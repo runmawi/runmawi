@@ -642,7 +642,7 @@ class ApiAuthController extends Controller
       $adddevice->save();
     }
 
-    if ( Auth::attempt($email_login) || Auth::attempt($username_login) || Auth::attempt($mobile_login)  ){
+    if ( !empty($users) && Auth::attempt($email_login) || !empty($users) && Auth::attempt($username_login) || !empty($users) && Auth::attempt($mobile_login)  ){
 
       Paystack_Andriod_UserId::truncate();
       Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
@@ -1078,22 +1078,44 @@ public function verifyandupdatepassword(Request $request)
 
   public function latestvideos()
   {
+    try {
 
-      $latestvideos = Video::where('active','=',1)->where('status','=', 1);
+        $check_Kidmode = 0 ;
 
-        if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
-          {
-            $latestvideos = $latestvideos  ->whereNotIn('videos.id',Block_videos());
-          }
+        $data = Video::where('active',1)->where('status', 1)->where('draft',1);
 
-      $latestvideos =$latestvideos->latest('created_at')->limit(1)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-          return $item;
-        });
+              if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+              {
+                $data = $data->whereNotIn('videos.id',Block_videos());
+              }
+
+              if( $check_Kidmode == 1 )
+              {
+                $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
+              }
+
+          $data = $data->latest()->limit(30)->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+            $item['source']    = "Videos";
+            return $item;
+          });
 
         $response = array(
-          'latestvideos' => $latestvideos
+          'status'  => 'true',
+          'Message' => 'Latest videos Retrieved successfully',
+          'latestvideos' => $data
         );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+      
+    }
+
+    
         
         return response()->json($response, 200);
   }
@@ -1774,8 +1796,6 @@ public function verifyandupdatepassword(Request $request)
       try {
           $pages = Page::where('active', '=', 1)->get()->map(function ($item) {
             $item['page_url'] = URL::to('page/'.$item->slug);
-            $item['body'] = strip_tags(html_entity_decode($item->body));
-            $item['body'] = str_replace(["\r", "\n"], '', $item['body']);
             return $item;
           });
 
@@ -3040,8 +3060,6 @@ public function verifyandupdatepassword(Request $request)
         // $plans = SubscriptionPlan::where("payment_type","=","recurring")->where('type','=','Stripe')->get();
 
       $plans = SubscriptionPlan::where("payment_type","=","recurring")->groupby('plans_name')->orderBy('id', 'asc')->get()->map(function ($item) {
-        $plan_content = str_replace(array("\r", "\n", "\t"), '', $item['plan_content']);
-        $item['plan_content'] =  htmlentities(strip_tags($plan_content));
         return $item;
       });
       
@@ -6779,6 +6797,7 @@ public function LocationCheck(Request $request){
 
         $Recommendation = HomeSetting::pluck('Recommendation')->first();
 
+
         if( $Recommendation == 1 ){
 
           $check_Kidmode = 0 ;
@@ -6803,7 +6822,8 @@ public function LocationCheck(Request $request){
                   $item['Video_Title_Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->video_title_image ;
                   return $item;
             });
-        } 
+        }
+        
 
         $response = array(
           'status'  => 'true',
@@ -6851,7 +6871,7 @@ public function LocationCheck(Request $request){
             return response()->json([
               'status'  => 'true',
               'message' => 'Most watched videos by User data Retrieve successfully',
-              'mostWatchedUserVideos' => $mostWatchedUserVideos], 200);
+              'mostWatchedUserVideos' => !empty($mostWatchedUserVideos) ? $mostWatchedUserVideos  : [] ], 200);
       
     } catch (\Throwable $th) {
       
@@ -9160,7 +9180,7 @@ $cpanel->end();
 
       try{
 
-        $HomeSetting = HomeSetting::first();
+        $HomeSetting = MobileHomeSetting::first();
         $OrderHomeSetting = OrderHomeSetting::first();
         $OrderSetting = array();
 
@@ -11305,6 +11325,28 @@ public function QRCodeMobileLogout(Request $request)
       $settings = Setting::first();
       $slug = $request->slug;
       $channel = Channel::where('channel_slug',$slug)->first(); 
+      $channels = Channel::where('channel_slug',$slug)->get()->map(function ($item) {
+        $settings = Setting::first();
+  
+          if(!empty($item['channel_banner']) && $item['channel_banner'] != null){
+            $item['channel_banner'] = $item->channel_banner;
+          }else{
+            $item['channel_banner'] = URL::to('/public/uploads/images/'.$settings->default_horizontal_image);
+          }
+                
+          if(!empty($item['channel_image']) && $item['channel_image'] != null){
+            $item['channel_image'] = $item->channel_image;
+          }else{
+            $item['channel_image'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+          }
+          if(!empty($item['channel_logo']) && $item['channel_logo'] != null){
+            $item['channel_logo'] = $item->channel_logo;
+          }else{
+            $item['channel_logo'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+          }
+          return $item;
+      });
+
       $currency = CurrencySetting::first();
           
               $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $channel->id)
@@ -11340,7 +11382,7 @@ public function QRCodeMobileLogout(Request $request)
               'LiveCategory' => LiveCategory::get(),
               'VideoCategory' => VideoCategory::get(),
               'AudioCategory' => AudioCategory::get(),
-              'channel' => $channel,
+              'channel' => $channels,
               'media_url' => $media_url,
               'facebook_url' => $facebook_url,
               'twitter_url' => $twitter_url,
@@ -11365,6 +11407,29 @@ public function QRCodeMobileLogout(Request $request)
 
           $settings = Setting::first();
           $channels = Channel::get(); 
+
+          $channels = Channel::where('status',1)->get()->map(function ($item) {
+            $settings = Setting::first();
+      
+              if(!empty($item['channel_banner']) && $item['channel_banner'] != null){
+                $item['channel_banner'] = $item->channel_banner;
+              }else{
+                $item['channel_banner'] = URL::to('/public/uploads/images/'.$settings->default_horizontal_image);
+              }
+                    
+              if(!empty($item['channel_image']) && $item['channel_image'] != null){
+                $item['channel_image'] = $item->channel_image;
+              }else{
+                $item['channel_image'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+              }
+              if(!empty($item['channel_logo']) && $item['channel_logo'] != null){
+                $item['channel_logo'] = $item->channel_logo;
+              }else{
+                $item['channel_logo'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+              }
+              return $item;
+          });
+
           $currency = CurrencySetting::first();
           $ThumbnailSetting = ThumbnailSetting::first();
             
@@ -11507,9 +11572,19 @@ public function QRCodeMobileLogout(Request $request)
       $slug = $request->slug;
       $ModeratorsUserid = ModeratorsUser::where('slug',$slug)->first(); 
 
-      $ModeratorsUser = ModeratorsUser::where('status',1)->get()->map(function ($item) {
-        $item['banner'] = URL::to('/public/uploads/moderator_albums/'.$item->banner);
-        $item['picture'] = URL::to('/public/uploads/moderator_albums/'.$item->picture);
+      $ModeratorsUser = ModeratorsUser::where('slug',$slug)->get()->map(function ($item) {
+      $settings = Setting::first();
+
+        if(!empty($item['banner']) && $item['banner'] != null){
+          $item['banner'] = URL::to('/public/uploads/moderator_albums/'.$item->banner);
+        }else{
+          $item['banner'] = URL::to('/public/uploads/images/'.$settings->default_horizontal_image);
+        }
+        if(!empty($item['picture']) && $item['picture'] != null){
+          $item['picture'] = URL::to('/public/uploads/moderator_albums/'.$item->picture);
+        }else{
+          $item['picture'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+        }
         return $item;
     });
 
@@ -11540,7 +11615,7 @@ public function QRCodeMobileLogout(Request $request)
 
           $response = array(
               'status'=> 'true',
-              'Content_Partner' => ModeratorsUser::where('slug',$slug)->first(),
+              'Content_Partner' => $ModeratorsUser,
               'currency' => $currency,
               'latest_video' => $latest_videos,
               'latest_series' => $latest_series,
@@ -11575,6 +11650,20 @@ public function QRCodeMobileLogout(Request $request)
     try{ 
       $settings = Setting::first();
       $ModeratorsUser = ModeratorsUser::get(); 
+      $ModeratorsUser = ModeratorsUser::where('status',1)->get()->map(function ($item) {
+      $settings = Setting::first();
+        if(!empty($item['banner']) && $item['banner'] != null){
+          $item['banner'] = URL::to('/public/uploads/moderator_albums/'.$item->banner);
+        }else{
+          $item['banner'] = URL::to('/public/uploads/images/'.$settings->default_horizontal_image);
+        }
+        if(!empty($item['picture']) && $item['picture'] != null){
+          $item['picture'] = URL::to('/public/uploads/moderator_albums/'.$item->picture);
+        }else{
+          $item['picture'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+        }
+        return $item;
+    });
       $currency = CurrencySetting::first();
       $ThumbnailSetting = ThumbnailSetting::first();
         
@@ -12080,7 +12169,7 @@ public function QRCodeMobileLogout(Request $request)
   public function DataFree()
   {
     try{
-      $HomeSetting = HomeSetting::first();
+      $HomeSetting = MobileHomeSetting::first();
       
       if($HomeSetting->latest_videos == 1){
       $settings = Setting::get();
@@ -12157,6 +12246,11 @@ public function QRCodeMobileLogout(Request $request)
           $response = array(
             'status'=> 'true',
             'Message' => 'Please Trun On Latest Video on Home Page Settings',
+            'videos' => [],
+            'series' =>[],
+            'live_streams' => [],
+            'audio' => [],
+            'settings' => [],
         );
       }
           
@@ -13268,15 +13362,12 @@ public function QRCodeMobileLogout(Request $request)
   {
     try {
 
-        $series = Series::select('id','image','player_image','tv_image')->where('id',$request->series_id)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('public/uploads/images/'.$item->image); 
-          $item['banner_image_url'] = URL::to('public/uploads/images/'.$item->player_image); 
-          $item['Tv_image_url'] = URL::to('public/uploads/images/'.$item->tv_image); 
-          $item['source']    = "videos";
-          return $item;
-        });
+        $series = Series::select('id','image','player_image','tv_image')->findOrFail($request->series_id);
 
-        $series =  $series->first();
+        $series['image_url'] = URL::to('public/uploads/images/' . $series->image);
+        $series['banner_image_url'] = URL::to('public/uploads/images/' . $series->player_image);
+        $series['Tv_image_url'] = URL::to('public/uploads/images/' . $series->tv_image);
+        $series['source'] = "Series";
 
        return response()->json([
         'status'  => 'true',
@@ -13294,4 +13385,99 @@ public function QRCodeMobileLogout(Request $request)
 
   }
   
+
+  public function Category_Videos(Request $request)
+  {
+
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $countryName =  $geoip->getCountry();
+    $getfeching = Geofencing::first();
+
+    $block_videos=BlockVideo::where('country_id',$countryName)->get();
+
+        if(!$block_videos->isEmpty()){
+          foreach($block_videos as $block_video){
+              $blockvideos[]=$block_video->video_id;
+          }
+      }
+      $blockvideos[]='';
+
+    $videocategories = VideoCategory::select('id','image')->orderBy('order', 'ASC')->get()->toArray();
+    $myData = array();
+    foreach ($videocategories as $key => $videocategory) {
+      $videocategoryid = $videocategory['id'];
+      $genre_image = $videocategory['image'];
+
+      $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')->where('categoryvideos.category_id',$videocategoryid)
+      ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+
+        return $item;
+      });
+
+      $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+      ->get('name');
+      foreach($main_genre as $value){
+        $category[] = $value['name'];
+      }
+      if(!empty($category)){
+      $main_genre = implode(",",$category);
+      }else{
+        $main_genre = "";
+      }
+      if(count($videos) > 0){
+        $msg = 'success';
+      }else{
+        $msg = 'nodata';
+      }
+      $myData[] = array(
+
+        "message" => $msg,
+        'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
+        'home_genre' =>  VideoCategory::where('id',$videocategoryid)->pluck('home_genre')->first(),
+        'gener_id' =>  VideoCategory::where('id',$videocategoryid)->pluck('id')->first(),
+        "videos" => $videos
+      );
+    }
+
+
+    $response = array(
+      'status' => 'true',
+      'genre_movies' => $myData,
+      'main_genre' => $msg,
+      'main_genre' => $main_genre,
+
+    );
+    return response()->json($response, 200);
+  }
+
+  
+  public function relatedtvvideos(Request $request) {
+    
+    $videoid = $request->videoid;
+   
+      // Recomendeds
+                
+      $recomendeds = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
+      ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+      ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+      ->where('videos.id', '!=', $videoid)
+      ->where('videos.active',  1)
+      ->where('videos.status',  1)
+      ->where('videos.draft',  1)
+      ->limit(10)
+      ->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+      $response = array(
+      'status'=>'true',
+      'channelrecomended' => $recomendeds
+    );
+    return response()->json($response, 200);
+  }
+
+
 }

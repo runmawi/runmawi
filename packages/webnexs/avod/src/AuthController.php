@@ -854,14 +854,22 @@ class AuthController extends Controller
     }
 
     public function list_total_cpv() {
-        $data = [];
-        $data['settings'] = Setting::first();
-        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-        if(!empty(session('advertiser_id')) ){
-            $data['cpv_lists'] = Adviews::where('advertiser_id',session('advertiser_id'))->get();
-            return view('avod::total_cpv',$data);
+
+        try {
+            $data = [];
+            $data['settings'] = Setting::first();
+            $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+    
+            if(!empty(session('advertiser_id')) ){
+                $data['cpv_lists'] = Adviews::where('advertiser_id',session('advertiser_id'))->get();
+                return view('avod::total_cpv',$data);
+            }
+            
+            return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+
+        } catch (\Throwable $th) {
+            return abort(404);
         }
-        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
     }
 
     public function ads_campaign() {
@@ -1044,13 +1052,75 @@ class AuthController extends Controller
     }
 
     public function AdsEvents(Request $request)
-        {
-            $data=[
+    {
+         $data=[
              'ads_category'   => Adscategory::all(),
+        ];
+
+        return view('avod::Ads_events',$data);
+    }
+    
+    public function Ads_edit(Request $request, $Ads_id)
+    {
+        try {
+            $Advertisement = Advertisement::where('id',$Ads_id)->first();
+
+            $data = [
+                'Advertisement' => $Advertisement,
+                'post_route'   => route('Ads_update',[$Ads_id]),
+                'ads_category' => Adscategory::all(),
+                'button_text' => "update",
             ];
 
-            return view('avod::Ads_events',$data);
+            return view('avod::ads_edit', $data);
+
+        } catch (\Throwable $th) {
+            return abort(404);
         }
-    
+        
+    }
+
+    public function Ads_update(Request $request, $advertisement_id)
+    {
+
+        $inputs = array(
+            'advertiser_id' => $advertisement_id ,
+            'ads_name'      => $request->ads_name ,
+            'ads_category'  => $request->ads_category ,
+            'ads_position'  => $request->ads_position ,
+            'ads_path'      => $request->ads_path ,
+            'ads_upload_type' => $request->ads_upload_type ,
+            'age'             => !empty($request->age) ? json_encode($request['age']) : " " ,
+            'gender'          => !empty($request['gender']) ? json_encode($request['gender']) : " " ,
+            'status'          => 0,
+        );
+
+        if($request->location == "all_countries" || $request->location == "India" ){
+            $inputs += ["location" => $request->location ];
+        }
+        else{
+            $inputs += ["location" => $request->locations ];
+        }
+
+        // dd( $inputs );
+
+        $Advertisement = Advertisement::find($advertisement_id)->update( $inputs );
+
+         return redirect()->back();
+        
+    }
+
+    public function Ads_delete($Ads_id)
+    {
+        try {
+
+            Advertisement::where('id',$Ads_id)->delete();
+            AdsEvent::where('id',$Ads_id)->delete();
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        
+    }
 }
 ?>

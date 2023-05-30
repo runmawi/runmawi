@@ -117,14 +117,21 @@ entertainment.</p>
       </div>
       
   </div>
-  <div class="container-fluid">
-      <p class="mb-0 text-center font-size-14 text-body" style="color: #208585 !important;">
-          <a href="https://dev.nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">
-              Terms and Conditions </a>  <a href="https://dev.nemisatv.co.za/page/FAQ" target="_blank" class="ml-1">
-              FAQ </a> <?php echo $settings->website_name ; ?> -
-          <?php echo Carbon::now()->year ; ?> All Rights Reserved
-      </p>
-  </div>
+
+    <div class="container-fluid">
+        <p class="mb-0 text-center font-size-14 text-body" style="color: #208585 !important;">
+          <?php
+                    // CMS Pages
+            $cmspages = App\Page::where('active', 1)->get();
+
+            foreach($cmspages as $key => $page) {?>
+              <a href="<?= URL::to('page/'.$page->title ) ?>" target="_blank" class="ml-1"> <?= $page->title ?> </a> 
+          <?php } ?>
+
+          <?php echo $settings->website_name .' - '. Carbon::now()->year ; ?>  All Rights Reserved
+        </p>
+    </div>
+
 </footer>
 
       <!-- jQuery, Popper JS -->

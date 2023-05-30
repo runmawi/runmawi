@@ -60,7 +60,15 @@ class AdminLiveCategoriesController extends Controller
           'responseBody' => $responseBody,
   );
             return view('admin.expired_dashboard');
-        }else{
+        }else if(check_storage_exist() == 0){
+          $settings = Setting::first();
+
+          $data = array(
+              'settings' => $settings,
+          );
+
+          return View::make('admin.expired_storage', $data);
+      }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin" ){
         $categories = LiveCategory::where('parent_id', '=', 0)->orderBy('order')->get();
 

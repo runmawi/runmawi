@@ -73,7 +73,16 @@
                     <div class="col-md-6">
                     <div id="google-line-chart" style="width: 900px; height: 500px"></div>
                  </div>
+
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <a href="{{ URL::to('admin/analytics/PlayerSeekUserTimeAnalytics/')  }}">
+                            <button class="tablinks btn btn-primary" id="openPayPerView" >Player Seeked Time</button>
+                    </div>
+                 </div>
+                 <br>
+                 <br>
                         <div class="row" id="player_user">
                             <div class="col-md-12">
                                 <table class="table text-center" id="player_table" style="width:100%">
@@ -86,8 +95,8 @@
                                             <th>Video Slug</th>
                                             <th>Viewed Count</th>
                                             <th>Watch Percentage (Minutes)</th>
-                                            <th>Seek Time (Seconds)</th>
-                                            <th>Buffered Time (Seconds)</th>
+                                            <!-- <th>Seek Time (Seconds)</th>
+                                            <th>Buffered Time (Seconds)</th> -->
 
                                         </tr>
                                     </thead>
@@ -99,9 +108,9 @@
                                         <td>{{ $playervideo->title  }}</td>  
                                         <td>{{ $playervideo->slug  }}</td>   
                                         <td>{{ $playervideo->count  }}</td>   
-                                        <td>{{ $playervideo->watchpercentage  }}</td>   
-                                        <td>{{ $playervideo->seekTime  }}</td>   
-                                        <td>@if(!empty($playervideo->bufferedTime)){{ $playervideo->bufferedTime  }} @else {{ 'No Buffer' }} @endif</td>   
+                                        <td><?= gmdate("H:i:s", @$playervideo->currentTime) ?></td> 
+                                        <!-- <td>{{ $playervideo->seekTime  }}</td>    -->
+                                        <!-- <td>@if(!empty($playervideo->bufferedTime)){{ $playervideo->bufferedTime  }} @else {{ 'No Buffer' }} @endif</td>    -->
                                         </tr>
                                     @endforeach
                                 </tbody>

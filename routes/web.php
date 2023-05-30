@@ -145,7 +145,7 @@ Route::get('/category/{cid}', 'ChannelController@channelVideos');
 Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
 Route::get('datafree/category/videos/{vid}','ChannelController@play_videos');
 Route::get('/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
-Route::get('/language/{language}', 'ChannelController@LanguageVideo');
+// Route::get('/language/{language}', 'ChannelController@LanguageVideo');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 Route::get('/category/wishlist/{slug}', 'ChannelController@Watchlist');
 Route::post('favorite', 'ThemeAudioController@add_favorite');
@@ -271,6 +271,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::post('ppvWatchlater', 'WatchLaterController@ppvWatchlater');
     Route::get('/promotions', 'HomeController@promotions');
     Route::get('/page/{slug}', 'PagesController@index');
+
     Route::get('/paypal/billings-details', 'HomeController@ViewPaypal');
     Route::get('/paypal/transaction-details', 'HomeController@ViewTrasaction');
     Route::get('/stripe/transaction-details', 'HomeController@ViewStripeTrasaction');
@@ -309,6 +310,8 @@ Route::get('refferal', 'AdminUsersController@refferal');
 Route::post('/profile/update', 'AdminUsersController@profileUpdate');   
 Route::get('/latest-videos', 'HomeController@LatestVideos');
 Route::get('/language/{lanid}/{language}', 'HomeController@LanguageVideo');
+Route::get('/language/{slug}', 'HomeController@Language_Video');
+Route::get('/language-list', 'HomeController@Language_List');
 Route::get('featured-videos', 'HomeController@Featured_videos');
 Route::post('mywishlist', 'WishlistController@mywishlist');
 Route::post('ppvWishlist', 'WishlistController@ppvWishlist');
@@ -357,6 +360,7 @@ Route::post('purchase-video', 'PaymentController@purchaseVideo');
 Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');
 Route::post('player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');
 Route::post('player_analytics_store', 'AdminPlayerAnalyticsController@PlayerAnalyticsStore');
+Route::post('player_seektime_store', 'AdminPlayerAnalyticsController@PlayerSeekTimeStore');
 Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
 Route::post('purchase-series', 'PaymentController@purchaseSeries');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
@@ -597,7 +601,7 @@ Route::get('/Testwatermark', 'Testwatermark@index');
     Route::get('/pages/edit/{id}', 'AdminPageController@edit');
     Route::post('/pages/update', 'AdminPageController@update');
     Route::get('/pages/delete/{id}','AdminPageController@destroy');
-
+    Route::post('/page_status_update', 'PagesController@page_status')->name('page_status_update'); 
 
     Route::get('/menu', 'AdminMenuController@index');
     Route::post('/menu/store', array('before' => 'demo', 'uses' => 'AdminMenuController@store'));
@@ -1098,6 +1102,10 @@ Route::post('/analytics/playerusers_start_date_url', 'AdminPlayerAnalyticsContro
 Route::post('/analytics/playerusers_end_date_url', 'AdminPlayerAnalyticsController@PlayerUsersEndDateRecord');
 Route::post('/analytics/playerusers_export', 'AdminPlayerAnalyticsController@PlayerUsersExport');
 Route::post('/analytics/PlayerUserDateAnalytics', 'AdminPlayerAnalyticsController@PlayerUserDateAnalytics');
+
+Route::get('/analytics/PlayerSeekUserTimeAnalytics', 'AdminPlayerAnalyticsController@PlayerSeekTimeAnalytics');
+Route::post('/analytics/PlayerUserSeekTime_export', 'AdminPlayerAnalyticsController@PlayerSeekTimeExport');
+Route::post('/analytics/PlayerSeekUserTimeDateAnalytics', 'AdminPlayerAnalyticsController@PlayerSeekTimeDateAnalytics');
 
 
 Route::get('/analytics/VideoAllCountry', 'AdminPlayerAnalyticsController@RegionVideoAllCountry');
@@ -2288,3 +2296,13 @@ Route::get('/Free-Movies', 'AllVideosListController@Free_videos')->name('Free_vi
 // Series
 Route::get('/series/list', 'AllVideosListController@all_series')->name('all_series');
 Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList');
+
+
+Route::get('/download-xml', function () {
+    $file = public_path('uploads/sitemap/sitemap.xml');
+    $headers = [
+        'Content-Type' => 'application/xml',
+    ];
+
+    return response()->download($file, 'sitemap.xml', $headers);
+})->name('download.xml');

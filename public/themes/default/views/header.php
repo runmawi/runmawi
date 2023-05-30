@@ -44,11 +44,11 @@
       // }
       ?>
    <?php //if (!empty($data["password_hash"])) {
-      $series = App\Series::where("title", $request_url)->first();
+      $series = App\Series::where("slug", $request_url)->first();
       // }
       ?>
    <?php //if (!empty($data["password_hash"])) {
-      $episdoe = App\Episode::where("title", $request_url)->first();
+      $episdoe = App\Episode::where("slug", $request_url)->first();
       // }
       ?>
    <?php //if (!empty($data["password_hash"])) {
@@ -761,14 +761,15 @@
                                        <?php  include 'public/themes/default/partials/Search_content.php'; ?>
                                     </div>
                                  </form>
-                              </div>
-
-                              <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+                                  <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
                                  <div class="iq-card-body">
                                     <div id="search_list" class="search_list search-toggle device-search" >
                                     </div>
                                  </div>
                               </div>
+                              </div>
+
+                              
                            </li>
                            <li class="nav-item nav-icon">
                               <!--<a href="#" class="search-toggle" data-toggle="search-toggle">

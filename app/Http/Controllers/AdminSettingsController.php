@@ -61,7 +61,21 @@ class AdminSettingsController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } else {
+            //  Delete Existing Image (PC-Image, Mobile-Image, Tablet-Image )
+            if (File::exists(base_path('public/uploads/sitemap/sitemap.xml'))) {
+                $sitemap = URL::to('public/uploads/sitemap/sitemap.xml');
+            }else{
+                $sitemap = '';
+            }
             $setting = Setting::first();
             $app_settings = AppSetting::first();
             if (!empty($setting->transcoding_resolution)) {
@@ -81,6 +95,7 @@ class AdminSettingsController extends Controller
                 'settings' => $setting,
                 'rtmp_url' => RTMP::all(),
                 'captchas' => Captcha::first(),
+                'sitemap' => $sitemap,
             ];
 
             return \View::make('admin.settings.index', $data);
@@ -519,7 +534,15 @@ class AdminSettingsController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
-        } 
+        } else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }
         else {
             $playerui = Playerui::first();
 
@@ -783,6 +806,14 @@ class AdminSettingsController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } else {
             $thumbnail_setting = ThumbnailSetting::first();
 
@@ -855,7 +886,15 @@ class AdminSettingsController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
-        } 
+        } else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }
         else {
             $FooterLink = FooterLink::orderBy('order')->get();
             return view('admin.footer.index', compact('FooterLink', $FooterLink));
@@ -942,7 +981,15 @@ class AdminSettingsController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
-        } 
+        } else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }
         else {
             $setting = Setting::first();
             $deeplinking_setting = LinkingSetting::first();

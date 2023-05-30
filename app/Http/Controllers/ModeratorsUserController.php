@@ -208,7 +208,7 @@ class ModeratorsUserController extends Controller
                     $file->move($path, $moderatorsuser->picture);
                 }
                 if ($request->picture == "") {
-                    $moderatorsuser->picture = "Default.png";
+                    $moderatorsuser->picture = null;
                 } else {
                     $moderatorsuser->picture = $file->getClientOriginalName();
                 }

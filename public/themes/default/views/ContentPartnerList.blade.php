@@ -18,7 +18,11 @@
                                 <a href="{{ URL::to('contentpartner').'/'.$content_user->slug   }} ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
+                                        @if(!empty($content_user->picture) && $content_user->picture != null)
                                             <img src="<?php echo  URL::to('/') . '/public/uploads/moderator_albums/'.$content_user->picture;  ?>" class="img-fluid w-100" alt="">
+                                        @else
+                                            <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" class="img-fluid w-100" alt="">
+                                        @endif
                                         </div>
                             
                                         <div class="content_user" >

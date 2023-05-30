@@ -648,10 +648,6 @@ border-radius: 4px;
   </div>
   <?php $settings = App\Setting::first(); ?>
 
-@php
-  include(public_path('themes/default/views/footer.blade.php'));
-@endphp
-
   
    <script>
 $(document).ready(function () {

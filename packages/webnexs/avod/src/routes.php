@@ -10,13 +10,12 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/buyplan', 'Webnexs\Avod\AuthController@buyplan')->name('buyplan'); 
 		Route::post('/buyplanrazorpay', 'Webnexs\Avod\AuthController@buyplanrazorpay')->name('buyplanrazorpay'); 
 		Route::get('/plan_history', 'Webnexs\Avod\AuthController@plan_history'); 
-		Route::get('/upload_ads', 'Webnexs\Avod\AuthController@upload_ads'); 
-		Route::get('/ads-list', 'Webnexs\Avod\AuthController@ads_list'); 
+		Route::get('/upload_ads', 'Webnexs\Avod\AuthController@upload_ads')->name('upload_ads'); 
 		Route::post('/store_ads', 'Webnexs\Avod\AuthController@store_ads'); 
 		Route::get('/paymentgateway/{plan_id}', 'Webnexs\Avod\AuthController@paymentgateway'); 
 		Route::get('/billing_details', 'Webnexs\Avod\AuthController@billing_details'); 
 		Route::get('/featured_ad_history', 'Webnexs\Avod\AuthController@featured_ad_history'); 
-		Route::get('logout', 'Webnexs\Avod\AuthController@logout');
+		Route::get('logout', 'Webnexs\Avod\AuthController@logout')->name('ads_logout');
 		Route::get('forget-password', 'Webnexs\Avod\AuthController@showForgetPasswordForm')->name('forget.password.get');
 		Route::post('forget-password', 'Webnexs\Avod\AuthController@submitForgetPasswordForm')->name('forget.password.post'); 
 		Route::get('reset-password/{token}', 'Webnexs\Avod\AuthController@showResetPasswordForm')->name('reset.password.get');
@@ -36,6 +35,12 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/Ads_Scheduled', 'Webnexs\Avod\AuthController@Ads_Scheduled')->name('Ads_Scheduled');
 		Route::post('AdsScheduleStore', 'Webnexs\Avod\AuthController@AdsScheduleStore')->name('AdsScheduleStore'); 
 		Route::get('Ads-Events', 'Webnexs\Avod\AuthController@AdsEvents')->name('AdsEvents'); 
+
+		Route::get('/ads-list', 'Webnexs\Avod\AuthController@ads_list')->name('ads-list'); 
+		Route::get('Ads-videos', 'Webnexs\Avod\AuthController@Ads-videos'); 
+		Route::get('Ads-edit/{Ads_id}', 'Webnexs\Avod\AuthController@Ads_edit')->name('Ads_edit'); 
+		Route::PATCH('Ads-update/{Ads_id}', 'Webnexs\Avod\AuthController@Ads_update')->name('Ads_update'); 
+		Route::get('Ads-delete/{Ads_id}', 'Webnexs\Avod\AuthController@Ads_delete')->name('Ads_delete');
 
 	});
 });

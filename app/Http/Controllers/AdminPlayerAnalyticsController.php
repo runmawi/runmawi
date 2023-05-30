@@ -21,10 +21,15 @@ use App\City as City;
 use App\State as State;
 use App\UserLogs as UserLogs;
 use File;
-
+use App\PlayerSeekTimeAnalytic as PlayerSeekTimeAnalytic;
+use View;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
+use \App\Setting as Setting;
 
 class AdminPlayerAnalyticsController extends Controller
 {
+
     public function PlayerAnalyticsCreate(Request $request){
 
 
@@ -96,6 +101,44 @@ class AdminPlayerAnalyticsController extends Controller
 
 
     public function PlayerVideoAnalytics(Request $request){
+
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+                $responseBody = json_decode($response->getBody());
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
+                );
+            return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }
 
         $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
         // groupBy('videoid')->
@@ -501,6 +544,44 @@ class AdminPlayerAnalyticsController extends Controller
     }
 
     public function RegionVideoAnalytics(Request $request){
+
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+                $responseBody = json_decode($response->getBody());
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
+                );
+            return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }
 
         $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
         $CountryCode = CountryCode::get();
@@ -1019,6 +1100,43 @@ class AdminPlayerAnalyticsController extends Controller
 
     public function PlayerUserAnalytics()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+                $responseBody = json_decode($response->getBody());
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
+                );
+            return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }
         $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
         $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
         ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
@@ -1028,14 +1146,15 @@ class AdminPlayerAnalyticsController extends Controller
         ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
         DB::raw('sum(player_analytics.duration) as duration') ,
          DB::raw('sum(player_analytics.currentTime) as currentTime') ,
-         DB::raw('(player_analytics.seekTime) as seekTime') ,
+         DB::raw('sum(player_analytics.seekTime) as seekedTime') ,
+         DB::raw('(player_analytics.seekTime) as seekedTime') ,
          DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
          DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
          \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
          \DB::raw("COUNT(player_analytics.videoid) as count"),
          \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
         ]);
-
+        // dd($player_videos);
         $player_videos_count =  count($player_videos);
         $UserLogs_count = UserLogs::get()->count(); 
        
@@ -1404,10 +1523,164 @@ class AdminPlayerAnalyticsController extends Controller
                         $each_user->title,
                         $each_user->slug,
                         $each_user->count,
-                        $each_user->watchpercentage,
+                        gmdate("H:i:s", @$each_user->currentTime),     
                         $each_user->seekTime,
                         $each_user->bufferedTime,
                     ]);
+                }
+            }
+
+            fclose($handle);
+
+            \Response::download($filename, "download.csv", $headers);
+
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+    public function PlayerSeekTimeStore(Request $request){
+
+        try{
+            $input = $request->all();
+
+            if(!Auth::guest()){
+
+                $PlayerSeekTimeAnalytic = new PlayerSeekTimeAnalytic;
+                $PlayerSeekTimeAnalytic->user_id = Auth::user()->id;
+                $PlayerSeekTimeAnalytic->video_id = $input['video_id'];
+                $PlayerSeekTimeAnalytic->video_title = $input['video_title'];
+                $PlayerSeekTimeAnalytic->video_slug = $input['video_slug'];
+                $PlayerSeekTimeAnalytic->user_name = Auth::user()->username;        
+                $PlayerSeekTimeAnalytic->SeekTime = $input['seekedTime'];
+                $PlayerSeekTimeAnalytic->duration = $input['duration'];
+                $PlayerSeekTimeAnalytic->save();
+
+                return 1;
+                
+            }else{
+                return 0;
+
+            }
+
+        }catch(\Throwable $th){
+            $data = array(
+                'status' => false,
+                'message' => $th->getMessage() ,
+            );
+        }
+    }
+
+    public function PlayerSeekTimeAnalytics(Request $request){
+
+        try{
+
+            $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::get();
+            $data = array(
+                'PlayerSeekTimeAnalytic' => $PlayerSeekTimeAnalytic,
+                'player_videos_count' => count($PlayerSeekTimeAnalytic),
+            );
+            return \View::make('admin.analytics.Player_user_seektime', $data);
+    
+        }catch(\Throwable $th){
+            $data = array(
+                'status' => false,
+                'message' => $th->getMessage() ,
+            );
+        }
+    }
+
+    public function PlayerSeekTimeDateAnalytics(Request $request)
+    {
+        // 2022-04-01
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        if (!empty($start_time) && empty($end_time))
+        {
+            $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::whereDate('created_at', '>=', $start_time)->get();
+
+        }else if (!empty($start_time) && !empty($end_time))
+        {
+    
+            $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::whereBetween('created_at', [$start_time, $end_time])->get();
+
+        }else{
+                $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::get();
+            }
+
+        $data = array(
+            'PlayerSeekTimeAnalytic' => $PlayerSeekTimeAnalytic,
+            'player_videos_count' => count($PlayerSeekTimeAnalytic),
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+        );
+        return \View::make('admin.analytics.Player_user_seektime', $data);
+
+    }
+
+
+    
+    public function PlayerSeekTimeExport(Request $request){
+
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+
+            $data = $request->all();
+            // dd($data);exit;
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+            if (!empty($start_time) && empty($end_time))
+            {
+                $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::whereDate('created_at', '>=', $start_time)->get();
+    
+            }else if (!empty($start_time) && !empty($end_time))
+            {
+        
+                $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::whereBetween('created_at', [$start_time, $end_time])->get();
+    
+            }else{
+                    $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::get();
+            }
+    
+            $file = "PlayerUsersSeekTimeAnalytics.csv";
+
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            fputcsv($handle, [
+                "User Name",
+                "Video Name",
+                "Video Slug",
+                "Seek Time ",
+                "Duration Time ",
+            ]);
+            if (count($PlayerSeekTimeAnalytic) > 0) {
+                foreach ($PlayerSeekTimeAnalytic as $each_user) {
+                    if(gmdate("H:i:s", @$each_user->SeekTime) != '00:00:00'){
+                        fputcsv($handle, [
+                            $each_user->user_name,
+                            $each_user->video_title,
+                            $each_user->video_slug,
+                            gmdate("H:i:s", @$each_user->SeekTime),  
+                            gmdate("H:i:s", @$each_user->duration),     
+                        ]);
+                    }
                 }
             }
 

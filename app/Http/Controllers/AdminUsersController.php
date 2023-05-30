@@ -96,6 +96,14 @@ class AdminUsersController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $user = $request->user();
         
@@ -261,6 +269,14 @@ class AdminUsersController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $data = array(
             'post_route' => URL::to('admin/user/store') ,
@@ -572,6 +588,14 @@ class AdminUsersController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $user = User::find($id);
         $data = array(
@@ -897,6 +921,14 @@ class AdminUsersController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $mobile_settings = MobileApp::get();
         $allCategories = MobileSlider::all();
@@ -1655,6 +1687,14 @@ class AdminUsersController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $registered_count = User::where('role', 'registered')->count();
         $subscription_count = User::where('role', 'subscriber')->count();
@@ -2248,6 +2288,14 @@ class AdminUsersController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $Country = Region::get();
 
@@ -2290,6 +2338,14 @@ class AdminUsersController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $Country = Region::get();
         $State = State::get();
@@ -3111,6 +3167,14 @@ class AdminUsersController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $settings = Setting::first();
         $ppv_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
@@ -3206,6 +3270,14 @@ class AdminUsersController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $settings = Setting::first();
         $ppv_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')

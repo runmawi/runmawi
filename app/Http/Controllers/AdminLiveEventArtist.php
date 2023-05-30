@@ -67,6 +67,14 @@ class AdminLiveEventArtist extends Controller
                     'responseBody' => $responseBody,
                 );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }
 
     }
@@ -142,6 +150,14 @@ class AdminLiveEventArtist extends Controller
             );
 
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }
         else{
             $data = array(
@@ -873,6 +889,14 @@ class AdminLiveEventArtist extends Controller
             'responseBody' => $responseBody,
         );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
 
             $videos =    LiveEventArtist::where('live_event_artists.status', '=',0)
@@ -1000,6 +1024,14 @@ class AdminLiveEventArtist extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
 
             $videos =    LiveEventArtist::where('live_event_artists.status', '=',0)

@@ -101,6 +101,14 @@ class AdminAudioController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
       $search_value = $request->get('s');
@@ -180,6 +188,14 @@ class AdminAudioController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
@@ -415,6 +431,14 @@ class AdminAudioController extends Controller
                     'responseBody' => $responseBody,
                 ];
                 return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                );
+
+                return View::make('admin.expired_storage', $data);
             } else {
                 if ($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role == "admin") {
                     
@@ -475,8 +499,10 @@ class AdminAudioController extends Controller
 
                 if(!empty($input['ppv_price'])){
                     $ppv_price = $input['ppv_price'];
-                }elseif($input['ppv_status'] || $settings->ppv_status == 1){
+                }elseif(!empty($input['ppv_status']) || $settings->ppv_status == 1){
                     $ppv_price = $settings->ppv_price;
+                }else{
+                    $ppv_price = null;
                 }
 
                 $audio = Audio::findOrFail($id);
@@ -1018,6 +1044,8 @@ class AdminAudioController extends Controller
                 $ppv_price = $input['ppv_price'];
             }elseif(!empty($input['ppv_status']) || $settings->ppv_status == 1){
                 $ppv_price = $settings->ppv_price;
+            }else{
+                $ppv_price = null;
             }
 
             if(!empty($input['searchtags'])){
@@ -1346,6 +1374,14 @@ class AdminAudioController extends Controller
             'responseBody' => $responseBody,
                 );
             return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                );
+
+                return View::make('admin.expired_storage', $data);
             }else{
 
                 $audios =    Audio::join('channels', 'channels.id','=','audio.user_id')
@@ -1475,6 +1511,14 @@ class AdminAudioController extends Controller
                 'responseBody' => $responseBody,
             );
                 return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                );
+
+                return View::make('admin.expired_storage', $data);
             }else{
             // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
     

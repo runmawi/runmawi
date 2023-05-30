@@ -50,6 +50,14 @@ class AdminSliderSettingController extends Controller
             );
 
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }
 
         else{

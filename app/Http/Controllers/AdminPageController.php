@@ -61,23 +61,33 @@ class AdminPageController extends Controller
             ]);
     
             $responseBody = json_decode($response->getBody());
-           $settings = Setting::first();
-           $data = array(
-            'settings' => $settings,
-            'responseBody' => $responseBody,
-    );
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+            );
+            
             return View::make('admin.expired_dashboard', $data);
-        }else{
-        $pages = Page::orderBy('created_at', 'DESC')->paginate(10);
-        $user = Auth::user();
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
 
-        $data = array(
-            'pages' => $pages,
-            'user' => $user,
-            'admin_user' => Auth::user()
+            $data = array(
+                'settings' => $settings,
             );
 
-        return View::make('admin.pages.index', $data);
+            return View::make('admin.expired_storage', $data);
+        }
+        else{
+            $pages = Page::orderBy('created_at', 'DESC')->paginate(10);
+            $user = Auth::user();
+
+            $data = array(
+                'pages' => $pages,
+                'user' => $user,
+                'admin_user' => Auth::user()
+            );
+
+            return View::make('admin.pages.index', $data);
         }
     }
 
@@ -119,6 +129,14 @@ class AdminPageController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $data = array(
             'post_route' => URL::to('admin/pages/store'),
@@ -216,6 +234,14 @@ class AdminPageController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $page = Page::find($id);
 

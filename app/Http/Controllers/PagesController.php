@@ -20,19 +20,11 @@ class PagesController extends Controller{
   public function index($slug){
 
     $settings = Setting::first();
-
-    // if($settings->enable_landing_page == 1 && Auth::guest()){
-
-    //     $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
-
-    //     return redirect()->route('landing_page', $landing_page_slug );
-    // }
     
     
     $Theme = HomeSetting::pluck('theme_choosen')->first();
     Theme::uses(  $Theme );
  
-         // Read value from Model method
          $dynamic_page = Page::where('slug', '=', $slug)->first();
             if($dynamic_page->active){
                // $author = User::find($dynamic_page->user_id);
@@ -47,6 +39,22 @@ class PagesController extends Controller{
         else {
             return Redirect::to('pages')->with(array('note' => 'Sorry, this page is no longer active.', 'note_type' => 'error'));
         }
+  }
+
+  public function page_status(Request $request)
+  {
+    try {
+
+        Page::where("id", $request->page_id)->update([
+            "active" => $request->page_status,
+        ]);
+
+      return response()->json(["message" => "true"]);
+    }
+     catch (\Throwable $th) {
+        return response()->json(["message" => "false"]);
+    }
+
   }
 
 }

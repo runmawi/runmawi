@@ -48,9 +48,10 @@
                                             <td>{{ $advertisement->created_at->format('d/M/y') }}</td>
                                             <td>
                                                 <a href="#" target="_blank" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
-                                                <a href="#" class="iq-bg-success ml-2 mr-2"><img class="ply " src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
-                                                <a href="#" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                                                <a href="{{ route('Ads_edit',[$advertisement->id]) }}" class="iq-bg-success ml-2 mr-2"><img class="ply " src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                                <a href="{{ route('Ads_delete',[$advertisement->id]) }}" onclick="return confirm('Are you sure remove this Ads?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                             </td>
+
 
                                              {{-- <td>{{ get_revenue($advertisement->id) }}</td>
                                             <td>{{ get_cpv($advertisement->id) }}</td> --}}

@@ -407,7 +407,7 @@ body.sidebar-main .iq-top-navbar { width: calc(100% - 80px); }
 .breadcrumb-item+.breadcrumb-item::before { content: "\ea5f"; font-family: 'remixicon'; font-size: 14px; vertical-align: sub; color: var(--iq-body-text); }
 .iq-top-navbar .breadcrumb li a, .iq-top-navbar .breadcrumb li a:hover { text-decoration: none; }
 .iq-top-navbar .navbar-expand-lg { justify-content: space-between !important; }
-.iq-top-navbar .navbar-collapse { flex-grow: unset; }
+.iq-top-navbar .navbar-collapse { /*flex-grow: unset;*/ }
 .navbar-list { margin: 0; padding: 0; float: right; }
 .navbar-list li { float: left; list-style-type: none; position: relative; }
 .navbar-list li > .dropdown .dropdown-menu { -webkit-animation: fade-in-bottom 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both; animation: fade-in-bottom 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both; -webkit-transform: translateY(100%); transform: translateY(100%); }
@@ -454,7 +454,7 @@ div#lottie-beil svg path, div#lottie-mail svg path, div#lottie-fullscreen svg pa
 .topnav-toolbar li.active a { background: var(--iq-light-primary); color: var(--iq-primary); }
 .topnav-toolbar ul li { list-style: none; padding: 13px 0; }
 .navbar-list li > .dropdown { line-height: 73px; cursor: pointer; }
-.iq-search-bar { padding: 0 15px; }
+.iq-search-bar { padding: 0 15px;position: absolute;right: 60px; }
 .iq-search-bar .searchbox { width: 480px; position: relative; }
 .iq-search-bar .search-input { width: 100%; height: 40px; padding: 5px 15px 5px 40px; font-size: 13px; border-radius: 5px; color: var(--iq-body-text); border: none; background-color: var(--iq-body-bg); }
 .iq-navbar-logo { padding: 20px; width: auto; position: relative; background: var(--iq-white); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; background: transparent; }

@@ -469,8 +469,8 @@ function send_password_notification($title,$message,$video_name='',$video_img=''
     return true;
 }
 
-function get_ad($ad_id,$field){
-    $ads = App\Advertisement::where('id',$ad_id)->first()->$field;
+function get_ad($ad_id){
+    $ads = App\Advertisement::where('id',$ad_id)->pluck('ads_name')->first();
     return  $ads; 
 }
 
@@ -478,7 +478,6 @@ function get_advertiser($advertiser_id,$field){
     $ads = App\Advertiser::where('id',$advertiser_id)->first()->$field;
     return  $ads; 
 }
-
 
 function get_revenue($ad_id){
     $revenue_total = App\Adrevenue::where('ad_id',$ad_id)->sum('advertiser_share');
@@ -496,8 +495,9 @@ function get_views($ad_id){
 }
 
 
-function get_video($vid,$field){
-    $getdata = App\Video::where('id',$vid)->first()->$field;
+function get_video($vid){
+
+    $getdata = App\Video::where('id',$vid)->pluck('title')->first();
     return  $getdata; 
 }
 
@@ -815,4 +815,118 @@ function Mail_Image()
     $Mail_Image = $settings != null && $settings->email_image != null ? $settings->email_image : $settings->logo ;
 
     return public_path('uploads/settings/'. $Mail_Image) ;
+}
+
+function default_vertical_image()
+{
+    $default_vertical_image = App\Setting::pluck('default_video_image')->first();
+
+    return  $default_vertical_image ;
+} 
+
+function default_horizontal_image()
+{
+    $default_horizontal_image = App\Setting::pluck('default_horizontal_image')->first();
+
+    return  $default_horizontal_image ;
+}
+
+
+function check_storage_exist(){
+
+    $StorageSetting = App\StorageSetting::first();
+    if(!empty($StorageSetting->site_key && $StorageSetting->site_user && $StorageSetting->site_action)){
+    $data = array('key' => $StorageSetting->site_key,
+    'action' => $StorageSetting->site_action,
+    'user'=> $StorageSetting->site_user);
+        
+        $url = "https://$StorageSetting->site_IPSERVERAPI/v1/accountdetail";
+        
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+
+        $response = curl_exec($ch);
+        $storage = json_decode($response);
+        // dd($storage->result->account_info->space_usage);
+        if (curl_errno($ch)) {
+            $space_available = 0 .' '.'TB';
+            $space_usage = 0 .' '.'TB';
+            $space_disk = 0 .' '.'TB';
+            $response =   1 ;
+
+        } else {
+            $space_usage =  $storage->result->account_info->space_usage;
+            $space_disk = $storage->result->account_info->space_disk  ;
+            if($space_usage > $space_disk || $space_usage == $space_disk ){
+                $response =   0 ;
+                
+            }else{
+                $response =   1 ;
+            }
+
+        }
+        curl_close($ch);
+
+    }else{
+        $space_available = 0 .' '.'TB';
+        $space_usage = 0 .' '.'TB';
+        $space_disk = 0 .' '.'TB';
+        $response =   1 ;
+
+    }
+
+    return  $response ;
+
+}
+
+
+function package_ends(){
+
+        $user =  App\User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $response = 0;
+
+        }else{
+             $response = 1;
+        }
+        return $response;
+}
+
+function package_ends_allplans(){
+
+    $user =  App\User::where('id',1)->first();
+    $duedate = $user->package_ends;
+    $current_date = date('Y-m-d');
+
+        $client = new GuzzleHttp\Client();
+        $url = "https://flicknexs.com/userapi/allplans";
+        $params = [
+            'userid' => 0,
+        ];
+
+        $headers = [
+            'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+        ];
+        $response = $client->request('post', $url, [
+            'json' => $params,
+            'headers' => $headers,
+            'verify'  => false,
+        ]);
+
+        $responseBody = json_decode($response->getBody());
+
+            $settings = App\Setting::first();
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+        );
+       
+    return $data;
 }

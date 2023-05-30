@@ -61,7 +61,15 @@ class AdminThemeSettingsController extends Controller
       'responseBody' => $responseBody,
 );
         return View::make('admin.expired_dashboard', $data);
-    }else{
+    }else if(check_storage_exist() == 0){
+      $settings = Setting::first();
+
+      $data = array(
+          'settings' => $settings,
+      );
+
+      return View::make('admin.expired_storage', $data);
+  }else{
 		$settings = SiteTheme::first();
 		$user = Auth::user();
 		$data = array(
@@ -271,7 +279,15 @@ class AdminThemeSettingsController extends Controller
           'responseBody' => $responseBody,
   );
             return View::make('admin.expired_dashboard', $data);
-        }else{
+        }else if(check_storage_exist() == 0){
+          $settings = Setting::first();
+
+          $data = array(
+              'settings' => $settings,
+          );
+
+          return View::make('admin.expired_storage', $data);
+      }else{
             $categories = Slider::where('id', '=', $id)->get();
 
             $allCategories = Slider::all();
@@ -438,7 +454,15 @@ class AdminThemeSettingsController extends Controller
           'responseBody' => $responseBody,
   );
             return View::make('admin.expired_dashboard', $data);
-        }else{
+        }else if(check_storage_exist() == 0){
+          $settings = Setting::first();
+
+          $data = array(
+              'settings' => $settings,
+          );
+
+          return View::make('admin.expired_storage', $data);
+      }else{
           $allCategories = Slider::orderBy('order_position','ASC')->get();
           $data = array (
             'allCategories'=>$allCategories
@@ -490,7 +514,15 @@ class AdminThemeSettingsController extends Controller
 
                 return View::make('admin.expired_dashboard', $data);
 
-            }
+            }else if(check_storage_exist() == 0){
+              $settings = Setting::first();
+
+              $data = array(
+                  'settings' => $settings,
+              );
+
+              return View::make('admin.expired_storage', $data);
+          }
             else{
 
             if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
@@ -559,7 +591,15 @@ class AdminThemeSettingsController extends Controller
         'responseBody' => $responseBody,
 );
           return View::make('admin.expired_dashboard', $data);
-      }else{
+      }else if(check_storage_exist() == 0){
+        $settings = Setting::first();
+
+        $data = array(
+            'settings' => $settings,
+        );
+
+        return View::make('admin.expired_storage', $data);
+    }else{
       if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
 
@@ -813,6 +853,7 @@ class AdminThemeSettingsController extends Controller
           Language::create([
             'name'  => $request->name ,
             'language_image' =>  $language_PC_image ,
+            'slug' =>  str_replace(' ', '_', $request['name']) ,
           ]);
 
           return back()->with('success', 'New Language added successfully.');
@@ -867,7 +908,15 @@ class AdminThemeSettingsController extends Controller
           'responseBody' => $responseBody,
   );
             return View::make('admin.expired_dashboard', $data);
-        }else{
+        }else if(check_storage_exist() == 0){
+          $settings = Setting::first();
+
+          $data = array(
+              'settings' => $settings,
+          );
+
+          return View::make('admin.expired_storage', $data);
+      }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $categories = Language::where('id', '=', $id)->get();
             $allCategories = Language::all();
@@ -926,7 +975,15 @@ class AdminThemeSettingsController extends Controller
               );
 
               return View::make('admin.expired_dashboard', $data);
-            }
+            }else if(check_storage_exist() == 0){
+              $settings = Setting::first();
+
+              $data = array(
+                  'settings' => $settings,
+              );
+
+              return View::make('admin.expired_storage', $data);
+          }
             else{
               if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
               
@@ -1023,6 +1080,7 @@ class AdminThemeSettingsController extends Controller
               Language::where('id',$id)->update([
                 'name' => $request['name'] ,
                 'language_image' => $language_PC_image ,
+                'slug' => str_replace(' ', '_', $request['name']) ,
               ]);
             
               return back()->with('success', 'New Language Updated successfully.');
