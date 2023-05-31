@@ -57,62 +57,49 @@
       ?>
    <meta charset="UTF-8">
 
-   <title><?php
+
+<!-- Place this data between the <head> tags of your website -->
+<title><?php
       if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
        }
       elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
       else{ echo $uppercase .' | ' . $settings->website_name ;} ?></title>
-   <meta  name="description" content= "<?php 
+<meta name="description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       else{ echo $settings->website_description   ;} //echo $settings; ?>" />
-   <meta property="og:title" content="<?php
-      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
-       }
-      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
-      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
-      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
-      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>" />
-   <meta name="description" property="og:description" content="<?php 
-      if(!empty($videos_data)){ echo $videos_data->description  ;
-      }
-      elseif(!empty($episdoe)){ echo $episdoe->description  ;}
-      elseif(!empty($series)){ echo $series->description ;}
-      elseif(!empty($livestream)){ echo $livestream->description  ;}
-      else{ echo $settings->website_description   ;} //echo $settings; ?>" />
-   <meta name="image" property="og:image" content="<?php 
-      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
-      }
-      elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
-      elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
-      elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
-      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
-   <?php  $Linking_Setting = App\LinkingSetting::first();  
-      $site_url = \Request::url();
-      $http_site_url = explode("http://",$site_url);
-      $https_site_url = explode("https://",$site_url);
-      if(!empty($http_site_url[1])){
-      $site_page_url = $http_site_url[1];
-      }elseif(!empty($https_site_url[1])){
-         $site_page_url = $https_site_url[1];
-      }else{
-         $site_page_url = "";
-      }
-      // dd($site_page_url);
-       ?>
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image:alt" content="<?php
+
+<!-- Schema.org markup for Google+ -->
+<meta itemprop="name" content="<?php
       if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
        }
       elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
       else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
+<meta itemprop="description" content="<?php 
+      if(!empty($videos_data)){ echo $videos_data->description  ;
+      }
+      elseif(!empty($episdoe)){ echo $episdoe->description  ;}
+      elseif(!empty($series)){ echo $series->description ;}
+      elseif(!empty($livestream)){ echo $livestream->description  ;}
+      else{ echo $settings->website_description   ;} //echo $settings; ?>">
+<meta itemprop="image" content="<?php 
+      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
+      }
+      elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
+      elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
+      elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>">
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="summary_large_image">
+<?php if(!empty($settings->twitter_page_id)){ ?><meta name="twitter:site" content="<?php echo $settings->twitter_page_id ;?>"><?php } ?>
 <meta name="twitter:title" content="<?php
       if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
        }
@@ -127,6 +114,7 @@
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       else{ echo $settings->website_description   ;} //echo $settings; ?>">
+<!-- Twitter summary card with large image must be at least 280x150px -->
 <meta name="twitter:image:src" content="<?php 
       if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
       }
@@ -134,6 +122,45 @@
       elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
       elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
       else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>">
+
+<!-- Open Graph data -->
+<meta property="og:title" content="<?php
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>" />
+<meta property="og:image" content="<?php 
+      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
+      }
+      elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
+      elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
+      elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
+<meta property="og:description" content="<?php 
+      if(!empty($videos_data)){ echo $videos_data->description  ;
+      }
+      elseif(!empty($episdoe)){ echo $episdoe->description  ;}
+      elseif(!empty($series)){ echo $series->description ;}
+      elseif(!empty($livestream)){ echo $livestream->description  ;}
+      else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+
+<?php if(!empty($settings->website_name)){ ?><meta property="og:site_name" content="<?php echo $settings->website_name ;?>" /><?php } ?>
+
+   <?php  $Linking_Setting = App\LinkingSetting::first();  
+      $site_url = \Request::url();
+      $http_site_url = explode("http://",$site_url);
+      $https_site_url = explode("https://",$site_url);
+      if(!empty($http_site_url[1])){
+      $site_page_url = $http_site_url[1];
+      }elseif(!empty($https_site_url[1])){
+         $site_page_url = $https_site_url[1];
+      }else{
+         $site_page_url = "";
+      }
+      // dd($site_page_url);
+       ?>
 
    <?php if(!empty($Linking_Setting->ios_app_store_id)){ ?>
    <meta property="al:ios:app_store_id" content="<?php  echo $Linking_Setting->ios_app_store_id; ?>" />
