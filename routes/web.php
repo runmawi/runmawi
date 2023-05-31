@@ -22,6 +22,7 @@ Route::get('/admin/mergeMp4Files', 'TranscodeController@mergeMp4Files');
 Route::get('/merge-m3u8-files', 'TranscodeController@mergeM3u8Files');
 Route::get('/storagelimitone', 'AdminDashboardController@storagelimitone'); 
 Route::get('/storagelimit', 'AdminDashboardController@storagelimit'); 
+Route::get('/country_route_check', 'AdminDashboardController@testuserroute'); 
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
@@ -133,7 +134,7 @@ Route::post('/admin/cpp_analytics_barchart', 'ModeratorsUserController@CPPAnalyt
 
 
 Route::post('/schedule/videos', 'ChannelController@ScheduledVideos');
-Route::get('/schedule/videos/embed/{name}','ChannelController@EmbedScheduledVideos');
+Route::get('/schedule/videos/embed/{slug}','ChannelController@EmbedScheduledVideos');
 Route::get('/videos/category/{cid}', 'ChannelController@channelVideos');
 Route::get('/movies/category/{cid}', 'ChannelController@channelVideos');
 
