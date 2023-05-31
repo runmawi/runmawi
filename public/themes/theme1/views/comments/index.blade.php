@@ -4,8 +4,11 @@
     ->latest()
     ->get(); ?>
 
-<?php include public_path('themes/theme1/views/comments/commentbox.blade.php'); ?>
-
+<?php 
+    if( !Auth::guest() ){
+        include public_path('themes/theme1/views/comments/commentbox.blade.php'); 
+    }
+?>
 <div class="bg-border col-lg-6 p-2">
     <?php foreach( $comment_loop as $key => $comment ): ?>
 
