@@ -1268,10 +1268,9 @@ class ChannelVideosController extends Controller
             
 
             $image_path = public_path() . '/uploads/images/';
-
-            if ($image != '')
+            $image_path = public_path() . '/uploads/images/';
+            if (!empty($image))
             {
-                //code for remove old file
                 if ($image != '' && $image != null)
                 {
                     $file_old = $image_path . $image;
@@ -1282,29 +1281,16 @@ class ChannelVideosController extends Controller
                 }
                 //upload new file
                 $file = $image;
+                //   $data['image']  = $file->getClientOriginalName();
+                $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
 
-                $filename = time() . '_' . $file->getClientOriginalName();
-
-                $PC_image = 'PC' . $filename;
-                $Mobile_image = 'Mobile' . $filename;
-                $Tablet_image = 'Tablet' . $filename;
-
-                Image::make($file)->resize(720, 1280)
-                    ->save(base_path() . '/public/uploads/images/' . $PC_image);
-                Image::make($file)->resize(244, 310)
-                    ->save(base_path() . '/public/uploads/images/' . $Mobile_image);
-                Image::make($file)->resize(120, 190)
-                    ->save(base_path() . '/public/uploads/images/' . $Tablet_image);
-
-                $video->image = $PC_image;
-                $video->mobile_image = $Mobile_image;
-                $video->tablet_image = $Tablet_image;
-
+                $file->move($image_path, $data['image']);
             }
             else
             {
                 $data['image'] = $video->image;
             }
+
 
             if (isset($data['duration']))
             {
@@ -2143,9 +2129,8 @@ class ChannelVideosController extends Controller
             $path = public_path() . '/uploads/videos/';
             $image_path = public_path() . '/uploads/images/';
 
-            if ($image != '')
+            if (!empty($image))
             {
-                //code for remove old file
                 if ($image != '' && $image != null)
                 {
                     $file_old = $image_path . $image;
@@ -2156,30 +2141,17 @@ class ChannelVideosController extends Controller
                 }
                 //upload new file
                 $file = $image;
+                //   $data['image']  = $file->getClientOriginalName();
+                $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
 
-                $filename = time() . '_' . $file->getClientOriginalName();
-
-                $PC_image = 'PC' . $filename;
-                $Mobile_image = 'Mobile' . $filename;
-                $Tablet_image = 'Tablet' . $filename;
-
-                Image::make($file)->resize(720, 1280)
-                    ->save(base_path() . '/public/uploads/images/' . $PC_image);
-                Image::make($file)->resize(244, 310)
-                    ->save(base_path() . '/public/uploads/images/' . $Mobile_image);
-                Image::make($file)->resize(120, 190)
-                    ->save(base_path() . '/public/uploads/images/' . $Tablet_image);
-
-                $video->mobile_image = $Mobile_image;
-                $video->tablet_image = $Tablet_image;
-                $data['image'] = $PC_image;
-
+                $file->move($image_path, $data['image']);
             }
             else
             {
                 $data['image'] = $video->image;
             }
 
+             
             if ($trailer != '')
             {
                 //code for remove old file
