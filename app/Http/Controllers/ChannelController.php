@@ -3610,7 +3610,7 @@ class ChannelController extends Controller
         // }
     }
 
-    public function EmbedScheduledVideos($name)
+    public function EmbedScheduledVideos($slug)
     {
         $settings = Setting::first();
         // try
@@ -3636,7 +3636,7 @@ class ChannelController extends Controller
         // $current_time  = '12:49 PM';
         $shedule_date = $current_date;
         // dd($current_date);
-        $VideoSchedules = VideoSchedules::where('name', '=', $name)->first();
+        $VideoSchedules = VideoSchedules::where('slug', '=', $slug)->first();
         if (!empty($VideoSchedules)) {
             $currenttime = explode(':', $current_time);
             if (count($currenttime) > 0) {
