@@ -12291,11 +12291,13 @@ public function QRCodeMobileLogout(Request $request)
   {
       $user_id = $request->user_id;
 
-      $All_Homepage_homesetting =  $this->All_Homepage_homesetting();
+      $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id );
 
       $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id')->get()->toArray();
 
       $result = array();
+
+      // return count($this->All_Homepage_latest_viewed_Livestream( $user_id ));
 
       foreach ($OrderHomeSettings as $key => $OrderHomeSetting) {
                  
@@ -12525,94 +12527,94 @@ public function QRCodeMobileLogout(Request $request)
       return response()->json($response, 200);
   }
 
-  private static function All_Homepage_homesetting(){
+  private  function All_Homepage_homesetting( $user_id ){
 
      $Homesetting = MobileHomeSetting::first();
 
      $input = array();
 
-     if($Homesetting->featured_videos == 1){
+     if($Homesetting->featured_videos == 1 && $this->All_Homepage_featured_videos()->isNotEmpty() ){
         array_push($input,'featured_videos');
      }
 
-     if($Homesetting->latest_videos == 1){
+     if($Homesetting->latest_videos == 1 && $this->All_Homepage_latestvideos()->isNotEmpty() ){
        array_push($input,'latest_videos');
     }
 
-     if($Homesetting->category_videos == 1){
+     if($Homesetting->category_videos == 1 && $this->All_Homepage_category_videos()->isNotEmpty() ){
         array_push($input,'category_videos');
      }
 
-     if($Homesetting->live_category == 1){
+     if($Homesetting->live_category == 1 && $this->All_Homepage_category_livestream()->isNotEmpty() ){
         array_push($input,'live_category');
      }
 
-    if($Homesetting->videoCategories == 1){
+    if($Homesetting->videoCategories == 1 && $this->All_Homepage_videoCategories()->isNotEmpty() ){
         array_push($input,'videoCategories');
     }
 
-    if($Homesetting->liveCategories == 1){
+    if($Homesetting->liveCategories == 1 && $this->All_Homepage_liveCategories()->isNotEmpty() ){
       array_push($input,'liveCategories');
     }
 
-    if($Homesetting->live_videos == 1){
+    if($Homesetting->live_videos == 1 && $this->All_Homepage_live_videos()->isNotEmpty() ){
       array_push($input,'live_videos');
     }
 
-    if($Homesetting->series == 1){
+    if($Homesetting->series == 1 && $this->All_Homepage_series_videos()->isNotEmpty() ){
       array_push($input,'series');
     }
 
-    if($Homesetting->audios == 1){
+    if($Homesetting->audios == 1 && $this->All_Homepage_audios()->isNotEmpty() ){
       array_push($input,'audios');
     }
 
-    if($Homesetting->albums == 1){
+    if($Homesetting->albums == 1  && $this->All_Homepage_albums()->isNotEmpty() ){
       array_push($input,'albums');
     }
 
-    if($Homesetting->Recommendation == 1){
-      array_push($input,'Recommendation');
-    }
-
-    if($Homesetting->video_schedule == 1){
+    if($Homesetting->video_schedule == 1 && $this->All_Homepage_video_schedule()->isNotEmpty() ){
       array_push($input,'video_schedule');
     }
 
-    if($Homesetting->channel_partner == 1){
+    if($Homesetting->channel_partner == 1 && $this->All_Homepage_ChannelPartner()->isNotEmpty() ){
       array_push($input,'ChannelPartner');
     }
 
-    if($Homesetting->content_partner == 1){
+    if($Homesetting->content_partner == 1 && $this->All_Homepage_ContentPartner()->isNotEmpty() ){
       array_push($input,'ContentPartner');
     }
 
-    if($Homesetting->continue_watching == 1){
-      array_push($input,'continue_watching');
+    if($Homesetting->AudioGenre == 1 && $this->All_Homepage_Audio_Genre()->isNotEmpty() ){
+      array_push($input,'Audio_Genre');
+    }
+    
+    if($Homesetting->AudioGenre_audios == 1 && $this->All_Homepage_Audio_Genre_audios()->isNotEmpty() ){
+      array_push($input,'Audio_Genre_audios');
     }
 
-    if($Homesetting->latest_viewed_Videos == 1){
+    if($Homesetting->latest_viewed_Videos == 1 && $this->All_Homepage_latest_viewed_Videos( $user_id )->isNotEmpty() ){
       array_push($input,'latest_viewed_Videos');
     }
 
-    if($Homesetting->latest_viewed_Livestream == 1){
+    if($Homesetting->latest_viewed_Livestream == 1 && ($this->All_Homepage_latest_viewed_Livestream( $user_id ))->isNotEmpty() ){
       array_push($input,'latest_viewed_Livestream');
     }
 
-    if($Homesetting->latest_viewed_Audios == 1){
-      array_push($input,'latest_viewed_Audios');
-    }
-
-    if($Homesetting->latest_viewed_Episode == 1){
+    if($Homesetting->latest_viewed_Episode == 1 && $this->All_Homepage_latest_viewed_Episode( $user_id )->isNotEmpty() ){
       array_push($input,'latest_viewed_Episode');
     }
 
-    if($Homesetting->AudioGenre == 1){
-      array_push($input,'Audio_Genre');
+    if($Homesetting->latest_viewed_Audios == 1 && count($this->All_Homepage_latest_viewed_Audios( $user_id )) != 0 ){
+      array_push($input,'latest_viewed_Audios');
     }
 
-    if($Homesetting->AudioGenre_audios == 1){
-      array_push($input,'Audio_Genre_audios');
+    // if($Homesetting->Recommendation == 1 ){
+    //   array_push($input,'Recommendation');
+    // }
+
+    if($Homesetting->continue_watching == 1 ){
+      array_push($input,'continue_watching');
     }
 
     // if($Homesetting->artist == 1){
