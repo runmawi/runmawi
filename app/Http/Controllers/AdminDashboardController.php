@@ -383,15 +383,16 @@ class AdminDashboardController extends Controller
         $regionName = $geoip->getregion();
         $cityName = $geoip->getcity();
         $userIp = '64.179.166.46';
+        $userIp = $geoip->setIP('64.179.166.46');
         $locationData = \Location::get($userIp);
-        echo"<pre>";
-        print_r($locationData);
         // echo"<pre>";
-        // print_r($countryName);
+        // print_r($locationData);
         // echo"<pre>";
-        // print_r($regionName);
+        // print_r($countryName);$geoip->getCountry()
         // echo"<pre>";
-        // print_r($cityName);
-        exit;
+        // print_r($regionName);$geoip->getRegion()
+        // echo"<pre>";
+        // print_r($cityName);$geoip->getCity()
+        // exit;
     }
 }

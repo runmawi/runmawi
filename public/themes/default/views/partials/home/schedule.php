@@ -12,22 +12,22 @@ $id = Auth::user()->id ; } else { $id = 0 ; } ?>
                          foreach($VideoSchedules as $Schedule): 
                           ?>
                        <li class="slide-item">
-                          <a href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>">
+                          <a href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>">
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
-                                <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>">
+                                <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>">
                                    <img loading="lazy" data-src="<?php echo $Schedule->image;  ?>" class="img-fluid loading w-100" alt=""></a>  
                                 </div>
                                 <div class="block-description">
-                                     <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>">
+                                     <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>">
                                 <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                      <h6><?php  echo (strlen($Schedule->name) > 17) ? substr($Schedule->name,0,18).'...' : $Schedule->name; ?></h6>
                                  
                                 <?php } ?>                                                         
                                     
                                    <div class="hover-buttons">
-                                       <a class="text-white d-flex align-items-center" href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>" >
+                                       <a class="text-white d-flex align-items-center" href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>" >
                                          <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                        </a>
                                        <div class="hover-buttons d-flex">
