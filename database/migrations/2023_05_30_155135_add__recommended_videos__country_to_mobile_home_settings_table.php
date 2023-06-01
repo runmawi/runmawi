@@ -14,9 +14,9 @@ class AddRecommendedVideosCountryToMobileHomeSettingsTable extends Migration
     public function up()
     {
         Schema::table('mobile_home_settings', function (Blueprint $table) {
-            $table->string('Recommended_videos_site')->default(0)->after('Recommendation');
-            $table->string('Recommended_videos_users')->default(0)->after('Recommended_videos_site');
-            $table->string('Recommended_videos_Country')->default(0)->after('Recommended_videos_users');
+            $table->tinyInteger('Recommended_videos_site')->default(0)->after('Recommendation');
+            $table->tinyInteger('Recommended_videos_users')->default(0)->after('Recommended_videos_site');
+            $table->tinyInteger('Recommended_videos_Country')->default(0)->after('Recommended_videos_users');
         });
     }
 
