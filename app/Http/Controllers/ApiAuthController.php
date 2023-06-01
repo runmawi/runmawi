@@ -2098,53 +2098,64 @@ public function verifyandupdatepassword(Request $request)
    public function addwishlist(Request $request) {
 
     $user_id = $request->user_id;
-    //$type = $request->type;//channel,ppv
     $video_id = $request->video_id;
-    if($request->video_id != ''){
-      $count = Wishlist::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->count();
-      if ( $count > 0 ) {
-        Wishlist::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
-        $response = array(
-          'status'=>'false',
-          'message'=>'Removed From Your Wishlist List'
-        );
-      } else {
-        $data = array('user_id' => $user_id, 'video_id' => $video_id );
-        Wishlist::insert($data);
-        $response = array(
-          'status'=>'true',
-          'message'=>'Added  to  Your Wishlist List'
-        );
 
-      }
+    if (!empty($video_id)) {
+        $count = Wishlist::where('user_id', $user_id)->where('video_id', $video_id)->count();
+
+        if ($count > 0) {
+            Wishlist::where('user_id', $user_id)->where('video_id', $video_id)->delete();
+
+            $response = [
+                'status' => 'false',
+                'message' => 'Removed From Your Wishlist List'
+            ];
+        } else {
+            $data = ['user_id' => $user_id, 'video_id' => $video_id];
+            Wishlist::insert($data);
+
+            $response = [
+                'status' => 'true',
+                'message' => 'Added to Your Wishlist List'
+            ];
+        }
     }
-
     return response()->json($response, 200);
 
   }
 
   public function addfavorite(Request $request) {
 
-    $user_id = $request->user_id;
-    //$type = $request->type;//channel,ppv
-    $video_id = $request->video_id;
-    if($request->video_id != ''){
-      $count = Favorite::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->count();
-      if ( $count > 0 ) {
-        Favorite::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
-        $response = array(
-          'status'=>'false',
-          'message'=>'Removed From Your Favorite List'
-        );
-      } else {
-        $data = array('user_id' => $user_id, 'video_id' => $video_id );
-        Favorite::insert($data);
-        $response = array(
-          'status'=>'true',
-          'message'=>'Added  to  Your Favorite List'
-        );
+    try {
+      
+      $user_id = $request->user_id;
+      $video_id = $request->video_id;
 
+      if (!empty($video_id)) {
+          $count = Favorite::where('user_id', $user_id)->where('video_id', $video_id)->count();
+
+          if ($count > 0) {
+              Favorite::where('user_id', $user_id)->where('video_id', $video_id)->delete();
+
+              $response = [
+                  'status' => 'false',
+                  'message' => 'Removed From Your Favorite List'
+              ];
+          } else {
+              $data = ['user_id' => $user_id, 'video_id' => $video_id];
+              Favorite::insert($data);
+
+              $response = [
+                    'status' => 'true',
+                    'message' => 'Added to Your Favorite List'
+                ];
+            }
       }
+    } catch (\Throwable $th) {
+        $response = [
+          'status' => 'false',
+          'message' => $th->getMessage(),
+        ];
     }
 
     return response()->json($response, 200);
@@ -2168,7 +2179,7 @@ public function verifyandupdatepassword(Request $request)
         Wishlist::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Wishlist List'
+          'message'=>'Added to Your Wishlist List'
         );
 
       }
@@ -2224,7 +2235,7 @@ public function verifyandupdatepassword(Request $request)
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Watch Later List'
+          'message'=>'Added to Your Watch Later List'
         );
 
       }
@@ -7208,25 +7219,28 @@ public function LocationCheck(Request $request){
   public function Episode_addfavorite(Request $request){
 
     $user_id = $request->user_id;
-    $Episode_id = $request->Episode_id;
+    $episode_id = $request->episode_id;
 
-    if($request->Episode_id != ''){
-      $count = Favorite::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->count();
-      if ( $count > 0 ) {
-        Favorite::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->delete();
-        $response = array(
-          'status'=>'false',
-          'message'=>'Removed From Your Favorite List'
-        );
-      } else {
-        $data = array('user_id' => $user_id, 'Episode_id' => $Episode_id );
-        Favorite::insert($data);
-        $response = array(
-          'status'=>'true',
-          'message'=>'Added  to  Your Favorite List'
-        );
+    if (!empty($episode_id)) {
+        $count = Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->count();
 
-      }
+        if ($count > 0) {
+            Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->delete();
+
+            $response = [
+                'status' => 'false',
+                'message' => 'Removed From Your Favorite List'
+            ];
+
+        } else {
+            $data = ['user_id' => $user_id, 'episode_id' => $episode_id];
+            Favorite::insert($data);
+
+            $response = [
+                'status' => 'true',
+                'message' => 'Added to Your Favorite List'
+            ];
+        }
     }
 
     return response()->json($response, 200);
