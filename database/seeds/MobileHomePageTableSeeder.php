@@ -43,6 +43,9 @@ class MobileHomePageTableSeeder extends Seeder
                     'AudioGenre' => 0,
                     'AudioGenre_audios' => 0,
                     'AudioAlbums' => 0,
+                    'Recommended_videos_site' => 0,
+                    'Recommended_videos_users' => 0,
+                    'Recommended_videos_Country' => 0,
                     'created_at' => Carbon::now(),
                 ],
         ];
