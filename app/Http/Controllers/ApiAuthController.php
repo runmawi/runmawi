@@ -8802,8 +8802,8 @@ public function Adstatus_upate(Request $request)
       
           $series_id = $request->series_id;
 
-          $series = Series::where('id','!=', $series_id)->get()->map(function ($item) {
-            $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $series = Series::where('id','!=', $series_id)->inRandomOrder()->get()->map(function ($item) {
+            $item['image'] = URL::to('public/uploads/images/'.$item->image);
             return $item;
           });
 
