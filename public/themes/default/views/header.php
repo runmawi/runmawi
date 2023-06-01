@@ -55,6 +55,8 @@
       $livestream = App\LiveStream::where("slug", $request_url)->first();
       // }
       ?>
+   <?php   $dynamic_page = App\Page::where('slug', '=', $request_url)->first(); ?>
+      
    <meta charset="UTF-8">
 
 
@@ -65,6 +67,7 @@
       elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
       else{ echo $uppercase .' | ' . $settings->website_name ;} ?></title>
 <meta name="description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
@@ -81,6 +84,7 @@
       elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
       else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
 <meta itemprop="description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
@@ -106,6 +110,7 @@
       elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
       else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
 <meta name="twitter:description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
@@ -130,6 +135,7 @@
       elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
       else{ echo $uppercase .' | ' . $settings->website_name ;} ?>" />
 <meta property="og:image" content="<?php 
       if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
