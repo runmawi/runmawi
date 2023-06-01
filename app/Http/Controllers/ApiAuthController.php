@@ -8798,17 +8798,30 @@ public function Adstatus_upate(Request $request)
   public function relatedseries(Request $request)
   {
 
-    $series_id = $request->series_id;
+    try {
+      
+          $series_id = $request->series_id;
 
-    $series = Series::where('id','!=', $series_id)
-      ->get()->map(function ($item) {
-      $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-      return $item;
-    });
-    $response = array(
-      'status' => 'true',
-      'series' => $series,
-    );
+          $series = Series::where('id','!=', $series_id)->get()->map(function ($item) {
+            $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            return $item;
+          });
+
+          $response = array(
+            'status' => 'true',
+            'message' => 'Retreive the Related Series Successfully' ,
+            'series' => $series,
+          );
+
+    } catch (\Throwable $th) {
+
+          $response = array(
+            'status' => 'false',
+            'message' => $th->getMessage() ,
+          );
+    }
+
+    
 
     return response()->json($response, 200);
   }
