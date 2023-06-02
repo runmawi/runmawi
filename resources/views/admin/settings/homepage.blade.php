@@ -1448,7 +1448,7 @@
 
 
     <div class="col-md-8 d-flex justify-content-between">
-        <h4><i class="entypo-list"></i> Order Home Page</h4>
+        <h4><i class="entypo-list"></i> Home Page Order</h4>
         <!-- <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a> -->
     </div>
 
@@ -1504,7 +1504,6 @@
 
             <div class="panel-heading">
                 <div class="panel-title">
-                    <p class="p1">Organize the Menu Items below: (max of 3 levels)</p>
                 </div>
 
                 <div class="panel-options">
@@ -1529,7 +1528,7 @@
 
                                 <td class="pl-3"><i class="fa fa-sort"></i>{{ $order_homepage->id }}</td>
 
-                                <td>{{ $order_homepage->header_name }} <i class="bi bi-0-square"></i> </td>
+                                <td>{{ $order_homepage->header_name }}  <span style="color:#7a7474; font-size: 12px; "> {{ $key == '23' || $key == '24' || $key == '25' ? "(Only for Mobile Home Setting )" : "" }} </span> </td>
 
                                 <td><a href="{{ URL::to('/admin/order_homepage/edit/') }}/{{ $order_homepage->id }}"
                                         class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
