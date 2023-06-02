@@ -220,8 +220,9 @@ class TvshowsController extends Controller
 
     public function play_episode($series_name, $episode_name)
     {
-        
-        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        try {
+           
+            $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         $settings = Setting::first();
 
@@ -589,6 +590,10 @@ class TvshowsController extends Controller
             }
         } else {
             return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
+        }
+
+        } catch (\Throwable $th) {
+            return abort(404);
         }
     }
 
