@@ -2108,7 +2108,7 @@ public function verifyandupdatepassword(Request $request)
 
             $response = [
                 'status' => 'false',
-                'message' => 'Removed From Your Wishlist List'
+                'message' => 'Removed From Your Wishlist'
             ];
         } else {
             $data = ['user_id' => $user_id, 'video_id' => $video_id];
@@ -2116,7 +2116,7 @@ public function verifyandupdatepassword(Request $request)
 
             $response = [
                 'status' => 'true',
-                'message' => 'Added to Your Wishlist List'
+                'message' => 'Added to Your Wishlist'
             ];
         }
     }
@@ -2139,7 +2139,7 @@ public function verifyandupdatepassword(Request $request)
 
               $response = [
                   'status' => 'false',
-                  'message' => 'Removed From Your Favorite List'
+                  'message' => 'Removed From Your Favorite'
               ];
           } else {
               $data = ['user_id' => $user_id, 'video_id' => $video_id];
@@ -2147,7 +2147,7 @@ public function verifyandupdatepassword(Request $request)
 
               $response = [
                     'status' => 'true',
-                    'message' => 'Added to Your Favorite List'
+                    'message' => 'Added to Your Favorite'
                 ];
             }
       }
@@ -2172,14 +2172,14 @@ public function verifyandupdatepassword(Request $request)
         Wishlist::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Wishlist List'
+          'message'=>'Removed From Your Wishlist'
         );
       } else {
         $data = array('user_id' => $user_id, 'audio_id' => $audio_id );
         Wishlist::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added to Your Wishlist List'
+          'message'=>'Added to Your Wishlist'
         );
 
       }
@@ -2200,14 +2200,14 @@ public function verifyandupdatepassword(Request $request)
         Favorite::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Favorite List'
+          'message'=>'Removed From Your Favorite'
         );
       } else {
         $data = array('user_id' => $user_id, 'audio_id' => $audio_id );
         Favorite::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Favorite List'
+          'message'=>'Added  to  Your Favorite'
         );
 
       }
@@ -2228,14 +2228,14 @@ public function verifyandupdatepassword(Request $request)
         Watchlater::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Watch Later List'
+          'message'=>'Removed From Your Watch Later'
         );
       } else {
         $data = array('user_id' => $user_id, 'video_id' => $video_id );
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added to Your Watch Later List'
+          'message'=>'Added to Your Watch Later'
         );
 
       }
@@ -2255,14 +2255,14 @@ public function verifyandupdatepassword(Request $request)
         Watchlater::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Watch Later List'
+          'message'=>'Removed From Your Watch Later'
         );
       } else {
         $data = array('user_id' => $user_id, 'audio_id' => $audio_id );
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Watch Later List'
+          'message'=>'Added  to  Your Watch Later'
         );
 
       }
@@ -6553,14 +6553,14 @@ public function LocationCheck(Request $request){
         Watchlater::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Watch Later List'
+          'message'=>'Removed From Your Watch Later'
         );
       } else {
         $data = array('user_id' => $user_id, 'episode_id' => $episode_id );
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Watch Later List'
+          'message'=>'Added  to  Your Watch Later'
         );
 
       }
@@ -6581,14 +6581,14 @@ public function LocationCheck(Request $request){
         Wishlist::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Wishlist List'
+          'message'=>'Removed From Your Wishlist'
         );
       } else {
         $data = array('user_id' => $user_id, 'episode_id' => $episode_id );
         Wishlist::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Wishlist List'
+          'message'=>'Added  to  Your Wishlist'
         );
 
       }
@@ -6610,14 +6610,14 @@ public function LocationCheck(Request $request){
         Favorite::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Favorite List'
+          'message'=>'Removed From Your Favorite'
         );
       } else {
         $data = array('user_id' => $user_id, 'episode_id' => $episode_id );
         Favorite::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Favorite List'
+          'message'=>'Added  to  Your Favorite'
         );
 
       }
@@ -7229,7 +7229,7 @@ public function LocationCheck(Request $request){
 
             $response = [
                 'status' => 'false',
-                'message' => 'Removed From Your Favorite List'
+                'message' => 'Removed From Your Favorite'
             ];
 
         } else {
@@ -7238,7 +7238,7 @@ public function LocationCheck(Request $request){
 
             $response = [
                 'status' => 'true',
-                'message' => 'Added to Your Favorite List'
+                'message' => 'Added to Your Favorite'
             ];
         }
     }
@@ -7258,14 +7258,14 @@ public function LocationCheck(Request $request){
         Wishlist::where('user_id', '=', $user_id)->where('episode_id', '=', $episodeid)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Wishlist List'
+          'message'=>'Removed From Your Wishlist'
         );
       } else {
         $data = array('user_id' => $user_id, 'episode_id' => $episodeid );
         Wishlist::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Wishlist List'
+          'message'=>'Added to Your Wishlist'
         );
 
       }
@@ -7289,14 +7289,14 @@ public function LocationCheck(Request $request){
         Watchlater::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Watch Later List'
+          'message'=>'Removed From Your Watch Later'
         );
       } else {
         $data = array('user_id' => $user_id, 'Episode_id' => $Episode_id );
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Watch Later List'
+          'message'=>'Added  to  Your Watch Later'
         );
 
       }
