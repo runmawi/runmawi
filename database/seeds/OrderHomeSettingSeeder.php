@@ -238,16 +238,35 @@ class OrderHomeSettingSeeder extends Seeder
                     'updated_at' => null,
                 ],
     
-                // [   
-                //     'user_id' => 1, 
-                //     'order_id' => 24,
-                //     'video_name' => 'Audio_Albums' ,
-                //     'header_name' => 'Audios based on Albums', 
-                //     'url' => '',
-                //     'created_at' => Carbon::now(),
-                //     'updated_at' => null,
-                // ],
+                [   
+                    'user_id' => 1, 
+                    'order_id' => 24,
+                    'video_name' => 'Recommended_videos_site' ,
+                    'header_name' => 'Recommended videos based on Site', 
+                    'url' => '',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => null,
+                ],
 
+                [   
+                    'user_id' => 1, 
+                    'order_id' => 25,
+                    'video_name' => 'Recommended_videos_users' ,
+                    'header_name' => 'Recommended videos based on Users', 
+                    'url' => '',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => null,
+                ],
+
+                [   
+                    'user_id' => 1, 
+                    'order_id' => 26,
+                    'video_name' => 'Recommended_videos_Country' ,
+                    'header_name' => 'Recommended videos based on Country', 
+                    'url' => '',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => null,
+                ],
             ];
 
             OrderHomeSetting::insert($Menu);

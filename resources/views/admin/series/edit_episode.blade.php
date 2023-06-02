@@ -39,7 +39,7 @@
 <?php
 $series = App\Series::where('id',$episodes->series_id)->first()  ;
 // dd($series->title);
-$media_url = URL::to('/episode/').'/'.$series->title.'/'.$episodes->slug;
+$media_url = URL::to('/episode/').'/'.$series->slug.'/'.$episodes->slug;
 $embed_media_url = URL::to('/episode/embed').'/'.$series->slug.'/'.$episodes->slug;
 $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
 ?>
@@ -54,7 +54,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 <div class="d-flex justify-content-between">
                     <div><h1 class="card-title">{{ $episodes->title }}</h1></div>
                     <div class="pull-right">
-                        <a href="{{URL::to('episode') . '/' . @$episodes->series_title->title . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
+                        <a href="{{URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
                     </div>
                 </div>
                 @endif
