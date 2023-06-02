@@ -668,6 +668,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                   </li>
 
+                  <li><a href="{{ route('seeding-index') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
+                        <span> Seeding Management  </span>
+                     </a>
+                  </li>
+
                
                   <!-- {{-- Contact Us --}} -->
                   <li><p class="lnk">CONTACT US</p></li>
@@ -980,6 +986,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                   </li>
 
+                  <li><a href="{{ route('seeding-index') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
+                        <span> Seeding Management  </span>
+                     </a>
+                  </li>
+
                <!-- {{-- Contact Us --}} -->
                <li><p class="lnk">CONTACT US</p></li>
 
@@ -1278,6 +1290,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <li><a href="{{ route('env_index') }}" class="iq-waves-effect">
                      <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
                         <span> Debug  </span>
+                     </a>
+                  </li>
+
+                  <li><a href="{{ route('seeding-index') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
+                        <span> Seeding Management  </span>
                      </a>
                   </li>
 

@@ -2108,7 +2108,7 @@ public function verifyandupdatepassword(Request $request)
 
             $response = [
                 'status' => 'false',
-                'message' => 'Removed From Your Wishlist List'
+                'message' => 'Removed From Your Wishlist'
             ];
         } else {
             $data = ['user_id' => $user_id, 'video_id' => $video_id];
@@ -2116,7 +2116,7 @@ public function verifyandupdatepassword(Request $request)
 
             $response = [
                 'status' => 'true',
-                'message' => 'Added to Your Wishlist List'
+                'message' => 'Added to Your Wishlist'
             ];
         }
     }
@@ -2139,7 +2139,7 @@ public function verifyandupdatepassword(Request $request)
 
               $response = [
                   'status' => 'false',
-                  'message' => 'Removed From Your Favorite List'
+                  'message' => 'Removed From Your Favorite'
               ];
           } else {
               $data = ['user_id' => $user_id, 'video_id' => $video_id];
@@ -2147,7 +2147,7 @@ public function verifyandupdatepassword(Request $request)
 
               $response = [
                     'status' => 'true',
-                    'message' => 'Added to Your Favorite List'
+                    'message' => 'Added to Your Favorite'
                 ];
             }
       }
@@ -2172,14 +2172,14 @@ public function verifyandupdatepassword(Request $request)
         Wishlist::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Wishlist List'
+          'message'=>'Removed From Your Wishlist'
         );
       } else {
         $data = array('user_id' => $user_id, 'audio_id' => $audio_id );
         Wishlist::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added to Your Wishlist List'
+          'message'=>'Added to Your Wishlist'
         );
 
       }
@@ -2200,14 +2200,14 @@ public function verifyandupdatepassword(Request $request)
         Favorite::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Favorite List'
+          'message'=>'Removed From Your Favorite'
         );
       } else {
         $data = array('user_id' => $user_id, 'audio_id' => $audio_id );
         Favorite::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Favorite List'
+          'message'=>'Added  to  Your Favorite'
         );
 
       }
@@ -2228,14 +2228,14 @@ public function verifyandupdatepassword(Request $request)
         Watchlater::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Watch Later List'
+          'message'=>'Removed From Your Watch Later'
         );
       } else {
         $data = array('user_id' => $user_id, 'video_id' => $video_id );
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added to Your Watch Later List'
+          'message'=>'Added to Your Watch Later'
         );
 
       }
@@ -2255,14 +2255,14 @@ public function verifyandupdatepassword(Request $request)
         Watchlater::where('user_id', '=', $user_id)->where('audio_id', '=', $audio_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Watch Later List'
+          'message'=>'Removed From Your Watch Later'
         );
       } else {
         $data = array('user_id' => $user_id, 'audio_id' => $audio_id );
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Watch Later List'
+          'message'=>'Added  to  Your Watch Later'
         );
 
       }
@@ -6555,14 +6555,14 @@ public function LocationCheck(Request $request){
         Watchlater::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Watch Later List'
+          'message'=>'Removed From Your Watch Later'
         );
       } else {
         $data = array('user_id' => $user_id, 'episode_id' => $episode_id );
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Watch Later List'
+          'message'=>'Added  to  Your Watch Later'
         );
 
       }
@@ -6583,14 +6583,14 @@ public function LocationCheck(Request $request){
         Wishlist::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Wishlist List'
+          'message'=>'Removed From Your Wishlist'
         );
       } else {
         $data = array('user_id' => $user_id, 'episode_id' => $episode_id );
         Wishlist::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Wishlist List'
+          'message'=>'Added  to  Your Wishlist'
         );
 
       }
@@ -6612,14 +6612,14 @@ public function LocationCheck(Request $request){
         Favorite::where('user_id', '=', $user_id)->where('episode_id', '=', $episode_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Favorite List'
+          'message'=>'Removed From Your Favorite'
         );
       } else {
         $data = array('user_id' => $user_id, 'episode_id' => $episode_id );
         Favorite::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Favorite List'
+          'message'=>'Added  to  Your Favorite'
         );
 
       }
@@ -7231,7 +7231,7 @@ public function LocationCheck(Request $request){
 
             $response = [
                 'status' => 'false',
-                'message' => 'Removed From Your Favorite List'
+                'message' => 'Removed From Your Favorite'
             ];
 
         } else {
@@ -7240,7 +7240,7 @@ public function LocationCheck(Request $request){
 
             $response = [
                 'status' => 'true',
-                'message' => 'Added to Your Favorite List'
+                'message' => 'Added to Your Favorite'
             ];
         }
     }
@@ -7260,14 +7260,14 @@ public function LocationCheck(Request $request){
         Wishlist::where('user_id', '=', $user_id)->where('episode_id', '=', $episodeid)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Wishlist List'
+          'message'=>'Removed From Your Wishlist'
         );
       } else {
         $data = array('user_id' => $user_id, 'episode_id' => $episodeid );
         Wishlist::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Wishlist List'
+          'message'=>'Added to Your Wishlist'
         );
 
       }
@@ -7291,14 +7291,14 @@ public function LocationCheck(Request $request){
         Watchlater::where('user_id', '=', $user_id)->where('Episode_id', '=', $Episode_id)->delete();
         $response = array(
           'status'=>'false',
-          'message'=>'Removed From Your Watch Later List'
+          'message'=>'Removed From Your Watch Later'
         );
       } else {
         $data = array('user_id' => $user_id, 'Episode_id' => $Episode_id );
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Watch Later List'
+          'message'=>'Added  to  Your Watch Later'
         );
 
       }
@@ -12333,6 +12333,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_latestvideos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "videos" ;
 
         }
@@ -12342,6 +12343,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_featured_videos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "videos" ;
 
         }
@@ -12351,6 +12353,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_live_videos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "livestream" ;
 
         }
@@ -12360,6 +12363,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_series_videos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "series" ;
 
         }
@@ -12369,6 +12373,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_audios();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "audios" ;
 
         }
@@ -12378,6 +12383,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_albums();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "audios_albums" ;
 
         }
@@ -12397,6 +12403,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_video_schedule();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "videos" ;
 
         }
@@ -12406,6 +12413,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_ChannelPartner();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "ChannelPartner" ;
 
         }
@@ -12415,6 +12423,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_ContentPartner();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "ContentPartner" ;
 
         }
@@ -12425,6 +12434,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_latest_viewed_Videos( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "videos" ;
 
         }
@@ -12434,6 +12444,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_latest_viewed_Livestream( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "livestream" ;
 
         }
@@ -12443,6 +12454,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_latest_viewed_Audios( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "audios" ;
 
         }
@@ -12452,6 +12464,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_latest_viewed_Episode( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "episode" ;
 
         }
@@ -12462,16 +12475,18 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_category_videos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
-          $source_type = "category_videos" ;
+          $header_name_IOS = null ;
+          $source_type = "videos" ;
 
         }
 
-        if( $OrderHomeSetting['video_name'] == "live_category" ){          // livestream Videos based on Categories category 
+        if( $OrderHomeSetting['video_name'] == "live_category" ){          // livestream Videos based on category 
           
           $data = $this->All_Homepage_category_livestream();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
-          $source_type = "live_category" ;
+          $header_name_IOS = null ;
+          $source_type = "livestreams" ;
 
         }
 
@@ -12479,7 +12494,8 @@ public function QRCodeMobileLogout(Request $request)
           
           $data = $this->All_Homepage_Recommended_videos_site();
           $source = $OrderHomeSetting['video_name'] ;
-          $header_name = "Recommended videos based on site" ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "videos" ;
 
         }
@@ -12488,7 +12504,8 @@ public function QRCodeMobileLogout(Request $request)
           
           $data = $this->All_Homepage_Recommended_videos_users($user_id);
           $source = $OrderHomeSetting['video_name'] ;
-          $header_name = "Recommended videos based on Users" ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "videos" ;
 
         }
@@ -12497,7 +12514,8 @@ public function QRCodeMobileLogout(Request $request)
          
           $data = $this->All_Homepage_Recommended_videos_Country();
           $source = $OrderHomeSetting['video_name'] ;
-          $header_name = "Recommended videos based on Country" ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "videos" ;
 
         }
@@ -12507,7 +12525,8 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_liveCategories();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
-          $source_type = "livestreams" ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "liveCategories" ;
 
         }
 
@@ -12516,7 +12535,8 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_videoCategories();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
-          $source_type = "videos" ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "videoCategories" ;
 
         }
 
@@ -12525,6 +12545,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_Audio_Genre();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
           $source_type = "Audio_Genre" ;
 
         }
@@ -12534,6 +12555,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_Audio_Genre_audios();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = null ;
           $source_type = "Audios" ;
 
         }
@@ -12541,6 +12563,8 @@ public function QRCodeMobileLogout(Request $request)
         $result[] = array(
           "source"      => $source,
           "header_name" => $header_name,
+          "header_name_IOS" => $header_name_IOS,
+          "source_type" => $source_type,
           "data"        => $data,
         );
 
