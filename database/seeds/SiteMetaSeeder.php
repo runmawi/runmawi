@@ -17,7 +17,16 @@ class SiteMetaSeeder extends Seeder
         SiteMeta::truncate();
     
         $SiteMetaData = [
-
+            
+            [  'user_id' => '1', 
+                'page_name' => 'Home',
+                'page_slug' => 'home',
+                'page_title' => 'Home',
+                'meta_description' => 'Home',
+                'meta_keyword' => 'Home',
+                'created_at' => Carbon::now(),
+                'updated_at' => null,
+            ],
             [  
                 'user_id' => '1', 
                 'page_name' => 'Continue Watching List',
@@ -70,16 +79,6 @@ class SiteMetaSeeder extends Seeder
                 'page_title' => 'Most Watched Videos Site',
                 'meta_description' => 'Most Watched Videos Site',
                 'meta_keyword' => 'Most Watched Videos Site',
-                'created_at' => Carbon::now(),
-                'updated_at' => null,
-            ],
-
-            [  'user_id' => '1', 
-                'page_name' => 'Home',
-                'page_slug' => 'home',
-                'page_title' => 'Home',
-                'meta_description' => 'Home',
-                'meta_keyword' => 'Home',
                 'created_at' => Carbon::now(),
                 'updated_at' => null,
             ],
