@@ -142,7 +142,7 @@ Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
 Route::get('/verify-request-sent', 'HomeController@VerifyRequestNotsent');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
-Route::get('/category/{cid}', 'ChannelController@channelVideos');
+Route::get('/category/{cid}', 'ChannelController@channelVideos')->name('video_categories');
 Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
 Route::get('datafree/category/videos/{vid}','ChannelController@play_videos');
 Route::get('/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
@@ -198,7 +198,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('/home', 'HomeController@index')->name('home');
 
     /*TV-shows */ 
-    Route::get('tv-shows', 'TvshowsController@index');
+    Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
     Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
@@ -309,7 +309,7 @@ Route::get('watchlater', 'WatchLaterController@show_watchlaters');
 Route::get('myprofile', 'AdminUsersController@myprofile')->name('myprofile');
 Route::get('refferal', 'AdminUsersController@refferal');
 Route::post('/profile/update', 'AdminUsersController@profileUpdate');   
-Route::get('/latest-videos', 'HomeController@LatestVideos');
+Route::get('/latest-videos', 'HomeController@LatestVideos')->name('latest-videos');
 Route::get('/language/{lanid}/{language}', 'HomeController@LanguageVideo');
 Route::get('/language/{slug}', 'HomeController@Language_Video');
 Route::get('/language-list', 'HomeController@Language_List');
