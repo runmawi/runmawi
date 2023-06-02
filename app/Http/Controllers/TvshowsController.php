@@ -673,20 +673,24 @@ class TvshowsController extends Controller
             $ppv_exits = 0;
         }
 
-        // $series = Series::findOrFail($id);
+      
         $season = SeriesSeason::where('series_id', '=', $id)
             ->with('episodes')
             ->get();
 
         $season_trailer = SeriesSeason::where('series_id', '=', $id)->get();
 
-        // dd($season_trailer);
-
-        // dd($season);
-
         $episodefirst = Episode::where('series_id', '=', $id)
             ->orderBy('id', 'ASC')
             ->first();
+
+          
+        $category_name = SeriesGenre::select('series_genre.name as categories_name','series_genre.slug as categories_slug')
+            ->Join('series_categories', 'series_categories.category_id', '=', 'series_genre.id')
+            ->where('series_categories.series_id', $series->id)
+            ->get();
+            
+
         //Make sure series is active
         if ((!Auth::guest() && Auth::user()->role == 'admin') || $series->active || $ppv_exits > 0) {
             $view_increment = 5;
@@ -704,7 +708,7 @@ class TvshowsController extends Controller
                 $publishable_key = null;
             }
             $series = Series::where('slug', '=', $name)->first();
-            //   dd($series);
+           
             $data = [
                 'series_data' => $series,
                 'currency' => $currency,
@@ -719,6 +723,7 @@ class TvshowsController extends Controller
                 'menu' => Menu::orderBy('order', 'ASC')->get(),
                 'view_increment' => $view_increment,
                 'series_categories' => SeriesGenre::all(),
+                'category_name'     => $category_name ,
                 'pages' => Page::where('active', '=', 1)->get(),
             ];
 
@@ -738,6 +743,7 @@ class TvshowsController extends Controller
                 'menu' => Menu::orderBy('order', 'ASC')->get(),
                 'view_increment' => $view_increment,
                 'series_categories' => SeriesGenre::all(),
+                'category_name'     => $category_name ,
                 'pages' => Page::where('active', '=', 1)->get(),
             ];
             return Redirect::to('series')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
