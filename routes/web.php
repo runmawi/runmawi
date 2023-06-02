@@ -775,9 +775,9 @@ Route::get('/Testwatermark', 'Testwatermark@index');
     Route::post('/site-meta-update', 'AdminSiteMetaController@meta_setting_update')->name('meta_setting_update');
 
     // Site Meta Settings
-        Route::get('/user-logged-device', 'AdminAppSettings@LoggedUserDevices')->name('meta_setting');
-        Route::get('/user-logged-device/delete/{id}', 'AdminAppSettings@LoggedUserDeviceDelete')->name('meta_setting_edit');
-        Route::get('/user-logged-device/delete/{id}', 'AdminAppSettings@LoggedUserDeviceDelete')->name('meta_setting_edit');
+        Route::get('/user-logged-device', 'AdminAppSettings@LoggedUserDevices')->name('LoggedUserDevices');
+        Route::get('/user-logged-device/delete/{id}', 'AdminAppSettings@LoggedUserDeviceDelete')->name('LoggedUserDeviceDelete');
+        Route::get('/user-logged-device/delete/{id}', 'AdminAppSettings@LoggedUserDeviceDelete')->name('LoggedUserDeviceDelete');
         Route::get('/logged_device_Bulk_delete', 'AdminAppSettings@logged_device_Bulk_delete')->name('logged_device_Bulk_delete'); 
 
 
