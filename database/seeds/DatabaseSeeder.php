@@ -64,6 +64,7 @@ class DatabaseSeeder extends Seeder
             LifeTimeSubscriptionSeeder::class,
             AdminAdsTimeSlotSeeding::class,
             DeviceSeeder::class,
+            SiteMetaSeeder::class,
         ]);
     
     }
