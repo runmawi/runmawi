@@ -3915,7 +3915,8 @@ public function checkEmailExists(Request $request)
     }
 
     if($login_type == 'facebook'){ //Facebook
-      $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
+      // $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
+      $check_exists = User::where('email', '=', $email)->count();
       if($check_exists > 0){//Login
         $user_details = User::where('email', '=', $email)->get();
         $response = array(
@@ -3945,7 +3946,8 @@ public function checkEmailExists(Request $request)
       }
     }
     if($login_type == 'google'){ //Google
-      $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
+      // $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
+      $check_exists = User::where('email', '=', $email)->count();
       if($check_exists > 0) {//Login
         $user_details = User::where('email', '=', $email)->get();
         $response = array(
@@ -13561,5 +13563,16 @@ public function QRCodeMobileLogout(Request $request)
     return response()->json($response, 200);
   }
 
+  public function LoggedUserDeviceDelete (Request $request)
+  {
+      
+    LoggedDevice::where("id",  $request->user_id)->delete();
+      $response = array(
+        'status'=>'true',
+        'message' => 'Deleted User successfully'
+      );
+    return response()->json($response, 200);
+
+  }
 
 }
