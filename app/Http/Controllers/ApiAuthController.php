@@ -12473,7 +12473,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_category_videos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
-          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = null ;
           $source_type = "videos" ;
 
         }
