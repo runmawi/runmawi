@@ -1128,6 +1128,11 @@ Route::post('/VideoByRegionCSV', 'AdminUsersController@VideoByRegionCSV');
 Route::get('/Geofencing', 'GeofencingController@index');
 Route::get('/Geofencing/create', 'GeofencingController@create');
 Route::post('/Geofencing/store', 'GeofencingController@store');
+
+// Seeding
+Route::get('/Seeding', 'AdminSeederController@index')->name('seeding-index');
+Route::post('/Seeding/run', 'AdminSeederController@unique_seeding')->name('seeding-run');
+Route::get('/Seeding/refresh', 'AdminSeederController@refresh_seeding')->name('seeding-refresh');
        
 Route::get('/Planstate', 'AdminUsersController@PlanState');
 Route::get('/Plancity', 'AdminUsersController@PlanCity');
