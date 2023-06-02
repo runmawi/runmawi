@@ -42,7 +42,7 @@ class AdminSeederController extends Controller
 
             Artisan::call('db:seed', ['--class' => $request->seed_class ]);
 
-            return redirect()->route('seeding-index')->with('success', 'Seeding for <strong>'. $request->seed_class.'</strong> has successfully run and finished.');
+            return redirect()->route('seeding-index')->with('success', 'Seeding for '. $request->seed_class.' has successfully run and finished.');
 
 
         } catch (\Throwable $th) {
