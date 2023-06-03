@@ -44,11 +44,12 @@
                               <!-- MainContent -->
 
 <div class="main-content">
+
     <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php include 'partials/home/free_content.blade.php'; ?>
+                    <?php include 'partials/home/latest-series.php'; ?>
                 </div>
             </div>
         </div>
@@ -58,7 +59,7 @@
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php include 'partials/home/latest-series.php'; ?>
+                    <?php include 'partials/home/free_content.blade.php'; ?>
                 </div>
             </div>
         </div>
