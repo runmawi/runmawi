@@ -1667,8 +1667,10 @@ class AdminSeriesController extends Controller
 
         if(!empty($data['ppv_price'])){
             $ppv_price = $data['ppv_price'];
+            $ppv_price = null;
         }elseif(!empty($data['ppv_status']) || $settings->ppv_status == 1){
             $ppv_price = $settings->ppv_price;
+            $ppv_price = null;
         }else{
             $ppv_price = null;
         }
@@ -2050,8 +2052,10 @@ class AdminSeriesController extends Controller
        
         if(!empty($input['ppv_price'])){
             $ppv_price = $input['ppv_price'];
+            $ppv_price = null;
         }elseif(!empty($input['ppv_price']) || $settings->ppv_status == 1){
             $ppv_price = $settings->ppv_price;
+            $ppv_price = null;
         }else{
             $ppv_price = null;
         }
