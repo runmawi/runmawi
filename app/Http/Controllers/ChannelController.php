@@ -140,6 +140,7 @@ class ChannelController extends Controller
 
     public function play_videos($slug)
     {
+        
         $data['password_hash'] = '';
         $data = session()->all();
         $getfeching = \App\Geofencing::first();
@@ -151,9 +152,7 @@ class ChannelController extends Controller
         $ThumbnailSetting = ThumbnailSetting::first();
         $StorageSetting = StorageSetting::first();
 
-        $source_id = Video::where('slug', $slug)
-            ->pluck('id')
-            ->first();
+        $source_id = Video::where('slug', $slug)->pluck('id')->first();
 
         if (!Auth::guest()) {
             $get_video_id = \App\Video::where('slug', $slug)->first();
@@ -293,7 +292,7 @@ class ChannelController extends Controller
                     ->where('id', $vid)
                     ->first();
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -306,6 +305,7 @@ class ChannelController extends Controller
                 } else {
                     $genres_name = 'No Genres Added';
                 }
+
 
                 $lang_name = LanguageVideo::select('languages.name as name')
                     ->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
@@ -548,7 +548,7 @@ class ChannelController extends Controller
                     $publishable_key = null;
                 }
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -701,7 +701,7 @@ class ChannelController extends Controller
                     ->where('id', $vid)
                     ->first();
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -884,7 +884,7 @@ class ChannelController extends Controller
                 } else {
                     $recomended = [];
                 }
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -1040,7 +1040,7 @@ class ChannelController extends Controller
                     ->whereNotNull('reelvideo')
                     ->get();
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name =CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -1049,7 +1049,7 @@ class ChannelController extends Controller
                     ->where('id', $vid)
                     ->first();
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -1189,7 +1189,7 @@ class ChannelController extends Controller
                     ->whereNotNull('reelvideo')
                     ->get();
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name =CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -1197,7 +1197,7 @@ class ChannelController extends Controller
                 $categoryVideos = Video::with('category.categoryname')
                     ->where('id', $vid)
                     ->first();
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -1598,7 +1598,7 @@ class ChannelController extends Controller
                     ->where('id', $vid)
                     ->first();
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -1829,7 +1829,7 @@ class ChannelController extends Controller
                     $publishable_key = null;
                 }
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -1936,7 +1936,7 @@ class ChannelController extends Controller
                     ->where('id', $vid)
                     ->first();
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -2096,7 +2096,7 @@ class ChannelController extends Controller
                 } else {
                     $recomended = [];
                 }
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -2215,7 +2215,7 @@ class ChannelController extends Controller
                     ->whereNotNull('reelvideo')
                     ->get();
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -2224,7 +2224,7 @@ class ChannelController extends Controller
                     ->where('id', $vid)
                     ->first();
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -2327,7 +2327,7 @@ class ChannelController extends Controller
                     ->whereNotNull('reelvideo')
                     ->get();
 
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -2335,7 +2335,7 @@ class ChannelController extends Controller
                 $categoryVideos = Video::with('category.categoryname')
                     ->where('id', $vid)
                     ->first();
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
@@ -3031,7 +3031,7 @@ class ChannelController extends Controller
                 $categoryVideos = Video::with('category.categoryname')
                     ->where('id', $vid)
                     ->first();
-                $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                $category_name = CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')
                     ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                     ->where('categoryvideos.video_id', $vid)
                     ->get();
