@@ -11,6 +11,7 @@ use App\Watchlater as Watchlater;
 use App\Wishlist as Wishlist;
 use App\Genre;
 use App\LiveCategory;
+use App\CategoryLive;
 use URL;
 use Auth;
 use View;
@@ -239,6 +240,12 @@ class LiveStreamController extends Controller
              $parser = new M3UFileParser($M3U_files);
              $M3U_channels = $parser->list() ;
 
+             $category_name = CategoryLive::select('live_categories.name as categories_name','live_categories.slug as categories_slug','livecategories.live_id')
+                                ->Join('live_categories', 'livecategories.category_id', '=', 'live_categories.id')
+                                ->where('livecategories.live_id', $vid)
+                                ->get();
+
+
            $data = array(
                  'currency' => $currency,
                  'video_access' => $video_access,
@@ -262,7 +269,7 @@ class LiveStreamController extends Controller
                  'source_id'        => $source_id,
                  'commentable_type' => "LiveStream_play" ,
                  'CinetPay_payment_settings' => PaymentSetting::where('payment_type','CinetPay')->first() ,
-
+                 'category_name'   => $category_name ,
            );
 
            return Theme::view('livevideo', $data);
@@ -272,6 +279,7 @@ class LiveStreamController extends Controller
           //   return view('auth.login',compact('system_settings'));
           // }
         } catch (\Throwable $th) {
+
             return abort(404);
         }
         }
