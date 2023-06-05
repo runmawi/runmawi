@@ -249,7 +249,7 @@ class TvshowsController extends Controller
         $episode_Wishlist = Wishlist::where('episode_id', $episodess->id)
             ->where('user_id', $auth_user_id)
             ->first();
-            
+
             // Subtitle Data 
             
         $playerui = Playerui::first();
@@ -283,6 +283,12 @@ class TvshowsController extends Controller
         $episodeprev = Episode::where('id', '<', $id)
             ->where('series_id', '=', $episode->series_id)
             ->first();
+
+        $category_name = SeriesGenre::select('series_genre.name as categories_name','series_genre.slug as categories_slug')
+            ->Join('series_categories', 'series_categories.category_id', '=', 'series_genre.id')
+            ->where('series_categories.series_id', $episode->series_id)
+            ->get();
+
         //Make sure series is active
 
         $view = new RecentView();
@@ -541,6 +547,7 @@ class TvshowsController extends Controller
                     'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
                     'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
                     'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
+                    'category_name'             => $category_name ,
                 ];
                 
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -578,6 +585,7 @@ class TvshowsController extends Controller
                     'subtitles_name' =>   $subtitles_name ,
                     'playerui_settings' =>   $playerui ,
                     'episodesubtitles' =>   $subtitle ,
+                    'category_name'             => $category_name ,
                 ];
 
                 if (Auth::guest() && $settings->access_free == 1) {
