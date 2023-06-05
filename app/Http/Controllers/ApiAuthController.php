@@ -12817,7 +12817,7 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
         $data = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured')
-          ->where('active',1)->where('status', 1)->where('draft',1)->latest();
+          ->where('active',1)->where('status', 1)->latest();
 
             if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
             {
