@@ -120,7 +120,7 @@ class TvshowsController extends Controller
             ->count();
         if ($latest_series_count > 0) {
             $latest_series = Series::where('active', '=', '1')
-                ->take(10)
+                ->take(30)
                 ->orderBy('created_at', 'DESC')
                 ->get();
         } else {
@@ -133,7 +133,7 @@ class TvshowsController extends Controller
         if ($latest_episodes_count > 0) {
             $latest_episodes = Episode::where('active', '=', '1')
                 ->where('status', '=', '1')
-                ->take(10)
+                ->take(30)
                 ->orderBy('id', 'DESC')
                 ->get();
         } else {
