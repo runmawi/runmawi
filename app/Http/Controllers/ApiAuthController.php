@@ -12848,8 +12848,8 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
           $data = AudioAlbums::latest()->limit(30)->get()->map(function ($item) {
-              $item['image_url'] = URL::to('/public/uploads/albums/'.$item->image);
-              $item['Player_image_url'] = URL::to('/public/uploads/albums/'.$item->image); // Note - No Player Image for Albums
+              $item['image_url'] = URL::to('/public/uploads/albums/'.$item->album);
+              $item['Player_image_url'] = URL::to('/public/uploads/albums/'.$item->album); // Note - No Player Image for Albums
               $item['redirect_url'] = URL::to('audio/'.$item->slug);
               $item['source']    = "Audios_album";
               return $item;
