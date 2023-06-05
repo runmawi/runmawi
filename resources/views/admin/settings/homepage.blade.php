@@ -1409,6 +1409,22 @@
                                 </div>
                             </div>
 
+                            <div class="col-sm-4">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1"> {{ ucwords('continue watching') }} </label></div>
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox"
+                                                        @if ($mobilesettings->continue_watching == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                        name="continue_watching" id="continue_watching">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+                                        </div>
+                                    </div>
                             {{-- <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
