@@ -98,7 +98,7 @@
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>">
-<meta itemprop="image" content="<?php 
+<meta style="background-size: contain;" itemprop="image" content="<?php 
       if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;
       }
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->player_image  ;}
@@ -127,7 +127,7 @@
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>">
 <!-- Twitter summary card with large image must be at least 280x150px -->
-<meta name="twitter:image:src" content="<?php 
+<meta style="background-size: contain;" name="twitter:image:src" content="<?php 
       if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;
       }
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->player_image;}
@@ -145,7 +145,7 @@
       elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->page_title .' | '. $settings->website_name ; }
       else{ echo $uppercase .' | ' . $settings->website_name ;} ?>" />
-<meta property="og:image" content="<?php 
+<meta style="background-size: contain;" property="og:image" content="<?php 
       if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;
       }
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->player_image  ;}
