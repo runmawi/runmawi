@@ -6,7 +6,7 @@
 
 <?php 
     if( !Auth::guest() ){
-        include public_path('themes/defautlt/views/comments/commentbox.blade.php'); 
+        include public_path('themes/default/views/comments/commentbox.blade.php'); 
     }
 ?>
 
