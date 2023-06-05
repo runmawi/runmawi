@@ -239,6 +239,10 @@
         </div>
     </div>
 
+    
+
+    @include('avod::ads_footer')
+
     <script src=" {{ URL::to('assets/admin/dashassets/js/jquery.min.js') }} "></script>  <!-- Imported styles on this page -->
     <script src=" {{ URL::to('assets/admin/dashassets/js/select2.min.js') }}"></script> <!-- Select2 JavaScript -->
 

@@ -13,41 +13,41 @@ use Intervention\Image\Facades\Image;
 use Carbon\CarbonInterval;
 use Illuminate\Support\Str;
 use Razorpay\Api\Api;
-use Validator,Redirect,Response;
+use Validator, Redirect, Response;
 use Exception;
 use Carbon\Carbon;
-Use App\Advertiserplanhistory;
-Use App\Advertiser;
-Use App\Advertisement;
-Use App\Adscategory;
+use App\Advertiserplanhistory;
+use App\Advertiser;
+use App\Advertisement;
+use App\Adscategory;
 use App\FeaturedadHistory;
 use App\Advertiserwallet;
 use App\AdsTimeSlot;
 use App\Adcampaign;
 use App\Adviews;
 use App\Adrevenue;
-Use App\Setting;
-Use App\Adsplan;
+use App\Setting;
+use App\Adsplan;
 use App\AdsEvent;
-Use App\User;
+use App\User;
 use DatePeriod;
 use Session;
 use Stripe;
-use Mail; 
+use Mail;
 use DB;
 
 class AuthController extends Controller
 {
     public function index()
     {
-        $data = array('settings'=>Setting::first());
-        return view('avod::login',$data);
-    }  
+        $data = ['settings' => Setting::first()];
+        return view('avod::login', $data);
+    }
 
     public function register()
     {
-        $data = array('settings'=>Setting::first());
-        return view('avod::register',$data);
+        $data = ['settings' => Setting::first()];
+        return view('avod::register', $data);
     }
 
     public function postLogin(Request $request)
@@ -58,23 +58,23 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        
+
         if ($data = Advertiser::where('email_id', $request->email_id)->first()) {
             $pass = Hash::check($request->password, $data->password);
             if ($pass && $data->status == 1) {
                 session(['advertiser_id' => $data->id]);
                 return redirect()->intended('/advertiser');
-            }elseif ($pass && $data->status == 0) {
-                return Redirect::to("advertiser/login")->withError('Opps! Your account is under verification.Please wait for admin approval.');
+            } elseif ($pass && $data->status == 0) {
+                return Redirect::to('advertiser/login')->withError('Opps! Your account is under verification.Please wait for admin approval.');
             } elseif ($pass && $data->status == 2) {
-                return Redirect::to("advertiser/login")->withError('Opps! Admin has disapproved your account.Please contact administrator.');
+                return Redirect::to('advertiser/login')->withError('Opps! Admin has disapproved your account.Please contact administrator.');
             }
         }
-        return Redirect::to("advertiser/login")->withError('Opps! You have entered invalid credentials');
+        return Redirect::to('advertiser/login')->withError('Opps! You have entered invalid credentials');
     }
 
     public function postRegister(Request $request)
-    {  
+    {
         request()->validate([
             'company_name' => 'required',
             'email_id' => 'required|email|unique:advertisers',
@@ -93,13 +93,18 @@ class AuthController extends Controller
 
         $advertiser_emailid = $data['email_id'];
         $customerName = $data['company_name'];
-        $adminemail = User::where('role','=','admin')->first()->email;
+        $adminemail = User::where('role', '=', 'admin')->first()->email;
 
         $details = [
-            'title' => "Dear " .$customerName,
-            'body' => "We are happy to have you on board.\n
-            Thank you for registering as an Advertiser at ".$customerName.".\n 
-            If you have any questions, please write to us at ".$adminemail." for queries and suggestions."
+            'title' => 'Dear ' . $customerName,
+            'body' =>
+                "We are happy to have you on board.\n
+            Thank you for registering as an Advertiser at " .
+                $customerName .
+                ".\n 
+            If you have any questions, please write to us at " .
+                $adminemail .
+                ' for queries and suggestions.',
         ];
 
         try {
@@ -108,29 +113,31 @@ class AuthController extends Controller
             //throw $th;
         }
 
-        return Redirect::to("advertiser/login")->withSuccess('Great! You have Successfully registered');
+        return Redirect::to('advertiser/login')->withSuccess('Great! You have Successfully registered');
     }
 
-    public function ads_list() {
-
+    public function ads_list()
+    {
         try {
-           
-            if(empty(session('advertiser_id'))){
-                return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+            if (empty(session('advertiser_id'))) {
+                return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
             }
 
-            $data = array(
-                'settings' => Setting::first() ,
-                'advertisements' => Advertisement::where('advertiser_id',session('advertiser_id'))->get()->map(function ($item) {
-                    $item['ads_category'] = Adscategory::where('id',$item->ads_category )->pluck('name')->first() ; 
-                    return $item;
-                  }),
-                  
+            $data = [
+                'settings' => Setting::first(),
+                'advertisements' => Advertisement::where('advertiser_id', session('advertiser_id'))
+                    ->get()
+                    ->map(function ($item) {
+                        $item['ads_category'] = Adscategory::where('id', $item->ads_category)
+                            ->pluck('name')
+                            ->first();
+                        return $item;
+                    }),
+
                 // App\
-            );
+            ];
 
-            return view('avod::ads_list',$data);
-
+            return view('avod::ads_list', $data);
         } catch (\Throwable $th) {
             return abort(404);
         }
@@ -140,178 +147,195 @@ class AuthController extends Controller
     {
         $data = [];
         $data['settings'] = Setting::first();
-        $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-        if(!empty(session('advertiser_id')) && $activeplan == 0){
-            $data['plans'] = Adsplan::all();
-            return view('avod::chooseplan',$data);
+        // $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
 
-        }elseif(!empty(session('advertiser_id')) && $activeplan > 0){
-            $adslist = Advertisement::where('advertiser_id',session('advertiser_id'))->pluck('id')->toArray();
+        $activeplan = 1; // stativ data given
+
+        if (!empty(session('advertiser_id')) && $activeplan == 0) {
+            $data['plans'] = Adsplan::all();
+            return view('avod::chooseplan', $data);
+        } elseif (!empty(session('advertiser_id')) && $activeplan > 0) {
+            $adslist = Advertisement::where('advertiser_id', session('advertiser_id'))
+                ->pluck('id')
+                ->toArray();
             $cpc = [];
             $ads = [];
             foreach ($adslist as $key => $ad_id) {
-                $cpc[] = Adrevenue::where('ad_id',$ad_id)->sum('advertiser_share');
-                $ads[] = Advertisement::where('id',$ad_id)->first()->ads_name;
+                $cpc[] = Adrevenue::where('ad_id', $ad_id)->sum('advertiser_share');
+                $ads[] = Advertisement::where('id', $ad_id)->first()->ads_name;
             }
 
             $ads1 = $cpv = [];
             foreach ($adslist as $key => $ad_id) {
-                $cpv[] = Adviews::where('ad_id',$ad_id)->sum('advertiser_share');
-                $ads1[] = Advertisement::where('id',$ad_id)->first()->ads_name;
+                $cpv[] = Adviews::where('ad_id', $ad_id)->sum('advertiser_share');
+                $ads1[] = Advertisement::where('id', $ad_id)->first()->ads_name;
             }
-            return view('avod::dashboard')->with('ads',json_encode($ads,JSON_NUMERIC_CHECK))->with('cpc',json_encode($cpc,JSON_NUMERIC_CHECK))->with('ads1',json_encode($ads1,JSON_NUMERIC_CHECK))->with('cpv',json_encode($cpv,JSON_NUMERIC_CHECK));
-
+            return view('avod::dashboard')
+                ->with('ads', json_encode($ads, JSON_NUMERIC_CHECK))
+                ->with('cpc', json_encode($cpc, JSON_NUMERIC_CHECK))
+                ->with('ads1', json_encode($ads1, JSON_NUMERIC_CHECK))
+                ->with('cpv', json_encode($cpv, JSON_NUMERIC_CHECK));
         }
-        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+        return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
     }
 
-
-    public function logout() {
+    public function logout()
+    {
         Session::flush();
         return Redirect('advertiser/login');
     }
 
-    public function buyplan(Request $request) {
+    public function buyplan(Request $request)
+    {
         $data = [];
         $data['settings'] = Setting::first();
-        if(!empty(session('advertiser_id'))){
-            
-                $user_id = session('advertiser_id');
-                $user = Advertiser::find($user_id);
-                $paymentMethod = $request->get('py_id');
-                $plan_id = $request->get('plan');
-                $plan_amount = Adsplan::where('id',$plan_id)->first()->plan_amount;
-                try {
+        if (!empty(session('advertiser_id'))) {
+            $user_id = session('advertiser_id');
+            $user = Advertiser::find($user_id);
+            $paymentMethod = $request->get('py_id');
+            $plan_id = $request->get('plan');
+            $plan_amount = Adsplan::where('id', $plan_id)->first()->plan_amount;
+            try {
+                $user->createOrGetStripeCustomer();
+                $user->updateDefaultPaymentMethod($paymentMethod);
+                $charge = $user->charge($plan_amount * 100, $paymentMethod);
 
-                    $user->createOrGetStripeCustomer();
-                    $user->updateDefaultPaymentMethod($paymentMethod);
-                    $charge = $user->charge($plan_amount * 100, $paymentMethod);  
-                    
-                    $ads_limit = Adsplan::where('id',$plan_id)->first()->no_of_ads;
-                    $planhistory = new Advertiserplanhistory();
-                    $planhistory->plan_id = $plan_id;
-                    $planhistory->advertiser_id = session('advertiser_id');
-                    $planhistory->ads_limit = $ads_limit;
-                    $planhistory->no_of_uploads = 0;
-                    $planhistory->status = 'active';
-                    $planhistory->payment_mode = 'stripe';
-                    $planhistory->transaction_id = $charge->id;
-                    $planhistory->save();
+                $ads_limit = Adsplan::where('id', $plan_id)->first()->no_of_ads;
+                $planhistory = new Advertiserplanhistory();
+                $planhistory->plan_id = $plan_id;
+                $planhistory->advertiser_id = session('advertiser_id');
+                $planhistory->ads_limit = $ads_limit;
+                $planhistory->no_of_uploads = 0;
+                $planhistory->status = 'active';
+                $planhistory->payment_mode = 'stripe';
+                $planhistory->transaction_id = $charge->id;
+                $planhistory->save();
 
-                    $plan_name = Adsplan::where('id',$plan_id)->first()->plan_name;
-                    $plan_amount = Adsplan::where('id',$plan_id)->first()->plan_amount;
-                    $date = date('Y-m-d');
-                    $customerName = Advertiser::find(session('advertiser_id'))->company_name;
-                    $adminemail = User::where('role','=','admin')->first()->email;
-                    $advertiser_emailid = Advertiser::find(session('advertiser_id'))->email_id;
+                $plan_name = Adsplan::where('id', $plan_id)->first()->plan_name;
+                $plan_amount = Adsplan::where('id', $plan_id)->first()->plan_amount;
+                $date = date('Y-m-d');
+                $customerName = Advertiser::find(session('advertiser_id'))->company_name;
+                $adminemail = User::where('role', '=', 'admin')->first()->email;
+                $advertiser_emailid = Advertiser::find(session('advertiser_id'))->email_id;
 
-                    $details = [
-                        'title' => "Dear " .$customerName,
-                        'body' => "Welcome to Flicknexs.
+                $details = [
+                    'title' => 'Dear ' . $customerName,
+                    'body' =>
+                        "Welcome to Flicknexs.
                         Thank you for purchasing to Ad plan. \n
-                        Your Plan Name :".$plan_name."\n
-                        Date of Purchase: ".$date."\n
-                        Plan Amount : ".$plan_amount."\n
+                        Your Plan Name :" .
+                        $plan_name .
+                        "\n
+                        Date of Purchase: " .
+                        $date .
+                        "\n
+                        Plan Amount : " .
+                        $plan_amount .
+                        "\n
                         Log in to the Ad panel to explore more!\n
-                        Please write to us at ".$adminemail." for queries and suggestions."
-                    ];
+                        Please write to us at " .
+                        $adminemail .
+                        ' for queries and suggestions.',
+                ];
 
-                    try {
-                        \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
-
-                    } catch (\Throwable $th) {
-                        //throw $th;
-                    }
-
-                    echo "success";  exit;    
-                } catch (IncompletePayment $exception) {
-
-                    return redirect()->route(
-                        'cashier.payment',
-                        [$exception->payment->id, 'redirect' => route('advertiser')]
-                    );
+                try {
+                    \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
+                } catch (\Throwable $th) {
+                    //throw $th;
                 }
-            
+
+                echo 'success';
+                exit();
+            } catch (IncompletePayment $exception) {
+                return redirect()->route('cashier.payment', [$exception->payment->id, 'redirect' => route('advertiser')]);
+            }
         }
-        echo "error";exit; 
+        echo 'error';
+        exit();
     }
 
-    
-    public function plan_history() {
+    public function plan_history()
+    {
         $data = [];
         $data['settings'] = Setting::first();
-        $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+        // $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
 
-        if(!empty(session('advertiser_id')) && $activeplan == 0){
-            return Redirect::to("/advertiser")->withError('Opps! You do not have access');
-        }elseif(!empty(session('advertiser_id')) && $activeplan > 0){
+        $activeplan = 1; // Static data
+
+        if (!empty(session('advertiser_id')) && $activeplan == 0) {
+            return Redirect::to('/advertiser')->withError('Opps! You do not have access');
+        } elseif (!empty(session('advertiser_id')) && $activeplan > 0) {
             $data['plans'] = DB::table('advertiser_plan_history')
-            ->select('advertiser_plan_history.*','ads_plans.plan_name','ads_plans.plan_amount','ads_plans.no_of_ads' )
-            ->join('ads_plans', 'ads_plans.id', '=', 'advertiser_plan_history.plan_id')
-            ->where('advertiser_plan_history.advertiser_id',session('advertiser_id'))
-            ->get();
-            return view('avod::plan_history',$data);
+                ->select('advertiser_plan_history.*', 'ads_plans.plan_name', 'ads_plans.plan_amount', 'ads_plans.no_of_ads')
+                ->join('ads_plans', 'ads_plans.id', '=', 'advertiser_plan_history.plan_id')
+                ->where('advertiser_plan_history.advertiser_id', session('advertiser_id'))
+                ->get();
+
+            return view('avod::plan_history', $data);
         }
-        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+
+        return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
     }
 
-    public function upload_ads_old() {
-        
+    public function upload_ads_old()
+    {
         $data = [];
         $data['settings'] = Setting::first();
-        $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-        $getdata = Advertiserplanhistory::where('advertiser_id','=',session('advertiser_id'))->where('status','active')->first();
+        $activeplan = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
+            ->where('status', 'active')
+            ->count();
+        $getdata = Advertiserplanhistory::where('advertiser_id', '=', session('advertiser_id'))
+            ->where('status', 'active')
+            ->first();
         $upload_ads_cnt = $getdata->ads_limit - $getdata->no_of_uploads;
-        
-        if(!empty(session('advertiser_id')) && $activeplan == 0 || $upload_ads_cnt == 0){
+
+        if ((!empty(session('advertiser_id')) && $activeplan == 0) || $upload_ads_cnt == 0) {
             $getdata->status = 'deactive';
             $getdata->save();
 
-            $plan_name = Adsplan::where('id',$getdata->plan_id)->first()->plan_name;
+            $plan_name = Adsplan::where('id', $getdata->plan_id)->first()->plan_name;
             $customerName = Advertiser::find(session('advertiser_id'))->company_name;
             $advertiser_emailid = Advertiser::find(session('advertiser_id'))->email_id;
             $details = [
-                'title' => "Dear " .$customerName,
-                'body' => "Your ".$plan_name." limit for the plan has been reached, to add more ads please login to your account to upgrade plan."
+                'title' => 'Dear ' . $customerName,
+                'body' => 'Your ' . $plan_name . ' limit for the plan has been reached, to add more ads please login to your account to upgrade plan.',
             ];
 
             try {
                 \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
-
             } catch (\Throwable $th) {
                 //throw $th;
             }
 
-            return Redirect::to("/advertiser")->withError('Opps! Your limit has completed.Please update your plan');
-        }elseif(!empty(session('advertiser_id')) && $activeplan > 0 && $getdata->ads_limit > $getdata->no_of_uploads ){
-
+            return Redirect::to('/advertiser')->withError('Opps! Your limit has completed.Please update your plan');
+        } elseif (!empty(session('advertiser_id')) && $activeplan > 0 && $getdata->ads_limit > $getdata->no_of_uploads) {
             // Ads scheduling
 
-              $now = Carbon::now();
+            $now = Carbon::now();
 
-              $data = [
-                'Monday_time'    => AdsTimeSlot::where('day','Monday')->get(),
-                'Tuesday_time' =>AdsTimeSlot::where('day','Tuesday')->get(),
-                'Wednesday_time' =>AdsTimeSlot::where('day','Wednesday')->get(),
-                'Thursday_time' =>AdsTimeSlot::where('day','Thrusday')->get(),
-                'Friday_time' =>AdsTimeSlot::where('day','Friday')->get(),
-                'Saturday_time' =>AdsTimeSlot::where('day','Saturday')->get(),
-                'Sunday_time' =>AdsTimeSlot::where('day','Sunday')->get(),
-                'Monday'   =>  $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d'),
-                'Tuesday'   =>  $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d'),
-                'Wednesday' =>  $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d'),
-                'Thrusday'  =>  $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d'),
-                'Friday'    => $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d'),
+            $data = [
+                'Monday_time' => AdsTimeSlot::where('day', 'Monday')->get(),
+                'Tuesday_time' => AdsTimeSlot::where('day', 'Tuesday')->get(),
+                'Wednesday_time' => AdsTimeSlot::where('day', 'Wednesday')->get(),
+                'Thursday_time' => AdsTimeSlot::where('day', 'Thrusday')->get(),
+                'Friday_time' => AdsTimeSlot::where('day', 'Friday')->get(),
+                'Saturday_time' => AdsTimeSlot::where('day', 'Saturday')->get(),
+                'Sunday_time' => AdsTimeSlot::where('day', 'Sunday')->get(),
+                'Monday' => $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d'),
+                'Tuesday' => $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d'),
+                'Wednesday' => $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d'),
+                'Thrusday' => $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d'),
+                'Friday' => $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d'),
                 'Saturday' => $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d'),
-                'Sunday'    => $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d'),
-              ];
+                'Sunday' => $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d'),
+            ];
 
-          //  End Scheduling
+            //  End Scheduling
 
             $data['ads_category'] = Adscategory::all();
-            return view('avod::upload_ads',$data);
+            return view('avod::upload_ads', $data);
         }
-        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+        return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
     }
 
     public function upload_ads(Request $request)
@@ -319,51 +343,47 @@ class AuthController extends Controller
         $data = [];
         $data['settings'] = Setting::first();
 
-        $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-        $getdata = Advertiserplanhistory::where('advertiser_id','=',session('advertiser_id'))->where('status','active')->first();
-        
-        if(!empty(session('advertiser_id')) && $activeplan == 0 ){
+        // $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
 
-            return Redirect::to("/advertiser")->withError('Opps! Please update your plan for uploading ads');
+        $activeplan = 1; // stativ data given
 
-        }elseif(!empty(session('advertiser_id')) && $activeplan > 0 ){
-
+        if (!empty(session('advertiser_id')) && $activeplan == 0) {
+            return Redirect::to('/advertiser')->withError('Opps! Please update your plan for uploading ads');
+        } elseif (!empty(session('advertiser_id')) && $activeplan > 0) {
             // Ads scheduling
 
-              $now = Carbon::now();
+            $now = Carbon::now();
 
-              $data = [
-                'Monday_time'    => AdsTimeSlot::where('day','Monday')->get(),
-                'Tuesday_time' =>AdsTimeSlot::where('day','Tuesday')->get(),
-                'Wednesday_time' =>AdsTimeSlot::where('day','Wednesday')->get(),
-                'Thursday_time' =>AdsTimeSlot::where('day','Thrusday')->get(),
-                'Friday_time' =>AdsTimeSlot::where('day','Friday')->get(),
-                'Saturday_time' =>AdsTimeSlot::where('day','Saturday')->get(),
-                'Sunday_time' =>AdsTimeSlot::where('day','Sunday')->get(),
-                'Monday'   =>  $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d'),
-                'Tuesday'   =>  $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d'),
-                'Wednesday' =>  $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d'),
-                'Thrusday'  =>  $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d'),
-                'Friday'    => $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d'),
+            $data = [
+                'Monday_time' => AdsTimeSlot::where('day', 'Monday')->get(),
+                'Tuesday_time' => AdsTimeSlot::where('day', 'Tuesday')->get(),
+                'Wednesday_time' => AdsTimeSlot::where('day', 'Wednesday')->get(),
+                'Thursday_time' => AdsTimeSlot::where('day', 'Thrusday')->get(),
+                'Friday_time' => AdsTimeSlot::where('day', 'Friday')->get(),
+                'Saturday_time' => AdsTimeSlot::where('day', 'Saturday')->get(),
+                'Sunday_time' => AdsTimeSlot::where('day', 'Sunday')->get(),
+                'Monday' => $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d'),
+                'Tuesday' => $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d'),
+                'Wednesday' => $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d'),
+                'Thrusday' => $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d'),
+                'Friday' => $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d'),
                 'Saturday' => $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d'),
-                'Sunday'    => $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d'),
-              ];
+                'Sunday' => $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d'),
+            ];
 
-          //  End Scheduling
+            //  End Scheduling
 
             $data['ads_category'] = Adscategory::all();
-            return view('avod::upload_ads',$data);
+            return view('avod::upload_ads', $data);
         }
-        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+        return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
     }
 
+    public function store_ads(Request $request)
+    {
+        $data = $request->all();
 
-    public function store_ads(Request $request) {
-
-        
-        $data = $request->all();   
-    
-        $Ads = new Advertisement;
+        $Ads = new Advertisement();
         $Ads->advertiser_id = session('advertiser_id');
         $Ads->ads_name = $request->ads_name;
         $Ads->ads_category = $request->ads_category;
@@ -374,195 +394,170 @@ class AuthController extends Controller
         // $Ads->gender = $request->gender;
         $Ads->household_income = $request->household_income;
 
-        if($request->location == "all_countries" || $request->location == "India" ){
+        if ($request->location == 'all_countries' || $request->location == 'India') {
             $Ads->location = $request->location;
-        }
-        else{
+        } else {
             $Ads->location = $request->locations;
         }
 
-        if (!empty($data['age']))
-        {
+        if (!empty($data['age'])) {
             $Ads->age = json_encode($data['age']);
         }
 
-        if (!empty($data['gender']))
-        {
+        if (!empty($data['gender'])) {
             $Ads->gender = json_encode($data['gender']);
         }
-        if($request->ads_video != null ){
-            $Ads_video = time().'_'.$request->ads_video->getClientOriginalName();  
+        if ($request->ads_video != null) {
+            $Ads_video = time() . '_' . $request->ads_video->getClientOriginalName();
             $ads = $request->ads_video->move(public_path('uploads/AdsVideos'), $Ads_video);
             $Ads->ads_video = $Ads_video;
         }
 
         $Ads->save();
 
-        $last_ads_id = $Ads->id ;
-        $last_ads_name = $Ads->ads_name ?  $Ads->ads_name : 'Ads' ;
+        $last_ads_id = $Ads->id;
+        $last_ads_name = $Ads->ads_name ? $Ads->ads_name : 'Ads';
 
+        // Events
 
+        $mondays = new DatePeriod(Carbon::now()->startOfWeek(Carbon::MONDAY), CarbonInterval::week(), Carbon::now(Carbon::MONDAY)->addMonths(6));
+        $tuesday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::TUESDAY), CarbonInterval::week(), Carbon::now(Carbon::TUESDAY)->addMonths(6));
+        $wednesday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::WEDNESDAY), CarbonInterval::week(), Carbon::now(Carbon::WEDNESDAY)->addMonths(6));
+        $thursday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::THURSDAY), CarbonInterval::week(), Carbon::now(Carbon::THURSDAY)->addMonths(6));
+        $friday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::FRIDAY), CarbonInterval::week(), Carbon::now(Carbon::FRIDAY)->addMonths(6));
+        $saturday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SATURDAY), CarbonInterval::week(), Carbon::now(Carbon::SATURDAY)->addMonths(6));
+        $sunday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SUNDAY), CarbonInterval::week(), Carbon::now(Carbon::SUNDAY)->addMonths(6));
 
-// Events
-
-        $mondays   = new DatePeriod(Carbon::now()->startOfWeek(Carbon::MONDAY) ,CarbonInterval::week(), Carbon::now(Carbon::MONDAY)->addMonths(6));
-        $tuesday   = new DatePeriod(Carbon::now()->startOfWeek(Carbon::TUESDAY) ,CarbonInterval::week(), Carbon::now(Carbon::TUESDAY)->addMonths(6));
-        $wednesday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::WEDNESDAY) ,CarbonInterval::week(), Carbon::now(Carbon::WEDNESDAY)->addMonths(6));
-        $thursday  = new DatePeriod(Carbon::now()->startOfWeek(Carbon::THURSDAY) ,CarbonInterval::week(), Carbon::now(Carbon::THURSDAY)->addMonths(6));
-        $friday    = new DatePeriod(Carbon::now()->startOfWeek(Carbon::FRIDAY) ,CarbonInterval::week(), Carbon::now(Carbon::FRIDAY)->addMonths(6));
-        $saturday  = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SATURDAY) ,CarbonInterval::week(), Carbon::now(Carbon::SATURDAY)->addMonths(6));
-        $sunday    = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SUNDAY) ,CarbonInterval::week(), Carbon::now(Carbon::SUNDAY)->addMonths(6));
-
-
-        if($request->Monday_Start_time  != null && $request->Monday_end_time != null ){
-
+        if ($request->Monday_Start_time != null && $request->Monday_end_time != null) {
             foreach ($mondays as $date) {
-
                 $Monday_start_time = count($request['Monday_Start_time']);
-        
-                for ($i=0; $i<$Monday_start_time; $i++){
-                        $AdsTimeSlot = new AdsEvent;
-                        $AdsTimeSlot->start = $date->format('Y-m-d').' '.$request['Monday_Start_time'][$i];
-                        $AdsTimeSlot->end   = $date->format('Y-m-d').' '.$request['Monday_end_time'][$i];
-                        $AdsTimeSlot->ads_category_id = $request->ads_category;
-                        $AdsTimeSlot->ads_id = $last_ads_id;
-                        $AdsTimeSlot->title = $last_ads_name;
-                        $AdsTimeSlot->status = '1';
-                        $AdsTimeSlot->day = "Monday";
-                        $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                        $AdsTimeSlot->save();
+
+                for ($i = 0; $i < $Monday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['Monday_Start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['Monday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->day = 'Monday';
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
                 }
             }
         }
-    
-        if($request->tuesday_start_time  != null && $request->Tuesday_end_time  != null ){
-    
+
+        if ($request->tuesday_start_time != null && $request->Tuesday_end_time != null) {
             $tuesday_start_time = count($request['tuesday_start_time']);
-    
+
             foreach ($tuesday as $date) {
-    
-                for ($i=0; $i<$tuesday_start_time; $i++){
-                        $AdsTimeSlot = new AdsEvent;
-                        $AdsTimeSlot->start =  $date->format('Y-m-d').' '.$request['tuesday_start_time'][$i];
-                        $AdsTimeSlot->end =    $date->format('Y-m-d').' '.$request['Tuesday_end_time'][$i];
-                        $AdsTimeSlot->ads_category_id = $request->ads_category;
-                        $AdsTimeSlot->ads_id = $last_ads_id;
-                        $AdsTimeSlot->title = $last_ads_name;
-                        $AdsTimeSlot->day = "Tuesday";
-                        $AdsTimeSlot->status = '1';
-                        $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                        $AdsTimeSlot->save();
+                for ($i = 0; $i < $tuesday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['tuesday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['Tuesday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->day = 'Tuesday';
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
                 }
             }
         }
-    
-        if($request->wednesday_start_time  != null && $request->wednesday_end_time  != null ){
-    
+
+        if ($request->wednesday_start_time != null && $request->wednesday_end_time != null) {
             $wednesday_start_time = count($request['wednesday_start_time']);
 
             foreach ($wednesday as $date) {
-
-                for ($i=0; $i<$wednesday_start_time; $i++){
-                        $AdsTimeSlot = new AdsEvent;
-                        $AdsTimeSlot->start = $date->format('Y-m-d').' '. $request['wednesday_start_time'][$i];
-                        $AdsTimeSlot->end =  $date->format('Y-m-d').' '.$request['wednesday_end_time'][$i];
-                        $AdsTimeSlot->ads_category_id = $request->ads_category;
-                        $AdsTimeSlot->ads_id = $last_ads_id;
-                        $AdsTimeSlot->title = $last_ads_name;
-                        $AdsTimeSlot->status = '1';
-                        $AdsTimeSlot->day = "Wednesday";
-                        $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                        $AdsTimeSlot->save();
+                for ($i = 0; $i < $wednesday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['wednesday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['wednesday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->day = 'Wednesday';
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
                 }
-
             }
         }
-    
-        if($request->thursday_start_time  != null && $request->thursday_end_time  != null ){
-    
+
+        if ($request->thursday_start_time != null && $request->thursday_end_time != null) {
             $thursday_start_time = count($request['thursday_start_time']);
 
             foreach ($thursday as $date) {
-    
-                for ($i=0; $i<$thursday_start_time; $i++){
-                        $AdsTimeSlot = new AdsEvent;
-                        $AdsTimeSlot->start = $date->format('Y-m-d').' '. $request['thursday_start_time'][$i];
-                        $AdsTimeSlot->end =  $date->format('Y-m-d').' '. $request['thursday_end_time'][$i];
-                        $AdsTimeSlot->ads_category_id = $request->ads_category;
-                        $AdsTimeSlot->ads_id = $last_ads_id;
-                        $AdsTimeSlot->status = '1';
-                        $AdsTimeSlot->day = "Thursday";
-                        $AdsTimeSlot->title = $last_ads_name;
-                        $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                        $AdsTimeSlot->save();
+                for ($i = 0; $i < $thursday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['thursday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['thursday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->day = 'Thursday';
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
                 }
-
             }
-
         }
-    
-        if($request->friday_start_time  != null && $request->friday_end_time  != null){
-    
-            $friday_start_time = count($request['friday_start_time']);
-    
-            foreach ($friday as $date) {
 
-            for ($i=0; $i<$friday_start_time; $i++){
-                    $AdsTimeSlot = new AdsEvent;
-                    $AdsTimeSlot->start =  $date->format('Y-m-d').' '.$request['friday_start_time'][$i];
-                    $AdsTimeSlot->end =  $date->format('Y-m-d').' '.$request['friday_end_time'][$i];
+        if ($request->friday_start_time != null && $request->friday_end_time != null) {
+            $friday_start_time = count($request['friday_start_time']);
+
+            foreach ($friday as $date) {
+                for ($i = 0; $i < $friday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['friday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['friday_end_time'][$i];
                     $AdsTimeSlot->ads_category_id = $request->ads_category;
                     $AdsTimeSlot->ads_id = $last_ads_id;
                     $AdsTimeSlot->status = '1';
                     $AdsTimeSlot->title = $last_ads_name;
-                    $AdsTimeSlot->day = "Friday";
+                    $AdsTimeSlot->day = 'Friday';
                     $AdsTimeSlot->advertiser_id = session('advertiser_id');
                     $AdsTimeSlot->save();
+                }
             }
-            }
-
         }
-    
-        if($request->saturday_start_time  != null && $request->saturday_end_time  != null  ){
-    
+
+        if ($request->saturday_start_time != null && $request->saturday_end_time != null) {
             $saturday_start_time = count($request['saturday_start_time']);
 
             foreach ($saturday as $date) {
-    
-            for ($i=0; $i<$saturday_start_time; $i++){
-                    $AdsTimeSlot = new AdsEvent;
-                    $AdsTimeSlot->start = $date->format('Y-m-d').' '. $request['saturday_start_time'][$i];
-                    $AdsTimeSlot->end = $date->format('Y-m-d').' '. $request['saturday_end_time'][$i];
+                for ($i = 0; $i < $saturday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['saturday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['saturday_end_time'][$i];
                     $AdsTimeSlot->ads_category_id = $request->ads_category;
                     $AdsTimeSlot->ads_id = $last_ads_id;
                     $AdsTimeSlot->title = $last_ads_name;
                     $AdsTimeSlot->status = '1';
-                    $AdsTimeSlot->day = "Saturday";
+                    $AdsTimeSlot->day = 'Saturday';
                     $AdsTimeSlot->advertiser_id = session('advertiser_id');
                     $AdsTimeSlot->save();
+                }
             }
-            }
-    
         }
-    
-        if($request->sunday_start_time  != null && $request->sunday_end_time != null ){
-    
+
+        if ($request->sunday_start_time != null && $request->sunday_end_time != null) {
             $sunday_start_time = count($request['sunday_start_time']);
 
             foreach ($sunday as $date) {
-    
-            for ($i=0; $i<$sunday_start_time; $i++){
-                    $AdsTimeSlot = new AdsEvent;
-                    $AdsTimeSlot->start = $date->format('Y-m-d').' '.$request['sunday_start_time'][$i];
-                    $AdsTimeSlot->end =    $date->format('Y-m-d').' '.$request['sunday_end_time'][$i];
+                for ($i = 0; $i < $sunday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['sunday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['sunday_end_time'][$i];
                     $AdsTimeSlot->ads_category_id = $request->ads_category;
                     $AdsTimeSlot->ads_id = $last_ads_id;
                     $AdsTimeSlot->title = $last_ads_name;
                     $AdsTimeSlot->status = '1';
-                    $AdsTimeSlot->day = "Sunday";
+                    $AdsTimeSlot->day = 'Sunday';
                     $AdsTimeSlot->advertiser_id = session('advertiser_id');
                     $AdsTimeSlot->save();
-            }
+                }
             }
         }
 
@@ -573,12 +568,13 @@ class AuthController extends Controller
         return Redirect::to('advertiser/ads-list');
     }
 
-    public function paymentgateway($plan_id){
+    public function paymentgateway($plan_id)
+    {
         $data['plan_id'] = $plan_id;
-        $data['plan_amount'] = (Adsplan::where('id',$plan_id)->first()->plan_amount)*100;
-        $data['plan_value'] = (Adsplan::where('id',$plan_id)->first()->plan_amount);
-        $data['plan_name'] = (Adsplan::where('id',$plan_id)->first()->plan_name);
-        $data['no_of_ads'] = (Adsplan::where('id',$plan_id)->first()->no_of_ads);
+        $data['plan_amount'] = Adsplan::where('id', $plan_id)->first()->plan_amount * 100;
+        $data['plan_value'] = Adsplan::where('id', $plan_id)->first()->plan_amount;
+        $data['plan_name'] = Adsplan::where('id', $plan_id)->first()->plan_name;
+        $data['no_of_ads'] = Adsplan::where('id', $plan_id)->first()->no_of_ads;
         $data['settings'] = Setting::first();
         $user_id = session('advertiser_id');
         $user = Advertiser::find($user_id);
@@ -587,23 +583,23 @@ class AuthController extends Controller
         $data['website_logo'] = Setting::pluck('logo')->first();
         $data['website_name'] = Setting::pluck('website_name')->first();
 
-        return view('avod::stripegateway',$data);
+        return view('avod::stripegateway', $data);
     }
 
-    public function buyplanrazorpay(Request $request) {
+    public function buyplanrazorpay(Request $request)
+    {
         $input = $request->all();
-  
-        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
-  
-        $payment = $api->payment->fetch($input['razorpay_payment_id']);
-  
-        if(count($input)  && !empty($input['razorpay_payment_id'])) {
-            try {
-                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount'=>$payment['amount'])); 
 
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+
+        $payment = $api->payment->fetch($input['razorpay_payment_id']);
+
+        if (count($input) && !empty($input['razorpay_payment_id'])) {
+            try {
+                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(['amount' => $payment['amount']]);
 
                 $plan_id = $input['plan_id'];
-                $ads_limit = Adsplan::where('id',$plan_id)->first()->no_of_ads;
+                $ads_limit = Adsplan::where('id', $plan_id)->first()->no_of_ads;
                 $planhistory = new Advertiserplanhistory();
                 $planhistory->plan_id = $plan_id;
                 $planhistory->advertiser_id = session('advertiser_id');
@@ -614,144 +610,157 @@ class AuthController extends Controller
                 $planhistory->transaction_id = $input['razorpay_payment_id'];
                 $planhistory->save();
 
-                $plan_name = Adsplan::where('id',$plan_id)->first()->plan_name;
-                $plan_amount = Adsplan::where('id',$plan_id)->first()->plan_amount;
+                $plan_name = Adsplan::where('id', $plan_id)->first()->plan_name;
+                $plan_amount = Adsplan::where('id', $plan_id)->first()->plan_amount;
                 $date = date('Y-m-d');
                 $customerName = Advertiser::find(session('advertiser_id'))->company_name;
-                $adminemail = User::where('role','=','admin')->first()->email;
+                $adminemail = User::where('role', '=', 'admin')->first()->email;
                 $advertiser_emailid = Advertiser::find(session('advertiser_id'))->email_id;
                 $details = [
-                    'title' => "Dear " .$customerName,
-                    'body' => "Welcome to Flicknexs.
+                    'title' => 'Dear ' . $customerName,
+                    'body' =>
+                        "Welcome to Flicknexs.
                     Thank you for purchasing to Ad plan. \n
-                    Your Plan Name :".$plan_name."\n
-                    Date of Purchase: ".$date."\n
-                    Plan Amount : ".$plan_amount."\n
+                    Your Plan Name :" .
+                        $plan_name .
+                        "\n
+                    Date of Purchase: " .
+                        $date .
+                        "\n
+                    Plan Amount : " .
+                        $plan_amount .
+                        "\n
                     Log in to the Ad panel to explore more!\n
-                    Please write to us at ".$adminemail." for queries and suggestions."
+                    Please write to us at " .
+                        $adminemail .
+                        ' for queries and suggestions.',
                 ];
 
                 try {
-
                     \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
-
                 } catch (\Throwable $th) {
                     //throw $th;
                 }
 
-
-                return Redirect::to("advertiser/")->withSuccess('success','Payment Successful');
-                
+                return Redirect::to('advertiser/')->withSuccess('success', 'Payment Successful');
             } catch (Exception $e) {
-                return  $e->getMessage();
-                return redirect()->back()->withError('error',$e->getMessage());
+                return $e->getMessage();
+                return redirect()
+                    ->back()
+                    ->withError('error', $e->getMessage());
             }
         }
-          
-        return Redirect::to("advertiser/billing_details")->withError('error','Please try again');
 
+        return Redirect::to('advertiser/billing_details')->withError('error', 'Please try again');
     }
 
+    public function billing_details()
+    {
+        $data['planhistory'] = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
+            ->where('status', 'active')
+            ->first();
 
-    
-    public function billing_details(){
-        $data['planhistory'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->first();
-        $data['plan'] = Adsplan::where('id',$data['planhistory']->plan_id)->first();
+        $data['plan'] = Adsplan::where('id', $data['planhistory']->plan_id)->first();
         $data['settings'] = Setting::first();
 
-        return view('avod::billing_details',$data);
-
+        return view('avod::billing_details', $data);
     }
 
     public function showForgetPasswordForm()
-      {
-         return view('avod::forgetPassword');
-      }
-  
-      /**
-       * Write code on Method
-       *
-       * @return response()
-       */
-      public function submitForgetPasswordForm(Request $request)
-      {
-          $request->validate([
-              'email_id' => 'required|email|exists:advertisers',
-          ]);
-  
-          $token = Str::random(64);
-          DB::table('advertiser_password_reset')->insert([
-              'email' => $request->email_id, 
-              'token' => $token, 
-              'created_at' => Carbon::now()
-            ]);
+    {
+        return view('avod::forgetPassword');
+    }
 
-            try {
-                
-                \Mail::send('avod::forgetPasswordemail', ['token' => $token], function($message) use($request){
-                    $message->to($request->email_id);
-                    $message->subject('Reset Password');
-                });
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function submitForgetPasswordForm(Request $request)
+    {
+        $request->validate([
+            'email_id' => 'required|email|exists:advertisers',
+        ]);
 
-            } catch (\Throwable $th) {
-                //throw $th;
-            }
-  
-  
-          return Redirect::to("advertiser/login")->withSuccess('We have e-mailed your password reset link!');
-      }
-      /**
-       * Write code on Method
-       *
-       * @return response()
-       */
-      public function showResetPasswordForm($token) { 
-         return view('avod::forgetPasswordLink', ['token' => $token]);
-      }
-  
-      /**
-       * Write code on Method
-       *
-       * @return response()
-       */
-      public function submitResetPasswordForm(Request $request)
-      {
-          $request->validate([
-              'email_id' => 'required|email|exists:advertisers',
-              'password' => 'required|string|min:6|confirmed',
-              'password_confirmation' => 'required'
-          ]);
-  
-          $updatePassword = DB::table('advertiser_password_reset')
-                              ->where([
-                                'email' => $request->email_id, 
-                                'token' => $request->token
-                              ])
-                              ->first();
-  
-          if(!$updatePassword){
-              return back()->withInput()->with('error', 'Invalid token!');
-          }
-  
-          $user = Advertiser::where('email_id', $request->email_id)
-                      ->update(['password' => Hash::make($request->password)]);
- 
-          DB::table('advertiser_password_reset')->where(['email'=> $request->email_id])->delete();
-  
-          return redirect('advertiser/login')->with('success', 'Your password has been changed!');
-      }
+        $token = Str::random(64);
+        DB::table('advertiser_password_reset')->insert([
+            'email' => $request->email_id,
+            'token' => $token,
+            'created_at' => Carbon::now(),
+        ]);
 
-      public function FeaturedAds()
-      {
+        try {
+            \Mail::send('avod::forgetPasswordemail', ['token' => $token], function ($message) use ($request) {
+                $message->to($request->email_id);
+                $message->subject('Reset Password');
+            });
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        return Redirect::to('advertiser/login')->withSuccess('We have e-mailed your password reset link!');
+    }
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function showResetPasswordForm($token)
+    {
+        return view('avod::forgetPasswordLink', ['token' => $token]);
+    }
+
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function submitResetPasswordForm(Request $request)
+    {
+        $request->validate([
+            'email_id' => 'required|email|exists:advertisers',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required',
+        ]);
+
+        $updatePassword = DB::table('advertiser_password_reset')
+            ->where([
+                'email' => $request->email_id,
+                'token' => $request->token,
+            ])
+            ->first();
+
+        if (!$updatePassword) {
+            return back()
+                ->withInput()
+                ->with('error', 'Invalid token!');
+        }
+
+        $user = Advertiser::where('email_id', $request->email_id)->update(['password' => Hash::make($request->password)]);
+
+        DB::table('advertiser_password_reset')
+            ->where(['email' => $request->email_id])
+            ->delete();
+
+        return redirect('advertiser/login')->with('success', 'Your password has been changed!');
+    }
+
+    public function FeaturedAds()
+    {
         $data = [];
         $data['settings'] = Setting::first();
-        $data['advertisements'] = Advertisement::where('advertiser_id',session('advertiser_id'))->where('featured',1)->get();
-        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+        $data['advertisements'] = Advertisement::where('advertiser_id', session('advertiser_id'))
+            ->where('featured', 1)
+            ->get();
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
+            ->where('status', 'active')
+            ->count();
 
-        return view('avod::featured_ads',$data);
-      }
+        return view('avod::featured_ads', $data);
+    }
 
-      public function UploadFeaturedAd() {
+    public function UploadFeaturedAd()
+    {
         $data = [];
         $data['settings'] = Setting::first();
         $data['ads_category'] = Adscategory::all();
@@ -762,117 +771,122 @@ class AuthController extends Controller
 
         // Ads scheduling
 
-            $now = Carbon::now();
+        $now = Carbon::now();
 
-            $data  ['Monday_time' ]  = AdsTimeSlot::where('day','Monday')->get();
-            $data  ['Tuesday_time'] =AdsTimeSlot::where('day','Tuesday')->get();
-            $data  ['Wednesday_time'] =AdsTimeSlot::where('day','Wednesday')->get();
-            $data  ['Thursday_time'] =AdsTimeSlot::where('day','Thrusday')->get();
-            $data  ['Friday_time']=AdsTimeSlot::where('day','Friday')->get();
-            $data  ['Saturday_time'] =AdsTimeSlot::where('day','Saturday')->get();
-            $data  ['Sunday_time'] =AdsTimeSlot::where('day','Sunday')->get();
-            $data  ['Monday']  =  $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
-            $data  ['Tuesday'] =  $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d');
-            $data  ['Wednesday'] =  $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d');
-            $data  ['Thrusday'] =  $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d');
-            $data  ['Friday']  = $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
-            $data  ['Saturday'] = $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
-            $data  ['Sunday']   = $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
-    
-        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-           
-        return view('avod::upload_featured_ad',$data);
+        $data['Monday_time'] = AdsTimeSlot::where('day', 'Monday')->get();
+        $data['Tuesday_time'] = AdsTimeSlot::where('day', 'Tuesday')->get();
+        $data['Wednesday_time'] = AdsTimeSlot::where('day', 'Wednesday')->get();
+        $data['Thursday_time'] = AdsTimeSlot::where('day', 'Thrusday')->get();
+        $data['Friday_time'] = AdsTimeSlot::where('day', 'Friday')->get();
+        $data['Saturday_time'] = AdsTimeSlot::where('day', 'Saturday')->get();
+        $data['Sunday_time'] = AdsTimeSlot::where('day', 'Sunday')->get();
+        $data['Monday'] = $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
+        $data['Tuesday'] = $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d');
+        $data['Wednesday'] = $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d');
+        $data['Thrusday'] = $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d');
+        $data['Friday'] = $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
+        $data['Saturday'] = $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
+        $data['Sunday'] = $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
+
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
+            ->where('status', 'active')
+            ->count();
+
+        return view('avod::upload_featured_ad', $data);
     }
 
-    public function buyfeaturedad_stripe(Request $request) {
+    public function buyfeaturedad_stripe(Request $request)
+    {
         $data = [];
         $data['settings'] = Setting::first();
-        if(!empty(session('advertiser_id'))){
-            
-                $user_id = session('advertiser_id');
-                $user = Advertiser::find($user_id);
-                $paymentMethod = $request->get('py_id');
-                $plan_amount = $request->get('price');
-                try {
+        if (!empty(session('advertiser_id'))) {
+            $user_id = session('advertiser_id');
+            $user = Advertiser::find($user_id);
+            $paymentMethod = $request->get('py_id');
+            $plan_amount = $request->get('price');
+            try {
+                $user->createOrGetStripeCustomer();
+                $user->updateDefaultPaymentMethod($paymentMethod);
+                $charge = $user->charge($plan_amount * 100, $paymentMethod);
 
-                    $user->createOrGetStripeCustomer();
-                    $user->updateDefaultPaymentMethod($paymentMethod);
-                    $charge = $user->charge($plan_amount * 100, $paymentMethod);  
-                    
-                    $planhistory = new FeaturedadHistory();
-                    $planhistory->advertiser_id = session('advertiser_id');
-                    $planhistory->payment_mode = 'stripe';
-                    $planhistory->transaction_id = $charge->id;
-                    $planhistory->cost = $plan_amount;
-                    $planhistory->save();
+                $planhistory = new FeaturedadHistory();
+                $planhistory->advertiser_id = session('advertiser_id');
+                $planhistory->payment_mode = 'stripe';
+                $planhistory->transaction_id = $charge->id;
+                $planhistory->cost = $plan_amount;
+                $planhistory->save();
 
-                    $Ads = new Advertisement;
-                    $Ads->advertiser_id = session('advertiser_id');
-                    $Ads->ads_name = $request->ads_name;
-                    $Ads->ads_category = $request->ads_category;
-                    $Ads->featured = 1;
-                    $Ads->ads_position = $request->ads_position;
-                    $Ads->ads_path = $request->ads_path;
-                    $Ads->ads_upload_type = $request->ads_upload_type;
-                    $Ads->age = json_encode($request->age);
-                    $Ads->gender = json_encode($request->gender);
-                    $Ads->household_income = $request->household_income;
-                    $Ads->location = $request->location;
-                    $Ads->save();
+                $Ads = new Advertisement();
+                $Ads->advertiser_id = session('advertiser_id');
+                $Ads->ads_name = $request->ads_name;
+                $Ads->ads_category = $request->ads_category;
+                $Ads->featured = 1;
+                $Ads->ads_position = $request->ads_position;
+                $Ads->ads_path = $request->ads_path;
+                $Ads->ads_upload_type = $request->ads_upload_type;
+                $Ads->age = json_encode($request->age);
+                $Ads->gender = json_encode($request->gender);
+                $Ads->household_income = $request->household_income;
+                $Ads->location = $request->location;
+                $Ads->save();
 
-                    echo "success";  exit;    
-                } catch (IncompletePayment $exception) {
-                    return redirect()->route(
-                        'cashier.payment',
-                        [$exception->payment->id, 'redirect' => route('advertiser')]
-                    );
-                }
-            
+                echo 'success';
+                exit();
+            } catch (IncompletePayment $exception) {
+                return redirect()->route('cashier.payment', [$exception->payment->id, 'redirect' => route('advertiser')]);
+            }
         }
-        echo "error";exit; 
+        echo 'error';
+        exit();
     }
 
-
-    public function featured_ad_history() {
+    public function featured_ad_history()
+    {
         $data = [];
         $data['settings'] = Setting::first();
-        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-        $data['list'] = FeaturedadHistory::where('advertiser_id',session('advertiser_id'))->get();
-        return view('avod::featured_ad_history',$data);
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
+            ->where('status', 'active')
+            ->count();
+        $data['list'] = FeaturedadHistory::where('advertiser_id', session('advertiser_id'))->get();
+        return view('avod::featured_ad_history', $data);
     }
 
-
-    public function list_total_cpc() {
+    public function list_total_cpc()
+    {
         $data = [];
         $data['settings'] = Setting::first();
-        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-        if(!empty(session('advertiser_id')) ){
-            $data['cpc_lists'] = Adrevenue::where('advertiser_id',session('advertiser_id'))->get();
-            return view('avod::total_cpc',$data);
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
+            ->where('status', 'active')
+            ->count();
+        if (!empty(session('advertiser_id'))) {
+            $data['cpc_lists'] = Adrevenue::where('advertiser_id', session('advertiser_id'))->get();
+            return view('avod::total_cpc', $data);
         }
-        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+        return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
     }
 
-    public function list_total_cpv() {
-
+    public function list_total_cpv()
+    {
         try {
             $data = [];
             $data['settings'] = Setting::first();
-            $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-    
-            if(!empty(session('advertiser_id')) ){
-                $data['cpv_lists'] = Adviews::where('advertiser_id',session('advertiser_id'))->get();
-                return view('avod::total_cpv',$data);
-            }
-            
-            return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+            $data['activeplan'] = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
+                ->where('status', 'active')
+                ->count();
 
+            if (!empty(session('advertiser_id'))) {
+                $data['cpv_lists'] = Adviews::where('advertiser_id', session('advertiser_id'))->get();
+                return view('avod::total_cpv', $data);
+            }
+
+            return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
         } catch (\Throwable $th) {
             return abort(404);
         }
     }
 
-    public function ads_campaign() {
+    public function ads_campaign()
+    {
         $data = [];
         $data['settings'] = Setting::first();
         $data['campaigns'] = Adcampaign::all();
@@ -880,57 +894,56 @@ class AuthController extends Controller
         $user = Advertiser::find($user_id);
         $data['intent'] = $user->createSetupIntent();
         $data['user'] = $user;
-        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
+            ->where('status', 'active')
+            ->count();
 
-        return view('avod::advertiser_wallet',$data);
+        return view('avod::advertiser_wallet', $data);
     }
 
-    public function buycampaign_stripe(Request $request) {
+    public function buycampaign_stripe(Request $request)
+    {
         $data = [];
         $data['settings'] = Setting::first();
-        if(!empty(session('advertiser_id'))){
-            
-                $user_id = session('advertiser_id');
-                $user = Advertiser::find($user_id);
-                $paymentMethod = $request->get('py_id');
-                $amount = $request->get('amount');
-                $campaign_id = $request->get('campaign_id');
-                try {
+        if (!empty(session('advertiser_id'))) {
+            $user_id = session('advertiser_id');
+            $user = Advertiser::find($user_id);
+            $paymentMethod = $request->get('py_id');
+            $amount = $request->get('amount');
+            $campaign_id = $request->get('campaign_id');
+            try {
+                $user->createOrGetStripeCustomer();
+                $user->updateDefaultPaymentMethod($paymentMethod);
+                $charge = $user->charge($amount * 100, $paymentMethod);
 
-                    $user->createOrGetStripeCustomer();
-                    $user->updateDefaultPaymentMethod($paymentMethod);
-                    $charge = $user->charge($amount * 100, $paymentMethod);  
-                    
-                    $walletdata = new Advertiserwallet();
-                    $walletdata->advertiser_id = session('advertiser_id');
-                    $walletdata->payment_mode = 'stripe';
-                    $walletdata->status = 1;
-                    $walletdata->transaction_id = $charge->id;
-                    $walletdata->amount = $amount;
-                    $walletdata->campaign_id = $campaign_id;
-                    $walletdata->save();
+                $walletdata = new Advertiserwallet();
+                $walletdata->advertiser_id = session('advertiser_id');
+                $walletdata->payment_mode = 'stripe';
+                $walletdata->status = 1;
+                $walletdata->transaction_id = $charge->id;
+                $walletdata->amount = $amount;
+                $walletdata->campaign_id = $campaign_id;
+                $walletdata->save();
 
-                    echo "success";  exit;    
-                } catch (IncompletePayment $exception) {
-                    return redirect()->route(
-                        'cashier.payment',
-                        [$exception->payment->id, 'redirect' => route('ads_campaign')]
-                    );
-                }
-            
+                echo 'success';
+                exit();
+            } catch (IncompletePayment $exception) {
+                return redirect()->route('cashier.payment', [$exception->payment->id, 'redirect' => route('ads_campaign')]);
+            }
         }
-        echo "error";exit; 
+        echo 'error';
+        exit();
     }
 
-
-    public function buyrz_adcampaign(Request $request) {
+    public function buyrz_adcampaign(Request $request)
+    {
         $input = $request->all();
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
-  
-        if(count($input)  && !empty($input['razorpay_payment_id'])) {
+
+        if (count($input) && !empty($input['razorpay_payment_id'])) {
             try {
-                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount'=>$payment['amount'])); 
+                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(['amount' => $payment['amount']]);
                 $walletdata = new Advertiserwallet();
                 $walletdata->advertiser_id = session('advertiser_id');
                 $walletdata->payment_mode = 'razorpay';
@@ -940,35 +953,36 @@ class AuthController extends Controller
                 $walletdata->campaign_id = $campaign_id;
                 $walletdata->save();
 
-                return Redirect::to("advertiser/ads_campaign/")->withSuccess('success','Payment Successful');
-                
+                return Redirect::to('advertiser/ads_campaign/')->withSuccess('success', 'Payment Successful');
             } catch (Exception $e) {
-                return  $e->getMessage();
-                return redirect()->back()->withError('error',$e->getMessage());
+                return $e->getMessage();
+                return redirect()
+                    ->back()
+                    ->withError('error', $e->getMessage());
             }
         }
-          
-        return Redirect::to("advertiser/ads_campaign/")->withError('error','Please try again');
 
+        return Redirect::to('advertiser/ads_campaign/')->withError('error', 'Please try again');
     }
 
-    public function buyrz_ad(Request $request) {
+    public function buyrz_ad(Request $request)
+    {
         $input = $request->all();
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
 
-        if(count($input)  && !empty($input['razorpay_payment_id'])) {
+        if (count($input) && !empty($input['razorpay_payment_id'])) {
             try {
-                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount'=>$payment['amount'])); 
-                
+                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(['amount' => $payment['amount']]);
+
                 $planhistory = new FeaturedadHistory();
                 $planhistory->advertiser_id = session('advertiser_id');
                 $planhistory->payment_mode = 'razorpay';
                 $planhistory->transaction_id = $input['razorpay_payment_id'];
-                $planhistory->cost = $payment['amount']/100;
+                $planhistory->cost = $payment['amount'] / 100;
                 $planhistory->save();
 
-                $Ads = new Advertisement;
+                $Ads = new Advertisement();
                 $Ads->advertiser_id = session('advertiser_id');
                 $Ads->ads_name = $request->ads_name;
                 $Ads->ads_category = $request->ads_category;
@@ -983,144 +997,133 @@ class AuthController extends Controller
                 $Ads->gender = json_encode($input['gender']);
                 $Ads->location = $request->location;
                 $Ads->save();
-                return Redirect::to("advertiser/featured_ads/")->withSuccess('success','Payment Successful'); 
-                
+                return Redirect::to('advertiser/featured_ads/')->withSuccess('success', 'Payment Successful');
             } catch (Exception $e) {
-               return redirect()->route(
-                'cashier.payment',
-                [$e->payment->id, 'redirect' => route('advertiser')]
-            );
-           }
-       }
+                return redirect()->route('cashier.payment', [$e->payment->id, 'redirect' => route('advertiser')]);
+            }
+        }
 
-       echo "error";exit; 
-   }
+        echo 'error';
+        exit();
+    }
 
-   public function Ads_Scheduled(Request $request)
-   {
-    
-    if($request->ajax()) {
-       
-        $data = AdsEvent::where('advertiser_id',session('advertiser_id'))
-                  ->whereDate('start', '>=', $request->start)
-                  ->whereDate('end',   '<=', $request->end)
-                  ->get(['id', 'title', 'start', 'end','ads_category_id','color']);
+    public function Ads_Scheduled(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = AdsEvent::where('advertiser_id', session('advertiser_id'))
+                ->whereDate('start', '>=', $request->start)
+                ->whereDate('end', '<=', $request->end)
+                ->get(['id', 'title', 'start', 'end', 'ads_category_id', 'color']);
 
-        return response()->json($data);
-   }
+            return response()->json($data);
+        }
 
-       return view('avod::Ads_Scheduled');
-   }
+        return view('avod::Ads_Scheduled');
+    }
 
-   public function AdsScheduleStore(Request $request)
-   {
-
+    public function AdsScheduleStore(Request $request)
+    {
         switch ($request->type) {
             case 'add':
-            $event = AdsEvent::create([
-                'title' => $request->title,
-                'start' => $request->start,
-                'end' => $request->end,
-                'ads_category_id' => $request->ads_category,
-                'color' => $request->color ? $request->color : null,
+                $event = AdsEvent::create([
+                    'title' => $request->title,
+                    'start' => $request->start,
+                    'end' => $request->end,
+                    'ads_category_id' => $request->ads_category,
+                    'color' => $request->color ? $request->color : null,
+                ]);
 
-            ]);
-
-            return redirect('advertiser/Ads_Scheduled');
-            break;
+                return redirect('advertiser/Ads_Scheduled');
+                break;
 
             case 'update':
-            $event = AdsEvent::find($request->id)->update([
-                'title' => $request->title,
-                'start' => $request->start,
-                'end' => $request->end,
-            ]);
+                $event = AdsEvent::find($request->id)->update([
+                    'title' => $request->title,
+                    'start' => $request->start,
+                    'end' => $request->end,
+                ]);
 
-            return response()->json($event);
-            break;
+                return response()->json($event);
+                break;
 
             case 'delete':
-            $event = AdsEvent::find($request->id)->delete();
+                $event = AdsEvent::find($request->id)->delete();
 
-            return response()->json($event);
-            break;
-            
+                return response()->json($event);
+                break;
+
             default:
-            # code...
-            break;
+                # code...
+                break;
         }
     }
 
     public function AdsEvents(Request $request)
     {
-         $data=[
-             'ads_category'   => Adscategory::all(),
+        $data = [
+            'ads_category' => Adscategory::all(),
         ];
 
-        return view('avod::Ads_events',$data);
+        return view('avod::Ads_events', $data);
     }
-    
+
     public function Ads_edit(Request $request, $Ads_id)
     {
         try {
-            $Advertisement = Advertisement::where('id',$Ads_id)->first();
+
+            $Advertisement = Advertisement::where('id', $Ads_id)->first();
 
             $data = [
                 'Advertisement' => $Advertisement,
-                'post_route'   => route('Ads_update',[$Ads_id]),
+                'post_route' => route('Ads_update', [$Ads_id]),
                 'ads_category' => Adscategory::all(),
-                'button_text' => "update",
+                'button_text'  => 'update',
+                'AdsEvent'     => AdsEvent::where('ads_id',$Ads_id)->get(['start', 'end', 'day']),
             ];
 
             return view('avod::ads_edit', $data);
 
         } catch (\Throwable $th) {
+
             return abort(404);
+
         }
-        
     }
 
     public function Ads_update(Request $request, $advertisement_id)
     {
+        $inputs = [
+            'advertiser_id' => $advertisement_id,
+            'ads_name' => $request->ads_name,
+            'ads_category' => $request->ads_category,
+            'ads_position' => $request->ads_position,
+            'ads_path' => $request->ads_path,
+            'ads_upload_type' => $request->ads_upload_type,
+            'age' => !empty($request->age) ? json_encode($request['age']) : ' ',
+            'gender' => !empty($request['gender']) ? json_encode($request['gender']) : ' ',
+            'status' => 0,
+        ];
 
-        $inputs = array(
-            'advertiser_id' => $advertisement_id ,
-            'ads_name'      => $request->ads_name ,
-            'ads_category'  => $request->ads_category ,
-            'ads_position'  => $request->ads_position ,
-            'ads_path'      => $request->ads_path ,
-            'ads_upload_type' => $request->ads_upload_type ,
-            'age'             => !empty($request->age) ? json_encode($request['age']) : " " ,
-            'gender'          => !empty($request['gender']) ? json_encode($request['gender']) : " " ,
-            'status'          => 0,
-        );
-
-        if($request->location == "all_countries" || $request->location == "India" ){
-            $inputs += ["location" => $request->location ];
-        }
-        else{
-            $inputs += ["location" => $request->locations ];
+        if ($request->location == 'all_countries' || $request->location == 'India') {
+            $inputs += ['location' => $request->location];
+        } else {
+            $inputs += ['location' => $request->locations];
         }
 
-        // dd( $inputs );
+        $Advertisement = Advertisement::find($advertisement_id)->update($inputs);
 
-        $Advertisement = Advertisement::find($advertisement_id)->update( $inputs );
-
-         return redirect()->back();
-        
+        return redirect()->back();
     }
 
     public function Ads_delete($Ads_id)
     {
         try {
+            Advertisement::where('id', $Ads_id)->delete();
+            AdsEvent::where('id', $Ads_id)->delete();
 
-            Advertisement::where('id',$Ads_id)->delete();
-            AdsEvent::where('id',$Ads_id)->delete();
-            
         } catch (\Throwable $th) {
-            //throw $th;
+            return abort(404);
         }
-        
     }
 }
 ?>
