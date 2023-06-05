@@ -66,6 +66,9 @@ $user = App\User::where('id',$id)->first();
     color: var(--iq-secondary);
     border-radius: 4px;
 }
+#navbarSupportedContent{
+   display:none;
+}
    .sign-user_card input{
       background-color: rgb(255 255 255) !important;
    }
@@ -2045,3 +2048,8 @@ jQuery(document).ready(function($){
     })
       
 </script>
+<script>
+   $('.navbar-toggle a').on('click',function() {
+    $('.main-nav').removeClass('open');
+});
+   </script>

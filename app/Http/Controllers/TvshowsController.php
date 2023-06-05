@@ -120,7 +120,7 @@ class TvshowsController extends Controller
             ->count();
         if ($latest_series_count > 0) {
             $latest_series = Series::where('active', '=', '1')
-                ->take(10)
+                ->take(30)
                 ->orderBy('created_at', 'DESC')
                 ->get();
         } else {
@@ -133,7 +133,7 @@ class TvshowsController extends Controller
         if ($latest_episodes_count > 0) {
             $latest_episodes = Episode::where('active', '=', '1')
                 ->where('status', '=', '1')
-                ->take(10)
+                ->take(30)
                 ->orderBy('id', 'DESC')
                 ->get();
         } else {
@@ -220,8 +220,9 @@ class TvshowsController extends Controller
 
     public function play_episode($series_name, $episode_name)
     {
-        
-        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        try {
+           
+            $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         $settings = Setting::first();
 
@@ -589,6 +590,10 @@ class TvshowsController extends Controller
             }
         } else {
             return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
+        }
+
+        } catch (\Throwable $th) {
+            return abort(404);
         }
     }
 
