@@ -69,7 +69,7 @@ $settings = App\Setting::first();
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank" class="ml-1">
-                          <img class="w-100" src="<?php echo  URL::to('/assets/img/link.png')?>" style="" />
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/link.png')?>" style="" />
                       </a>
                       <?php } ?>
 
