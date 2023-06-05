@@ -479,7 +479,7 @@ Your browser does not support the audio element.
           <div class=" container-fluid video-list you-may-like overflow-hidden">
             <div class="bc-icons-2">
                       <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords('Audios') ?></a>
+                        <li class="breadcrumb-item"><a class="black-text" href="<?= route('Audios_list') ?>"><?= ucwords('Audios') ?></a>
                           <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                         </li>
 
