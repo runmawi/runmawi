@@ -1274,7 +1274,7 @@
                         <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
 
                             @foreach ($SeriesGenre as $key => $category)
-                                @if ($key < 8)
+                                @if ($key <= 8)
                                     <li class="nav-item">
                                         <a class="{{"nav-link"." "."series-category-key-id-".($key+1) }}" id="pills-profile-tab" data-toggle="pill"
                                             data-category-id={{ $category->id }} onclick="Series_Category(this)" role="tab" aria-controls="pills-profile" aria-selected="false">
