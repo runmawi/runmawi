@@ -49,8 +49,8 @@
  // Send seekedTime to Laravel backend
 
                 var videotype = $('#video_type').val();
-                var video_title = '<?= @$video->title ?>';
-                var video_slug = '<?= @$video->slug ?>';
+                var video_title = $('#video_title').val();
+                var video_slug = $('#videoslug').val();
                 var videoid = $('#video_id').val();
                 var url = '<?= URL::to('player_seektime_store') ?>';
             // alert(seekedTime);
@@ -118,8 +118,8 @@
  // Send seekedTime to Laravel backend
 
                 var videotype = $('#video_type').val();
-                var video_title = '<?= @$video->title ?>';
-                var video_slug = '<?= @$video->slug ?>';
+                var video_title = $('#video_title').val();
+                var video_slug = $('#videoslug').val();
                 var videoid = $('#video_id').val();
                 var url = '<?= URL::to('player_seektime_store') ?>';
             // alert(seekedTime);
@@ -188,8 +188,8 @@
  // Send seekedTime to Laravel backend
 
                 var videotype = $('#video_type').val();
-                var video_title = '<?= @$video->title ?>';
-                var video_slug = '<?= @$video->slug ?>';
+                var video_title = $('#video_title').val();
+                var video_slug = $('#videoslug').val();
                 var videoid = $('#video_id').val();
                 var url = '<?= URL::to('player_seektime_store') ?>';
             // alert(seekedTime);
@@ -285,8 +285,8 @@
                         // Send seekedTime to Laravel backend
 
                         var videotype = $('#video_type').val();
-                        var video_title = '<?= @$video->title ?>';
-                        var video_slug = '<?= @$video->slug ?>';
+                        var video_title = $('#video_title').val();
+                        var video_slug = $('#videoslug').val();
                         var url = '<?= URL::to('player_seektime_store') ?>';
                         var videoid = $('#video_id').val();
                     // alert(seekedTime);
@@ -388,8 +388,8 @@
  // Send seekedTime to Laravel backend
 
                 var videotype = $('#video_type').val();
-                var video_title = '<?= @$video->title ?>';
-                var video_slug = '<?= @$video->slug ?>';
+                var video_title = $('#video_title').val();
+                var video_slug = $('#videoslug').val();
                 var videoid = $('#video_id').val();
                 var url = '<?= URL::to('player_seektime_store') ?>';
             // alert(seekedTime);
@@ -483,8 +483,8 @@
                         // Send seekedTime to Laravel backend
 
                         var videotype = $('#video_type').val();
-                        var video_title = '<?= @$video->title ?>';
-                        var video_slug = '<?= @$video->slug ?>';
+                        var video_title = $('#video_title').val();
+                        var video_slug = $('#videoslug').val();
                         var url = '<?= URL::to('player_seektime_store') ?>';
                         var videoid = $('#video_id').val();
                     // alert(seekedTime);
@@ -592,8 +592,8 @@
                         // Send seekedTime to Laravel backend
 
                         var videotype = $('#video_type').val();
-                        var video_title = '<?= @$video->title ?>';
-                        var video_slug = '<?= @$video->slug ?>';
+                        var video_title = $('#video_title').val();
+                        var video_slug = $('#videoslug').val(); 
                         var url = '<?= URL::to('player_seektime_store') ?>';
                         var videoid = $('#video_id').val();
                     // alert(seekedTime);
@@ -718,8 +718,8 @@
  // Send seekedTime to Laravel backend
 
                 var videotype = $('#video_type').val();
-                var video_title = '<?= @$video->title ?>';
-                var video_slug = '<?= @$video->slug ?>';
+                var video_title = $('#video_title').val();
+                var video_slug = $('#videoslug').val();
                 var videoid = $('#video_id').val();
                 var url = '<?= URL::to('player_seektime_store') ?>';
             // alert(seekedTime);

@@ -1,6 +1,6 @@
 <?php if(count($free_Contents) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title">Free Content Videos</h4>                      
+  <h4 class="main-title">Free Episodes</h4>                      
 </div>
 <?php
 endif;
@@ -16,7 +16,7 @@ endif;
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->image;  ?>" class="img-fluid w-100" alt="">
+                <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->image;  ?>" class="img-fluid lazyload w-100" alt="">
                
                     <?php  if(!empty($free_Content->ppv_price == 1)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$free_Content->ppv_price; ?></p>

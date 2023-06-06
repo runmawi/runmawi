@@ -1273,12 +1273,12 @@
                     <div class="mt-3 ">
                         <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
 
-                            @foreach ($videos_categories as $key => $videos_category)
-                                @if ($key < 8)
+                            @foreach ($SeriesGenre as $key => $category)
+                                @if ($key <= 8)
                                     <li class="nav-item">
                                         <a class="{{"nav-link"." "."series-category-key-id-".($key+1) }}" id="pills-profile-tab" data-toggle="pill"
-                                            data-category-id={{ $videos_category->id }} onclick="Series_Category(this)" role="tab" aria-controls="pills-profile" aria-selected="false">
-                                            {{ $videos_category->name }}
+                                            data-category-id={{ $category->id }} onclick="Series_Category(this)" role="tab" aria-controls="pills-profile" aria-selected="false">
+                                            {{ $category->name }}
                                         </a>
                                     </li>
                                 @endif
@@ -1294,14 +1294,14 @@
                                 <div class="dropdown-menu">
                                     <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist"
                                         style="display: flex; justify-content: start; flex-direction: column;">
-                                        @foreach ($videos_categories as $key => $videos_category)
+                                        @foreach ($SeriesGenre as $key => $category)
                                             @if ($key > 8)
                                                 <li class="nav-item">
                                                     <a class="nav-link " id="pills-kids-tab" data-toggle="pill"
-                                                        data-category-id={{ $videos_category->id }}
+                                                        data-category-id={{ $category->id }}
                                                         onclick="Series_Category(this)" href="#pills-kids"
                                                         role="tab" aria-controls="pills-kids"
-                                                        aria-selected="false">{{ $videos_category->name }}</a>
+                                                        aria-selected="false">{{ $category->name }}</a>
                                             @endif
                                         @endforeach
                                                 </li>
@@ -1327,12 +1327,12 @@
                         <div class="row mt-2"></div>
                     </div>
 
-                    <div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
+                    <!--<div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
                         <a class="btn btn-success my-2 my-sm-0 w-100" style="font-weight:600;font-size: 20px;"
                             href="https://dev.nemisatv.co.za/tv-shows"><span>All Videos <i class="fa fa-angle-right"
                                     aria-hidden="true"></i></span>
                         </a>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </section>

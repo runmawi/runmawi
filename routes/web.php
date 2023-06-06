@@ -22,6 +22,7 @@ Route::get('/admin/mergeMp4Files', 'TranscodeController@mergeMp4Files');
 Route::get('/merge-m3u8-files', 'TranscodeController@mergeM3u8Files');
 Route::get('/storagelimitone', 'AdminDashboardController@storagelimitone'); 
 Route::get('/storagelimit', 'AdminDashboardController@storagelimit'); 
+Route::get('/country_route_check', 'AdminDashboardController@testuserroute'); 
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
@@ -133,7 +134,7 @@ Route::post('/admin/cpp_analytics_barchart', 'ModeratorsUserController@CPPAnalyt
 
 
 Route::post('/schedule/videos', 'ChannelController@ScheduledVideos');
-Route::get('/schedule/videos/embed/{name}','ChannelController@EmbedScheduledVideos');
+Route::get('/schedule/videos/embed/{slug}','ChannelController@EmbedScheduledVideos');
 Route::get('/videos/category/{cid}', 'ChannelController@channelVideos');
 Route::get('/movies/category/{cid}', 'ChannelController@channelVideos');
 
@@ -141,7 +142,7 @@ Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
 Route::get('/verify-request-sent', 'HomeController@VerifyRequestNotsent');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
-Route::get('/category/{cid}', 'ChannelController@channelVideos');
+Route::get('/category/{cid}', 'ChannelController@channelVideos')->name('video_categories');
 Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
 Route::get('datafree/category/videos/{vid}','ChannelController@play_videos');
 Route::get('/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
@@ -197,14 +198,14 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('/home', 'HomeController@index')->name('home');
 
     /*TV-shows */ 
-    Route::get('tv-shows', 'TvshowsController@index');
+    Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
     Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
     // Route::get('episode/{series_name}/{episode_name}/{id}', 'TvshowsController@play_episode');
 
-    Route::get('play_series/{name}/', 'TvshowsController@play_series');
+    Route::get('play_series/{name}/', 'TvshowsController@play_series')->name('play_series');
     Route::get('datafree/play_series/{name}/', 'TvshowsController@play_series');
 
     // Route::get('play_series/{name}/{id}', 'TvshowsController@play_series');
@@ -223,6 +224,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     //Route::get('audios_category/{audio_id}', 'ThemeAudioController@categoryaudios');
     Route::get('album/{album_slug}', 'ThemeAudioController@album');
     Route::get('/albums-list', 'ThemeAudioController@albums_list')->name('albums_list');
+    Route::get('/Audios-list', 'ThemeAudioController@Audios_list')->name('Audios_list');
 
         
     Route::post('/sendOtp', 'HomeController@SendOTP');
@@ -308,7 +310,7 @@ Route::get('watchlater', 'WatchLaterController@show_watchlaters');
 Route::get('myprofile', 'AdminUsersController@myprofile')->name('myprofile');
 Route::get('refferal', 'AdminUsersController@refferal');
 Route::post('/profile/update', 'AdminUsersController@profileUpdate');   
-Route::get('/latest-videos', 'HomeController@LatestVideos');
+Route::get('/latest-videos', 'HomeController@LatestVideos')->name('latest-videos');
 Route::get('/language/{lanid}/{language}', 'HomeController@LanguageVideo');
 Route::get('/language/{slug}', 'HomeController@Language_Video');
 Route::get('/language-list', 'HomeController@Language_List');
@@ -768,7 +770,19 @@ Route::get('/Testwatermark', 'Testwatermark@index');
         dd(__('website'));
     });
 
+    // Site Meta Settings
+    Route::get('/site-meta-setting', 'AdminSiteMetaController@meta_setting')->name('meta_setting');
+    Route::get('/site-meta-edit/{id}', 'AdminSiteMetaController@meta_setting_edit')->name('meta_setting_edit');
+    Route::post('/site-meta-update', 'AdminSiteMetaController@meta_setting_update')->name('meta_setting_update');
 
+    // Site Meta Settings
+        Route::get('/user-logged-device', 'AdminAppSettings@LoggedUserDevices')->name('LoggedUserDevices');
+        Route::get('/user-logged-device/delete/{id}', 'AdminAppSettings@LoggedUserDeviceDelete')->name('LoggedUserDeviceDelete');
+        Route::get('/user-logged-device/delete/{id}', 'AdminAppSettings@LoggedUserDeviceDelete')->name('LoggedUserDeviceDelete');
+        Route::get('/logged_device_Bulk_delete', 'AdminAppSettings@logged_device_Bulk_delete')->name('logged_device_Bulk_delete'); 
+
+
+        
     /* User Roles */
     Route::get('/permissions', 'AdminRolePermissionController@index');
     Route::get('/permissions/edit/{id}', 'AdminRolePermissionController@edit');
@@ -1127,6 +1141,11 @@ Route::post('/VideoByRegionCSV', 'AdminUsersController@VideoByRegionCSV');
 Route::get('/Geofencing', 'GeofencingController@index');
 Route::get('/Geofencing/create', 'GeofencingController@create');
 Route::post('/Geofencing/store', 'GeofencingController@store');
+
+// Seeding
+Route::get('/Seeding', 'AdminSeederController@index')->name('seeding-index');
+Route::post('/Seeding/run', 'AdminSeederController@unique_seeding')->name('seeding-run');
+Route::get('/Seeding/refresh', 'AdminSeederController@refresh_seeding')->name('seeding-refresh');
        
 Route::get('/Planstate', 'AdminUsersController@PlanState');
 Route::get('/Plancity', 'AdminUsersController@PlanCity');

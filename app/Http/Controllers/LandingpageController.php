@@ -36,7 +36,7 @@ class LandingpageController extends Controller
             'script_content'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('script_content')->first(),
             'footer'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('footer')->first(),
             'header'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('header')->first(),
-            'videos_categories' => SeriesGenre::orderBy('order')->get(),
+            'SeriesGenre' => SeriesGenre::orderBy('order')->get(),
             'SeriesCategory'    => SeriesGenre::find($first_videos_categories_id) != null ? SeriesGenre::find($first_videos_categories_id)->specific_category_series : array(),
         ];
 

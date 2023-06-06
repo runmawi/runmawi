@@ -859,9 +859,9 @@ function check_storage_exist(){
             $response =   1 ;
 
         } else {
-            $space_usage =  $storage->result->account_info->space_usage;
-            $space_disk = $storage->result->account_info->space_disk  ;
-            if($space_usage > $space_disk || $space_usage == $space_disk ){
+            $space_usage =  @$storage->result->account_info->space_usage;
+            $space_disk = @$storage->result->account_info->space_disk  ;
+            if(@$space_usage > @$space_disk || @$space_usage == @$space_disk ){
                 $response =   0 ;
                 
             }else{

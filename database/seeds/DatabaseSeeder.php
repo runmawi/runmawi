@@ -53,7 +53,6 @@ class DatabaseSeeder extends Seeder
             FeaturedAddHistorySeeder::class,
             RTMLSeeder::class,
             OrderHomeSettingSeeder::class,
-            // OrderHomeSettingSeederPhase2::class,
             MobileHomePageTableSeeder::class,
             FooterMenuSeeder::class,
             CompressImageSeeder::class,
@@ -64,6 +63,7 @@ class DatabaseSeeder extends Seeder
             LifeTimeSubscriptionSeeder::class,
             AdminAdsTimeSlotSeeding::class,
             DeviceSeeder::class,
+            SiteMetaSeeder::class,
         ]);
     
     }

@@ -78,7 +78,7 @@
                 <div class="row">
                     <div class="col-md-6">
                     <a href="{{ URL::to('admin/analytics/PlayerSeekUserTimeAnalytics/')  }}">
-                            <button class="tablinks btn btn-primary" id="openPayPerView" >Player Seeked Time</button>
+                            <button class="tablinks btn btn-primary" id="openPayPerView" >Player Seeked Time</button></a>
                     </div>
                  </div>
                  <br>

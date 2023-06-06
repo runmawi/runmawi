@@ -292,8 +292,8 @@ class HomeSettingsController extends Controller
 
     public function mobilesave_settings(Request $request){
         
-        // dd($request['series']);
         $settings = MobileHomeSetting::first();
+
         if(!empty($request['featured_videos'])){
             $settings->featured_videos = 1;
         } 
@@ -336,8 +336,8 @@ class HomeSettingsController extends Controller
             $settings->series = 0;
         }else{
             $settings->series = 1;
-
         } 
+
         if($request->Recommendation !=null){
             $settings->Recommendation = 1;
         }else{
@@ -369,6 +369,10 @@ class HomeSettingsController extends Controller
         $settings->AudioGenre = !empty($request->AudioGenre) ?  "1" : "0" ;
         $settings->AudioGenre_audios = !empty($request->AudioGenre_audios) ?  "1" : "0" ;
         $settings->AudioAlbums = !empty($request->AudioAlbums) ?  "1" : "0" ;
+        $settings->Recommended_videos_site = !empty($request->Recommended_videos_site) ?  "1" : "0" ;
+        $settings->Recommended_videos_users = !empty($request->Recommended_videos_users) ?  "1" : "0" ;
+        $settings->Recommended_videos_Country = !empty($request->Recommended_videos_Country) ?  "1" : "0" ;
+        $settings->continue_watching = !empty($request->continue_watching) ?  "1" : "0" ;
         $settings->save();
 
         return redirect::to('/admin/home-settings');

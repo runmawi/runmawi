@@ -54,6 +54,7 @@ if(!empty($request_url)){
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
 <!-- <input type="hidden" name="logo_path" id='logo_path' value="{{ URL::to('/') . '/public/uploads/settings/' . $playerui_settings->watermark }}"> -->
 <input type="hidden" name="logo_path" id='logo_path' value="<?php echo $playerui_settings->watermark_logo; ?>">
+<input type="hidden" name="video_title" id="video_title" value="<?php echo $video->title; ?>">
 
 <input type="hidden" name="current_time" id="current_time" value="<?php if (isset($watched_time)) {
     echo $watched_time;
@@ -374,6 +375,19 @@ hr {
     .swal2-html-container {
         color: #fff !important;
     }
+
+       /* <!-- BREADCRUMBS  */
+
+    .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
+      content: none; 
+    } 
+
+    ol.breadcrumb {
+        color: white;
+        background-color: transparent !important  ;
+        font-size: revert;
+    }
+
 </style>
 <?php
 
@@ -1114,6 +1128,35 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                                 data-videocategoryid="<?= $video->video_category_id ?>"
                                 value="<?= $video->video_category_id ?>">
                             <div class="container-fluid video-details">
+
+                                                      <!-- BREADCRUMBS -->
+                                <div class="col-sm-12 col-md-12 col-xs-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="bc-icons-2">
+                                                <ol class="breadcrumb">
+                                                    <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                                    </li>
+
+                                                    <?php foreach ($category_name as $key => $video_category_name) { ?>
+                                                    <?php $category_name_length = count($category_name); ?>
+                                                    <li class="breadcrumb-item">
+                                                        <a class="black-text" href="<?= route('video_categories',[ $video_category_name->categories_slug ])?>">
+                                                            <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
+                                                        </a>
+                                                    </li>
+                                                    <?php } ?>
+
+                                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                                                    <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="trending-info g-border p-0">
                                     <div class="row align-items-center">
                                         <div class="col-sm-8 col-md-8 col-xs-12">

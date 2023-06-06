@@ -53,6 +53,7 @@ Use App\HomeSetting;
 use App\ThumbnailSetting;
 use App\AdminLandingPage;
 use App\PaymentSetting;
+use App\CategoryAudio;
 
 class ThemeAudioController extends Controller{
 
@@ -89,6 +90,13 @@ class ThemeAudioController extends Controller{
         $countryName = $geoip->getCountry();
 
         $source_id = Audio::where('slug',$slug)->pluck('id')->first();
+
+        
+        $category_name = CategoryAudio::select('audio_categories.name as categories_name','audio_categories.slug as categories_slug','category_audios.audio_id')
+        ->Join('audio_categories', 'category_audios.category_id', '=', 'audio_categories.id')
+        ->where('category_audios.audio_id', $source_id)
+        ->get();
+
 
         if (!empty($name)) {
           
@@ -216,6 +224,7 @@ class ThemeAudioController extends Controller{
                 'ablum_audios' =>  null,
                 'source_id'   => $source_id,    
                 'commentable_type' => "play_audios" ,
+                'category_name'    => $category_name ,
                 );
 
                 return Theme::view('audio', $data);
@@ -259,6 +268,7 @@ class ThemeAudioController extends Controller{
                 'ablum_audios' =>  $merged_audios,
                 'source_id'   => $source_id,
                 'commentable_type' => "play_audios" ,
+                'category_name'    => $category_name ,
                 );
             } else {
                 $data = array(
@@ -733,7 +743,31 @@ class ThemeAudioController extends Controller{
           }else {
             return 0;
           }     
-        
     }
 
+    public function Audios_list()
+    {
+        try {
+           
+            $audios = Audio::where('active',1)->where('status', 1)->latest();
+  
+              if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+              {
+                $audios = $audios->whereNotIn('audio.id',Block_audios());
+              }
+  
+            $audios = $audios->Paginate($this->audios_per_page);
+
+            $data = [
+                'audios' => $audios ,
+                'ThumbnailSetting' => ThumbnailSetting ::first(),
+            ];
+
+            return Theme::view('audios_list',$data);
+
+        } catch (\Throwable $th) {
+            // return abort(404);
+            return $th->getMessage();
+        }
+    }
 }

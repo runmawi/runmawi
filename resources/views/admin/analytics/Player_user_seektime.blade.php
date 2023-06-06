@@ -70,7 +70,7 @@
                 <div class="row">
                     <div class="col-md-6">
                     <a href="{{ URL::to('admin/analytics/PlayerUserAnalytics/')  }}">
-                            <button class="tablinks btn btn-primary" id="openPayPerView" >Player User Analytics</button>
+                            <button class="tablinks btn btn-primary" id="openPayPerView" >Player User Analytics</button></a>
                     </div>
                  </div>
                  <br>

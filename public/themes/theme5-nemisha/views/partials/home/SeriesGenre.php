@@ -20,8 +20,8 @@
                 <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Series_Genre->image;  ?>" class="img-fluid w-100" alt="">
                
                   
-              </div>
-              <div class="block-description">
+              </div> </div>
+              <div class="block-description">   </div>
               <a href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
                   <h6><?php echo __($Series_Genre->name); ?></h6>
                 </a>
@@ -35,8 +35,8 @@
                    Visit Series Category Video
                   </a>
                 </div>
-              </div>
-            </div>
+           
+           
           </a>
         </li>
       <?php  } 
