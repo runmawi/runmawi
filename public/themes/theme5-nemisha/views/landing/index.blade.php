@@ -1327,12 +1327,12 @@
                         <div class="row mt-2"></div>
                     </div>
 
-                    <div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
+                    <!--<div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
                         <a class="btn btn-success my-2 my-sm-0 w-100" style="font-weight:600;font-size: 20px;"
                             href="https://dev.nemisatv.co.za/tv-shows"><span>All Videos <i class="fa fa-angle-right"
                                     aria-hidden="true"></i></span>
                         </a>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </section>
