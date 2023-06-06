@@ -29,7 +29,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100" alt="series">
+                <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid lazyload w-100" alt="series">
                
                     <?php if($latest_serie->access == 'subscriber' ){ ?>
                         <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>

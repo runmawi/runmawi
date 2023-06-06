@@ -26,7 +26,7 @@ class PagesController extends Controller{
     Theme::uses(  $Theme );
  
          $dynamic_page = Page::where('slug', '=', $slug)->first();
-            if($dynamic_page->active){
+            if(!empty($dynamic_page) && @$dynamic_page->active){
                // $author = User::find($dynamic_page->user_id);
                 $data = array(
                                 'pager' => $dynamic_page, 

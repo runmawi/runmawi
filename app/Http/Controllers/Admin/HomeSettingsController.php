@@ -372,6 +372,7 @@ class HomeSettingsController extends Controller
         $settings->Recommended_videos_site = !empty($request->Recommended_videos_site) ?  "1" : "0" ;
         $settings->Recommended_videos_users = !empty($request->Recommended_videos_users) ?  "1" : "0" ;
         $settings->Recommended_videos_Country = !empty($request->Recommended_videos_Country) ?  "1" : "0" ;
+        $settings->continue_watching = !empty($request->continue_watching) ?  "1" : "0" ;
         $settings->save();
 
         return redirect::to('/admin/home-settings');

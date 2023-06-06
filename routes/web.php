@@ -770,7 +770,19 @@ Route::get('/Testwatermark', 'Testwatermark@index');
         dd(__('website'));
     });
 
+    // Site Meta Settings
+    Route::get('/site-meta-setting', 'AdminSiteMetaController@meta_setting')->name('meta_setting');
+    Route::get('/site-meta-edit/{id}', 'AdminSiteMetaController@meta_setting_edit')->name('meta_setting_edit');
+    Route::post('/site-meta-update', 'AdminSiteMetaController@meta_setting_update')->name('meta_setting_update');
 
+    // Site Meta Settings
+        Route::get('/user-logged-device', 'AdminAppSettings@LoggedUserDevices')->name('LoggedUserDevices');
+        Route::get('/user-logged-device/delete/{id}', 'AdminAppSettings@LoggedUserDeviceDelete')->name('LoggedUserDeviceDelete');
+        Route::get('/user-logged-device/delete/{id}', 'AdminAppSettings@LoggedUserDeviceDelete')->name('LoggedUserDeviceDelete');
+        Route::get('/logged_device_Bulk_delete', 'AdminAppSettings@logged_device_Bulk_delete')->name('logged_device_Bulk_delete'); 
+
+
+        
     /* User Roles */
     Route::get('/permissions', 'AdminRolePermissionController@index');
     Route::get('/permissions/edit/{id}', 'AdminRolePermissionController@edit');

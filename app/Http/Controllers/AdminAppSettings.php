@@ -70,6 +70,7 @@ use Session;
 use Redirect;
 use App\AppSetting;
 use App\RTMP;
+use App\LoggedDevice;
 
 class AdminAppSettings extends Controller
 {   
@@ -191,4 +192,36 @@ class AdminAppSettings extends Controller
        
          return true;
         }
+
+        public function LoggedUserDevices()
+        {
+            
+          $LoggedDevice = LoggedDevice::get();          
+             $data = array(
+                       'LoggedDevice' => $LoggedDevice ,   
+             );
+            return view('admin.devices.logged_devices',$data);
+  
+        }
+        
+    public function logged_device_Bulk_delete(Request $request)
+    {
+        try {
+            $logged_id = $request->logged_id;
+            LoggedDevice::whereIn("id", explode(",", $logged_id))->delete();
+          
+            return response()->json(["message" => "true"]);
+        } catch (\Throwable $th) {
+            return response()->json(["message" => "false"]);
+        }
+    }
+
+    public function LoggedUserDeviceDelete ( $id)
+    {
+        
+      LoggedDevice::where("id",  $id)->delete();
+      return Redirect::back()->with(array('message' => 'Successfully Deleted!', 'note_type' => 'success') );
+
+    }
+
 }

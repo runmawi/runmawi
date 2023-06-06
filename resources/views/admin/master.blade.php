@@ -931,7 +931,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
                             <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect">{{ ucwords('Home page Pop Up settings')  }} </a></li>
                             <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> Comment Section Settings </a></li>
-
+                            <li><a href="{{ route('meta_setting') }}" class="iq-waves-effect"> Site Meta Settings </a></li>
 
                         </ul>
                     </li>
