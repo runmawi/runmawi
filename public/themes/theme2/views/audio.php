@@ -224,6 +224,19 @@ text-align: center;
 #circle{
 border-radius: 50%;
 }
+
+    /* <!-- BREADCRUMBS  */
+
+    .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
+          content: none; 
+      } 
+
+      ol.breadcrumb {
+            color: white;
+            background-color: transparent !important  ;
+            font-size: revert;
+      }
+
 </style>
 
 <?php if (isset($error)) { ?>
@@ -435,6 +448,35 @@ Your browser does not support the audio element.
 <div class="clear"></div>  
 
 <?php } ?>
+
+                       <!-- BREADCRUMBS -->
+      <div class="ml-2">     
+        <div class="row">
+          <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <div class="bc-icons-2">
+                      <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a class="black-text" href="<?= route('Audios_list') ?>"><?= ucwords('Audios') ?></a>
+                          <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                        </li>
+
+                        <?php foreach ($category_name as $key => $audio_category_name) { ?>
+                          <?php $category_name_length = count($category_name); ?>
+                          <li class="breadcrumb-item">
+                              <a class="black-text" href="<?= route('AudioCategory',[ $audio_category_name->categories_slug ])?>">
+                                  <?= ucwords($audio_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
+                              </a>
+                          </li>
+                        <?php } ?>
+
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                        <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($audio->title) > 50) ? ucwords(substr($audio->title,0,120).'...') : ucwords($audio->title); ?> </a></li>
+                      </ol>
+                  </div>
+              </div>
+            </div>
+        </div>
+      </div>
 
 
                <!-- Comment Section -->
