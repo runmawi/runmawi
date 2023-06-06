@@ -1329,6 +1329,29 @@ public function verifyandupdatepassword(Request $request)
           $item['post_position_time'] =$ads_videos != null  && $ads_videos->ads_position == 'post' ? $ads_Post_time  : "0";
           $item['ads_seen_status'] = $item->ads_status;
           $item['ios_publish_time']    = Carbon::parse($item->publish_time)->format('Y-m-d H:i:s');
+
+          // Videos URL 
+          if( $item['type'] == "mp4_url"){
+
+            $item['videos_url'] =  $item->mp4_url ;
+          }
+          elseif( $item['type'] == "m3u8_url" ){
+
+            $item['videos_url']    = $item->m3u8_url ;
+          }
+          elseif( $item['type'] == "embed" ){
+
+            $item['videos_url']    = $item->embed_code ;
+          }
+          elseif( $item['type'] == null &&   pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" ){
+
+            $item['videos_url']    = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+          }
+          else{
+
+            $item['videos_url']    = null ;
+          }
+
           return $item;
         });
   
