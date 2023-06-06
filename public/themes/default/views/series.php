@@ -334,7 +334,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                 </div>
             </div>
         </div>
-        </div></div>
+        
 		</section>
 		
 				<?php endif;?>
