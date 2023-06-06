@@ -8,6 +8,21 @@ $series = App\series::where('id', $episode->series_id)->first();
 $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 ?>
 
+<style>
+    
+ /* <!-- BREADCRUMBS  */
+
+ .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
+          content: none; 
+      } 
+
+      ol.breadcrumb {
+            color: white;
+            background-color: transparent !important  ;
+            font-size: revert;
+      }
+</style>
+
 <!-- free content - hide & show -->
 
 <!-- <div class="row free_content">
@@ -215,6 +230,37 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $episode->genre_id ?>"
         value="<?= $episode->genre_id ?>">
     <br>
+
+    <div class="row">
+        <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
+
+                    <?php foreach ($category_name as $key => $series_category_name) { ?>
+                    <?php $category_name_length = count($category_name); ?>
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
+                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                        </a>
+                    </li>
+                    <?php } ?>
+
+                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                    <li class="breadcrumb-item"><a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> </a></li>
+
+                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? ucwords(substr(@$episode->title, 0, 120) . '...') : ucwords($episode->title); ?> </a></li>
+                </ol>
+            </div>
+        </div>
+    <div>
 
     <div class="container-fluid series-details">
         <div id="series_title">
