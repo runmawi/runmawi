@@ -122,6 +122,7 @@ use App\ThumbnailSetting;
 use App\Menu;
 use App\SeriesGenre;
 use App\M3UFileParser;
+use File;
 
 class ApiAuthController extends Controller
 {
@@ -1328,6 +1329,29 @@ public function verifyandupdatepassword(Request $request)
           $item['post_position_time'] =$ads_videos != null  && $ads_videos->ads_position == 'post' ? $ads_Post_time  : "0";
           $item['ads_seen_status'] = $item->ads_status;
           $item['ios_publish_time']    = Carbon::parse($item->publish_time)->format('Y-m-d H:i:s');
+
+          // Videos URL 
+          if( $item['type'] == "mp4_url"){
+
+            $item['videos_url'] =  $item->mp4_url ;
+          }
+          elseif( $item['type'] == "m3u8_url" ){
+
+            $item['videos_url']    = $item->m3u8_url ;
+          }
+          elseif( $item['type'] == "embed" ){
+
+            $item['videos_url']    = $item->embed_code ;
+          }
+          elseif( $item['type'] == null &&   pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" ){
+
+            $item['videos_url']    = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+          }
+          else{
+
+            $item['videos_url']    = null ;
+          }
+
           return $item;
         });
   
@@ -2050,49 +2074,56 @@ public function verifyandupdatepassword(Request $request)
 
   public function updateProfile(Request $request) {
 
-        $id = $request->user_id;
-        $user = User::find($id);
-        $path = URL::to('/').'/public/uploads/avatars/';
-        $logo = $request->file('avatar');
-        if($logo != '' && $logo != null) {
+      try {
 
-            $file_old = $path.$logo;
-            if (file_exists($file_old)){
-              unlink($file_old);
+          $user = User::find($request->user_id);
+
+          $input = array(
+            'email'    => $request->user_email,
+            'username' => $request->user_username,
+            'name'     => $request->user_name,
+            'ccode'    => $request->user_ccode,
+            'mobile'   => $request->user_mobile,
+            'gender'   => $request->gender,
+            'DOB'      => $request->DOB,
+          );
+
+          if($request->hasFile('avatar')){
+
+            $file = $request->avatar;
+
+            if (File::exists(base_path('public/uploads/avatars/'.$user->avatar))) {
+                File::delete(base_path('public/uploads/avatars/'.$user->avatar));
             }
-          $file = $logo;
-          $avatar = $file->getClientOriginalName();
-          $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
 
-        }elseif(!empty($user->avatar)){
-          $avatar = $user->avatar;
-        } else {
-          $avatar = 'default.png';
-        }
-        if(!empty($request->user_password)){
-          $user_password = Hash::make($request->user_password);
-          // print_r($user_password);exit;
-        }else{
-          $user_password = $user->password;
-        }
-        $user = User::find($id);
-        $user->email = $request->user_email;
-        $user->username = $request->user_username;
-        $user->name = $request->user_name;
-        $user->ccode = $request->user_ccode;
-        $user->mobile = $request->user_mobile;
-        $user->password = $user_password;
-        $user->avatar = $avatar;
-        $user->gender = $request->gender;
-        $user->DOB = $request->DOB;
-        $user->save();
+            $filename   = 'user-avatar-'.time().'.'.$file->getClientOriginalExtension();
+            Image::make($file)->save(base_path().'/public/uploads/avatars/'.$filename );
+
+            $input+= [ 'avatar' => $filename ] ;
+
+          }
         
-        $response = array(
-        'status'=>'true',
-        'message'=>'Your Profile detail has been updated'
-      );
-    // send_password_notification('Notification From Flicknexs','Your Profile  has been Updated Successfully','Your Account  has been Created Successfully','',$id);
-        return response()->json($response, 200);
+          if(!empty($request->user_password)){
+            $input+= [ 'password' => Hash::make($request->user_password) ] ;
+          }
+
+          $user->update($input);
+          
+          $response = array(
+            'status'=>'true',
+            'message'=>'Your Profile detail has been updated'
+          );
+
+      } catch (\Throwable $th) {
+        
+        $response = [
+          'status' => 'false',
+          'message' => $th->getMessage(),
+        ];
+
+      }
+
+      return response()->json($response, 200);
    }
 
    public function addwishlist(Request $request) {
@@ -12819,7 +12850,7 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
         $data = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured')
-          ->where('active',1)->where('status', 1)->where('draft',1)->latest();
+          ->where('active',1)->where('status', 1)->latest();
 
             if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
             {
