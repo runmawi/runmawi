@@ -73,13 +73,40 @@ class AdminSiteMetaController extends Controller
       public function meta_setting_update(Request $request)
       {
         $input = $request->all();
+        // dd($input['meta_image']);
+        $meta_image = isset($input["meta_image"]) ? $input["meta_image"]: "";
+        $image_path = public_path() . "/uploads/images/";
+
+        if (!empty($meta_image))
+        {
+            if ($meta_image != '' && $meta_image != null)
+            {
+                $file_old = $image_path . $meta_image;
+                if (file_exists($file_old))
+                {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $meta_image;
+            $data['meta_image'] = str_replace(' ', '_', $file->getClientOriginalName());
+
+            $file->move($image_path, $data['meta_image']);
+            $image = URL::to('/public/uploads/images').'/'.$data['meta_image'];
+        }
+        else
+        {
+            $image = null;
+        }
+
 
         $SiteMeta = SiteMeta::find($request->id);     
 
         $SiteMeta->page_name = $input['page_name'];
         $SiteMeta->page_title = $input['page_title'];
         $SiteMeta->meta_description = $input['meta_description'];      
-        $SiteMeta->meta_keyword = $input['meta_keyword'];        
+        $SiteMeta->meta_keyword = $input['meta_keyword'];
+        $SiteMeta->meta_image = $image; 
         $SiteMeta->user_id = Auth::User()->id;
         $SiteMeta->save();
  
