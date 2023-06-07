@@ -8932,6 +8932,7 @@ $cpanel->end();
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
        $item['shareurl'] = URL::to('/episode/') . '/' . Series::where('id',$item->series_id)->pluck('slug')->first() . '/' . $item->slug;
+       $item['m3u8url'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
        
        $plans_ads_enable = $this->plans_ads_enable($request->user_id);
 
