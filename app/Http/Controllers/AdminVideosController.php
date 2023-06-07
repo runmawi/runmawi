@@ -189,6 +189,7 @@ class AdminVideosController extends Controller
             } else {
                 // $data = Video::orderBy("created_at", "desc")
                 // ->paginate(9);
+                $data = [];
             }
             if (count($data) > 0) {
                 $total_row = $data->count();
