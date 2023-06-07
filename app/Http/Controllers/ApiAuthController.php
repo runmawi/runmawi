@@ -6950,7 +6950,7 @@ public function LocationCheck(Request $request){
                   }
 
                   $data = $data->limit(30)->get()->map(function ($item) {
-                      $item['image_url'] = URL::to('public/uploads/images'.$item->image) ;
+                      $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
                   return $item;
         });
 
