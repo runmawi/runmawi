@@ -1464,6 +1464,7 @@ class AdminPlayerAnalyticsController extends Controller
                 $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
                 ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
                 // ->groupBy('player_analytics.videoid')
+                ->where('users.role', '!=' ,'admin')    
                 ->orderBy('player_analytics.created_at')
                 ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
                 ->groupBy('player_analytics.user_id')
@@ -1485,6 +1486,7 @@ class AdminPlayerAnalyticsController extends Controller
 
                 $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
                 ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+                ->where('users.role', '!=' ,'admin')    
                 ->groupBy('player_analytics.user_id')
                 ->orderBy('player_analytics.created_at')
                 ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
