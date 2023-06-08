@@ -18,14 +18,15 @@ $settings = App\Setting::first();
 
           <div class=" small m-0 text-white ">
              <div class="map1"> 
-              <?php if(!empty($app_settings->android_url)){ ?>
-              <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.png')?>" />
+              <?php if(!empty($app_settings->android_url)){ ?>  
+                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.png')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-              <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.png')?>"  />
+                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.png')?>"  /></a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
-              <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" />
+                  <a href="<?= $app_settings->android_tv ?>">
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
               <?php } ?>
               </div>
               
