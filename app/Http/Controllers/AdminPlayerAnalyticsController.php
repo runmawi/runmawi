@@ -1140,6 +1140,7 @@ class AdminPlayerAnalyticsController extends Controller
         $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
         $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
         ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+        ->where('users.role', '!=' ,'admin')
         ->groupBy('player_analytics.user_id')
         ->groupBy('player_analytics.videoid')
         ->orderBy('player_analytics.created_at')
@@ -1181,6 +1182,7 @@ class AdminPlayerAnalyticsController extends Controller
             $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
+            ->where('users.role', '!=' ,'admin')    
             ->orderBy('player_analytics.created_at')
             ->whereDate('player_analytics.created_at', '>=', $start_time)
             ->groupBy('player_analytics.user_id')
@@ -1203,6 +1205,7 @@ class AdminPlayerAnalyticsController extends Controller
            $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
            ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
            // ->groupBy('player_analytics.videoid')
+           ->where('users.role', '!=' ,'admin')    
            ->orderBy('player_analytics.created_at')
            ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
            ->groupBy('player_analytics.user_id')
@@ -1224,6 +1227,7 @@ class AdminPlayerAnalyticsController extends Controller
             $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
             $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+            ->where('users.role', '!=' ,'admin')    
             ->groupBy('player_analytics.user_id')
             ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
@@ -1268,6 +1272,7 @@ class AdminPlayerAnalyticsController extends Controller
             $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
+            ->where('users.role', '!=' ,'admin')    
             ->orderBy('player_analytics.created_at')
             ->whereDate('player_analytics.created_at', '>=', $start_time)
             ->groupBy('player_analytics.user_id')
@@ -1349,6 +1354,7 @@ class AdminPlayerAnalyticsController extends Controller
             $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
+            ->where('users.role', '!=' ,'admin')    
             ->orderBy('player_analytics.created_at')
             ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
             ->groupBy('player_analytics.user_id')
@@ -1436,6 +1442,7 @@ class AdminPlayerAnalyticsController extends Controller
                 $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
+            ->where('users.role', '!=' ,'admin')    
             ->orderBy('player_analytics.created_at')
             ->whereDate('player_analytics.created_at', '>=', $start_time)
             ->groupBy('player_analytics.user_id')
@@ -1457,6 +1464,7 @@ class AdminPlayerAnalyticsController extends Controller
                 $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
                 ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
                 // ->groupBy('player_analytics.videoid')
+                ->where('users.role', '!=' ,'admin')    
                 ->orderBy('player_analytics.created_at')
                 ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
                 ->groupBy('player_analytics.user_id')
@@ -1478,6 +1486,7 @@ class AdminPlayerAnalyticsController extends Controller
 
                 $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
                 ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+                ->where('users.role', '!=' ,'admin')    
                 ->groupBy('player_analytics.user_id')
                 ->orderBy('player_analytics.created_at')
                 ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
@@ -1575,7 +1584,8 @@ class AdminPlayerAnalyticsController extends Controller
 
         try{
 
-            $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::get();
+            $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::join('users', 'users.id', '=', 'player_seektime_analytics.user_id')
+            ->where('users.role', '!=' ,'admin')->get();
             $data = array(
                 'PlayerSeekTimeAnalytic' => $PlayerSeekTimeAnalytic,
                 'player_videos_count' => count($PlayerSeekTimeAnalytic),
@@ -1599,15 +1609,18 @@ class AdminPlayerAnalyticsController extends Controller
         $end_time = $data['end_time'];
         if (!empty($start_time) && empty($end_time))
         {
-            $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::whereDate('created_at', '>=', $start_time)->get();
+            $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::join('users', 'users.id', '=', 'player_seektime_analytics.user_id')
+            ->where('users.role', '!=' ,'admin')->whereDate('player_seektime_analytics.created_at', '>=', $start_time)->get();
 
         }else if (!empty($start_time) && !empty($end_time))
         {
     
-            $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::whereBetween('created_at', [$start_time, $end_time])->get();
+            $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::join('users', 'users.id', '=', 'player_seektime_analytics.user_id')
+            ->where('users.role', '!=' ,'admin')->whereBetween('player_seektime_analytics.created_at', [$start_time, $end_time])->get();
 
         }else{
-                $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::get();
+                $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::join('users', 'users.id', '=', 'player_seektime_analytics.user_id')
+                ->where('users.role', '!=' ,'admin')->get();
             }
 
         $data = array(
@@ -1638,15 +1651,18 @@ class AdminPlayerAnalyticsController extends Controller
             $end_time = $data["end_time"];
             if (!empty($start_time) && empty($end_time))
             {
-                $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::whereDate('created_at', '>=', $start_time)->get();
+                $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::join('users', 'users.id', '=', 'player_seektime_analytics.user_id')
+                ->where('users.role', '!=' ,'admin')->whereDate('player_seektime_analytics.created_at', '>=', $start_time)->get();
     
             }else if (!empty($start_time) && !empty($end_time))
             {
         
-                $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::whereBetween('created_at', [$start_time, $end_time])->get();
+                $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::join('users', 'users.id', '=', 'player_seektime_analytics.user_id')
+                ->where('users.role', '!=' ,'admin')->whereBetween('player_seektime_analytics.created_at', [$start_time, $end_time])->get();
     
             }else{
-                    $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::get();
+                    $PlayerSeekTimeAnalytic = PlayerSeekTimeAnalytic::join('users', 'users.id', '=', 'player_seektime_analytics.user_id')
+                    ->where('users.role', '!=' ,'admin')->get();
             }
     
             $file = "PlayerUsersSeekTimeAnalytics.csv";

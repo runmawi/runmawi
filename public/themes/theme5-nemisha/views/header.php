@@ -62,6 +62,7 @@
     $livestream = App\LiveStream::where('slug', $request_url)->first();
     $dynamic_page = App\Page::where('slug', '=', $request_url)->first();
     $SiteMeta_page = App\SiteMeta::where('page_slug', '=', $request_url)->first();
+    $SiteMeta_image = App\SiteMeta::where('page_slug', '=', $request_url)->pluck('meta_image')->first();
     ?>
     <meta charset="UTF-8">
  
@@ -108,7 +109,8 @@
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
       elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
       elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
-      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>">
+      elseif(!empty($SiteMeta_image)){ echo $SiteMeta_image ;}
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;} //echo $settings; ?>">
 
 <!-- Twitter Card data -->
 <meta name="twitter:card" content="summary_large_image">
@@ -137,7 +139,8 @@
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
       elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
       elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
-      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>">
+      elseif(!empty($SiteMeta_image)){ echo $SiteMeta_image ;}
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;} //echo $settings; ?>">
 
 <!-- Open Graph data -->
 <meta property="og:title" content="<?php
@@ -155,7 +158,8 @@
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
       elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
       elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
-      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
+      elseif(!empty($SiteMeta_image)){ echo $SiteMeta_image ;}
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;} //echo $settings; ?>" />
 <meta property="og:description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
