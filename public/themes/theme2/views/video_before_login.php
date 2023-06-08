@@ -2,6 +2,22 @@
     include(public_path('themes/theme2/views/header.php'));
 ?>
 
+
+<style>
+         /* <!-- BREADCRUMBS  */
+
+         .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
+          content: none; 
+      } 
+
+      ol.breadcrumb {
+            color: white;
+            background-color: transparent !important  ;
+            font-size: revert;
+      }
+      
+</style>
+
 <?php 
 
 $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
@@ -21,6 +37,7 @@ if($default_ads_url !=null && $default_ads_status == 1){
     }else{ 
       $ads_path = $default_ads ;
 }  
+
 
 include('Adstagurl.php'); 
 
@@ -296,6 +313,35 @@ if(!empty($request_url)){
     <div class="container-fluid video-details" style="width:90%!important;">
         <div class="trending-info g-border p-0">
             <div class="row">
+
+                              <!-- BREADCRUMBS -->
+                              <div class="col-sm-12 col-md-12 col-xs-12">
+                      <div class="row">
+                          <div class="col-md-12">
+                              <div class="bc-icons-2">
+                                  <ol class="breadcrumb">
+                                      <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                      </li>
+
+                                      <?php foreach ($category_name as $key => $video_category_name) { ?>
+                                        <?php $category_name_length = count($category_name); ?>
+                                        <li class="breadcrumb-item">
+                                            <a class="black-text" href="<?php echo route('video_categories',[ $video_category_name->categories_slug ])?>">
+                                                <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
+                                            </a>
+                                        </li>
+                                      <?php } ?>
+
+                                      <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                                      <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
+                                  </ol>
+                              </div>
+                          </div>
+                      </div>
+                </div>
+
                 <div class="col-sm-9 col-md-9 col-xs-12">
                                      <!--  Video thumbnail image-->
                   <?php if( $video->enable_video_title_image == 1  &&  $video->video_title_image != null){ ?>
@@ -752,6 +798,27 @@ $(document).ready(function(){
 <!-- Ads Start -->
 
 <?php
+
+$Auto_skip = App\HomeSetting::first();
+$SkipIntroPermission = App\Playerui::pluck('skip_intro')->first();
+$Intro_skip = App\Video::where('id',$video->id)->first();
+$start_time = $Intro_skip->intro_start_time;
+$end_time = $Intro_skip->intro_end_time;
+
+$StartParse = date_parse($start_time);
+$startSec = $StartParse['hour']  * 60 *  60  + $StartParse['minute']  * 60  + $StartParse['second'];
+
+$EndParse = date_parse($end_time);
+$EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['second'];
+
+$SkipIntroParse = date_parse($Intro_skip['skip_intro']);
+$skipIntroTime =  $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] * 60 + $SkipIntroParse['second'];
+
+if($Intro_skip['type'] == "mp4_url" || $Intro_skip['type'] == "m3u8_url"){
+  $video_type_id = "videoPlayer";
+}else{
+  $video_type_id = "video";
+}
 
   include('AdsvideoPre.php'); 
   include('AdsvideoMid.php');
