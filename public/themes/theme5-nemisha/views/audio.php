@@ -464,7 +464,7 @@ Your browser does not support the audio element.
           <div class=" container-fluid video-list you-may-like overflow-hidden">
             <div class="bc-icons-2">
                       <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="black-text" href="<?= route('Audios_list') ?>"><?= ucwords('Audios') ?></a>
+                        <li class="breadcrumb-item"><a class="black-text" href="<?= route('Audios_list') ?>"><?= ucwords('Podcasts') ?></a>
                           <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                         </li>
 
@@ -485,8 +485,52 @@ Your browser does not support the audio element.
               </div>
             </div>
         </div>
-      </div>
+      
 
+      <div class="col-sm-12 col-md-12 col-xs-12 container-fluid">
+                  <!--  Video thumbnail image-->
+          <?php if(!empty($audios->title) && !empty($ThumbnailSetting) && $ThumbnailSetting->title == 1){ ?>
+            <h1 class="trending-text big-title text-uppercase mt-3">
+                <?php echo (strlen($audios->title) > 50) ? substr($audios->title,0,120).'...' : $audios->title;  if( Auth::guest() ) { } ?>
+              </h1>
+            <?php } ?>
+          <?php if(!empty($category_name) && !empty($ThumbnailSetting) && $ThumbnailSetting->category == 1){ ?>
+
+              <!-- <h5 class="mt-3 mb-0">Audio Category:</h5>
+              <div class="text-white">
+              <?php foreach ($category_name as $key => $audio_category_name) {  ?>
+                          <?php $category_name_length = count($category_name); ?>
+                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo ucwords($audio_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : ''); ?></p>
+
+                        <?php } ?>
+              </div> -->
+            <?php } ?>
+
+          <?php if(!empty($audios->description)){ ?>
+
+            <h5 class="mt-3 mb-0">Description:</h5>
+              <div class="text-white">
+                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($audios->description); ?></p>
+              </div>
+            <?php } ?>
+
+          <?php if(!empty($audios->details)){ ?>
+
+            <h5 class="mt-3 mb-0">Links and Details:</h5>
+              <div class="text-white">
+                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($audios->details); ?></p>
+              </div>
+            <?php } ?>
+
+          <?php if(!empty($audios->rating) && !empty($ThumbnailSetting) && $ThumbnailSetting->rating == 1){ ?>
+
+              <h5 class="mt-3 mb-0">Rating:</h5>
+              <div class="text-white">
+                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($audios->rating); ?></p>
+              </div>
+            <?php } ?>
+              
+        </div>
                <!-- Comment Section -->
           <div class="ml-2">     
       <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('audios')->first() == 1 ): ?>

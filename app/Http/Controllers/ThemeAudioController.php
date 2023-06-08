@@ -225,6 +225,8 @@ class ThemeAudioController extends Controller{
                 'source_id'   => $source_id,    
                 'commentable_type' => "play_audios" ,
                 'category_name'    => $category_name ,
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+
                 );
 
                 return Theme::view('audio', $data);
@@ -269,6 +271,7 @@ class ThemeAudioController extends Controller{
                 'source_id'   => $source_id,
                 'commentable_type' => "play_audios" ,
                 'category_name'    => $category_name ,
+                'ThumbnailSetting' => ThumbnailSetting::first(),
                 );
             } else {
                 $data = array(
