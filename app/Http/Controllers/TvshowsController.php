@@ -550,7 +550,7 @@ class TvshowsController extends Controller
                     'category_name'             => $category_name ,
                 ];
                 
-                if (Auth::guest() && $settings->access_free == 1 || Auth::guest()) {
+                if (Auth::guest() && $settings->access_free == 1) {
                     return Theme::view('beforloginepisode', $data);
                 } else {
                     return Theme::view('episode', $data);
