@@ -7,6 +7,22 @@
   $series = App\series::first();
 ?>
 
+<style>
+   /* <!-- BREADCRUMBS  */
+
+ .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
+          content: none; 
+      } 
+
+      ol.breadcrumb {
+            color: white;
+            background-color: transparent !important  ;
+            font-size: revert;
+      }
+      
+      
+</style>
+
 <?php 
 $series= App\series::where('id',$episode->series_id)->first();
 $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
@@ -200,6 +216,36 @@ if (Auth::guest())
 ?>" value="<?=$episode->genre_id
 ?>">
 <br>
+
+<div class="row-flex">
+        <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
+
+                    <?php foreach ($category_name as $key => $series_category_name) { ?>
+                    <?php $category_name_length = count($category_name); ?>
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
+                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                        </a>
+                    </li>
+                    <?php } ?>
+
+                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                    <li class="breadcrumb-item"><a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> </a></li>
+
+                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? ucwords(substr(@$episode->title, 0, 120) . '...') : ucwords($episode->title); ?> </a></li>
+                </ol>
+        </div>  
+    </div>
+    
 
 	<div class=" series-details">
 	<div id="series_title">

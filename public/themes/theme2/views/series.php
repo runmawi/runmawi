@@ -53,6 +53,19 @@
     .ply{
         width: 40px;
     }
+
+           /* <!-- BREADCRUMBS  */
+
+           .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
+          content: none; 
+      } 
+
+      ol.breadcrumb {
+            color: white;
+            background-color: transparent !important  ;
+            font-size: revert;
+      }
+      
 </style>
 
 <?php 
@@ -167,6 +180,33 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 </div>
 </div>
 <section id="tabs" class="project-tab">
+
+<div class="row d-flex">
+        <div class="container-fluid " >
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
+
+                    <?php foreach ($category_name as $key => $series_category_name) { ?>
+                    <?php $category_name_length = count($category_name); ?>
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
+                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                        </a>
+                    </li>
+                    <?php } ?>
+                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title); ?> </a></li>
+                </ol>
+            </div>
+        </div>
+      <div>
+        
 	<div class="">
 		<div class="row">
 			<div class="col-md-12 mt-4">
