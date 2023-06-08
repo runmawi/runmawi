@@ -140,7 +140,7 @@ padding-top: 20px;
   padding-bottom: 5px;
 }
 .fas{
-  color: rgb(0, 82, 204);
+  color: #ed553b;
   font-size: 20px;
 }
     
@@ -301,7 +301,7 @@ Your browser does not support the audio element.
 <div class="d-flex aw" style="justify-content: space-between;width: 40%;align-items: center;">
 
 <div onclick="toggleAudio()">
-  <button class="  btn btn-outline-success" id="vidbutton"  ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+  <button class="    btn btn btn-primary" id="vidbutton"  ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
 </div>
 
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
