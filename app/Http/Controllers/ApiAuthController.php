@@ -12353,7 +12353,7 @@ public function QRCodeMobileLogout(Request $request)
 
       $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id );
 
-      $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id')->get()->toArray();
+      $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->get()->toArray();
 
       $result = array();
 
@@ -12948,9 +12948,8 @@ public function QRCodeMobileLogout(Request $request)
 
          $data = Channel::select('id','channel_name','status','channel_image','channel_slug')
                 ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
-                    $item['image_url'] = URL::to('/public/uploads/channel/'.$item->channel_image);
-                    $item['Player_image_url'] = URL::to('/public/uploads/channel/'.$item->channel_image); // Note - No Player Image for Channel
-                    $item['redirect_url'] = URL::to('channel/'.$item->channel_slug);
+                    $item['image_url'] = $item->channel_image ;
+                    $item['Player_image_url'] = $item->channel_image ; // Note - No Player Image for Channel
                     $item['source']    = "Channel_Partner";
                         return $item;
                     });
@@ -12970,12 +12969,11 @@ public function QRCodeMobileLogout(Request $request)
 
           $data = ModeratorsUser::select('id','username','status','picture','slug')
                   ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
-                    $item['image_url'] = $item->picture ;
-                    $item['Player_image_url'] = $item->picture; // Note - No Player Image for Moderators User
+                    $item['image_url'] =  URL::to('public/uploads/picture/'.$item->picture)  ;
+                    $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->picture) ; // Note - No Player Image for Moderators User
                     $item['source']    = "Content_Partner";
                   return $item;
               });
-
       endif;
 
     return $data;
