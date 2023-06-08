@@ -1,6 +1,20 @@
 <?php
  include(public_path('themes/theme1/views/header.php')); ?>
 
+<style>
+         /* <!-- BREADCRUMBS  */
+
+         .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
+          content: none; 
+      } 
+
+      ol.breadcrumb {
+            color: white;
+            background-color: transparent !important  ;
+            font-size: revert;
+      }
+      
+</style>
 <?php 
 
 $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
@@ -299,6 +313,35 @@ if(!empty($request_url)){
     <div class="container-fluid video-details" >
         <div class="trending-info g-border p-0">
             <div class="row">
+
+                                  <!-- BREADCRUMBS -->
+                                  <div class="col-sm-12 col-md-12 col-xs-12">
+                      <div class="row">
+                          <div class="col-md-12">
+                              <div class="bc-icons-2">
+                                  <ol class="breadcrumb">
+                                      <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                      </li>
+
+                                      <?php foreach ($category_name as $key => $video_category_name) { ?>
+                                        <?php $category_name_length = count($category_name); ?>
+                                        <li class="breadcrumb-item">
+                                            <a class="black-text" href="<?php echo route('video_categories',[ $video_category_name->categories_slug ])?>">
+                                                <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
+                                            </a>
+                                        </li>
+                                      <?php } ?>
+
+                                      <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                                      <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
+                                  </ol>
+                              </div>
+                          </div>
+                      </div>
+                </div>
+
                 <div class="col-sm-9 col-md-9 col-xs-12">
                   
                                         <!--  Video thumbnail image-->
@@ -851,6 +894,7 @@ $(document).ready(function(){
             background: url(<?php echo URL::to($logo_url) ; ?>) no-repeat;
             background-size: 100px auto, auto;
             }
+        
         </style>
 <?php } ?>
     
