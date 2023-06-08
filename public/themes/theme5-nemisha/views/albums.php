@@ -274,7 +274,7 @@ border-bottom: 1px solid #141414;
 <div class="blur"></div>
 <div class="overlay_blur">
  <h6 class="hero-title album mb-2 mt-3"> <?= $album->albumname; ?></h6>
-     <p class="mt-2">Music by    <br>A. R. Rahman</p>
+     <p class="mt-2">Music by    <br><?= $album->albumname; ?></p>
     <div class="d-flex aw" style="justify-content: space-between;width: 40%;align-items: center;">
 
     <div onclick="toggleAudio()">
