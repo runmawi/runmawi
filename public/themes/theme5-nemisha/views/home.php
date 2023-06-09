@@ -111,7 +111,7 @@
     <?php 
    if(($preference_Language) != null && count($preference_Language) > 0 ){ ?>
          <section id="iq-favorites">
-            <div class="fluid overflow-hidden">
+            <div class="container-fluid overflow-hidden">
                   <div class="row">
                      <div class="col-sm-12">
                         <?php include 'partials/home/preference_Language.php'; ?>
@@ -127,7 +127,7 @@
        if($value->video_name == 'latest_videos'){
          if($home_settings->latest_videos == 1){ ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/latest-videos.php'; ?>
@@ -139,7 +139,7 @@
             <!-- Data Free  Category Videos  -->
 
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                <?php
                   $DataFreeCategories = App\VideoCategory::where('slug','datafree')->where('in_home','=',1)->first();
                   $countDataFreeCategories = App\VideoCategory::where('slug','datafree')->where('in_home','=',1)->count();
@@ -166,7 +166,7 @@
              <!-- Data Free  Category Series  -->
 
              <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                <?php
                   $DataFreeseriesCategories = App\SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->first();
                   $countDataFreeseriesCategories = App\SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->count();
@@ -194,7 +194,7 @@
              <!-- Data Free  Category Live  -->
 
              <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                <?php
                   $DataFreeliveCategories = App\LiveCategory::where('slug','datafree')->first();
                   $countDataFreeliveCategories = App\LiveCategory::where('slug','datafree')->count();
@@ -222,7 +222,7 @@
              <!-- Data Free  Category Audios  -->
 
              <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                <?php
                   $DataFreeAudioCategories = App\AudioCategory::where('slug','datafree')->first();
                   $countDataFreeAudioCategories = App\AudioCategory::where('slug','datafree')->count();
@@ -255,7 +255,7 @@
        if( $value->video_name == "Audio_Genre"){
          if($home_settings->AudioGenre == 1){  ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/AudioGenre.php'; ?>
@@ -305,7 +305,7 @@
        if( $value->video_name == "latest_viewed_Videos"){
          if($home_settings->latest_viewed_Videos == 1){  ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/latest_viewed_Videos.php'; ?>
@@ -321,7 +321,7 @@
       if($value->video_name == 'latest_viewed_Livestream'){
          if($home_settings->latest_viewed_Livestream == 1){ ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/latest_viewed_Livestream.php'; ?>
@@ -337,7 +337,7 @@
       if($value->video_name == 'latest_viewed_Audios'){
          if($home_settings->latest_viewed_Audios == 1){ ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/latest_viewed_Audios.php'; ?>
@@ -352,7 +352,7 @@
       if($value->video_name == "latest_viewed_Episode" ){
          if($home_settings->latest_viewed_Episode == 1){ ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/latest_viewed_Episode.php'; ?>

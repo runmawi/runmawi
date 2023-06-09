@@ -209,14 +209,14 @@ endif; ?>
                         <p> <?php echo __($videos->description); ?></p>
                         </div>
                             <div class="row justify r-mb-23  p-0 mb-4 text-center align-items-center" >
-                                <div class="col-3 col-md-3">
+                                <!--<div class="col-3 col-md-3">
                                   <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="text-white">
                                 <div class="" style="font-size:25px;">
                              <i class="fa fa-plus" aria-hidden="true"></i>
 
                                       </div>
-                                Add Watchlist</a></div>
+                                Add Watchlist</a></div>-->
                                 <div class="col-3 col-md-3">
                                  <!-- <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="text-white ">
@@ -336,13 +336,13 @@ if(Route::current()->getName() == "home"){
                                 </div>
 
                                 <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"  data-delay-in="1.2">
-                                    <div class="col-4 col-md-3">
+                                    <!--<div class="col-4 col-md-3">
                                     <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white">
                                         <div class="" style="font-size:25px;">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                         </div>  Add Watchlist
                                     </a>
-                                    </div>
+                                    </div>-->
 
                                     <div class="col-3 col-md-3">
                                         <!-- <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white ">
@@ -476,14 +476,14 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
 </div>
    <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
-                                <div class="col-md-3">
+                                <!--<div class="col-md-3">
                                   <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
                                 class="text-white">
                                 <div class="" style="font-size:25px;">
                              <i class="fa fa-plus" aria-hidden="true"></i>
 
                                       </div>
-                                Add Watchlist</a></div>
+                                Add Watchlist</a></div>-->
                                 <div class="col-md-3">
                                  <!-- <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
                                 class="text-white ">
