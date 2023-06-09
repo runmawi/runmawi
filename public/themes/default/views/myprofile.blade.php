@@ -646,6 +646,7 @@ border-radius: 4px;
         
 
   </div>
+  
   <?php $settings = App\Setting::first(); ?>
 
   
@@ -981,3 +982,6 @@ $('#submit-new-cat').click(function(){
         }, 3000);
     })
 </script>
+@php
+include(public_path('themes/default/views/footer.blade.php'));
+@endphp
