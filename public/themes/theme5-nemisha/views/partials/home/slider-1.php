@@ -16,11 +16,7 @@
                         <?php  echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title; ?>
                     </h1>
                             <div class="mb-3">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span></div>
+                             <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" /></div>
                             <div class="p-0">
 
                     <a href="<?php echo $slider_video->link; ?>" class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
@@ -70,11 +66,7 @@ data-delay-in="0.6">
   ?>
 </h1>
                             <div class="mb-3">
-                            <span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span></div>
+                             <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" /></div>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
     <span class="badge badge-secondary p-2">
         <?php echo __($slider_video->year); ?>
@@ -140,11 +132,7 @@ endif; ?>
                                 </h1>
 
                                 <div class="mb-3">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
+                                    <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                                 </div>
 
                                 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
@@ -322,11 +310,7 @@ if(Route::current()->getName() == "home"){
                             <?php } ?>
 
                                 <div class="mb-3">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
+                                   <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                                 </div>
 
                                 <div data-animation-in="fadeInUp" data-delay-in="1.2"
@@ -543,11 +527,7 @@ endif; ?>
                             </h1>
 
                             <div class="mb-3">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
+                                <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                             </div>
 
                             <div 
