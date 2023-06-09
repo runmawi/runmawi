@@ -1682,7 +1682,7 @@ class AdminSeriesController extends Controller
             $type = 'm3u8';
         } 
         
-        if($episodes->type == 'aws_m3u8'){
+        elseif($episodes->type == 'aws_m3u8'){
             $type = 'aws_m3u8';
         }else{
             $type = 'file';

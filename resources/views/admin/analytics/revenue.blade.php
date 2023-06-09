@@ -188,6 +188,7 @@ $jsondata = json_decode($jsonString, true);
                                     <th>ACC Type</th>
                                     <th>Country</th>
                                     <th>Registered ON </th>
+                                    <th>DOB </th>
                                     <th>Source</th>
                                     <th>Status</th>
                                  </tr>
@@ -198,8 +199,10 @@ $jsondata = json_decode($jsonString, true);
                              <tr>
                              <td>{{ $user->username  }}</td>   
                              <td>@if($user->role == "registered") Registered User  @elseif($user->role == "subscriber") Subscribed User @endif</td>
-                             <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
+                             <!-- <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td> -->
+                             <td>{{ $user->countryname  }}</td>   
                              <td>{{ $user->created_at }}</td> 
+                             <td>{{ $user->DOB }}</td> 
                              <td>@if($user->provider == "google") Google User @elseif($user->provider == "facebook") Facebook User @else Web User @endif</td>
                             <?php if ($user->active == 0)
                             { ?>

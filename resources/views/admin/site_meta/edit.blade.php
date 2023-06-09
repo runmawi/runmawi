@@ -79,7 +79,22 @@
                         @endif
 
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6 form-group {{ $errors->has('meta_image_error_msg') ? 'has-error' : '' }}">
 
+                            <label>Meta Image:</label>
+                            <span><p id="meta_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio </p></span>
+                            <input type="file" name="meta_image" id="meta_image" />
+                        </div>
+                        <div class="col-sm-6 form-group" >
+                        @if(!empty($SiteMeta->meta_image))
+                            <div class="col-sm-8 p-0">
+                                <img src="{{ $SiteMeta->meta_image }}" class="video-img w-100 mt-1" />
+                            </div>
+                        @endif
+
+                    </div>
+                </div>
         <input type="hidden" name="id" id="id" value="{{ $SiteMeta->id }}" />
         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
     </form>

@@ -6,7 +6,7 @@ include public_path('themes/theme5-nemisha/views/header.php');
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="movie-title">Series Genre <?php echo @$CategoryAudio->name; ?></h4>
+                    <h2 class="text-center  mb-3 mt-3"> <?php echo @$CategorySeries->name; ?></h2>
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
