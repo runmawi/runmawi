@@ -141,12 +141,15 @@
     #mySidebar{
         display: none;
     }
+    #home-slider{
+        height: 380px;
+    }
     #home-slider p {
         font-size: 15px!important;
     }
     .h-100{
         height: auto!important;
-        padding: 0!important;
+        padding: 0px 0px 0 10px!important;
         height:300px;
     }
     h1{
