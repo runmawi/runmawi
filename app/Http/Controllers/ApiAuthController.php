@@ -13657,6 +13657,18 @@ public function QRCodeMobileLogout(Request $request)
 
       $user_id = $request->user_id;
       $andriodId = $request->andriodId;
+      // print_r($andriodId);exit;
+
+      if(!empty($andriodId) ){
+        $andriodId = $request->andriodId;
+      }else{
+        $andriodId = 0;
+      }
+      if(!empty($user_id) ){
+        $user_id = $request->user_id;
+      }else{
+        $user_id = 0;
+      }
     /*channel videos*/
     $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
     $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
