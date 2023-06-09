@@ -459,6 +459,6 @@ Route::group(
         Route::post('relatedtvvideos', 'ApiAuthController@relatedtvvideos');
         Route::post('LoggedUserDeviceDelete', 'ApiAuthController@LoggedUserDeviceDelete');
         Route::post('android_continue_watchings', 'ApiAuthController@android_continue_watchings');
-        Route::post('android_ContinueWatching', 'ApiAuthController@android_ContinueWatching');
+        Route::post('android_list_continue_watchings', 'ApiAuthController@android_ContinueWatching');
 
     });
