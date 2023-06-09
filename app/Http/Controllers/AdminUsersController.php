@@ -4407,4 +4407,17 @@ class AdminUsersController extends Controller
         }
        
     }
+
+    public function DOB(Request $request)
+    {
+        $user = User::where('id',$request->users_id)->first();
+        // dd($user);
+        
+        DB::table('users')->where('id', $request->users_id)->update(
+            [
+                'DOB'  => $request->DOB,
+            ]);
+        return Redirect::back()->with(array('message' => 'Successfully Update DOB','note_type' => 'success'));
+
+    }
 }
