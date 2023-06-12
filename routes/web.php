@@ -2668,3 +2668,7 @@ Route::get('/download-xml', function () {
 
     return response()->download($file, 'sitemap.xml', $headers);
 })->name('download.xml');
+
+// Ads Vast 
+
+Route::get('Ads-vast', 'AdsVastController@index');

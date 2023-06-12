@@ -25,6 +25,7 @@ Route::group(
      
 
         Route::post('All_Homepage', 'ApiAuthController@All_Homepage');
+        Route::post('All_Pagelist', 'ApiAuthController@All_Pagelist');
 
         // Search 
         Route::post('search', 'ApiAuthController@search');
@@ -472,6 +473,15 @@ Route::group(
             Route::post('Android_Audio_wishlist', 'ApiAuthController@Android_Audio_wishlist');
             Route::post('Android_LiveStream_wishlist', 'ApiAuthController@Android_LiveStream_wishlist');
 
+
+            Route::post('IOS_addwishlist', 'ApiAuthController@IOS_addwishlist');
+            Route::post('IOS_Video_wishlist', 'ApiAuthController@IOS_Video_wishlist');
+            Route::post('IOS_Episode_wishlist', 'ApiAuthController@IOS_Episode_wishlist');
+            Route::post('IOS_Audio_wishlist', 'ApiAuthController@IOS_Audio_wishlist');
+            Route::post('IOS_LiveStream_wishlist', 'ApiAuthController@IOS_LiveStream_wishlist');
+
+
+
             Route::post('addfavorite', 'ApiAuthController@addfavorite');
             Route::post('addwatchlater', 'ApiAuthController@addwatchlater');
 
@@ -485,6 +495,8 @@ Route::group(
 
             Route::post('Android_live_like', 'ApiAuthController@Android_live_like');
             Route::post('Android_live_dislike', 'ApiAuthController@Android_live_dislike');
+
+            Route::post('Android_liked_disliked', 'ApiAuthController@Android_liked_disliked');
 
             // Audio Like & dislike - Android
             Route::post('Android_Episodelike', 'ApiAuthController@Android_Episodelike');
@@ -506,4 +518,5 @@ Route::group(
             Route::post('IOS_Episodelike', 'ApiAuthController@IOS_Episodelike');
             Route::post('IOS_Episodedislike', 'ApiAuthController@IOS_Episodedislike');
                 
+            Route::post('IOS_liked_disliked', 'ApiAuthController@IOS_liked_disliked');
     });
