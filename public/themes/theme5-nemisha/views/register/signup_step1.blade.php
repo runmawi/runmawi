@@ -726,6 +726,8 @@ if(password_confirm == 0){
     }
 }
 }
+function visibility1() {
+
   var x = document.getElementById('password');
   if (x.type === 'password') {
     x.type = "text";
