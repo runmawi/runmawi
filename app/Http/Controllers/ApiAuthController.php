@@ -13428,41 +13428,68 @@ public function QRCodeMobileLogout(Request $request)
   {
     try {
 
-        $source_name = $request->source_name ;
-
-        if ($source_name != null && $source_name == "latest_videos") {
-          $data = $this->Latest_videos_Pagelist();
-        }
-        elseif ($source_name != null && $source_name == "live_videos") {
-          $data = $this->Livestream_Pagelist();
-        }
-        elseif ($source_name != null && $source_name == "featured_videos") {
-          $data = $this->Featured_videos_Pagelist();
-        }
-        elseif ($source_name != null && $source_name == "Datafree") {
-          $data = $this->Datafree_Pagelist();
-        }
-        elseif ($source_name != null && $source_name == "ChannelPartner") {
-          $data = $this->Channel_Pagelist();
-        }
-        elseif ($source_name != null && $source_name == "ContentPartner") {
-          $data = $this->Content_Pagelist();
-        }
-        elseif ($source_name != null && $source_name == "series") {
-          $data = $this->Series_Pagelist();
-        }
-        elseif ($source_name != null && $source_name == "audios") {
-          $data = $this->Audios_Pagelist();
-        }
-        elseif ($source_name != null && $source_name == "Recommended_videos_site") {
-          $data = $this->Recommended_videos_site_Pagelist();
-        }
-        elseif ($source_name != null && $source_name == "Recommended_videos_Country") {
-          $data = $this->Recommended_videos_Country_Pagelist();
-        }
-        elseif ($source_name != null && $source_name == "Recommended_videos_users") {
-          $data = $this->Recommended_videos_users_Pagelist($request->user_id);
-        }
+      $source_name = $request->source_name;
+      $data = [];
+      $Page_List_Name = 'No data';
+      
+      if ($source_name != null) {
+          switch ($source_name) {
+              case 'latest_videos':
+                  $data = $this->Latest_videos_Pagelist();
+                  $Page_List_Name = 'Latest_videos_Pagelist';
+                  break;
+      
+              case 'live_videos':
+                  $data = $this->Livestream_Pagelist();
+                  $Page_List_Name = 'Livestream_Pagelist';
+                  break;
+      
+              case 'featured_videos':
+                  $data = $this->Featured_videos_Pagelist();
+                  $Page_List_Name = 'Featured_videos_Pagelist';
+                  break;
+      
+              case 'Datafree':
+                  $data = $this->Datafree_Pagelist();
+                  $Page_List_Name = 'Datafree_Pagelist';
+                  break;
+      
+              case 'ChannelPartner':
+                  $data = $this->Channel_Pagelist();
+                  $Page_List_Name = 'Channel_Pagelist';
+                  break;
+      
+              case 'ContentPartner':
+                  $data = $this->Content_Pagelist();
+                  $Page_List_Name = 'Content_Pagelist';
+                  break;
+      
+              case 'series':
+                  $data = $this->Series_Pagelist();
+                  $Page_List_Name = 'Livestream_Pagelist';
+                  break;
+      
+              case 'audios':
+                  $data = $this->Audios_Pagelist();
+                  $Page_List_Name = 'Audios_Pagelist';
+                  break;
+      
+              case 'Recommended_videos_site':
+                  $data = $this->Recommended_videos_site_Pagelist();
+                  $Page_List_Name = 'Recommended_videos_site_Pagelist';
+                  break;
+      
+              case 'Recommended_videos_Country':
+                  $data = $this->Recommended_videos_Country_Pagelist();
+                  $Page_List_Name = 'Recommended_videos_Country_Pagelist';
+                  break;
+      
+              case 'Recommended_videos_users':
+                  $data = $this->Recommended_videos_users_Pagelist($request->user_id);
+                  $Page_List_Name = 'Recommended_videos_users_Pagelist';
+                  break;
+          }
+      }
 
         $response = array(
           'status' => 'true',
