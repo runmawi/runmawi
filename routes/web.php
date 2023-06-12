@@ -47,6 +47,7 @@ Route::post('/user/tv-code', 'AdminUsersController@TVCode');
 Route::get('/user/tv-code/remove/{id}', 'AdminUsersController@RemoveTVCode');
 
 Route::get('admin/combineM3U8toHLS/', 'AdminVideosController@combineM3U8');
+Route::post('/user/DOB', 'AdminUsersController@DOB');
 
 
 // Route::get('/admin/filemanager', 'FileManagerController@index');

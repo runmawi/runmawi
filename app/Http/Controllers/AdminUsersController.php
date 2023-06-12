@@ -1879,7 +1879,7 @@ class AdminUsersController extends Controller
         }
         $filename = public_path("/uploads/csv/" . $file);
         $handle = fopen($filename, 'w');
-        fputcsv($handle, ["User Name", "ACC Type", "Country", "Registered ON ", "Source", "Status",]);
+        fputcsv($handle, ["User Name", "ACC Type", "Country", "Registered ON ","DOB", "Source", "Status",]);
         if ($registered_count > 0)
         {
             foreach ($registered as $each_user)
@@ -1928,7 +1928,7 @@ class AdminUsersController extends Controller
                 {
                     $provider = 'Web User';
                 }
-                fputcsv($handle, [$each_user->username, $role, $phoneccode, $each_user->created_at, $provider, $active,
+                fputcsv($handle, [$each_user->username, $role, $each_user->countryname, $each_user->created_at,$each_user->DOB, $provider, $active,
 
                 ]);
             }
@@ -1981,7 +1981,7 @@ class AdminUsersController extends Controller
                 {
                     $provider = 'Web User';
                 }
-                fputcsv($handle, [$each_user->username, $role, $phoneccode, $each_user->created_at, $provider, $active, ]);
+                fputcsv($handle, [$each_user->username, $role, $each_user->countryname, $each_user->created_at,$each_user->DOB, $provider, $active, ]);
 
             }
         }
@@ -2033,7 +2033,7 @@ class AdminUsersController extends Controller
                 {
                     $provider = 'Web User';
                 }
-                fputcsv($handle, [$each_user->username, $role, $phoneccode, $each_user->created_at, $provider, $active,
+                fputcsv($handle, [$each_user->username, $role, $each_user->countryname, $each_user->created_at,$each_user->DOB, $provider, $active,
 
                 ]);
 
@@ -4406,5 +4406,18 @@ class AdminUsersController extends Controller
             return Redirect::to("/blocked");
         }
        
+    }
+
+    public function DOB(Request $request)
+    {
+        $user = User::where('id',$request->users_id)->first();
+        // dd($user);
+        
+        DB::table('users')->where('id', $request->users_id)->update(
+            [
+                'DOB'  => $request->DOB,
+            ]);
+        return Redirect::back()->with(array('message' => 'Successfully Update DOB','note_type' => 'success'));
+
     }
 }

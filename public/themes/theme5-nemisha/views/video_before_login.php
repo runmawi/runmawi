@@ -403,7 +403,7 @@ if(!empty($request_url)){
         <?php if(!Auth::guest()) { ?>
         <div class="row">
             <div class="col-sm-6 col-md-6 col-xs-12">
-                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists d-flex">
                       <!-- Watchlater -->
                      <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
                       <!-- Wishlist -->

@@ -140,7 +140,7 @@ padding-top: 20px;
   padding-bottom: 5px;
 }
 .fas{
-  color: rgb(0, 82, 204);
+  color: #ed553b;
   font-size: 20px;
 }
     
@@ -296,7 +296,7 @@ Your browser does not support the audio element.
     background-position: right;">
               <div class="row justify-content-between align-items-center">
             <div class="col-sm-3 col-md-3 col-xs-3 text-center">
-<img src="<?= URL::to('/').'/public/uploads/albums/'.$audio->image ?>"  class="img-responsive w-100"  >
+<img src="<?= URL::to('/').'/public/uploads/images/'.$audio->image ?>"  class="img-responsive w-100"  >
 
 <!-- -->
 </div>
@@ -314,7 +314,7 @@ Your browser does not support the audio element.
 <div class="d-flex aw" style="justify-content: space-between;width: 40%;align-items: center;">
 
 <div onclick="toggleAudio()">
-  <button class="  btn btn-outline-success" id="vidbutton"  ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+  <button class="    btn btn btn-primary" id="vidbutton"  ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
 </div>
 
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
@@ -464,7 +464,7 @@ Your browser does not support the audio element.
           <div class=" container-fluid video-list you-may-like overflow-hidden">
             <div class="bc-icons-2">
                       <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="black-text" href="<?= route('Audios_list') ?>"><?= ucwords('Audios') ?></a>
+                        <li class="breadcrumb-item"><a class="black-text" href="<?= route('Audios_list') ?>"><?= ucwords('Podcasts') ?></a>
                           <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                         </li>
 
@@ -485,8 +485,52 @@ Your browser does not support the audio element.
               </div>
             </div>
         </div>
-      </div>
+      
 
+      <div class="col-sm-12 col-md-12 col-xs-12 container-fluid">
+                  <!--  Video thumbnail image-->
+          <?php if(!empty($audios->title) && !empty($ThumbnailSetting) && $ThumbnailSetting->title == 1){ ?>
+            <h1 class="trending-text big-title text-uppercase mt-3">
+                <?php echo (strlen($audios->title) > 50) ? substr($audios->title,0,120).'...' : $audios->title;  if( Auth::guest() ) { } ?>
+              </h1>
+            <?php } ?>
+          <?php if(!empty($category_name) && !empty($ThumbnailSetting) && $ThumbnailSetting->category == 1){ ?>
+
+              <!-- <h5 class="mt-3 mb-0">Audio Category:</h5>
+              <div class="text-white">
+              <?php foreach ($category_name as $key => $audio_category_name) {  ?>
+                          <?php $category_name_length = count($category_name); ?>
+                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo ucwords($audio_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : ''); ?></p>
+
+                        <?php } ?>
+              </div> -->
+            <?php } ?>
+
+          <?php if(!empty($audios->description)){ ?>
+
+            <h5 class="mt-3 mb-0">Description:</h5>
+              <div class="text-white">
+                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($audios->description); ?></p>
+              </div>
+            <?php } ?>
+
+          <?php if(!empty($audios->details)){ ?>
+
+            <h5 class="mt-3 mb-0">Links and Details:</h5>
+              <div class="text-white">
+                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($audios->details); ?></p>
+              </div>
+            <?php } ?>
+
+          <?php if(!empty($audios->rating) && !empty($ThumbnailSetting) && $ThumbnailSetting->rating == 1){ ?>
+
+              <h5 class="mt-3 mb-0">Rating:</h5>
+              <div class="text-white">
+                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($audios->rating); ?></p>
+              </div>
+            <?php } ?>
+              
+        </div>
                <!-- Comment Section -->
           <div class="ml-2">     
       <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('audios')->first() == 1 ): ?>
@@ -751,7 +795,13 @@ window.location = '<?= URL::to('login') ?>';
 
     var trackDurationItem = document.createElement('div');
     trackDurationItem.setAttribute("class", "playlist-duration");
-    trackDurationItem.innerHTML = duration
+
+    var measuredTime = new Date(null);
+    measuredTime.setSeconds(duration); 
+    var MHSTime = measuredTime.toISOString().substr(11, 8);
+    
+    trackDurationItem.innerHTML = MHSTime
+
     document.querySelector("#ptc-"+index).appendChild(trackDurationItem);
 
   }

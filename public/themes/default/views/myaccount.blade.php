@@ -795,6 +795,38 @@ cursor: pointer;
                               </span>
                            </form>
 
+                           {{-- DOB --}}
+                           <hr style="border:0.5px solid #fff;">
+
+                           <div class="row align-items-center">
+                              <div class="col-md-8">
+                                 <span class="text-light font-size-13">Date of Birth</span>
+                              </div>
+                              <div class="col-md-4 text-right">
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_DOB">Add</a>
+                              </div>
+                           </div>
+
+                           
+                           <form id="DOB" accept-charset="UTF-8" action="{{ URL::to('user/DOB') }}"   enctype="multipart/form-data" method="post">
+                              @csrf
+                              <input type="hidden" name="users_id" value="{{ $user->id }}" />
+                              <input type="hidden" name="email" value="{{ $user->email }}" />
+                              <span id="user_DOB" class="collapse">
+                                       <div class="row mt-3">
+                                          <div class="col-md-8">
+                                                <input type="date" id="DOB" name="DOB" value="@if(!empty($user->DOB)){{ $user->DOB }}@endif">
+
+                                          </div>
+                                       <div class="col-md-4">
+                   
+                                       <a type="button"  class="btn round DOB text-white">Add</a>
+                                          </div>
+                                       </div>
+                              </span>
+                           </form>
+
+
                           <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-8">
@@ -1527,96 +1559,6 @@ cursor: pointer;
 
 		</div>
 		<?php $settings = App\Setting::first(); ?>
-      <footer class="mb-0">
-         <div class="container-fluid">
-            <div class="block-space">
-               <div class="row align-items-center">
-                   <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
-                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
-                     <div class="d-flex mt-2">
-                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
-                        <i class="ri-facebook-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-skype-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-linkedin-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-whatsapp-fill"></i>
-                        </a>
-                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
-                        <i class="fa fa-google-plus"></i>
-                        </a>
-                     </div>
-                  </div>
-                  <div class="col-lg-3 col-md-4 col-sm-12 p-0">
-                     <ul class="f-link list-unstyled mb-0">
-                        <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
-                     </ul>
-                  </div>                  
-                  <div class="col-lg-3 col-md-4">
-                      <!-- <div class="row">
-                     <ul class="f-link list-unstyled mb-0 catag"> -->
-                        <!-- <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
-                        <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
-                        <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
-                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li> -->
-                         
-                          <!-- </ul>
-                          <ul class="f-link list-unstyled mb-0"> -->
-                        
-                         <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
-                         <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
-                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> -->
-                          <!-- </ul> -->
-                      <!-- </div> -->
-                      
-                      <!--<ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>-->
-				</div>
-                   <div class="col-lg-3 col-md-4 p-0">
-                     <!--<ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Cotact Us</a></li>
-                        <li><a href="#">Legal Notice</a></li>
-                     </ul>-->
-                      <ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-                  
-                   </div>
-               </div>
-            </div>
-         <div class="copyright py-2">
-            <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
-            </div>
-         </div>
-      </footer>
 
           <!-- back-to-top End -->
      <!-- back-to-top End -->
@@ -2038,6 +1980,10 @@ jQuery(document).ready(function($){
             $('#tv-code').submit();
          });
 
+         $(".DOB").click(function(){
+            $('#DOB').submit();
+         });
+
       });
 
       
@@ -2053,3 +1999,6 @@ jQuery(document).ready(function($){
     $('.main-nav').removeClass('open');
 });
    </script>
+@php
+include(public_path('themes/default/views/footer.blade.php'));
+@endphp

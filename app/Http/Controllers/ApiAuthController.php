@@ -12057,14 +12057,25 @@ public function QRCodeMobileLogout(Request $request)
                     $currentPage,
                     ['path' => request()->url()]
                 );
-
-
+                $current_page = request()->get('page');
+             
+                if(request()->get('page') > 1 ){
+                  foreach($mergedResults as $key => $value){                   
+                    $array_values[] = $value;
+                  }
+             
+                }else{
+                  foreach($mergedResults as $key => $value){
+                    $array_values[] = $value;
+                  }
+                }
             $videos_data[] = $mergedResults ;
 
             return response()->json([
               'status'  => 'true',
               'Message' => 'All videos Retrieved  Successfully',
-              'videos'    => $mergedResults,
+              'current_page'    => $current_page,
+              'videos'    => $array_values,
               'ppv_gobal_price'  => $this->ppv_gobal_price,
               'SeriesGenre'      => $SeriesGenre ,
               'VideoCategory'    => $VideoCategory ,
@@ -13605,4 +13616,139 @@ public function QRCodeMobileLogout(Request $request)
 
   }
 
+  
+
+  public function android_continue_watchings(Request $request)
+  {
+      $user_id = $request->user_id;
+      $current_duration = $request->current_duration;
+      $watch_percentage = $request->watch_percentage;
+      $andriodId = $request->andriodId;
+      $UserType = $request->UserType;
+      if(!empty($request->skip_time)){
+      $skip_time = $request->skip_time;
+      }else{
+        $skip_time = 0;
+      }
+      if($request->video_id){
+          $video_id = $request->video_id;
+          $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
+          $andriodId_count = ContinueWatching::where('andriodId', '=', $andriodId)->where('videoid', '=', $video_id)->count();
+          if ( $count > 0 ) {
+            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
+            $response = array(
+              'status'=>'true',
+              'message'=>'Current Time updated'
+          );
+        }else if ( $andriodId_count > 0 ) {
+          ContinueWatching::where('andriodId', '=', $andriodId)->where('videoid', '=', $video_id)
+          ->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,
+          'skip_time' => $skip_time]);
+          $response = array(
+            'status'=>'true',
+            'message'=>'Current Time updated'
+        );
+       } else {
+            $data = array('user_id' => $user_id,'andriodId' => $andriodId,'UserType'=> $UserType, 'videoid' => $video_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time );
+            ContinueWatching::insert($data);
+            $response = array(
+              'status'=>'true',
+              'message'=>'Added  to  Continue Watching List'
+          );
+
+        }
+      }
+
+
+      return response()->json($response, 200);
+  }
+
+  public function android_ContinueWatching(Request $request)
+  {
+
+      $user_id = $request->user_id;
+      $andriodId = $request->andriodId;
+      // print_r($andriodId);exit;
+
+      if(!empty($andriodId) ){
+        $andriodId = $request->andriodId;
+      }else{
+        $andriodId = 0;
+      }
+      if(!empty($user_id) ){
+        $user_id = $request->user_id;
+      }else{
+        $user_id = 0;
+      }
+    /*channel videos*/
+    $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
+    $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
+
+    $andrio_video_ids = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->get();
+    $andrio_video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->count();
+    if ( $andrio_video_ids_count  > 0 && $video_ids_count  > 0) {
+    $ContinueWatching = array_merge($video_ids->toArray(), $andrio_video_ids->toArray()/*, $arrayN, $arrayN*/);
+
+      foreach ($ContinueWatching as $key => $value1) {
+        $k2[] = $value1['videoid'];
+      }
+      // print_r($k2);exit;
+
+      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        return $item;
+      });
+      $response = array(
+        'status' => "true",
+        'videos'=> $videos,
+      );
+    }else if ( $video_ids_count  > 0) {
+
+      foreach ($video_ids as $key => $value1) {
+        $k2[] = $value1->videoid;
+      }
+      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        return $item;
+      });
+      $response = array(
+        'status' => "true",
+        'videos'=> $videos,
+      );
+    }elseif ( $andrio_video_ids_count  > 0) {
+
+      foreach ($andrio_video_ids as $key => $value1) {
+        $k2[] = $value1->videoid;
+      }
+      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        return $item;
+      });
+      $response = array(
+        'status' => "true",
+        'videos'=> $videos,
+      );
+    }else{
+      $response = array(
+        'status' => "false",
+        'videos'=> [],
+      );
+    }
+
+
+    // $response = array(
+    //     'status'=>$status,
+    //     'videos'=> $videos
+    //   );
+    return response()->json($response, 200);
+
+
+
+  }
 }
