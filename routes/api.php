@@ -460,5 +460,43 @@ Route::group(
         Route::post('LoggedUserDeviceDelete', 'ApiAuthController@LoggedUserDeviceDelete');
         Route::post('android_continue_watchings', 'ApiAuthController@android_continue_watchings');
         Route::post('android_list_continue_watchings', 'ApiAuthController@android_ContinueWatching');
+        Route::post('Ios_continue_watchings', 'ApiAuthController@Ios_continue_watchings');
+        Route::post('Ios_list_continue_watchings', 'ApiAuthController@Ios_ContinueWatching');
 
+
+        Route::post('addwishlist', 'ApiAuthController@addwishlist');
+        Route::post('addfavorite', 'ApiAuthController@addfavorite');
+        Route::post('addwatchlater', 'ApiAuthController@addwatchlater');
+
+            // Audio Like & dislike - Android
+            Route::post('/Android_Videolike', 'ApiAuthController@Android_LikeVideo');
+            Route::post('/Android_Videodislike', 'ApiAuthController@Android_DisLikeVideo');
+
+            // Audio Like & dislike - Android
+            Route::post('Android_Audiolike', 'ApiAuthController@Android_Audiolike');
+            Route::post('Android_Audiodislike', 'ApiAuthController@Android_Audiodislike');
+
+            Route::post('Android_live_like', 'ApiAuthController@Android_live_like');
+            Route::post('Android_live_dislike', 'ApiAuthController@Android_live_dislike');
+
+            // Audio Like & dislike - Android
+            Route::post('Android_Episodelike', 'ApiAuthController@Android_Episodelike');
+            Route::post('Android_Episodedislike', 'ApiAuthController@Android_Episodedislike');
+
+
+            // Audio Like & dislike - IOS
+            Route::post('/IOS_Videolike', 'ApiAuthController@IOS_LikeVideo');
+            Route::post('/IOS_Videodislike', 'ApiAuthController@IOS_DisLikeVideo');
+
+            // Audio Like & dislike - IOS
+            Route::post('IOS_Audiolike', 'ApiAuthController@IOS_Audiolike');
+            Route::post('IOS_Audiodislike', 'ApiAuthController@IOS_Audiodislike');
+
+            Route::post('IOS_live_like', 'ApiAuthController@IOS_live_like');
+            Route::post('IOS_live_dislike', 'ApiAuthController@IOS_live_dislike');
+
+            // Audio Like & dislike - IOS
+            Route::post('IOS_Episodelike', 'ApiAuthController@IOS_Episodelike');
+            Route::post('IOS_Episodedislike', 'ApiAuthController@IOS_Episodedislike');
+                
     });
