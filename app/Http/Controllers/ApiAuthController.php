@@ -12057,14 +12057,25 @@ public function QRCodeMobileLogout(Request $request)
                     $currentPage,
                     ['path' => request()->url()]
                 );
-
-
+                $current_page = request()->get('page');
+             
+                if(request()->get('page') > 1 ){
+                  foreach($mergedResults as $key => $value){                   
+                    $array_values[] = $value;
+                  }
+             
+                }else{
+                  foreach($mergedResults as $key => $value){
+                    $array_values[] = $value;
+                  }
+                }
             $videos_data[] = $mergedResults ;
 
             return response()->json([
               'status'  => 'true',
               'Message' => 'All videos Retrieved  Successfully',
-              'videos'    => $mergedResults,
+              'current_page'    => $current_page,
+              'videos'    => $array_values,
               'ppv_gobal_price'  => $this->ppv_gobal_price,
               'SeriesGenre'      => $SeriesGenre ,
               'VideoCategory'    => $VideoCategory ,
