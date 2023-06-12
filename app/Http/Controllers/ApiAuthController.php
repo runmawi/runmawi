@@ -12044,7 +12044,7 @@ public function QRCodeMobileLogout(Request $request)
             // Merge the results of the video, series, and audio album queries
 
                 $mergedResults = $videos->merge($Series)->merge($AudioAlbums);
-
+                  // echo "<pre>";
             // Paginate the merged results using LengthAwarePaginator
 
                 $currentPage = request()->get('page') ?: 1;
@@ -12057,11 +12057,15 @@ public function QRCodeMobileLogout(Request $request)
                     $currentPage,
                     ['path' => request()->url()]
                 );
+                // print_r($mergedResults);exit;
+
                 $current_page = request()->get('page');
              
                 if(request()->get('page') > 1 ){
                   foreach($mergedResults as $key => $value){                   
                     $array_values[] = $value;
+                // print_r($mergedResults);exit;
+
                   }
              
                 }else{
@@ -12074,14 +12078,16 @@ public function QRCodeMobileLogout(Request $request)
             return response()->json([
               'status'  => 'true',
               'Message' => 'All videos Retrieved  Successfully',
+              'mergedResults'    => $mergedResults ,
               'current_page'    => $current_page,
-              'videos'    => $array_values,
+              'videos'    => $mergedResults,
               'ppv_gobal_price'  => $this->ppv_gobal_price,
               'SeriesGenre'      => $SeriesGenre ,
               'VideoCategory'    => $VideoCategory ,
               'video_andriod'    => $videos_data ,
               'currency'         => CurrencySetting::first(),
               'ThumbnailSetting' => ThumbnailSetting::first(),
+
            ], 200);
 
     } catch (\Throwable $th) {
@@ -13751,4 +13757,1002 @@ public function QRCodeMobileLogout(Request $request)
 
 
   }
+
+  public function Ios_continue_watchings(Request $request)
+  {
+      $user_id = $request->user_id;
+      $current_duration = $request->current_duration;
+      $watch_percentage = $request->watch_percentage;
+      $IOSId = $request->IOSId;
+      $UserType = $request->UserType;
+      if(!empty($request->skip_time)){
+      $skip_time = $request->skip_time;
+      }else{
+        $skip_time = 0;
+      }
+      if($request->video_id){
+          $video_id = $request->video_id;
+          $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
+          $IOSId_count = ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)->count();
+          if ( $count > 0 ) {
+            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
+            $response = array(
+              'status'=>'true',
+              'message'=>'Current Time updated'
+          );
+        }else if ( $IOSId_count > 0 ) {
+          ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)
+          ->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,
+          'skip_time' => $skip_time]);
+          $response = array(
+            'status'=>'true',
+            'message'=>'Current Time updated'
+        );
+       } else {
+            $data = array('user_id' => $user_id,'IOSId' => $IOSId,'UserType'=> $UserType, 'videoid' => $video_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time );
+            ContinueWatching::insert($data);
+            $response = array(
+              'status'=>'true',
+              'message'=>'Added  to  Continue Watching List'
+          );
+
+        }
+      }
+
+
+      return response()->json($response, 200);
+  }
+
+  public function Ios_ContinueWatching(Request $request)
+  {
+
+      $user_id = $request->user_id;
+      $IOSId = $request->IOSId;
+      // print_r($IOSId);exit;
+
+      if(!empty($IOSId) ){
+        $IOSId = $request->IOSId;
+      }else{
+        $IOSId = 0;
+      }
+      if(!empty($user_id) ){
+        $user_id = $request->user_id;
+      }else{
+        $user_id = 0;
+      }
+    /*channel videos*/
+    $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
+    $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
+
+    $ios_video_ids = ContinueWatching::where('videoid','!=',NULL)->where('IOSId','=',$IOSId)->get();
+    $ios_video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('IOSId','=',$IOSId)->count();
+    if ( $ios_video_ids_count  > 0 && $video_ids_count  > 0) {
+    $ContinueWatching = array_merge($video_ids->toArray(), $ios_video_ids->toArray()/*, $arrayN, $arrayN*/);
+
+      foreach ($ContinueWatching as $key => $value1) {
+        $k2[] = $value1['videoid'];
+      }
+      // print_r($k2);exit;
+
+      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        return $item;
+      });
+      $response = array(
+        'status' => "true",
+        'videos'=> $videos,
+      );
+    }else if ( $video_ids_count  > 0) {
+
+      foreach ($video_ids as $key => $value1) {
+        $k2[] = $value1->videoid;
+      }
+      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        return $item;
+      });
+      $response = array(
+        'status' => "true",
+        'videos'=> $videos,
+      );
+    }elseif ( $ios_video_ids_count  > 0) {
+
+      foreach ($ios_video_ids as $key => $value1) {
+        $k2[] = $value1->videoid;
+      }
+      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        return $item;
+      });
+      $response = array(
+        'status' => "true",
+        'videos'=> $videos,
+      );
+    }else{
+      $response = array(
+        'status' => "false",
+        'videos'=> [],
+      );
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+
+  
+  public function android_add_video_wishlist(Request $request) {
+
+    $andriodId = $request->andriodId;
+    $video_id = $request->video_id;
+
+    if (!empty($video_id)) {
+        $count = Wishlist::where('andriodId', $andriodId)->where('video_id', $video_id)->count();
+
+        if ($count > 0) {
+            Wishlist::where('andriodId', $andriodId)->where('video_id', $video_id)->delete();
+
+            $response = [
+                'status' => 'false',
+                'message' => 'Removed From Your Wishlist'
+            ];
+        } else {
+            $data = ['andriodId' => $andriodId, 'video_id' => $video_id];
+            Wishlist::insert($data);
+
+            $response = [
+                'status' => 'true',
+                'message' => 'Added to Your Wishlist'
+            ];
+        }
+    }
+    return response()->json($response, 200);
+
+  }
+
+  public function android_add_video_favorite(Request $request) {
+
+    try {
+      
+      $andriodId = $request->andriodId;
+      $video_id = $request->video_id;
+
+      if (!empty($video_id)) {
+          $count = Favorite::where('andriodId', $andriodId)->where('video_id', $video_id)->count();
+
+          if ($count > 0) {
+              Favorite::where('andriodId', $andriodId)->where('video_id', $video_id)->delete();
+
+              $response = [
+                  'status' => 'false',
+                  'message' => 'Removed From Your Favorite'
+              ];
+          } else {
+              $data = ['andriodId' => $andriodId, 'video_id' => $video_id];
+              Favorite::insert($data);
+
+              $response = [
+                    'status' => 'true',
+                    'message' => 'Added to Your Favorite'
+                ];
+            }
+      }
+    } catch (\Throwable $th) {
+        $response = [
+          'status' => 'false',
+          'message' => $th->getMessage(),
+        ];
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+  
+  public function android_add_video_watchlater(Request $request) {
+
+    $andriodId = $request->andriodId;
+    $video_id = $request->video_id;
+    if($request->video_id != ''){
+      $count = Watchlater::where('andriodId', '=', $andriodId)->where('video_id', '=', $video_id)->count();
+      if ( $count > 0 ) {
+        Watchlater::where('andriodId', '=', $andriodId)->where('video_id', '=', $video_id)->delete();
+        $response = array(
+          'status'=>'false',
+          'message'=>'Removed From Your Watch Later'
+        );
+      } else {
+        $data = array('andriodId' => $andriodId, 'video_id' => $video_id );
+        Watchlater::insert($data);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Added to Your Watch Later'
+        );
+
+      }
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+
+  public function Android_DisLikeVideo(Request $request)
+  {
+    $andriodId = $request->andriodId;
+    $video_id = $request->video_id;
+    $dislike = $request->dislike;
+    $d_like = Likedislike::where("video_id",$video_id)->where("andriodId",$andriodId)->count();
+
+    if($d_like > 0){
+      $new_vide_dislike = Likedislike::where("video_id",$video_id)->where("andriodId",$andriodId)->first();
+      if($dislike == 1){
+        $new_vide_dislike->andriodId = $request->andriodId;
+        $new_vide_dislike->video_id = $request->video_id;
+        $new_vide_dislike->liked = 0;
+        $new_vide_dislike->disliked = 1;
+        $new_vide_dislike->save();
+      }else{
+        $new_vide_dislike->andriodId = $request->andriodId;
+        $new_vide_dislike->video_id = $request->video_id;
+        $new_vide_dislike->disliked = 0;
+        $new_vide_dislike->save();
+      }
+    }else{
+      $new_vide_dislike = new Likedislike;
+      $new_vide_dislike->andriodId = $request->andriodId;
+      $new_vide_dislike->video_id = $request->video_id;
+      $new_vide_dislike->liked = 0;
+      $new_vide_dislike->disliked = 1;
+      $new_vide_dislike->save();
+    }
+
+     $response = array(
+      'status'=>'true',
+      'liked' => $new_vide_dislike->liked,
+      'disliked' => $new_vide_dislike->disliked,
+      'message'=>'success'
+    );
+
+     return response()->json($response, 200);
+  }
+
+  
+
+  public function Android_LikeVideo(Request $request)
+  {
+    $andriodId = $request->andriodId;
+    $video_id = $request->video_id;
+    $like = $request->like;
+    $d_like = Likedislike::where("video_id",$video_id)->where("andriodId",$andriodId)->count();
+    if($d_like > 0){
+      $new_vide_like = Likedislike::where("video_id",$video_id)->where("andriodId",$andriodId)->first();
+      if($like == 1){
+        $new_vide_like->andriodId = $request->andriodId;
+        $new_vide_like->video_id = $request->video_id;
+        $new_vide_like->liked = 1;
+        $new_vide_like->disliked = 0;
+        $new_vide_like->save();
+      }else{
+        $new_vide_like->andriodId = $request->andriodId;
+        $new_vide_like->video_id = $request->video_id;
+        $new_vide_like->liked = 0;
+        $new_vide_like->save();
+      }
+    }else{
+      $new_vide_like = new Likedislike;
+      $new_vide_like->andriodId = $request->andriodId;
+      $new_vide_like->video_id = $request->video_id;
+      $new_vide_like->liked = 1;
+      $new_vide_like->disliked = 0;
+      $new_vide_like->save();
+    }
+
+     $response = array(
+      'status'=>'true',
+      'liked' => $new_vide_like->liked,
+      'disliked' => $new_vide_like->disliked,
+      'message'=>'success'
+    );
+
+     return response()->json($response, 200);
+
+  }
+
+
+  public function Android_Audiolike(Request $request)
+  {
+    $andriodId = $request->andriodId;
+    $audio_id = $request->audio_id;
+
+    $like_count = Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->count();
+    $like_counts = Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->where('liked','=' ,'1')->count();
+    $unlike_count = Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->where('liked', 0)->count();
+
+    if($like_count > 0){
+
+      if($like_counts > 0){
+        Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->where('liked','=' ,'1')
+        ->update([
+                'andriodId'  => $andriodId ,
+                'audio_id' => $audio_id ,
+                'liked'    => '0' ,
+                'disliked'    => '0',
+              ]);
+
+      }elseif( $unlike_count > 0){
+          Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->where('liked',0)
+          ->update([
+                  'andriodId'  => $andriodId ,
+                  'audio_id' => $audio_id ,
+                  'liked'    => '1' ,
+                  'disliked'    => '0',
+                ]);
+      }
+
+    }
+    else{
+        Likedislike::create([
+          'andriodId'  => $andriodId ,
+          'audio_id' => $audio_id ,
+          'liked'    => '1' ,
+          'disliked'    => '0' ,
+        ]);
+    }
+
+    $response = array(
+      'status'=>'true',
+      'like'  =>  Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->pluck('liked')->first(),
+      'dislike'  =>   Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->pluck('disliked')->first(),
+    );
+
+    return response()->json($response, 200);
+
+  }
+
+  public function Android_Audiodislike(Request $request)
+  {
+      $andriodId = $request->andriodId;
+      $audio_id = $request->audio_id;
+
+      $dislike_count = Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->count();
+      $dislike_counts = Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->where('disliked',1)->count();
+      $undislike_count = Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->where('disliked', 0)->count();
+
+      if($dislike_count > 0){
+
+        if($dislike_counts > 0){
+          Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->where('disliked','=' ,'1')
+          ->update([
+                  'andriodId'  => $andriodId ,
+                  'audio_id' => $audio_id ,
+                  'liked'    => '0' ,
+                  'disliked'    => '0',
+                ]);
+
+        }elseif( $undislike_count > 0){
+            Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->where('disliked',0)
+            ->update([
+                    'andriodId'  => $andriodId ,
+                    'audio_id' => $audio_id ,
+                    'liked'    => '0' ,
+                    'disliked'    => '1',
+                  ]);
+        }
+
+
+      }else{
+          Likedislike::create([
+            'andriodId'  => $andriodId ,
+            'audio_id' => $audio_id ,
+            'liked'    => '0',
+            'disliked'    => '1',
+          ]);
+      }
+
+      $response = array(
+        'status'=>'true',
+        'like'  =>  Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->pluck('liked')->first(),
+        'dislike'  =>   Likedislike::where("audio_id",$audio_id)->where("andriodId",$andriodId)->pluck('disliked')->first(),
+      );
+
+      return response()->json($response, 200);
+  }
+ 
+  
+  
+  public function Android_live_like(Request $request)
+  {
+      $andriodId = $request->andriodId;
+      $live_id = $request->live_id;
+
+      $like_count = Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->count();
+      $like_counts = Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->where('liked','=' ,'1')->count();
+      $unlike_count = Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->where('liked', 0)->count();
+
+      if($like_count > 0){
+
+        if($like_counts > 0){
+          Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->where('liked','=' ,'1')
+          ->update([
+                  'andriodId'  => $andriodId ,
+                  'live_id' => $live_id ,
+                  'liked'    => '0' ,
+                  'disliked'    => '0',
+                ]);
+
+        }elseif( $unlike_count > 0){
+            Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->where('liked',0)
+            ->update([
+                    'andriodId'  => $andriodId ,
+                    'live_id' => $live_id ,
+                    'liked'    => '1' ,
+                    'disliked'    => '0',
+                  ]);
+        }
+
+      }
+      else{
+          Likedislike::create([
+            'andriodId'  => $andriodId ,
+            'live_id' => $live_id ,
+            'liked'    => '1' ,
+            'disliked'    => '0' ,
+          ]);
+      }
+
+      $response = array(
+        'status'=>'true',
+        'like'  =>  Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->pluck('liked')->first(),
+        'dislike'  =>   Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->pluck('disliked')->first(),
+      );
+
+      return response()->json($response, 200);
+  }
+
+  public function Android_live_dislike(Request $request)
+
+  {
+      $andriodId = $request->andriodId;
+      $live_id = $request->live_id;
+
+      $dislike_count = Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->count();
+      $dislike_counts = Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->where('disliked',1)->count();
+      $undislike_count = Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->where('disliked', 0)->count();
+
+      if($dislike_count > 0){
+
+        if($dislike_counts > 0){
+          Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->where('disliked','=' ,'1')
+          ->update([
+                  'andriodId'  => $andriodId ,
+                  'live_id' => $live_id ,
+                  'liked'    => '0' ,
+                  'disliked'    => '0',
+                ]);
+
+        }elseif( $undislike_count > 0){
+            Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->where('disliked',0)
+            ->update([
+                    'andriodId'  => $andriodId ,
+                    'live_id' => $live_id ,
+                    'liked'    => '0' ,
+                    'disliked'    => '1',
+                  ]);
+        }
+
+
+      }else{
+          Likedislike::create([
+            'andriodId'  => $andriodId ,
+            'live_id' => $live_id ,
+            'liked'    => '0',
+            'disliked'    => '1',
+          ]);
+      }
+
+      $response = array(
+        'status'=>'true',
+        'like'  =>  Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->pluck('liked')->first(),
+        'dislike'  =>   Likedislike::where("live_id",$live_id)->where("andriodId",$andriodId)->pluck('disliked')->first(),
+      );
+
+      return response()->json($response, 200);
+  }
+
+  
+
+  public function Android_Episodelike(Request $request)
+  {
+    $andriodId = $request->andriodId;
+    $episode_id = $request->episode_id;
+
+    $like_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->count();
+    $like_counts = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('liked','=' ,'1')->count();
+    $unlike_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('liked', 0)->count();
+
+    if($like_count > 0){
+
+      if($like_counts > 0){
+        Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('liked','=' ,'1')
+        ->update([
+                'andriodId'  => $andriodId ,
+                'episode_id' => $episode_id ,
+                'liked'    => '0' ,
+                'disliked'    => '0',
+              ]);
+
+      }elseif( $unlike_count > 0){
+          Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('liked',0)
+          ->update([
+                  'andriodId'  => $andriodId ,
+                  'episode_id' => $episode_id ,
+                  'liked'    => '1' ,
+                  'disliked'    => '0',
+                ]);
+      }
+
+    }
+    else{
+        Likedislike::create([
+          'andriodId'  => $andriodId ,
+          'episode_id' => $episode_id ,
+          'liked'    => '1' ,
+          'disliked'    => '0' ,
+        ]);
+    }
+
+    $response = array(
+      'status'=>'true',
+      'like'  =>  Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('liked')->first(),
+      'dislike'  =>   Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('disliked')->first(),
+    );
+
+    return response()->json($response, 200);
+
+  }
+
+  public function Android_Episodedislike(Request $request)
+  {
+      $andriodId = $request->andriodId;
+      $episode_id = $request->episode_id;
+
+      $dislike_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->count();
+      $dislike_counts = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('disliked',1)->count();
+      $undislike_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('disliked', 0)->count();
+
+      if($dislike_count > 0){
+
+        if($dislike_counts > 0){
+          Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('disliked','=' ,'1')
+          ->update([
+                  'andriodId'  => $andriodId ,
+                  'episode_id' => $episode_id ,
+                  'liked'    => '0' ,
+                  'disliked'    => '0',
+                ]);
+
+        }elseif( $undislike_count > 0){
+            Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('disliked',0)
+            ->update([
+                    'andriodId'  => $andriodId ,
+                    'episode_id' => $episode_id ,
+                    'liked'    => '0' ,
+                    'disliked'    => '1',
+                  ]);
+        }
+
+
+      }else{
+          Likedislike::create([
+            'andriodId'  => $andriodId ,
+            'episode_id' => $episode_id ,
+            'liked'    => '0',
+            'disliked'    => '1',
+          ]);
+      }
+
+      $response = array(
+        'status'=>'true',
+        'like'  =>  Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('liked')->first(),
+        'dislike'  =>   Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('disliked')->first(),
+      );
+
+      return response()->json($response, 200);
+  }
+
+
+
+  // like dislike guest IOS
+
+  public function IOS_DisLikeVideo(Request $request)
+  {
+    $IOSId = $request->IOSId;
+    $video_id = $request->video_id;
+    $dislike = $request->dislike;
+    $d_like = Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->count();
+
+    if($d_like > 0){
+      $new_vide_dislike = Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->first();
+      if($dislike == 1){
+        $new_vide_dislike->IOSId = $request->IOSId;
+        $new_vide_dislike->video_id = $request->video_id;
+        $new_vide_dislike->liked = 0;
+        $new_vide_dislike->disliked = 1;
+        $new_vide_dislike->save();
+      }else{
+        $new_vide_dislike->IOSId = $request->IOSId;
+        $new_vide_dislike->video_id = $request->video_id;
+        $new_vide_dislike->disliked = 0;
+        $new_vide_dislike->save();
+      }
+    }else{
+      $new_vide_dislike = new Likedislike;
+      $new_vide_dislike->IOSId = $request->IOSId;
+      $new_vide_dislike->video_id = $request->video_id;
+      $new_vide_dislike->liked = 0;
+      $new_vide_dislike->disliked = 1;
+      $new_vide_dislike->save();
+    }
+
+     $response = array(
+      'status'=>'true',
+      'liked' => $new_vide_dislike->liked,
+      'disliked' => $new_vide_dislike->disliked,
+      'message'=>'success'
+    );
+
+     return response()->json($response, 200);
+  }
+
+  
+
+  public function IOS_LikeVideo(Request $request)
+  {
+    $IOSId = $request->IOSId;
+    $video_id = $request->video_id;
+    $like = $request->like;
+    $d_like = Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->count();
+    if($d_like > 0){
+      $new_vide_like = Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->first();
+      if($like == 1){
+        $new_vide_like->IOSId = $request->IOSId;
+        $new_vide_like->video_id = $request->video_id;
+        $new_vide_like->liked = 1;
+        $new_vide_like->disliked = 0;
+        $new_vide_like->save();
+      }else{
+        $new_vide_like->IOSId = $request->IOSId;
+        $new_vide_like->video_id = $request->video_id;
+        $new_vide_like->liked = 0;
+        $new_vide_like->save();
+      }
+    }else{
+      $new_vide_like = new Likedislike;
+      $new_vide_like->IOSId = $request->IOSId;
+      $new_vide_like->video_id = $request->video_id;
+      $new_vide_like->liked = 1;
+      $new_vide_like->disliked = 0;
+      $new_vide_like->save();
+    }
+
+     $response = array(
+      'status'=>'true',
+      'liked' => $new_vide_like->liked,
+      'disliked' => $new_vide_like->disliked,
+      'message'=>'success'
+    );
+
+     return response()->json($response, 200);
+
+  }
+
+
+  public function IOS_Audiolike(Request $request)
+  {
+    $IOSId = $request->IOSId;
+    $audio_id = $request->audio_id;
+
+    $like_count = Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->count();
+    $like_counts = Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->where('liked','=' ,'1')->count();
+    $unlike_count = Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->where('liked', 0)->count();
+
+    if($like_count > 0){
+
+      if($like_counts > 0){
+        Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->where('liked','=' ,'1')
+        ->update([
+                'IOSId'  => $IOSId ,
+                'audio_id' => $audio_id ,
+                'liked'    => '0' ,
+                'disliked'    => '0',
+              ]);
+
+      }elseif( $unlike_count > 0){
+          Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->where('liked',0)
+          ->update([
+                  'IOSId'  => $IOSId ,
+                  'audio_id' => $audio_id ,
+                  'liked'    => '1' ,
+                  'disliked'    => '0',
+                ]);
+      }
+
+    }
+    else{
+        Likedislike::create([
+          'IOSId'  => $IOSId ,
+          'audio_id' => $audio_id ,
+          'liked'    => '1' ,
+          'disliked'    => '0' ,
+        ]);
+    }
+
+    $response = array(
+      'status'=>'true',
+      'like'  =>  Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->pluck('liked')->first(),
+      'dislike'  =>   Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->pluck('disliked')->first(),
+    );
+
+    return response()->json($response, 200);
+
+  }
+
+  public function IOS_Audiodislike(Request $request)
+  {
+      $IOSId = $request->IOSId;
+      $audio_id = $request->audio_id;
+
+      $dislike_count = Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->count();
+      $dislike_counts = Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->where('disliked',1)->count();
+      $undislike_count = Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->where('disliked', 0)->count();
+
+      if($dislike_count > 0){
+
+        if($dislike_counts > 0){
+          Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->where('disliked','=' ,'1')
+          ->update([
+                  'IOSId'  => $IOSId ,
+                  'audio_id' => $audio_id ,
+                  'liked'    => '0' ,
+                  'disliked'    => '0',
+                ]);
+
+        }elseif( $undislike_count > 0){
+            Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->where('disliked',0)
+            ->update([
+                    'IOSId'  => $IOSId ,
+                    'audio_id' => $audio_id ,
+                    'liked'    => '0' ,
+                    'disliked'    => '1',
+                  ]);
+        }
+
+
+      }else{
+          Likedislike::create([
+            'IOSId'  => $IOSId ,
+            'audio_id' => $audio_id ,
+            'liked'    => '0',
+            'disliked'    => '1',
+          ]);
+      }
+
+      $response = array(
+        'status'=>'true',
+        'like'  =>  Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->pluck('liked')->first(),
+        'dislike'  =>   Likedislike::where("audio_id",$audio_id)->where("IOSId",$IOSId)->pluck('disliked')->first(),
+      );
+
+      return response()->json($response, 200);
+  }
+ 
+  
+  
+  public function IOS_live_like(Request $request)
+  {
+      $IOSId = $request->IOSId;
+      $live_id = $request->live_id;
+
+      $like_count = Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->count();
+      $like_counts = Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->where('liked','=' ,'1')->count();
+      $unlike_count = Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->where('liked', 0)->count();
+
+      if($like_count > 0){
+
+        if($like_counts > 0){
+          Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->where('liked','=' ,'1')
+          ->update([
+                  'IOSId'  => $IOSId ,
+                  'live_id' => $live_id ,
+                  'liked'    => '0' ,
+                  'disliked'    => '0',
+                ]);
+
+        }elseif( $unlike_count > 0){
+            Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->where('liked',0)
+            ->update([
+                    'IOSId'  => $IOSId ,
+                    'live_id' => $live_id ,
+                    'liked'    => '1' ,
+                    'disliked'    => '0',
+                  ]);
+        }
+
+      }
+      else{
+          Likedislike::create([
+            'IOSId'  => $IOSId ,
+            'live_id' => $live_id ,
+            'liked'    => '1' ,
+            'disliked'    => '0' ,
+          ]);
+      }
+
+      $response = array(
+        'status'=>'true',
+        'like'  =>  Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->pluck('liked')->first(),
+        'dislike'  =>   Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->pluck('disliked')->first(),
+      );
+
+      return response()->json($response, 200);
+  }
+
+  public function IOS_live_dislike(Request $request)
+
+  {
+      $IOSId = $request->IOSId;
+      $live_id = $request->live_id;
+
+      $dislike_count = Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->count();
+      $dislike_counts = Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->where('disliked',1)->count();
+      $undislike_count = Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->where('disliked', 0)->count();
+
+      if($dislike_count > 0){
+
+        if($dislike_counts > 0){
+          Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->where('disliked','=' ,'1')
+          ->update([
+                  'IOSId'  => $IOSId ,
+                  'live_id' => $live_id ,
+                  'liked'    => '0' ,
+                  'disliked'    => '0',
+                ]);
+
+        }elseif( $undislike_count > 0){
+            Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->where('disliked',0)
+            ->update([
+                    'IOSId'  => $IOSId ,
+                    'live_id' => $live_id ,
+                    'liked'    => '0' ,
+                    'disliked'    => '1',
+                  ]);
+        }
+
+
+      }else{
+          Likedislike::create([
+            'IOSId'  => $IOSId ,
+            'live_id' => $live_id ,
+            'liked'    => '0',
+            'disliked'    => '1',
+          ]);
+      }
+
+      $response = array(
+        'status'=>'true',
+        'like'  =>  Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->pluck('liked')->first(),
+        'dislike'  =>   Likedislike::where("live_id",$live_id)->where("IOSId",$IOSId)->pluck('disliked')->first(),
+      );
+
+      return response()->json($response, 200);
+  }
+
+  
+
+  public function IOS_Episodelike(Request $request)
+  {
+    $IOSId = $request->IOSId;
+    $episode_id = $request->episode_id;
+
+    $like_count = Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->count();
+    $like_counts = Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->where('liked','=' ,'1')->count();
+    $unlike_count = Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->where('liked', 0)->count();
+
+    if($like_count > 0){
+
+      if($like_counts > 0){
+        Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->where('liked','=' ,'1')
+        ->update([
+                'IOSId'  => $IOSId ,
+                'episode_id' => $episode_id ,
+                'liked'    => '0' ,
+                'disliked'    => '0',
+              ]);
+
+      }elseif( $unlike_count > 0){
+          Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->where('liked',0)
+          ->update([
+                  'IOSId'  => $IOSId ,
+                  'episode_id' => $episode_id ,
+                  'liked'    => '1' ,
+                  'disliked'    => '0',
+                ]);
+      }
+
+    }
+    else{
+        Likedislike::create([
+          'IOSId'  => $IOSId ,
+          'episode_id' => $episode_id ,
+          'liked'    => '1' ,
+          'disliked'    => '0' ,
+        ]);
+    }
+
+    $response = array(
+      'status'=>'true',
+      'like'  =>  Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->pluck('liked')->first(),
+      'dislike'  =>   Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->pluck('disliked')->first(),
+    );
+
+    return response()->json($response, 200);
+
+  }
+
+  public function IOS_Episodedislike(Request $request)
+  {
+      $IOSId = $request->IOSId;
+      $episode_id = $request->episode_id;
+
+      $dislike_count = Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->count();
+      $dislike_counts = Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->where('disliked',1)->count();
+      $undislike_count = Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->where('disliked', 0)->count();
+
+      if($dislike_count > 0){
+
+        if($dislike_counts > 0){
+          Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->where('disliked','=' ,'1')
+          ->update([
+                  'IOSId'  => $IOSId ,
+                  'episode_id' => $episode_id ,
+                  'liked'    => '0' ,
+                  'disliked'    => '0',
+                ]);
+
+        }elseif( $undislike_count > 0){
+            Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->where('disliked',0)
+            ->update([
+                    'IOSId'  => $IOSId ,
+                    'episode_id' => $episode_id ,
+                    'liked'    => '0' ,
+                    'disliked'    => '1',
+                  ]);
+        }
+
+
+      }else{
+          Likedislike::create([
+            'IOSId'  => $IOSId ,
+            'episode_id' => $episode_id ,
+            'liked'    => '0',
+            'disliked'    => '1',
+          ]);
+      }
+
+      $response = array(
+        'status'=>'true',
+        'like'  =>  Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->pluck('liked')->first(),
+        'dislike'  =>   Likedislike::where("episode_id",$episode_id)->where("IOSId",$IOSId)->pluck('disliked')->first(),
+      );
+
+      return response()->json($response, 200);
+  }
+
 }
