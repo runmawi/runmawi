@@ -458,15 +458,22 @@ Route::group(
         Route::get('category_videos', 'ApiAuthController@Category_Videos');
         Route::post('relatedtvvideos', 'ApiAuthController@relatedtvvideos');
         Route::post('LoggedUserDeviceDelete', 'ApiAuthController@LoggedUserDeviceDelete');
+
         Route::post('android_continue_watchings', 'ApiAuthController@android_continue_watchings');
         Route::post('android_list_continue_watchings', 'ApiAuthController@android_ContinueWatching');
+
         Route::post('Ios_continue_watchings', 'ApiAuthController@Ios_continue_watchings');
         Route::post('Ios_list_continue_watchings', 'ApiAuthController@Ios_ContinueWatching');
 
 
-        Route::post('addwishlist', 'ApiAuthController@addwishlist');
-        Route::post('addfavorite', 'ApiAuthController@addfavorite');
-        Route::post('addwatchlater', 'ApiAuthController@addwatchlater');
+            Route::post('Android_addwishlist', 'ApiAuthController@Android_addwishlist');
+            Route::post('Android_Video_wishlist', 'ApiAuthController@Android_Video_wishlist');
+            Route::post('Android_Episode_wishlist', 'ApiAuthController@Android_Episode_wishlist');
+            Route::post('Android_Audio_wishlist', 'ApiAuthController@Android_Audio_wishlist');
+            Route::post('Android_LiveStream_wishlist', 'ApiAuthController@Android_LiveStream_wishlist');
+
+            Route::post('addfavorite', 'ApiAuthController@addfavorite');
+            Route::post('addwatchlater', 'ApiAuthController@addwatchlater');
 
             // Audio Like & dislike - Android
             Route::post('/Android_Videolike', 'ApiAuthController@Android_LikeVideo');
