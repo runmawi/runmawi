@@ -25,6 +25,7 @@ Route::group(
      
 
         Route::post('All_Homepage', 'ApiAuthController@All_Homepage');
+        Route::post('All_Pagelist', 'ApiAuthController@All_Pagelist');
 
         // Search 
         Route::post('search', 'ApiAuthController@search');

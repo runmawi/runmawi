@@ -13438,6 +13438,351 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
   }
 
+  public function All_Pagelist(Request $request)
+  {
+    try {
+
+      $source_name = $request->source_name;
+      $data = [];
+      $Page_List_Name = 'No data';
+      
+      if ($source_name != null) {
+          switch ($source_name) {
+              case 'latest_videos':
+                  $data = $this->Latest_videos_Pagelist();
+                  $Page_List_Name = 'Latest_videos_Pagelist';
+                  break;
+      
+              case 'live_videos':
+                  $data = $this->Livestream_Pagelist();
+                  $Page_List_Name = 'Livestream_Pagelist';
+                  break;
+      
+              case 'featured_videos':
+                  $data = $this->Featured_videos_Pagelist();
+                  $Page_List_Name = 'Featured_videos_Pagelist';
+                  break;
+      
+              case 'Datafree':
+                  $data = $this->Datafree_Pagelist();
+                  $Page_List_Name = 'Datafree_Pagelist';
+                  break;
+      
+              case 'ChannelPartner':
+                  $data = $this->Channel_Pagelist();
+                  $Page_List_Name = 'Channel_Pagelist';
+                  break;
+      
+              case 'ContentPartner':
+                  $data = $this->Content_Pagelist();
+                  $Page_List_Name = 'Content_Pagelist';
+                  break;
+      
+              case 'series':
+                  $data = $this->Series_Pagelist();
+                  $Page_List_Name = 'Livestream_Pagelist';
+                  break;
+      
+              case 'audios':
+                  $data = $this->Audios_Pagelist();
+                  $Page_List_Name = 'Audios_Pagelist';
+                  break;
+      
+              case 'Recommended_videos_site':
+                  $data = $this->Recommended_videos_site_Pagelist();
+                  $Page_List_Name = 'Recommended_videos_site_Pagelist';
+                  break;
+      
+              case 'Recommended_videos_Country':
+                  $data = $this->Recommended_videos_Country_Pagelist();
+                  $Page_List_Name = 'Recommended_videos_Country_Pagelist';
+                  break;
+      
+              case 'Recommended_videos_users':
+                  $data = $this->Recommended_videos_users_Pagelist($request->user_id);
+                  $Page_List_Name = 'Recommended_videos_users_Pagelist';
+                  break;
+          }
+      }
+
+        $response = array(
+          'status' => 'true',
+          'message' => ' Retrieved Page List Successfully',
+          'Page_List_Name' => $Page_List_Name,
+          'Page_List' => $data,
+        );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status' => 'false',
+        'Page_List' => $th->getMessage(),
+      );
+    }
+
+    return response()->json($response, 200);
+  }
+
+  private static function Latest_videos_Pagelist(){
+
+      $check_Kidmode = 0;
+
+      $query = Video::query()
+            ->select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict', 'player_image')
+            ->where('active', 1)
+            ->where('status', 1)
+            ->where('draft', 1);
+        
+      if (Geofencing() !== null && Geofencing()->geofencing === 'ON') {
+          $query->whereNotIn('videos.id', Block_videos());
+      }
+        
+      if ($check_Kidmode == 1) {
+          $query->whereBetween('age_restrict', [0, 12]);
+      }
+        
+      $data = $query->latest()->paginate(10);
+        
+      $data->getCollection()->transform(function ($item) {
+            $item->image_url = URL::to('/public/uploads/images/'.$item->image);
+            $item->player_image_url = URL::to('/public/uploads/images/'.$item->player_image);
+            $item->source = "Videos";
+            return $item;
+      });
+        
+      return $data;
+  }
+
+  private static function Featured_videos_Pagelist(){
+
+      $check_Kidmode = 0;
+
+      $query = Video::query()
+            ->select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict', 'player_image')
+            ->where('active', 1)
+            ->where('status', 1)
+            ->where('draft', 1)
+            ->where('featured',1);
+
+      if (Geofencing() !== null && Geofencing()->geofencing === 'ON') {
+          $query->whereNotIn('videos.id', Block_videos());
+      }
+        
+      if ($check_Kidmode == 1) {
+          $query->whereBetween('age_restrict', [0, 12]);
+      }
+        
+      $data = $query->latest()->paginate(10);
+        
+      $data->getCollection()->transform(function ($item) {
+            $item->image_url = URL::to('/public/uploads/images/'.$item->image);
+            $item->player_image_url = URL::to('/public/uploads/images/'.$item->player_image);
+            $item->source = "Videos";
+            return $item;
+      });
+        
+      return $data;
+  }
+
+  private static function Livestream_Pagelist(){
+
+      $query = LiveStream::query()
+        ->select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured')
+        ->where('active',1)->where('status', 1);
+
+      $data = $query->latest()->paginate(10);
+
+      $data->getCollection()->transform(function ($item) {
+            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+            $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+            $item['source']    = "Livestream";
+          return $item;
+      });
+          
+      return $data;
+  }
+
+  private static function Datafree_Pagelist(){
+
+  }
+
+  private static function Channel_Pagelist(){
+
+      $query = Channel::query()
+        ->select('id','channel_name','status','channel_image','channel_slug')
+        ->where('status',1);
+        
+      $data = $query->latest()->paginate(10);
+
+      $data->getCollection()->transform(function ($item) {
+        $item['image_url'] = $item->channel_image ;
+        $item['Player_image_url'] = $item->channel_image ; // Note - No Player Image for Channel
+        $item['source']    = "Channel_Partner";
+        return $item;
+      });
+
+      return $data;
+  }
+
+  private static function Content_Pagelist(){
+
+      $query = ModeratorsUser::query()
+        ->select('id','username','status','picture','slug')
+        ->where('status',1);
+        
+      $data = $query->latest()->paginate(10);
+
+      $data->getCollection()->transform(function ($item) {
+        $item['image_url'] =  URL::to('public/uploads/picture/'.$item->picture)  ;
+        $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->picture) ; // Note - No Player Image for Moderators User
+        $item['source']    = "Content_Partner";
+        return $item;
+      });
+
+      return $data;
+  }
+
+  private static function Series_Pagelist(){
+
+      $query = Series::query()
+        ->select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code','mp4_url','webm_url','ogg_url','url','player_image')
+        ->where('active', '=', '1');
+
+        $data = $query->latest()->paginate(10);
+
+        $data->getCollection()->transform(function ($item) {
+            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+            $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+            $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+            $item['episode_count'] = Episode::where('series_id',$item->id)->count();
+            $item['source']    = "Series";
+            return $item;
+        });
+
+      return $data;
+  }
+
+  private static function Audios_Pagelist(){
+
+      $query = Audio::query()
+        ->select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured')
+        ->where('active',1)->where('status', 1);
+
+        $data = $query->latest()->paginate(10);
+
+        $data->getCollection()->transform(function ($item) {
+          $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
+          $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+          $item['source']    = "Audios";
+          return $item;
+        });
+
+      return $data;
+  }
+
+  private static function Recommended_videos_site_Pagelist(){
+
+    $check_Kidmode = 0 ;
+
+    $query = RecentView::query()
+      ->select('video_id', 'videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.image', 'videos.featured', 'videos.age_restrict', 'videos.player_image', DB::raw('COUNT(video_id) AS count'))
+      ->join('videos', 'videos.id', '=', 'recent_views.video_id');
+
+      if (Geofencing() !== null && Geofencing()->geofencing === 'ON') {
+          $query->whereNotIn('videos.id', Block_videos());
+      }
+
+      if ($check_Kidmode == 1) {
+          $query->whereBetween('videos.age_restrict', [0, 12]);
+      }
+
+      $data = $query->groupBy('video_id')
+          ->orderByDesc('count')
+          ->latest('videos.created_at')
+          ->paginate(10);
+
+      $data->getCollection()->transform(function ($item) {
+          $item->image_url = URL::to('public/uploads/images/'.$item->image);
+          $item->player_image_url = URL::to('public/uploads/images/'.$item->player_image);
+          $item->source = "Videos";
+          return $item;
+      });
+      
+     return $data;
+  }
+
+  private static function Recommended_videos_users_Pagelist($user_id){
+
+    $check_Kidmode = 0 ;
+
+    $query = RecentView::query()
+        ->select('video_id', 'videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.image', 'videos.featured', 'videos.age_restrict', 'videos.player_image', DB::raw('COUNT(video_id) AS count'))
+        ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+        ->groupBy('video_id')->where('recent_views.sub_user',$user_id)
+        ->orderByRaw('count DESC' );
+    
+        if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+        {
+          $query->whereNotIn('videos.id',Block_videos());
+        }
+
+        if( $check_Kidmode == 1 )
+        {
+          $query->whereBetween('videos.age_restrict', [ 0, 12 ]);
+        }
+
+    $data = $query->groupBy('video_id')
+      ->orderByDesc('count')
+      ->latest('videos.created_at')
+      ->paginate(10);
+
+    $data->getCollection()->transform(function ($item) {
+        $item->image_url = URL::to('public/uploads/images/'.$item->image);
+        $item->player_image_url = URL::to('public/uploads/images/'.$item->player_image);
+        $item->source = "Videos";
+        return $item;
+    });
+
+    return $data;
+
+  }
+
+  private static function Recommended_videos_Country_Pagelist(){
+
+    $check_Kidmode = 0;
+    
+    $query = RecentView::query()
+      ->select('video_id', 'videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.image', 'videos.featured', 'videos.age_restrict', 'videos.player_image', DB::raw('COUNT(video_id) AS count'))
+      ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
+      ->where('country_name', Country_name());
+    
+      if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+      {
+        $query->whereNotIn('videos.id',Block_videos());
+      }
+
+      if( $check_Kidmode == 1 )
+      {
+        $query->whereBetween('videos.age_restrict', [ 0, 12 ]);
+      }
+
+    $data = $query->groupBy('video_id')
+                  ->orderByDesc('count')
+                  ->latest('videos.created_at')
+                  ->paginate(10);
+
+    $data->getCollection()->transform(function ($item) {
+        $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+        $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+        $item['source']    = "Videos"; 
+      return $item;
+
+    });
+
+    return $data;
+  }
+
+
           // Only for Nemisha - Learn function
   public function learn()
   {
