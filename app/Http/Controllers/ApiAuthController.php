@@ -13595,7 +13595,7 @@ public function QRCodeMobileLogout(Request $request)
 
     $query = VideoCategory::find($category_id)->specific_category_videos();
 
-    $query->latest()->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+    $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
 
     if (Geofencing() !== null && Geofencing()->geofencing === 'ON') {
         $query->whereNotIn('videos.id', Block_videos());
@@ -13605,9 +13605,9 @@ public function QRCodeMobileLogout(Request $request)
         $query->whereBetween('age_restrict', [0, 12]);
     }
 
-    $data = $query->paginate(10);
+    $data = $query->latest();
 
-    $data->getCollection()->transform(function ($item) {
+    $data->get()->transform(function ($item) {
       $item->image_url = URL::to('/public/uploads/images/'.$item->image);
       $item->player_image_url = URL::to('/public/uploads/images/'.$item->player_image);
       $item->source = "Videos";
@@ -13624,9 +13624,9 @@ public function QRCodeMobileLogout(Request $request)
 
     $query->where('active',1)->where('status', 1);
 
-    $data = $query->latest()->paginate(10);
+    $data = $query->latest()->get();
         
-    $data->getCollection()->transform(function ($item) {
+    $data->transform(function ($item) {
           $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
           $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
           $item['source']    = "Livestream";
@@ -13643,9 +13643,9 @@ public function QRCodeMobileLogout(Request $request)
 
     $query->where('active',1)->where('status', 1);
 
-    $data = $query->latest()->paginate(10);
+    $data = $query->latest()->get();
 
-    $data->getCollection()->transform(function ($item) {
+    $data->transform(function ($item) {
       $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
       $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
       $item['source']    = "Audios";
@@ -13660,9 +13660,9 @@ public function QRCodeMobileLogout(Request $request)
 
     $query = AudioCategory::query();
 
-    $data = $query->latest()->paginate(10);
+    $data = $query->latest();
 
-    $data->getCollection()->transform(function ($item) {
+    $data->get()->transform(function ($item) {
       $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
       $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
       $item['source']    = "Audios";
@@ -13676,9 +13676,9 @@ public function QRCodeMobileLogout(Request $request)
 
     $query = SeriesGenre::query()->where('in_home',1);
 
-    $data = $query->latest()->paginate(10);
+    $data = $query->latest();
 
-    $data->getCollection()->transform(function ($item) {
+    $data->get()->transform(function ($item) {
       $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
       $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
       $item['source']    = "Series";
@@ -13692,9 +13692,9 @@ public function QRCodeMobileLogout(Request $request)
 
     $query = VideoSchedules::query()->where('in_home',1);
 
-    $data = $query->latest()->paginate(10);
+    $data = $query->latest();
 
-    $data->getCollection()->transform(function ($item) {
+    $data->get()->transform(function ($item) {
       $item['image_url'] = $item->image;
       $item['Player_image_url'] = $item->player_image; 
       $item['source']    = "Videos";
@@ -13709,9 +13709,9 @@ public function QRCodeMobileLogout(Request $request)
 
     $query = VideoCategory::query()->where('in_home', 1)->orderBy('order');
 
-    $data = $query->latest()->paginate(10);
+    $data = $query->latest();
 
-    $data->getCollection()->transform(function ($item) {
+    $data->get()->transform(function ($item) {
       $item['image_url'] = asset('public/uploads/videocategory/'.$item->image);
       $item['Player_image_url'] = asset('public/uploads/videocategory/'.$item->banner_image);
       $item['source'] = "VideoCategory";
@@ -13726,9 +13726,9 @@ public function QRCodeMobileLogout(Request $request)
 
     $query =  LiveCategory::query()->where('in_menu',1)->orderBy('order');
     
-    $data = $query->latest()->paginate(10);
+    $data = $query->latest();
         
-    $data->getCollection()->transform(function ($item) {
+    $data->get()->transform(function ($item) {
       $item['image_url'] = URL::to('public/uploads/livecategory/'.$item->image);
       $item['Player_image_url'] = URL::to('public/uploads/livecategory/'.$item->image); // Note - No Player Image for LiveCategory
       $item['source']    = "LiveCategory";
@@ -13757,9 +13757,9 @@ public function QRCodeMobileLogout(Request $request)
           $query->whereBetween('age_restrict', [0, 12]);
       }
         
-      $data = $query->latest()->paginate(10);
+      $data = $query->latest();
         
-      $data->getCollection()->transform(function ($item) {
+      $data->get()->transform(function ($item) {
             $item->image_url = URL::to('/public/uploads/images/'.$item->image);
             $item->player_image_url = URL::to('/public/uploads/images/'.$item->player_image);
             $item->source = "Videos";
@@ -13788,9 +13788,9 @@ public function QRCodeMobileLogout(Request $request)
           $query->whereBetween('age_restrict', [0, 12]);
       }
         
-      $data = $query->latest()->paginate(10);
+      $data = $query->latest();
         
-      $data->getCollection()->transform(function ($item) {
+      $data->get()->transform(function ($item) {
             $item->image_url = URL::to('/public/uploads/images/'.$item->image);
             $item->player_image_url = URL::to('/public/uploads/images/'.$item->player_image);
             $item->source = "Videos";
@@ -13806,9 +13806,9 @@ public function QRCodeMobileLogout(Request $request)
         ->select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured')
         ->where('active',1)->where('status', 1);
 
-      $data = $query->latest()->paginate(10);
+      $data = $query->latest();
 
-      $data->getCollection()->transform(function ($item) {
+      $data->get()->transform(function ($item) {
             $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
             $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
             $item['source']    = "Livestream";
@@ -13824,9 +13824,9 @@ public function QRCodeMobileLogout(Request $request)
         ->select('id','channel_name','status','channel_image','channel_slug')
         ->where('status',1);
         
-      $data = $query->latest()->paginate(10);
+      $data = $query->latest();
 
-      $data->getCollection()->transform(function ($item) {
+      $data->get()->transform(function ($item) {
         $item['image_url'] = $item->channel_image ;
         $item['Player_image_url'] = $item->channel_image ; // Note - No Player Image for Channel
         $item['source']    = "Channel_Partner";
@@ -13842,9 +13842,9 @@ public function QRCodeMobileLogout(Request $request)
         ->select('id','username','status','picture','slug')
         ->where('status',1);
         
-      $data = $query->latest()->paginate(10);
+      $data = $query->latest();
 
-      $data->getCollection()->transform(function ($item) {
+      $data->get()->transform(function ($item) {
         $item['image_url'] =  URL::to('public/uploads/picture/'.$item->picture)  ;
         $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->picture) ; // Note - No Player Image for Moderators User
         $item['source']    = "Content_Partner";
@@ -13860,9 +13860,9 @@ public function QRCodeMobileLogout(Request $request)
         ->select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code','mp4_url','webm_url','ogg_url','url','player_image')
         ->where('active', '=', '1');
 
-        $data = $query->latest()->paginate(10);
+        $data = $query->latest();
 
-        $data->getCollection()->transform(function ($item) {
+        $data->get()->transform(function ($item) {
             $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
             $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
@@ -13880,9 +13880,9 @@ public function QRCodeMobileLogout(Request $request)
         ->select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured')
         ->where('active',1)->where('status', 1);
 
-        $data = $query->latest()->paginate(10);
+        $data = $query->latest();
 
-        $data->getCollection()->transform(function ($item) {
+        $data->get()->transform(function ($item) {
           $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
           $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
           $item['source']    = "Audios";
@@ -13910,10 +13910,9 @@ public function QRCodeMobileLogout(Request $request)
 
       $data = $query->groupBy('video_id')
           ->orderByDesc('count')
-          ->latest('videos.created_at')
-          ->paginate(10);
+          ->latest('videos.created_at');
 
-      $data->getCollection()->transform(function ($item) {
+      $data->get()->transform(function ($item) {
           $item->image_url = URL::to('public/uploads/images/'.$item->image);
           $item->player_image_url = URL::to('public/uploads/images/'.$item->player_image);
           $item->source = "Videos";
@@ -13945,10 +13944,9 @@ public function QRCodeMobileLogout(Request $request)
 
     $data = $query->groupBy('video_id')
       ->orderByDesc('count')
-      ->latest('videos.created_at')
-      ->paginate(10);
+      ->latest('videos.created_at');
 
-    $data->getCollection()->transform(function ($item) {
+    $data->get()->transform(function ($item) {
         $item->image_url = URL::to('public/uploads/images/'.$item->image);
         $item->player_image_url = URL::to('public/uploads/images/'.$item->player_image);
         $item->source = "Videos";
@@ -13980,10 +13978,9 @@ public function QRCodeMobileLogout(Request $request)
 
     $data = $query->groupBy('video_id')
                   ->orderByDesc('count')
-                  ->latest('videos.created_at')
-                  ->paginate(10);
+                  ->latest('videos.created_at');
 
-    $data->getCollection()->transform(function ($item) {
+    $data->get()->transform(function ($item) {
         $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
         $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
         $item['source']    = "Videos"; 
@@ -13998,9 +13995,9 @@ public function QRCodeMobileLogout(Request $request)
 
     $query = AudioAlbums::query();
 
-    $data = $query->latest()->paginate(10);
+    $data = $query->latest();
 
-    $data->getCollection()->transform(function ($item) {
+    $data->get()->transform(function ($item) {
       $item['image_url'] = asset('public/uploads/albums/'.$item->album);
       $item['Player_image_url'] = asset('public/uploads/albums/'.$item->album); // Note - No Player Image for Albums
       $item['source'] = "Audios_album";
