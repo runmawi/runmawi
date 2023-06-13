@@ -13620,7 +13620,9 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function Specific_Category_Livestreams_Pagelist( $category_id ){
     
-    $query =  LiveCategory::find($request->category_id)->specific_category_live();
+    $query =  LiveCategory::find($category_id)->specific_category_live();
+
+    $query->where('active',1)->where('status', 1);
 
     $data = $query->latest()->paginate(10);
         
