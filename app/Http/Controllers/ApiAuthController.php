@@ -13486,12 +13486,7 @@ public function QRCodeMobileLogout(Request $request)
                   $data = $this->Featured_videos_Pagelist();
                   $Page_List_Name = 'Featured_videos_Pagelist';
                   break;
-      
-              case 'Datafree':
-                  $data = $this->Datafree_Pagelist();
-                  $Page_List_Name = 'Datafree_Pagelist';
-                  break;
-      
+
               case 'ChannelPartner':
                   $data = $this->Channel_Pagelist();
                   $Page_List_Name = 'Channel_Pagelist';
@@ -13556,8 +13551,23 @@ public function QRCodeMobileLogout(Request $request)
                     $data = $this->Series_Genre_Pagelist();
                     $Page_List_Name = 'Series_Genre_Pagelist';
                     break;  
-                    
-                    
+
+              case 'category_videos':
+                    $data = $this->Specific_Category_Videos_Pagelist($request->category_id);
+                    $Page_List_Name = 'Specific_Category_Videos';
+                    break;  
+
+              case 'liveCategories':
+                    $data = $this->Specific_Category_Livestreams_Pagelist($request->category_id);
+                    $Page_List_Name = 'Specific_Category_Livestreams';
+                    break;  
+
+
+              case 'Audio_Genre_audios':
+                    $data = $this->Specific_album_audios_Pagelist();
+                    $Page_List_Name = 'Series_Genre_Pagelist';
+                    break;  
+
           }
       }
 
@@ -13577,6 +13587,52 @@ public function QRCodeMobileLogout(Request $request)
     }
 
     return response()->json($response, 200);
+  }
+
+  private static function Specific_Category_Videos_Pagelist($category_id){
+
+    $check_Kidmode = 0 ;
+
+    $query = VideoCategory::find($category_id)->specific_category_videos();
+
+    $query->latest()->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+
+    if (Geofencing() !== null && Geofencing()->geofencing === 'ON') {
+        $query->whereNotIn('videos.id', Block_videos());
+    }
+    
+    if ($check_Kidmode == 1) {
+        $query->whereBetween('age_restrict', [0, 12]);
+    }
+
+    $data = $query->paginate(10);
+
+    $data->getCollection()->transform(function ($item) {
+      $item->image_url = URL::to('/public/uploads/images/'.$item->image);
+      $item->player_image_url = URL::to('/public/uploads/images/'.$item->player_image);
+      $item->source = "Videos";
+      return $item;
+    });
+
+    return $data;
+
+  }
+
+  private static function Specific_Category_Livestreams_Pagelist( $category_id ){
+    
+    $query =  LiveCategory::find($request->category_id)->specific_category_live();
+
+    $data = $query->latest()->paginate(10);
+        
+    $data->getCollection()->transform(function ($item) {
+          $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+          $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+          $item['source']    = "Livestream";
+          return $item;
+    });
+
+    return $data;
+    
   }
 
   private static function Audio_Genre_Pagelist(){
@@ -13739,10 +13795,6 @@ public function QRCodeMobileLogout(Request $request)
       });
           
       return $data;
-  }
-
-  private static function Datafree_Pagelist(){
-
   }
 
   private static function Channel_Pagelist(){
