@@ -13564,8 +13564,8 @@ public function QRCodeMobileLogout(Request $request)
 
 
               case 'Audio_Genre_audios':
-                    $data = $this->Specific_album_audios_Pagelist();
-                    $Page_List_Name = 'Series_Genre_Pagelist';
+                    $data = $this->Specific_Genre_audios_Pagelist($request->category_id);
+                    $Page_List_Name = 'Specific_Genre_audios_Pagelist';
                     break;  
 
           }
@@ -13633,6 +13633,25 @@ public function QRCodeMobileLogout(Request $request)
           return $item;
     });
 
+    return $data;
+    
+  }
+
+  private static function Specific_Genre_audios_Pagelist( $category_id ){
+    
+    $query =  AudioCategory::find($category_id)->specific_category_audio();
+
+    $query->where('active',1)->where('status', 1);
+
+    $data = $query->latest()->paginate(10);
+
+    $data->getCollection()->transform(function ($item) {
+      $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
+      $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+      $item['source']    = "Audios";
+      return $item;
+    });
+  
     return $data;
     
   }
