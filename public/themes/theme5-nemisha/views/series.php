@@ -225,8 +225,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 						<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Detail</a>-->
 					</div>
 				</nav>
-				<div >
-		<div >
+            </div>
 <!-- $series->title -->
 						<div class="container-fluid">
 				<div class="favorites-contens">
@@ -363,7 +362,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                 </div>
             </div>
         </div>
-        </div></div></div></div>
+        </div>
 		</section>
 		
 				<?php endif;?>
