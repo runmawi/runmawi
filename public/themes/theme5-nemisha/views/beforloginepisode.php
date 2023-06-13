@@ -215,7 +215,7 @@ if (Auth::guest())
 }
 ?>
 		</div>
-	</div>
+    </div></div>
 
 <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?=$episode->genre_id
 ?>" value="<?=$episode->genre_id
@@ -250,7 +250,7 @@ if (Auth::guest())
                     <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? ucwords(substr(@$episode->title, 0, 120) . '...') : ucwords($episode->title); ?> </a></li>
                 </ol>
             </div>
-        </div>
+    </div></div>
     <div>
 
 	<div class="container series-details">
