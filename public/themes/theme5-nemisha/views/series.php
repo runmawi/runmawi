@@ -185,7 +185,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 </div>
 </div>
 <section id="tabs" class="project-tab">
-	<div class="">
+	<div class="container-fluid p-0">
 
                         <!-- BREADCRUMBS -->
 
@@ -213,7 +213,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                 </ol>
             </div>
         </div>
-    <div>
+                  </div>
 
 		<div class="row">
 			<div class="col-md-12 mt-4">
