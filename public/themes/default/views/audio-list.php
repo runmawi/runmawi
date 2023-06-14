@@ -18,7 +18,7 @@
                                  <div class="iq-main-header d-flex align-items-center justify-content-between">
                                     <?php if(isset($page_title) && count( $audios) > 0 ): ?>
                                        <h4 class="main-title">Today Trending</h4>
-                                          <a href="#" class="text-primary">View all</a>
+                                         
                                     <?php endif; ?> 
                                  </div>
                               </div>
@@ -40,7 +40,7 @@
                                  <a href=<?= route('albums_list') ?> >
                                        <h4 class="main-title"> Albums </h4>
                                  </a>
-                              <a href="#" class="text-primary">View all</a>
+                            
                               <?php endif; ?> 
                            </div>
                         </div>
