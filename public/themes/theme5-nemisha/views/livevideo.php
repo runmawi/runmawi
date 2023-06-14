@@ -560,7 +560,7 @@ else{
                             $publishdate = date('d F Y', strtotime($originalDate));
                         }
                         ?>
-                        <div class=" align-items-center text-white text-detail p-0">
+                        <div class=" align-items-center text-white text-detail container-fluid">
                             <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name); ?></span>
                             <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name); ?></span>
                             <span class="badge badge-secondary p-2">Published On : <?php echo $publishdate; ?></span>
@@ -569,7 +569,7 @@ else{
                         </div>
 
                         <?php if(!Auth::guest()) { ?>
-                        <div class="row">
+                        <div class="row container-fluid">
                             <div class="col-sm-6 col-md-6 col-xs-12">
                                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                                     <!-- Social Share, Like Dislike -->
