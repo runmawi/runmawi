@@ -4,13 +4,16 @@ import {
   addSidxSegmentsToPlaylist
 } from '../../src/segment/segmentBase';
 import errors from '../../src/errors';
+import window from 'global/window';
 
 QUnit.module('segmentBase - segmentsFromBase');
 
 QUnit.test('sets segment to baseUrl', function(assert) {
   const inputAttributes = {
     baseUrl: 'http://www.example.com/i.fmp4',
-    initialization: { sourceURL: 'http://www.example.com/init.fmp4' }
+    initialization: { sourceURL: 'http://www.example.com/init.fmp4' },
+    periodStart: 0,
+    type: 'static'
   };
 
   assert.deepEqual(segmentsFromBase(inputAttributes), [{
@@ -20,6 +23,7 @@ QUnit.test('sets segment to baseUrl', function(assert) {
     },
     resolvedUri: 'http://www.example.com/i.fmp4',
     uri: 'http://www.example.com/i.fmp4',
+    presentationTime: 0,
     number: 0
   }]);
 });
@@ -28,7 +32,9 @@ QUnit.test('sets duration based on sourceDuration', function(assert) {
   const inputAttributes = {
     baseUrl: 'http://www.example.com/i.fmp4',
     initialization: { sourceURL: 'http://www.example.com/init.fmp4' },
-    sourceDuration: 10
+    sourceDuration: 10,
+    periodStart: 0,
+    type: 'static'
   };
 
   assert.deepEqual(segmentsFromBase(inputAttributes), [{
@@ -40,6 +46,7 @@ QUnit.test('sets duration based on sourceDuration', function(assert) {
     },
     resolvedUri: 'http://www.example.com/i.fmp4',
     uri: 'http://www.example.com/i.fmp4',
+    presentationTime: 0,
     number: 0
   }]);
 });
@@ -56,7 +63,9 @@ QUnit.test('sets duration based on sourceDuration and not @timescale', function(
     baseUrl: 'http://www.example.com/i.fmp4',
     initialization: { sourceURL: 'http://www.example.com/init.fmp4' },
     sourceDuration: 10,
-    timescale: 2
+    timescale: 2,
+    periodStart: 0,
+    type: 'static'
   };
 
   assert.deepEqual(segmentsFromBase(inputAttributes), [{
@@ -68,6 +77,7 @@ QUnit.test('sets duration based on sourceDuration and not @timescale', function(
     },
     resolvedUri: 'http://www.example.com/i.fmp4',
     uri: 'http://www.example.com/i.fmp4',
+    presentationTime: 0,
     number: 0
   }]);
 });
@@ -78,7 +88,8 @@ QUnit.test('sets duration based on @duration', function(assert) {
     sourceDuration: 20,
     baseUrl: 'http://www.example.com/i.fmp4',
     initialization: { sourceURL: 'http://www.example.com/init.fmp4' },
-    periodIndex: 0
+    periodStart: 0,
+    type: 'static'
   };
 
   assert.deepEqual(segmentsFromBase(inputAttributes), [{
@@ -90,6 +101,7 @@ QUnit.test('sets duration based on @duration', function(assert) {
     },
     resolvedUri: 'http://www.example.com/i.fmp4',
     uri: 'http://www.example.com/i.fmp4',
+    presentationTime: 0,
     number: 0
   }]);
 });
@@ -101,7 +113,8 @@ QUnit.test('sets duration based on @duration and @timescale', function(assert) {
     timescale: 5,
     baseUrl: 'http://www.example.com/i.fmp4',
     initialization: { sourceURL: 'http://www.example.com/init.fmp4' },
-    periodIndex: 0
+    periodStart: 0,
+    type: 'static'
   };
 
   assert.deepEqual(segmentsFromBase(inputAttributes), [{
@@ -113,6 +126,7 @@ QUnit.test('sets duration based on @duration and @timescale', function(assert) {
     },
     resolvedUri: 'http://www.example.com/i.fmp4',
     uri: 'http://www.example.com/i.fmp4',
+    presentationTime: 0,
     number: 0
   }]);
 });
@@ -127,7 +141,8 @@ QUnit.test('translates ranges in <Initialization> node', function(assert) {
       sourceURL: 'http://www.example.com/init.fmp4',
       range: '121-125'
     },
-    periodIndex: 0
+    periodStart: 0,
+    type: 'static'
   };
 
   assert.deepEqual(segmentsFromBase(inputAttributes), [{
@@ -143,6 +158,7 @@ QUnit.test('translates ranges in <Initialization> node', function(assert) {
     },
     resolvedUri: 'http://www.example.com/i.fmp4',
     uri: 'http://www.example.com/i.fmp4',
+    presentationTime: 0,
     number: 0
   }]);
 });
@@ -167,9 +183,11 @@ QUnit.test('generates playlist from sidx references', function(assert) {
       byterange: {
         offset: 9,
         length: 11
-      }
+      },
+      timeline: 0
     },
-    segments: []
+    segments: [],
+    endList: true
   };
   const sidx = {
     timescale: 1,
@@ -196,6 +214,65 @@ QUnit.test('generates playlist from sidx references', function(assert) {
     },
     duration: 2,
     timeline: 0,
+    presentationTime: 0,
     number: 0
   }]);
 });
+
+if (window.BigInt) {
+  const BigInt = window.BigInt;
+
+  QUnit.test('generates playlist from sidx references with BigInt', function(assert) {
+    const baseUrl = 'http://www.example.com/i.fmp4';
+    const playlist = {
+      sidx: {
+        map: {
+          byterange: {
+            offset: 0,
+            length: 10
+          }
+        },
+        timeline: 0,
+        duration: 10,
+        byterange: {
+          offset: 9,
+          length: 11
+        }
+      },
+      segments: []
+    };
+    const offset = BigInt(Number.MAX_SAFE_INTEGER) + BigInt(10);
+    const sidx = {
+      timescale: 1,
+      firstOffset: offset,
+      references: [{
+        referenceType: 0,
+        referencedSize: 5,
+        subsegmentDuration: 2
+      }]
+    };
+
+    const segments = addSidxSegmentsToPlaylist(playlist, sidx, baseUrl).segments;
+
+    assert.equal(typeof segments[0].byterange.offset, 'bigint', 'bigint offset');
+    segments[0].byterange.offset = segments[0].byterange.offset.toString();
+
+    assert.deepEqual(segments, [{
+      map: {
+        byterange: {
+          offset: 0,
+          length: 10
+        }
+      },
+      uri: 'http://www.example.com/i.fmp4',
+      resolvedUri: 'http://www.example.com/i.fmp4',
+      byterange: {
+        // sidx byterange offset + length = 20
+        offset: (window.BigInt(20) + offset).toString(),
+        length: 5
+      },
+      number: 0,
+      presentationTime: 0
+    }]);
+  });
+}

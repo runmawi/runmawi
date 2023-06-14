@@ -54,14 +54,14 @@
                                     <tr id="tr_{{ $Logged_Device->id }}">
 
                                         <td><input type="checkbox" id="Sub_chck" class="sub_chk" data-id="{{$Logged_Device->id}}"></td>
-                                        <td>{{ $Logged_Device->user->username  }}</td>  
-                                        <td>{{ $Logged_Device->user->email  }}</td>  
-                                        <td>{{ $Logged_Device->user_ip  }}</td>   
-                                        <td>{{ $Logged_Device->device_name  }}</td>   
+                                        <td>{{ @$Logged_Device->user->username  }}</td>  
+                                        <td>{{ @$Logged_Device->user->email  }}</td>  
+                                        <td>{{ @$Logged_Device->user_ip  }}</td>   
+                                        <td>{{ @$Logged_Device->device_name  }}</td>   
                                         <td>
                                         <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete" onclick="return confirm('Are you sure?')" 
-                                             href="{{ URL::to('admin/user-logged-device/delete') . '/' . $Logged_Device->id }}">
+                                             href="{{ URL::to('admin/user-logged-device/delete') . '/' . @$Logged_Device->id }}">
                                              <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                            
                                         </td>   

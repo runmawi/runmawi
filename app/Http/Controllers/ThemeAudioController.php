@@ -327,9 +327,10 @@ class ThemeAudioController extends Controller{
                ->where('audio.active', '=', '1')->orderBy('audio.created_at', 'DESC')
                ->select('audio_albums.slug as albumslug' , 'audio.*');
 
-                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                      $audios = $audios  ->whereNotIn('id',$blocked_Audio);
-               }
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                      $audios = $audios->whereNotIn('audio.id',$blocked_Audio);
+                }
+
                 $audios = $audios->get();      
             } else {
               $audios = [];
