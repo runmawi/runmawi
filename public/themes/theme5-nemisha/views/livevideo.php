@@ -549,7 +549,7 @@ else{
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div></div>
                         <!-- Year, Running time, Age -->
                         <?php
                         if (!empty($video->publish_time)) {
