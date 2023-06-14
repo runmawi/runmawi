@@ -1239,7 +1239,7 @@
                     <div class="row m-0 p-0 justify-content-around align-items-center">
                         <div class="col-lg-6 p-0">
 
-                            <video id="player" height="618" controls autoplay poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
+                            <video id="player" height="618" controls autoplay muted poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
                                 <source src="<?php echo URL::to('/assets/img/tv.mp4'); ?>" type="video/mp4">
                                 <source src="" type="video/ogg">
                             </video>
@@ -1549,7 +1549,7 @@
 
                         <div class="col-lg-6 mt-5">
                             <div class="" style="margin:4px;">
-                                <video id="player1" height="800" controls autoplay poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
+                                <video id="player1" height="800" controls autoplay muted poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
                                     <source src="<?php echo URL::to('/assets/img/vq.mp4'); ?>" type="video/mp4">
                                     <source src="" type="video/ogg">
                                 </video>
@@ -1703,7 +1703,7 @@
                 <h2 class="mb-3">Hours of Infotainment, Edutainment <br>and Entertainment</h2>
 
                 <div class="col-lg-7 vid">
-                    <video id="player2" controls autoplay poster="<?php echo URL::to('/assets/img/dan.png'); ?>">
+                    <video id="player2" controls autoplay muted poster="<?php echo URL::to('/assets/img/dan.png'); ?>">
                         <source src="<?php echo URL::to('/assets/img/dance.mp4'); ?>" type="video/mp4">
                         <source src="" type="video/ogg">
                     </video>
