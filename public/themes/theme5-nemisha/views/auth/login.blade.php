@@ -322,7 +322,7 @@ font-weight: 600;
                           <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
                           <!--<i class="">   
                                 <img class=" fa fa-user icon mr-3" src="<?php echo URL::to('/').'/assets/img/uss.png';  ?>"> </i>-->
-                            <input id="email" type="email" class=" input-field form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('Email') }}" value="{{ old('EMAIL') }}" required autocomplete="email" autofocus>
+                            <input id="email" type="email" class=" input-field form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('EMAIL') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         </div></div>
                         <div class="form-group" style="  ">                                 
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>--><div class="input-icons">
