@@ -519,4 +519,9 @@ Route::group(
             Route::post('IOS_Episodedislike', 'ApiAuthController@IOS_Episodedislike');
                 
             Route::post('IOS_liked_disliked', 'ApiAuthController@IOS_liked_disliked');
+
+
+            Route::get('series_genre_list', 'ApiAuthController@series_genre_list');
+            Route::post('series_genre', 'ApiAuthController@series_genre');
+
     });
