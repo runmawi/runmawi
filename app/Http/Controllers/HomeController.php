@@ -528,32 +528,32 @@ class HomeController extends Controller
                     ->count();
                     // dd(count($alldevices_register));
 
-                if (count($alldevices_register) > 0  && $user_role == "registered" && Auth::User()->id != 1)
-                {
-                    // dd('test');
-                    LoggedDevice::where('user_ip','=', $userIp)
-                    ->where('user_id','=', Auth::User()->id)
-                    ->where('device_name','=', $device_name)
-                    ->delete();
+                // if (count($alldevices_register) > 0  && $user_role == "registered" && Auth::User()->id != 1)
+                // {
+                //     // dd('test');
+                //     LoggedDevice::where('user_ip','=', $userIp)
+                //     ->where('user_id','=', Auth::User()->id)
+                //     ->where('device_name','=', $device_name)
+                //     ->delete();
 
-                    Mail::send('emails.register_device_login', array(
-                        'id' => Auth::User()->id,
-                        'name' => Auth::User()->username,
+                //     Mail::send('emails.register_device_login', array(
+                //         'id' => Auth::User()->id,
+                //         'name' => Auth::User()->username,
 
-                    ) , function ($message) use ($email, $username)
-                    {
-                        $message->from(AdminMail() , GetWebsiteName());
-                        $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
-                    });
-                    $message = 'Buy Subscriptions Plan To Access Multiple Devices.';
-                    Auth::logout();
-                    unset($data['password_hash']);
-                    \Session::flush();
-                    return Redirect::to('/')->with(array(
-                        'message' => 'Buy Subscriptions Plan!',
-                        'note_type' => 'success'
-                    ));
-                }
+                //     ) , function ($message) use ($email, $username)
+                //     {
+                //         $message->from(AdminMail() , GetWebsiteName());
+                //         $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
+                //     });
+                //     $message = 'Buy Subscriptions Plan To Access Multiple Devices.';
+                //     Auth::logout();
+                //     unset($data['password_hash']);
+                //     \Session::flush();
+                //     return Redirect::to('/')->with(array(
+                //         'message' => 'Buy Subscriptions Plan!',
+                //         'note_type' => 'success'
+                //     ));
+                // }
 
                 // else if ($user_check >= 1 && $user_check < $device_limit  && $user_role == "subscriber" && Auth::User()->id != 1)
                 // {
@@ -618,98 +618,98 @@ class HomeController extends Controller
                 //         ));
                 //     }
                 // }
-                elseif ($user_check >= $device_limit && Auth::User()->role != "admin" && Auth::User()->role != "registered")
-                {
-                    // dd(Auth::User()->role);
+                // elseif ($user_check >= $device_limit && Auth::User()->role != "admin" && Auth::User()->role != "registered")
+                // {
+                //     // dd(Auth::User()->role);
 
-                    $url1 = $_SERVER['REQUEST_URI'];
-                    header("Refresh: 120; URL=$url1");
-                    $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
-                    return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
-                        'message' => $message,
-                        'note_type' => 'success'
-                    ));
-                }
-                else
-                {
-                    // dd($device_name);
-                    $device_name = '';
-                    if ($agent->isDesktop())
-                    {
-                        $device_name = 'desktop';
-                    }
-                    elseif ($agent->isTablet())
-                    {
-                        $device_name = 'tablet';
-                    }
-                    elseif ($agent->isMobile())
-                    {
-                        $device_name = 'mobile';
-                    }
-                    elseif ($agent->isMobile())
-                    {
-                        $device_name = 'mobile';
-                    }
-                    else
-                    {
-                        $device_name = 'tv';
-                    }
+                //     $url1 = $_SERVER['REQUEST_URI'];
+                //     header("Refresh: 120; URL=$url1");
+                //     $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
+                //     return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
+                //         'message' => $message,
+                //         'note_type' => 'success'
+                //     ));
+                // }
+                // else
+                // {
+                //     // dd($device_name);
+                //     $device_name = '';
+                //     if ($agent->isDesktop())
+                //     {
+                //         $device_name = 'desktop';
+                //     }
+                //     elseif ($agent->isTablet())
+                //     {
+                //         $device_name = 'tablet';
+                //     }
+                //     elseif ($agent->isMobile())
+                //     {
+                //         $device_name = 'mobile';
+                //     }
+                //     elseif ($agent->isMobile())
+                //     {
+                //         $device_name = 'mobile';
+                //     }
+                //     else
+                //     {
+                //         $device_name = 'tv';
+                //     }
 
-                    if (!empty($device_name))
-                    {
+                //     if (!empty($device_name))
+                //     {
                         
-                        $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
-                            ->where('device_name', '=', $device_name)->first();
-                    //  dd('devices_check');
+                //         $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
+                //             ->where('device_name', '=', $device_name)->first();
+                //     //  dd('devices_check');
 
-                        if (empty($devices_check))
-                        {
-                            $adddevice = new LoggedDevice;
-                            $adddevice->user_id = Auth::User()->id;
-                            $adddevice->user_ip = $userIp;
-                            $adddevice->device_name = $device_name;
-                            $adddevice->save();
-                        }
-                    }
+                //         if (empty($devices_check))
+                //         {
+                //             $adddevice = new LoggedDevice;
+                //             $adddevice->user_id = Auth::User()->id;
+                //             $adddevice->user_ip = $userIp;
+                //             $adddevice->device_name = $device_name;
+                //             $adddevice->save();
+                //         }
+                //     }
  
 
-                }
+                // }
 
                 // dd($user_role);
-                $logged = UserLogs::where('user_id', '=', Auth::User()->id)
-                    ->orderBy('created_at', 'DESC')
-                    ->whereDate('created_at', '>=', \Carbon\Carbon::now()
-                    ->today())
-                    ->first();
-                if (!empty($logged))
-                {
-                    $today_old_log = UserLogs::where('user_id', '=', Auth::User()->id)
-                        ->orderBy('created_at', 'DESC')
-                        ->whereDate('created_at', '>=', \Carbon\Carbon::now()
-                        ->today())
-                        ->delete();
-                    $new_login = new UserLogs;
-                    $new_login->user_id = Auth::User()->id;
-                    $new_login->user_ip = $userIp;
-                    $new_login->countryname = Country_name();
-                    $new_login->regionname = Region_name();
-                    $new_login->cityname = city_name();
-                    $new_login->save();
-                }
-                else
-                {
-                    $new_login = new UserLogs;
-                    $new_login->user_id = Auth::User()->id;
-                    $new_login->user_ip = $userIp;
-                    $new_login->countryname = Country_name();
-                    $new_login->regionname = Region_name();
-                    $new_login->cityname = city_name();
-                    $new_login->save();
-                }
+                // $logged = UserLogs::where('user_id', '=', Auth::User()->id)
+                //     ->orderBy('created_at', 'DESC')
+                //     ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                //     ->today())
+                //     ->first();
+                // if (!empty($logged))
+                // {
+                //     $today_old_log = UserLogs::where('user_id', '=', Auth::User()->id)
+                //         ->orderBy('created_at', 'DESC')
+                //         ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                //         ->today())
+                //         ->delete();
+                //     $new_login = new UserLogs;
+                //     $new_login->user_id = Auth::User()->id;
+                //     $new_login->user_ip = $userIp;
+                //     $new_login->countryname = Country_name();
+                //     $new_login->regionname = Region_name();
+                //     $new_login->cityname = city_name();
+                //     $new_login->save();
+                // }
+                // else
+                // {
+                //     $new_login = new UserLogs;
+                //     $new_login->user_id = Auth::User()->id;
+                //     $new_login->user_ip = $userIp;
+                //     $new_login->countryname = Country_name();
+                //     $new_login->regionname = Region_name();
+                //     $new_login->cityname = city_name();
+                //     $new_login->save();
+                // }
 
-                $users_logged_today = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()
-                    ->today())
-                    ->count();
+                // $users_logged_today = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                //     ->today())
+                //     ->count();
 
                  
                     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -1454,32 +1454,32 @@ class HomeController extends Controller
                     ->count();
                     // dd(count($alldevices_register));
 
-                if (count($alldevices_register) > 0  && $user_role == "registered" && Auth::User()->id != 1)
-                {
-                    // dd('test');
-                    LoggedDevice::where('user_ip','=', $userIp)
-                    ->where('user_id','=', Auth::User()->id)
-                    ->where('device_name','=', $device_name)
-                    ->delete();
+                // if (count($alldevices_register) > 0  && $user_role == "registered" && Auth::User()->id != 1)
+                // {
+                //     // dd('test');
+                //     LoggedDevice::where('user_ip','=', $userIp)
+                //     ->where('user_id','=', Auth::User()->id)
+                //     ->where('device_name','=', $device_name)
+                //     ->delete();
 
-                    Mail::send('emails.register_device_login', array(
-                        'id' => Auth::User()->id,
-                        'name' => Auth::User()->username,
+                //     Mail::send('emails.register_device_login', array(
+                //         'id' => Auth::User()->id,
+                //         'name' => Auth::User()->username,
 
-                    ) , function ($message) use ($email, $username)
-                    {
-                        $message->from(AdminMail() , GetWebsiteName());
-                        $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
-                    });
-                    $message = 'Buy Subscriptions Plan To Access Multiple Devices.';
-                    Auth::logout();
-                    unset($data['password_hash']);
-                    \Session::flush();
-                    return Redirect::to('/')->with(array(
-                        'message' => 'Buy Subscriptions Plan!',
-                        'note_type' => 'success'
-                    ));
-                }
+                //     ) , function ($message) use ($email, $username)
+                //     {
+                //         $message->from(AdminMail() , GetWebsiteName());
+                //         $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
+                //     });
+                //     $message = 'Buy Subscriptions Plan To Access Multiple Devices.';
+                //     Auth::logout();
+                //     unset($data['password_hash']);
+                //     \Session::flush();
+                //     return Redirect::to('/')->with(array(
+                //         'message' => 'Buy Subscriptions Plan!',
+                //         'note_type' => 'success'
+                //     ));
+                // }
 
                 // else if ($user_check >= 1 && $user_check < $device_limit  && $user_role == "subscriber" && Auth::User()->id != 1)
                 // {
@@ -1544,94 +1544,94 @@ class HomeController extends Controller
                 //         ));
                 //     }
                 // }
-                elseif ($user_check >= $device_limit && Auth::User()->role != "admin" && Auth::User()->role != "registered")
-                {
-                    // dd(Auth::User()->role);
+                // elseif ($user_check >= $device_limit && Auth::User()->role != "admin" && Auth::User()->role != "registered")
+                // {
+                //     // dd(Auth::User()->role);
 
-                    $url1 = $_SERVER['REQUEST_URI'];
-                    header("Refresh: 120; URL=$url1");
-                    $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
-                    return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
-                        'message' => $message,
-                        'note_type' => 'success'
-                    ));
-                }
-                else
-                {
-                    // dd($device_name);
-                    $device_name = '';
-                    if ($agent->isDesktop())
-                    {
-                        $device_name = 'desktop';
-                    }
-                    elseif ($agent->isTablet())
-                    {
-                        $device_name = 'tablet';
-                    }
-                    elseif ($agent->isMobile())
-                    {
-                        $device_name = 'mobile';
-                    }
-                    elseif ($agent->isMobile())
-                    {
-                        $device_name = 'mobile';
-                    }
-                    else
-                    {
-                        $device_name = 'tv';
-                    }
+                //     $url1 = $_SERVER['REQUEST_URI'];
+                //     header("Refresh: 120; URL=$url1");
+                //     $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
+                //     return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
+                //         'message' => $message,
+                //         'note_type' => 'success'
+                //     ));
+                // }
+                // else
+                // {
+                //     // dd($device_name);
+                //     $device_name = '';
+                //     if ($agent->isDesktop())
+                //     {
+                //         $device_name = 'desktop';
+                //     }
+                //     elseif ($agent->isTablet())
+                //     {
+                //         $device_name = 'tablet';
+                //     }
+                //     elseif ($agent->isMobile())
+                //     {
+                //         $device_name = 'mobile';
+                //     }
+                //     elseif ($agent->isMobile())
+                //     {
+                //         $device_name = 'mobile';
+                //     }
+                //     else
+                //     {
+                //         $device_name = 'tv';
+                //     }
 
-                    if (!empty($device_name))
-                    {
+                //     if (!empty($device_name))
+                //     {
                         
-                        $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
-                            ->where('device_name', '=', $device_name)->first();
-                    //  dd('devices_check');
+                //         $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
+                //             ->where('device_name', '=', $device_name)->first();
+                //     //  dd('devices_check');
 
-                        if (empty($devices_check))
-                        {
-                            $adddevice = new LoggedDevice;
-                            $adddevice->user_id = Auth::User()->id;
-                            $adddevice->user_ip = $userIp;
-                            $adddevice->device_name = $device_name;
-                            $adddevice->save();
-                        }
-                    }
+                //         if (empty($devices_check))
+                //         {
+                //             $adddevice = new LoggedDevice;
+                //             $adddevice->user_id = Auth::User()->id;
+                //             $adddevice->user_ip = $userIp;
+                //             $adddevice->device_name = $device_name;
+                //             $adddevice->save();
+                //         }
+                //     }
  
 
-                }
+                // }
 
-                // dd($user_role);
-                $logged = UserLogs::where('user_id', '=', Auth::User()->id)
-                    ->orderBy('created_at', 'DESC')
-                    ->whereDate('created_at', '>=', \Carbon\Carbon::now()
-                    ->today())
-                    ->first();
-                if (!empty($logged))
-                {
-                    $today_old_log = UserLogs::where('user_id', '=', Auth::User()->id)
-                        ->orderBy('created_at', 'DESC')
-                        ->whereDate('created_at', '>=', \Carbon\Carbon::now()
-                        ->today())
-                        ->delete();
-                    $new_login = new UserLogs;
-                    $new_login->user_id = Auth::User()->id;
-                    $new_login->user_ip = $userIp;
-                    $new_login->countryname = Country_name();
-                    $new_login->regionname = Region_name();
-                    $new_login->cityname = city_name();
-                    $new_login->save();
-                }
-                else
-                {
-                    $new_login = new UserLogs;
-                    $new_login->user_id = Auth::User()->id;
-                    $new_login->user_ip = $userIp;
-                    $new_login->countryname = Country_name();
-                    $new_login->regionname = Region_name();
-                    $new_login->cityname = city_name();
-                    $new_login->save();
-                }
+                // // dd($user_role);
+                // $logged = UserLogs::where('user_id', '=', Auth::User()->id)
+                //     ->orderBy('created_at', 'DESC')
+                //     ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                //     ->today())
+                //     ->first();
+                // if (!empty($logged))
+                // {
+                //     $today_old_log = UserLogs::where('user_id', '=', Auth::User()->id)
+                //         ->orderBy('created_at', 'DESC')
+                //         ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                //         ->today())
+                //         ->delete();
+                //     $new_login = new UserLogs;
+                //     $new_login->user_id = Auth::User()->id;
+                //     $new_login->user_ip = $userIp;
+                //     $new_login->countryname = Country_name();
+                //     $new_login->regionname = Region_name();
+                //     $new_login->cityname = city_name();
+                //     $new_login->save();
+                // }
+                // else
+                // {
+                //     $new_login = new UserLogs;
+                //     $new_login->user_id = Auth::User()->id;
+                //     $new_login->user_ip = $userIp;
+                //     $new_login->countryname = Country_name();
+                //     $new_login->regionname = Region_name();
+                //     $new_login->cityname = city_name();
+                //     $new_login->save();
+                // }
 
                 $users_logged_today = UserLogs::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()
                     ->today())
