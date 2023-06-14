@@ -549,7 +549,7 @@ else{
                                     </div>
                                 </div>
                             </div>
-                        </div></div>
+                        </div>
                         <!-- Year, Running time, Age -->
                         <?php
                         if (!empty($video->publish_time)) {
@@ -644,7 +644,7 @@ else{
 
                             </ul>
                         </div>
-                    </div>
+                    </div></div></div>
                     <?php   }?>
                     <div class="container-fluid">
                         <div class="text-white col-md-6 p-0">
