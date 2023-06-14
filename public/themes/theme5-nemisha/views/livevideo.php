@@ -576,7 +576,7 @@ else{
                                     <?php include 'partials/live-social-share.php'; ?>
                                 </ul>
                             </div>
-
+  
                             <!--                    <div class="col-sm-6 col-md-6 col-xs-12">-->
                             <!--
                   <div class="d-flex align-items-center series mb-4">
@@ -600,7 +600,7 @@ else{
                             </ul>
                         </div>
 
-                    </div>
+                  
 
                     <?php } ?>
 
@@ -644,7 +644,7 @@ else{
 
                             </ul>
                         </div>
-                    </div>
+                    </div></div>  </div>
                     <?php   }?>
                     <div class="container-fluid">
                         <div class="text-white col-md-6 p-0">
