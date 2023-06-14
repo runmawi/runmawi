@@ -9602,7 +9602,7 @@ $cpanel->end();
               'status'=>$status,
               'Language_name' => $Language->name,
               'Language' => $Language,
-              'languagesVideo' => $languagesVideo,
+              'language_videos' => $languagesVideo,
           );
         }
 
@@ -16491,5 +16491,87 @@ public function QRCodeMobileLogout(Request $request)
   }
 
   
+  public function series_genre_list(Request $request){
+
+    try{
+
+      $series = SeriesGenre::query()->with(['category_series' => function ($series) {
+        $series->select('series.id','series.slug', 'series.image', 'series.title', 'series.duration', 'series.rating', 'series.featured')
+            ->where('series.active', '1')
+            ->latest('series.created_at');
+            }])
+            ->select('series_genre.id', 'series_genre.name', 'series_genre.in_home', 'series_genre.slug', 'series_genre.order')
+            ->orderBy('series_genre.order')
+            ->get();
+            $series = $series->map(function ($genre) {
+              $genre->category_series = $genre->category_series->map(function ($item) {
+                  $item->image_url     = URL::to('/public/uploads/images/'.$item->image);
+                  $item->redirect_url  = URL::to('play_series/'. $item->slug);
+                  $item->season_count  = SeriesSeason::where('series_id',$item->id)->count();
+                  $item->Episode_count = Episode::where('series_id',$item->id)->count();
+                  return $item;
+              });
+              return $genre;
+        });
+
+        $response = array(
+            'status'=>'true',
+            'series' => $series,
+        );
+      
+
+    } catch (\Throwable $th) {
+      $response = array(
+        'status'=>'false',
+        'message'=>$th->getMessage(),
+        'nodata' => [],
+      );
+  }
+  return response()->json($response, 200);
+
+  }
+
+  
+  public function series_genre(Request $request){
+
+    try{
+      $series_categories = $request->series_category;
+      $series = SeriesGenre::query()->with(['category_series' => function ($series) {
+        $series->select('series.id','series.slug', 'series.image', 'series.title', 'series.duration', 'series.rating', 'series.featured')
+            ->where('series.active', '1')
+            ->latest('series.created_at');
+            }])
+            ->select('series_genre.id', 'series_genre.name', 'series_genre.in_home', 'series_genre.slug', 'series_genre.order')
+            ->orderBy('series_genre.order')
+            ->where('series_genre.id', $series_categories)
+            ->get();
+            $series = $series->map(function ($genre) {
+              $genre->category_series = $genre->category_series->map(function ($item) {
+                  $item->image_url     = URL::to('/public/uploads/images/'.$item->image);
+                  $item->redirect_url  = URL::to('play_series/'. $item->slug);
+                  $item->season_count  = SeriesSeason::where('series_id',$item->id)->count();
+                  $item->Episode_count = Episode::where('series_id',$item->id)->count();
+                  return $item;
+              });
+              return $genre;
+        });
+
+        $response = array(
+            'status'=>'true',
+            'series' => $series,
+        );
+      
+
+    } catch (\Throwable $th) {
+      $response = array(
+        'status'=>'false',
+        'message'=>$th->getMessage(),
+        'nodata' => [],
+      );
+  }
+  return response()->json($response, 200);
+
+  }
+
 
 }
