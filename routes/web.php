@@ -570,7 +570,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/pages/edit/{id}', 'AdminPageController@edit');
     Route::post('/pages/update', 'AdminPageController@update');
     Route::get('/pages/delete/{id}', 'AdminPageController@destroy');
-    Route::post('/page_status_update', 'PagesController@page_status')->name('page_status_update');
+    Route::post('/page_status_update', 'AdminPageController@page_status')->name('page_status_update');
 
     Route::get('/menu', 'AdminMenuController@index');
     Route::post('/menu/store', ['before' => 'demo', 'uses' => 'AdminMenuController@store']);
