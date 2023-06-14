@@ -99,7 +99,9 @@ class WishlistController extends Controller
             ->where('type', '=', 'live')
             ->get();
 
-
+        $episode_videos = Wishlist::where('user_id', '=', Auth::user()->id)
+            ->where('episode_id', '!=', null)
+            ->get();
         $channel_watchlater_array = array();
 
         foreach ($channelwatchlater as $key => $cfave)
@@ -120,14 +122,17 @@ class WishlistController extends Controller
             array_push($live_watchlater_array, $ccfave->livestream_id);
         }
 
+        $episode_array = array();
+        
+        foreach ($episode_videos as $key => $ccfave)
+        {
+            array_push($episode_array, $ccfave->episode_id);
+        }
         $videos = Video::where('active', '=', '1')->whereIn('id', $channel_watchlater_array)->paginate(12);
         $ppvvideos = PpvVideo::where('active', '=', '1')->whereIn('id', $ppv_watchlater_array)->paginate(12);
         $livevideos = LiveStream::where('active', '=', '1')->whereIn('id', $live_watchlater_array)->paginate(12);
-        
-        $episode_videos = Episode::join('mywishlists','mywishlists.episode_id','=','episodes.id')
-                            ->where('active','=','1')->latest('episodes.created_at')
-                            ->get();
-
+        $episode_videos = Episode::where('active', '=', '1')->whereIn('id', $episode_array)->paginate(12);
+        // dd(count($episode_videos));
         $data = array(
             'ppvwatchlater'     =>  $ppvvideos,
             'channelwatchlater' =>  $videos,
