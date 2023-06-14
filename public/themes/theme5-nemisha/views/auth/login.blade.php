@@ -330,7 +330,7 @@ font-weight: 600;
 			</i> -->
 			
                            
-                            								<input id="password" type="password" class="input-field  form-control @error('password') is-invalid @enderror" placeholder="{{ __('PASSWORD') }}" name="password" required autocomplete="current-password" >
+                            								<input id="password" type="password" class="input-field  form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
                             
                         </div> 
                             <div class="position-relative">
