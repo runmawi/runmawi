@@ -576,7 +576,7 @@ else{
                                     <?php include 'partials/live-social-share.php'; ?>
                                 </ul>
                             </div>
-
+  
                             <!--                    <div class="col-sm-6 col-md-6 col-xs-12">-->
                             <!--
                   <div class="d-flex align-items-center series mb-4">
@@ -600,7 +600,7 @@ else{
                             </ul>
                         </div>
 
-                    </div>
+                  
 
                     <?php } ?>
 
@@ -644,8 +644,8 @@ else{
 
                             </ul>
                         </div>
-                    </div>
-                    <?php   }?>
+                    </div></div> 
+                    <?php   }?> </div>
                     <div class="container-fluid">
                         <div class="text-white col-md-6 p-0">
                             <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
