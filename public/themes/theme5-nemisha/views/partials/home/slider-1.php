@@ -16,11 +16,7 @@
                         <?php  echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title; ?>
                     </h1>
                             <div class="mb-3">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span></div>
+                             <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" /></div>
                             <div class="p-0">
 
                     <a href="<?php echo $slider_video->link; ?>" class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
@@ -70,11 +66,7 @@ data-delay-in="0.6">
   ?>
 </h1>
                             <div class="mb-3">
-                            <span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span></div>
+                             <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" /></div>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
     <span class="badge badge-secondary p-2">
         <?php echo __($slider_video->year); ?>
@@ -92,8 +84,8 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
 data-delay-in="1.2">
 <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
-    <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>
+    <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>-->
 </div>
 </div>
 </div>
@@ -140,11 +132,7 @@ endif; ?>
                                 </h1>
 
                                 <div class="mb-3">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
+                                    <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                                 </div>
 
                                 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
@@ -163,7 +151,7 @@ endif; ?>
                                     data-delay-in="1.2">
                                     <a href="<?= route('live_event_play',$live_event_banner->slug)  ?>"
                                         class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
-                                    <a class="btn bd ml-2" href="<?= route('live_event_play',$live_event_banner->slug)  ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+                                   <!-- <a class="btn bd ml-2" href="<?= route('live_event_play',$live_event_banner->slug)  ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>-->
                                 </div>
                             </div>
                         </div>
@@ -209,14 +197,14 @@ endif; ?>
                         <p> <?php echo __($videos->description); ?></p>
                         </div>
                             <div class="row justify r-mb-23  p-0 mb-4 text-center align-items-center" >
-                                <div class="col-3 col-md-3">
+                                <!--<div class="col-3 col-md-3">
                                   <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="text-white">
                                 <div class="" style="font-size:25px;">
                              <i class="fa fa-plus" aria-hidden="true"></i>
 
                                       </div>
-                                Add Watchlist</a></div>
+                                Add Watchlist</a></div>-->
                                 <div class="col-3 col-md-3">
                                  <!-- <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="text-white ">
@@ -322,11 +310,7 @@ if(Route::current()->getName() == "home"){
                             <?php } ?>
 
                                 <div class="mb-3">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
+                                   <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                                 </div>
 
                                 <div data-animation-in="fadeInUp" data-delay-in="1.2"
@@ -336,13 +320,13 @@ if(Route::current()->getName() == "home"){
                                 </div>
 
                                 <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"  data-delay-in="1.2">
-                                    <div class="col-4 col-md-3">
+                                    <!--<div class="col-4 col-md-3">
                                     <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white">
                                         <div class="" style="font-size:25px;">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                         </div>  Add Watchlist
                                     </a>
-                                    </div>
+                                    </div>-->
 
                                     <div class="col-3 col-md-3">
                                         <!-- <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white ">
@@ -476,14 +460,14 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
 </div>
    <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
-                                <div class="col-md-3">
+                                <!--<div class="col-md-3">
                                   <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
                                 class="text-white">
                                 <div class="" style="font-size:25px;">
                              <i class="fa fa-plus" aria-hidden="true"></i>
 
                                       </div>
-                                Add Watchlist</a></div>
+                                Add Watchlist</a></div>-->
                                 <div class="col-md-3">
                                  <!-- <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
                                 class="text-white ">
@@ -496,8 +480,8 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
 data-delay-in="1.2">
 <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
-    <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="btn bd ml-3" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>
+    <a class="btn bd ml-3" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>-->
 </div>
 </div>
 </div>
@@ -543,11 +527,7 @@ endif; ?>
                             </h1>
 
                             <div class="mb-3">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
+                                <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                             </div>
 
                             <div 

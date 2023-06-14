@@ -61,7 +61,7 @@ class AllVideosListController extends Controller
 
             // Series Genres
 
-                $SeriesGenre = SeriesGenre::select('id','name','slug','in_home')
+                $SeriesGenre = SeriesGenre::select('id','name','slug','in_home')->where('in_home',1)
                                 ->orderBy('name', "asc")->get()->map(function ($item) {
                                     $item['redirect_url']  = URL::to('series/category/'.$item->slug);
                                     $item['source_data']  = 'SeriesGenre';
@@ -161,7 +161,7 @@ class AllVideosListController extends Controller
             return Theme::view('All-Videos.All_videos',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
        
@@ -189,6 +189,7 @@ class AllVideosListController extends Controller
                 }])
                 ->select('series_genre.id', 'series_genre.name', 'series_genre.in_home', 'series_genre.slug', 'series_genre.order')
                 ->orderBy('series_genre.order')
+                ->where('in_home','=',1)
                 ->whereIn('series_genre.id', $series_categories)
                 ->get();
             

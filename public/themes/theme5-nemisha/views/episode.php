@@ -64,7 +64,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 } else {
     echo '0';
 } ?>">
-<div class="container-fluid">
+<div class="">
     <div id="series_bg" class=" mt-3">
         <div class="">
 
@@ -264,7 +264,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 </ol>
             </div>
         </div>
-    <div>
+    </div>
 
     <div class="container-fluid series-details">
 
