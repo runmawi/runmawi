@@ -566,7 +566,7 @@ else{
                             <span class="badge badge-secondary p-2">Published On : <?php echo $publishdate; ?></span>
                             <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict); ?></span>
 
-                        </div>
+                       
 
                         <?php if(!Auth::guest()) { ?>
                         <div class="row container-fluid">
