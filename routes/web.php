@@ -261,7 +261,6 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('addwatchlater', 'WatchLaterController@watchlater');
     Route::post('ppvWatchlater', 'WatchLaterController@ppvWatchlater');
     Route::get('/promotions', 'HomeController@promotions');
-    Route::get('/page/{slug}', 'PagesController@index');
 
     Route::get('/paypal/billings-details', 'HomeController@ViewPaypal');
     Route::get('/paypal/transaction-details', 'HomeController@ViewTrasaction');
@@ -2570,6 +2569,9 @@ Route::get('/download-xml', function () {
 
     return response()->download($file, 'sitemap.xml', $headers);
 })->name('download.xml');
+
+
+Route::get('/page/{slug}', 'PagesController@index');
 
 // Ads Vast
 
