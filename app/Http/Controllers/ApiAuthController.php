@@ -13688,7 +13688,7 @@ public function QRCodeMobileLogout(Request $request)
       $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
       $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
       $item['episode_count'] = Episode::where('series_id',$item->id)->count();
-      $item['source']    = "Series";
+      $item['source']    = "series";
       return $item;
     });
   
@@ -13721,7 +13721,7 @@ public function QRCodeMobileLogout(Request $request)
     $data->transform(function ($item) {
       $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
       $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
-      $item['source']    = "Series";
+      $item['source']    = "series";
       return $item;
     });
 
@@ -13907,7 +13907,7 @@ public function QRCodeMobileLogout(Request $request)
             $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
             $item['episode_count'] = Episode::where('series_id',$item->id)->count();
-            $item['source']    = "Series";
+            $item['source']    = "series";
             return $item;
         });
 
