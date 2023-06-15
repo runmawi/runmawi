@@ -1146,12 +1146,35 @@
             right: 0;
             top: 56%;
         }
-        }
         .nav-link:hover {
     border: none!important;
      background-color: transparent!important; 
     /* padding: 6px 15px; */
     padding: 10px 0!important;
+}
+        #MuteButton::before {
+    content:  '🔈';
+}
+
+#MuteButton.muted::before {
+   
+     content:  '🔇';
+}
+
+#MuteButton {
+  position: fixed;
+  top: 5rem;
+  right: 1rem;
+  background: rgba(0,0,0,.5);
+  border: none;
+  color: #fff;
+  z-index: 5;
+  font-size: 1.5rem;
+  border-radius: 2rem;
+  width: 3rem;
+  height: 3rem;
+  line-height: 2.8rem;
+  text-align: center;
 }
     </style>
 
@@ -1180,8 +1203,10 @@
     <section class="mt-5 mb-0">
         <section class="mt-5 mb-0">
             <div class="bg-video-wrap">
-                <video src="<?php echo URL::to('/assets/img/tv.mp4'); ?>" loop muted autoplay>
+                <video id="bg-video" src="<?php echo URL::to('/assets/img/tv.mp4'); ?>" loop muted autoplay>
                 </video>
+                <a id="MuteButton" class="muted" onclick="toggleMute();">
+</a>
                 <div class="overlay">
                     <div class="nemis">
                         <h1 class=" mt-5 pt-5">Welcome to <span class="">NEMISA TV</span></h1>
@@ -1798,7 +1823,20 @@
 
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-
+<script>
+    function toggleMute() {
+  var button=document.getElementById("MuteButton")
+  var video=document.getElementById("bg-video")
+  
+  if(video.muted){
+    video.muted = false;
+  } else {
+    video.muted = true;
+  }
+  
+  button.classList.toggle('muted');
+}
+</script>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 // This is the bare minimum JavaScript. You can opt to pass no arguments to setup.
