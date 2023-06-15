@@ -109,8 +109,8 @@ $settings = App\Setting::first();
             $cmspages = App\Page::where('active', 1)->get();
 
             foreach($cmspages as $key => $page) {?>
-              <a href="<?= URL::to('page/'.$page->title ) ?>" target="_blank" class="ml-1"> <?= $page->title ?> </a> 
-          <?php } ?>
+              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= $page->title ?> </a> 
+            <?php } ?>
 
           <?php echo $settings->website_name .' - '. Carbon::now()->year ; ?>  All Rights Reserved
         </p>
