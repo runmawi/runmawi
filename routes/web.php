@@ -164,6 +164,14 @@ Route::post('/nexmo', 'HomeController@verify')->name('nexmo');
 Route::get('/auth/redirect/{provider}', 'GoogleLoginController@redirect');
 Route::get('/callback/{provider}', 'GoogleLoginController@callback');
 
+
+// Landing page
+Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
+
+//  CMS Page
+Route::get('/page/{slug}', 'PagesController@index');
+
+
 // CheckAuthTheme5 & restrictIp Middleware
 Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
@@ -179,7 +187,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('image/index', 'ImageController@index');
 
     Route::post('image/upload', 'ImageController@upload');
-    Route::get('/', 'HomeController@FirstLanging');
+    Route::get('/', 'HomeController@FirstLanging')->name('FirstLanging');
 
     Route::get('choose-profile', 'HomeController@Multipleprofile');
     Route::get('subuser/{id}', 'HomeController@subuser')->name('subuser');
@@ -2073,9 +2081,6 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     // Filter
     Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
 
-    // Landing page
-    Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
-
     // Landing page  category videos
     Route::get('landing_category_series', 'LandingpageController@landing_category_series')->name('landing_category_series');
 
@@ -2226,8 +2231,6 @@ Route::get('/download-xml', function () {
     return response()->download($file, 'sitemap.xml', $headers);
 })->name('download.xml');
 
-
-Route::get('/page/{slug}', 'PagesController@index');
 
 // Ads Vast
 
