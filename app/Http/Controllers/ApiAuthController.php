@@ -13183,7 +13183,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Series Genre status) is turned off in the admin panel
       else:
 
-          $data =  SeriesGenre::where('in_home',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
+          $data =  SeriesGenre::where('in_home',1)->latest()->limit(30)->orderBy('order')->get()->map(function ($item) {
                         $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
                         $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
                         $item['source']    = "SeriesGenre";
