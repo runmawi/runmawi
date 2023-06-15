@@ -143,7 +143,6 @@ Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 
 // CheckAuthTheme5 & restrictIp Middleware
 Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
-    Route::get('datafree/category/videos/{vid}', 'ChannelController@play_videos');
     Route::get('/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
     // Route::get('/language/{language}', 'ChannelController@LanguageVideo');
     Route::get('/category/wishlist/{slug}', 'ChannelController@Watchlist');
