@@ -8,6 +8,16 @@ use Carbon\Carbon as Carbon;
 Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
+    
+Route::get('/video-chat', function () {
+    // fetch all users apart from the authenticated user
+    $users = App\User::where('id', '<>', Auth::id())->get();
+    return view('video-chat', ['users' => $users]);
+});
+
+// Endpoints to call or receive calls.
+Route::post('/video/call-user', 'VideoChatController@callUser');
+Route::post('/video/accept-call', 'VideoChatController@acceptCall');
 
 Route::get('/cinet_pay/billings-details', 'PaymentController@cinet_pay');
 Route::get('/admin/transcode-index', 'TranscodeController@index');
