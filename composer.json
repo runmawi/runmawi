@@ -43,7 +43,7 @@
         "php-ffmpeg/php-ffmpeg": "0.16",
         "phpoffice/phpspreadsheet": "^1.18",
         "pion/laravel-chunk-upload": "^1.5",
-        "pusher/pusher-php-server": "~4.0",
+        "pusher/pusher-php-server": "^5.0",
         "razorpay/razorpay": "2.*",
         "sokil/php-vast": "^2.2",
         "spatie/image": "^2.0",
