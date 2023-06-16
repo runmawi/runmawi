@@ -14,6 +14,12 @@ Route::get('/video-chat', function () {
     $users = App\User::where('id', '<>', Auth::id())->get();
     return view('video-chat', ['users' => $users]);
 });
+// Route::get('video_chat', 'VideoChatController@index');
+
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('video_chat', 'VideoChatController@index');
+    Route::post('auth/video_chat', 'VideoChatController@auth');
+  });
 
 // Endpoints to call or receive calls.
 Route::post('/video/call-user', 'VideoChatController@callUser');
