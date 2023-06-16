@@ -12987,8 +12987,7 @@ public function QRCodeMobileLogout(Request $request)
       
        else:
 
-         $data = Channel::select('id','channel_name','status','channel_image','channel_slug')
-                ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+         $data = Channel::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
                     $item['image_url'] = $item->channel_image ;
                     $item['Player_image_url'] = $item->channel_image ; // Note - No Player Image for Channel
                     $item['source']    = "Channel_Partner";
@@ -13008,8 +13007,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (content_partner) is turned off in the admin panel
       else:
 
-          $data = ModeratorsUser::select('id','username','status','picture','slug')
-                  ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+          $data = ModeratorsUser::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
                     $item['image_url'] =  URL::to('public/uploads/picture/'.$item->picture)  ;
                     $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->picture) ; // Note - No Player Image for Moderators User
                     $item['source']    = "Content_Partner";
@@ -13861,7 +13859,6 @@ public function QRCodeMobileLogout(Request $request)
   private static function Channel_Pagelist(){
 
       $query = Channel::query()
-        ->select('id','channel_name','status','channel_image','channel_slug')
         ->where('status',1);
         
       $data = $query->latest()->get();
@@ -13879,7 +13876,6 @@ public function QRCodeMobileLogout(Request $request)
   private static function Content_Pagelist(){
 
       $query = ModeratorsUser::query()
-        ->select('id','username','status','picture','slug')
         ->where('status',1);
         
       $data = $query->latest()->get();
