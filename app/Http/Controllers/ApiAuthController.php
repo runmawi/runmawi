@@ -12989,7 +12989,7 @@ public function QRCodeMobileLogout(Request $request)
 
          $data = Channel::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
                     $item['image_url'] = $item->channel_image ;
-                    $item['Player_image_url'] = $item->channel_image ; // Note - No Player Image for Channel
+                    $item['Player_image_url'] = $item->channel_banner ;
                     $item['source']    = "Channel_Partner";
                         return $item;
                     });
@@ -13009,7 +13009,7 @@ public function QRCodeMobileLogout(Request $request)
 
           $data = ModeratorsUser::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
                     $item['image_url'] =  URL::to('public/uploads/picture/'.$item->picture)  ;
-                    $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->picture) ; // Note - No Player Image for Moderators User
+                    $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->banner) ; // Note - No Player Image for Moderators User
                     $item['source']    = "Content_Partner";
                   return $item;
               });
@@ -13865,7 +13865,7 @@ public function QRCodeMobileLogout(Request $request)
 
       $data->transform(function ($item) {
         $item['image_url'] = $item->channel_image ;
-        $item['Player_image_url'] = $item->channel_image ; // Note - No Player Image for Channel
+        $item['Player_image_url'] = $item->channel_banner ; 
         $item['source']    = "Channel_Partner";
         return $item;
       });
@@ -13882,7 +13882,7 @@ public function QRCodeMobileLogout(Request $request)
 
       $data->transform(function ($item) {
         $item['image_url'] =  URL::to('public/uploads/picture/'.$item->picture)  ;
-        $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->picture) ; // Note - No Player Image for Moderators User
+        $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->banner) ; 
         $item['source']    = "Content_Partner";
         return $item;
       });
