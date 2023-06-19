@@ -141,39 +141,38 @@
 		@endif
 
 
-		<div class="row">
-                    <div class="col-md-6">
+		
                     <div class="row mt-3">
                                         <div class="col-sm-6">
                                             <label class="m-0">Video Image Cover</label>
-                                            <p class="p1">Select the video image (1080x1920 px or 9:16 ratio):</p>
+                                            <p class="p1">Select the video image(1080x1920 px or 9:16 ratio):</p>
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="image" id="image" />
                                             </div>
-                                        </div>
+                                       
 
-                                        <div class="col-sm-6">
+                                        <div class="">
                                             <div class="panel-body">
                                                 @if(!empty($video->image))
                                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg" width="200" />
                                                 @endif
                                             </div>
                                         </div>
-                                    </div>
-                    </div>
+                                  
+                   </div>
                     <div class="col-md-6">
-                    <div class="row mt-3">
-                                        <div class="col-sm-6">
+                 
+                                      
                                             <label class="m-0">Player Image Cover</label>
                                             <p class="p1">Select the video image(1280x720 px or 16:9 ratio):</p>
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
                                             </div>
-                                        </div>
+                                       
 
-                                        <div class="col-sm-6">
+                                        <div class="">
                                             <div class="panel-body">
                                                 @if(!empty($video->player_image))
                                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-imgimg" width="200" />
@@ -181,8 +180,8 @@
                                             </div>
                                         </div>
                                     </div>
-                    </div>
-                </div>
+                  </div>
+             
                                     
 
 
@@ -351,7 +350,7 @@
 				</div>
 			</div>
 
-
+<div class="row mt-3"> 
 			<div class="col-sm-6">
 				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label></label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -364,21 +363,21 @@
                         </div></div> 
 			</div>
 			</div>
-			</div>
+			
 
-			<div class="clear"></div>
-			<div class="row mt-3"> 
+		
+			
 
-			<div class="col-sm-12" id="publishlater">
+			<div class="col-sm-6" id="publishlater">
 			<label class="">Publish Time</label>
 			<input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif">
 			<div class="clear"></div>
 			</div>
-			</div>
 			
-			<div class="clear"></div>
-			<div class="row mt-3"> 
-				<div class="col-sm-6"> 
+    </div>
+		
+		
+				<div class="col-sm-6 p-0"> 
 					<!-- <div class="panel panel-primary" data-collapsed="0"> 
 						<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body"> 
@@ -398,7 +397,7 @@
 							<div class="clear"></div>
 						</div> 
 					</div>
-				</div>
+                </div></div>
 			
 				<div class="row col-sm-6 form-group mt-3" id="ppv_price">
 					<div class="col-sm-6">
@@ -419,7 +418,6 @@
 					<div class="clear"></div>
 				</div>
 
-				</div>
 
 				<!-- <div class="col-sm-6"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
@@ -454,9 +452,9 @@
 			@if(isset($video->id))
 				<input type="hidden" id="id" name="id" value="{{ $video->id }}" />
 			@endif
-
+<div class="d-flex justify-content-end">
 			<input type="hidden" class="btn btn-primary" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
+			<input type="submit" value="{{ $button_text }}" class="btn btn-primary " /></div>
 
 		</form>
 

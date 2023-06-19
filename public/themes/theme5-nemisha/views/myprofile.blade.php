@@ -362,8 +362,7 @@
                         </div>
 
                         <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-                            src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar ?>" alt="profile-bg"/
-                            style="" width="150" height="150">
+                            src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar ?>" alt="profile-bg" style="height: 150px; width: 150px;">
                         <div> <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="Text-white"
                                 style="color: #fff!important;"><i class="fa fa-plus-circle"></i> Edit</a></div>
 
