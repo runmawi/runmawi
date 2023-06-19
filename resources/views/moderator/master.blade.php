@@ -91,7 +91,9 @@ $userrolepermissiom = Session::get('userrolepermissiom ');
     hr {
         border-top: 1px solid #e2e2e22e!important;
     }
-    
+    .progress{
+        height: 6px;
+    }
 </style>
 
 </head>
@@ -361,7 +363,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                    <?php }else{
 
                    } ?>
-                  <li><a href="{{ URL::to('/cpp/my-account') }}"><i class="las la-user-plus"></i>About My Profile</a></li>
+                  <li><a href="{{ URL::to('/cpp/my-account') }}"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/ab.svg')?>"><span>About My Profile</span></a></li>
                
                </ul>
             </nav>
@@ -420,7 +422,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden"  name="email"  value="<?=  $Channel->email ?>"  autocomplete="email" autofocus>
                                     <input id="password" type="hidden"  name="password" value="<?=  $Channel->unhased_password ?>" autocomplete="current-password" >
-                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
+                                    <button type="submit" class="btn btn-hover" style="margin-top: -6%;margin-left: -65%;">Channel Visit Portal </button>                          
                            </form>
                         </div>
                         <?php } ?>
