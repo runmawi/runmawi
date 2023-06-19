@@ -904,7 +904,9 @@ class AuthController extends Controller
             $Ads->gender = json_encode($data['gender']);
         }
         if ($request->ads_video != null) {
-            $Ads->ads_video = $this->Ads_xml_file( $request->ads_video);
+            $Ads_xml_file = $this->Ads_xml_file( $request->ads_video);
+            $Ads->ads_video = $Ads_xml_file ;
+            $Ads->ads_path =  $Ads_xml_file;
         }
 
 

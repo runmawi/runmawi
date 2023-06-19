@@ -27,7 +27,6 @@ if(  plans_ads_enable() == 1 ){
             {
                     $video_tag_url = null ;
             }
-
 ?>
 
 <input type="hidden" id="video_tag_url" name="video_tag_url" value="<?= $video_tag_url ?>">
