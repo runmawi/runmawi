@@ -581,7 +581,7 @@ border-radius: 0px 4px 4px 0px;
                      <input type="file" class="form-group" name="reels_thumbnail"  id=""  >
 
                         @if($video->reels_thumbnail != null )
-                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->reels_thumbnail }}" width="200" height="200"  class="" />
+                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->reels_thumbnail }}" class="w-100" />
                         @endif
                   </div>
 
