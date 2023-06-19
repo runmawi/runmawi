@@ -865,7 +865,7 @@ data: {
                                  <input type="file" name="image" id="image" >
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or 9:16 ratio</p></span>
                                  @if(!empty($video->image))
-                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
+                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100" />
                                  @endif
                               </div>
                               <div class="col-sm-6 form-group">
@@ -873,7 +873,7 @@ data: {
                               <input type="file" name="player_image" id="player_image" >
                               <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio </p></span>
                               @if(!empty($video->player_image))
-                              <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img" width="200" height="200"/>
+                              <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100" />
                               @endif
                               </div>
                         </div>
