@@ -1,34 +1,44 @@
-<VAST version="3.0">
-    <Ad>
+<VAST version="4.1">
+    <Ad id="ad1">
         <InLine>
-            <AdSystem version="1.0">Your Ad System</AdSystem>
-            <AdTitle>Your Ad Title</AdTitle>
-            <Impression id="Impression-1" uri="https://example.com/impression" />
+            <AdSystem>
+                <![CDATA[Ad Server Name]]>
+            </AdSystem>
+            <AdTitle>
+                <![CDATA[Ad Title]]>
+            </AdTitle>
+            <Impression id="imp1">
+                <![CDATA[http://ad.server.com/impression]]>
+            </Impression>
             <Creatives>
-                <Creative>
+                <Creative id="013d876d-14fc-49a2-aefd-744fce68365b" adId="pre">
                     <Linear>
-                        <Duration>00:00:30</Duration>
-                        <MediaFiles>
-                            <MediaFile delivery="progressive" type="video/mp4" bitrate="1000" width="640" height="360"
-                                scalable="true" maintainAspectRatio="true" apiFramework="VPAID" codec="H.264"
-                                url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" />
-                        </MediaFiles>
-                        <TrackingEvents>
-                            <Tracking event="start" offset="00:00:00" uri="https://example.com/tracking/start" />
-                        </TrackingEvents>
+                        <Duration>00:02:08</Duration>
                         <VideoClicks>
-                            <ClickThrough id="ClickThrough-1">https://example.com/click-through</ClickThrough>
+                            <ClickThrough>
+                                <![CDATA[http://entertainmentserver.com/landing]]>
+                            </ClickThrough>
+                            <ClickTracking>
+                                <![CDATA[http://ad.server.com/videoclicks/clicktracking]]>
+                            </ClickTracking>
+                            <CustomClick>
+                                <![CDATA[http://ad.server.com/videoclicks/customclick]]>
+                            </CustomClick>
                         </VideoClicks>
-                        <MediaFiles>
-                            <MediaFile delivery="progressive" type="video/mp4" bitrate="1000" width="640"
-                                height="360" scalable="true" maintainAspectRatio="true" apiFramework="VPAID"
-                                codec="H.264"
-                                url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" />
-                        </MediaFiles>
                         <TrackingEvents>
-                            <Tracking event="midpoint" offset="00:00:15"
-                                uri="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" />
+                            <Tracking event="start">
+                                <![CDATA[http://ad.server.com/trackingevent/start]]>
+                            </Tracking>
+                            <Tracking event="pause">
+                                <![CDATA[http://ad.server.com/trackingevent/stop]]>
+                            </Tracking>
                         </TrackingEvents>
+                        <MediaFiles>
+                            <MediaFile delivery="progressive" type="video/mp4" height="200" width="200"
+                                bitrate="2500">
+                                <![CDATA[http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4]]>
+                            </MediaFile>
+                        </MediaFiles>
                     </Linear>
                 </Creative>
             </Creatives>
