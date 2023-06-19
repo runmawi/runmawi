@@ -13,6 +13,18 @@
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 @section('content')
 <style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #e4e4e4;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin: 13px 5px;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #000;
+}
     #optionradio {color: #000;}
     #video_upload {margin-top: 5%;}
    .file {
@@ -475,7 +487,7 @@ data: {
                             <div class="row">
                                  
                                 <div class="col-sm-6 form-group">
-                                <label><h5>Age Restrict :</h5></label>
+                                <label>Age Restrict :</label>
                                 <select class="form-control" id="age_restrict" name="age_restrict">
                                     <option selected  value="0">Choose Age</option>
                                     @foreach($age_categories as $age)
@@ -658,12 +670,12 @@ data: {
 
                                     <div class="col-sm-6 form-group">
                                         <label class="m-0" style="display:block;">URL Link </label>
-                                        <input type="text" class="form-group" name="url_link" accept="" id="url_link" >
+                                        <input type="text" class="form-group form-control" name="url_link" accept="" id="url_link" >
                                     </div>
     
                                     <div class="col-sm-6 form-group">
                                         <label class="m-0">URL Start Time <small>Format (HH:MM:SS)</small></label>
-                                        <input type="text" class="form-group" name="url_linktym" accept="" id="url_linktym" >
+                                        <input type="text" class="form-group form-control" name="url_linktym" accept="" id="url_linktym" >
                                     </div>
                                 </div>
 
@@ -993,8 +1005,8 @@ p {
    
     border-radius: 0px;
     margin-bottom: 25px;
-    margin-top: 2px;
-    width: 100%;
+    margin-top: 8px;
+  
     box-sizing: border-box;
   
     color: #2C3E50;
