@@ -35,6 +35,8 @@ use Session;
 use Stripe;
 use Mail;
 use DB;
+use URL;
+use File;
 
 class AuthController extends Controller
 {
@@ -114,33 +116,6 @@ class AuthController extends Controller
         }
 
         return Redirect::to('advertiser/login')->withSuccess('Great! You have Successfully registered');
-    }
-
-    public function ads_list()
-    {
-        try {
-            if (empty(session('advertiser_id'))) {
-                return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
-            }
-
-            $data = [
-                'settings' => Setting::first(),
-                'advertisements' => Advertisement::where('advertiser_id', session('advertiser_id'))
-                    ->get()
-                    ->map(function ($item) {
-                        $item['ads_category'] = Adscategory::where('id', $item->ads_category)
-                            ->pluck('name')
-                            ->first();
-                        return $item;
-                    }),
-
-                // App\
-            ];
-
-            return view('avod::ads_list', $data);
-        } catch (\Throwable $th) {
-            return abort(404);
-        }
     }
 
     public function dashboard()
@@ -377,195 +352,6 @@ class AuthController extends Controller
             return view('avod::upload_ads', $data);
         }
         return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
-    }
-
-    public function store_ads(Request $request)
-    {
-        $data = $request->all();
-
-        $Ads = new Advertisement();
-        $Ads->advertiser_id = session('advertiser_id');
-        $Ads->ads_name = $request->ads_name;
-        $Ads->ads_category = $request->ads_category;
-        $Ads->ads_position = $request->ads_position;
-        $Ads->ads_path = $request->ads_path;
-        $Ads->ads_upload_type = $request->ads_upload_type;
-        // $Ads->age = $request->age;
-        // $Ads->gender = $request->gender;
-        $Ads->household_income = $request->household_income;
-
-        if ($request->location == 'all_countries' || $request->location == 'India') {
-            $Ads->location = $request->location;
-        } else {
-            $Ads->location = $request->locations;
-        }
-
-        if (!empty($data['age'])) {
-            $Ads->age = json_encode($data['age']);
-        }
-
-        if (!empty($data['gender'])) {
-            $Ads->gender = json_encode($data['gender']);
-        }
-        if ($request->ads_video != null) {
-            $Ads_video = time() . '_' . $request->ads_video->getClientOriginalName();
-            $ads = $request->ads_video->move(public_path('uploads/AdsVideos'), $Ads_video);
-            $Ads->ads_video = $Ads_video;
-        }
-
-        $Ads->save();
-
-        $last_ads_id = $Ads->id;
-        $last_ads_name = $Ads->ads_name ? $Ads->ads_name : 'Ads';
-
-        // Events
-
-        $mondays = new DatePeriod(Carbon::now()->startOfWeek(Carbon::MONDAY), CarbonInterval::week(), Carbon::now(Carbon::MONDAY)->addMonths(6));
-        $tuesday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::TUESDAY), CarbonInterval::week(), Carbon::now(Carbon::TUESDAY)->addMonths(6));
-        $wednesday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::WEDNESDAY), CarbonInterval::week(), Carbon::now(Carbon::WEDNESDAY)->addMonths(6));
-        $thursday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::THURSDAY), CarbonInterval::week(), Carbon::now(Carbon::THURSDAY)->addMonths(6));
-        $friday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::FRIDAY), CarbonInterval::week(), Carbon::now(Carbon::FRIDAY)->addMonths(6));
-        $saturday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SATURDAY), CarbonInterval::week(), Carbon::now(Carbon::SATURDAY)->addMonths(6));
-        $sunday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SUNDAY), CarbonInterval::week(), Carbon::now(Carbon::SUNDAY)->addMonths(6));
-
-        if ($request->Monday_Start_time != null && $request->Monday_end_time != null) {
-            foreach ($mondays as $date) {
-                $Monday_start_time = count($request['Monday_Start_time']);
-
-                for ($i = 0; $i < $Monday_start_time; $i++) {
-                    $AdsTimeSlot = new AdsEvent();
-                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['Monday_Start_time'][$i];
-                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['Monday_end_time'][$i];
-                    $AdsTimeSlot->ads_category_id = $request->ads_category;
-                    $AdsTimeSlot->ads_id = $last_ads_id;
-                    $AdsTimeSlot->title = $last_ads_name;
-                    $AdsTimeSlot->status = '1';
-                    $AdsTimeSlot->day = 'Monday';
-                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                    $AdsTimeSlot->save();
-                }
-            }
-        }
-
-        if ($request->tuesday_start_time != null && $request->Tuesday_end_time != null) {
-            $tuesday_start_time = count($request['tuesday_start_time']);
-
-            foreach ($tuesday as $date) {
-                for ($i = 0; $i < $tuesday_start_time; $i++) {
-                    $AdsTimeSlot = new AdsEvent();
-                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['tuesday_start_time'][$i];
-                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['Tuesday_end_time'][$i];
-                    $AdsTimeSlot->ads_category_id = $request->ads_category;
-                    $AdsTimeSlot->ads_id = $last_ads_id;
-                    $AdsTimeSlot->title = $last_ads_name;
-                    $AdsTimeSlot->day = 'Tuesday';
-                    $AdsTimeSlot->status = '1';
-                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                    $AdsTimeSlot->save();
-                }
-            }
-        }
-
-        if ($request->wednesday_start_time != null && $request->wednesday_end_time != null) {
-            $wednesday_start_time = count($request['wednesday_start_time']);
-
-            foreach ($wednesday as $date) {
-                for ($i = 0; $i < $wednesday_start_time; $i++) {
-                    $AdsTimeSlot = new AdsEvent();
-                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['wednesday_start_time'][$i];
-                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['wednesday_end_time'][$i];
-                    $AdsTimeSlot->ads_category_id = $request->ads_category;
-                    $AdsTimeSlot->ads_id = $last_ads_id;
-                    $AdsTimeSlot->title = $last_ads_name;
-                    $AdsTimeSlot->status = '1';
-                    $AdsTimeSlot->day = 'Wednesday';
-                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                    $AdsTimeSlot->save();
-                }
-            }
-        }
-
-        if ($request->thursday_start_time != null && $request->thursday_end_time != null) {
-            $thursday_start_time = count($request['thursday_start_time']);
-
-            foreach ($thursday as $date) {
-                for ($i = 0; $i < $thursday_start_time; $i++) {
-                    $AdsTimeSlot = new AdsEvent();
-                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['thursday_start_time'][$i];
-                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['thursday_end_time'][$i];
-                    $AdsTimeSlot->ads_category_id = $request->ads_category;
-                    $AdsTimeSlot->ads_id = $last_ads_id;
-                    $AdsTimeSlot->status = '1';
-                    $AdsTimeSlot->day = 'Thursday';
-                    $AdsTimeSlot->title = $last_ads_name;
-                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                    $AdsTimeSlot->save();
-                }
-            }
-        }
-
-        if ($request->friday_start_time != null && $request->friday_end_time != null) {
-            $friday_start_time = count($request['friday_start_time']);
-
-            foreach ($friday as $date) {
-                for ($i = 0; $i < $friday_start_time; $i++) {
-                    $AdsTimeSlot = new AdsEvent();
-                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['friday_start_time'][$i];
-                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['friday_end_time'][$i];
-                    $AdsTimeSlot->ads_category_id = $request->ads_category;
-                    $AdsTimeSlot->ads_id = $last_ads_id;
-                    $AdsTimeSlot->status = '1';
-                    $AdsTimeSlot->title = $last_ads_name;
-                    $AdsTimeSlot->day = 'Friday';
-                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                    $AdsTimeSlot->save();
-                }
-            }
-        }
-
-        if ($request->saturday_start_time != null && $request->saturday_end_time != null) {
-            $saturday_start_time = count($request['saturday_start_time']);
-
-            foreach ($saturday as $date) {
-                for ($i = 0; $i < $saturday_start_time; $i++) {
-                    $AdsTimeSlot = new AdsEvent();
-                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['saturday_start_time'][$i];
-                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['saturday_end_time'][$i];
-                    $AdsTimeSlot->ads_category_id = $request->ads_category;
-                    $AdsTimeSlot->ads_id = $last_ads_id;
-                    $AdsTimeSlot->title = $last_ads_name;
-                    $AdsTimeSlot->status = '1';
-                    $AdsTimeSlot->day = 'Saturday';
-                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                    $AdsTimeSlot->save();
-                }
-            }
-        }
-
-        if ($request->sunday_start_time != null && $request->sunday_end_time != null) {
-            $sunday_start_time = count($request['sunday_start_time']);
-
-            foreach ($sunday as $date) {
-                for ($i = 0; $i < $sunday_start_time; $i++) {
-                    $AdsTimeSlot = new AdsEvent();
-                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['sunday_start_time'][$i];
-                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['sunday_end_time'][$i];
-                    $AdsTimeSlot->ads_category_id = $request->ads_category;
-                    $AdsTimeSlot->ads_id = $last_ads_id;
-                    $AdsTimeSlot->title = $last_ads_name;
-                    $AdsTimeSlot->status = '1';
-                    $AdsTimeSlot->day = 'Sunday';
-                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
-                    $AdsTimeSlot->save();
-                }
-            }
-        }
-
-        // $getdata = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->first();
-        // $getdata->no_of_uploads += 1;
-        // $getdata->save();
-
-        return Redirect::to('advertiser/ads-list');
     }
 
     public function paymentgateway($plan_id)
@@ -1067,6 +853,268 @@ class AuthController extends Controller
         return view('avod::Ads_events', $data);
     }
 
+    public function ads_list()
+    {
+        try {
+            if (empty(session('advertiser_id'))) {
+                return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
+            }
+
+            $data = [
+                'settings' => Setting::first(),
+                'advertisements' => Advertisement::where('advertiser_id', session('advertiser_id'))
+                    ->get()->map(function ($item) {
+                        $item['ads_category'] = Adscategory::where('id', $item->ads_category)->pluck('name')->first();
+                        return $item;
+                    }),
+            ];
+
+            return view('avod::ads_list', $data);
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+    }
+
+    public function store_ads(Request $request)
+    {
+        $data = $request->all();
+
+        $Ads = new Advertisement();
+        $Ads->advertiser_id = session('advertiser_id');
+        $Ads->ads_name = $request->ads_name;
+        $Ads->ads_category = $request->ads_category;
+        $Ads->ads_position = $request->ads_position;
+        $Ads->ads_path = $request->ads_path;
+        $Ads->ads_upload_type = 'tag_url';
+        // $Ads->age = $request->age;
+        // $Ads->gender = $request->gender;
+        $Ads->household_income = $request->household_income;
+
+        if ($request->location == 'all_countries' || $request->location == 'India') {
+            $Ads->location = $request->location;
+        } else {
+            $Ads->location = $request->locations;
+        }
+
+        if (!empty($data['age'])) {
+            $Ads->age = json_encode($data['age']);
+        }
+
+        if (!empty($data['gender'])) {
+            $Ads->gender = json_encode($data['gender']);
+        }
+        if ($request->ads_video != null) {
+            $Ads_xml_file = $this->Ads_xml_file( $request->ads_video);
+            $Ads->ads_video = $Ads_xml_file ;
+            $Ads->ads_path =  $Ads_xml_file;
+        }
+
+
+        $Ads->save();
+
+        $last_ads_id = $Ads->id;
+        $last_ads_name = $Ads->ads_name ? $Ads->ads_name : 'Ads';
+
+        // Events
+
+        $mondays = new DatePeriod(Carbon::now()->startOfWeek(Carbon::MONDAY), CarbonInterval::week(), Carbon::now(Carbon::MONDAY)->addMonths(6));
+        $tuesday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::TUESDAY), CarbonInterval::week(), Carbon::now(Carbon::TUESDAY)->addMonths(6));
+        $wednesday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::WEDNESDAY), CarbonInterval::week(), Carbon::now(Carbon::WEDNESDAY)->addMonths(6));
+        $thursday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::THURSDAY), CarbonInterval::week(), Carbon::now(Carbon::THURSDAY)->addMonths(6));
+        $friday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::FRIDAY), CarbonInterval::week(), Carbon::now(Carbon::FRIDAY)->addMonths(6));
+        $saturday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SATURDAY), CarbonInterval::week(), Carbon::now(Carbon::SATURDAY)->addMonths(6));
+        $sunday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SUNDAY), CarbonInterval::week(), Carbon::now(Carbon::SUNDAY)->addMonths(6));
+
+        if ($request->Monday_Start_time != null && $request->Monday_end_time != null) {
+            foreach ($mondays as $date) {
+                $Monday_start_time = count($request['Monday_Start_time']);
+
+                for ($i = 0; $i < $Monday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['Monday_Start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['Monday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->day = 'Monday';
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
+                }
+            }
+        }
+
+        if ($request->tuesday_start_time != null && $request->Tuesday_end_time != null) {
+            $tuesday_start_time = count($request['tuesday_start_time']);
+
+            foreach ($tuesday as $date) {
+                for ($i = 0; $i < $tuesday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['tuesday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['Tuesday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->day = 'Tuesday';
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
+                }
+            }
+        }
+
+        if ($request->wednesday_start_time != null && $request->wednesday_end_time != null) {
+            $wednesday_start_time = count($request['wednesday_start_time']);
+
+            foreach ($wednesday as $date) {
+                for ($i = 0; $i < $wednesday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['wednesday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['wednesday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->day = 'Wednesday';
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
+                }
+            }
+        }
+
+        if ($request->thursday_start_time != null && $request->thursday_end_time != null) {
+            $thursday_start_time = count($request['thursday_start_time']);
+
+            foreach ($thursday as $date) {
+                for ($i = 0; $i < $thursday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['thursday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['thursday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->day = 'Thursday';
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
+                }
+            }
+        }
+
+        if ($request->friday_start_time != null && $request->friday_end_time != null) {
+            $friday_start_time = count($request['friday_start_time']);
+
+            foreach ($friday as $date) {
+                for ($i = 0; $i < $friday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['friday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['friday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->day = 'Friday';
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
+                }
+            }
+        }
+
+        if ($request->saturday_start_time != null && $request->saturday_end_time != null) {
+            $saturday_start_time = count($request['saturday_start_time']);
+
+            foreach ($saturday as $date) {
+                for ($i = 0; $i < $saturday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['saturday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['saturday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->day = 'Saturday';
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
+                }
+            }
+        }
+
+        if ($request->sunday_start_time != null && $request->sunday_end_time != null) {
+            $sunday_start_time = count($request['sunday_start_time']);
+
+            foreach ($sunday as $date) {
+                for ($i = 0; $i < $sunday_start_time; $i++) {
+                    $AdsTimeSlot = new AdsEvent();
+                    $AdsTimeSlot->start = $date->format('Y-m-d') . ' ' . $request['sunday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d') . ' ' . $request['sunday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->day = 'Sunday';
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
+                    $AdsTimeSlot->save();
+                }
+            }
+        }
+
+        // $getdata = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->first();
+        // $getdata->no_of_uploads += 1;
+        // $getdata->save();
+
+        return Redirect::to('advertiser/ads-list');
+    }
+
+    private function Ads_xml_file($Ads_videos)
+    {
+        
+        $Ads_video_slug  =  Str::slug(pathinfo($Ads_videos->getClientOriginalName(), PATHINFO_FILENAME));
+        $Ads_video_ext   = $Ads_videos->extension();
+
+        $Ads_xml_filename = time() . '-' . $Ads_video_slug .'.xml';
+
+        $Ads_upload_filename = time() . '-' . $Ads_video_slug .'.'. $Ads_video_ext;
+        $Ads_videos->move( public_path('uploads/AdsVideos'), $Ads_upload_filename  );
+
+        $Ads_upload_url = URL::to('public/uploads/AdsVideos/'.$Ads_upload_filename);
+
+        $factory = new \Sokil\Vast\Factory();
+        $document = $factory->create('4.1');
+
+        $ad1 = $document
+            ->createInLineAdSection()
+            ->setId( Str::random(23) )
+            ->setAdSystem( $Ads_upload_filename )
+            ->setAdTitle(  $Ads_upload_filename );
+
+        $linearCreative = $ad1
+            ->createLinearCreative()
+            ->setDuration(128)
+            ->setId( Str::random(23) );
+            // ->setAdId('pre-'.Str::random(23));
+            // ->setVideoClicksClickThrough('http://entertainmentserver.com/landing')
+            // ->addVideoClicksClickTracking('http://ad.server.com/videoclicks/clicktracking')
+            // ->addVideoClicksCustomClick('http://ad.server.com/videoclicks/customclick')
+            // ->addTrackingEvent('start', 'http://ad.server.com/trackingevent/start')
+            // ->addTrackingEvent('pause', 'http://ad.server.com/trackingevent/stop');
+
+        $linearCreative
+            ->createMediaFile()
+            ->setProgressiveDelivery()
+            ->setType('video/mp4')
+            ->setHeight(200)
+            ->setWidth(200)
+            ->setBitrate(2500)
+            ->setUrl( $Ads_upload_url );
+
+        $domDocument = $document->toDomDocument();
+        $xml_file_url = URL::to('public/uploads/AdsVideos/'.$Ads_xml_filename) ;
+        $xml_file    = public_path('uploads/AdsVideos/' . $Ads_xml_filename ) ;
+        $domDocument->save($xml_file);
+
+        return $xml_file_url ;
+    }
+
     public function Ads_edit(Request $request, $Ads_id)
     {
         try {
@@ -1118,10 +1166,27 @@ class AuthController extends Controller
     public function Ads_delete($Ads_id)
     {
         try {
-            Advertisement::where('id', $Ads_id)->delete();
+
+            $Advertisement = Advertisement::find($Ads_id);
+
+            $filename = pathinfo(parse_url($Advertisement->ads_video, PHP_URL_PATH), PATHINFO_FILENAME);
+
+            if (File::exists(base_path('public/uploads/AdsVideos/'. $filename."xml"  ))) {
+                File::delete(base_path('public/uploads/AdsVideos/'. $filename."xml"  ));
+            }
+
+            if (File::exists(base_path('public/uploads/AdsVideos/'. $filename."mp4"  ))) {
+                File::delete(base_path('public/uploads/AdsVideos/'. $filename."mp4"  ));
+            }
+
+            $Advertisement->delete();
+
             AdsEvent::where('id', $Ads_id)->delete();
 
+            return redirect()->back();
+
         } catch (\Throwable $th) {
+            return $th->getMessage();
             return abort(404);
         }
     }
