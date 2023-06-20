@@ -15,7 +15,7 @@
         <div class="iq-main-header d-flex align-items-center justify-content-between"> </div>
      </div>
      <section class="movie-detail ">
-        <?php if((count($channelwatchlater) > 0) ||(count($livevideos) > 0) ): ?>
+        <?php if((count($channelwatchlater) > 0) ): ?>
             <h4 class="main-title">My Videos</h4>       
         <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
@@ -58,6 +58,56 @@
                               <?php endforeach; 
             endif; ?>
             </ul>
+         </div>
+
+         <?php if((count($episode_videos) > 0) ): ?>
+            <h4 class="main-title">My Episodes</h4>       
+        <div class="favorites-contens">
+                        <ul class="category-page list-inline  row p-0 mb-4">
+             <?php if(count($episode_videos) > 0):
+                   foreach($episode_videos as $video): ?>
+                    <?php 
+                $series_slug = App\Series::where('id',$video->series_id)->pluck('slug')->first();
+                ?>
+            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
+                <a href="<?php echo URL::to('episode') ?><?= '/'.$series_slug .'/'. $video->slug ?>">
+                <li class="slide-item position-relative">
+                <!-- block-images -->
+                   <div class="block-images position-relative">
+                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
+                            <source src="<?php echo @$video->trailer;  ?>" type="video/mp4">
+                        </video>
+                    </div>
+
+                        <div class="block-description">
+                            <div class="hover-buttons d-flex">
+                                <a type="button" class="text-white"
+                                href="<?php echo URL::to('episode') ?><?= '/'.$series_slug .'/'. $video->slug ?>">
+                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                                </a>
+                                <div >
+                                </div>
+                            </div>
+                        </div>
+                       <div>
+                           
+                            <div class="movie-time d-flex align-items-center justify-content-between my-2">
+                                 <h6><?php  echo (strlen($video->title) > 15) ? substr($video->title,0,16).'...' : $video->title; ?></h6>
+                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
+                               
+                            </div>
+                            <span class="text-white"><i class="fa fa-clock-o"></i>
+                                    <?= gmdate('H:i:s', $video->duration); ?>
+                                </span>
+                       </div>
+                </li>
+                </a>
+            </div>
+                              <?php endforeach; 
+            endif; ?>
+            </ul>
+            <?php   endif; ?>
+
          </div>
 
         <!-- <h4 class="main-title">Live Videos</h4>-->

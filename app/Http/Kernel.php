@@ -73,5 +73,6 @@ class Kernel extends HttpKernel
         'cpp'      => \App\Http\Middleware\cpp::class,
         'channel'      => \App\Http\Middleware\Channel::class,
         'RazorpayMiddleware'      => \App\Http\Middleware\RazorpayMiddleware::class,
+        'CheckAuthTheme5'      => \App\Http\Middleware\CheckAuthTheme5::class,
     ];
 }

@@ -12987,10 +12987,9 @@ public function QRCodeMobileLogout(Request $request)
       
        else:
 
-         $data = Channel::select('id','channel_name','status','channel_image','channel_slug')
-                ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+         $data = Channel::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
                     $item['image_url'] = $item->channel_image ;
-                    $item['Player_image_url'] = $item->channel_image ; // Note - No Player Image for Channel
+                    $item['Player_image_url'] = $item->channel_banner ;
                     $item['source']    = "Channel_Partner";
                         return $item;
                     });
@@ -13008,10 +13007,9 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (content_partner) is turned off in the admin panel
       else:
 
-          $data = ModeratorsUser::select('id','username','status','picture','slug')
-                  ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+          $data = ModeratorsUser::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
                     $item['image_url'] =  URL::to('public/uploads/picture/'.$item->picture)  ;
-                    $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->picture) ; // Note - No Player Image for Moderators User
+                    $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->banner) ; // Note - No Player Image for Moderators User
                     $item['source']    = "Content_Partner";
                   return $item;
               });
@@ -13183,7 +13181,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Series Genre status) is turned off in the admin panel
       else:
 
-          $data =  SeriesGenre::where('in_home',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
+          $data =  SeriesGenre::where('in_home',1)->latest()->limit(30)->orderBy('order')->get()->map(function ($item) {
                         $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
                         $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
                         $item['source']    = "SeriesGenre";
@@ -13688,7 +13686,7 @@ public function QRCodeMobileLogout(Request $request)
       $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
       $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
       $item['episode_count'] = Episode::where('series_id',$item->id)->count();
-      $item['source']    = "Series";
+      $item['source']    = "series";
       return $item;
     });
   
@@ -13721,7 +13719,7 @@ public function QRCodeMobileLogout(Request $request)
     $data->transform(function ($item) {
       $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
       $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
-      $item['source']    = "Series";
+      $item['source']    = "series";
       return $item;
     });
 
@@ -13861,14 +13859,13 @@ public function QRCodeMobileLogout(Request $request)
   private static function Channel_Pagelist(){
 
       $query = Channel::query()
-        ->select('id','channel_name','status','channel_image','channel_slug')
         ->where('status',1);
         
       $data = $query->latest()->get();
 
       $data->transform(function ($item) {
         $item['image_url'] = $item->channel_image ;
-        $item['Player_image_url'] = $item->channel_image ; // Note - No Player Image for Channel
+        $item['Player_image_url'] = $item->channel_banner ; 
         $item['source']    = "Channel_Partner";
         return $item;
       });
@@ -13879,14 +13876,13 @@ public function QRCodeMobileLogout(Request $request)
   private static function Content_Pagelist(){
 
       $query = ModeratorsUser::query()
-        ->select('id','username','status','picture','slug')
         ->where('status',1);
         
       $data = $query->latest()->get();
 
       $data->transform(function ($item) {
         $item['image_url'] =  URL::to('public/uploads/picture/'.$item->picture)  ;
-        $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->picture) ; // Note - No Player Image for Moderators User
+        $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->banner) ; 
         $item['source']    = "Content_Partner";
         return $item;
       });
@@ -13907,7 +13903,7 @@ public function QRCodeMobileLogout(Request $request)
             $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
             $item['episode_count'] = Episode::where('series_id',$item->id)->count();
-            $item['source']    = "Series";
+            $item['source']    = "series";
             return $item;
         });
 

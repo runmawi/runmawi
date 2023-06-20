@@ -12,9 +12,11 @@
       <div class="row justify-content-center align-items-center">
          
           <div class="col-lg-6 d-flex align-items-center justify-content-center">
-              <h5 class="font-weight-bold mb-0  ">Download App</h5>
-               <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
+          <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
+          <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
+              <h5 class="font-weight-bold mb-0  ">Download App</h5>
+          <?php } ?>
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>
@@ -125,7 +127,7 @@ entertainment.</p>
             $cmspages = App\Page::where('active', 1)->get();
 
             foreach($cmspages as $key => $page) {?>
-              <a href="<?= URL::to('page/'.$page->title ) ?>" target="_blank" class="ml-1"> <?= $page->title ?> </a> 
+              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= $page->title ?> </a> 
           <?php } ?>
 
           <?php echo $settings->website_name .' - '. Carbon::now()->year ; ?>  All Rights Reserved

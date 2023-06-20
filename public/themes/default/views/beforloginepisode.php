@@ -237,9 +237,9 @@
                 </ol>
             </div>
         </div>
-    <div>
+   
 
-    
+    </div>
 <div class="container-fluid series-details">
    <div id="series_title">
       <div class="">

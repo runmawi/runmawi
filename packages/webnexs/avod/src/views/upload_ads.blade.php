@@ -171,26 +171,24 @@
                                                                     <p class="error-message ml-1"
                                                                         style="color: red;font-size:10px;">(This filed is required)</p>
                                                                 </div>
-                                                                <select class="form-control ads_type" name="ads_upload_type">
-                                                                    <option value="null">select Ads Type </option>
-                                                                    <option selected="selected" value="tag_url">Ad Tag Url </option>
-                                                                    {{-- <option value="ads_video_upload">Ads Video Upload
-                                                                    </option> --}}
+                                                                <select class="form-control ads_type" name="ads_upload_type" >
+                                                                    <option selected="selected" value="null">select Ads Type </option>
+                                                                    <option value="tag_url">Ad Tag Url </option>
+                                                                    <option value="ads_video_upload">Ads Video Upload
+                                                                    </option>
                                                                 </select>
                                                             </div>
 
                                                             <div class="form-group tag_url">
                                                                 <label> Ad Tag Url:</label>
-                                                                <input type="text" id="ads_path" name="ads_path"
+                                                                <input type="text" id="ads_path" name="ads_path" 
                                                                     class="form-control" placeholder="Please! Enter the Ads Tag URL" />
                                                             </div>
 
                                                             <div class="form-group ads_video_upload">
                                                                 <label> Ads Video Upload:</label>
-                                                                <input type="file" id="ads_video" name="ads_video"
-                                                                    class="form-control" />
+                                                                <input type="file" id="ads_video" name="ads_video" accept="video/mp4" class="form-control" />
                                                             </div>
-
                                                         </div>
 
                                                     </div>
@@ -923,7 +921,7 @@
             // document.getElementsByClassName('error-message')[4].style.display = 'none';
             $('.location_input').hide();
             $('.ads_video_upload').hide();
-            $('.tag_url').show();
+            $('.tag_url').hide();
         };
 
         $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
@@ -969,26 +967,23 @@
                 document.getElementById("Next2").disabled = true;
             }
         });
-
-
+    });
+    $(document).ready(function() {
+        $('.tag_url, .ads_video_upload').hide();
 
         $(".ads_type").change(function() {
+            $('.tag_url, .ads_video_upload').hide();
             var ads_type = $('.ads_type').val();
 
-            if (ads_type == 'tag_url') {
+            if (ads_type === 'tag_url') {
                 $('.tag_url').show();
-                $('.ads_video_upload').hide();
-
-            } else if (ads_type == 'ads_video_upload') {
-                $('.tag_url').hide();
+            } else if (ads_type === 'ads_video_upload') {
                 $('.ads_video_upload').show();
-            } else if (ads_type == 'null') {
-                $('.tag_url').hide();
-                $('.ads_video_upload').hide();
             }
         });
-
     });
+
+
 </script>
 
 </body>

@@ -4,6 +4,8 @@
   <?php if ($order_settings_list[0]->header_name) { echo $order_settings_list[0]->header_name ;} else { echo "" ; } ?>
                     <!-- Featured Movies -->
                   </a></h4>    
+    <a class="see" href="<?php if ($order_settings_list[0]->header_name) { echo URL::to('/').'/'.$order_settings_list[0]->url ;} else { echo "" ; } ?>"> See All  </a>
+
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
