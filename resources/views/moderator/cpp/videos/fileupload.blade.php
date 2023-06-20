@@ -25,17 +25,25 @@
     font-weight: 500;
     color: #000;
 }
-    #optionradio {color: #000;}
+    #optionradio {color: #000;text-align: end;}
     #video_upload {margin-top: 5%;}
    .file {
-        padding: 30;
-        background: rgba(56, 87, 127, 0.34);
-        border-radius: 10px;
-        text-align: center;
-        margin: 0 auto;
-        width: 75%;
-    }
-    #video_upload .file form{border: 2px dashed;}
+    background: rgb(255 255 255 / 100%);
+     border-radius: 10px; 
+    text-align: center;
+    margin: 0 auto;
+    /* width: 75%; */
+    border: 2px dashed;
+}
+    .card-title {
+    padding: 30px;
+    background: #f9f9f9;
+    font-size: 1.25rem;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+        margin-bottom: 0!important;
+}
+    #video_upload .file form{}
     #video_upload .file form i {display: block; font-size: 50px;}
 
     .form-control1 {
@@ -184,7 +192,7 @@
                         @endforeach
                         @endif
                    
-                </div>
+                </div><hr>
                     <div class="row">
                         <div class="col-md-12">
                             <!-- M3u8 Video --> 
