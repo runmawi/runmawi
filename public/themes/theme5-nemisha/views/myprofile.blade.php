@@ -394,7 +394,7 @@
                                         <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option>
                                         <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
                                         <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                                        <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option>
+                                        <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
                                     </select>
                                 </span>
                             </p>
@@ -545,7 +545,7 @@
                         <div class="form-group">
                             <label>Password:</label><br>
                             <input type="password" name="password"
-                                value="<?php if(!empty($user->password)): ?><?= $user->password ?><?php endif; ?>"
+                                value=""
                                 placeholder="Password" class="form-control">
                             <!-- <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  > -->
                         </div>
