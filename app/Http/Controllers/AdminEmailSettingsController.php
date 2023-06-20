@@ -177,7 +177,7 @@ class AdminEmailSettingsController extends Controller
             return Redirect::back();
 
         }catch (\Exception $e) {
-            $Error_msg = "While ! Changing Email Configuration Some Erro Occurs";
+            $Error_msg = "While ! Changing Email Configuration Some Error Occurs";
             $url = URL::to('/admin/email_settings');
             echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
         }
