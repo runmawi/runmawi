@@ -1373,6 +1373,7 @@ class CPPAdminVideosController extends Controller
             $video->status = $status;
             $video->uploaded_by = $uploaded_by;
             $video->player_image = $player_image;
+            $video->image = $data['image'];
             $video->m3u8_url = $m3u8_url;
             $video->mp4_url = $mp4_url;
             $video->embed_code = $embed_code;
@@ -1941,6 +1942,7 @@ class CPPAdminVideosController extends Controller
             $video->active = 1;
             $video->publish_type = $data['publish_type'];
             $video->publish_time = $data['publish_time'];
+            $video->image = $data['image'];
             $video->player_image = $player_image;
             $video->uploaded_by = 'CPP';
             $video->ppv_price = $data['ppv_price'];
