@@ -876,7 +876,7 @@ class AdminUsersController extends Controller
                     unlink($file_old);
                 }
             }
-            $file = $image;                         //upload new file
+            $file = $image;                    //upload new file
             // $user->avatar = $file->getClientOriginalName();
             $user->avatar = str_replace(' ', '_', $file->getClientOriginalName());
 
