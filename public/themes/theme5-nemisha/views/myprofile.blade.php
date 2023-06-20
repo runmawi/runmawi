@@ -394,7 +394,7 @@
                                         <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option>
                                         <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
                                         <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                                        <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option>
+                                        <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
                                     </select>
                                 </span>
                             </p>
@@ -522,7 +522,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}"
+                    <form id="new-cat-form" enctype="multipart/form-data" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}"
                         method="post">
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         <input type="hidden" name="user_id" value="<?= $user->id ?>" />
@@ -545,7 +545,7 @@
                         <div class="form-group">
                             <label>Password:</label><br>
                             <input type="password" name="password"
-                                value="<?php if(!empty($user->password)): ?><?= $user->password ?><?php endif; ?>"
+                                value=""
                                 placeholder="Password" class="form-control">
                             <!-- <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  > -->
                         </div>
@@ -564,10 +564,14 @@
                                 <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>  Select the Gender </option>
                                 <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
                                 <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                                <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option>
+                                <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
                             </select>
                         </div>
-                       
+                        <div class="form-group">
+                        <label> Profile Image:</label>
+                            <input type="file" multiple="true" class="form-control"
+                                name="avatar" id="avatar" required />
+                        </div>
                         <div class="form-group">
                             <label> DOB:</label>
                             <input type="date" id="DOB" name="DOB" class="form-control" max="<?php echo date("Y-m-d"); ?>"

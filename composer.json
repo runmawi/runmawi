@@ -58,8 +58,7 @@
         "wapmorgan/mp3info": "^0.0.8",
         "watson/sitemap": "^3.0",
         "yajra/laravel-datatables-oracle": "~9.0",
-        "zanysoft/laravel-zip": "^1.0",
-        "zusamarehan/tourify": "^0.5.4"
+        "zanysoft/laravel-zip": "^1.0"
     },
    
     "require-dev": {
