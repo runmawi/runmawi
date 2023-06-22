@@ -885,7 +885,7 @@ class AuthController extends Controller
         $Ads->ads_category = $request->ads_category;
         $Ads->ads_position = $request->ads_position;
         $Ads->ads_path = $request->ads_path;
-        $Ads->ads_upload_type = 'tag_url';
+        $Ads->ads_upload_type =  $request->ads_upload_type;
         // $Ads->age = $request->age;
         // $Ads->gender = $request->gender;
         $Ads->household_income = $request->household_income;
@@ -903,12 +903,12 @@ class AuthController extends Controller
         if (!empty($data['gender'])) {
             $Ads->gender = json_encode($data['gender']);
         }
+
         if ($request->ads_video != null) {
             $Ads_xml_file = $this->Ads_xml_file( $request->ads_video);
-            $Ads->ads_video = $Ads_xml_file ;
-            $Ads->ads_path =  $Ads_xml_file;
+            $Ads->ads_video =  $Ads_xml_file['Ads_upload_url'] ;
+            $Ads->ads_path =  $Ads_xml_file['Ads_xml_url'] ;
         }
-
 
         $Ads->save();
 
@@ -1112,7 +1112,12 @@ class AuthController extends Controller
         $xml_file    = public_path('uploads/AdsVideos/' . $Ads_xml_filename ) ;
         $domDocument->save($xml_file);
 
-        return $xml_file_url ;
+        $data = array(
+            'Ads_xml_url' => $xml_file_url ,
+            'Ads_upload_url' => $Ads_upload_url ,
+        );
+
+        return $data ;
     }
 
     public function Ads_edit(Request $request, $Ads_id)
@@ -1145,7 +1150,6 @@ class AuthController extends Controller
             'ads_name' => $request->ads_name,
             'ads_category' => $request->ads_category,
             'ads_position' => $request->ads_position,
-            'ads_path' => $request->ads_path,
             'ads_upload_type' => $request->ads_upload_type,
             'age' => !empty($request->age) ? json_encode($request['age']) : ' ',
             'gender' => !empty($request['gender']) ? json_encode($request['gender']) : ' ',
@@ -1158,9 +1162,87 @@ class AuthController extends Controller
             $inputs += ['location' => $request->locations];
         }
 
+        if ( $request->ads_video != null && $request->ads_upload_type == "ads_video_upload" ) {
+            $Ads_xml_file = $this->Ads_xml_file( $request->ads_video);
+            $inputs += ['ads_video' => $Ads_xml_file['Ads_upload_url'] ];
+            $inputs += ['ads_path' => $Ads_xml_file['Ads_xml_url'] ];
+        }
+
+        if ( $request->ads_upload_type == "tag_url" ) {
+            $inputs += ['ads_video' => null ];
+            $inputs += ['ads_path' => $request->ads_path ];
+        }
+
         $Advertisement = Advertisement::find($advertisement_id)->update($inputs);
 
         return redirect()->back();
+    }
+
+    private function Ads_xml_file_update($Ads_videos , $advertisement_id )
+    {
+
+            $Advertisement = Advertisement::find($advertisement_id);
+
+            $filename = pathinfo(parse_url($Advertisement->ads_video, PHP_URL_PATH), PATHINFO_FILENAME);
+
+            if (File::exists(base_path('public/uploads/AdsVideos/'. $filename."xml"  ))) {
+                File::delete(base_path('public/uploads/AdsVideos/'. $filename."xml"  ));
+            }
+
+            if (File::exists(base_path('public/uploads/AdsVideos/'. $filename."mp4"  ))) {
+                File::delete(base_path('public/uploads/AdsVideos/'. $filename."mp4"  ));
+            }
+
+        
+        $Ads_video_slug  =  Str::slug(pathinfo($Ads_videos->getClientOriginalName(), PATHINFO_FILENAME));
+        $Ads_video_ext   = $Ads_videos->extension();
+
+        $Ads_xml_filename = time() . '-' . $Ads_video_slug .'.xml';
+
+        $Ads_upload_filename = time() . '-' . $Ads_video_slug .'.'. $Ads_video_ext;
+        $Ads_videos->move( public_path('uploads/AdsVideos'), $Ads_upload_filename  );
+
+        $Ads_upload_url = URL::to('public/uploads/AdsVideos/'.$Ads_upload_filename);
+
+
+        $factory = new \Sokil\Vast\Factory();
+        $document = $factory->create('4.1');
+
+        $ad1 = $document
+            ->createInLineAdSection()
+            ->setId( Str::random(23) )
+            ->setAdSystem( $Ads_upload_filename )
+            ->setAdTitle(  $Ads_upload_filename );
+
+        $linearCreative = $ad1
+            ->createLinearCreative()
+            ->setDuration(128)
+            ->setId( Str::random(23) );
+            // ->setAdId('pre-'.Str::random(23));
+            // ->setVideoClicksClickThrough('http://entertainmentserver.com/landing')
+            // ->addVideoClicksClickTracking('http://ad.server.com/videoclicks/clicktracking')
+            // ->addVideoClicksCustomClick('http://ad.server.com/videoclicks/customclick')
+            // ->addTrackingEvent('start', 'http://ad.server.com/trackingevent/start')
+            // ->addTrackingEvent('pause', 'http://ad.server.com/trackingevent/stop');
+
+        $linearCreative
+            ->createMediaFile()
+            ->setProgressiveDelivery()
+            ->setType('video/mp4')
+            ->setHeight(200)
+            ->setWidth(200)
+            ->setBitrate(2500)
+            ->setUrl( $Ads_upload_url );
+
+        $domDocument = $document->toDomDocument();
+        $xml_file_url = URL::to('public/uploads/AdsVideos/'.$Ads_xml_filename) ;
+        $xml_file    = public_path('uploads/AdsVideos/' . $Ads_xml_filename ) ;
+        $domDocument->save($xml_file);
+
+        $data = array(
+            'Ads_xml_url' => $xml_file_url ,
+            'Ads_upload_url' => $Ads_upload_url ,
+        );
     }
 
     public function Ads_delete($Ads_id)
@@ -1186,7 +1268,7 @@ class AuthController extends Controller
             return redirect()->back();
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            
             return abort(404);
         }
     }
