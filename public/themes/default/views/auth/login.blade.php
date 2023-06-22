@@ -30,6 +30,20 @@ $system_settings = App\SystemSetting::find(1);
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
   </script>
 <style>
+     .reveal{
+        margin-left: -57px;
+   
+          height: 45px !important;
+    background: #ED553B !important;
+    color: #fff !important;
+    position: absolute;
+    right: 0px;
+   border-radius: 0!important;
+    top: -61px;
+    }
+    .sign-in-page .btn{
+         border-radius: 0!important;
+    }
     h3 {font-size: 30px!important;}
     .from-control::placeholder{
         color: #7b7b7b!important;
@@ -134,7 +148,14 @@ i.fa.fa-google-plus {
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
                             								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password"  autocomplete="current-password" >
                         </div>
-
+<div class="position-relative">
+                                 <span class="input-group-btn" id="eyeSlash">
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                 </span>
+                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                 </span>
+                            </div>
                         
                          <div class="d-flex justify-content-end links">
                                     <a href="{{ route('Reset_Password') }}" class="f-link">Forgot your password?</a>
@@ -236,7 +257,36 @@ i.fa.fa-google-plus {
       
     }
 </script>
-
+        <script>
+    function visibility1() {
+  var x = document.getElementById('password');
+  if (x.type === 'password') {
+    x.type = "text";
+    $('#eyeShow').show();
+    $('#eyeSlash').hide();
+  }else {
+    x.type = "password";
+    $('#eyeShow').hide();
+    $('#eyeSlash').show();
+  }
+}
+</script>
+    <script>
+           $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
+       </script>
 
 </body>
 
