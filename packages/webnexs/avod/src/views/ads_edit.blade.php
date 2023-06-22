@@ -99,7 +99,7 @@
                     @endif
                     <div class="clear"></div>
 
-                    <form action="{{ route('Ads_update', $Advertisement->id) }}" method="POST">
+                    <form action="{{ route('Ads_update', $Advertisement->id) }}" method="POST"  enctype="multipart/form-data" >
                         @csrf
                         @method('PATCH')
                         
@@ -154,18 +154,27 @@
                             <div class="col-sm-6">
                                 <label class="m-0">Ads upload Type:</label>
                                 <div class="panel-body">
-                                    <select class="form-control" name="ads_upload_type">
-                                        <option value="null"    {{ "null" == $Advertisement->ads_upload_type ? "selected" : null }}  >select Ads Type </option>
-                                        <option value="tag_url" {{ "tag_url" == $Advertisement->ads_upload_type ? "selected" : null }}  >Ad Tag Url </option>
+                                    <select class="form-control ads_type" name="ads_upload_type">
+                                        <option value="null"    {{ $Advertisement->ads_upload_type == "null" ? "selected" : null }}  >select Ads Type </option>
+                                        <option value="tag_url" {{ $Advertisement->ads_upload_type == "tag_url" ? "selected" : null }}  >Ad Tag Url </option>
+                                        <option value="ads_video_upload" {{  $Advertisement->ads_upload_type == "ads_video_upload"? "selected" : null }} > Ads Video Upload </option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 tag_url"  style="{{ $Advertisement->ads_upload_type == 'tag_url' ? 'display:block;' : 'display:none;' }}">
                                 <label class="m-0">Ad Tag Url:</label>
                                 <div class="panel-body">
                                     <input type="text" id="ads_path" name="ads_path"  class="form-control"
                                         value="{{ $Advertisement->ads_path }}" placeholder="Please! Enter the Ads Tag URL" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 ads_video_upload" style="{{ $Advertisement->ads_upload_type == 'ads_video_upload' ? 'display:block;' : 'display:none;' }}">
+                                <label class="m-0">Ad Video Upload:</label>
+                                <div class="panel-body">
+                                    <input type="file" id="ads_video" name="ads_video" accept="video/mp4" class="form-control" />
+                                    <span> {{ $Advertisement->ads_path }} </span>
                                 </div>
                             </div>
                         </div>
@@ -277,6 +286,20 @@
             setTimeout(function() {
                 $('#successMessage').fadeOut('fast');
             }, 3000);
+        });
+
+        $(document).ready(function() {
+
+            $(".ads_type").change(function() {
+                $('.tag_url, .ads_video_upload').hide();
+                var ads_type = $('.ads_type').val();
+
+                if (ads_type === 'tag_url') {
+                    $('.tag_url').css("display", "block");
+                } else if (ads_type === 'ads_video_upload') {
+                    $('.ads_video_upload').css("display", "block");
+                }
+            });
         });
     
     </script>
