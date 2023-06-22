@@ -11,4 +11,12 @@ class ForgetPasswordLog extends Model
     protected $table = 'forget_password_logs';
 
     public static $rules = array();
+
+    protected $fillable = [
+        'user_id',
+        'email',
+        'token',
+        'status',
+        'password_changed_time'
+    ];
 }
