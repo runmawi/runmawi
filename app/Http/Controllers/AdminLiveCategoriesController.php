@@ -18,6 +18,7 @@ use Session;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use App\Setting ;
+use Illuminate\Support\Str;
 
 class AdminLiveCategoriesController extends Controller
 {
@@ -107,8 +108,8 @@ class AdminLiveCategoriesController extends Controller
             $input = $request->all();
             
               $validatedData = $request->validate([
-                   'name' => 'required|max:255',
-             ]);
+                   'name' => 'required|max:255|unique:live_categories,name',
+              ]);
           
             $s = new LiveCategory();
            
@@ -166,7 +167,7 @@ class AdminLiveCategoriesController extends Controller
           $LiveCategory->name = $input['name'];
           $LiveCategory->user_id = Auth::User()->id;
           $LiveCategory->order = LiveCategory::max('order') + 1;
-          $LiveCategory->slug = $input['slug'];
+          $LiveCategory->slug =   $input['slug'] == null ? str::slug($input['name'])  : str::slug($input['slug']);
           $LiveCategory->parent_id = $input['parent_id'];
           $LiveCategory->image = $input['image'];
           $LiveCategory->in_menu = $in_menu;
@@ -219,9 +220,9 @@ class AdminLiveCategoriesController extends Controller
           if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             $input = $request->all();
             
-             $validatedData = $request->validate([
-                   'name' => 'required|max:255',
-             ]);
+            $validatedData = $request->validate([
+              'name' =>  'required|unique:live_categories,name,'.$request['id'],
+            ]);
             
             
             $path = public_path().'/uploads/livecategory/';
@@ -251,20 +252,11 @@ class AdminLiveCategoriesController extends Controller
                   $file->move($path,$category->image);
 
              } 
-
-            
             
             $category->name = $request['name'];
             $category->in_menu = $request['in_home'];
-            $category->slug = $request['slug'];
+            $category->slug =  $request['slug'] == null ? str::slug($request['name'])  : str::slug($request['slug']);
             $category->parent_id = $request['parent_id'];
-            
-             if ( $category->slug != '') {
-              $category->slug  = $request['slug'];
-              } else {
-                   $category->slug  = $request['name'];
-              }
-            
             
             $category->save();
 
