@@ -123,6 +123,7 @@ use App\Menu;
 use App\SeriesGenre;
 use App\M3UFileParser;
 use File;
+use App\Users_Interest_Genres;
 
 class ApiAuthController extends Controller
 {
@@ -16619,6 +16620,65 @@ public function Interest_Genre_list()
           'status'=>'false',
           'message'=>$th->getMessage(),
         );
+  }
+
+  return response()->json($response, 200);
+
+}
+
+public function users_interest_genres(Request $request)
+{
+  try {
+
+    $source_genres_id = array_map(function ($item1, $item2) {
+        return $item1 . '-' . $item2;
+    }, $request->genres_id , $request->source );
+
+    $Users_Interest_Genres  = Users_Interest_Genres::create([
+        'user_id' => $request->user_id,
+        'source_genres_id' => json_encode($source_genres_id),
+        'genres_slug' => $request->genres_slug,
+    ]);
+    
+    $response = array(
+      'status'=>'true',
+      'message'=> 'users interest genres updated successfully',
+      'Users_Interest_Genres' => Users_Interest_Genres::find($Users_Interest_Genres->id),
+      'user_id'  => $request->user_id ,
+    );
+
+
+  } catch (\Throwable $th) {
+
+      $response = array(
+        'status'=>'false',
+        'message'=>$th->getMessage(),
+      );
+  }
+
+  return response()->json($response, 200);
+
+}
+
+public function Users_Password_Pin_Update(Request $request)
+{
+  try {
+    
+    User::find($request->user_id)->update([
+      'Password_Pin'  => Hash::make($request->Password_Pin),
+    ]);
+
+    $response = array(
+      'status'=>'true',
+      'message'=> "Users Password Pin Update Successfully",
+      $users = User::find($request->user_id) ,
+  );
+
+  } catch (\Throwable $th) {
+      $response = array(
+        'status'=>'false',
+        'message'=>$th->getMessage(),
+      );
   }
 
   return response()->json($response, 200);
