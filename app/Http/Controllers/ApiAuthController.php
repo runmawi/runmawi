@@ -13366,9 +13366,10 @@ public function QRCodeMobileLogout(Request $request)
             $category->category_videos->map(function ($video) {
                 $video->image_url = URL::to('/public/uploads/images/'.$video->image);
                 $video->Player_image_url = URL::to('/public/uploads/images/'.$video->player_image);
-                $video->source    = "Videos";
+                $video->source  = "Videos";
                 return $video;
             });
+            $category->source =  "category_videos" ;
             return $category;
         });
     
@@ -13407,6 +13408,8 @@ public function QRCodeMobileLogout(Request $request)
                   $item['source'] = "Livestream";
                   return $item;
               });
+              $category->source =  "live_category" ;
+              return $category;
         });
 
       endif;
@@ -13463,10 +13466,12 @@ public function QRCodeMobileLogout(Request $request)
                   $item['image_url'] = URL::to('public/uploads/audios/'.$item->image);
                   $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
                   $item['source']    = "Audios";
+                  $item['source_Name'] = "category_audios";
                   return $item;
               });
+              $category->source =  "Audio_Genre_audios" ;
+              return $category;
         });
-    
       endif;
 
     return $data;
@@ -16567,7 +16572,55 @@ public function QRCodeMobileLogout(Request $request)
   }
   return response()->json($response, 200);
 
+}
+
+public function Interest_video_Genre()
+{
+  
+  try {
+
+        $VideoCategory = VideoCategory::where('in_home','=',1)->get();
+
+        $response = array(
+            'status'=>'true',
+            'data' => $VideoCategory,
+        );
+
+  } catch (\Throwable $th) {
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
   }
+
+  return response()->json($response, 200);
+
+}
+
+public function users_Interest_video_Genre(Request $request)
+{
+  try {
+
+    $VideoCategory = VideoCategory::where('in_home','=',1)->get();
+
+    $LiveCategory = LiveCategory::where('in_menu',1)->orderBy('order')->get();
+
+    $SeriesGenre = SeriesGenre::where('in_home',1)->orderBy('order')->get();
+    
+    $response = array(
+        'status'=>'true',
+        'data' => $VideoCategory,
+    );
+
+} catch (\Throwable $th) {
+    $response = array(
+      'status'=>'false',
+      'message'=>$th->getMessage(),
+    );
+}
+
+return response()->json($response, 200);
+}
 
 
 }
