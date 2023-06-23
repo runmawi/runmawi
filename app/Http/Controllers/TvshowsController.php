@@ -634,6 +634,8 @@ class TvshowsController extends Controller
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 
+        $currency = CurrencySetting::first();
+
         $settings = Setting::first();
         // dd($settings->access_free);
         if (Auth::guest() && $settings->access_free == 0):
@@ -707,7 +709,6 @@ class TvshowsController extends Controller
         //Make sure series is active
         if ((!Auth::guest() && Auth::user()->role == 'admin') || $series->active || $ppv_exits > 0) {
             $view_increment = 5;
-            $currency = CurrencySetting::first();
             $payment_settings = PaymentSetting::first();
             $mode = $payment_settings->live_mode;
             if ($mode == 0) {
