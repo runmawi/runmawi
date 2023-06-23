@@ -637,7 +637,7 @@ class TvshowsController extends Controller
         $currency = CurrencySetting::first();
 
         $settings = Setting::first();
-        // dd($settings->access_free);
+       
         if (Auth::guest() && $settings->access_free == 0):
             return Redirect::to('/login');
         endif;
@@ -677,7 +677,6 @@ class TvshowsController extends Controller
         }
         $series = Series::where('slug', '=', $name)->first();
 
-        // dd($video_access);
         $id = $series->id;
 
         if ($series->ppv_status == 1) {
@@ -743,6 +742,19 @@ class TvshowsController extends Controller
 
             return Theme::view('series', $data);
         } else {
+
+            $mode = $payment_settings->live_mode;
+            if ($mode == 0) {
+                $secret_key = $payment_settings->test_secret_key;
+                $publishable_key = $payment_settings->test_publishable_key;
+            } elseif ($mode == 1) {
+                $secret_key = $payment_settings->live_secret_key;
+                $publishable_key = $payment_settings->live_publishable_key;
+            } else {
+                $secret_key = null;
+                $publishable_key = null;
+            }
+
             $data = [
                 'series_data' => $series,
                 'currency' => $currency,
@@ -755,7 +767,7 @@ class TvshowsController extends Controller
                 'episodenext' => $episodefirst,
                 'url' => 'episodes',
                 'menu' => Menu::orderBy('order', 'ASC')->get(),
-                'view_increment' => $view_increment,
+                'view_increment' => 5 ,
                 'series_categories' => SeriesGenre::all(),
                 'category_name'     => $category_name ,
                 'pages' => Page::where('active', '=', 1)->get(),
