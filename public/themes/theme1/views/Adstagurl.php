@@ -16,7 +16,7 @@ if(  plans_ads_enable() == 1 ){
 
                     $video_tag_url =  $video_tag_url->where('ads_events.status',1)
                     ->where('advertisements.status',1)
-                    ->where('advertisements.ads_upload_type','tag_url')
+                    // ->where('advertisements.ads_upload_type','tag_url')
                     ->where('advertisements.id',$video->ads_tag_url_id)
                     ->where('videos.id', $video->id)
                     ->groupBy('advertisements.id')
@@ -27,7 +27,6 @@ if(  plans_ads_enable() == 1 ){
             {
                     $video_tag_url = null ;
             }
-
 ?>
 
 <input type="hidden" id="video_tag_url" name="video_tag_url" value="<?= $video_tag_url ?>">
