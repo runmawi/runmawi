@@ -16574,16 +16574,44 @@ public function QRCodeMobileLogout(Request $request)
 
 }
 
-public function Interest_video_Genre()
+public function Interest_Genre_list()
 {
   
   try {
 
-        $VideoCategory = VideoCategory::where('in_home','=',1)->get();
+        $VideoCategory = VideoCategory::select('id', 'name', 'slug', 'in_home')->where('in_home', '=', 1)
+                              ->get()->map(function ($item) {
+                                  $item['source'] = "VideoCategory";
+                                  return $item;
+                              });
+
+        $LiveCategory = LiveCategory::select('id', 'name', 'slug', 'in_menu')->where('in_menu', 1)->orderBy('order')
+                            ->get()->map(function ($item) {
+                                $item['source'] = "LiveCategory";
+                                return $item;
+                            });
+
+        $SeriesGenre = SeriesGenre::select('id', 'name', 'slug', 'in_menu')->where('in_menu', 1)->orderBy('order')
+                            ->get()->map(function ($item) {
+                                $item['source'] = "SeriesGenre";
+                                return $item;
+                            });
+
+        $AudioCategory = AudioCategory::select('id', 'name', 'slug')->latest()->get()->map(function ($item) {
+                              $item['source'] = "AudioCategory";
+                              return $item;
+                          });
+
+        $mergedData = $VideoCategory->concat($LiveCategory)->concat($SeriesGenre)->concat($AudioCategory);
+
+        $combinedData = $mergedData->groupBy('name')->map(function ($items) {
+            return $items->unique('slug')->first();
+        })->values();
 
         $response = array(
             'status'=>'true',
-            'data' => $VideoCategory,
+            'message'=> " Retreived Interest Genres list",
+            'data' => $combinedData,
         );
 
   } catch (\Throwable $th) {
@@ -16595,31 +16623,6 @@ public function Interest_video_Genre()
 
   return response()->json($response, 200);
 
-}
-
-public function users_Interest_video_Genre(Request $request)
-{
-  try {
-
-    $VideoCategory = VideoCategory::where('in_home','=',1)->get();
-
-    $LiveCategory = LiveCategory::where('in_menu',1)->orderBy('order')->get();
-
-    $SeriesGenre = SeriesGenre::where('in_home',1)->orderBy('order')->get();
-    
-    $response = array(
-        'status'=>'true',
-        'data' => $VideoCategory,
-    );
-
-} catch (\Throwable $th) {
-    $response = array(
-      'status'=>'false',
-      'message'=>$th->getMessage(),
-    );
-}
-
-return response()->json($response, 200);
 }
 
 

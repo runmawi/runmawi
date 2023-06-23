@@ -26,6 +26,9 @@ Route::group(
 
         Route::post('All_Homepage', 'ApiAuthController@All_Homepage');
         Route::post('All_Pagelist', 'ApiAuthController@All_Pagelist');
+        Route::get('Interest-Genre-list', 'ApiAuthController@Interest_Genre_list');
+        Route::post('users-Interest-video-Genre', 'ApiAuthController@users_Interest_video_Genre');
+        
 
         // Search 
         Route::post('search', 'ApiAuthController@search');
