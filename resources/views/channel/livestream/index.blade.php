@@ -9,6 +9,9 @@
     .iq-card{
         padding: 15px;
     }
+     .ab{
+        top:14px!important;
+    }
     .lar {
     font-family: 'Line Awesome Free';
     font-weight: 400;
