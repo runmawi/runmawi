@@ -123,6 +123,7 @@ use App\Menu;
 use App\SeriesGenre;
 use App\M3UFileParser;
 use File;
+use App\Users_Interest_Genres;
 
 class ApiAuthController extends Controller
 {
@@ -16574,16 +16575,44 @@ public function QRCodeMobileLogout(Request $request)
 
 }
 
-public function Interest_video_Genre()
+public function Interest_Genre_list()
 {
   
   try {
 
-        $VideoCategory = VideoCategory::where('in_home','=',1)->get();
+        $VideoCategory = VideoCategory::select('id', 'name', 'slug', 'in_home')->where('in_home', '=', 1)
+                              ->get()->map(function ($item) {
+                                  $item['source'] = "VideoCategory";
+                                  return $item;
+                              });
+
+        $LiveCategory = LiveCategory::select('id', 'name', 'slug', 'in_menu')->where('in_menu', 1)->orderBy('order')
+                            ->get()->map(function ($item) {
+                                $item['source'] = "LiveCategory";
+                                return $item;
+                            });
+
+        $SeriesGenre = SeriesGenre::select('id', 'name', 'slug', 'in_menu')->where('in_menu', 1)->orderBy('order')
+                            ->get()->map(function ($item) {
+                                $item['source'] = "SeriesGenre";
+                                return $item;
+                            });
+
+        $AudioCategory = AudioCategory::select('id', 'name', 'slug')->latest()->get()->map(function ($item) {
+                              $item['source'] = "AudioCategory";
+                              return $item;
+                          });
+
+        $mergedData = $VideoCategory->concat($LiveCategory)->concat($SeriesGenre)->concat($AudioCategory);
+
+        $combinedData = $mergedData->groupBy('name')->map(function ($items) {
+            return $items->unique('slug')->first();
+        })->values();
 
         $response = array(
             'status'=>'true',
-            'data' => $VideoCategory,
+            'message'=> " Retreived Interest Genres list",
+            'data' => $combinedData,
         );
 
   } catch (\Throwable $th) {
@@ -16597,29 +16626,63 @@ public function Interest_video_Genre()
 
 }
 
-public function users_Interest_video_Genre(Request $request)
+public function users_interest_genres(Request $request)
 {
   try {
 
-    $VideoCategory = VideoCategory::where('in_home','=',1)->get();
+    $source_genres_id = array_map(function ($item1, $item2) {
+        return $item1 . '-' . $item2;
+    }, $request->genres_id , $request->source );
 
-    $LiveCategory = LiveCategory::where('in_menu',1)->orderBy('order')->get();
-
-    $SeriesGenre = SeriesGenre::where('in_home',1)->orderBy('order')->get();
+    $Users_Interest_Genres  = Users_Interest_Genres::create([
+        'user_id' => $request->user_id,
+        'source_genres_id' => json_encode($source_genres_id),
+        'genres_slug' => $request->genres_slug,
+    ]);
     
     $response = array(
-        'status'=>'true',
-        'data' => $VideoCategory,
+      'status'=>'true',
+      'message'=> 'users interest genres updated successfully',
+      'Users_Interest_Genres' => Users_Interest_Genres::find($Users_Interest_Genres->id),
+      'user_id'  => $request->user_id ,
     );
 
-} catch (\Throwable $th) {
-    $response = array(
-      'status'=>'false',
-      'message'=>$th->getMessage(),
-    );
+
+  } catch (\Throwable $th) {
+
+      $response = array(
+        'status'=>'false',
+        'message'=>$th->getMessage(),
+      );
+  }
+
+  return response()->json($response, 200);
+
 }
 
-return response()->json($response, 200);
+public function Users_Password_Pin_Update(Request $request)
+{
+  try {
+    
+    User::find($request->user_id)->update([
+      'Password_Pin'  => Hash::make($request->Password_Pin),
+    ]);
+
+    $response = array(
+      'status'=>'true',
+      'message'=> "Users Password Pin Update Successfully",
+      $users = User::find($request->user_id) ,
+  );
+
+  } catch (\Throwable $th) {
+      $response = array(
+        'status'=>'false',
+        'message'=>$th->getMessage(),
+      );
+  }
+
+  return response()->json($response, 200);
+
 }
 
 

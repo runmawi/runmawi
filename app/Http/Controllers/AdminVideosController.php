@@ -8515,7 +8515,7 @@ class AdminVideosController extends Controller
     {
         try {
 
-            $Advertisement = Advertisement::where('ads_upload_type','tag_url')->where('status',1)
+            $Advertisement = Advertisement::where('status',1)
                                         ->where('ads_position',$request->position)
                                         ->get();
 
