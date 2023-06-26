@@ -13,6 +13,7 @@
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 @section('content')
 <style>
+       
     #video li{
         padding-left: 30px;
     }
