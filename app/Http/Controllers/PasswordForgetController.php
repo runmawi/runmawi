@@ -79,6 +79,8 @@ class PasswordForgetController extends Controller
 
             $ForgetPasswordLog == null ? ForgetPasswordLog::create($inputs) : ForgetPasswordLog::where('user_id',$user->id)->update($inputs) ;
 
+            return redirect()->back()->with('status-success', 'A Password Reset link has been sent to your E-mail account');
+
         } catch (\Throwable $th) {
 
             $email_log      = $th->getMessage();    
@@ -90,7 +92,6 @@ class PasswordForgetController extends Controller
             return redirect()->back()->with('status-fails', 'Sorry we cannot send you an email now. Kindly, check your email settings');
         }
 
-        return redirect()->back()->with('status-success', 'A Password Reset link has been sent to your E-mail account');
     }
 
     public function confirm_reset_password($crypt_email,$reset_token)

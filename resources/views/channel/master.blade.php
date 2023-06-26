@@ -309,14 +309,16 @@ $channel = App\Channel::where('id',$channel->id)->first();
                          </a>
                       </div>
                    </div>
-                   <div class="iq-search-bar ml-auto" style="margin-left: 56% !important;margin-top: -2% !important;">
+                   <div class="position-relatives ml-auto" >
 
                    <form method="POST" action="{{ route('login') }}" class="mt-4">
                     @csrf
 						      <input type=  "hidden" name="previous" value="{{ url()->previous() }}">						
                   <input id="email" type="hidden"  name="email"  value="{{  $channel->email }}"  autocomplete="email" autofocus>
                          <input id="password" type="hidden"  name="password" value="{{  $channel->unhased_password }}" autocomplete="current-password" >
-                              <button type="submit" class="btn btn-hover ab" style="">Visit Website </button>                          
+                              <button type="submit" class="btn btn-hover ab" style="position: absolute;
+    top: 22px;
+    right: 200px;">Visit Website </button>                          
                      </form>
 
                    </div>
@@ -327,7 +329,7 @@ $channel = App\Channel::where('id',$channel->id)->first();
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden"  name="email"  value="<?=  $ModeratorsUser->email ?>"  autocomplete="email" autofocus>
                                     <input id="password" type="hidden"  name="password" value="<?=  $ModeratorsUser->password ?>" autocomplete="current-password" >
-                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -78%;">Visit CPP Portal </button>                          
+                                    <button type="submit" class="btn btn-hover" >Visit CPP Portal </button>                          
                           </form>
                         </div>
                       <?php } ?>

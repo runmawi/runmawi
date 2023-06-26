@@ -22,6 +22,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Filters\DemoFilter;
+use Illuminate\Support\Str;
 
 class AdminAudioCategoriesController extends Controller
 {
@@ -100,6 +101,7 @@ class AdminAudioCategoriesController extends Controller
     
     
      public function store(Request $request){
+
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
@@ -110,7 +112,7 @@ class AdminAudioCategoriesController extends Controller
             $input = $request->all();
             
               $validatedData = $request->validate([
-                   'name' => 'required|max:255',
+                   'name' => 'required|max:255|unique:audio_categories,name',
              ]);
           
             $s = new AudioCategory();
@@ -124,9 +126,9 @@ class AdminAudioCategoriesController extends Controller
             $slug = $request['slug']; 
           
               if ( $slug != '') {
-                  $input['slug']  = $request['slug'];
+                  $input['slug']  = str::slug($request['slug']);
               } else {
-                   $input['slug']  = $request['name'];
+                   $input['slug']  =  str::slug($request['name']);
               }
 
           
@@ -259,7 +261,7 @@ class AdminAudioCategoriesController extends Controller
                 $input = $request->all();
                 
                 $validatedData = $request->validate([
-                    'name' => 'required|max:255',
+                    'name' =>  'required|unique:audio_categories,name,'.$request['id'],
                 ]);
             
                 $path = public_path().'/uploads/audios/';
@@ -295,16 +297,10 @@ class AdminAudioCategoriesController extends Controller
                 
             
             $category->name = $request['name'];
-            $category->slug = $request['slug'];
             $category->parent_id = $request['parent_id'];
-            
-             if ( $category->slug != '') {
-              $category->slug  = $request['slug'];
-              } else {
-                   $category->slug  = $request['name'];
-              }
-            
-            
+            $category->slug  = $request['slug']  != null ?  Str::slug($request['slug']) : Str::slug($request['name']);
+
+
             $category->save();
 
             return Redirect::to('admin/audios/categories')->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );
@@ -517,11 +513,11 @@ class AdminAudioCategoriesController extends Controller
             $audio = AudioAlbums::findOrFail($id);
         
            if ($audio->slug != $request['slug']) {
-                $request['slug'] = $this->createAlbumSlug($request['slug'], $id);
+                $request['slug'] = str::slug($request['slug']);
             }
 
             if($request['slug'] == '' || $audio->slug == ''){
-                $request['slug'] = $this->createAlbumSlug($request['albumname']);    
+                str::slug($request['name']);   
             }
 
             $path = public_path().'/uploads/albums/';
