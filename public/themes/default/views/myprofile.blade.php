@@ -67,6 +67,10 @@ $settings = App\Setting::first();
      padding: 10px 10px;
      cursor: pointer;
   }
+    .rounded-circle {
+    height: 150px;
+    width: 150px;
+}
 </style>
 
 <body>
@@ -513,7 +517,7 @@ $settings = App\Setting::first();
                     <div class="iq-card" id="recentviews" style="background-color:#191919;">
                  <div class="iq-card-header d-flex justify-content-between" >
                     <div class="iq-header-title">
-                       <h4 class="card-title">Recently Viewd Items</h4>
+                       <h4 class="card-title">Recently Viewed Items</h4>
                     </div>
                     
                  </div>
