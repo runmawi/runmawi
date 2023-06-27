@@ -1264,8 +1264,8 @@
                     <div class="row m-0 p-0 justify-content-around align-items-center">
                         <div class="col-lg-6 p-0">
 
-                            <video id="player" height="618" controls autoplay muted poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
-                                <source src="<?php echo URL::to('/assets/img/tv.mp4'); ?>" type="video/mp4">
+                            <video id="player" height="618" controls autoplay muted poster="<?php echo URL::to('/assets/img/lan/tv.jpeg'); ?>">
+                                <source src="https://dev.nemisatv.co.za/public/uploads/videos/youthtech-2.mp4" type="video/mp4">
                                 <source src="" type="video/ogg">
                             </video>
 
