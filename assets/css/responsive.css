@@ -177,6 +177,9 @@
     
     align-items: center;
     }
+    .c-logo{
+        width: auto!important;
+    }
     .bl h1{
         font-size:25px; 
     }
