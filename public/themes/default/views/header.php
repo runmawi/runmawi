@@ -709,6 +709,32 @@
                                  <!-- </ul> -->
                                  <!-- </li> -->
                                  <!-- signup Mobile view -->
+                                  <li>
+                               </li>
+                                  <div class="col-lg-12 align-items-center justify-content-center appk">
+          <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
+
+          <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
+              <h5 class="font-weight-bold mb-0  ">Download App</h5>
+          <?php } ?>
+
+          <div class=" small m-0 text-white ">
+             <div class="map1"> 
+              <?php if(!empty($app_settings->android_url)){ ?>  
+                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.png')?>" /></a>
+              <?php } ?>
+              <?php if(!empty($app_settings->ios_url)){ ?>
+                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.png')?>"  /></a>
+              <?php } ?>
+              <?php if(!empty($app_settings->android_tv)){ ?>
+                  <a href="<?= $app_settings->android_tv ?>">
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+              <?php } ?>
+              </div>
+              
+            <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
+          </div>
+          </div>
                                  <!-- signup End  -->
                                   <div class="mob-w">
                                     <?php 
@@ -735,6 +761,7 @@
                         </form>
                      </div>
                      <?php } ?></div>
+                                   
                            </ul>
                         </div>
                      </div>
