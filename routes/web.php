@@ -2104,7 +2104,7 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     // Content Partner List
     Route::get('contentpartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
     //   Route::get('ContentPartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
-    //   Route::get('Content-list', 'ContentPartnerHomeController@ContentList')->name('ContentList');
+    // Route::get('Content-list', 'ContentPartnerHomeController@ContentList')->name('ContentList');
     Route::get('content-partners', 'ContentPartnerHomeController@ContentList')->name('ContentList');
     Route::get('Content_category_series', 'ContentPartnerHomeController@Content_category_series')->name('Content_category_series');
     Route::get('Content_category_videos', 'ContentPartnerHomeController@Content_category_videos')->name('Content_category_videos');
