@@ -215,7 +215,7 @@ class HomeController extends Controller
                     $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
                         ->pluck('videoid')
                         ->toArray();
-                    $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching)->get();
+                    $cnt_watching = Video::with('cnt_watch')->where('type','!=','embed')->whereIn('id', $getcnt_watching)->get();
                 }
                 else
                 {
@@ -356,7 +356,7 @@ class HomeController extends Controller
             $pages = Page::all();
             if (!Auth::guest())
             {
-                $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
+                $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)->where('type','!=','embed')
                     ->pluck('videoid')
                     ->toArray();
                 $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching)->get();
@@ -1210,7 +1210,7 @@ class HomeController extends Controller
                     {
                         $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')
                             ->toArray();
-                        $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching)->get();
+                        $cnt_watching = Video::with('cnt_watch')->where('type','!=','embed')->whereIn('id', $getcnt_watching)->get();
                     }
                     elseif (!Auth::guest())
                     {
@@ -1223,7 +1223,7 @@ class HomeController extends Controller
                             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
                                 ->pluck('videoid')
                                 ->toArray();
-                            $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching);
+                            $cnt_watching = Video::with('cnt_watch')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
                             if ($getfeching != null && $getfeching->geofencing == 'ON')
                             {
                                 $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
@@ -1236,7 +1236,7 @@ class HomeController extends Controller
                                 ->where('multiuser', 'data')
                                 ->pluck('videoid')
                                 ->toArray();
-                            $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching);
+                            $cnt_watching = Video::with('cnt_watch')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
                             if ($getfeching != null && $getfeching->geofencing == 'ON')
                             {
                                 $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
@@ -2112,7 +2112,7 @@ class HomeController extends Controller
                 {
                     $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')
                         ->toArray();
-                    $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching)->get();
+                    $cnt_watching = Video::with('cnt_watch')->where('type','!=','embed')->whereIn('id', $getcnt_watching)->get();
                 }
                 elseif (!Auth::guest())
                 {
@@ -2125,7 +2125,7 @@ class HomeController extends Controller
                         $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
                             ->pluck('videoid')
                             ->toArray();
-                        $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching);
+                        $cnt_watching = Video::with('cnt_watch')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
                         if ($getfeching != null && $getfeching->geofencing == 'ON')
                         {
                             $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
@@ -2138,7 +2138,7 @@ class HomeController extends Controller
                             ->where('multiuser', 'data')
                             ->pluck('videoid')
                             ->toArray();
-                        $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching);
+                        $cnt_watching = Video::with('cnt_watch')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
                         if ($getfeching != null && $getfeching->geofencing == 'ON')
                         {
                             $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
@@ -3597,7 +3597,7 @@ class HomeController extends Controller
             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
                 ->pluck('videoid')
                 ->toArray();
-            $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching)->get();
+            $cnt_watching = Video::with('cnt_watch')->where('type','!=','embed')->whereIn('id', $getcnt_watching)->get();
         }
         else
         {
