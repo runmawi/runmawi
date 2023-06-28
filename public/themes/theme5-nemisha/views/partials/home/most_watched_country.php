@@ -1,6 +1,6 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h4 class="main-title">
-        <a href="">
+        <a href="<?php echo route('All_Country_MostwatchedVideos') ?>">
            Most Watched Videos in South Africa
             <!--<?php echo $countryName;?>-->
         </a>
