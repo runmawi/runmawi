@@ -18,7 +18,7 @@ use URL;
 use App\Setting as Setting;
 use App\HomeSetting as HomeSetting;
 use Theme;
-
+use Auth;
 
 class HomePageAudioController extends Controller
 {
@@ -60,13 +60,7 @@ class HomePageAudioController extends Controller
             $settings = Setting::first();
 
             if ($settings->enable_landing_page == 1 && Auth::guest()) {
-                $landing_page_slug = AdminLandingPage::where('status', 1)
-                    ->pluck('slug')
-                    ->first()
-                    ? AdminLandingPage::where('status', 1)
-                        ->pluck('slug')
-                        ->first()
-                    : 'landing-page';
+                $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first(): 'landing-page';
 
                 return redirect()->route('landing_page', $landing_page_slug);
             }
@@ -77,6 +71,7 @@ class HomePageAudioController extends Controller
 
             return Theme::view('AudiocategoryList', $data);
         } catch (\Throwable $th) {
+            return $th->getMessage();
             return abort(404);
         }
     }
