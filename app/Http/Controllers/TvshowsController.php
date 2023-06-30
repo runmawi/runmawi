@@ -1061,6 +1061,7 @@ class TvshowsController extends Controller
             return Theme::view('partials.home.SeriesCategory',$data);
 
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
