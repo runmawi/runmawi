@@ -7893,19 +7893,18 @@ public function Adstatus_upate(Request $request)
 
       $live_category= LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
       ->where('livecategories.category_id',$live_category_id)
-      // ->where('active','=',1)->where('status','=',1)
+      ->where('active','=',1)->where('status','=',1)
       ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
-    //  count($live_category)
 
       foreach ($livecategories as $key => $livecategory) {
         $livecategoryid = $livecategory['id'];
         $genre_image = $livecategory['image'];
         $livestream = LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
         ->where('livecategories.category_id',$livecategoryid)
-        // ->where('active','=',1)->where('status','=',1)
+        ->where('active','=',1)->where('status','=',1)
         ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           return $item;
