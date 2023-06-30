@@ -12,10 +12,26 @@
         width: 92% !important;
 
     }
+
+
+    /* <!-- BREADCRUMBS  */
+    .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
+
+    ol.breadcrumb {
+        color: white;
+        background-color: transparent !important;
+        font-size: revert;
+    }
+
+    .nav-div.container-fluid {
+        padding: 0;
+    }
 </style>
 
 
-<?php 
+<?php
 
 if (!Auth::guest() && !empty($data['password_hash'])) {
     $id = Auth::user()->id;
@@ -41,10 +57,30 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                         <h2 class="ml-3"><?php echo __($categoryVideos['category_title']); ?></h2>
                     </div>
 
-                    {{-- filter Option --}}
+                    <!-- BREADCRUMBS -->
+                    <div class="row d-flex">
+                        <div class="nav nav-tabs nav-fill container-fluid nav-div" id="nav-tab" role="tablist">
+                            <div class="bc-icons-2">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a class="black-text"
+                                            href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                    </li>
 
-                  
-                        @partial('categoryvids_section_filter')
+                                    <li class="breadcrumb-item"><a class="black-text"
+                                            href="<?= route('categoryList') ?>"><?= ucwords('Category') ?></a>
+                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                    </li>
+
+                                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($categoryVideos['category_title']) > 50 ? ucwords(substr($categoryVideos['category_title'], 0, 120) . '...') : ucwords($categoryVideos['category_title']); ?>
+                                        </a></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @partial('categoryvids_section_filter')
 
                     {{-- Main Content  --}}
 
@@ -62,8 +98,10 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
 @endphp
 
 {{-- Multiple Select  --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" defer></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" defer>
+</script>
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
 
 <script>
     $(".filter").click(function() {
@@ -130,7 +168,7 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                             $('#' + video_id).text('Remove From Wishlist');
                             $("body").append(
                                 '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>'
-                                );
+                            );
                             setTimeout(function() {
                                 $('.add_watch').slideUp('fast');
                             }, 3000);
@@ -140,7 +178,7 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                             $('#' + video_id).text('Add To Wishlist');
                             $("body").append(
                                 '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>'
-                                );
+                            );
                             setTimeout(function() {
                                 $('.remove_watch').slideUp('fast');
                             }, 3000);
