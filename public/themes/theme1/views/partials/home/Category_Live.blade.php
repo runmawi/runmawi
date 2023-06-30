@@ -2,7 +2,47 @@
 include public_path('themes/theme1/views/header.php');
 ?>
 
+<style>
+    /* <!-- BREADCRUMBS  */
+    .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
+
+    ol.breadcrumb {
+        color: white;
+        background-color: transparent !important;
+        font-size: revert;
+    }
+
+    .nav-div.container-fluid {
+        padding: 0;
+    }
+</style>
+
 <section id="iq-favorites">
+
+    <!-- BREADCRUMBS -->
+    <div class="row d-flex">
+        <div class="nav nav-tabs nav-fill container-fluid nav-div" id="nav-tab" role="tablist">
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="<?= route('liveList') ?>"><?= ucwords('live Stream') ?></a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
+
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="<?= route('CategoryLive') ?>"><?= ucwords(' Live Category') ?></a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
+
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($category_title) > 50 ? ucwords(substr($category_title, 0, 120) . '...') : ucwords($category_title); ?>
+                        </a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
     @if (isset($Live_Category) && count($Live_Category) > 0)
         <h3 class="vid-title text-center mt-4 mb-5"> Live Stream videos </h3>
         <div class="container-fluid"
@@ -26,8 +66,7 @@ include public_path('themes/theme1/views/header.php');
 
                                                 <div class="block-description">
                                                     <div class="hover-buttons">
-                                                        <a
-                                                            href="<?php echo URL::to('live').'/'.$LiveCategory->slug ?>">
+                                                        <a href="<?php echo URL::to('live') . '/' . $LiveCategory->slug; ?>">
                                                             <img class="ply" src="<?php echo URL::to('/') . '/assets/img/play.svg'; ?>">
                                                         </a>
                                                         <div>
