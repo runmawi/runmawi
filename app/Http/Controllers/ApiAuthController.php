@@ -14335,8 +14335,6 @@ public function QRCodeMobileLogout(Request $request)
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
         $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
-        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('watch_percentage')->min();
-        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('skip_time')->min();
         return $item;
       });
       $response = array(
