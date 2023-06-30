@@ -1381,24 +1381,33 @@ public function verifyandupdatepassword(Request $request)
         $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
   
         //Continue Watchings
+
         $cnt4 = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->count();
+        
         if($cnt4 == 1){
-        $get_time = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->get();
-        $curr_time = $get_time[0]->currentTime;
-      }else{
+          $get_time = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->get();
+          $curr_time = $get_time[0]->currentTime;
+        }
+        else{
           $curr_time = '00';
-      }
+        }
   
       //Continue Watchings
-      if(!empty($request->andriodId)){
-      $andriod_cnt4 = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->count();
-      if($andriod_cnt4 == 1){
-      $andriod_get_time = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->get();
-      $andriod_curr_time = $andriod_get_time[0]->currentTime;
-      }else{
+
+        if(!empty($request->andriodId)){
+            $andriod_cnt4 = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->count();
+            
+          if($andriod_cnt4 == 1){
+              $andriod_get_time = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->get();
+              $andriod_curr_time = $andriod_get_time[0]->currentTime;
+          }else{
+                $andriod_curr_time = '00';
+          }
+        }
+        else{
           $andriod_curr_time = '00';
-      }
-    }
+        }
+
         $userrole = User::where('id','=',$user_id)->first()->role;
         $status = 'true';
   
@@ -7904,19 +7913,18 @@ public function Adstatus_upate(Request $request)
 
       $live_category= LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
       ->where('livecategories.category_id',$live_category_id)
-      // ->where('active','=',1)->where('status','=',1)
+      ->where('active','=',1)->where('status','=',1)
       ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
-    //  count($live_category)
 
       foreach ($livecategories as $key => $livecategory) {
         $livecategoryid = $livecategory['id'];
         $genre_image = $livecategory['image'];
         $livestream = LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
         ->where('livecategories.category_id',$livecategoryid)
-        // ->where('active','=',1)->where('status','=',1)
+        ->where('active','=',1)->where('status','=',1)
         ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           return $item;
@@ -11486,39 +11494,19 @@ public function QRCodeMobileLogout(Request $request)
       {
         try{
 
-          $settings = Setting::first();
-          $channels = Channel::get(); 
-
-          $channels = Channel::where('status',1)->get()->map(function ($item) {
-            $settings = Setting::first();
-      
-              if(!empty($item['channel_banner']) && $item['channel_banner'] != null){
-                $item['channel_banner'] = $item->channel_banner;
-              }else{
-                $item['channel_banner'] = URL::to('/public/uploads/images/'.$settings->default_horizontal_image);
-              }
-                    
-              if(!empty($item['channel_image']) && $item['channel_image'] != null){
-                $item['channel_image'] = $item->channel_image;
-              }else{
-                $item['channel_image'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
-              }
-              if(!empty($item['channel_logo']) && $item['channel_logo'] != null){
-                $item['channel_logo'] = $item->channel_logo;
-              }else{
-                $item['channel_logo'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
-              }
+          $channels = Channel::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+              $item['channel_banner'] = $item->channel_image ;
+              $item['channel_image'] = $item->channel_banner ;
+              $item['channel_logo'] = $item->channel_logo ;
+              $item['source']    = "Channel_Partner";
               return $item;
           });
 
-          $currency = CurrencySetting::first();
-          $ThumbnailSetting = ThumbnailSetting::first();
-            
               $response = array(
                   'status'=> 'true',
                   'channels' => $channels,
-                  'ThumbnailSetting' => $ThumbnailSetting,
-                  'currency' => $currency,
+                  'ThumbnailSetting' => CurrencySetting::first() ,
+                  'currency' => ThumbnailSetting::first(),
               );
               
             } catch (\Throwable $th) {
@@ -11532,7 +11520,6 @@ public function QRCodeMobileLogout(Request $request)
         return response()->json($response, 200);
           
       }
-  
 
       
     public function channel_category_videos(Request $request)
@@ -13002,6 +12989,7 @@ public function QRCodeMobileLogout(Request $request)
          $data = Channel::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
                     $item['image_url'] = $item->channel_image ;
                     $item['Player_image_url'] = $item->channel_banner ;
+                    $item['Channel_Logo_url'] = $item->channel_logo ;
                     $item['source']    = "Channel_Partner";
                         return $item;
                     });

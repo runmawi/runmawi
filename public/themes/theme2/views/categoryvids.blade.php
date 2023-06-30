@@ -21,6 +21,24 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
     ->first();
 ?>
 
+<style>
+    /* <!-- BREADCRUMBS  */
+        .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
+
+    ol.breadcrumb {
+        color: white;
+        background-color: transparent !important;
+        font-size: revert;
+    }
+
+    .nav-div.container-fluid {
+        padding: 0;
+    }
+</style>
+
+
 <div class="main-content">
     <section id="iq-favorites">
         <h2 class="text-center  mb-3"><?php echo __($categoryVideos['category_title']); ?></h2>
@@ -28,9 +46,29 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
             <div class="row pageheight">
                 <div class="col-sm-12 overflow-hidden">
 
-                    {{-- filter Option --}}
+                    <!-- BREADCRUMBS -->
+                    <div class="row d-flex">
+                        <div class="nav nav-tabs nav-fill container-fluid nav-div" id="nav-tab" role="tablist">
+                            <div class="bc-icons-2">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a class="black-text"
+                                            href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                    </li>
 
-                        @partial('categoryvids_section_filter')
+                                    <li class="breadcrumb-item"><a class="black-text"
+                                            href="<?= route('categoryList') ?>"><?= ucwords('Category') ?></a>
+                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                    </li>
+
+                                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($categoryVideos['category_title']) > 50 ? ucwords(substr($categoryVideos['category_title'], 0, 120) . '...') : ucwords($categoryVideos['category_title']); ?>
+                                        </a></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    @partial('categoryvids_section_filter')
 
                     <div class="data">
                         @partial('categoryvids_section')
@@ -39,8 +77,9 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
             </div>
         </div>
         <?php /*
-                <!-- Modal Starts -->
-                <div class="modal fade bd-example-modal-xl<?= $category_video->id;?>
+                        <!-- Modal Starts -->
+                        <div class="modal fade bd-example-modal-xl<?= $category_video->id;?>
+        ?>
         ?>
         ?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
