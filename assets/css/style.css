@@ -247,6 +247,9 @@ h1{
 .bd i{
     font-size: 13px;
 }
+.appk{
+    display: none;
+}
 #home-slider ul.slick-dots { bottom: 0px; }
 #home-slider .slick-dots li { height: auto; width: auto; }
 #home-slider .slick-dots li button { height: 8px; width: 8px; background-color: hsl(0,0%,100%,0.3); padding: 0;border-radius: 50%; }
