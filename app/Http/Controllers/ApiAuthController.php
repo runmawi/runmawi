@@ -1390,12 +1390,14 @@ public function verifyandupdatepassword(Request $request)
       }
   
       //Continue Watchings
+      if(!empty($request->andriodId)){
       $cnt4 = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->count();
       if($cnt4 == 1){
       $get_time = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->get();
       $curr_time = $get_time[0]->currentTime;
-    }else{
-        $curr_time = '00';
+      }else{
+          $curr_time = '00';
+      }
     }
         $userrole = User::where('id','=',$user_id)->first()->role;
         $status = 'true';
