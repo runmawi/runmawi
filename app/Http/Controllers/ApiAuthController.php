@@ -1381,24 +1381,33 @@ public function verifyandupdatepassword(Request $request)
         $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
   
         //Continue Watchings
+
         $cnt4 = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->count();
+        
         if($cnt4 == 1){
-        $get_time = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->get();
-        $curr_time = $get_time[0]->currentTime;
-      }else{
+          $get_time = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->get();
+          $curr_time = $get_time[0]->currentTime;
+        }
+        else{
           $curr_time = '00';
-      }
+        }
   
       //Continue Watchings
-      if(!empty($request->andriodId)){
-      $andriod_cnt4 = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->count();
-      if($andriod_cnt4 == 1){
-      $andriod_get_time = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->get();
-      $andriod_curr_time = $andriod_get_time[0]->currentTime;
-      }else{
+
+        if(!empty($request->andriodId)){
+            $andriod_cnt4 = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->count();
+            
+          if($andriod_cnt4 == 1){
+              $andriod_get_time = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->get();
+              $andriod_curr_time = $andriod_get_time[0]->currentTime;
+          }else{
+                $andriod_curr_time = '00';
+          }
+        }
+        else{
           $andriod_curr_time = '00';
-      }
-    }
+        }
+
         $userrole = User::where('id','=',$user_id)->first()->role;
         $status = 'true';
   
