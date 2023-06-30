@@ -1389,6 +1389,16 @@ public function verifyandupdatepassword(Request $request)
           $curr_time = '00';
       }
   
+      //Continue Watchings
+      if(!empty($request->andriodId)){
+      $andriod_cnt4 = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->count();
+      if($andriod_cnt4 == 1){
+      $andriod_get_time = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->get();
+      $andriod_curr_time = $andriod_get_time[0]->currentTime;
+      }else{
+          $andriod_curr_time = '00';
+      }
+    }
         $userrole = User::where('id','=',$user_id)->first()->role;
         $status = 'true';
   
@@ -1540,6 +1550,7 @@ public function verifyandupdatepassword(Request $request)
         'status' => $status,
         'wishlist' => $wishliststatus,
         'curr_time' => $curr_time,
+        'andriod_curr_time' => $andriod_curr_time,
         'ppv_video_status' => $ppv_video_status,
         'watchlater' => $watchlaterstatus,
         'favorite' => $favorite                                 ,
@@ -14328,6 +14339,8 @@ public function QRCodeMobileLogout(Request $request)
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
         $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('skip_time')->min();
         return $item;
       });
       $response = array(
@@ -14356,8 +14369,8 @@ public function QRCodeMobileLogout(Request $request)
       }
       $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
-        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('skip_time')->min();
         return $item;
       });
       $response = array(
