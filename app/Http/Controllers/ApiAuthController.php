@@ -1296,6 +1296,7 @@ public function verifyandupdatepassword(Request $request)
   {
 
     try {
+
       $videoid = $request->videoid;
 
       $current_date = date('Y-m-d h:i:s a', time());
@@ -1355,6 +1356,8 @@ public function verifyandupdatepassword(Request $request)
 
           return $item;
         });
+
+
   
         $skip_time = ContinueWatching::orderBy('created_at', 'DESC')->where('user_id',$request->user_id)->where('videoid','=',$videoid)->first();
         
@@ -1365,21 +1368,25 @@ public function verifyandupdatepassword(Request $request)
           $skip_time = 0;
         }
   
+        $curr_time = '00';
+
         if ( isset($request->user_id) && $request->user_id != '' ) {
               $user_id = $request->user_id;
               $ppv_exist = PpvPurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
         
               //Wishlilst
-        $cnt = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
-        $wishliststatus =  ($cnt == 1) ? "true" : "false";
-        //Watchlater
-        $cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
-        $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
+            $cnt = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+            $wishliststatus =  ($cnt == 1) ? "true" : "false";
+
+            //Watchlater
+          $cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+          $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
   
          //Favorite
         $cnt2 = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
         $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
   
+
         //Continue Watchings
 
         $cnt4 = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->count();
@@ -1392,21 +1399,6 @@ public function verifyandupdatepassword(Request $request)
           $curr_time = '00';
         }
   
-      //Continue Watchings
-
-        if(!empty($request->andriodId)){
-            $andriod_cnt4 = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->count();
-            
-          if($andriod_cnt4 == 1){
-              $andriod_get_time = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->get();
-              $andriod_curr_time = $andriod_get_time[0]->currentTime;
-          }else{
-                $andriod_curr_time = '00';
-          }
-        }
-        else{
-          $andriod_curr_time = '00';
-        }
 
         $userrole = User::where('id','=',$user_id)->first()->role;
         $status = 'true';
@@ -1428,6 +1420,22 @@ public function verifyandupdatepassword(Request $request)
         $like = "false";
         $dislike = "false";
       }
+
+
+            //Continue Watchings
+
+
+            if(!empty($request->andriodId)){
+              $andriod_cnt4 = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->count();
+              
+            if($andriod_cnt4 == 1){
+                $andriod_get_time = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->get();
+                $andriod_curr_time = $andriod_get_time[0]->currentTime;
+            }else{
+                  $andriod_curr_time = '00';
+            }
+          }
+         
   
       if ($ppv_exist > 0) {
   
@@ -14327,8 +14335,6 @@ public function QRCodeMobileLogout(Request $request)
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
         $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
-        $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('watch_percentage')->min();
-        $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('skip_time')->min();
         return $item;
       });
       $response = array(
