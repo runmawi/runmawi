@@ -11475,39 +11475,19 @@ public function QRCodeMobileLogout(Request $request)
       {
         try{
 
-          $settings = Setting::first();
-          $channels = Channel::get(); 
-
-          $channels = Channel::where('status',1)->get()->map(function ($item) {
-            $settings = Setting::first();
-      
-              if(!empty($item['channel_banner']) && $item['channel_banner'] != null){
-                $item['channel_banner'] = $item->channel_banner;
-              }else{
-                $item['channel_banner'] = URL::to('/public/uploads/images/'.$settings->default_horizontal_image);
-              }
-                    
-              if(!empty($item['channel_image']) && $item['channel_image'] != null){
-                $item['channel_image'] = $item->channel_image;
-              }else{
-                $item['channel_image'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
-              }
-              if(!empty($item['channel_logo']) && $item['channel_logo'] != null){
-                $item['channel_logo'] = $item->channel_logo;
-              }else{
-                $item['channel_logo'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
-              }
+          $channels = Channel::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+              $item['channel_banner'] = $item->channel_image ;
+              $item['channel_image'] = $item->channel_banner ;
+              $item['channel_logo'] = $item->channel_logo ;
+              $item['source']    = "Channel_Partner";
               return $item;
           });
 
-          $currency = CurrencySetting::first();
-          $ThumbnailSetting = ThumbnailSetting::first();
-            
               $response = array(
                   'status'=> 'true',
                   'channels' => $channels,
-                  'ThumbnailSetting' => $ThumbnailSetting,
-                  'currency' => $currency,
+                  'ThumbnailSetting' => CurrencySetting::first() ,
+                  'currency' => ThumbnailSetting::first(),
               );
               
             } catch (\Throwable $th) {
@@ -11521,7 +11501,6 @@ public function QRCodeMobileLogout(Request $request)
         return response()->json($response, 200);
           
       }
-  
 
       
     public function channel_category_videos(Request $request)
@@ -12991,6 +12970,7 @@ public function QRCodeMobileLogout(Request $request)
          $data = Channel::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
                     $item['image_url'] = $item->channel_image ;
                     $item['Player_image_url'] = $item->channel_banner ;
+                    $item['Channel_Logo_url'] = $item->channel_logo ;
                     $item['source']    = "Channel_Partner";
                         return $item;
                     });
