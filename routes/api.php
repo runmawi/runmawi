@@ -526,5 +526,6 @@ Route::group(
 
             Route::get('series_genre_list', 'ApiAuthController@series_genre_list');
             Route::post('series_genre', 'ApiAuthController@series_genre');
+            Route::post('Android_ContinueWatchingExits', 'ApiAuthController@Android_ContinueWatchingExits');
 
     });
