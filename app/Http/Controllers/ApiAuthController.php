@@ -16729,6 +16729,8 @@ public function Android_ContinueWatchingExits(Request $request)
     $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
     $response = array(
       'status' => 'true',
+      'User_status' => 'true',
+      'Android_status' => 'true',
       'Android_ContinueWatching' => $Android_ContinueWatching,
       'ContinueWatching' => $ContinueWatching,
     );
@@ -16737,6 +16739,8 @@ public function Android_ContinueWatchingExits(Request $request)
     $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
     $response = array(
       'status' => 'true',
+      'User_status' => 'false',
+      'Android_status' => 'true',
       'Android_ContinueWatching' => $Android_ContinueWatching,
       'ContinueWatching' => [],
     );
@@ -16744,12 +16748,16 @@ public function Android_ContinueWatchingExits(Request $request)
     $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
     $response = array(
       'status' => 'true',
+      'User_status' => 'true',
+      'Android_status' => 'false',
       'Android_ContinueWatching' => [],
       'ContinueWatching' => $ContinueWatching,
     );
   }else{
     $response = array(
       'status' => 'false',
+      'User_status' => 'false',
+      'Android_status' => 'false',
       // 'ContinueWatching' => "video has been added"
     );
   }
