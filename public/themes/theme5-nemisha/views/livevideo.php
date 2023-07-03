@@ -47,11 +47,7 @@
         /* width: 100%; */
     }
 
-    .plyr--video {
-        height: calc(100vh - 80px - 75px);
-        max-width: none;
-        width: 100%;
-    }
+   
 
     .modal {
         position: fixed;
@@ -664,8 +660,8 @@ else{
                 </div>
 
                 <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
-                <div class="row">
-                    <div class=" container-fluid video-list you-may-like overflow-hidden">
+                <div class="row container-fluid">
+                    <div class="  video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>
                         <?php include 'comments/index.blade.php'; ?>
                     </div>
