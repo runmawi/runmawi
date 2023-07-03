@@ -1272,6 +1272,37 @@
                                             <?php //foreach ( $languages as $language) {
                                             ?>
                                             <li>
+                                                 <?php                         
+                        if(!Auth::guest()){                                                              
+                        $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
+                        $Channel = App\Channel::where('email', Auth::User()->email)->first();
+                        }
+                        if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
+                                <div class="iq-search-bar d-flex">
+                                    <form method="POST" action="<?php echo URL::to('cpp/home'); ?>" class="mt-4">
+                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                        <input id="email" type="hidden" name="email"
+                                            value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
+                                        <input id="password" type="hidden" name="password"
+                                            value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
+                                        <button type="submit" class="btn  "
+                                            style="">Visit CPP Portal </button>
+                                    </form>
+                                </div>
+                                <?php }if(!Auth::guest() && !empty($Channel)){ ?>
+                                <div class="iq-search-bar d-flex">
+                                    <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
+                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                        <input id="email" type="hidden" name="email"
+                                            value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
+                                        <input id="password" type="hidden" name="password"
+                                            value="<?= @$Channel->unhased_password ?>"
+                                            autocomplete="current-password">
+                                        <button type="submit" class="btn "
+                                            style="">Visit Channel Portal </button>
+                                    </form>
+                                </div>
+                                <?php } ?>
                                                 <!-- <a class="dropdown-item cont-item" href="<?php //echo URL::to('/').'/language/'.$language->id.'/'.$language->name;
                                                 ?>">  -->
                                                 <?php //echo $language->name;
@@ -1332,7 +1363,7 @@
                         $Channel = App\Channel::where('email', Auth::User()->email)->first();
                         }
                         if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
-                                <div class="iq-search-bar ml-auto">
+                                <div class="iq-search-bar ml-auto" id="hid">
                                     <form method="POST" action="<?php echo URL::to('cpp/home'); ?>" class="mt-4">
                                         <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                         <input id="email" type="hidden" name="email"
@@ -1344,7 +1375,7 @@
                                     </form>
                                 </div>
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
-                                <div class="iq-search-bar ml-auto">
+                                <div class="iq-search-bar ml-auto" id="hid">
                                     <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
                                         <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                         <input id="email" type="hidden" name="email"
