@@ -910,12 +910,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                       </div>
                   </div>
               <?php  }?>
-
-              <div class="col-sm-4 p-0">
-                    
-                </div>
-
-              <div class="col-sm-12 mt-4 p-0 bmk" style="margin-top: 2%;">
+        
+             </div></div>
+<div class="row flex-column-reverse flex-sm-row">
+              <div class="col-12 col-sm-7 mt-4 bmk" style="margin-top: 2%;">
                  <?php if(!empty($video->description) ) { ?>
 
                     <h5>Description:</h5>
@@ -926,16 +924,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               </div>
 
 
-              </div>
+            
 
-             <div class="col-sm-1 col-md-1 col-xs-12">
-                 <div class="btn btn-default views text-white">
-                           <!-- <span class="view-count"><i class="fa fa-eye"></i>  -->
-                               <!-- <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?>  -->
-                           </span>
-                       </div>
-             </div>
-             <div class="col-sm-5 col-md-5 col-xs-12 text-right mt-4">
+            
+             <div class="col-12 col-sm-5 col-md-5 col-xs-12 text-right mt-4">
                  <ul class="list-inline p-0 mt-4 share-icons music-play-lists d-flex justify-content-end" style="align-items: self-end;">
                     <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
                      <!-- Wishlist  -->
@@ -968,7 +960,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                
                </div></div>
            </div>
-         </div>
+         </div></div>
            
           <?php if(Auth::guest()) { ?>
  
