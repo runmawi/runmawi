@@ -14316,21 +14316,26 @@ public function QRCodeMobileLogout(Request $request)
 
       if(!empty($andriodId) ){
         $andriodId = $request->andriodId;
+        $andrio_video_ids = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->get();
+        $andrio_video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->count();    
       }else{
         $andriodId = 0;
+        $andrio_video_ids = 0;
+        $andrio_video_ids_count = 0;
       }
       if(!empty($user_id) ){
-        $user_id = $request->user_id;
+          /*channel videos*/
+          $user_id = $request->user_id;
+          $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
+          $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
       }else{
-        $user_id = 0;
+          /*channel videos*/
+          $user_id = $request->user_id;
+          $video_ids = 0;
+          $video_ids_count = 0;
       }
-    /*channel videos*/
-    $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
-    $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
 
-    $andrio_video_ids = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->get();
-    $andrio_video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->count();
-    if ( $andrio_video_ids_count  > 0 && $video_ids_count  > 0) {
+       if ( $andrio_video_ids_count  > 0 && $video_ids_count  > 0) {
     $ContinueWatching = array_merge($video_ids->toArray(), $andrio_video_ids->toArray()/*, $arrayN, $arrayN*/);
 
       foreach ($ContinueWatching as $key => $value1) {
