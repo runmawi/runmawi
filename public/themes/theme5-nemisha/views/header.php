@@ -1116,9 +1116,11 @@
                                         if ( $menu->in_menu == "video") { 
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                           ?>
-                                            <li class="dropdown menu-item">
+                                            <li class="dropdown menu-item d-flex">
+                                                 <img  height="40" width="40" class="" src="<?php echo $menu->image; ?>" /> 
                                                 <a class="dropdown-toggle" id="down"
                                                     href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
+                                                   
                                                     <a class="d-flex justify-content-between"
                                                         href="<?php echo URL::to('/categoryList'); ?>"> <?php echo __($menu->name); ?>
                                                         <!--  <i class="ri-arrow-down-s-line"></i>-->
@@ -1150,7 +1152,8 @@
                                             <?php } elseif ( $menu->in_menu == "movies") { 
                                         $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                         ?>
-                                            <li class="dropdown menu-item">
+                                            <li class="dropdown menu-item d-flex">
+                                                 <img  height="40" width="40" class="" src="<?php echo $menu->image; ?>" /> 
                                                 <a class="dropdown-toggle" id="down"
                                                     href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
                                                     <a class="d-flex justify-content-between"
@@ -1173,7 +1176,8 @@
                                        //  $LiveCategory = App\LiveCategory::all();
                                        $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                         ?>
-                                            <li class="dropdown menu-item">
+                                            <li class="dropdown menu-item d-flex">
+                                                 <img  height="40" width="40" class="" src="<?php echo $menu->image; ?>" /> 
                                                 <a class="dropdown-toggle" id="down"
                                                     href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
                                                     <a class="d-flex justify-content-between"
@@ -1197,6 +1201,7 @@
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
                                             <li class="dropdown menu-item">
+                                                 <img  height="40" width="40" class="" src="<?php echo $menu->image; ?>" /> 
                                                 <a class="dropdown-toggle" id="dn"
                                                     href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
                                                     <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
@@ -1218,6 +1223,7 @@
                                              $tv_shows_series = App\Series::get();
                                           ?>
                                             <li class="dropdown menu-item">
+                                                 <img  height="40" width="40" class="" src="<?php echo $menu->image; ?>" /> 
                                                 <a class="" id="" href="<?php echo URL::to('/') . $menu->url; ?>">
                                                     <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
                                                 </a>
@@ -1236,8 +1242,9 @@
                                             </li>
 
                                             <?php } else { ?>
-                                            <li class="menu-item">
-                                                <a href="<?php if ($menu->select_url == 'add_Site_url') {
+                                            <li class="menu-item d-flex">
+                                                <img  height="40" width="40" class="" src="<?php echo $menu->image; ?>" /> 
+                                             <a href="<?php if ($menu->select_url == 'add_Site_url') {
                                                     echo URL::to('/') . $menu->url;
                                                 } elseif ($menu->select_url == 'add_Custom_url') {
                                                     echo $menu->custom_url;
