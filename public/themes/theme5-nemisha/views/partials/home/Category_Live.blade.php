@@ -2,12 +2,50 @@
     include public_path('themes/theme5-nemisha/views/header.php');
 @endphp
 
+<style>
+    /* <!-- BREADCRUMBS  */
+    .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
+
+    ol.breadcrumb {
+        color: white;
+        background-color: transparent !important;
+        font-size: revert;
+    }
+
+    .nav-div.container-fluid {
+        padding: 0;
+    }
+</style>
+
 <div class="main-content">
     <section id="iq-favorites">
         <h2 class="text-center  mb-3"> {{ @$category_title }} </h2>
         <div class="container-fluid">
             <div class="row pageheight">
                 <div class="col-sm-12 overflow-hidden">
+
+                    <!-- BREADCRUMBS -->
+                    <div class="row d-flex">
+                        <div class="nav nav-tabs nav-fill container-fluid nav-div" id="nav-tab" role="tablist">
+                            <div class="bc-icons-2">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a class="black-text"
+                                            href="<?= route('liveList') ?>"><?= ucwords('live Stream') ?></a>
+                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                    </li>
+
+                                    <li class="breadcrumb-item"><a class="black-text"
+                                            href="<?= route('CategoryLive') ?>"><?= ucwords(' Live Category') ?></a>
+                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                    </li>
+
+                                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($category_title) > 50 ? ucwords(substr($category_title, 0, 120) . '...') : ucwords($category_title); ?> </a></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="data">
                         <div class="favorites-contens">
@@ -121,7 +159,8 @@
                                     <div class="col-md-12 text-center mt-4"
                                         style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
                                         <p>
-                                        <h2 style="position: absolute;top: 50%;left: 50%;color: white;">No Live Streams Available</h2>
+                                        <h2 style="position: absolute;top: 50%;left: 50%;color: white;">No Live Streams
+                                            Available</h2>
                                     </div>
                                 @endif
                             </ul>
