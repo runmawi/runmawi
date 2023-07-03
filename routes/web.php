@@ -62,6 +62,12 @@ Route::post('/user/DOB', 'AdminUsersController@DOB');
 
 // Route::get('/admin/filemanager', 'FileManagerController@index');
 
+
+// Endpoints Playlist Audios.
+
+Route::post('/create/playlist', 'MyPlaylistController@CreatePlaylist');
+
+
 // User analytics
 Route::post('/admin/exportCsv', 'AdminUsersController@exportCsv');
 Route::post('/admin/start_date_url', 'AdminUsersController@StartDateRecord');
