@@ -500,7 +500,7 @@ else{
                                                 <!-- BREADCRUMBS -->
                             <div class="col-sm-12 col-md-12 col-xs-12">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 p-0">
                                         <div class="bc-icons-2">
                                             <ol class="breadcrumb">
                                                 <li class="breadcrumb-item"><a class="black-text" href="<?= route('liveList') ?>"><?= ucwords('Livestreams') ?></a>
@@ -535,7 +535,7 @@ else{
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-sm-3 col-md-3 col-xs-12">
+                            <!--<div class="col-sm-3 col-md-3 col-xs-12">
                                 <div class=" d-flex mt-4 pull-right">
                                     <div class="views">
                                         <span class="view-count"><i class="fa fa-eye"></i>
@@ -544,7 +544,7 @@ else{
                                         </span>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                         <!-- Year, Running time, Age -->
                         <?php
