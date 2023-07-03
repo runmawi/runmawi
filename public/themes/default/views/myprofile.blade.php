@@ -67,6 +67,21 @@ $settings = App\Setting::first();
      padding: 10px 10px;
      cursor: pointer;
   }
+    .rounded-circle {
+    height: 150px;
+    width: 150px;
+}
+    .fa-fw{
+        position: absolute;
+    right: 0px;
+    top: 34px;
+        color: #000;
+    background-color: #578cea;
+    padding: 12px 22px;
+    /* width: 100%; */
+    display: flex;
+    justify-content: center;
+    }
 </style>
 
 <body>
@@ -250,7 +265,7 @@ $settings = App\Setting::first();
                     <div class="row align-items-center justify-content-end">
                         <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
                             <span class="text-light font-size-13">Password</span>
-                            <p class="mb-0"></p>
+                            <p class="mb-0">***********</p>
                         </div>
                     </div>
                     
@@ -312,7 +327,7 @@ $settings = App\Setting::first();
      <div class="modal-content">
         
         <div class="modal-header">
-                <h4 class="modal-title">Update Profile</h4>
+                <h4 class="modal-title text-black">Update Profile</h4>
            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
            
         </div>
@@ -333,9 +348,11 @@ $settings = App\Setting::first();
                         </div> 
                     
                     
-                        <div class="form-group">
+                        <div class="form-group position-relative">
                           <label>Password:</label><br>
-                          <input type="password"  name="password"   placeholder="Password"  class="form-control"  >
+                          <input type="password" id="pass_log_id"  name="password"   placeholder="Password"  class="form-control"  >
+                            <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
+
                       </div> 
                     
                     
@@ -513,7 +530,7 @@ $settings = App\Setting::first();
                     <div class="iq-card" id="recentviews" style="background-color:#191919;">
                  <div class="iq-card-header d-flex justify-content-between" >
                     <div class="iq-header-title">
-                       <h4 class="card-title">Recently Viewd Items</h4>
+                       <h4 class="card-title">Recently Viewed Items</h4>
                     </div>
                     
                  </div>
@@ -981,6 +998,15 @@ $('#submit-new-cat').click(function(){
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+</script>
+<script>
+    $(document).on('click', '.toggle-password', function() {
+
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    
+    var input = $("#pass_log_id");
+    input.attr('type') === 'password' ? input.attr('type','text') : input.attr('type','password')
+});
 </script>
 @php
 include(public_path('themes/default/views/footer.blade.php'));

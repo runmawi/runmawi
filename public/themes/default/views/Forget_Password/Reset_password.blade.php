@@ -99,7 +99,7 @@
 
                                 <div class="">
                                     
-                                    @if (session('status-success'))
+                                    @if (session()->has('status-success'))
                                         <div class="alert alert-success status_message" role="alert" style="font-size: 15px;">
                                             {{ session('status-success') }}
                                         </div>

@@ -3,6 +3,9 @@
     label{
         font-size: 14px!important;
     }
+     .ab{
+        top:14px!important;
+    }
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
