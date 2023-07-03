@@ -1434,6 +1434,8 @@ public function verifyandupdatepassword(Request $request)
             }else{
                   $andriod_curr_time = '00';
             }
+          }else{
+            $andriod_curr_time = '00';
           }
          
   

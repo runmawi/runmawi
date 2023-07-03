@@ -31,4 +31,14 @@ class MyPlaylistController extends Controller
         $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses(  $this->Theme );
     }
+
+    public function CreatePlaylist(Request $request){
+
+        try {
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+    }
 }
