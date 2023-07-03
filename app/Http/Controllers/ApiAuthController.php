@@ -11505,9 +11505,9 @@ public function QRCodeMobileLogout(Request $request)
         try{
 
           $channels = Channel::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
-              $item['channel_banner'] = $item->channel_image ;
-              $item['channel_image'] = $item->channel_banner ;
-              $item['channel_logo'] = $item->channel_logo ;
+              $item['channel_image'] = $item->channel_image != null ? $item->channel_image : URL::to('/public/uploads/images/'.default_horizontal_image()) ;
+              $item['channel_banner'] = $item->channel_banner != null ? $item->channel_banner : URL::to('/public/uploads/images/'.default_vertical_image())  ;
+              $item['channel_logo'] = $item->channel_logo != null ? $item->channel_logo : URL::to('/public/uploads/images/'.default_vertical_image());
               $item['source']    = "Channel_Partner";
               return $item;
           });
@@ -12997,12 +12997,13 @@ public function QRCodeMobileLogout(Request $request)
        else:
 
          $data = Channel::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
-                    $item['image_url'] = $item->channel_image ;
-                    $item['Player_image_url'] = $item->channel_banner ;
-                    $item['Channel_Logo_url'] = $item->channel_logo ;
+                    $item['image_url'] = $item->channel_image != null ? $item->channel_image : URL::to('/public/uploads/images/'.default_horizontal_image()) ;
+                    $item['Player_image_url'] = $item->channel_banner != null ? $item->channel_banner : URL::to('/public/uploads/images/'.default_vertical_image())  ;
+                    $item['Channel_Logo_url'] = $item->channel_logo != null ? $item->channel_logo : URL::to('/public/uploads/images/'.default_vertical_image());
                     $item['source']    = "Channel_Partner";
                         return $item;
                     });
+
        endif;
    
     return $data;
