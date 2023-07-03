@@ -14330,12 +14330,13 @@ public function QRCodeMobileLogout(Request $request)
       foreach ($ContinueWatching as $key => $value1) {
         $k2[] = $value1['videoid'];
       }
-      // print_r($k2);exit;
 
-      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
+      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id,$andriodId) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
         $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        $item['andriod_watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('watch_percentage')->min();
+        $item['andriod_skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('skip_time')->min();
         return $item;
       });
       $response = array(
@@ -14362,9 +14363,11 @@ public function QRCodeMobileLogout(Request $request)
       foreach ($andrio_video_ids as $key => $value1) {
         $k2[] = $value1->videoid;
       }
-      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
+      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id,$andriodId) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        return $item;
+        $item['andriod_watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('watch_percentage')->min();
+        $item['andriod_skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('skip_time')->min();
+         return $item;
       });
       $response = array(
         'status' => "true",
