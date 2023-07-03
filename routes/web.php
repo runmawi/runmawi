@@ -65,7 +65,9 @@ Route::post('/user/DOB', 'AdminUsersController@DOB');
 
 // Endpoints Playlist Audios.
 
-Route::post('/create/playlist', 'MyPlaylistController@CreatePlaylist');
+Route::post('/playlist', 'MyPlaylistController@MyPlaylist');
+Route::post('/playlist/store', 'MyPlaylistController@StorePlaylist');
+
 
 
 // User analytics

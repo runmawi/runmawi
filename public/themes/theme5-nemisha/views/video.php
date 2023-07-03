@@ -927,7 +927,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             
 
             
-             <div class="col-12 col-sm-5 col-md-5 col-xs-12 text-right mt-4">
+             <div class="col-12 col-sm-5 col-md-5 col-xs-12 text-right ">
                  <ul class="list-inline p-0 mt-4 share-icons music-play-lists d-flex justify-content-end" style="align-items: self-end;">
                     <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
                      <!-- Wishlist  -->

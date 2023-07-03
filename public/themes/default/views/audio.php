@@ -473,6 +473,52 @@ Your browser does not support the audio element.
 
 <?php } ?>
 
+<!-- Playlist  -->
+
+<div class="">
+  <?php if(!Auth::guest()){ ?>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Create PlayList
+</button>
+<?php } ?>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-black" id="exampleModalLabel">Create PlayList</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	        
+      <form  id="my-playlist-form" accept-charset="UTF-8"  enctype="multipart/form-data"  action="<?= URL::to('/playlist/store') ?>" method="post">
+      
+      <div class="col-sm-6 p-0">
+            <label for="name">PlayList Title</label>
+            <input name="title" id="title" placeholder="PlayList Title" class="form-control text-black"  /><br />
+          </div>
+          <div class="col-sm-6 p-0">
+		
+            <label for="name">PlayList Image</label>
+            <input type="file" name="image" id="image" />
+          </div>
+      </div>
+      <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" id="store-play-list" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+</div>
+
                         <!-- BREADCRUMBS -->
                         <div class="ml-2">     
         <div class="row">
@@ -630,6 +676,10 @@ Your browser does not support the audio element.
 
 
 <script type="text/javascript">
+
+$('#store-play-list').click(function(){
+				$('#my-playlist-form').submit();
+			});
 
 var base_url = $('#base_url').val();
 
