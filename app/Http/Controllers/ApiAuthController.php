@@ -5289,9 +5289,13 @@ return response()->json($response, 200);
 
       $user_id = $request->user_id;
     /*channel videos*/
-    $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
-    $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
-
+    if(!empty($user_id)){
+      $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
+      $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();  
+    }else{
+      $video_ids = 0;
+      $video_ids_count = 0;  
+    }
     if ( $video_ids_count  > 0) {
 
       foreach ($video_ids as $key => $value1) {
