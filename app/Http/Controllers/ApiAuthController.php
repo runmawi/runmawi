@@ -16706,4 +16706,55 @@ public function Users_Password_Pin_Update(Request $request)
 }
 
 
+public function Android_ContinueWatchingExits(Request $request)
+{
+  $video_id = $request->video_id;
+  $user_id = $request->user_id;
+  $andriodId = $request->andriodId;
+  if(!empty($user_id)){
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->count();
+
+  }else{
+    $ContinueWatching = 0;
+  }
+
+  if(!empty($andriodId)){
+    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->count();
+  }else{
+    $Android_ContinueWatching = 0;
+  }
+
+  if($Android_ContinueWatching > 0 && $ContinueWatching > 0){
+    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->get();
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+    $response = array(
+      'status' => 'true',
+      'Android_ContinueWatching' => $Android_ContinueWatching,
+      'ContinueWatching' => $ContinueWatching,
+    );
+  }elseif($Android_ContinueWatching > 0 ){
+    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->get();
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+    $response = array(
+      'status' => 'true',
+      'Android_ContinueWatching' => $Android_ContinueWatching,
+      'ContinueWatching' => [],
+    );
+  }elseif($ContinueWatching > 0){
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+    $response = array(
+      'status' => 'true',
+      'Android_ContinueWatching' => [],
+      'ContinueWatching' => $ContinueWatching,
+    );
+  }else{
+    $response = array(
+      'status' => 'false',
+      // 'ContinueWatching' => "video has been added"
+    );
+  }
+
+  return response()->json($response, 200);
+
+}
 }
