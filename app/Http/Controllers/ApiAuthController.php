@@ -12367,11 +12367,22 @@ public function QRCodeMobileLogout(Request $request)
   public function categoryLive(Request $request)
   {
       try{
-        $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
-        
-        $Live_Category = $LiveCategory->all();
 
-        $response = array( 'status'=> 'true','LiveCategory' => $Live_Category );
+        $query =  LiveCategory::find($request->category_id)->specific_category_live();
+
+        $query->where('active',1)->where('status', 1);
+
+        $data = $query->latest()->get();
+            
+        $data->transform(function ($item) {
+              $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+              $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+              $item['source']    = "Livestream";
+              return $item;
+        });
+
+        
+        $response = array( 'status'=> 'true','LiveCategory' => $data );
 
       } catch (\Throwable $th) {
 
