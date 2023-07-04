@@ -1426,16 +1426,43 @@ public function verifyandupdatepassword(Request $request)
 
 
             if(!empty($request->andriodId)){
+
               $andriod_cnt4 = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->count();
               
+                 //Wishlilst
+            $Wishlist_cnt = Wishlist::select('video_id')->where('andriodId','=',$andriodId)->where('video_id','=',$videoid)->count();
+            $andriod_wishliststatus =  ($Wishlist_cnt == 1) ? "true" : "false";
+
+            //Watchlater
+              // $cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+              // $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
+      
+            //Favorite
+            // $cnt2 = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+            // $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
+              
+              $like_data = LikeDisLike::where("video_id","=",$videoid)->where("andriodId","=",$andriodId)->where("liked","=",1)->count();
+              $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("andriodId","=",$andriodId)->where("disliked","=",1)->count();
+              // $favoritestatus = Favorite::where("video_id","=",$videoid)->where("user_id","=",$user_id)->count();
+              $like = ($like_data == 1) ? "true" : "false";
+              $dislike = ($dislike_data == 1) ? "true" : "false";
+              // $favorite = ($favoritestatus > 0) ? "true" : "false";
+
+
             if($andriod_cnt4 == 1){
                 $andriod_get_time = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->get();
                 $andriod_curr_time = $andriod_get_time[0]->currentTime;
             }else{
                   $andriod_curr_time = '00';
             }
+
           }else{
             $andriod_curr_time = '00';
+            $andriod_wishliststatus = 'false';
+            // $andriod_watchlaterstatus = 'false';
+            // $andriod_favorite = 'false';
+            $andriod_like = "false";
+            $andriod_dislike = "false";
           }
          
   
@@ -1564,10 +1591,14 @@ public function verifyandupdatepassword(Request $request)
         }else{
             $video_ads_tag_url = null ;
         }
-
+        // 'andriod_watchlaterstatus' => $andriod_watchlaterstatus ,
+        // 'andriod_favorite' => $andriod_favorite ,
         $response = array(
         'status' => $status,
         'wishlist' => $wishliststatus,
+        'andriod_wishliststatus' => $andriod_wishliststatus ,
+        'andriod_like' => $andriod_like ,
+        'andriod_dislike' => $andriod_dislike ,
         'curr_time' => $curr_time,
         'andriod_curr_time' => $andriod_curr_time,
         'ppv_video_status' => $ppv_video_status,
