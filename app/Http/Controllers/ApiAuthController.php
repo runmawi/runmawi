@@ -1444,8 +1444,8 @@ public function verifyandupdatepassword(Request $request)
               $like_data = LikeDisLike::where("video_id","=",$videoid)->where("andriodId","=",$request->andriodId)->where("liked","=",1)->count();
               $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("andriodId","=",$request->andriodId)->where("disliked","=",1)->count();
               // $favoritestatus = Favorite::where("video_id","=",$videoid)->where("user_id","=",$user_id)->count();
-              $like = ($like_data == 1) ? "true" : "false";
-              $dislike = ($dislike_data == 1) ? "true" : "false";
+              $andriod_like = ($like_data == 1) ? "true" : "false";
+              $andriod_dislike = ($dislike_data == 1) ? "true" : "false";
               // $favorite = ($favoritestatus > 0) ? "true" : "false";
 
 
@@ -1517,14 +1517,14 @@ public function verifyandupdatepassword(Request $request)
       }
 
       $video = Video::find( $request->videoid);
-
+      
       $AdsVideosPre = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
               ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category')
               ->where('ads_events.status',1)
               ->where('advertisements.status',1)
-              ->where('advertisements.ads_category',$video->pre_ads_category)
+              ->where('advertisements.ads_category',@$video->pre_ads_category)
               ->where('ads_position','pre')
-              ->where('advertisements.id',$video->pre_ads)
+              ->where('advertisements.id',@$video->pre_ads)
               ->groupBy('advertisements.id')
               ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                   $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
@@ -1537,10 +1537,10 @@ public function verifyandupdatepassword(Request $request)
               ->Join('videos','advertisements.ads_category','=','videos.mid_ads_category')
               ->where('ads_events.status',1)
               ->where('advertisements.status',1)
-              ->where('advertisements.ads_category',$video->mid_ads_category)
-              ->where('videos.id',$video->id)
+              ->where('advertisements.ads_category',@$video->mid_ads_category)
+              ->where('videos.id',@$video->id)
               ->where('ads_position','mid')
-              ->where('advertisements.id',$video->mid_ads)
+              ->where('advertisements.id',@$video->mid_ads)
               ->groupBy('advertisements.id')
               ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                   $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
@@ -1552,10 +1552,10 @@ public function verifyandupdatepassword(Request $request)
       $AdsVideosPost = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
               ->Join('videos','advertisements.ads_category','=','videos.post_ads_category')
               ->where('ads_events.status',1)->where('advertisements.status',1)
-              ->where('advertisements.ads_category',$video->post_ads_category)
-              ->where('videos.id',$video->id)
+              ->where('advertisements.ads_category',@$video->post_ads_category)
+              ->where('videos.id',@$video->id)
               ->where('ads_position','post')
-              ->where('advertisements.id',$video->post_ads)
+              ->where('advertisements.id',@$video->post_ads)
               ->groupBy('advertisements.id')
               ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                   $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
