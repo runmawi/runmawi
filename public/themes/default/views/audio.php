@@ -311,7 +311,7 @@ Your browser does not support the audio element.
  
 </div>
             
-<div class="col-sm-9 col-md-9 col-xs-9 p-0">
+<div class="col-sm-9 col-md-9 col-xs-9">
     
         
 <div class="album_bg">

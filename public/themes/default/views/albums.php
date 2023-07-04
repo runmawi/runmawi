@@ -66,7 +66,7 @@
   }
 
   .title{
-    margin-left: 10px;
+   padding: 5px 0 5px 0 ;
     /*
     text-align: center;
       border-top:1px solid rgba(255, 255, 255,0.1)*/
@@ -270,9 +270,7 @@
 
             
               </div>
-           <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
-    background-repeat: no-repeat;
-    background-position: right;">
+           <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;    background-repeat: no-repeat;    background-position: right;">
             <div class="row align-items-center mb-4">
 
               <div class="col-sm-3">
@@ -285,7 +283,8 @@
                     <div class="blur"></div>
                     <div class="overlay_blur">
 
-                      <h4 class="hero-title album mb-2"> <?= $album->albumname; ?></h4>
+                      <h4 class="hero-title album mb-0"> <?= $album->albumname; ?></h4>
+                         <div class="title"></div>
                       <!-- <p class="mt-2">Music by    <br>A. R. Rahman</p> -->
 
                       <div class="d-flex" style="justify-content: space-between;width: 33%;align-items: center;">
@@ -322,7 +321,7 @@
 
       <div class="infos-ctn">
         <div class="timer">00:00</div>
-        <div class="title"></div>
+       
         <div class="duration">00:00</div>
       </div>
 
