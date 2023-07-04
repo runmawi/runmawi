@@ -35,6 +35,21 @@ class MyPlaylistController extends Controller
         Theme::uses(  $this->Theme );
     }
 
+    public function MyPlaylist(Request $request){
+        try {
+            //code...
+          $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
+          $data = [
+            'MyPlaylist' => $MyPlaylist,
+        ];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            $data = [];
+        }
+        return Theme::view('MyPlaylist', $data);
+    }
+
     public function StorePlaylist(Request $request){
 
         try {
@@ -56,7 +71,7 @@ class MyPlaylistController extends Controller
             $image  = URL::to('/').'/public/uploads/images/'.$file->getClientOriginalName();
 
         } else {
-            $image  = $Setting->default_video_image;
+            $image  = URL::to('/').'/public/uploads/images/'.$Setting->default_video_image;
         }
 
 
@@ -75,5 +90,23 @@ class MyPlaylistController extends Controller
             "note_type" => "success",
         ]);
         
+    }
+
+    public function Audio_Playlist($slug){
+        try {
+            //code...
+          $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
+          $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+          $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
+            dd($MyPlaylist);
+          $data = [
+            'MyPlaylist' => $MyPlaylist,
+        ];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            $data = [];
+        }
+        return Theme::view('MyPlaylist', $data);
     }
 }

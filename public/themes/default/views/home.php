@@ -125,12 +125,29 @@
    </section>
    <?php } } ?>
 
+
+   <?php 
+   if(!Auth::guest()){
+      if($value->video_name == 'my_play_list'){
+      
+      if($home_settings->my_playlist == 1){ ?>
+   <section id="iq-favorites">
+      <div class="container-fluid overflow-hidden">
+         <div class="row">
+            <div class="col-sm-12 ">
+               <?php include('partials/home/my-playlist.php'); ?>
+            </div>
+         </div>
+      </div>
+   </section>
+   <?php } }  } ?>
+
    <!-- Audio Genre -->
    <?php
        if( $value->video_name == "Audio_Genre"){
          if($home_settings->AudioGenre == 1){  ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/AudioGenre.php'; ?>
@@ -146,6 +163,7 @@
          
       if($home_settings->AudioGenre_audios == 1){ ?>
    <section id="iq-favorites">
+         <div class="container-fluid overflow-hidden">
          <div class="row">
             
          <?php
@@ -159,7 +177,7 @@
                //  dd($audios);
             ?>
 
-            <div class="col-sm-12 ">
+            <div class="col-sm-12 p-0">
             <?php 
                if (count($audios) > 0) { 
                   include('partials/home/audiocategoryloop.php');
@@ -169,7 +187,7 @@
                <p class="no_audio"></p>
             <?php } }?>
             </div>
-      </div>
+             </div></div>
    </section>
    <?php } } ?>
 
@@ -179,7 +197,7 @@
        if( $value->video_name == "latest_viewed_Videos"){
          if($home_settings->latest_viewed_Videos == 1){  ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/latest_viewed_Videos.php'; ?>
@@ -194,7 +212,7 @@
       if($value->video_name == 'latest_viewed_Livestream'){
          if($home_settings->latest_viewed_Livestream == 1){ ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/latest_viewed_Livestream.php'; ?>
@@ -209,7 +227,7 @@
       if($value->video_name == 'latest_viewed_Audios'){
          if($home_settings->latest_viewed_Audios == 1){ ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/latest_viewed_Audios.php'; ?>
@@ -224,7 +242,7 @@
       if($value->video_name == "latest_viewed_Episode" ){
          if($home_settings->latest_viewed_Episode == 1){ ?>
             <section id="iq-favorites">
-               <div class="fluid overflow-hidden">
+               <div class="container-fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
                            <?php include 'partials/home/latest_viewed_Episode.php'; ?>
