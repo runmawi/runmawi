@@ -930,3 +930,23 @@ function package_ends_allplans(){
        
     return $data;
 }
+
+function MyPlaylistfavorite($MyPlaylist_id)
+{
+    if(!Auth::guest()){
+    // $favorite = App\Favorite::where('user_id', '=', Auth::user()->id)->where('playlist_id', '=', $MyPlaylist_id)->first();
+    // if(isset($favorite->id)){ 
+    //     $status = "active";
+    // } else {
+    //     $status = "";
+    // }
+        $status = "";
+
+    return $status;
+}else{
+    $status = "";
+    return $status;
+}
+
+}
+   
