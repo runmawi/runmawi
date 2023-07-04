@@ -16791,10 +16791,10 @@ public function Channel_Audios_list(Request $request)
             $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
+                'data' => $data ,
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
-                'data' => $data ,
             );
 
         } catch (\Throwable $th) {
@@ -16825,10 +16825,10 @@ public function Channel_Audios_list(Request $request)
             $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
+                'data' => $data ,
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
-                'data' => $data ,
             );
 
         } catch (\Throwable $th) {
@@ -16857,10 +16857,10 @@ public function Channel_Audios_list(Request $request)
             $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
+                'data' => $data ,
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
-                'data' => $data ,
             );
 
         } catch (\Throwable $th) {
@@ -16888,10 +16888,10 @@ public function Channel_Audios_list(Request $request)
             $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
+                'data' => $data ,
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
-                'data' => $data ,
             );
 
         } catch (\Throwable $th) {
