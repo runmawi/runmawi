@@ -168,7 +168,7 @@
                             <div class="sign-in-from w-100 m-auto">
 
                                 <div align="center">
-                                    <img src="<?php echo URL::to('/public/uploads/settings/' . $settings->logo); ?>" style="margin-bottom:1rem;">
+                                    <img src="<?php echo URL::to('/assets/img/nem.png'); ?>" style="margin-bottom:1rem;">
                                     <h3 class="mb-3 text-center"> Reset Password </h3>
                                 </div>
 
