@@ -1426,11 +1426,11 @@ public function verifyandupdatepassword(Request $request)
 
 
             if(!empty($request->andriodId)){
-
+              
               $andriod_cnt4 = ContinueWatching::select('currentTime')->where('andriodId','=',$request->andriodId)->where('videoid','=',$videoid)->count();
               
                  //Wishlilst
-            $Wishlist_cnt = Wishlist::select('video_id')->where('andriodId','=',$andriodId)->where('video_id','=',$videoid)->count();
+            $Wishlist_cnt = Wishlist::select('video_id')->where('andriodId','=',$request->andriodId)->where('video_id','=',$videoid)->count();
             $andriod_wishliststatus =  ($Wishlist_cnt == 1) ? "true" : "false";
 
             //Watchlater
@@ -1441,8 +1441,8 @@ public function verifyandupdatepassword(Request $request)
             // $cnt2 = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
             // $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
               
-              $like_data = LikeDisLike::where("video_id","=",$videoid)->where("andriodId","=",$andriodId)->where("liked","=",1)->count();
-              $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("andriodId","=",$andriodId)->where("disliked","=",1)->count();
+              $like_data = LikeDisLike::where("video_id","=",$videoid)->where("andriodId","=",$request->andriodId)->where("liked","=",1)->count();
+              $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("andriodId","=",$request->andriodId)->where("disliked","=",1)->count();
               // $favoritestatus = Favorite::where("video_id","=",$videoid)->where("user_id","=",$user_id)->count();
               $like = ($like_data == 1) ? "true" : "false";
               $dislike = ($dislike_data == 1) ? "true" : "false";
