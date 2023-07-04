@@ -16807,4 +16807,134 @@ public function Android_ContinueWatchingExits(Request $request)
   return response()->json($response, 200);
 
 }
+
+public function Channel_Audios_list(Request $request)
+    {
+        try {
+
+            $channel = Channel::where('channel_slug',$request->channel_slug)->first(); 
+
+            $data = Audio::where('active', '1')->where('user_id', $channel->id)
+                    ->where('uploaded_by','Channel')
+                    ->latest()
+                    ->get() ;
+
+            $response = array(
+                'status'=>'true',
+                'message' => 'Retrived data successfully',
+                'data' => $data ,
+                'settings' => Setting::first(),
+                'currency' => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
+
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status' => 'false',
+            'message' => $th->getMessage(),          
+          );
+          
+            return $th->getMessage();
+        }
+
+        return response()->json($response, 200);
+
+    }
+
+    public function Channel_livevideos_list(Request $request)
+    {
+        try {
+
+            $channel = Channel::where('channel_slug',$request->channel_slug)->first(); 
+
+            $data = LiveStream::where('active','1')->where('status',1)->where('user_id',$channel->id)
+                                ->where('uploaded_by','Channel')
+                                ->latest()
+                                ->get();
+
+            $response = array(
+                'status'=>'true',
+                'message' => 'Retrived data successfully',
+                'data' => $data ,
+                'settings' => Setting::first(),
+                'currency' => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+              'status' => 'false',
+              'message' => $th->getMessage(),          
+            );
+        }
+
+        return response()->json($response, 200);
+       
+    }
+
+    public function Channel_series_list(Request $request)
+    {
+        try {
+
+            $channel = Channel::where('channel_slug',$request->channel_slug)->first(); 
+           
+            $data = Series::where('active','1')->where('user_id', $channel->id)
+                            ->where('uploaded_by', 'Channel')
+                            ->latest()
+                            ->get();
+
+            $response = array(
+                'status'=>'true',
+                'message' => 'Retrived data successfully',
+                'data' => $data ,
+                'settings' => Setting::first(),
+                'currency' => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
+
+        } catch (\Throwable $th) {
+            $response = array(
+              'status' => 'false',
+              'message' => $th->getMessage(),          
+            );
+        }
+
+        return response()->json($response, 200);
+
+    }
+    
+    public function Channel_videos_list(Request $request)
+    {
+        try {
+
+            $channel = Channel::where('channel_slug',$request->channel_slug)->first(); 
+
+            $data = Video::where('active', '=', '1')->where('status', '=', '1')
+                            ->where('user_id', '=', $channel->id)
+                            ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
+                            ->get();
+
+            $response = array(
+                'status'=>'true',
+                'message' => 'Retrived data successfully',
+                'data' => $data ,
+                'settings' => Setting::first(),
+                'currency' => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
+
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status' => 'false',
+            'message' => $th->getMessage(),          
+          );
+
+        }
+
+        return response()->json($response, 200);
+
+    }
 }

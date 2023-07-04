@@ -30,6 +30,12 @@ Route::group(
         Route::post('Users-Interest-Genres', 'ApiAuthController@users_interest_genres');
         Route::post('Users-Password-Pin-Update', 'ApiAuthController@Users_Password_Pin_Update');
         
+
+        Route::post('Channel-Audios-list', 'ApiAuthController@Channel_Audios_list');
+        Route::post('Channel-livevideos-list', 'ApiAuthController@Channel_livevideos_list');
+        Route::post('Channel-series-list', 'ApiAuthController@Channel_series_list');
+        Route::post('Channel-videos-list', 'ApiAuthController@Channel_videos_list');
+        
         // Search 
         Route::post('search', 'ApiAuthController@search');
         Route::post('searchapi', 'ApiAuthController@searchapi');
