@@ -16817,7 +16817,7 @@ public function Channel_Audios_list(Request $request)
 
             $channel = Channel::where('channel_slug',$request->channel_slug)->first(); 
 
-            $data = LiveStream::where('active','1')->where('user_id',$channel->id)
+            $data = LiveStream::where('active','1')->where('status',1)->where('user_id',$channel->id)
                                 ->where('uploaded_by','Channel')
                                 ->latest()
                                 ->get();
