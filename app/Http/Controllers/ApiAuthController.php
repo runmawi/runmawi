@@ -16788,13 +16788,13 @@ public function Channel_Audios_list(Request $request)
                     ->latest()
                     ->get() ;
 
-            $repond = array(
+            $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
+                'data' => $data ,
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
-                'data' => $data ,
             );
 
         } catch (\Throwable $th) {
@@ -16817,18 +16817,18 @@ public function Channel_Audios_list(Request $request)
 
             $channel = Channel::where('channel_slug',$request->channel_slug)->first(); 
 
-            $data = LiveStream::where('active','1')->where('user_id',$channel->id)
+            $data = LiveStream::where('active','1')->where('status',1)->where('user_id',$channel->id)
                                 ->where('uploaded_by','Channel')
                                 ->latest()
                                 ->get();
 
-            $repond = array(
+            $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
+                'data' => $data ,
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
-                'data' => $data ,
             );
 
         } catch (\Throwable $th) {
@@ -16854,13 +16854,13 @@ public function Channel_Audios_list(Request $request)
                             ->latest()
                             ->get();
 
-            $repond = array(
+            $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
+                'data' => $data ,
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
-                'data' => $data ,
             );
 
         } catch (\Throwable $th) {
@@ -16885,13 +16885,13 @@ public function Channel_Audios_list(Request $request)
                             ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
                             ->get();
 
-            $repond = array(
+            $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
+                'data' => $data ,
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
-                'data' => $data ,
             );
 
         } catch (\Throwable $th) {
@@ -16900,7 +16900,7 @@ public function Channel_Audios_list(Request $request)
             'status' => 'false',
             'message' => $th->getMessage(),          
           );
-          
+
         }
 
         return response()->json($response, 200);
