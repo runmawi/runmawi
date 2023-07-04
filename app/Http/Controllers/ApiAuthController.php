@@ -16788,7 +16788,7 @@ public function Channel_Audios_list(Request $request)
                     ->latest()
                     ->get() ;
 
-            $repond = array(
+            $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
                 'settings' => Setting::first(),
@@ -16822,7 +16822,7 @@ public function Channel_Audios_list(Request $request)
                                 ->latest()
                                 ->get();
 
-            $repond = array(
+            $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
                 'settings' => Setting::first(),
@@ -16854,7 +16854,7 @@ public function Channel_Audios_list(Request $request)
                             ->latest()
                             ->get();
 
-            $repond = array(
+            $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
                 'settings' => Setting::first(),
@@ -16885,7 +16885,7 @@ public function Channel_Audios_list(Request $request)
                             ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
                             ->get();
 
-            $repond = array(
+            $response = array(
                 'status'=>'true',
                 'message' => 'Retrived data successfully',
                 'settings' => Setting::first(),
@@ -16900,7 +16900,7 @@ public function Channel_Audios_list(Request $request)
             'status' => 'false',
             'message' => $th->getMessage(),          
           );
-          
+
         }
 
         return response()->json($response, 200);
