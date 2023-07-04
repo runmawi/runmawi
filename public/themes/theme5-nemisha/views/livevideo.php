@@ -47,11 +47,7 @@
         /* width: 100%; */
     }
 
-    .plyr--video {
-        height: calc(100vh - 80px - 75px);
-        max-width: none;
-        width: 100%;
-    }
+   
 
     .modal {
         position: fixed;
@@ -504,7 +500,7 @@ else{
                                                 <!-- BREADCRUMBS -->
                             <div class="col-sm-12 col-md-12 col-xs-12">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 p-0">
                                         <div class="bc-icons-2">
                                             <ol class="breadcrumb">
                                                 <li class="breadcrumb-item"><a class="black-text" href="<?= route('liveList') ?>"><?= ucwords('Livestreams') ?></a>
@@ -539,7 +535,7 @@ else{
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-sm-3 col-md-3 col-xs-12">
+                            <!--<div class="col-sm-3 col-md-3 col-xs-12">
                                 <div class=" d-flex mt-4 pull-right">
                                     <div class="views">
                                         <span class="view-count"><i class="fa fa-eye"></i>
@@ -548,7 +544,7 @@ else{
                                         </span>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                         <!-- Year, Running time, Age -->
                         <?php
@@ -664,8 +660,8 @@ else{
                 </div>
 
                 <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
-                <div class="row">
-                    <div class=" container-fluid video-list you-may-like overflow-hidden">
+                <div class="row container-fluid">
+                    <div class="  video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>
                         <?php include 'comments/index.blade.php'; ?>
                     </div>

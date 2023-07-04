@@ -1434,6 +1434,8 @@ public function verifyandupdatepassword(Request $request)
             }else{
                   $andriod_curr_time = '00';
             }
+          }else{
+            $andriod_curr_time = '00';
           }
          
   
@@ -5287,9 +5289,13 @@ return response()->json($response, 200);
 
       $user_id = $request->user_id;
     /*channel videos*/
-    $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
-    $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
-
+    if(!empty($user_id)){
+      $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
+      $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();  
+    }else{
+      $video_ids = 0;
+      $video_ids_count = 0;  
+    }
     if ( $video_ids_count  > 0) {
 
       foreach ($video_ids as $key => $value1) {
@@ -12361,11 +12367,22 @@ public function QRCodeMobileLogout(Request $request)
   public function categoryLive(Request $request)
   {
       try{
-        $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
-        
-        $Live_Category = $LiveCategory->all();
 
-        $response = array( 'status'=> 'true','LiveCategory' => $Live_Category );
+        $query =  LiveCategory::find($request->category_id)->specific_category_live();
+
+        $query->where('active',1)->where('status', 1);
+
+        $data = $query->latest()->get();
+            
+        $data->transform(function ($item) {
+              $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+              $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+              $item['source']    = "Livestream";
+              return $item;
+        });
+
+        
+        $response = array( 'status'=> 'true','LiveCategory' => $data );
 
       } catch (\Throwable $th) {
 
@@ -14310,21 +14327,26 @@ public function QRCodeMobileLogout(Request $request)
 
       if(!empty($andriodId) ){
         $andriodId = $request->andriodId;
+        $andrio_video_ids = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->get();
+        $andrio_video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->count();    
       }else{
         $andriodId = 0;
+        $andrio_video_ids = 0;
+        $andrio_video_ids_count = 0;
       }
       if(!empty($user_id) ){
-        $user_id = $request->user_id;
+          /*channel videos*/
+          $user_id = $request->user_id;
+          $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
+          $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
       }else{
-        $user_id = 0;
+          /*channel videos*/
+          $user_id = $request->user_id;
+          $video_ids = 0;
+          $video_ids_count = 0;
       }
-    /*channel videos*/
-    $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
-    $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
 
-    $andrio_video_ids = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->get();
-    $andrio_video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->count();
-    if ( $andrio_video_ids_count  > 0 && $video_ids_count  > 0) {
+       if ( $andrio_video_ids_count  > 0 && $video_ids_count  > 0) {
     $ContinueWatching = array_merge($video_ids->toArray(), $andrio_video_ids->toArray()/*, $arrayN, $arrayN*/);
 
       foreach ($ContinueWatching as $key => $value1) {
@@ -16695,4 +16717,63 @@ public function Users_Password_Pin_Update(Request $request)
 }
 
 
+public function Android_ContinueWatchingExits(Request $request)
+{
+  $video_id = $request->video_id;
+  $user_id = $request->user_id;
+  $andriodId = $request->andriodId;
+  if(!empty($user_id)){
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->count();
+
+  }else{
+    $ContinueWatching = 0;
+  }
+
+  if(!empty($andriodId)){
+    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->count();
+  }else{
+    $Android_ContinueWatching = 0;
+  }
+
+  if($Android_ContinueWatching > 0 && $ContinueWatching > 0){
+    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->get();
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+    $response = array(
+      'status' => 'true',
+      'User_status' => 'true',
+      'Android_status' => 'true',
+      'Android_ContinueWatching' => $Android_ContinueWatching,
+      'ContinueWatching' => $ContinueWatching,
+    );
+  }elseif($Android_ContinueWatching > 0 ){
+    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->get();
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+    $response = array(
+      'status' => 'true',
+      'User_status' => 'false',
+      'Android_status' => 'true',
+      'Android_ContinueWatching' => $Android_ContinueWatching,
+      'ContinueWatching' => [],
+    );
+  }elseif($ContinueWatching > 0){
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+    $response = array(
+      'status' => 'true',
+      'User_status' => 'true',
+      'Android_status' => 'false',
+      'Android_ContinueWatching' => [],
+      'ContinueWatching' => $ContinueWatching,
+    );
+  }else{
+    $response = array(
+      'status' => 'false',
+      'User_status' => 'false',
+      'Android_status' => 'false',
+      // 'ContinueWatching' => "video has been added"
+    );
+  }
+
+  return response()->json($response, 200);
+
+}
 }

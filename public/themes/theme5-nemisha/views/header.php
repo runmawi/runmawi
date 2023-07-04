@@ -1116,14 +1116,18 @@
                                         if ( $menu->in_menu == "video") { 
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                           ?>
-                                            <li class="dropdown menu-item">
-                                                <a class="dropdown-toggle" id="down"
+                                            <li class="dropdown menu-item d-flex align-items-center">
+                                                <div>  <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> </div>
+                                                <div>  <a class="dropdown-toggle" id="down"
                                                     href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
+                                                   
                                                     <a class="d-flex justify-content-between"
                                                         href="<?php echo URL::to('/categoryList'); ?>"> <?php echo __($menu->name); ?>
                                                         <!--  <i class="ri-arrow-down-s-line"></i>-->
                                                     </a>
-                                                </a>
+                                                </a></div>
+                                               
+                                              
 
 
                                                 <ul class="dropdown-menu categ-head">
@@ -1150,14 +1154,17 @@
                                             <?php } elseif ( $menu->in_menu == "movies") { 
                                         $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                         ?>
-                                            <li class="dropdown menu-item">
-                                                <a class="dropdown-toggle" id="down"
+                                            <li class="dropdown menu-item d-flex align-items-center">
+                                                <div> <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> </div>
+                                                <div>  <a class="dropdown-toggle" id="down"
                                                     href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
                                                     <a class="d-flex justify-content-between"
                                                         href="<?php echo URL::to('/Movie-list'); ?>"> <?php echo __($menu->name); ?>
                                                         <!--<i class="ri-arrow-down-s-line"></i>-->
                                                     </a>
-                                                </a>
+                                                </a></div>
+                                                
+                                              
                                                 <ul class="dropdown-menu categ-head">
                                                     <?php foreach ( $languages as $language){ ?>
                                                     <li>
@@ -1173,14 +1180,17 @@
                                        //  $LiveCategory = App\LiveCategory::all();
                                        $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                         ?>
-                                            <li class="dropdown menu-item">
-                                                <a class="dropdown-toggle" id="down"
+                                            <li class="dropdown menu-item d-flex d-flex align-items-center">
+                                                <div> <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> </div>
+                                                <div> <a class="dropdown-toggle" id="down"
                                                     href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
                                                     <a class="d-flex justify-content-between"
                                                         href="<?php echo URL::to('/Live-list'); ?>"> <?php echo __($menu->name); ?>
                                                         <!-- <i class="ri-arrow-down-s-line"></i>-->
                                                     </a>
-                                                </a>
+                                                </a></div>
+                                                
+                                               
                                                 <ul class="dropdown-menu categ-head">
                                                     <?php foreach ( $LiveCategory as $category){ ?>
                                                     <li>
@@ -1196,11 +1206,14 @@
                                             <?php }elseif ( $menu->in_menu == "audios") { 
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
-                                            <li class="dropdown menu-item">
-                                                <a class="dropdown-toggle" id="dn"
+                                            <li class="dropdown menu-item d-flex align-items-center">
+                                                <div>  <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> </div>
+                                                <div>   <a class="dropdown-toggle" id="dn"
                                                     href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
                                                     <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
-                                                </a>
+                                                </a></div>
+                                               
+                                             
                                                 <ul class="dropdown-menu categ-head">
                                                     <?php foreach ( $AudioCategory as $category){ ?>
                                                     <li>
@@ -1217,10 +1230,13 @@
                                             <?php }elseif ( $menu->in_menu == "tv_show") { 
                                              $tv_shows_series = App\Series::get();
                                           ?>
-                                            <li class="dropdown menu-item">
-                                                <a class="" id="" href="<?php echo URL::to('/') . $menu->url; ?>">
+                                            <li class="dropdown menu-item d-flex align-items-center">
+                                                <div>  <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> </div>
+                                                <div> <a class="" id="" href="<?php echo URL::to('/') . $menu->url; ?>">
                                                     <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
-                                                </a>
+                                                </a></div>
+                                               
+                                               
                                                 <?php if(count($tv_shows_series) > 0 ){ ?>
                                                 <ul class="dropdown-menu categ-head">
                                                     <?php foreach ( $tv_shows_series as $tvshows_series){ ?>
@@ -1236,14 +1252,16 @@
                                             </li>
 
                                             <?php } else { ?>
-                                            <li class="menu-item">
-                                                <a href="<?php if ($menu->select_url == 'add_Site_url') {
+                                            <li class="menu-item d-flex align-items-center">
+                                               <div><img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> </div> 
+                                               <div>  <a href="<?php if ($menu->select_url == 'add_Site_url') {
                                                     echo URL::to('/') . $menu->url;
                                                 } elseif ($menu->select_url == 'add_Custom_url') {
                                                     echo $menu->custom_url;
                                                 } ?>">
                                                     <?php echo __($menu->name); ?>
-                                                </a>
+                                                </a></div> 
+                                           
                                             </li>
                                             <?php } } ?>
                                             <!-- <li class="nav-item dropdown menu-item"> -->
@@ -1254,6 +1272,37 @@
                                             <?php //foreach ( $languages as $language) {
                                             ?>
                                             <li>
+                                                 <?php                         
+                        if(!Auth::guest()){                                                              
+                        $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
+                        $Channel = App\Channel::where('email', Auth::User()->email)->first();
+                        }
+                        if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
+                                <div class="iq-search-bar d-flex">
+                                    <form method="POST" action="<?php echo URL::to('cpp/home'); ?>" class="mt-4">
+                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                        <input id="email" type="hidden" name="email"
+                                            value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
+                                        <input id="password" type="hidden" name="password"
+                                            value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
+                                        <button type="submit" class="btn  "
+                                            style="">Visit CPP Portal </button>
+                                    </form>
+                                </div>
+                                <?php }if(!Auth::guest() && !empty($Channel)){ ?>
+                                <div class="iq-search-bar d-flex">
+                                    <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
+                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                        <input id="email" type="hidden" name="email"
+                                            value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
+                                        <input id="password" type="hidden" name="password"
+                                            value="<?= @$Channel->unhased_password ?>"
+                                            autocomplete="current-password">
+                                        <button type="submit" class="btn "
+                                            style="">Visit Channel Portal </button>
+                                    </form>
+                                </div>
+                                <?php } ?>
                                                 <!-- <a class="dropdown-item cont-item" href="<?php //echo URL::to('/').'/language/'.$language->id.'/'.$language->name;
                                                 ?>">  -->
                                                 <?php //echo $language->name;
@@ -1314,7 +1363,7 @@
                         $Channel = App\Channel::where('email', Auth::User()->email)->first();
                         }
                         if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
-                                <div class="iq-search-bar ml-auto">
+                                <div class="iq-search-bar ml-auto" id="hid">
                                     <form method="POST" action="<?php echo URL::to('cpp/home'); ?>" class="mt-4">
                                         <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                         <input id="email" type="hidden" name="email"
@@ -1326,7 +1375,7 @@
                                     </form>
                                 </div>
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
-                                <div class="iq-search-bar ml-auto">
+                                <div class="iq-search-bar ml-auto" id="hid">
                                     <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
                                         <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                         <input id="email" type="hidden" name="email"
