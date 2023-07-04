@@ -159,7 +159,7 @@
                //  dd($audios);
             ?>
 
-            <div class="col-sm-12 ">
+            <div class="col-sm-12 p-0">
             <?php 
                if (count($audios) > 0) { 
                   include('partials/home/audiocategoryloop.php');

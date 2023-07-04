@@ -29,7 +29,7 @@
 </style>
 <div class="container-fluid overflow-hidden">
     <div class="row">
-        <div class="col-sm-12 ">
+        <div class="col-sm-12 p-0">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <a href="<?php echo URL::to('/audios/category') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
                     <h4 class="movie-title">
