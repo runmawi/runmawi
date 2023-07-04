@@ -146,6 +146,7 @@
          
       if($home_settings->AudioGenre_audios == 1){ ?>
    <section id="iq-favorites">
+         <div class="container-fluid overflow-hidden">
          <div class="row">
             
          <?php
@@ -169,7 +170,7 @@
                <p class="no_audio"></p>
             <?php } }?>
             </div>
-      </div>
+             </div></div>
    </section>
    <?php } } ?>
 
