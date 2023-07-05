@@ -543,14 +543,12 @@ Route::group(
             Route::post('Android_LiveStream_favorite', 'ApiAuthController@Android_LiveStream_favorite');
 
 
-            Route::post('IOS_showfavorites', 'ApiAuthController@IOS_showfavorites');
             Route::post('IOS_Video_favorite', 'ApiAuthController@IOS_Video_favorite');
             Route::post('IOS_Episode_favorite', 'ApiAuthController@IOS_Episode_favorite');
             Route::post('IOS_Audio_favorite', 'ApiAuthController@IOS_Audio_favorite');
             Route::post('IOS_LiveStream_favorite', 'ApiAuthController@IOS_LiveStream_favorite');
 
 
-            Route::post('Android_mywishlist', 'ApiAuthController@Android_mywishlist');
             Route::post('Android_Video_watchlater', 'ApiAuthController@Android_Video_watchlater');
             Route::post('Android_Episode_watchlater', 'ApiAuthController@Android_Episode_watchlater');
             Route::post('Android_Audio_watchlater', 'ApiAuthController@Android_Audio_watchlater');
@@ -566,5 +564,25 @@ Route::group(
             Route::post('TV_Season_Episode_Count', 'ApiAuthController@TV_Season_Episode_Count');
             Route::post('TV_Season_Episdoe_List', 'ApiAuthController@TV_Season_Episdoe_List');
 
+            Route::post('IOS_ShowVideo_favorite', 'ApiAuthController@IOS_ShowVideo_favorite');
+            Route::post('IOS_ShowEpisode_favorite', 'ApiAuthController@IOS_ShowEpisode_favorite');
+            Route::post('IOS_ShowAudio_favorite', 'ApiAuthController@IOS_ShowAudio_favorite');
+            Route::post('IOS_ShowLiveStream_favorite', 'ApiAuthController@IOS_ShowLiveStream_favorite');
+
+            Route::post('Android_ShowVideo_favorite', 'ApiAuthController@Android_ShowVideo_favorite');
+            Route::post('Android_ShowEpisode_favorite', 'ApiAuthController@Android_ShowEpisode_favorite');
+            Route::post('Android_ShowAudio_favorite', 'ApiAuthController@Android_ShowAudio_favorite');
+            Route::post('Android_ShowLiveStream_favorite', 'ApiAuthController@Android_ShowLiveStream_favorite');
+
+
+            Route::post('IOS_ShowVideo_wishlist', 'ApiAuthController@IOS_ShowVideo_wishlist');
+            Route::post('IOS_ShowEpisode_wishlist', 'ApiAuthController@IOS_ShowEpisode_wishlist');
+            Route::post('IOS_ShowAudio_wishlist', 'ApiAuthController@IOS_ShowAudio_wishlist');
+            Route::post('IOS_ShowLiveStream_wishlist', 'ApiAuthController@IOS_ShowLiveStream_wishlist');
+
+            Route::post('Android_ShowVideo_wishlist', 'ApiAuthController@Android_ShowVideo_wishlist');
+            Route::post('Android_ShowEpisode_wishlist', 'ApiAuthController@Android_ShowEpisode_wishlist');
+            Route::post('Android_ShowAudio_wishlist', 'ApiAuthController@Android_ShowAudio_wishlist');
+            Route::post('Android_ShowLiveStream_wishlist', 'ApiAuthController@Android_ShowLiveStream_wishlist');
 
     });
