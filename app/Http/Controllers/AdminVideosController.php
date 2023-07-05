@@ -4601,7 +4601,7 @@ class AdminVideosController extends Controller
         }
         $Schedules = new VideoSchedules();
         $Schedules->name = $request["name"];
-        $Schedules->slug = $slug;
+        $Schedules->slug = str_replace(' ', '_', $request['name']);
         $Schedules->description = $request["description"];
         $Schedules->image = $image;
         $Schedules->player_image = $player_image;
