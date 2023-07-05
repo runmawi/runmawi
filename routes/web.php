@@ -68,6 +68,8 @@ Route::post('/user/DOB', 'AdminUsersController@DOB');
 Route::get('/my-playlist', 'MyPlaylistController@MyPlaylist');
 Route::post('/playlist/store', 'MyPlaylistController@StorePlaylist');
 Route::get('/playlist/{slug}', 'MyPlaylistController@Audio_Playlist');
+Route::post('/add_audio_playlist', 'MyPlaylistController@Add_Audio_Playlist');
+Route::get('/get_playlist/{slug}', 'MyPlaylistController@GetMY_Audio_Playlist');
 
 
 
