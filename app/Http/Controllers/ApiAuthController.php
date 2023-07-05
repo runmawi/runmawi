@@ -17632,36 +17632,46 @@ public function TV_Season_Episdoe_List(Request $request)
 
 public function TV_Season_Episode_Count(Request $request)
 {
-  try {
+  // try {
     $series_id = $request->series_id;
 
     $season_count = SeriesSeason::where('series_id',$series_id)->count();
 
     $season = SeriesSeason::where('series_id',$series_id)->get();
-    foreach ($season as $key => $value) {
-      $episodekey = $key+1;
+    $myData = array();
 
-      $episode[$value->id] = Episode::where('season_id',$value->id)->count();
-      $season_id[] = $value->id;
+    foreach ($season as $key => $value) {
+      $season_countkey = $key+1;
+      $episode_count = Episode::where('season_id',$value->id)->count();
+      $season_id = $value->id;
+
+      $myData[] = array(
+        "season_countkey" => $season_countkey,
+        "episode_count" => $episode_count,
+        "season_id" => $season_id,
+
+      );
     }
 
     $season_count = Episode::where('series_id',$series_id)->get();
 
     $episode_count = Episode::where('series_id',$series_id)->count();
 
-    
 
     $response = array(
       'status' => 'true',
-      'season_episode_count' => $episode,
+      // 'season_episode_count' => $episode,
+      'myData' => $myData,
+
+  
     );
-  } catch (\Throwable $th) {
-    $response = array(
-      'status' => 'false',
-      'season_episode_count' => 0,
-      'season_id' => 0,
-    );
-  }
+  // } catch (\Throwable $th) {
+  //   $response = array(
+  //     'status' => 'false',
+  //     'season_episode_count' => 0,
+  //     'season_id' => 0,
+  //   );
+  // }
   return response()->json($response, 200);
 
 }
