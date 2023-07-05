@@ -533,5 +533,38 @@ Route::group(
             Route::get('series_genre_list', 'ApiAuthController@series_genre_list');
             Route::post('series_genre', 'ApiAuthController@series_genre');
             Route::post('Android_ContinueWatchingExits', 'ApiAuthController@Android_ContinueWatchingExits');
+            Route::post('IOS_ContinueWatchingExits', 'ApiAuthController@IOS_ContinueWatchingExits');
+
+
+            Route::post('Android_showfavorites', 'ApiAuthController@Android_showfavorites');
+            Route::post('Android_Video_favorite', 'ApiAuthController@Android_Video_favorite');
+            Route::post('Android_Episode_favorite', 'ApiAuthController@Android_Episode_favorite');
+            Route::post('Android_Audio_favorite', 'ApiAuthController@Android_Audio_favorite');
+            Route::post('Android_LiveStream_favorite', 'ApiAuthController@Android_LiveStream_favorite');
+
+
+            Route::post('IOS_showfavorites', 'ApiAuthController@IOS_showfavorites');
+            Route::post('IOS_Video_favorite', 'ApiAuthController@IOS_Video_favorite');
+            Route::post('IOS_Episode_favorite', 'ApiAuthController@IOS_Episode_favorite');
+            Route::post('IOS_Audio_favorite', 'ApiAuthController@IOS_Audio_favorite');
+            Route::post('IOS_LiveStream_favorite', 'ApiAuthController@IOS_LiveStream_favorite');
+
+
+            Route::post('Android_mywishlist', 'ApiAuthController@Android_mywishlist');
+            Route::post('Android_Video_watchlater', 'ApiAuthController@Android_Video_watchlater');
+            Route::post('Android_Episode_watchlater', 'ApiAuthController@Android_Episode_watchlater');
+            Route::post('Android_Audio_watchlater', 'ApiAuthController@Android_Audio_watchlater');
+            Route::post('Android_LiveStream_watchlater', 'ApiAuthController@Android_LiveStream_watchlater');
+
+
+            Route::post('IOS_mywatchlater', 'ApiAuthController@IOS_mywatchlater');
+            Route::post('IOS_Video_watchlater', 'ApiAuthController@IOS_Video_watchlater');
+            Route::post('IOS_Episode_watchlater', 'ApiAuthController@IOS_Episode_watchlater');
+            Route::post('IOS_Audio_watchlater', 'ApiAuthController@IOS_Audio_watchlater');
+            Route::post('IOS_LiveStream_watchlater', 'ApiAuthController@IOS_LiveStream_watchlater');
+
+            Route::post('TV_Season_Episode_Count', 'ApiAuthController@TV_Season_Episode_Count');
+            Route::post('TV_Season_Episdoe_List', 'ApiAuthController@TV_Season_Episdoe_List');
+
 
     });
