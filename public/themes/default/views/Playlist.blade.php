@@ -392,7 +392,7 @@ $settings = App\Setting::first();
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
  <?php foreach ($All_Audios as $audio) { ?>
                        <li class="slide-item">
-                            <a href="<?php echo URL('/').'/audio/'.$audio->slug;?>">
+                            <!-- <a href="<?php echo URL('/').'/audio/'.$audio->slug;?>"> -->
                              <div class="block-images position-relative">
                              <!-- block-images -->
                                 <div class="img-box">
@@ -404,10 +404,13 @@ $settings = App\Setting::first();
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i> 
                                                <p><?php echo ucfirst($audio->title);?></p>
                                         </a>
+                                        <span style="color: white;"class="myplaylist <?php if((1)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio->id ?>">
+                                      <i style="" <?php if((1)): ?> class="ri-heart-fill" <?php  else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
+                                    </span>
                                     </div>
                                 </div>
                               </div>
-                          </a>
+                          <!-- </a> -->
                        </li>
                        <?php } ?>
                     </ul>
@@ -418,6 +421,47 @@ $settings = App\Setting::first();
 
 </div>
 <?php } ?>
+<input type="hidden" id="MyPlaylist_slug" value="{{ $MyPlaylist->slug }}">
+<script>
+    $('.myplaylist').click(function() {
+        var audioid = $(this).data('audioid');
+        if ($(this).data('authenticated')) {
+            $(this).toggleClass('active');
+            if ($(this).hasClass('active')) {
+        // alert(audioid);
+
+                $.ajax({
+                    url: "<?php echo URL::to('/add_audio_playlist'); ?>",
+                    type: "POST",
+                    data: {
+                        audioid: $(this).data('audioid'),
+                        _token: '<?= csrf_token() ?>'
+                    },
+                    dataType: "html",
+                    success: function(data) {
+                        if (data == "Added To Wishlist") {
+
+                            // $('#' + audioid).text('');
+                            // $('#' + audioid).text('Remove From Wishlist');
+                            $("body").append(
+                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to Playlist</div>'
+                            );
+                            setTimeout(function() {
+                                $('.add_watch').slideUp('fast');
+                            }, 3000);
+                        } else {
+
+                      
+                        }
+                    }
+                });
+            }
+        } else {
+            window.location = '<?= URL::to('login') ?>';
+        }
+    });
+</script>
+
 <script type="text/javascript">
 $(document).ready(function() {
 $(".my-div").on("contextmenu",function(){
@@ -517,10 +561,26 @@ window.location = '<?= URL::to('login') ?>';
   }
 
   var listAudio = <?php echo json_encode($playlist_audio); ?>;
+  var MyPlaylist = <?php echo json_encode($MyPlaylist); ?>;
 
-  for (var i = 0; i < listAudio.length; i++) {
-      createTrackItem(i,listAudio[i].title,listAudio[i].duration);
-  }
+   	setInterval(function(){ 
+   		$.getJSON('<?php echo URL::to("/get_playlist");?>'+'/'+$("#MyPlaylist_slug").val(), function(data) {
+      // alert(listAudio);
+          $('.playlist-track-ctn').remove();
+            var listAudio = <?php echo json_encode($playlist_audio); ?>;
+            // localStorage.setItem('listAudio', listAudio);
+
+            for (var i = 0; i < listAudio.length; i++) {
+            createTrackItem(i,listAudio[i].title,listAudio[i].duration);
+        }
+   		});
+   	}, 3000);
+    // alert(localStorage.getItem('listAudio'));
+    //  var listAudio = localStorage.getItem('listAudio');
+    // console.log(listAudio);
+  // for (var i = 0; i < listAudio.length; i++) {
+  //     createTrackItem(i,listAudio[i].title,listAudio[i].duration);
+  // }
 
   var indexAudio = 0;
 
