@@ -14,6 +14,7 @@ use App\AudioAlbums as AudioAlbums;
 use App\Artist as Artist;
 use App\HomeSetting as HomeSetting;
 use App\AudioCategory as AudioCategory;
+use App\PpvPurchase as PpvPurchase;
 use Auth;
 use View;
 use Theme;
@@ -33,6 +34,21 @@ class MyPlaylistController extends Controller
 
         $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses(  $this->Theme );
+    }
+
+    public function MyPlaylist(Request $request){
+        try {
+            //code...
+          $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
+          $data = [
+            'MyPlaylist' => $MyPlaylist,
+        ];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            $data = [];
+        }
+        return Theme::view('MyPlaylist', $data);
     }
 
     public function StorePlaylist(Request $request){
@@ -56,7 +72,7 @@ class MyPlaylistController extends Controller
             $image  = URL::to('/').'/public/uploads/images/'.$file->getClientOriginalName();
 
         } else {
-            $image  = $Setting->default_video_image;
+            $image  = URL::to('/').'/public/uploads/images/'.$Setting->default_video_image;
         }
 
 
@@ -70,10 +86,80 @@ class MyPlaylistController extends Controller
             //throw $th;
         }
 
-        return Redirect::back()->with([
+        return Redirect::to('playlist/'.$MyPlaylist->slug)->with([
             "message" => "Successfully Updated Video!",
             "note_type" => "success",
         ]);
         
     }
+
+    public function Audio_Playlist($slug){
+        try {
+            //code...
+          $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
+          $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+          $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
+          $All_Audios = Audio::get();
+          $playlist_audio = Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
+          ->where('audio_user_playlist.user_id',Auth::user()->id)
+          ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
+        //   dd($playlist_audio);
+
+        $audioppv = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')
+        ->groupby("audio_id")
+        ->orderBy('created_at', 'desc')->get();
+        
+          $data = [
+            'audioppv' => $audioppv,
+            'MyPlaylist' => $MyPlaylist,
+            'All_Audios' => $All_Audios,
+            'playlist_audio' => $playlist_audio,
+            'media_url' => URL::to('/').'/playlist/'.$slug,
+            'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
+            'first_album_mp3_url' => $MyPlaylist->first() ? $MyPlaylist->first()->mp3_url : null ,
+            'first_album_title' => $MyPlaylist->first() ? $MyPlaylist->first()->title : null ,
+        ];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            $data = [];
+        }
+        return Theme::view('Playlist', $data);
+    }
+
+    public function Add_Audio_Playlist(Request $request){
+        try {
+            //code...
+          $AudioUserPlaylist = AudioUserPlaylist::where('audio_id',$request->audioid)->where('user_id',Auth::user()->id)->first();
+            if(empty($AudioUserPlaylist)){
+                $AudioUserPlaylist = new AudioUserPlaylist();
+                $AudioUserPlaylist->audio_id = $request->audioid;
+                $AudioUserPlaylist->user_id = Auth::user()->id;
+                $AudioUserPlaylist->save();
+            }
+            $data = 1;
+    
+        } catch (\Throwable $th) {
+            //throw $th;
+            $data = 0;
+        }
+        return $data;
+    }
+
+    
+    public function GetMY_Audio_Playlist($slug){
+        try {
+
+          $playlist_audio = Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
+          ->where('audio_user_playlist.user_id',Auth::user()->id)
+          ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            $data = [];
+        }
+        return $playlist_audio;
+    }
+
+
 }
