@@ -1874,31 +1874,32 @@ public function verifyandupdatepassword(Request $request)
      {
 
         $sliders = Slider::where('active', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-                  $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
+                  $item['slider'] = URL::to('public/uploads/videocategory/'.$item->slider );
+                  $item['player_image'] = URL::to('public/uploads/videocategory/'.$item->player_image );
                   $item['slider_source'] = "slider";
                   return $item;
         });
 
         $video_banners = Video::where('active','=',1)->where('status','=',1)
                   ->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-                  $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image );
                   $item['video_url'] = URL::to('/').'/storage/app/public/';
-                  $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                  $item['player_image'] = URL::to('public/uploads/images/'.$item->player_image );
                   $item['slider_source'] = "videos";
                   return $item;
         });
 
         $live_banner = LiveStream::where('active','=',1)
                   ->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-                  $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                  $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image );
+                  $item['player_image'] = URL::to('public/uploads/images/'.$item->player_image );
                   $item['slider_source'] = "livestream";
                   return $item;
         });
 
         $series_banner = Series::where('active','=',1)->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-              $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+              $item['image_url'] = URL::to('public/uploads/images/'.$item->image );
+              $item['player_image'] = URL::to('public/uploads/images/'.$item->player_image );
               $item['slider_source'] = "series";
               return $item;
         });
