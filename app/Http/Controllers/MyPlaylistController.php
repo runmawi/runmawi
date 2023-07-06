@@ -119,6 +119,7 @@ class MyPlaylistController extends Controller
             'first_album_mp3_url' => $MyPlaylist->first() ? $MyPlaylist->first()->mp3_url : null ,
             'first_album_title' => $MyPlaylist->first() ? $MyPlaylist->first()->title : null ,
         ];
+        // dd($data);
 
         } catch (\Throwable $th) {
             //throw $th;
