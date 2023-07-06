@@ -9170,7 +9170,7 @@ $cpanel->end();
     $andriod_favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("andriodId","=",$andriodId)->count();
     $andriod_like = ($like_data == 1) ? "true" : "false";
     $andriod_dislike = ($dislike_data == 1) ? "true" : "false";
-    $andriod_favorite = ($favoritestatus > 0) ? "true" : "false";
+    $andriod_favorite = ($andriod_favoritestatus > 0) ? "true" : "false";
     // $userrole = User::find($user_id)->pluck('role');
 
   }else{
