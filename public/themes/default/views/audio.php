@@ -145,12 +145,18 @@ width: 2px;
   font-weight: bold;
   
 }
-
+    label{
+        color: #000;
+    }
 .active-track > .playlist-info-track,.active-track >.playlist-duration,.active-track > .playlist-btn-play{
   color: #ffc266 !important;
 }
 
-
+    .form-control{
+        color: #000!important;
+        font-weight: 700;
+        border-radius: 5px;
+    }
 .playlist-btn-play{
     color: #fff!important;
   pointer-events: none;
@@ -311,7 +317,7 @@ Your browser does not support the audio element.
  
 </div>
             
-<div class="col-sm-9 col-md-9 col-xs-9 p-0">
+<div class="col-sm-9 col-md-9 col-xs-9">
     
         
 <div class="album_bg">
@@ -475,19 +481,19 @@ Your browser does not support the audio element.
 
 <!-- Playlist  -->
 
-<div class="">
+<div class="container-fluid">
   <?php if(!Auth::guest()){ ?>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Create PlayList
 </button>
 <?php } ?>
-
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-black" id="exampleModalLabel">Create PlayList</h5>
+        <h4 class="modal-title text-black" id="exampleModalLabel">Create PlayList</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -496,18 +502,18 @@ Your browser does not support the audio element.
 	        
       <form  id="my-playlist-form" accept-charset="UTF-8"  enctype="multipart/form-data"  action="<?= URL::to('/playlist/store') ?>" method="post">
       
-      <div class="col-sm-6 p-0">
+      <div class="col-sm-10 p-0">
             <label for="name">PlayList Title</label>
-            <input name="title" id="title" placeholder="PlayList Title" class="form-control text-black"  /><br />
+            <input name="title" id="title" placeholder="PlayList Title" class="form-control text-black"  />
           </div>
-          <div class="col-sm-6 p-0">
+          <div class="col-sm-10 p-0">
 		
             <label for="name">PlayList Image</label>
             <input type="file" name="image" id="image" />
           </div>
-      </div>
+     
       <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-
+<br>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
         <button type="button" id="store-play-list" class="btn btn-primary">Save</button>
@@ -524,7 +530,7 @@ Your browser does not support the audio element.
         <div class="row">
           <div class=" container-fluid video-list you-may-like overflow-hidden">
             <div class="bc-icons-2">
-                      <ol class="breadcrumb">
+                      <ol class="breadcrumb" style="isplay: flex; justify-content: start;align-items: center;">
                         <li class="breadcrumb-item"><a class="black-text" href="<?= route('Audios_list') ?>"><?= ucwords('Audios') ?></a>
                           <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                         </li>

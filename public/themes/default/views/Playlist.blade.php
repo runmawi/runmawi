@@ -9,7 +9,7 @@ $settings = App\Setting::first();
     cursor: pointer;
     border-radius: 10px;
   }
-    
+  
   #myBar {
     width: 0%;
     height: 3px;
@@ -23,6 +23,9 @@ $settings = App\Setting::first();
   .logo {
     fill: red;
   }
+    .fa-plus{
+        color: Red;
+    }
       .play-border{
           border:1px solid rgba(255,255,255,0.3);
           border-radius: 10px;
@@ -38,8 +41,8 @@ $settings = App\Setting::first();
 
   .btn-ctn{
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+   /* align-items: center;
+    justify-content: space-evenly;*/
   }
   .infos-ctn{
   padding-top: 8px;
@@ -74,10 +77,13 @@ $settings = App\Setting::first();
     text-align: center;
       border-top:1px solid rgba(255, 255, 255,0.1)*/
   }
+    ol{
+        list-style: decimal-leading-zero;
+    }
 
   .player-ctn{
     
-  
+            }
  
   padding: 25px;
   /*background: linear-gradient(180deg, #151517 127.69%, #282834 0% );*/
@@ -91,11 +97,13 @@ $settings = App\Setting::first();
 
   .playlist-track-ctn{
     display: flex;
-      padding-left: 10px;
-    background-color: #464646;
+     padding: 6px 6px 6px 15px;
+      border-radius: 5px;
+    
+      background-color: #464646;
     margin-top: 3px;
       margin-right: 10px;
-    border-radius: 5px;
+    
     cursor: pointer;
       align-items: center;
   }
@@ -135,13 +143,41 @@ $settings = App\Setting::first();
     border: 2px solid red;
       width: 2px;
   }
+    .plus-minus-toggle {
+  cursor: pointer;
+  
+  position: relative;
+  width: 21px;
+  &:before,
+  &:after{
+    background: red;
+    content: '';
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 21px;
+    transition: transform 500ms ease;
+  }
+  &:after {
+    transform-origin: center;
+  }
+  &.collapsed {
+    &:after {
+      transform: rotate(90deg);
+    }
+    &:before {
+      transform: rotate(180deg);
+    }
+  }
+}
   .playlist-ctn{
     padding-bottom: 20px;
-      overflow: scroll;
+      /*overflow: scroll;
       scroll-behavior: auto;
       min-height:335px;
       scrollbar-color: rebeccapurple green!important;
-      overflow-x: hidden;
+      overflow-x: hidden;*/
   }
   .active-track{
     background: #4d4d4d;
@@ -162,8 +198,8 @@ $settings = App\Setting::first();
     padding-bottom: 5px;
   }
   .fas{
-    color: rgb(255,0,0);
-    font-size: 20px;
+    color: rgb(255,0,0)!important;
+    font-size: 14px;
   }
       .img-responsive{
           border-radius: 10px;
@@ -233,9 +269,110 @@ $settings = App\Setting::first();
   .aud-lp{
   border-bottom: 1px solid #141414;
   }
+    .btn-action i{
+        color: Red;
+    }
 </style>
 
-<?php if( count(@$playlist_audio) == 0 ){ ?>
+<section style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.25)0%, rgba(0, 0, 0, 1)80%), url(<?=URL::to('/assets/img/t6.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;">
+    <div class="container-fluid">
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="row align-items-center">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-5">
+                         <img src="<?=URL::to('/assets/img/t6.png') ?>" height="250" width="250" class="img-responsive" >
+                    </div>
+                    <div class="col-lg-4 p-0">
+                <p>PLAYLIST</p>
+                <h2>My Playlist</h2>
+                        
+
+
+    <div class="btn-ctn">
+          <div class="btn-action" onclick="toggleAudio()">
+          <div id="btn-faws-play-pause">
+            <a href="{{URL::to('/').'/playlist/play/'.$MyPlaylist->slug}}"><i class='fas fa-play' id="icon-play"></i></a>
+            <i class='fas fa-pause' id="icon-pause" style="display: none"></i>
+          </div>
+      </div>
+        <div class="btn-action" >
+          <div id="">
+            <i class='fa fa-trash-o' id="icon-play"></i>
+           
+          </div>
+      </div>
+        <div class="btn-action" >
+          <div id="">
+            <i class='fa fa-share-alt' id="icon-play"></i>
+           
+          </div>
+      </div>
+     
+     
+
+    
+
+  
+
+    
+
+    </div>
+  </div>
+</div>
+
+            </div>
+                </div>
+                 <hr>
+        
+            </div> 
+            
+     
+    <div class="container-fluid">
+ <div class="playlist-ctn">
+             <h4 class="mb-3">Tracks</h4>
+     <table class="w-100">
+         <tr>
+              <td>1</td>
+               <td><img src="<?=URL::to('/assets/img/t6.png') ?>" class="" height="50" width="50"></td>
+               <td> <h4>Rainbow-Thiralil-MassTamilan.dev.mp3</h4></td>
+               <td>AR Hits</td>
+               <td><div class="plus-minus-toggle collapsed"></div></td>
+               <td>4:58</td>
+         </tr>
+         <tr>
+              <td>2</td>
+               <td><img src="<?=URL::to('/assets/img/t6.png') ?>" class="" height="50" width="50"></td>
+               <td> <h4>Rainbow-Thiralil-MassTamilan.dev.mp3</h4></td>
+               <td>AR Hits</td>
+               <td><div class="plus-minus-toggle collapsed"></div></td>
+               <td>4:58</td>
+         </tr>
+         <tr>
+              <td>2</td>
+               <td><img src="<?=URL::to('/assets/img/t6.png') ?>" class="" height="50" width="50"></td>
+               <td> <h4>Rainbow-Thiralil-MassTamilan.dev.mp3</h4></td>
+               <td>AR Hits</td>
+               <td><div class="plus-minus-toggle collapsed"></div></td>
+               <td>4:58</td>
+         </tr>
+       
+     </table>
+     <ol>
+         <li>
+             <div class="track d-flex">
+                 
+                
+             </div>
+         </li>
+     </ol>
+    </div></div>   
+    
+</section>
+
+<?php if(isset($playlist_audio)){ $playlist_audio_count = count(@$playlist_audio) ; }else{$playlist_audio_count = 0 ;} if( $playlist_audio_count == 0 ){ ?>
 
   <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
       <p ><h3 class="text-center">No Audio Available</h3>
@@ -250,6 +387,7 @@ $settings = App\Setting::first();
 <?php } else { ?>
 
   <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
+
 
   <div id="audio_bg" >
     <div class="container-fluid">
@@ -273,113 +411,7 @@ $settings = App\Setting::first();
 
             
               </div>
-           <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= @$MyPlaylist->image ?>');background-size: cover;
-    background-repeat: no-repeat;
-    background-position: right;">
-            <div class="row align-items-center mb-4">
-
-              <div class="col-sm-3">
-                <img src="<?=  @$MyPlaylist->image ?>"  class="img-responsive" width="200" height="200">
-              </div>
-
-              <div class="col-sm-8 col-md-8 col-xs-8">
-                <div class="album_bg">
-                  <div class="album_container">
-                    <div class="blur"></div>
-                    <div class="overlay_blur">
-
-                      <h4 class="hero-title album mb-2"> <?= @$MyPlaylist->title; ?></h4>
-                      <!-- <p class="mt-2">Music by    <br>A. R. Rahman</p> -->
-
-                      <div class="d-flex" style="justify-content: space-between;width: 33%;align-items: center;">
-
-                        <div onclick="toggleAudio()">
-                          <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
-                        </div>
-
-                      <a aria-hidden="true" class="MyPlaylistfavorite <?php echo MyPlaylistfavorite(@$MyPlaylist->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-Playlist_id="<?= @$MyPlaylist->id ?>"><?php if(MyPlaylistfavorite(@$MyPlaylist->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
-                      
-                      <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
-
-                      <div class="dropdown">
-                          <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: black;border:1px solid white;padding: 0;">
-                              <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= @$media_url ?>" target="_blank">
-                                  <i class="fa fa-twitter" style="color: #00acee;padding: 10px;border-radius: 50%;font-size: 26px;"></i>
-                              </a>
-
-                              <div class="divider" style="border:1px solid white"></div>
-                              <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= @$media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
-                          </div>
-                      </div>
-                  </div>
-                  </div>
-              </div>    
-            </div>
-          </div>
-        </div>
-
-        <div id="myProgress">
-          <div id="myBar"></div>
-        </div>
-
-      <div class="infos-ctn">
-        <div class="timer">00:00</div>
-        <div class="title"></div>
-        <div class="duration">00:00</div>
-      </div>
-
-    <div class="btn-ctn">
-      <div class="btn-action first-btn" onclick="previous()">
-          <div id="btn-faws-back">
-            <i class='fas fa-step-backward'></i>
-          </div>
-      </div>
-
-      <div class="btn-action" onclick="rewind()">
-          <div id="btn-faws-rewind">
-            <i class='fas fa-backward'></i>
-          </div>
-      </div>
-
-      <div class="btn-action" onclick="toggleAudio()">
-          <div id="btn-faws-play-pause">
-            <i class='fas fa-play' id="icon-play"></i>
-            <i class='fas fa-pause' id="icon-pause" style="display: none"></i>
-          </div>
-      </div>
-
-      <div class="btn-play" onclick="forward()">
-          <div id="btn-faws-forward">
-            <i class='fas fa-forward'></i>
-          </div>
-      </div>
-
-      <div class="btn-action" onclick="next()">
-          <div id="btn-faws-next">
-            <i class='fas fa-step-forward'></i>
-          </div>
-      </div>
-
-      <div class="btn-mute" id="toggleMute" onclick="toggleMute()">
-          <div id="btn-faws-volume">
-            <i id="icon-vol-up" class='fas fa-volume-up'></i>
-            <i id="icon-vol-mute" class='fas fa-volume-mute' style="display: none"></i>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-      <div class="col-lg-4">
-        <div class="play-border">
-          <div class="playlist-ctn"> <h6 class="mb-2 font-weight-bold">AUDIO LIST <i class="fa fa-arrow-right" aria-hidden="true"></i></h6>
-        </div>
-      </div>
-        </div>
-    </div>
-</div>
-    </div>
+          
 
 <div class="clear"></div>  
 
@@ -421,7 +453,7 @@ $settings = App\Setting::first();
 
 </div>
 <?php } ?>
-<input type="hidden" id="MyPlaylist_slug" value="{{ $MyPlaylist->slug }}">
+<input type="hidden" id="MyPlaylist_slug" value="{{ @$MyPlaylist->slug }}">
 <script>
     $('.myplaylist').click(function() {
         var audioid = $(this).data('audioid');
@@ -521,346 +553,7 @@ window.location = '<?= URL::to('login') ?>';
 
 
 </div>
-<script>
-  function createTrackItem(index,name,duration){
 
-    var trackItem = document.createElement('div');
-    trackItem.setAttribute("class", "playlist-track-ctn");
-    trackItem.setAttribute("id", "ptc-"+index);
-    trackItem.setAttribute("data-index", index);
-    document.querySelector(".playlist-ctn").appendChild(trackItem);
-
-    var playBtnItem = document.createElement('div');
-    playBtnItem.setAttribute("class", "playlist-btn-play");
-    playBtnItem.setAttribute("id", "pbp-"+index);
-    document.querySelector("#ptc-"+index).appendChild(playBtnItem);
-
-    var btnImg = document.createElement('i');
-    btnImg.setAttribute("class", "fas fa-play");
-    btnImg.setAttribute("height", "40");
-    btnImg.setAttribute("width", "40");
-    btnImg.setAttribute("id", "p-img-"+index);
-    document.querySelector("#pbp-"+index).appendChild(btnImg);
-
-    var trackInfoItem = document.createElement('div');
-    trackInfoItem.setAttribute("class", "playlist-info-track");
-    trackInfoItem.innerHTML = name
-    document.querySelector("#ptc-"+index).appendChild(trackInfoItem);
-
-    var trackDurationItem = document.createElement('div');
-    trackDurationItem.setAttribute("class", "playlist-duration");
-
-    var measuredTime = new Date(null);
-    measuredTime.setSeconds(duration); 
-    var MHSTime = measuredTime.toISOString().substr(11, 8);
-    
-    trackDurationItem.innerHTML = MHSTime
-
-    document.querySelector("#ptc-"+index).appendChild(trackDurationItem);
-
-  }
-
-  var listAudio = <?php echo json_encode($playlist_audio); ?>;
-  var MyPlaylist = <?php echo json_encode($MyPlaylist); ?>;
-
-   	setInterval(function(){ 
-   		$.getJSON('<?php echo URL::to("/get_playlist");?>'+'/'+$("#MyPlaylist_slug").val(), function(data) {
-      // alert(listAudio);
-          $('.playlist-track-ctn').remove();
-            var listAudio = <?php echo json_encode($playlist_audio); ?>;
-            // localStorage.setItem('listAudio', listAudio);
-
-            for (var i = 0; i < listAudio.length; i++) {
-            createTrackItem(i,listAudio[i].title,listAudio[i].duration);
-        }
-   		});
-   	}, 3000);
-    // alert(localStorage.getItem('listAudio'));
-    //  var listAudio = localStorage.getItem('listAudio');
-    // console.log(listAudio);
-  // for (var i = 0; i < listAudio.length; i++) {
-  //     createTrackItem(i,listAudio[i].title,listAudio[i].duration);
-  // }
-
-  var indexAudio = 0;
-
-  function loadNewTrack(index){
-
-    var access = listAudio[index].access
-
-    var audioppv_id  = listAudio[index].id
-            
-
-
-      if(access == 'guest'){
-        // alert(access);
-      var player = document.querySelector('#source-audio')
-
-      player.src = listAudio[index].mp3_url
-
-      document.querySelector('.title').innerHTML = listAudio[index].title
-
-      this.currentAudio = document.getElementById("myAudio");
-      this.currentAudio.load()
-      this.toggleAudio()
-      this.updateStylePlaylist(this.indexAudio,index)
-      this.indexAudio = index;
-    }else if(access == 'ppv'){ 
-
-      var audioppv = <?php echo json_encode($audioppv) ?>;
-      
-      var countaudioppv = [];    
-
-      // audioppv.forEach(element => console.log(element));
-      audioppv.forEach(element => {
-            if(element.audio_id == audioppv_id) {
-              // alert(audioppv_id);
-              countaudioppv.push(1) 
-            }       
-          });
-
-        if(countaudioppv.length > 0 || role == 'subscriber'){
-            var player = document.querySelector('#source-audio')
-
-            player.src = listAudio[index].mp3_url
-
-            document.querySelector('.title').innerHTML = listAudio[index].title
-
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
-        }else{
-            var player = document.querySelector('#source-audio')
-
-            player.src = ''
-
-            document.querySelector('.title').innerHTML = listAudio[index].title
-
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
-
-            document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
-            document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
-
-            document.querySelector('#enable_button').style.display = 'block';
-            alert("Purchase Audio");   
-
-
-        }
-    }else if(access == 'subscriber'){ 
-
-
-      var role = <?php echo json_encode($role) ?>;
-      // alert(role);
-
-      if(role == 'subscriber'){
-            var player = document.querySelector('#source-audio')
-
-            player.src = listAudio[index].mp3_url
-
-            document.querySelector('.title').innerHTML = listAudio[index].title
-
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
-        }else{
-            var player = document.querySelector('#source-audio')
-
-            player.src = ''
-
-            document.querySelector('.title').innerHTML = listAudio[index].title
-
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
-
-            document.querySelector('#Subscriber_button').style.display = 'block';
-            alert("Become Subscriber to Listen this Audio");   
-
-
-        }
-
-    }
-
-  }
-
-  var playListItems = document.querySelectorAll(".playlist-track-ctn");
-
-  for (let i = 0; i < playListItems.length; i++){
-    playListItems[i].addEventListener("click", getClickedElement.bind(this));
-  }
-
-  function getClickedElement(event) {
-    for (let i = 0; i < playListItems.length; i++){
-      if(playListItems[i] == event.target){
-        var clickedIndex = event.target.getAttribute("data-index")
-        if (clickedIndex == this.indexAudio ) { // alert('Same audio');
-            this.toggleAudio()
-        }else{
-            loadNewTrack(clickedIndex);
-        }
-      }
-    }
-  }
-
-  document.querySelector('#source-audio').src = <?php echo json_encode($first_album_mp3_url) ; ?>  
-  document.querySelector('.title').innerHTML = <?php echo json_encode($first_album_title) ; ?>  
-
-  var currentAudio = document.getElementById("myAudio");
-
-  currentAudio.load()
-  
-  currentAudio.onloadedmetadata = function() {
-        document.getElementsByClassName('duration')[0].innerHTML = this.getMinutes(this.currentAudio.duration)
-  }.bind(this);
-
-  var interval1;
-
-  function toggleAudio() {
-
-    if (this.currentAudio.paused) {
-      document.querySelector('#icon-play').style.display = 'none';
-      document.querySelector('#icon-pause').style.display = 'block';
-      document.querySelector('#ptc-'+this.indexAudio).classList.add("active-track");
-      this.playToPause(this.indexAudio)
-      this.currentAudio.play();
-    }else{
-      document.querySelector('#icon-play').style.display = 'block';
-      document.querySelector('#icon-pause').style.display = 'none';
-      this.pauseToPlay(this.indexAudio)
-      this.currentAudio.pause();
-    }
-  }
-
-  function pauseAudio() {
-    this.currentAudio.pause();
-    clearInterval(interval1);
-  }
-
-  var timer = document.getElementsByClassName('timer')[0]
-
-  var barProgress = document.getElementById("myBar");
-
-
-  var width = 0;
-
-  function onTimeUpdate() {
-    var t = this.currentAudio.currentTime
-    timer.innerHTML = this.getMinutes(t);
-    this.setBarProgress();
-    if (this.currentAudio.ended) {
-      document.querySelector('#icon-play').style.display = 'block';
-      document.querySelector('#icon-pause').style.display = 'none';
-      this.pauseToPlay(this.indexAudio)
-      if (this.indexAudio < listAudio.length-1) {
-          var index = parseInt(this.indexAudio)+1
-          this.loadNewTrack(index)
-      }
-    }
-  }
-
-
-  function setBarProgress(){
-    var progress = (this.currentAudio.currentTime/this.currentAudio.duration)*100;
-    document.getElementById("myBar").style.width = progress + "%";
-  }
-
-
-  function getMinutes(t){
-    var min = parseInt(parseInt(t)/60);
-    var sec = parseInt(t%60);
-    if (sec < 10) {
-      sec = "0"+sec
-    }
-    if (min < 10) {
-      min = "0"+min
-    }
-    return min+":"+sec
-  }
-
-  var progressbar = document.querySelector('#myProgress')
-  progressbar.addEventListener("click", seek.bind(this));
-
-
-  function seek(event) {
-    var percent = event.offsetX / progressbar.offsetWidth;
-    this.currentAudio.currentTime = percent * this.currentAudio.duration;
-    barProgress.style.width = percent*100 + "%";
-  }
-
-  function forward(){
-    this.currentAudio.currentTime = this.currentAudio.currentTime + 5
-    this.setBarProgress();
-  }
-
-  function rewind(){
-    this.currentAudio.currentTime = this.currentAudio.currentTime - 5
-    this.setBarProgress();
-  }
-
-
-  function next(){
-    if (this.indexAudio <listAudio.length-1) {
-        var oldIndex = this.indexAudio
-        this.indexAudio++;
-        updateStylePlaylist(oldIndex,this.indexAudio)
-        this.loadNewTrack(this.indexAudio);
-    }
-  }
-
-  function previous(){
-    if (this.indexAudio>0) {
-        var oldIndex = this.indexAudio
-        this.indexAudio--;
-        updateStylePlaylist(oldIndex,this.indexAudio)
-        this.loadNewTrack(this.indexAudio);
-    }
-  }
-
-  function updateStylePlaylist(oldIndex,newIndex){
-    document.querySelector('#ptc-'+oldIndex).classList.remove("active-track");
-    this.pauseToPlay(oldIndex);
-    document.querySelector('#ptc-'+newIndex).classList.add("active-track");
-    this.playToPause(newIndex)
-  }
-
-  function playToPause(index){
-    var ele = document.querySelector('#p-img-'+index)
-    ele.classList.remove("fa-play");
-    ele.classList.add("fa-pause");
-  }
-
-  function pauseToPlay(index){
-    var ele = document.querySelector('#p-img-'+index)
-    ele.classList.remove("fa-pause");
-    ele.classList.add("fa-play");
-  }
-
-
-  function toggleMute(){
-    var btnMute = document.querySelector('#toggleMute');
-    var volUp = document.querySelector('#icon-vol-up');
-    var volMute = document.querySelector('#icon-vol-mute');
-    if (this.currentAudio.muted == false) {
-       this.currentAudio.muted = true
-       volUp.style.display = "none"
-       volMute.style.display = "block"
-    }else{
-      this.currentAudio.muted = false
-      volMute.style.display = "none"
-      volUp.style.display = "block"
-    }
-  }
-</script>
 
 
 <!-- Cinet Pay CheckOut -->
@@ -956,6 +649,14 @@ window.location = '<?= URL::to('login') ?>';
             console.log(data);
         });
     }
+</script>
+<script>
+    $(function() {
+  $('.plus-minus-toggle').on('click', function() {
+    $(this).toggleClass('collapsed');
+  });
+});
+
 </script>
 @php
 include(public_path('themes/default/views/footer.blade.php'));

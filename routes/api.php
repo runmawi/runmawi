@@ -582,5 +582,10 @@ Route::group(
             Route::post('Android_ShowEpisode_wishlist', 'ApiAuthController@Android_ShowEpisode_wishlist');
             Route::post('Android_ShowAudio_wishlist', 'ApiAuthController@Android_ShowAudio_wishlist');
             Route::post('Android_ShowLiveStream_wishlist', 'ApiAuthController@Android_ShowLiveStream_wishlist');
+            
+            
+            Route::get('social_network_setting', 'ApiAuthController@social_network_setting');
+            Route::get('contact_email_setting', 'ApiAuthController@contact_email_setting');
+
 
     });

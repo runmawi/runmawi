@@ -167,6 +167,39 @@ class MyPlaylistController extends Controller
         }
         return $playlist_audio;
     }
+    
+    public function Play_Playlist($slug){
+        try {
+            //code...
+          $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
+          $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+          $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
+          $All_Audios = Audio::get();
+          $playlist_audio = Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
+          ->where('audio_user_playlist.user_id',Auth::user()->id)
+          ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
+        //   dd($playlist_audio);
 
+        $audioppv = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')
+        ->groupby("audio_id")
+        ->orderBy('created_at', 'desc')->get();
+        
+          $data = [
+            'audioppv' => $audioppv,
+            'MyPlaylist' => $MyPlaylist,
+            'All_Audios' => $All_Audios,
+            'playlist_audio' => $playlist_audio,
+            'media_url' => URL::to('/').'/playlist/'.$slug,
+            'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
+            'first_album_mp3_url' => $MyPlaylist->first() ? $MyPlaylist->first()->mp3_url : null ,
+            'first_album_title' => $MyPlaylist->first() ? $MyPlaylist->first()->title : null ,
+        ];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            $data = [];
+        }
+        return Theme::view('PlayPlayList', $data);
+    }
 
 }
