@@ -274,7 +274,7 @@ $settings = App\Setting::first();
     }
 </style>
 
-<section style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.25)0%, rgba(0, 0, 0, 1)80%), url(<?=URL::to('/assets/img/t6.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;">
+<section style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.25)0%, rgba(0, 0, 0, 1)80%), url(<?= $MyPlaylist->image ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;">
     <div class="container-fluid">
         <br>
         <br>
@@ -283,7 +283,7 @@ $settings = App\Setting::first();
                 <div class="row align-items-center">
                     <div class="col-lg-3"></div>
                     <div class="col-lg-5">
-                         <img src="<?=URL::to('/assets/img/t6.png') ?>" height="250" width="250" class="img-responsive" >
+                         <img src="<?= $MyPlaylist->image ?>" height="250" width="250" class="img-responsive" >
                     </div>
                     <div class="col-lg-4 p-0">
                 <p>PLAYLIST</p>

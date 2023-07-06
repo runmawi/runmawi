@@ -9183,7 +9183,7 @@ $cpanel->end();
   if(!empty($request->user_id)){
     $user_id = $request->user_id;
     $users = User::where('id','=',$user_id)->first();
-    $userrole = $users->role;
+    $userrole = @$users->role;
   }else{
     $userrole = '';
   }
