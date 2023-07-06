@@ -102,17 +102,21 @@ class MyPlaylistController extends Controller
           $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
           $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
           $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
-          $All_Audios = Audio::Select('audio.*','audio_albums.albumname')
-          ->Join('audio_albums','audio_albums.id','=','audio.album_id')
-          ->Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
-          ->where('audio_user_playlist.audio_id', '=','audio.id')
-          ->where('audio_user_playlist.playlist_id', $MyPlaylist_id)
-          ->orderBy('audio.created_at', 'desc')->get();
-          dd($All_Audios);
+          $AudioUserPlaylist = AudioUserPlaylist::where('user_id',Auth::user()->id)->where('playlist_id',$MyPlaylist_id)->get();
+        //   dd($AudioUserPlaylist);
+          foreach ($AudioUserPlaylist as $value){
+            $All_Audios = Audio::Select('audio.*','audio_albums.albumname')->Join('audio_albums','audio_albums.id','=','audio.album_id')
+            ->where('audio.id','!=',$value->audio_id)
+            ->orderBy('audio.created_at', 'desc')->get();
+          }
 
-          $playlist_audio = Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
+
+        //   dd($All_Audios);
+          $playlist_audio =
+           Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
           ->where('audio_user_playlist.user_id',Auth::user()->id)
           ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
+        //   dd($All_Audios);
 
         $audioppv = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')
         ->groupby("audio_id")
@@ -132,7 +136,7 @@ class MyPlaylistController extends Controller
         // dd($data);
 
         } catch (\Throwable $th) {
-            throw $th;
+            //throw $th;
             $data = [];
         }
         // dd($data);
