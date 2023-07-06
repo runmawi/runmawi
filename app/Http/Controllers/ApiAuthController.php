@@ -19146,5 +19146,41 @@ public function IOS_ShowVideo_favorite(Request $request) {
             return response()->json($response, 200);
       
         }
-      
+        public function social_network_setting(Request $request) {
+
+          try {
+            $socail_networl_setting = Setting::select('facebook_page_id','google_page_id','twitter_page_id','instagram_page_id','linkedin_page_id','whatsapp_page_id','skype_page_id','youtube_page_id')->first();
+            $response = array(
+              'status' => "true",
+              'socail_networl_setting'=> $socail_networl_setting,
+            );
+          } catch (\Throwable $th) {
+            //throw $th;
+            $response = array(
+              'status' => "true",
+              'socail_networl_setting'=> [],
+            );
+          }
+          return response()->json($response, 200);
+
+        }
+
+        public function contact_email_setting(Request $request) {
+
+          try {
+            $contact_email_setting = Setting::select('system_email','google_tracking_id','google_oauth_key','coupon_status')->first();
+            $response = array(
+              'status' => "true",
+              'contact_email_setting'=> $contact_email_setting,
+            );
+          } catch (\Throwable $th) {
+            //throw $th;
+            $response = array(
+              'status' => "true",
+              'contact_email_setting'=> [],
+            );
+          }
+          return response()->json($response, 200);
+
+        }
 }
