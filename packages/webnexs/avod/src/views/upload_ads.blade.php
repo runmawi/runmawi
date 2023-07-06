@@ -189,6 +189,12 @@
                                                                 <label> Ads Video Upload:</label>
                                                                 <input type="file" id="ads_video" name="ads_video" accept="video/mp4" class="form-control" />
                                                             </div>
+
+                                                            <div class="form-group ads_video_upload">
+                                                                <label> Ads Redirection URL:</label>
+                                                                <input type="url" id="ads_redirection_url" name="ads_redirection_url"  
+                                                                    placeholder="https://example.com" pattern="https://.*" class="form-control" />
+                                                            </div>
                                                         </div>
 
                                                     </div>
