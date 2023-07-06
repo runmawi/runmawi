@@ -4175,6 +4175,16 @@ public function checkEmailExists(Request $request)
       $series = Series::where('active', '=', '1')->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['mp4_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
+        $item['Season_count'] = SeriesSeason::where('series_id','=',$item->id)->count();
+        $series_genre = SeriesCategory::Select('series_genre.name')
+        ->Join('series_genre','series_genre.id','=','series_categories.category_id')
+        ->where('series_categories.series_id',$item->id)->get();
+        if(count($series_genre) > 0 ){
+          $item['series_genre'] = $series_genre;
+           }else{
+            $item['series_genre'] = [];
+           }
+
         return $item;
       });
 
