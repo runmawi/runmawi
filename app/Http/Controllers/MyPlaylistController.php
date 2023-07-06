@@ -102,13 +102,17 @@ class MyPlaylistController extends Controller
           $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
           $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
           $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
-          $All_Audios = Audio::Select('audio.*','audio_albums.albumname')->Join('audio_albums','audio_albums.id','=','audio.album_id')
+          $All_Audios = Audio::Select('audio.*','audio_albums.albumname')
+          ->Join('audio_albums','audio_albums.id','=','audio.album_id')
+          ->Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
+          ->where('audio_user_playlist.audio_id', '=','audio.id')
+          ->where('audio_user_playlist.playlist_id', $MyPlaylist_id)
           ->orderBy('audio.created_at', 'desc')->get();
+          dd($All_Audios);
 
           $playlist_audio = Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
           ->where('audio_user_playlist.user_id',Auth::user()->id)
           ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
-        //   dd($All_Audios);
 
         $audioppv = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')
         ->groupby("audio_id")
@@ -128,7 +132,7 @@ class MyPlaylistController extends Controller
         // dd($data);
 
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             $data = [];
         }
         // dd($data);
@@ -139,17 +143,25 @@ class MyPlaylistController extends Controller
     public function Add_Audio_Playlist(Request $request){
         try {
             //code...
-          $AudioUserPlaylist = AudioUserPlaylist::where('audio_id',$request->audioid)->where('user_id',Auth::user()->id)->first();
+          $AudioUserPlaylist = AudioUserPlaylist::where('audio_id',$request->audioid)->where('playlist_id',$request->playlistid)->where('user_id',Auth::user()->id)->first();
             if(empty($AudioUserPlaylist)){
                 $AudioUserPlaylist = new AudioUserPlaylist();
                 $AudioUserPlaylist->audio_id = $request->audioid;
+                $AudioUserPlaylist->playlist_id = $request->playlistid;
                 $AudioUserPlaylist->user_id = Auth::user()->id;
                 $AudioUserPlaylist->save();
+            }else{
+                AudioUserPlaylist::where('audio_id',$request->audioid)->where('playlist_id',$request->playlistid)
+                ->where('user_id',Auth::user()->id)->delete();
+                // print_r('test');exit;
+
             }
             $data = 1;
     
         } catch (\Throwable $th) {
             //throw $th;
+            AudioUserPlaylist::where('audio_id',$request->audioid)->where('playlist_id',$request->playlistid)
+            ->where('user_id',Auth::user()->id)->delete();
             $data = 0;
         }
         return $data;
@@ -177,7 +189,7 @@ class MyPlaylistController extends Controller
           $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
           $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
           $All_Audios = Audio::get();
-          $playlist_audio = Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
+          $playlist_audio = Audio::Select('audio.title as name','audio.mp3_url as file','audio.*')->Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
           ->where('audio_user_playlist.user_id',Auth::user()->id)
           ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
         //   dd($playlist_audio);
@@ -198,7 +210,7 @@ class MyPlaylistController extends Controller
         ];
 
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             $data = [];
         }
         return Theme::view('PlayPlayList', $data);
