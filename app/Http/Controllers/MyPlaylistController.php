@@ -86,7 +86,7 @@ class MyPlaylistController extends Controller
             //throw $th;
         }
 
-        return Redirect::back()->with([
+        return Redirect::to('playlist/'.$MyPlaylist->slug)->with([
             "message" => "Successfully Updated Video!",
             "note_type" => "success",
         ]);
@@ -126,4 +126,40 @@ class MyPlaylistController extends Controller
         }
         return Theme::view('Playlist', $data);
     }
+
+    public function Add_Audio_Playlist(Request $request){
+        try {
+            //code...
+          $AudioUserPlaylist = AudioUserPlaylist::where('audio_id',$request->audioid)->where('user_id',Auth::user()->id)->first();
+            if(empty($AudioUserPlaylist)){
+                $AudioUserPlaylist = new AudioUserPlaylist();
+                $AudioUserPlaylist->audio_id = $request->audioid;
+                $AudioUserPlaylist->user_id = Auth::user()->id;
+                $AudioUserPlaylist->save();
+            }
+            $data = 1;
+    
+        } catch (\Throwable $th) {
+            //throw $th;
+            $data = 0;
+        }
+        return $data;
+    }
+
+    
+    public function GetMY_Audio_Playlist($slug){
+        try {
+
+          $playlist_audio = Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
+          ->where('audio_user_playlist.user_id',Auth::user()->id)
+          ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            $data = [];
+        }
+        return $playlist_audio;
+    }
+
+
 }
