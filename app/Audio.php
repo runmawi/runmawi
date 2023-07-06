@@ -28,4 +28,10 @@ class Audio extends Model
     public function audioartists(){
 		return $this->belongsToMany('App\Audioartist');
 	}
+
+	public function getDurationFormattedAttribute()
+    {
+        return gmdate('H:i:s', $this->duration);
+    }
+	
 }

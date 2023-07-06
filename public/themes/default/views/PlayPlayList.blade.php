@@ -178,6 +178,9 @@ padding-top: 20px;
 <script src=app.js></script>
 <script>
       function createTrackItem(index,name,duration){
+    console.log(name)
+    console.log(duration)
+
     var trackItem = document.createElement('div');
     trackItem.setAttribute("class", "playlist-track-ctn");
     trackItem.setAttribute("id", "ptc-"+index);
@@ -203,30 +206,38 @@ padding-top: 20px;
 
     var trackDurationItem = document.createElement('div');
     trackDurationItem.setAttribute("class", "playlist-duration");
-    trackDurationItem.innerHTML = duration
+
+    var measuredTime = new Date(null);
+    measuredTime.setSeconds(duration); 
+    var MHSTime = measuredTime.toISOString().substr(11, 8);
+        // alert(MHSTime);
+    trackDurationItem.innerHTML = MHSTime
     document.querySelector("#ptc-"+index).appendChild(trackDurationItem);
   }
 
-  var listAudio = [
-    {
-      name:"Artist 1 - audio 1",
-      file:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
-      duration:"08:47"
-    },
-    {
-      name:"Artist 2 - audio 2",
-      file:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-      duration:"05:53"
-    },
-    {
-      name:"Artist 3 - audio 3",
-      file:"https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_1MG.mp3",
-      duration:"00:27"
-    }
-  ]
+  // var listAudio = [
+  //   {
+  //     title:"Artist 1 - audio 1",
+  //     file:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+  //     duration:"08:47"
+  //   },
+  //   {
+  //     title:"Artist 2 - audio 2",
+  //     file:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+  //     duration:"05:53"
+  //   },
+  //   {
+  //     title:"Artist 3 - audio 3",
+  //     file:"https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_1MG.mp3",
+  //     duration:"00:27"
+  //   }
+  // ]
+
+  var listAudio = <?php echo json_encode($playlist_audio); ?>;
+
 
   for (var i = 0; i < listAudio.length; i++) {
-      createTrackItem(i,listAudio[i].name,listAudio[i].duration);
+      createTrackItem(i,listAudio[i].title,listAudio[i].duration);
   }
   var indexAudio = 0;
 

@@ -9243,7 +9243,7 @@ $cpanel->end();
 
         $ppv_video_status = "can_view";
 
-    } else if (!empty($season) && $season->access != "ppv" || $season->access == "free") {
+    } else if (!empty(@$season) && @$season->access != "ppv" || @$season->access == "free") {
       $ppv_video_status = "can_view";
     }
     else {
