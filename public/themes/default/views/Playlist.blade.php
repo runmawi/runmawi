@@ -410,42 +410,46 @@ $settings = App\Setting::first();
     $('.add_audio_playlist').click(function() {
       
         var audioid = $(this).data('audioid');
-        alert(audioid);
+        var playlistid = <?php echo json_encode(@$MyPlaylist->id); ?>;
 
-        // if ($(this).data('authenticated')) {
-        //     $(this).toggleClass('active');
-        //     if ($(this).hasClass('active')) {
+        // alert(playlistid);
+
+        if ($(this).data('authenticated')) {
+            $(this).toggleClass('active');
+            if ($(this).hasClass('active')) {
         // alert(audioid);
 
-        //         $.ajax({
-        //             url: "<?php echo URL::to('/add_audio_playlist'); ?>",
-        //             type: "POST",
-        //             data: {
-        //                 audioid: $(this).data('audioid'),
-        //                 _token: '<?= csrf_token() ?>'
-        //             },
-        //             dataType: "html",
-        //             success: function(data) {
-        //                 if (data == "Added To Wishlist") {
+                $.ajax({
+                    url: "<?php echo URL::to('/add_audio_playlist'); ?>",
+                    type: "POST",
+                    data: {
+                        audioid: $(this).data('audioid'),
+                        playlistid: <?php echo json_encode(@$MyPlaylist->id); ?>,
 
-        //                     // $('#' + audioid).text('');
-        //                     // $('#' + audioid).text('Remove From Wishlist');
-        //                     $("body").append(
-        //                         '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to Playlist</div>'
-        //                     );
-        //                     setTimeout(function() {
-        //                         $('.add_watch').slideUp('fast');
-        //                     }, 3000);
-        //                 } else {
+                        _token: '<?= csrf_token() ?>'
+                    },
+                    dataType: "html",
+                    success: function(data) {
+                        if (data == "Added To Wishlist") {
+
+                            // $('#' + audioid).text('');
+                            // $('#' + audioid).text('Remove From Wishlist');
+                            $("body").append(
+                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to Playlist</div>'
+                            );
+                            setTimeout(function() {
+                                $('.add_watch').slideUp('fast');
+                            }, 3000);
+                        } else {
 
                       
-        //                 }
-        //             }
-        //         });
-        //     }
-        // } else {
-        //     window.location = '<?= URL::to('login') ?>';
-        // }
+                        }
+                    }
+                });
+            }
+        } else {
+            window.location = '<?= URL::to('login') ?>';
+        }
     });
 </script>
 
@@ -609,6 +613,48 @@ window.location = '<?= URL::to('login') ?>';
     $(function() {
   $('.plus-minus-toggle').on('click', function() {
     $(this).toggleClass('collapsed');
+
+    var audioid = $(this).data('audioid');
+        var playlistid = <?php echo json_encode(@$MyPlaylist->id); ?>;
+
+        // alert(playlistid);
+
+        if ($(this).data('authenticated')) {
+            $(this).toggleClass('active');
+            if ($(this).hasClass('active')) {
+        // alert(audioid);
+
+                $.ajax({
+                    url: "<?php echo URL::to('/add_audio_playlist'); ?>",
+                    type: "POST",
+                    data: {
+                        audioid: $(this).data('audioid'),
+                        playlistid: <?php echo json_encode(@$MyPlaylist->id); ?>,
+
+                        _token: '<?= csrf_token() ?>'
+                    },
+                    dataType: "html",
+                    success: function(data) {
+                        if (data == "Added To Wishlist") {
+
+                            // $('#' + audioid).text('');
+                            // $('#' + audioid).text('Remove From Wishlist');
+                            $("body").append(
+                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to Playlist</div>'
+                            );
+                            setTimeout(function() {
+                                $('.add_watch').slideUp('fast');
+                            }, 3000);
+                        } else {
+
+                      
+                        }
+                    }
+                });
+            }
+        } else {
+            window.location = '<?= URL::to('login') ?>';
+        }
   });
 });
 
