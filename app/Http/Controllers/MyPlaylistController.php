@@ -96,6 +96,9 @@ class MyPlaylistController extends Controller
     public function Audio_Playlist($slug){
         try {
             //code...
+            if (Auth::guest()) {
+                return redirect("/login");
+            }
           $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
           $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
           $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
@@ -119,12 +122,15 @@ class MyPlaylistController extends Controller
             'first_album_mp3_url' => $MyPlaylist->first() ? $MyPlaylist->first()->mp3_url : null ,
             'first_album_title' => $MyPlaylist->first() ? $MyPlaylist->first()->title : null ,
         ];
+    
         // dd($data);
 
         } catch (\Throwable $th) {
             //throw $th;
             $data = [];
         }
+        // dd($data);
+
         return Theme::view('Playlist', $data);
     }
 
