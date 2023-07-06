@@ -334,31 +334,18 @@ $settings = App\Setting::first();
  <div class="playlist-ctn">
              <h4 class="mb-3">Tracks</h4>
      <table class="w-100">
-         <tr>
-              <td>1</td>
-               <td><img src="<?=URL::to('/assets/img/t6.png') ?>" class="" height="50" width="50"></td>
-               <td> <h4>Rainbow-Thiralil-MassTamilan.dev.mp3</h4></td>
-               <td>AR Hits</td>
-               <td><div class="plus-minus-toggle collapsed"></div></td>
-               <td>4:58</td>
-         </tr>
-         <tr>
-              <td>2</td>
-               <td><img src="<?=URL::to('/assets/img/t6.png') ?>" class="" height="50" width="50"></td>
-               <td> <h4>Rainbow-Thiralil-MassTamilan.dev.mp3</h4></td>
-               <td>AR Hits</td>
-               <td><div class="plus-minus-toggle collapsed"></div></td>
-               <td>4:58</td>
-         </tr>
-         <tr>
-              <td>2</td>
-               <td><img src="<?=URL::to('/assets/img/t6.png') ?>" class="" height="50" width="50"></td>
-               <td> <h4>Rainbow-Thiralil-MassTamilan.dev.mp3</h4></td>
-               <td>AR Hits</td>
-               <td><div class="plus-minus-toggle collapsed"></div></td>
-               <td>4:58</td>
-         </tr>
-       
+     <?php foreach ($All_Audios as $key => $audio) { ?>
+            <tr>
+                    <td> {{ $key+1 }}</td>
+                    <td><img src="<?= URL::to('/').'/public/uploads/images/' . $audio->image ?>" class="" height="50" width="50"></td>
+                    <td> <h4>{{ $audio->title }}</h4></td>
+                    <td>{{ $audio->albumname }}</td>
+                    <td><div class="plus-minus-toggle collapsed add_audio_playlist" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio->id ?>"></div></td>
+                    <td><?php echo gmdate("H:i:s", $audio->duration);?></td>
+              </tr>
+      <?php } ?>
+      
+        
      </table>
      <ol>
          <li>
@@ -416,81 +403,49 @@ $settings = App\Setting::first();
 <div class="clear"></div>  
 
 <?php } ?>
-<div class="container-fluid overflow-hidden">
-<div class="row album-top-30 mt-3 p-0">  
-<div class="col-sm-12">
-<p  class="album-title">Audios </p>
-<div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
- <?php foreach ($All_Audios as $audio) { ?>
-                       <li class="slide-item">
-                            <!-- <a href="<?php echo URL('/').'/audio/'.$audio->slug;?>"> -->
-                             <div class="block-images position-relative">
-                             <!-- block-images -->
-                                <div class="img-box">
-                                <img loading="lazy" data-src="<?= URL::to('/').'/public/uploads/images/' . $audio->image ?>" alt="" class="img-fluid loading w-100">
-                                 </div>
-                                <div class="block-description">
-                                  <div class="hover-buttons text-white">
-                                           <a class="d-flex" href="<?php echo URL('/').'/audio/'.$audio->slug;?>">
-                                                <i class="fa fa-play mr-1" aria-hidden="true"></i> 
-                                               <p><?php echo ucfirst($audio->title);?></p>
-                                        </a>
-                                        <span style="color: white;"class="myplaylist <?php if((1)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio->id ?>">
-                                      <i style="" <?php if((1)): ?> class="ri-heart-fill" <?php  else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
-                                    </span>
-                                    </div>
-                                </div>
-                              </div>
-                          <!-- </a> -->
-                       </li>
-                       <?php } ?>
-                    </ul>
-                 </div>
-</div>
 
-</div>
-
-</div>
 <?php } ?>
 <input type="hidden" id="MyPlaylist_slug" value="{{ @$MyPlaylist->slug }}">
 <script>
-    $('.myplaylist').click(function() {
+    $('.add_audio_playlist').click(function() {
+      
         var audioid = $(this).data('audioid');
-        if ($(this).data('authenticated')) {
-            $(this).toggleClass('active');
-            if ($(this).hasClass('active')) {
+        alert(audioid);
+
+        // if ($(this).data('authenticated')) {
+        //     $(this).toggleClass('active');
+        //     if ($(this).hasClass('active')) {
         // alert(audioid);
 
-                $.ajax({
-                    url: "<?php echo URL::to('/add_audio_playlist'); ?>",
-                    type: "POST",
-                    data: {
-                        audioid: $(this).data('audioid'),
-                        _token: '<?= csrf_token() ?>'
-                    },
-                    dataType: "html",
-                    success: function(data) {
-                        if (data == "Added To Wishlist") {
+        //         $.ajax({
+        //             url: "<?php echo URL::to('/add_audio_playlist'); ?>",
+        //             type: "POST",
+        //             data: {
+        //                 audioid: $(this).data('audioid'),
+        //                 _token: '<?= csrf_token() ?>'
+        //             },
+        //             dataType: "html",
+        //             success: function(data) {
+        //                 if (data == "Added To Wishlist") {
 
-                            // $('#' + audioid).text('');
-                            // $('#' + audioid).text('Remove From Wishlist');
-                            $("body").append(
-                                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to Playlist</div>'
-                            );
-                            setTimeout(function() {
-                                $('.add_watch').slideUp('fast');
-                            }, 3000);
-                        } else {
+        //                     // $('#' + audioid).text('');
+        //                     // $('#' + audioid).text('Remove From Wishlist');
+        //                     $("body").append(
+        //                         '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to Playlist</div>'
+        //                     );
+        //                     setTimeout(function() {
+        //                         $('.add_watch').slideUp('fast');
+        //                     }, 3000);
+        //                 } else {
 
                       
-                        }
-                    }
-                });
-            }
-        } else {
-            window.location = '<?= URL::to('login') ?>';
-        }
+        //                 }
+        //             }
+        //         });
+        //     }
+        // } else {
+        //     window.location = '<?= URL::to('login') ?>';
+        // }
     });
 </script>
 
