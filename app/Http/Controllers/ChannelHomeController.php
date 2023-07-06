@@ -212,19 +212,24 @@ class ChannelHomeController extends Controller
             if(!empty($channel)){
                 $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $channel->id)
                 ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+                ->limit(30)
                 ->get();
 
                 $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
                 ->where('uploaded_by', '=', 'Channel')
                 ->orderBy('created_at', 'DESC')
+                ->limit(30)
                 ->get() ;
 
                 $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
                 ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+                ->limit(30)
                 ->get();
 
-                $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
+                $latest_videos = Video::where('user_id', $channel->id)
+                ->where('uploaded_by', 'Channel')->where('draft', '1')
+                ->where('active', '1')->where('status', '1')
+                ->limit(30)
                 ->get();
     
             $ThumbnailSetting = ThumbnailSetting::first();
@@ -246,5 +251,112 @@ class ChannelHomeController extends Controller
             return $theme->load('public/themes/default/views/ChannelHome', $data)->render();
 
         }
+    }
+
+    public function Channel_Audios_list($channel_slug)
+    {
+        try {
+
+            $channel = Channel::where('channel_slug',$channel_slug)->first(); 
+
+            $data = Audio::where('active', '1')->where('user_id', $channel->id)
+                    ->where('uploaded_by','Channel')
+                    ->latest()
+                    ->paginate() ;
+
+            $respond = array(
+                'settings' => Setting::first(),
+                'currency' => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'audios' => $data ,
+            );
+
+            return Theme::view('channel.Channel_Audios_list', $respond);
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
+        }
+    }
+
+    public function Channel_livevideos_list($channel_slug)
+    {
+        try {
+
+            $channel = Channel::where('channel_slug',$channel_slug)->first(); 
+
+            $data = LiveStream::where('active','1')->where('user_id',$channel->id)
+                                ->where('uploaded_by','Channel')
+                                ->latest()
+                                ->get();
+
+            $data = array(
+                'settings' => Setting::first(),
+                'currency' => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'videos' => $data ,
+                'channel_slug' => $channel_slug ,
+            );
+
+            return Theme::view('channel.Channel_livevideos_list', $data);
+
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+    }
+
+    public function Channel_series_list($channel_slug)
+    {
+        try {
+
+            $channel = Channel::where('channel_slug',$channel_slug)->first(); 
+           
+            $data = Series::where('active','1')->where('user_id', $channel->id)
+                            ->where('uploaded_by', 'Channel')
+                            ->latest()
+                            ->paginate();
+
+            $respond_data = array(
+                'settings' => Setting::first(),
+                'currency' => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'Series' => $data ,
+                'channel_slug' => $channel_slug ,
+            );
+
+            return Theme::view('channel.Channel_series_list',  [ 'respond_data' => $respond_data]);
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
+        }
+    }
+    
+    public function Channel_videos_list($channel_slug)
+    {
+        try {
+
+            $channel = Channel::where('channel_slug',$channel_slug)->first(); 
+
+            $data = Video::where('active', '=', '1')->where('status', '=', '1')
+                            ->where('user_id', '=', $channel->id)
+                            ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
+                            ->paginate();
+
+            $respond_data = array(
+                'settings' => Setting::first(),
+                'currency' => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'videos' => $data ,
+                'channel_slug' => $channel_slug ,
+            );
+
+            return Theme::view('Channel.Channel_videos_list', [ 'respond_data' => $respond_data]);
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
+        }
+
     }
 }
