@@ -195,7 +195,6 @@ class ApiAuthController extends Controller
 
         $stripe_plan = SubscriptionPlan();
         $settings = Setting::first();
-
         if (isset($input['ccode']) && !empty($input['ccode'])) {
           $user_data['ccode'] = $input['ccode'];
         } else {
@@ -273,7 +272,7 @@ class ApiAuthController extends Controller
 
 
         $user = User::where('email', '=', $request->get('email'))->first();
-        $username = User::where('username', '=', $request->get('username'))->first();
+        $username = User::where('username', '=', $request->get('username'))->where('username', '!=', null)->first();
 
 
         if ($user === null && $username === null) {
@@ -4929,7 +4928,7 @@ return response()->json($response, 200);
       $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->orderBy('episode_order')->get()->map(function ($item)  {
         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['episode_id'] =$item->id;
-        if($item->image == 'm3u8'){
+        if($item->type == 'm3u8'){
         $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
         }else{
           $item['transcoded_url'] = '';
@@ -8975,7 +8974,7 @@ public function Adstatus_upate(Request $request)
       
           $series_id = $request->series_id;
 
-          $series = Series::where('id','!=', $series_id)>where('active','=',1)->inRandomOrder()->get()->map(function ($item) {
+          $series = Series::where('id','!=', $series_id)->where('active','=',1)->inRandomOrder()->get()->map(function ($item) {
             $item['image'] = URL::to('public/uploads/images/'.$item->image);
             return $item;
           });
@@ -19255,4 +19254,38 @@ public function IOS_ShowVideo_favorite(Request $request) {
           return response()->json($response, 200);
 
         }
+
+        
+  public function tv_livestreams()
+  {
+    try {
+
+        $check_Kidmode = 0 ;
+
+        $data =  LiveStream::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
+
+         
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'Livestreams videos Retrieved successfully',
+          'livestreams' => $data
+        );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+      
+    }
+
+    
+        
+        return response()->json($response, 200);
+  }
+
 }

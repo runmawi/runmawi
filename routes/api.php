@@ -587,5 +587,6 @@ Route::group(
             Route::get('social_network_setting', 'ApiAuthController@social_network_setting');
             Route::get('contact_email_setting', 'ApiAuthController@contact_email_setting');
 
+            Route::get('tv_livestreams', 'ApiAuthController@tv_livestreams');
 
     });
