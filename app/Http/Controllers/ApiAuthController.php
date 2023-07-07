@@ -15125,10 +15125,9 @@ public function QRCodeMobileLogout(Request $request)
     $andriodId = $request->andriodId;
     $episode_id = $request->episode_id;
 
-    $like_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->count();
-    $like_counts = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('liked','=' ,'1')->count();
-    $unlike_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('liked', 0)->count();
-
+    $like_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where("andriodId",'!=',null)->count();
+    $like_counts = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where("andriodId",'!=',null)->where('liked','=' ,'1')->count();
+    $unlike_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where("andriodId",'!=',null)->where('liked', 0)->count();
     if($like_count > 0){
 
       if($like_counts > 0){
@@ -15175,9 +15174,9 @@ public function QRCodeMobileLogout(Request $request)
       $andriodId = $request->andriodId;
       $episode_id = $request->episode_id;
 
-      $dislike_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->count();
-      $dislike_counts = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('disliked',1)->count();
-      $undislike_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where('disliked', 0)->count();
+      $dislike_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where("andriodId",'!=',null)->count();
+      $dislike_counts = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where("andriodId",'!=',null)->where('disliked',1)->count();
+      $undislike_count = Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->where("andriodId",'!=',null)->where('disliked', 0)->count();
 
       if($dislike_count > 0){
 
