@@ -274,7 +274,7 @@ $settings = App\Setting::first();
     }
 </style>
 
-<section style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.25)0%, rgba(0, 0, 0, 1)80%), url(<?= $MyPlaylist->image ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;">
+<section style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.25)0%, rgba(0, 0, 0, 1)80%), url(<?= @$MyPlaylist->image ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;">
     <div class="container-fluid">
         <br>
         <br>
@@ -283,7 +283,7 @@ $settings = App\Setting::first();
                 <div class="row align-items-center">
                     <div class="col-lg-3"></div>
                     <div class="col-lg-5">
-                         <img src="<?= $MyPlaylist->image ?>" height="250" width="250" class="img-responsive" >
+                         <img src="<?= @$MyPlaylist->image ?>" height="250" width="250" class="img-responsive" >
                     </div>
                     <div class="col-lg-4 p-0">
                 <p>PLAYLIST</p>
@@ -294,7 +294,7 @@ $settings = App\Setting::first();
     <div class="btn-ctn">
           <div class="btn-action" onclick="toggleAudio()">
           <div id="btn-faws-play-pause">
-            <a href="{{URL::to('/').'/playlist/play/'.$MyPlaylist->slug}}"><i class='fas fa-play' id="icon-play"></i></a>
+            <a href="{{URL::to('/').'/playlist/play/'.@$MyPlaylist->slug}}"><i class='fas fa-play' id="icon-play"></i></a>
             <i class='fas fa-pause' id="icon-pause" style="display: none"></i>
           </div>
       </div>

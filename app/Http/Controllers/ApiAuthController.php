@@ -4929,7 +4929,11 @@ return response()->json($response, 200);
       $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->orderBy('episode_order')->get()->map(function ($item)  {
         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['episode_id'] =$item->id;
-
+        if($item->image == 'm3u8'){
+        $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+        }else{
+          $item['transcoded_url'] = '';
+        }
         return $item;
       });;
 
