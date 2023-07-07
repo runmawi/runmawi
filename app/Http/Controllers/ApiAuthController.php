@@ -19254,4 +19254,38 @@ public function IOS_ShowVideo_favorite(Request $request) {
           return response()->json($response, 200);
 
         }
+
+        
+  public function tv_livestreams()
+  {
+    try {
+
+        $check_Kidmode = 0 ;
+
+        $data =  LiveStream::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
+
+         
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'Livestreams videos Retrieved successfully',
+          'livestreams' => $data
+        );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+      
+    }
+
+    
+        
+        return response()->json($response, 200);
+  }
+
 }
