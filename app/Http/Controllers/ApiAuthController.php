@@ -195,7 +195,6 @@ class ApiAuthController extends Controller
 
         $stripe_plan = SubscriptionPlan();
         $settings = Setting::first();
-
         if (isset($input['ccode']) && !empty($input['ccode'])) {
           $user_data['ccode'] = $input['ccode'];
         } else {
@@ -273,7 +272,7 @@ class ApiAuthController extends Controller
 
 
         $user = User::where('email', '=', $request->get('email'))->first();
-        $username = User::where('username', '=', $request->get('username'))->first();
+        $username = User::where('username', '=', $request->get('username'))->where('username', '!=', null)->first();
 
 
         if ($user === null && $username === null) {
