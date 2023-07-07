@@ -70,6 +70,9 @@ Route::post('/playlist/store', 'MyPlaylistController@StorePlaylist');
 Route::get('/playlist/{slug}', 'MyPlaylistController@Audio_Playlist');
 Route::post('/add_audio_playlist', 'MyPlaylistController@Add_Audio_Playlist');
 Route::get('/get_playlist/{slug}', 'MyPlaylistController@GetMY_Audio_Playlist');
+Route::get('/playlist/play/{slug}', 'MyPlaylistController@Play_Playlist');
+Route::get('/playlist/delete/{id}', 'MyPlaylistController@Delete_Playlist');
+
 
 
 
@@ -2111,6 +2114,10 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
     Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
     Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
+    Route::get('Channel/Audios-list/{channel_slug}', 'ChannelHomeController@Channel_Audios_list')->name('Channel_Audios_list');
+    Route::get('Channel/livevideos-list/{channel_slug}', 'ChannelHomeController@Channel_livevideos_list')->name('Channel_livevideos_list');
+    Route::get('Channel/series-list/{channel_slug}', 'ChannelHomeController@Channel_series_list')->name('Channel_series_list');
+    Route::get('Channel/videos-list/{channel_slug}', 'ChannelHomeController@Channel_videos_list')->name('Channel_videos_list');
 
     // Content Partner List
     Route::get('contentpartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');

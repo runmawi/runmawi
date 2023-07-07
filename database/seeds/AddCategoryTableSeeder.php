@@ -18,12 +18,12 @@ class AddCategoryTableSeeder extends Seeder
       Adscategory::truncate();
 
         $Adscategory = [
-                            [  'name' => 'Kids',
+                            [  'name' => 'Ads Category 1',
                                'created_at' => Carbon::now(),
                                'updated_at' => null,
                             ],
 
-                            [  'name' => 'Anime',
+                            [  'name' => 'Ads Category 2',
                                'created_at' => Carbon::now(),
                                'updated_at' => null,
                             ],
