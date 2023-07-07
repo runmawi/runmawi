@@ -176,6 +176,12 @@
                                     <input type="file" id="ads_video" name="ads_video" accept="video/mp4" class="form-control" />
                                     <span> {{ $Advertisement->ads_path }} </span>
                                 </div>
+
+                                <label class="m-0">Ads Redirection URL:</label>
+                                <div class="panel-body">
+                                    <input type="url" id="ads_redirection_url" name="ads_redirection_url"  
+                                        placeholder="https://example.com" pattern="https://.*" class="form-control" value="{{ $Advertisement->ads_redirection_url }}" />
+                                </div>
                             </div>
                         </div>
 

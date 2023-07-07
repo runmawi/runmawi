@@ -195,7 +195,6 @@ class ApiAuthController extends Controller
 
         $stripe_plan = SubscriptionPlan();
         $settings = Setting::first();
-
         if (isset($input['ccode']) && !empty($input['ccode'])) {
           $user_data['ccode'] = $input['ccode'];
         } else {
@@ -273,7 +272,7 @@ class ApiAuthController extends Controller
 
 
         $user = User::where('email', '=', $request->get('email'))->first();
-        $username = User::where('username', '=', $request->get('username'))->first();
+        $username = User::where('username', '=', $request->get('username'))->where('username', '!=', null)->first();
 
 
         if ($user === null && $username === null) {
@@ -750,7 +749,7 @@ class ApiAuthController extends Controller
 
     if($user > 0){
 
-      $verification_code = mt_rand(100000, 999999);
+      $verification_code = mt_rand(1000, 9999);
       $email = $user_email;
 
       try {
@@ -1957,31 +1956,32 @@ public function verifyandupdatepassword(Request $request)
      {
 
         $sliders = Slider::where('active', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-                  $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
+                  $item['slider'] = URL::to('public/uploads/videocategory/'.$item->slider );
+                  $item['player_image'] = URL::to('public/uploads/videocategory/'.$item->player_image );
                   $item['slider_source'] = "slider";
                   return $item;
         });
 
         $video_banners = Video::where('active','=',1)->where('status','=',1)
                   ->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-                  $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image );
                   $item['video_url'] = URL::to('/').'/storage/app/public/';
-                  $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                  $item['player_image'] = URL::to('public/uploads/images/'.$item->player_image );
                   $item['slider_source'] = "videos";
                   return $item;
         });
 
         $live_banner = LiveStream::where('active','=',1)
                   ->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-                  $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                  $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image );
+                  $item['player_image'] = URL::to('public/uploads/images/'.$item->player_image );
                   $item['slider_source'] = "livestream";
                   return $item;
         });
 
         $series_banner = Series::where('active','=',1)->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-              $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+              $item['image_url'] = URL::to('public/uploads/images/'.$item->image );
+              $item['player_image'] = URL::to('public/uploads/images/'.$item->player_image );
               $item['slider_source'] = "series";
               return $item;
         });
@@ -4174,6 +4174,16 @@ public function checkEmailExists(Request $request)
       $series = Series::where('active', '=', '1')->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['mp4_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
+        $item['Season_count'] = SeriesSeason::where('series_id','=',$item->id)->count();
+        $series_genre = SeriesCategory::Select('series_genre.name')
+        ->Join('series_genre','series_genre.id','=','series_categories.category_id')
+        ->where('series_categories.series_id',$item->id)->get();
+        if(count($series_genre) > 0 ){
+          $item['series_genre'] = $series_genre;
+           }else{
+            $item['series_genre'] = [];
+           }
+
         return $item;
       });
 
@@ -4918,7 +4928,11 @@ return response()->json($response, 200);
       $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->orderBy('episode_order')->get()->map(function ($item)  {
         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['episode_id'] =$item->id;
-
+        if($item->type == 'm3u8'){
+        $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+        }else{
+          $item['transcoded_url'] = '';
+        }
         return $item;
       });;
 
@@ -8960,7 +8974,7 @@ public function Adstatus_upate(Request $request)
       
           $series_id = $request->series_id;
 
-          $series = Series::where('id','!=', $series_id)->inRandomOrder()->get()->map(function ($item) {
+          $series = Series::where('id','!=', $series_id)->where('active','=',1)->inRandomOrder()->get()->map(function ($item) {
             $item['image'] = URL::to('public/uploads/images/'.$item->image);
             return $item;
           });
@@ -9129,6 +9143,24 @@ $cpanel->end();
     }
 
 
+    if($request->andriodId != ''){
+      $andriodId = $request->andriodId;
+      $cnt = Wishlist::select('episode_id')->where('andriodId','=',$andriodId)->where('episode_id','=',$request->episodeid)->count();
+      $andriod_wishliststatus =  ($cnt == 1) ? "true" : "false";
+      // $userrole = User::find($andriodId)->pluck('role');
+    }else{
+      $andriod_wishliststatus = 'false';
+      // $userrole = '';
+    }
+    if(!empty($request->andriodId) && $request->andriodId != '' ){
+      $andriodId = $request->andriodId;
+      $cnt = Watchlater::select('episode_id')->where('andriodId','=',$andriodId)->where('episode_id','=',$request->episodeid)->count();
+      $andriod_watchlaterstatus =  ($cnt == 1) ? "true" : "false";
+      // $userrole = User::find($andriodId)->pluck('role');
+    }else{
+      $andriod_watchlaterstatus = 'false';
+      // $userrole = '';
+    }
     if($request->user_id != ''){
     $like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
     $dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
@@ -9144,10 +9176,28 @@ $cpanel->end();
     $favorite = 'false';
     // $userrole = '';
   }
+
+  if($request->andriodId != ''){
+    $like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("andriodId","=",$andriodId)->where("liked","=",1)->count();
+    $dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("andriodId","=",$andriodId)->where("disliked","=",1)->count();
+    $andriod_favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("andriodId","=",$andriodId)->count();
+    $andriod_like = ($like_data == 1) ? "true" : "false";
+    $andriod_dislike = ($dislike_data == 1) ? "true" : "false";
+    $andriod_favorite = ($andriod_favoritestatus > 0) ? "true" : "false";
+    // $userrole = User::find($user_id)->pluck('role');
+
+  }else{
+    $andriod_like = 'false';
+    $andriod_dislike = 'false';
+    $andriod_favorite = 'false';
+    // $userrole = '';
+  }
+  if(!empty($request->user_id)){
+
   if(!empty($request->user_id)){
     $user_id = $request->user_id;
     $users = User::where('id','=',$user_id)->first();
-    $userrole = $users->role;
+    $userrole = @$users->role;
   }else{
     $userrole = '';
   }
@@ -9201,12 +9251,13 @@ $cpanel->end();
         ->count();
   } else {
       $ppv_exist = 0;
+      $season = null;
   }
   if ($ppv_exist > 0) {
 
         $ppv_video_status = "can_view";
 
-    } else if (!empty($season) && $season->access != "ppv" || $season->access == "free") {
+    } else if (!empty(@$season) && @$season->access != "ppv" || @$season->access == "free") {
       $ppv_video_status = "can_view";
     }
     else {
@@ -9217,6 +9268,62 @@ $cpanel->end();
       $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
     }
 
+  }else{
+    $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
+
+    $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
+
+    $season = SeriesSeason::where('id',$season_id)->first();
+
+    if (!empty(@$season) && @$season->access != "ppv" || @$season->access == "free") {
+      $ppv_video_status = "can_view";
+    }
+    else {
+          $ppv_video_status = "pay_now";
+    }
+
+    if(!empty($season_id) ){
+      $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
+    }
+    $userrole = 'guest';
+
+    if(!empty($series_id) && count($series_id) > 0){
+      $series_id = $series_id[0];
+  
+    $main_genre = SeriesCategory::Join('genres','genres.id','=','series_categories.category_id')
+    ->where('series_categories.series_id',$series_id)->get('name');
+  
+    $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.language_id')
+    ->where('series_languages.series_id',$series_id)->get('name');
+    }
+  
+    if(!empty($series_id) && !empty($main_genre)){
+    foreach($main_genre as $value){
+      $category[] = $value['name'];
+    }
+  }else{
+    $category = [];
+  }
+    if(!empty($category)){
+    $main_genre = implode(",",$category);
+    }else{
+      $main_genre = "";
+    }
+  
+    if(!empty($series_id) && !empty($languages)){
+    foreach($languages as $value){
+      $language[] = $value['name'];
+    }
+  }else{
+    $language = "";
+  }
+  
+    if(!empty($language)){
+    $languages = implode(",",$language);
+    }else{
+      $languages = "";
+    }
+  }
 
     $response = array(
       'status'=>'true',
@@ -9233,6 +9340,11 @@ $cpanel->end();
       'dislike' => $dislike,
       'main_genre' =>preg_replace( "/\r|\n/", "", $main_genre ),
       'languages' => $languages,
+      'andriod_watchlaterstatus' => $andriod_watchlaterstatus,
+      'andriod_wishliststatus' => $andriod_wishliststatus,
+      'andriod_favorite' => $andriod_favorite,
+      'andriod_dislike' => $andriod_dislike,
+      'andriod_like' => $andriod_like,
 
     );
     return response()->json($response, 200);
@@ -17722,7 +17834,7 @@ public function Android_ShowVideo_wishlist(Request $request)
     
     $response = array(
       'status' => "true",
-      'videos'=> $videos,
+      'channel_videos'=> $videos,
     );
   }else if ( $video_Wishlist_ids_count  > 0) {
 
@@ -17737,7 +17849,7 @@ public function Android_ShowVideo_wishlist(Request $request)
     
     $response = array(
       'status' => "true",
-      'videos'=> $videos,
+      'channel_videos'=> $videos,
     );
   }elseif ( $andrio_video_ids_count  > 0) {
 
@@ -17751,12 +17863,12 @@ public function Android_ShowVideo_wishlist(Request $request)
 
     $response = array(
       'status' => "true",
-      'videos'=> $videos,
+      'channel_videos'=> $videos,
     );
   }else{
     $response = array(
       'status' => "false",
-      'videos'=> [],
+      'channel_videos'=> [],
     );
   }
 
@@ -18445,7 +18557,7 @@ public function Android_ShowVideo_favorite(Request $request) {
         
         $response = array(
           'status' => "true",
-          'videos'=> $videos,
+          'channel_videos'=> $videos,
         );
       }else if ( $user_favorite_ids_count  > 0) {
 
@@ -18462,7 +18574,7 @@ public function Android_ShowVideo_favorite(Request $request) {
         
         $response = array(
           'status' => "true",
-          'videos'=> $videos,
+          'channel_videos'=> $videos,
         );
       }elseif ( $andriod_favorite_ids_count  > 0) {
 
@@ -18479,12 +18591,12 @@ public function Android_ShowVideo_favorite(Request $request) {
         
         $response = array(
           'status' => "true",
-          'videos'=> $videos,
+          'channel_videos'=> $videos,
         );
       }else{
         $response = array(
           'status' => "false",
-          'videos'=> [],
+          'channel_videos'=> [],
         );
       }
 
@@ -18764,12 +18876,12 @@ public function IOS_ShowVideo_favorite(Request $request) {
 
   if(!empty($IOSId) ){
     $IOSId = $request->IOSId;
-    $IOS_favorite_ids = Favorite::select('video_id')->where('IOSId','=',$IOSId)->get();
-    $IOS_favorite_ids_count = Favorite::select('video_id')->where('IOSId','=',$IOSId)->count();
+    $IOSfavorite_ids = Favorite::select('video_id')->where('IOSId','=',$IOSId)->get();
+    $IOSfavorite_ids_count = Favorite::select('video_id')->where('IOSId','=',$IOSId)->count();
   }else{
     $IOSId = 0;
-    $IOS_favorite_ids = 0;
-    $IOS_favorite_ids_count = 0;
+    $IOSfavorite_ids = 0;
+    $IOSfavorite_ids_count = 0;
   }
   if(!empty($user_id) ){
     $user_id = $request->user_id;
@@ -18782,9 +18894,9 @@ public function IOS_ShowVideo_favorite(Request $request) {
     $user_favorite_ids_count = 0;
 }
  
-        if ( $user_favorite_ids_count  > 0 && $IOS_favorite_ids_count  > 0) {
+        if ( $user_favorite_ids_count  > 0 && $IOSfavorite_ids_count  > 0) {
           
-        $Favorite = array_merge($user_favorite_ids->toArray(), $IOS_favorite_ids->toArray()/*, $arrayN, $arrayN*/);
+        $Favorite = array_merge($user_favorite_ids->toArray(), $IOSfavorite_ids->toArray()/*, $arrayN, $arrayN*/);
 
         foreach ($Favorite as $key => $value1) {
           $k2[] = $value1['video_id'];
@@ -18818,9 +18930,9 @@ public function IOS_ShowVideo_favorite(Request $request) {
           'status' => "true",
           'videos'=> $videos,
         );
-      }elseif ( $IOS_favorite_ids_count  > 0) {
+      }elseif ( $IOSfavorite_ids_count  > 0) {
 
-        foreach ($IOS_favorite_ids as $key => $value1) {
+        foreach ($IOSfavorite_ids as $key => $value1) {
           $k2[] = $value1['video_id'];
         }
         
@@ -18853,12 +18965,12 @@ public function IOS_ShowVideo_favorite(Request $request) {
   
     if(!empty($IOSId) ){
       $IOSId = $request->IOSId;
-      $IOS_favorite_ids = Favorite::select('episode_id')->where('IOSId','=',$IOSId)->get();
-      $IOS_favorite_ids_count = Favorite::select('episode_id')->where('IOSId','=',$IOSId)->count();
+      $IOSfavorite_ids = Favorite::select('episode_id')->where('IOSId','=',$IOSId)->get();
+      $IOSfavorite_ids_count = Favorite::select('episode_id')->where('IOSId','=',$IOSId)->count();
     }else{
       $IOSId = 0;
-      $IOS_favorite_ids = 0;
-      $IOS_favorite_ids_count = 0;
+      $IOSfavorite_ids = 0;
+      $IOSfavorite_ids_count = 0;
     }
     if(!empty($user_id) ){
       $user_id = $request->user_id;
@@ -18871,9 +18983,9 @@ public function IOS_ShowVideo_favorite(Request $request) {
       $user_favorite_ids_count = 0;
   }
    
-          if ( $user_favorite_ids_count  > 0 && $IOS_favorite_ids_count  > 0) {
+          if ( $user_favorite_ids_count  > 0 && $IOSfavorite_ids_count  > 0) {
             
-          $Favorite = array_merge($user_favorite_ids->toArray(), $IOS_favorite_ids->toArray()/*, $arrayN, $arrayN*/);
+          $Favorite = array_merge($user_favorite_ids->toArray(), $IOSfavorite_ids->toArray()/*, $arrayN, $arrayN*/);
   
           foreach ($Favorite as $key => $value1) {
             $k2[] = $value1['episode_id'];
@@ -18907,9 +19019,9 @@ public function IOS_ShowVideo_favorite(Request $request) {
             'status' => "true",
             'episode'=> $episode,
           );
-        }elseif ( $IOS_favorite_ids_count  > 0) {
+        }elseif ( $IOSfavorite_ids_count  > 0) {
   
-          foreach ($IOS_favorite_ids as $key => $value1) {
+          foreach ($IOSfavorite_ids as $key => $value1) {
             $k2[] = $value1['episode_id'];
           }
           
@@ -18943,12 +19055,12 @@ public function IOS_ShowVideo_favorite(Request $request) {
     
       if(!empty($IOSId) ){
         $IOSId = $request->IOSId;
-        $IOS_favorite_ids = Favorite::select('audio_id')->where('IOSId','=',$IOSId)->get();
-        $IOS_favorite_ids_count = Favorite::select('audio_id')->where('IOSId','=',$IOSId)->count();
+        $IOSfavorite_ids = Favorite::select('audio_id')->where('IOSId','=',$IOSId)->get();
+        $IOSfavorite_ids_count = Favorite::select('audio_id')->where('IOSId','=',$IOSId)->count();
       }else{
         $IOSId = 0;
-        $IOS_favorite_ids = 0;
-        $IOS_favorite_ids_count = 0;
+        $IOSfavorite_ids = 0;
+        $IOSfavorite_ids_count = 0;
       }
       if(!empty($user_id) ){
         $user_id = $request->user_id;
@@ -18961,9 +19073,9 @@ public function IOS_ShowVideo_favorite(Request $request) {
         $user_favorite_ids_count = 0;
     }
      
-            if ( $user_favorite_ids_count  > 0 && $IOS_favorite_ids_count  > 0) {
+            if ( $user_favorite_ids_count  > 0 && $IOSfavorite_ids_count  > 0) {
               
-            $Favorite = array_merge($user_favorite_ids->toArray(), $IOS_favorite_ids->toArray()/*, $arrayN, $arrayN*/);
+            $Favorite = array_merge($user_favorite_ids->toArray(), $IOSfavorite_ids->toArray()/*, $arrayN, $arrayN*/);
     
             foreach ($Favorite as $key => $value1) {
               $k2[] = $value1['audio_id'];
@@ -18995,9 +19107,9 @@ public function IOS_ShowVideo_favorite(Request $request) {
               'status' => "true",
               'audios'=> $audios,
             );
-          }elseif ( $IOS_favorite_ids_count  > 0) {
+          }elseif ( $IOSfavorite_ids_count  > 0) {
     
-            foreach ($IOS_favorite_ids as $key => $value1) {
+            foreach ($IOSfavorite_ids as $key => $value1) {
               $k2[] = $value1['audio_id'];
             }
             
@@ -19030,12 +19142,12 @@ public function IOS_ShowVideo_favorite(Request $request) {
       
         if(!empty($IOSId) ){
           $IOSId = $request->IOSId;
-          $IOS_favorite_ids = Favorite::select('live_id')->where('IOSId','=',$IOSId)->get();
-          $IOS_favorite_ids_count = Favorite::select('live_id')->where('IOSId','=',$IOSId)->count();
+          $IOSfavorite_ids = Favorite::select('live_id')->where('IOSId','=',$IOSId)->get();
+          $IOSfavorite_ids_count = Favorite::select('live_id')->where('IOSId','=',$IOSId)->count();
         }else{
           $IOSId = 0;
-          $IOS_favorite_ids = 0;
-          $IOS_favorite_ids_count = 0;
+          $IOSfavorite_ids = 0;
+          $IOSfavorite_ids_count = 0;
         }
         if(!empty($user_id) ){
           $user_id = $request->user_id;
@@ -19048,9 +19160,9 @@ public function IOS_ShowVideo_favorite(Request $request) {
           $user_favorite_ids_count = 0;
       }
        
-              if ( $user_favorite_ids_count  > 0 && $IOS_favorite_ids_count  > 0) {
+              if ( $user_favorite_ids_count  > 0 && $IOSfavorite_ids_count  > 0) {
                 
-              $Favorite = array_merge($user_favorite_ids->toArray(), $IOS_favorite_ids->toArray()/*, $arrayN, $arrayN*/);
+              $Favorite = array_merge($user_favorite_ids->toArray(), $IOSfavorite_ids->toArray()/*, $arrayN, $arrayN*/);
       
               foreach ($Favorite as $key => $value1) {
                 $k2[] = $value1['live_id'];
@@ -19080,9 +19192,9 @@ public function IOS_ShowVideo_favorite(Request $request) {
                 'status' => "true",
                 'live_stream'=> $live_stream,
               );
-            }elseif ( $IOS_favorite_ids_count  > 0) {
+            }elseif ( $IOSfavorite_ids_count  > 0) {
       
-              foreach ($IOS_favorite_ids as $key => $value1) {
+              foreach ($IOSfavorite_ids as $key => $value1) {
                 $k2[] = $value1['live_id'];
               }
               
@@ -19105,5 +19217,75 @@ public function IOS_ShowVideo_favorite(Request $request) {
             return response()->json($response, 200);
       
         }
+        public function social_network_setting(Request $request) {
+
+          try {
+            $socail_networl_setting = Setting::select('facebook_page_id','google_page_id','twitter_page_id','instagram_page_id','linkedin_page_id','whatsapp_page_id','skype_page_id','youtube_page_id')->get();
+            $response = array(
+              'status' => "true",
+              'socail_networl_setting'=> $socail_networl_setting,
+            );
+          } catch (\Throwable $th) {
+            //throw $th;
+            $response = array(
+              'status' => "true",
+              'socail_networl_setting'=> [],
+            );
+          }
+          return response()->json($response, 200);
+
+        }
+
+        public function contact_email_setting(Request $request) {
+
+          try {
+            $contact_email_setting = Setting::select('system_email','google_tracking_id','google_oauth_key','coupon_status')->get();
+            $response = array(
+              'status' => "true",
+              'contact_email_setting'=> $contact_email_setting,
+            );
+          } catch (\Throwable $th) {
+            //throw $th;
+            $response = array(
+              'status' => "true",
+              'contact_email_setting'=> [],
+            );
+          }
+          return response()->json($response, 200);
+
+        }
+
+        
+  public function tv_livestreams()
+  {
+    try {
+
+        $check_Kidmode = 0 ;
+
+        $data =  LiveStream::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
+
+         
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'Livestreams videos Retrieved successfully',
+          'livestreams' => $data
+        );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
       
+    }
+
+    
+        
+        return response()->json($response, 200);
+  }
+
 }

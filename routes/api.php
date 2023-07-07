@@ -536,7 +536,6 @@ Route::group(
             Route::post('IOS_ContinueWatchingExits', 'ApiAuthController@IOS_ContinueWatchingExits');
 
 
-            Route::post('Android_showfavorites', 'ApiAuthController@Android_showfavorites');
             Route::post('Android_Video_favorite', 'ApiAuthController@Android_Video_favorite');
             Route::post('Android_Episode_favorite', 'ApiAuthController@Android_Episode_favorite');
             Route::post('Android_Audio_favorite', 'ApiAuthController@Android_Audio_favorite');
@@ -555,7 +554,6 @@ Route::group(
             Route::post('Android_LiveStream_watchlater', 'ApiAuthController@Android_LiveStream_watchlater');
 
 
-            Route::post('IOS_mywatchlater', 'ApiAuthController@IOS_mywatchlater');
             Route::post('IOS_Video_watchlater', 'ApiAuthController@IOS_Video_watchlater');
             Route::post('IOS_Episode_watchlater', 'ApiAuthController@IOS_Episode_watchlater');
             Route::post('IOS_Audio_watchlater', 'ApiAuthController@IOS_Audio_watchlater');
@@ -584,5 +582,11 @@ Route::group(
             Route::post('Android_ShowEpisode_wishlist', 'ApiAuthController@Android_ShowEpisode_wishlist');
             Route::post('Android_ShowAudio_wishlist', 'ApiAuthController@Android_ShowAudio_wishlist');
             Route::post('Android_ShowLiveStream_wishlist', 'ApiAuthController@Android_ShowLiveStream_wishlist');
+            
+            
+            Route::get('social_network_setting', 'ApiAuthController@social_network_setting');
+            Route::get('contact_email_setting', 'ApiAuthController@contact_email_setting');
+
+            Route::get('tv_livestreams', 'ApiAuthController@tv_livestreams');
 
     });
