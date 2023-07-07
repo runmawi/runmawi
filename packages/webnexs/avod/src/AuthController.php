@@ -1076,7 +1076,7 @@ class AuthController extends Controller
     {
 
         $Ads_videos = $data["ads_videos"] ;
-        $ads_redirection_url = $data["ads_videos"];
+        $ads_redirection_url = $data["ads_redirection_url"];
         
         $Ads_video_slug  =  Str::slug(pathinfo($Ads_videos->getClientOriginalName(), PATHINFO_FILENAME));
         $Ads_video_ext   = $Ads_videos->extension();
@@ -1175,12 +1175,13 @@ class AuthController extends Controller
         if ( $request->ads_video != null && $request->ads_upload_type == "ads_video_upload" ) {
          
             $data = array (
-                "ads_videos" => $request->ads_video ,
-                "ads_redirection_url" => $request->ads_redirection_url ,
+                "ads_videos"            => $request->ads_video ,
+                "ads_redirection_url"   => $request->ads_redirection_url ,
+                "advertisement_id"      => $advertisement_id ,
             );
 
-            $Ads_xml_file = $this->Ads_xml_file( $data );
-         
+            $Ads_xml_file = $this->Ads_xml_file_update( $data );
+
             $inputs += ['ads_video' => $Ads_xml_file['Ads_upload_url'] ];
             $inputs += ['ads_path' => $Ads_xml_file['Ads_xml_url'] ];
             $inputs += ['ads_redirection_url' => $request->ads_redirection_url];
@@ -1196,8 +1197,12 @@ class AuthController extends Controller
         return redirect()->back();
     }
 
-    private function Ads_xml_file_update($Ads_videos , $advertisement_id )
+    private function Ads_xml_file_update( $data )
     {
+        
+            $Ads_videos = $data["ads_videos"] ;
+            $ads_redirection_url = $data["ads_redirection_url"];
+            $advertisement_id = $data["advertisement_id"];
 
             $Advertisement = Advertisement::find($advertisement_id);
 
@@ -1235,11 +1240,11 @@ class AuthController extends Controller
         $linearCreative = $ad1
             ->createLinearCreative()
             ->setDuration(128)
-            ->setId( Str::random(23) );
-            // ->setAdId('pre-'.Str::random(23));
-            // ->setVideoClicksClickThrough('http://entertainmentserver.com/landing')
-            // ->addVideoClicksClickTracking('http://ad.server.com/videoclicks/clicktracking')
-            // ->addVideoClicksCustomClick('http://ad.server.com/videoclicks/customclick')
+            ->setId( Str::random(23) )
+            // ->setAdId('pre-'.Str::random(23))
+            ->setVideoClicksClickThrough($ads_redirection_url)
+            ->addVideoClicksClickTracking( $ads_redirection_url )
+            ->addVideoClicksCustomClick( $ads_redirection_url );
             // ->addTrackingEvent('start', 'http://ad.server.com/trackingevent/start')
             // ->addTrackingEvent('pause', 'http://ad.server.com/trackingevent/stop');
 
@@ -1261,6 +1266,8 @@ class AuthController extends Controller
             'Ads_xml_url' => $xml_file_url ,
             'Ads_upload_url' => $Ads_upload_url ,
         );
+
+        return $data ;
     }
 
     public function Ads_delete($Ads_id)
