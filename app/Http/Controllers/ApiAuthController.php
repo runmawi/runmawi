@@ -750,7 +750,7 @@ class ApiAuthController extends Controller
 
     if($user > 0){
 
-      $verification_code = mt_rand(100000, 999999);
+      $verification_code = mt_rand(1000, 9999);
       $email = $user_email;
 
       try {
@@ -9193,7 +9193,8 @@ $cpanel->end();
     $andriod_favorite = 'false';
     // $userrole = '';
   }
-  
+  if(!empty($request->user_id)){
+
   if(!empty($request->user_id)){
     $user_id = $request->user_id;
     $users = User::where('id','=',$user_id)->first();
@@ -9268,7 +9269,62 @@ $cpanel->end();
       $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
     }
 
-        
+  }else{
+    $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
+
+    $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
+
+    $season = SeriesSeason::where('id',$season_id)->first();
+
+    if (!empty(@$season) && @$season->access != "ppv" || @$season->access == "free") {
+      $ppv_video_status = "can_view";
+    }
+    else {
+          $ppv_video_status = "pay_now";
+    }
+
+    if(!empty($season_id) ){
+      $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
+    }
+    $userrole = 'guest';
+
+    if(!empty($series_id) && count($series_id) > 0){
+      $series_id = $series_id[0];
+  
+    $main_genre = SeriesCategory::Join('genres','genres.id','=','series_categories.category_id')
+    ->where('series_categories.series_id',$series_id)->get('name');
+  
+    $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.language_id')
+    ->where('series_languages.series_id',$series_id)->get('name');
+    }
+  
+    if(!empty($series_id) && !empty($main_genre)){
+    foreach($main_genre as $value){
+      $category[] = $value['name'];
+    }
+  }else{
+    $category = [];
+  }
+    if(!empty($category)){
+    $main_genre = implode(",",$category);
+    }else{
+      $main_genre = "";
+    }
+  
+    if(!empty($series_id) && !empty($languages)){
+    foreach($languages as $value){
+      $language[] = $value['name'];
+    }
+  }else{
+    $language = "";
+  }
+  
+    if(!empty($language)){
+    $languages = implode(",",$language);
+    }else{
+      $languages = "";
+    }
+  }
 
     $response = array(
       'status'=>'true',

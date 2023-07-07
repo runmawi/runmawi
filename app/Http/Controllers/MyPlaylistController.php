@@ -224,5 +224,19 @@ class MyPlaylistController extends Controller
         }
         return Theme::view('PlayPlayList', $data);
     }
-
+    public function Delete_Playlist($id){
+        try {
+            // dd($id);
+            $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
+            AudioUserPlaylist::where('user_id',Auth::user()->id)->where('playlist_id',$id)->delete();
+            $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->where('id', $MyPlaylist_id)->delete();
+        } catch (\Throwable $th) {
+            throw $th;
+            $data = [];
+        }
+        return Redirect::to('/home')->with([
+            "message" => "Successfully Updated Video!",
+            "note_type" => "success",
+        ]);
+    }
 }
