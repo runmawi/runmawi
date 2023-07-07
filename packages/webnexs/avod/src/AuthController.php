@@ -1076,7 +1076,7 @@ class AuthController extends Controller
     {
 
         $Ads_videos = $data["ads_videos"] ;
-        $ads_redirection_url = $data["ads_videos"];
+        $ads_redirection_url = $data["ads_redirection_url"];
         
         $Ads_video_slug  =  Str::slug(pathinfo($Ads_videos->getClientOriginalName(), PATHINFO_FILENAME));
         $Ads_video_ext   = $Ads_videos->extension();
