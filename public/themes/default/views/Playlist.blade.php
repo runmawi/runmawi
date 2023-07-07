@@ -300,7 +300,8 @@ $settings = App\Setting::first();
       </div>
         <div class="btn-action" >
           <div id="">
-            <i class='fa fa-trash-o' id="icon-play"></i>
+            <a href="{{ URL::to('playlist/delete').'/'. @$MyPlaylist->id }}">
+            <i class='fa fa-trash-o' id="icon-play"></i></a>
            
           </div>
       </div>
