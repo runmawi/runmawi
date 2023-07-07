@@ -345,6 +345,13 @@ Your browser does not support the audio element.
         <div class="divider" style="border:1px solid white"></div>
         <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
     </div>
+</div>&nbsp;
+<div>
+<?php if(!Auth::guest()){ ?>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Create PlayList
+</button>
+<?php } ?>
 </div>
 <!-- Share -->
 </div>
@@ -482,11 +489,7 @@ Your browser does not support the audio element.
 <!-- Playlist  -->
 
 <div class="container-fluid">
-  <?php if(!Auth::guest()){ ?>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Create PlayList
-</button>
-<?php } ?>
+
 </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
