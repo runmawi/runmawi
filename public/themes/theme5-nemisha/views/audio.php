@@ -296,7 +296,7 @@ Your browser does not support the audio element.
     background-position: right;">
               <div class="row justify-content-between align-items-center">
             <div class="col-sm-3 col-md-3 col-xs-3 text-center">
-<img src="<?= URL::to('/').'/public/uploads/images/'.$audio->image ?>"  class="img-responsive w-100"  >
+<img height="150" width="150" id="audio_img" src="">
 
 <!-- -->
 </div>
@@ -815,11 +815,14 @@ window.location = '<?= URL::to('login') ?>';
   var indexAudio = 0;
 
   function loadNewTrack(index){
-
+    
     var player = document.querySelector('#source-audio')
+  
+
     player.src = listAudio[index].mp3_url
     document.querySelector('.title').innerHTML = listAudio[index].title
-
+    var image = document.querySelector('#audio_img')
+    image.src = listAudio[index].poster
     this.currentAudio = document.getElementById("myAudio");
     this.currentAudio.load()
     this.toggleAudio()
@@ -846,8 +849,12 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
 
-  document.querySelector('#source-audio').src = listAudio[indexAudio].mp3_url
-  document.querySelector('.title').innerHTML = listAudio[indexAudio].title
+  document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
+  document.querySelector('.title').innerHTML = <?php echo json_encode(@$audios->title) ; ?>  
+       var playerimage = <?php echo json_encode(@$audio->player_image) ; ?>;
+           var imageplayer = '<?php echo URL::to('/public/uploads/images/') ?>'
+//            alert();
+      $("#audio_img").attr('src', imageplayer+'/'+playerimage);
 
   var currentAudio = document.getElementById("myAudio");
 
