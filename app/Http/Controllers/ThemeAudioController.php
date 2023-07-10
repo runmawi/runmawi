@@ -529,6 +529,7 @@ class ThemeAudioController extends Controller{
                 'other_albums' => $other_albums,
                 'first_album_mp3_url' => $album_audios->first() ? $album_audios->first()->mp3_url : null ,
                 'first_album_title' => $album_audios->first() ? $album_audios->first()->title : null ,
+                'first_audio_image' => $album_audios->first() ? $album_audios->first()->image : null ,
                 'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
                 'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),

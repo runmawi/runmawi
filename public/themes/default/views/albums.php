@@ -596,7 +596,7 @@ window.location = '<?= URL::to('login') ?>';
 
       document.querySelector('.title').innerHTML = listAudio[index].title
  var image = document.querySelector('#audio_img')
-    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image
+    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image
    
       this.currentAudio = document.getElementById("myAudio");
       this.currentAudio.load()
@@ -712,9 +712,11 @@ window.location = '<?= URL::to('login') ?>';
 
   document.querySelector('#source-audio').src = <?php echo json_encode($first_album_mp3_url) ; ?>  
   document.querySelector('.title').innerHTML = <?php echo json_encode($first_album_title) ; ?>  
- var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
+  var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
   var player_imagess = player_images +'/' + <?php echo json_encode(@$album->player_image) ; ?>;
-  $("#audio_img").attr('src', player_imagess);
+
+  var first_audio_image = player_images +'/' + <?php echo json_encode($first_audio_image) ; ?>;
+  $("#audio_img").attr('src', first_audio_image);
     
   var currentAudio = document.getElementById("myAudio");
 
