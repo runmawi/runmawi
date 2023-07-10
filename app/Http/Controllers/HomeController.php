@@ -2335,9 +2335,9 @@ class HomeController extends Controller
                 [   'username' => ['required', 'string'], 
                     'email' => ['required', 'string', 'email', 'unique:users'],
                     // 'password' => 'required|string|min:6|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
-                    'password_confirmation' => 'required',
+                    // 'password_confirmation' => 'required',
                     'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
-                    'password_confirmation' => 'required|confirmed',
+                    // 'password_confirmation' => 'required|confirmed',
                     'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
                  ]);
         }
