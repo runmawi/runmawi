@@ -307,8 +307,15 @@ $settings = App\Setting::first();
       </div>
         <div class="btn-action" >
           <div id="">
-            <i class='fa fa-share-alt' id="icon-play"></i>
-           
+            <i class='fa fa-share-alt'type="button" id="dropdownMenuButton icon-play" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id=""></i>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: black;border:1px solid white;padding: 0;">
+        <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
+            <i class="fa fa-twitter" style="color: #00acee;padding: 10px;border-radius: 50%;font-size: 26px;"></i>
+        </a>
+        <div class="divider" style="border:1px solid white"></div>
+        <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
+    </div>
+</div>&nbsp;
           </div>
       </div>
      
