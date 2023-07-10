@@ -312,9 +312,8 @@ Your browser does not support the audio element.
     background-position: right;">
               <div class="row align-items-center">
            <div class="col-sm-3 col-md-3 col-xs-3 ">
- <img height="150" width="150" id="audio_img" src="">
- 
-</div>
+              <img height="150" width="150" id="audio_img" src="">
+           </div>
             
 <div class="col-sm-9 col-md-9 col-xs-9">
     
@@ -810,12 +809,10 @@ window.location = '<?= URL::to('login') ?>';
   function loadNewTrack(index){
     
     var player = document.querySelector('#source-audio')
-  
-
     player.src = listAudio[index].mp3_url
     document.querySelector('.title').innerHTML = listAudio[index].title
     var image = document.querySelector('#audio_img')
-    image.src = listAudio[index].poster
+    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image
     this.currentAudio = document.getElementById("myAudio");
     this.currentAudio.load()
     this.toggleAudio()
@@ -844,15 +841,12 @@ window.location = '<?= URL::to('login') ?>';
 
   document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
   document.querySelector('.title').innerHTML = <?php echo json_encode(@$audios->title) ; ?>  
-       var playerimage = <?php echo json_encode(@$audio->player_image) ; ?>;
-           var imageplayer = '<?php echo URL::to('/public/uploads/images/') ?>'
-//            alert();
-      $("#audio_img").attr('src', imageplayer+'/'+playerimage);
-
-  var currentAudio = document.getElementById("myAudio");
-
-  currentAudio.load()
+  var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
+  var player_imagess = player_images +'/' + <?php echo json_encode(@$audio->player_image) ; ?>;
+  $("#audio_img").attr('src', player_imagess);
   
+  var currentAudio = document.getElementById("myAudio");
+  currentAudio.load()
   currentAudio.onloadedmetadata = function() {
         document.getElementsByClassName('duration')[0].innerHTML = this.getMinutes(this.currentAudio.duration)
   }.bind(this);
