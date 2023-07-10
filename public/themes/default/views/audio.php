@@ -573,8 +573,9 @@ Your browser does not support the audio element.
    
 <h4  class="album-title">Other Albums </h4>
     <div class="favorites-contens">
-<ul class="favorites-slider list-inline  row p-0 mb-0">
+
     <?php foreach ($other_albums as $other_album) { ?>
+        <ul class="favorites-slider list-inline  row p-0 mb-0">
         <li class="slide-item">
             <?php if($other_album->album != ''){ ?>
             
@@ -595,8 +596,9 @@ Your browser does not support the audio element.
            
           
         </li>
+            </ul>
     <?php } ?>
-</ul>
+
         </div>
 </div>
 
