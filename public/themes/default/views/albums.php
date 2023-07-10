@@ -386,8 +386,9 @@
 <div class="col-sm-12">
 <p  class="album-title">Other Albums </p>
 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+                   
  <?php foreach ($other_albums as $other_album) { ?>
+     <ul class="favorites-slider list-inline  row p-0 mb-0">
                        <li class="slide-item">
                             <a href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
                              <div class="block-images position-relative">
@@ -406,8 +407,9 @@
                               </div>
                           </a>
                        </li>
+          </ul>
                        <?php } ?>
-                    </ul>
+                   
                  </div>
 </div>
 
