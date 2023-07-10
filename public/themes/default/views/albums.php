@@ -309,7 +309,15 @@
                               <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
                           </div>
                       </div>
+                      <div>
+                    <?php if(!Auth::guest()){ ?>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                      Create PlayList
+                    </button>
+                    <?php } ?>
+                    </div>
                   </div>
+
                   </div>
               </div>    
             </div>
@@ -418,8 +426,56 @@
 
 </div>
 <?php } ?>
+<!-- Playlist  -->
+
+<div class="container-fluid">
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-black" id="exampleModalLabel">Create PlayList</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	        
+      <form  id="my-playlist-form" accept-charset="UTF-8"  enctype="multipart/form-data"  action="<?= URL::to('/playlist/store') ?>" method="post">
+      
+      <div class="col-sm-10 p-0">
+            <label for="name">PlayList Title</label>
+            <input name="title" id="title" placeholder="PlayList Title" class="form-control text-black"  />
+          </div>
+          <div class="col-sm-10 p-0">
+		
+            <label for="name">PlayList Image</label>
+            <input type="file" name="image" id="image" />
+          </div>
+     
+      <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+<br>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" id="store-play-list" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+</div>
 <script type="text/javascript">
 $(document).ready(function() {
+
+  
+$('#store-play-list').click(function(){
+				$('#my-playlist-form').submit();
+			});
+
+
 $(".my-div").on("contextmenu",function(){
 return false;
 }); 
