@@ -522,112 +522,17 @@ window.location = '<?= URL::to('login') ?>';
   var indexAudio = 0;
 
   function loadNewTrack(index){
-
-    var access = listAudio[index].access
-
-    var audioppv_id  = listAudio[index].id
-            
-
-
-      if(access == 'guest'){
-        // alert(access);
-      var player = document.querySelector('#source-audio')
-
-      player.src = listAudio[index].mp3_url
-
-      document.querySelector('.title').innerHTML = listAudio[index].title
-
-      this.currentAudio = document.getElementById("myAudio");
-      this.currentAudio.load()
-      this.toggleAudio()
-      this.updateStylePlaylist(this.indexAudio,index)
-      this.indexAudio = index;
-    }else if(access == 'ppv'){ 
-
-      var audioppv = <?php echo json_encode($audioppv) ?>;
-      
-      var countaudioppv = [];    
-
-      // audioppv.forEach(element => console.log(element));
-      audioppv.forEach(element => {
-            if(element.audio_id == audioppv_id) {
-              // alert(audioppv_id);
-              countaudioppv.push(1) 
-            }       
-          });
-
-        if(countaudioppv.length > 0 || role == 'subscriber'){
-            var player = document.querySelector('#source-audio')
-
-            player.src = listAudio[index].mp3_url
-
-            document.querySelector('.title').innerHTML = listAudio[index].title
-
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
-        }else{
-            var player = document.querySelector('#source-audio')
-
-            player.src = ''
-
-            document.querySelector('.title').innerHTML = listAudio[index].title
-
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
-
-            document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
-            document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
-
-            document.querySelector('#enable_button').style.display = 'block';
-            alert("Purchase Audio");   
-
-
-        }
-    }else if(access == 'subscriber'){ 
-
-
-      var role = <?php echo json_encode($role) ?>;
-      // alert(role);
-
-      if(role == 'subscriber'){
-            var player = document.querySelector('#source-audio')
-
-            player.src = listAudio[index].mp3_url
-
-            document.querySelector('.title').innerHTML = listAudio[index].title
-
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
-        }else{
-            var player = document.querySelector('#source-audio')
-
-            player.src = ''
-
-            document.querySelector('.title').innerHTML = listAudio[index].title
-
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
-
-            document.querySelector('#Subscriber_button').style.display = 'block';
-            alert("Become Subscriber to Listen this Audio");   
-
-
-        }
-
-    }
-
+    
+    var player = document.querySelector('#source-audio')
+    player.src = listAudio[index].mp3_url
+    document.querySelector('.title').innerHTML = listAudio[index].title
+    var image = document.querySelector('#audio_img')
+    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image
+    this.currentAudio = document.getElementById("myAudio");
+    this.currentAudio.load()
+    this.toggleAudio()
+    this.updateStylePlaylist(this.indexAudio,index)
+    this.indexAudio = index;
   }
 
   var playListItems = document.querySelectorAll(".playlist-track-ctn");
@@ -649,13 +554,14 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
 
-  document.querySelector('#source-audio').src = <?php echo json_encode($first_album_mp3_url) ; ?>  
-  document.querySelector('.title').innerHTML = <?php echo json_encode($first_album_title) ; ?>  
-
-  var currentAudio = document.getElementById("myAudio");
-
-  currentAudio.load()
+  document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
+  document.querySelector('.title').innerHTML = <?php echo json_encode(@$audios->title) ; ?>  
+  var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
+  var player_imagess = player_images +'/' + <?php echo json_encode(@$album->player_image) ; ?>;
+  $("#audio_img").attr('src', player_imagess);
   
+  var currentAudio = document.getElementById("myAudio");
+  currentAudio.load()
   currentAudio.onloadedmetadata = function() {
         document.getElementsByClassName('duration')[0].innerHTML = this.getMinutes(this.currentAudio.duration)
   }.bind(this);
