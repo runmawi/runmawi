@@ -14,7 +14,7 @@ class AddAdsRedirectionUrlToAdvertisementsTable extends Migration
     public function up()
     {
         Schema::table('advertisements', function (Blueprint $table) {
-            $table->longText('ads_redirection_url')->nullable();
+            $table->longText('ads_redirection_url')->nullable()->after('ads_path');
         });
     }
 
