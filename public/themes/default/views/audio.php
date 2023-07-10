@@ -312,9 +312,8 @@ Your browser does not support the audio element.
     background-position: right;">
               <div class="row align-items-center">
            <div class="col-sm-3 col-md-3 col-xs-3 ">
- <img height="150" width="150" id="audio_img" src="">
- 
-</div>
+              <img height="150" width="150" id="audio_img" src="">
+           </div>
             
 <div class="col-sm-9 col-md-9 col-xs-9">
     
@@ -327,7 +326,7 @@ Your browser does not support the audio element.
 </h2>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
-<div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
+<div class="d-flex" style="justify-content: space-between;width: 70%;align-items: center;">
 
 <div onclick="toggleAudio()">
   <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
@@ -347,7 +346,7 @@ Your browser does not support the audio element.
 </div>&nbsp;
 <div>
 <?php if(!Auth::guest()){ ?>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+<button type="button" class="btn bd btn-primary" data-toggle="modal" data-target="#exampleModal">
   Create PlayList
 </button>
 <?php } ?>
@@ -574,8 +573,9 @@ Your browser does not support the audio element.
    
 <h4  class="album-title">Other Albums </h4>
     <div class="favorites-contens">
-<ul class="favorites-slider list-inline  row p-0 mb-0">
+
     <?php foreach ($other_albums as $other_album) { ?>
+        <ul class="favorites-slider list-inline  row p-0 mb-0">
         <li class="slide-item">
             <?php if($other_album->album != ''){ ?>
             
@@ -596,8 +596,9 @@ Your browser does not support the audio element.
            
           
         </li>
+            </ul>
     <?php } ?>
-</ul>
+
         </div>
 </div>
 
@@ -810,12 +811,10 @@ window.location = '<?= URL::to('login') ?>';
   function loadNewTrack(index){
     
     var player = document.querySelector('#source-audio')
-  
-
     player.src = listAudio[index].mp3_url
     document.querySelector('.title').innerHTML = listAudio[index].title
     var image = document.querySelector('#audio_img')
-    image.src = listAudio[index].poster
+    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image
     this.currentAudio = document.getElementById("myAudio");
     this.currentAudio.load()
     this.toggleAudio()
@@ -844,15 +843,12 @@ window.location = '<?= URL::to('login') ?>';
 
   document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
   document.querySelector('.title').innerHTML = <?php echo json_encode(@$audios->title) ; ?>  
-       var playerimage = <?php echo json_encode(@$audio->player_image) ; ?>;
-           var imageplayer = '<?php echo URL::to('/public/uploads/images/') ?>'
-//            alert();
-      $("#audio_img").attr('src', imageplayer+'/'+playerimage);
-
-  var currentAudio = document.getElementById("myAudio");
-
-  currentAudio.load()
+  var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
+  var player_imagess = player_images +'/' + <?php echo json_encode(@$audio->player_image) ; ?>;
+  $("#audio_img").attr('src', player_imagess);
   
+  var currentAudio = document.getElementById("myAudio");
+  currentAudio.load()
   currentAudio.onloadedmetadata = function() {
         document.getElementsByClassName('duration')[0].innerHTML = this.getMinutes(this.currentAudio.duration)
   }.bind(this);

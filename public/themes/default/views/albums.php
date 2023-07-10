@@ -66,7 +66,7 @@
   }
 
   .title{
-   padding: 5px 0 5px 0 ;
+    margin-left: 10px;
     /*
     text-align: center;
       border-top:1px solid rgba(255, 255, 255,0.1)*/
@@ -270,11 +270,13 @@
 
             
               </div>
-           <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;    background-repeat: no-repeat;    background-position: right;">
+           <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right;">
             <div class="row align-items-center mb-4">
 
               <div class="col-sm-3">
-                <img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" width="200" height="200">
+                <img height="150" width="150" id="audio_img" src="">
               </div>
 
               <div class="col-sm-8 col-md-8 col-xs-8">
@@ -283,8 +285,7 @@
                     <div class="blur"></div>
                     <div class="overlay_blur">
 
-                      <h4 class="hero-title album mb-0"> <?= $album->albumname; ?></h4>
-                         <div class="title"></div>
+                      <h4 class="hero-title album mb-2"> <?= $album->albumname; ?></h4>
                       <!-- <p class="mt-2">Music by    <br>A. R. Rahman</p> -->
 
                       <div class="d-flex" style="justify-content: space-between;width: 33%;align-items: center;">
@@ -329,7 +330,7 @@
 
       <div class="infos-ctn">
         <div class="timer">00:00</div>
-       
+        <div class="title"></div>
         <div class="duration">00:00</div>
       </div>
 
@@ -393,8 +394,10 @@
 <div class="col-sm-12">
 <p  class="album-title">Other Albums </p>
 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+    
+                   <ul class="favorites-slider list-inline  row p-0 mb-0">
  <?php foreach ($other_albums as $other_album) { ?>
+     
                        <li class="slide-item">
                             <a href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
                              <div class="block-images position-relative">
@@ -413,8 +416,9 @@
                               </div>
                           </a>
                        </li>
+        
                        <?php } ?>
-                    </ul>
+                     </ul>
                  </div>
 </div>
 
@@ -531,6 +535,7 @@ window.location = '<?= URL::to('login') ?>';
 </div>
 <script>
   function createTrackItem(index,name,duration){
+
     var trackItem = document.createElement('div');
     trackItem.setAttribute("class", "playlist-track-ctn");
     trackItem.setAttribute("id", "ptc-"+index);
@@ -556,44 +561,134 @@ window.location = '<?= URL::to('login') ?>';
 
     var trackDurationItem = document.createElement('div');
     trackDurationItem.setAttribute("class", "playlist-duration");
-    trackDurationItem.innerHTML = duration
+
+    var measuredTime = new Date(null);
+    measuredTime.setSeconds(duration); 
+    var MHSTime = measuredTime.toISOString().substr(11, 8);
+    
+    trackDurationItem.innerHTML = MHSTime
+
     document.querySelector("#ptc-"+index).appendChild(trackDurationItem);
+
   }
 
-  var listAudio = [
-    {
-      name:"Artist 1 - audio 1",
-      file:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
-      duration:"08:47",
-        img:'https://lh6.googleusercontent.com/-fgsARdZit74/AAAAAAAAAAI/AAAAAAAAY2Q/RIxfhjaEe4k/w48-c-h48/photo.jpg'
-    },
-    {
-      name:"Artist 2 - audio 2",
-      file:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-      duration:"05:53"
-    },
-    {
-      name:"Artist 3 - audio 3",
-      file:"https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_1MG.mp3",
-      duration:"00:27"
-    }
-  ]
+  var listAudio = <?php echo json_encode($album_audios); ?>;
 
   for (var i = 0; i < listAudio.length; i++) {
-      createTrackItem(i,listAudio[i].name,listAudio[i].duration);
+      createTrackItem(i,listAudio[i].title,listAudio[i].duration);
   }
+
   var indexAudio = 0;
 
   function loadNewTrack(index){
-    var player = document.querySelector('#source-audio')
-    player.src = listAudio[index].file
-    document.querySelector('.title').innerHTML = listAudio[index].name
-       document.getElementById('image').src = img;
-    this.currentAudio = document.getElementById("myAudio");
-    this.currentAudio.load()
-    this.toggleAudio()
-    this.updateStylePlaylist(this.indexAudio,index)
-    this.indexAudio = index;
+
+    var access = listAudio[index].access
+
+    var audioppv_id  = listAudio[index].id
+            
+
+
+      if(access == 'guest'){
+        // alert(access);
+      var player = document.querySelector('#source-audio')
+
+      player.src = listAudio[index].mp3_url
+
+      document.querySelector('.title').innerHTML = listAudio[index].title
+ var image = document.querySelector('#audio_img')
+    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image
+   
+      this.currentAudio = document.getElementById("myAudio");
+      this.currentAudio.load()
+      this.toggleAudio()
+      this.updateStylePlaylist(this.indexAudio,index)
+      this.indexAudio = index;
+    }else if(access == 'ppv'){ 
+
+      var audioppv = <?php echo json_encode($audioppv) ?>;
+      
+      var countaudioppv = [];    
+
+      // audioppv.forEach(element => console.log(element));
+      audioppv.forEach(element => {
+            if(element.audio_id == audioppv_id) {
+              // alert(audioppv_id);
+              countaudioppv.push(1) 
+            }       
+          });
+
+        if(countaudioppv.length > 0 || role == 'subscriber'){
+            var player = document.querySelector('#source-audio')
+
+            player.src = listAudio[index].mp3_url
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+        }else{
+            var player = document.querySelector('#source-audio')
+
+            player.src = ''
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+
+            document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
+            document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
+
+            document.querySelector('#enable_button').style.display = 'block';
+            alert("Purchase Audio");   
+
+
+        }
+    }else if(access == 'subscriber'){ 
+
+
+      var role = <?php echo json_encode($role) ?>;
+      // alert(role);
+
+      if(role == 'subscriber'){
+            var player = document.querySelector('#source-audio')
+
+            player.src = listAudio[index].mp3_url
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+        }else{
+            var player = document.querySelector('#source-audio')
+
+            player.src = ''
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+
+            document.querySelector('#Subscriber_button').style.display = 'block';
+            alert("Become Subscriber to Listen this Audio");   
+
+
+        }
+
+    }
+
   }
 
   var playListItems = document.querySelectorAll(".playlist-track-ctn");
@@ -615,10 +710,12 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
 
-  document.querySelector('#source-audio').src = listAudio[indexAudio].file
-  document.querySelector('.title').innerHTML = listAudio[indexAudio].name
-  document.querySelector('.img').innerHTML = listAudio[indexAudio].img
- 
+  document.querySelector('#source-audio').src = <?php echo json_encode($first_album_mp3_url) ; ?>  
+  document.querySelector('.title').innerHTML = <?php echo json_encode($first_album_title) ; ?>  
+ var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
+  var player_imagess = player_images +'/' + <?php echo json_encode(@$album->player_image) ; ?>;
+  $("#audio_img").attr('src', player_imagess);
+    
   var currentAudio = document.getElementById("myAudio");
 
   currentAudio.load()
@@ -765,6 +862,7 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
 </script>
+
 
 <!-- Cinet Pay CheckOut -->
 
