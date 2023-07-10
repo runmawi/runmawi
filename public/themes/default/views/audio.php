@@ -326,7 +326,7 @@ Your browser does not support the audio element.
 </h2>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
-<div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
+<div class="d-flex" style="justify-content: space-between;width: 70%;align-items: center;">
 
 <div onclick="toggleAudio()">
   <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
@@ -346,7 +346,7 @@ Your browser does not support the audio element.
 </div>&nbsp;
 <div>
 <?php if(!Auth::guest()){ ?>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+<button type="button" class="btn bd btn-primary" data-toggle="modal" data-target="#exampleModal">
   Create PlayList
 </button>
 <?php } ?>
