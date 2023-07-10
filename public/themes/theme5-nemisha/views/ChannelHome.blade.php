@@ -12,7 +12,9 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         height: 1px;
          background-image: linear-gradient(90deg, white, transparent);
     }
-    
+    .slick-track{
+        display: flex;
+    }
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
