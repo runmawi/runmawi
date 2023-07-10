@@ -276,7 +276,7 @@
             <div class="row align-items-center mb-4">
 
               <div class="col-sm-3">
-                <img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" width="200" height="200">
+                <img height="150" width="150" id="audio_img" src="">
               </div>
 
               <div class="col-sm-8 col-md-8 col-xs-8">
@@ -386,8 +386,9 @@
 <div class="col-sm-12">
 <p  class="album-title">Other Albums </p>
 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+                   
  <?php foreach ($other_albums as $other_album) { ?>
+     <ul class="favorites-slider list-inline  row p-0 mb-0">
                        <li class="slide-item">
                             <a href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
                              <div class="block-images position-relative">
@@ -406,8 +407,9 @@
                               </div>
                           </a>
                        </li>
+          </ul>
                        <?php } ?>
-                    </ul>
+                   
                  </div>
 </div>
 
@@ -522,17 +524,114 @@ window.location = '<?= URL::to('login') ?>';
   var indexAudio = 0;
 
   function loadNewTrack(index){
-    
-    var player = document.querySelector('#source-audio')
-    player.src = listAudio[index].mp3_url
-    document.querySelector('.title').innerHTML = listAudio[index].title
-    var image = document.querySelector('#audio_img')
+
+    var access = listAudio[index].access
+
+    var audioppv_id  = listAudio[index].id
+            
+
+
+      if(access == 'guest'){
+        // alert(access);
+      var player = document.querySelector('#source-audio')
+
+      player.src = listAudio[index].mp3_url
+
+      document.querySelector('.title').innerHTML = listAudio[index].title
+ var image = document.querySelector('#audio_img')
     image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image
-    this.currentAudio = document.getElementById("myAudio");
-    this.currentAudio.load()
-    this.toggleAudio()
-    this.updateStylePlaylist(this.indexAudio,index)
-    this.indexAudio = index;
+   
+      this.currentAudio = document.getElementById("myAudio");
+      this.currentAudio.load()
+      this.toggleAudio()
+      this.updateStylePlaylist(this.indexAudio,index)
+      this.indexAudio = index;
+    }else if(access == 'ppv'){ 
+
+      var audioppv = <?php echo json_encode($audioppv) ?>;
+      
+      var countaudioppv = [];    
+
+      // audioppv.forEach(element => console.log(element));
+      audioppv.forEach(element => {
+            if(element.audio_id == audioppv_id) {
+              // alert(audioppv_id);
+              countaudioppv.push(1) 
+            }       
+          });
+
+        if(countaudioppv.length > 0 || role == 'subscriber'){
+            var player = document.querySelector('#source-audio')
+
+            player.src = listAudio[index].mp3_url
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+        }else{
+            var player = document.querySelector('#source-audio')
+
+            player.src = ''
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+
+            document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
+            document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
+
+            document.querySelector('#enable_button').style.display = 'block';
+            alert("Purchase Audio");   
+
+
+        }
+    }else if(access == 'subscriber'){ 
+
+
+      var role = <?php echo json_encode($role) ?>;
+      // alert(role);
+
+      if(role == 'subscriber'){
+            var player = document.querySelector('#source-audio')
+
+            player.src = listAudio[index].mp3_url
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+        }else{
+            var player = document.querySelector('#source-audio')
+
+            player.src = ''
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+
+            document.querySelector('#Subscriber_button').style.display = 'block';
+            alert("Become Subscriber to Listen this Audio");   
+
+
+        }
+
+    }
+
   }
 
   var playListItems = document.querySelectorAll(".playlist-track-ctn");
@@ -554,14 +653,16 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
 
-  document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
-  document.querySelector('.title').innerHTML = <?php echo json_encode(@$audios->title) ; ?>  
-  var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
+  document.querySelector('#source-audio').src = <?php echo json_encode($first_album_mp3_url) ; ?>  
+  document.querySelector('.title').innerHTML = <?php echo json_encode($first_album_title) ; ?>  
+ var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
   var player_imagess = player_images +'/' + <?php echo json_encode(@$album->player_image) ; ?>;
   $("#audio_img").attr('src', player_imagess);
-  
+    
   var currentAudio = document.getElementById("myAudio");
+
   currentAudio.load()
+  
   currentAudio.onloadedmetadata = function() {
         document.getElementsByClassName('duration')[0].innerHTML = this.getMinutes(this.currentAudio.duration)
   }.bind(this);
