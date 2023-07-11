@@ -15161,8 +15161,8 @@ public function QRCodeMobileLogout(Request $request)
 
     $response = array(
       'status'=>'true',
-      'like'  =>  Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('liked')->first(),
-      'dislike'  =>   Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('disliked')->first(),
+      'liked'  =>  Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('liked')->first(),
+      'disliked'  =>   Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('disliked')->first(),
     );
 
     return response()->json($response, 200);
@@ -15211,8 +15211,8 @@ public function QRCodeMobileLogout(Request $request)
 
       $response = array(
         'status'=>'true',
-        'like'  =>  Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('liked')->first(),
-        'dislike'  =>   Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('disliked')->first(),
+        'liked'  =>  Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('liked')->first(),
+        'disliked'  =>   Likedislike::where("episode_id",$episode_id)->where("andriodId",$andriodId)->pluck('disliked')->first(),
       );
 
       return response()->json($response, 200);
