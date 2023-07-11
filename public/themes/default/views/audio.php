@@ -307,7 +307,7 @@ Your browser does not support the audio element.
 <div class="row album-top-30 mt-4 ">
     
     <div class="col-lg-8">
-         <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/images/'. $audio->player_image ?>');background-size: cover;
+         <div class="player-ctn" id="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/images/'. $audio->player_image ?>');background-size: cover;
     background-repeat: no-repeat;
     background-position: right;">
               <div class="row align-items-center">
@@ -812,7 +812,12 @@ window.location = '<?= URL::to('login') ?>';
     player.src = listAudio[index].mp3_url
     document.querySelector('.title').innerHTML = listAudio[index].title
     var image = document.querySelector('#audio_img')
-    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image
+    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image 
+
+    var divElement = document.getElementById("player-ctn");
+    var player_imageURL = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image 
+    divElement.style.backgroundImage = "linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1))," + "url('" + player_imageURL + "')";
+
     this.currentAudio = document.getElementById("myAudio");
     this.currentAudio.load()
     this.toggleAudio()
@@ -842,8 +847,8 @@ window.location = '<?= URL::to('login') ?>';
   document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
   document.querySelector('.title').innerHTML = <?php echo json_encode(@$audios->title) ; ?>  
   var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
-  var player_imagess = player_images +'/' + <?php echo json_encode(@$audio->player_image) ; ?>;
-  $("#audio_img").attr('src', player_imagess);
+  var audio_images = player_images +'/' + <?php echo json_encode(@$audio->image) ; ?>;
+  $("#audio_img").attr('src', audio_images);
   
   var currentAudio = document.getElementById("myAudio");
   currentAudio.load()
