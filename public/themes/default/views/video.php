@@ -2533,7 +2533,7 @@ $artists = [];
                             left: 80%;
                             z-index: 2;
                             content: '';
-                            height: 56px;
+                            height: 86px;
                             width: 10%;
                             background: url(<?php echo URL::to($logo_url); ?>) no-repeat;
                             background-size: 100px auto, auto;
