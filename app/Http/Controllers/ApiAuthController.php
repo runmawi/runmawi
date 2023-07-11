@@ -14273,6 +14273,27 @@ public function QRCodeMobileLogout(Request $request)
 
   }
 
+  public function website_baseurl()
+  {
+    try {
+
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'Retrieved Base-URL Successfully',
+          'baseurl'  => URL::to('/') ,
+        );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+    }
+
+    return response()->json($response, 200);
+
+  }
 
           // Only for Nemisha - Learn function
   public function learn()
