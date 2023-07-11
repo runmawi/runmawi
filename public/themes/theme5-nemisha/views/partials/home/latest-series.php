@@ -5,15 +5,28 @@
   ?>
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-   <h4 class="main-title">
-    <!-- Recently Added  -->
-    <a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>">
-      <?php if ($order_settings_list[4]->header_name) { echo $order_settings_list[4]->header_name ;} else { echo "" ; } ?>
-    </a>
-  </h4>  
-     <a class="see" href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>">See All
+  <?php if( Route::currentRouteName() == "ChannelHome"){?>
+
+      <h4 class="main-title">
+            <a href="<?php echo route('Channel_series_list',Request::segment(2)); ?>">
+              <?php if ($order_settings_list[4]->header_name) { echo $order_settings_list[4]->header_name ;} else { echo "" ; } ?>
+            </a>
+        </h4>  
+
+      <a class="see" href="<?php echo route('Channel_series_list',Request::segment(2)); ?>">See All </a>
+
+  <?php }else{ ?>
     
-    </a>
+    <h4 class="main-title">
+          <a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>">
+            <?php if ($order_settings_list[4]->header_name) { echo $order_settings_list[4]->header_name ;} else { echo "" ; } ?>
+          </a>
+      </h4>  
+
+      <a class="see" href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>">See All </a>
+
+  <?php } ?>
+
 </div>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
