@@ -82,7 +82,7 @@ class ThemeAudioController extends Controller{
         if(Auth::guest()):
             return Redirect::to('/login');
         endif;
-        //$audio = Audio::findOrFail($albumID);
+
         $getfeching= Geofencing::first();
         $getfeching= Geofencing::first();
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -91,7 +91,6 @@ class ThemeAudioController extends Controller{
 
         $source_id = Audio::where('slug',$slug)->pluck('id')->first();
 
-        
         $category_name = CategoryAudio::select('audio_categories.name as categories_name','audio_categories.slug as categories_slug','category_audios.audio_id')
         ->Join('audio_categories', 'category_audios.category_id', '=', 'audio_categories.id')
         ->where('category_audios.audio_id', $source_id)
