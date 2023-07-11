@@ -29,7 +29,8 @@ Route::group(
         Route::get('Interest-Genre-list', 'ApiAuthController@Interest_Genre_list');
         Route::post('Users-Interest-Genres', 'ApiAuthController@users_interest_genres');
         Route::post('Users-Password-Pin-Update', 'ApiAuthController@Users_Password_Pin_Update');
-        
+        Route::get('website-baseurl', 'ApiAuthController@website_baseurl');
+
 
         Route::post('Channel-Audios-list', 'ApiAuthController@Channel_Audios_list');
         Route::post('Channel-livevideos-list', 'ApiAuthController@Channel_livevideos_list');
