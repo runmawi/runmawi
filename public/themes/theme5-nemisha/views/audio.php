@@ -5,7 +5,7 @@ $audio = $audios ;
 ?>
 <style type="text/css">
     #myProgress {
-   background-color: #d9d9f2; 
+   background-color: #8b0000; 
   cursor: pointer;
   border-radius: 10px;
 }
@@ -17,17 +17,23 @@ $audio = $audios ;
   border-radius: 10px;
 }
     .title{
-        text-align: left;
+        text-align: left!important;
         color: #fff;
     }
 .logo {
   fill: red;
 }
+    .play-border{
+        border:1px solid rgba(255,255,255,0.3);
+        border-radius: 10px;
+        padding: 10px;
+        border-width:2px;
+    }
 
 .btn-action{
   cursor: pointer;
- 
-  
+  padding-top: 10px;
+  width: 30px;
 }
 
 .btn-ctn, .infos-ctn{
@@ -60,15 +66,19 @@ padding-top: 20px;
 }
 
 .title{
-  
-  text-align: left;
+   /*margin-left: 10px;
+ 
+  text-align: center;
+    border-top:1px solid rgba(255, 255, 255,0.1)*/
 }
 
 .player-ctn{
   
  
-  padding: 10px;
-  background: linear-gradient(180deg, #151517 127.69%, #282834 0% );
+  padding: 25px;
+  /*background: linear-gradient(180deg, #151517 127.69%, #282834 0% );*/
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
   margin:auto;
    
     border-radius: 10px;
@@ -77,8 +87,10 @@ padding-top: 20px;
 
 .playlist-track-ctn{
   display: flex;
+    padding-left: 10px;
   background-color: #464646;
   margin-top: 3px;
+    margin-right: 10px;
   border-radius: 5px;
   cursor: pointer;
     align-items: center;
@@ -92,8 +104,8 @@ padding-top: 20px;
     color: #fff;
 }
 .playlist-info-track{
-  width: 85%;
-   
+  width: 80%;
+  
     padding: 2px;
 }
 .playlist-info-track,.playlist-duration{
@@ -104,21 +116,26 @@ padding-top: 20px;
   pointer-events: none;
 }
    .playlist-ctn {
-  scrollbar-width: thin;
-  scrollbar-color: #CFD8DC;
+ 
+}
+    .playlist-ctn::-webkit-scrollbar {
+width: 2px;
 }
 .playlist-ctn::-webkit-scrollbar-track {
-  background: #CFD8DC;
+  background: rgba(255,255,255,0.2);
+    
 }
 .playlist-ctn::-webkit-scrollbar-thumb {
-  background-color: rgb(0, 82, 204) ;
-  border-radius: 6px;
-  border: 3px solid var(--scrollbarBG);
+  background-color: red;
+  border-radius: 2px;
+  border: 2px solid red;
+     width: 2px;
 }
 .playlist-ctn{
    padding-bottom: 20px;
     overflow: scroll;
-    max-height: 400px;
+    scroll-behavior: auto;
+    max-height:335px;
     scrollbar-color: rebeccapurple green!important;
     overflow-x: hidden;
 }
@@ -128,19 +145,26 @@ padding-top: 20px;
   font-weight: bold;
   
 }
-
+    label{
+        color: #000;
+    }
 .active-track > .playlist-info-track,.active-track >.playlist-duration,.active-track > .playlist-btn-play{
   color: #ffc266 !important;
 }
 
-
+    .form-control{
+        color: #000!important;
+        font-weight: 700;
+        border-radius: 5px;
+    }
 .playlist-btn-play{
+    color: #fff!important;
   pointer-events: none;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 .fas{
-  color: #ed553b;
+  color: rgb(255,0,0);
   font-size: 20px;
 }
     
@@ -155,15 +179,11 @@ border-radius: 25px !important;
 }
 .vjs-texttrack-settings { display: none; }
 .audio-js .vjs-big-play-button{ border: none !important; }
-.bd{/*border-radius: 25px!important;*/padding:5px;
+.bd{/*border-radius: 25px!important;*/padding:2px;
 background: #2bc5b4!important;}
 .bd:hover{
 
 }
-    textarea.form-control{
-          background-color: #fff!important;
-          height: 100px;
-      }
     th,td {
     padding: 10px;
     color: #fff!important;
@@ -171,7 +191,7 @@ background: #2bc5b4!important;}
     tr{
         border:#141414;
     }
-.overlay_blur p{
+p{
 color: #fff;
 }
     .img-responsive{
@@ -227,11 +247,6 @@ text-align: center;
 #circle{
 border-radius: 50%;
 }
-    .btn-outline-success{
-        border-radius: 30px;
-        padding: 5px 15px!important;
-    }
-
           /* <!-- BREADCRUMBS  */
 
       .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
@@ -290,31 +305,31 @@ Your browser does not support the audio element.
 <?php } else { ?>                
 
 <div class="row album-top-30 mt-4 ">
+    
     <div class="col-lg-8">
          <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/images/'. $audio->player_image ?>');background-size: cover;
     background-repeat: no-repeat;
     background-position: right;">
-              <div class="row justify-content-between align-items-center">
-            <div class="col-sm-3 col-md-3 col-xs-3 text-center">
-<img height="150" width="150" id="audio_img" src="">
-
-<!-- -->
-</div>
+              <div class="row align-items-center">
+           <div class="col-sm-3 col-md-3 col-xs-3 ">
+              <img height="150" width="150" id="audio_img" src="">
+           </div>
             
-<div class="col-sm-9 col-md-9 col-xs-9 p-0">
+<div class="col-sm-9 col-md-9 col-xs-9">
     
         
 <div class="album_bg">
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
-<h6 class="hero-title album mt-3"><div class="title"></div> </h6>
+<h2 class="hero-title album">          <div class="title"></div>
+</h2>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
-<div class="d-flex aw" style="justify-content: space-between;width: 40%;align-items: center;">
+<div class="d-flex" style="justify-content: space-between;width: 70%;align-items: center;">
 
 <div onclick="toggleAudio()">
-  <button class="    btn btn btn-primary" id="vidbutton"  ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+  <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
 </div>
 
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
@@ -328,6 +343,13 @@ Your browser does not support the audio element.
         <div class="divider" style="border:1px solid white"></div>
         <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
     </div>
+</div>&nbsp;
+<div>
+<?php if(!Auth::guest()){ ?>
+<button type="button" class="btn bd btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Create PlayList
+</button>
+<?php } ?>
 </div>
 <!-- Share -->
 </div>
@@ -431,7 +453,11 @@ Your browser does not support the audio element.
           <source id="source-audio" src="" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-      <div class="playlist-ctn"></div>
+        <div class="play-border">
+            <div class="playlist-ctn">
+                <h6 class="mb-2 font-weight-bold">AUDIO LIST <i class="fa fa-arrow-right" aria-hidden="true"></i>
+</h6>
+            </div></div>
     </div>
 
     </div>
@@ -452,19 +478,61 @@ Your browser does not support the audio element.
 <div class="prev_cat_audio" style="display: none;"><?= $audios_category_prev->id ?></div>
 <?php } ?>
 </div>
-
-
+</div>
+</div>
 <div class="clear"></div>  
 
 <?php } ?>
 
+<!-- Playlist  -->
+
+<div class="container-fluid">
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-black" id="exampleModalLabel">Create PlayList</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	        
+      <form  id="my-playlist-form" accept-charset="UTF-8"  enctype="multipart/form-data"  action="<?= URL::to('/playlist/store') ?>" method="post">
+      
+      <div class="col-sm-10 p-0">
+            <label for="name">PlayList Title</label>
+            <input name="title" id="title" placeholder="PlayList Title" class="form-control text-black"  />
+          </div>
+          <div class="col-sm-10 p-0">
+		
+            <label for="name">PlayList Image</label>
+            <input type="file" name="image" id="image" />
+          </div>
+     
+      <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+<br>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" id="store-play-list" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+</div>
+
                         <!-- BREADCRUMBS -->
-      <div class="ml-2">     
+                        <div class="ml-2">     
         <div class="row">
           <div class=" container-fluid video-list you-may-like overflow-hidden">
             <div class="bc-icons-2">
-                      <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="black-text" href="<?= route('Audios_list') ?>"><?= ucwords('Podcasts') ?></a>
+                      <ol class="breadcrumb" style="isplay: flex; justify-content: start;align-items: center;">
+                        <li class="breadcrumb-item"><a class="black-text" href="<?= route('Audios_list') ?>"><?= ucwords('Audios') ?></a>
                           <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                         </li>
 
@@ -485,54 +553,11 @@ Your browser does not support the audio element.
               </div>
             </div>
         </div>
-      
+      </div>
 
-      <div class="col-sm-12 col-md-12 col-xs-12 container-fluid">
-                  <!--  Video thumbnail image-->
-          <?php if(!empty($audios->title) && !empty($ThumbnailSetting) && $ThumbnailSetting->title == 1){ ?>
-            <h1 class="trending-text big-title text-uppercase mt-3">
-                <?php echo (strlen($audios->title) > 50) ? substr($audios->title,0,120).'...' : $audios->title;  if( Auth::guest() ) { } ?>
-              </h1>
-            <?php } ?>
-          <?php if(!empty($category_name) && !empty($ThumbnailSetting) && $ThumbnailSetting->category == 1){ ?>
 
-              <!-- <h5 class="mt-3 mb-0">Audio Category:</h5>
-              <div class="text-white">
-              <?php foreach ($category_name as $key => $audio_category_name) {  ?>
-                          <?php $category_name_length = count($category_name); ?>
-                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo ucwords($audio_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : ''); ?></p>
-
-                        <?php } ?>
-              </div> -->
-            <?php } ?>
-
-          <?php if(!empty($audios->description)){ ?>
-
-            <h5 class="mt-3 mb-0">Description:</h5>
-              <div class="text-white">
-                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($audios->description); ?></p>
-              </div>
-            <?php } ?>
-
-          <?php if(!empty($audios->details)){ ?>
-
-            <h5 class="mt-3 mb-0">Links and Details:</h5>
-              <div class="text-white">
-                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($audios->details); ?></p>
-              </div>
-            <?php } ?>
-
-          <?php if(!empty($audios->rating) && !empty($ThumbnailSetting) && $ThumbnailSetting->rating == 1){ ?>
-
-              <h5 class="mt-3 mb-0">Rating:</h5>
-              <div class="text-white">
-                  <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($audios->rating); ?></p>
-              </div>
-            <?php } ?>
-              
-        </div>
                <!-- Comment Section -->
-          <div class="ml-2">     
+               
       <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('audios')->first() == 1 ): ?>
         <div class="row">
             <div class=" container-fluid video-list you-may-like overflow-hidden">
@@ -541,15 +566,16 @@ Your browser does not support the audio element.
             </div>
         </div>
       <?php endif; ?>
-</div>
-<div class="container-fluid overflow-hidden">
+
+<div class="container-fluid">
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
    
-<h4  class="album-title text-white">Other Podcasts </h4>
+<h4  class="album-title">Other Albums </h4>
     <div class="favorites-contens">
-<ul class="favorites-slider list-inline  row p-0 mb-0">
+
     <?php foreach ($other_albums as $other_album) { ?>
+        <ul class="favorites-slider list-inline  row p-0 mb-0">
         <li class="slide-item">
             <?php if($other_album->album != ''){ ?>
             
@@ -557,25 +583,26 @@ Your browser does not support the audio element.
                     <div class="block-images position-relative">
                           <div class="img-box">
                              <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive w-100" />   
-                        </div> </div>  
-                        <div class="block-description"> </div>
+                        </div>
+                        <div class="block-description">
                             <div class="hover-buttons text-white">
                                 <p class="mt-2"><?php echo ucfirst($other_album->albumname);?> </p>
                 </div>
                            
             <?php  } ?> 
-                       
-                       
+                        </div>
+                    </div>      
             </a>
            
           
         </li>
+            </ul>
     <?php } ?>
-</ul>
+
         </div>
 </div>
 
-    </div></div>
+</div>
 <?php endif; ?>
 
 <div class="">
@@ -659,6 +686,10 @@ Your browser does not support the audio element.
 
 <script type="text/javascript">
 
+$('#store-play-list').click(function(){
+				$('#my-playlist-form').submit();
+			});
+
 var base_url = $('#base_url').val();
 
 $(document).ready(function(){
@@ -728,44 +759,7 @@ window.location = '<?= URL::to('login') ?>';
       });
 
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/add-on/jplayer.playlist.min.js"></script>
-
-<script type="text/javascript">
-    var ppbutton = document.getElementById("vidbutton");
-
-    $player = $("#jquery_jplayer_1")
-    jPlayer_method = $player.jPlayer
-    $player.jPlayer({
-        ready: function () {
-           jPlayer_method.call( $player, "setMedia",  <?php echo $json_list;?>);
-       },
-       cssSelectorAncestor: "#jp_container_1",
-       swfPath: "src/swf/",
-       solution: "html, flash",
-       supplied: "mp3",
-       preload: "auto",
-       useStateClassSkin: true,
-       autoBlur: false,
-       smoothPlayBar: true,
-       keyEnabled: true,
-       remainingDuration: true,
-       toggleDuration: true,
-       pause: function(e) {
-        ppbutton.innerHTML = '<i class="fa fa-play mr-2" aria-hidden="true"></i> Play';
-    },
-    play: function(e) {
-        ppbutton.innerHTML = '<i class="fa fa-pause mr-2" aria-hidden="true"></i> Pause';
-    }
-});
-    
-    $("#vidbutton").on("click", function(e) {
-        e.preventDefault();
-        $(".jp-play").trigger("click");
-    });
-</script>
 
     <script>
   function createTrackItem(index,name,duration){
@@ -817,12 +811,10 @@ window.location = '<?= URL::to('login') ?>';
   function loadNewTrack(index){
     
     var player = document.querySelector('#source-audio')
-  
-
     player.src = listAudio[index].mp3_url
     document.querySelector('.title').innerHTML = listAudio[index].title
     var image = document.querySelector('#audio_img')
-    image.src = listAudio[index].poster
+    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image
     this.currentAudio = document.getElementById("myAudio");
     this.currentAudio.load()
     this.toggleAudio()
@@ -851,15 +843,12 @@ window.location = '<?= URL::to('login') ?>';
 
   document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
   document.querySelector('.title').innerHTML = <?php echo json_encode(@$audios->title) ; ?>  
-       var playerimage = <?php echo json_encode(@$audio->player_image) ; ?>;
-           var imageplayer = '<?php echo URL::to('/public/uploads/images/') ?>'
-//            alert();
-      $("#audio_img").attr('src', imageplayer+'/'+playerimage);
-
-  var currentAudio = document.getElementById("myAudio");
-
-  currentAudio.load()
+  var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
+  var player_imagess = player_images +'/' + <?php echo json_encode(@$audio->player_image) ; ?>;
+  $("#audio_img").attr('src', player_imagess);
   
+  var currentAudio = document.getElementById("myAudio");
+  currentAudio.load()
   currentAudio.onloadedmetadata = function() {
         document.getElementsByClassName('duration')[0].innerHTML = this.getMinutes(this.currentAudio.duration)
   }.bind(this);
