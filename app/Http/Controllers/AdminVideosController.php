@@ -83,6 +83,8 @@ use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
 use ParseM3U8;
 use App\Playerui;
 use App\PlayerSeekTimeAnalytic;
+use App\AdminVideoPlaylist as AdminVideoPlaylist;
+use App\VideoPlaylist as VideoPlaylist;
 
 class AdminVideosController extends Controller
 {
@@ -712,6 +714,7 @@ class AdminVideosController extends Controller
                 "InappPurchase" => InappPurchase::all(),
                 "post_dropzone_url" => $dropzone_url,
                 "ads_tag_urls" => Advertisement::where('ads_upload_type','tag_url')->where('status',1)->get(),
+                "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
             ];
 
             return View::make("admin.videos.fileupload", $data);
@@ -1195,6 +1198,7 @@ class AdminVideosController extends Controller
             PlayerAnalytic::where("videoid", $id)->delete();
             CategoryVideo::where("video_id", $id)->delete();
             PlayerSeekTimeAnalytic::where("video_id", $id)->delete();
+            VideoPlaylist::where("video_id", $id)->delete();
             Video::destroy($id);
 
             // VideoResolution::where('video_id', '=', $id)->delete();
@@ -1296,6 +1300,9 @@ class AdminVideosController extends Controller
                 "ads_tag_urls" => Advertisement::where('status',1)->where('ads_upload_type','tag_url')->where('id',$video->ads_tag_url_id)->first(),
                 "MoviesSubtitles" => $MoviesSubtitles ,
                 "subtitlescount" => $subtitlescount,
+                "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
+                "Playlist_id"  => VideoPlaylist::where("video_id", $id)->pluck("playlist_id")->toArray(),
+
             ];
 
             return View::make("admin.videos.create_edit", $data);
@@ -2270,7 +2277,23 @@ class AdminVideosController extends Controller
             }
         }
 
+        // playlist
+        if (!empty($data["playlist"])) {
+            $playlist_id = $data["playlist"];
+            unset($data["playlist"]);
+// dd($playlist_id);
+            if (!empty($playlist_id)) {
+                VideoPlaylist::where("video_id", $video->id)->delete();
 
+                foreach ($playlist_id as $key => $value) {
+                    $VideoPlaylist = new VideoPlaylist();
+                    $VideoPlaylist->user_id = Auth::user()->id;
+                    $VideoPlaylist->video_id = $video->id;
+                    $VideoPlaylist->playlist_id = $value;
+                    $VideoPlaylist->save();
+                }
+            }
+        }
         // Block country
         if (!empty($data["country"])) {
             $country = $data["country"];
@@ -3144,6 +3167,23 @@ class AdminVideosController extends Controller
             }
         }
 
+        // playlist
+        if (!empty($data["playlist"])) {
+            $playlist_id = $data["playlist"];
+            unset($data["playlist"]);
+            if (!empty($playlist_id)) {
+                VideoPlaylist::where("video_id", $video->id)->delete();
+
+                foreach ($playlist_id as $key => $value) {
+                    $VideoPlaylist = new VideoPlaylist();
+                    $VideoPlaylist->user_id = Auth::user()->id;
+                    $VideoPlaylist->video_id = $video->id;
+                    $VideoPlaylist->playlist_id = $value;
+                    $VideoPlaylist->save();
+                }
+            }
+        }
+
         if (!empty($data['country'])) {
             $country = $data['country'];
             unset($data['country']);
@@ -3766,6 +3806,7 @@ class AdminVideosController extends Controller
             PlayerAnalytic::whereIn("videoid", explode(",", $video_id))->delete();
             CategoryVideo::whereIn("video_id", explode(",", $video_id))->delete();
             PlayerSeekTimeAnalytic::whereIn("video_id", explode(",", $video_id))->delete();
+            VideoPlaylist::where("video_id", $id)->delete();
 
             return response()->json(["message" => "true"]);
         } catch (\Throwable $th) {
