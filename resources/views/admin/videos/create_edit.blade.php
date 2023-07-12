@@ -597,6 +597,19 @@ border-radius: 0px 4px 4px 0px;
                         </span>
                    @endif
                </div>
+               <div class="col-sm-6 form-group">
+               <label class="m-0">Choose Playlist:</label>
+                  <select class="form-control js-example-basic-multiple playlists" id="playlist" name="playlist[]" style="width: 100%;" multiple="multiple">
+                     @foreach($AdminVideoPlaylist as $Video_Playlist)
+                        @if(in_array($Video_Playlist->id, $Playlist_id))
+                           <option value="{{ $Video_Playlist->id }}" selected="true">{{ $Video_Playlist->title }}</option>
+                        @else
+                           <option value="{{ $Video_Playlist->id }}" >{{ $Video_Playlist->title }}</option>
+                        @endif 
+                     @endforeach
+                  </select>
+
+               </div> 
                   <div class="col-sm-6 form-group">
                      <label class="m-0">Reels videos: <small>( Upload the 1 min Videos )</small></label>
                      <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple >

@@ -491,6 +491,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/Testwatermark', 'Testwatermark@index');
 
+    // Admin Video Playlist 
+
+    Route::get('/videos/playlist', 'AdminVideoPlayListController@index');
+    Route::get('/videos/playlist/edit/{id}', 'AdminVideoPlayListController@edit');
+    Route::post('/videos/playlist/store', 'AdminVideoPlayListController@store');
+    Route::post('/videos/playlist/update', 'AdminVideoPlayListController@update');
+    Route::get('/videos/playlist/delete/{id}', 'AdminVideoPlayListController@destroy');
+
     // Admin Video Functionality
     Route::post('/category_order', 'AdminVideoCategoriesController@category_order');
     Route::get('/videos', 'AdminVideosController@index');
