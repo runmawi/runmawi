@@ -179,6 +179,7 @@
   .vjs-texttrack-settings { display: none; }
   .audio-js .vjs-big-play-button{ border: none !important; }
   .bd{
+      padding:5px 15px;
   background: #2bc5b4!important;}
   .bd:hover{
 
