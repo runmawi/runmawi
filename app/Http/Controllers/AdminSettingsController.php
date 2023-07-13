@@ -1052,32 +1052,20 @@ class AdminSettingsController extends Controller
     {
         $CompressImage = CompressImage::first();
 
-        if ($CompressImage == null) {
-            CompressImage::create([
+            $inputs = array(
                 'compress_resolution_size' => $request->compress_resolution_size,
                 'compress_resolution_format' => $request->compress_resolution_format,
                 'enable_compress_image' => $request->enable_compress_image == null ? '0' : '1',
                 'videos' => $request->videos == null ? '0' : '1',
                 'live' => $request->live == null ? '0' : '1',
+                'live_validation' => $request->live_validation == null ? '0' : '1',
                 'series' => $request->series == null ? '0' : '1',
                 'season' => $request->season == null ? '0' : '1',
                 'episode' => $request->episode == null ? '0' : '1',
                 'audios' => $request->audios == null ? '0' : '1',
-            ]);
-        } 
-        else {
-            CompressImage::first()->update([
-                'compress_resolution_size' => $request->compress_resolution_size,
-                'compress_resolution_format' => $request->compress_resolution_format,
-                'enable_compress_image' => $request->enable_compress_image == null ? '0' : '1',
-                'videos' => $request->videos == null ? '0' : '1',
-                'live' => $request->live == null ? '0' : '1',
-                'series' => $request->series == null ? '0' : '1',
-                'season' => $request->season == null ? '0' : '1',
-                'episode' => $request->episode == null ? '0' : '1',
-                'audios' => $request->audios == null ? '0' : '1',
-            ]);
-        }
+            );        
+
+        $CompressImage == null ? CompressImage::create($inputs) : CompressImage::first()->update($inputs)  ; 
 
         return redirect()
             ->route('compress_image')
