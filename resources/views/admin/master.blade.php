@@ -732,6 +732,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <!-- <li><a href="{{ URL::to('admin/test/videoupload') }}" class="iq-waves-effect">Test Server Video Upload</a></li> -->
                         <li><a href="{{ URL::to('admin/assign_videos/partner') }}" class="iq-waves-effect">Move Videos to Partner</a></li>
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></li>                    
+                        <li><a href="{{ URL::to('admin/videos/playlist') }}" class="iq-waves-effect">Manage Video Playlist</a></li>
+
                     
           </ul></li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span class="">Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
