@@ -1738,7 +1738,7 @@ $artists = [];
                                                         <label
                                                             class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                                                             <input type="radio" class="payment_btn"
-                                                                id="tres_important" 
+                                                                id="tres_important" name="payment_method"
                                                                 value=<?= $Stripepayment->payment_type ?>
                                                                 data-value="stripe">
                                                             <?php if (!empty($Stripepayment->stripe_lable)) {
@@ -1754,7 +1754,7 @@ $artists = [];
                                                         <label
                                                             class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                                                             <input type="radio" class="payment_btn"
-                                                                id="tres_important" 
+                                                                id="tres_important" name="payment_method"
                                                                 value="<?= $Stripepayment->payment_type ?>"
                                                                 data-value="stripe">
                                                             <!--<img class="" height="20" width="40" src="<?php echo URL::to('/assets/img/stripe.png'); ?>" style="margin-top:-5px" >-->
@@ -1825,7 +1825,7 @@ $artists = [];
 
                                                         <label
                                                             class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                                            <input type="radio" class="payment_btn" id="" checked name="payment_method"  
+                                                            <input type="radio" class="payment_btn" id="" name="payment_method"  
                                                                 name="payment_method"
                                                                 value="<?= $CinetPay_payment_settings->payment_type ?>"
                                                                 data-value="CinetPay">
@@ -2585,17 +2585,17 @@ $artists = [];
 
                 <script>
                     window.onload = function() {
-                        $('.Razorpay_button,.paystack_button,.Stripe_button').hide();
+                        $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button').hide();
                     }
 
                     $(document).ready(function() {
 
                         $(".payment_btn").click(function() {
 
-                            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button,.cinetpay_button').hide();
+                            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
 
                             let payment_gateway = $('input[name="payment_method"]:checked').val();
-
+                            // alert(payment_gateway);
                             if (payment_gateway == "Stripe") {
 
                                 $('.Stripe_button').show();

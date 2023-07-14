@@ -516,6 +516,7 @@ Route::group(
             // Audio Like & dislike - IOS
             Route::post('/IOS_Videolike', 'ApiAuthController@IOS_LikeVideo');
             Route::post('/IOS_Videodislike', 'ApiAuthController@IOS_DisLikeVideo');
+            Route::post('/IOS_Video_Like', 'ApiAuthController@IOS_Video_Like');
 
             // Audio Like & dislike - IOS
             Route::post('IOS_Audiolike', 'ApiAuthController@IOS_Audiolike');

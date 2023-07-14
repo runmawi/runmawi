@@ -85,6 +85,15 @@
                                     <td> {{ 'Live Videos'}} </td>
                                     <td> 
                                         <div class="mt-1">
+                                            <p> Tv Image Live validation </p>
+                                            <label class="switch">
+                                                <input name="tv_image_live_validation" class="tv_image_live_validation" id="tv_image_live_validation" type="checkbox" @if(  $Compress_image != null &&  $Compress_image->tv_image_live_validation == "1") checked  @endif  >
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="mt-1">
+                                            <p> Dimension Image Validation</p>
                                             <label class="switch">
                                                 <input name="live" class="live" id="live" type="checkbox" @if(  $Compress_image != null &&  $Compress_image->live == "1") checked  @endif  >
                                                 <span class="slider round"></span>
@@ -92,7 +101,6 @@
                                         </div>
                                     </td>
                                 </tbody>
-
 
                                 <tbody>
                                     <td> {{ "3" }} </td>
