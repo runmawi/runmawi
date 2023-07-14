@@ -2595,7 +2595,7 @@ $artists = [];
                             $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
 
                             let payment_gateway = $('input[name="payment_method"]:checked').val();
-                            alert(payment_gateway);
+                            // alert(payment_gateway);
                             if (payment_gateway == "Stripe") {
 
                                 $('.Stripe_button').show();
