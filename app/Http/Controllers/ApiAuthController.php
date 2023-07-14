@@ -14643,10 +14643,11 @@ public function QRCodeMobileLogout(Request $request)
       }
       if($request->video_id){
           $video_id = $request->video_id;
-          $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
+          $count = ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)->count();
           $IOSId_count = ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)->count();
+          // print_r($count);exit;
           if ( $count > 0 ) {
-            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
+            ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
             $response = array(
               'status'=>'true',
               'message'=>'Current Time updated'
@@ -15322,6 +15323,56 @@ public function QRCodeMobileLogout(Request $request)
     );
 
      return response()->json($response, 200);
+
+  }
+
+  public function IOS_Video_Like(Request $request)
+  {
+    $IOSId = $request->IOSId;
+    $video_id = $request->video_id;
+
+    $like_count = Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->count();
+    $like_counts = Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->where('liked','=' ,'1')->count();
+    $unlike_count = Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->where('liked', 0)->count();
+
+    if($like_count > 0){
+
+      if($like_counts > 0){
+        Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->where('liked','=' ,'1')
+        ->update([
+                'IOSId'  => $IOSId ,
+                'video_id' => $video_id ,
+                'liked'    => '0' ,
+                'disliked'    => '0',
+              ]);
+
+      }elseif( $unlike_count > 0){
+          Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->where('liked',0)
+          ->update([
+                  'IOSId'  => $IOSId ,
+                  'video_id' => $video_id ,
+                  'liked'    => '1' ,
+                  'disliked'    => '0',
+                ]);
+      }
+
+    }
+    else{
+        Likedislike::create([
+          'IOSId'  => $IOSId ,
+          'video_id' => $video_id ,
+          'liked'    => '1' ,
+          'disliked'    => '0' ,
+        ]);
+    }
+
+    $response = array(
+      'status'=>'true',
+      'like'  =>  Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->pluck('liked')->first(),
+      'dislike'  =>   Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->pluck('disliked')->first(),
+    );
+
+    return response()->json($response, 200);
 
   }
 
