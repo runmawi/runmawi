@@ -238,7 +238,7 @@
         }
 
         .nav-link {
-            padding: 5px!important;
+            padding: 5px !important;
         }
 
         .adv {
@@ -250,9 +250,7 @@
             font-size: 40px;
         }
 
-        .btn {
-           
-        }
+        .btn {}
 
         h3 {
             font-weight: 600;
@@ -563,9 +561,9 @@
             z-index: -1;
             border-radius: 30px !important;
         }
-        .btn-outline-danger:hover {
-            
-        }
+
+        .btn-outline-danger:hover {}
+
         .btn-success:hover {
             color: #fff !important;
             border-color: 1px solid #ED553B !importan;
@@ -574,7 +572,8 @@
         .btn-success:hover:after {
             width: 100%;
         }
-.btn-success1:after {
+
+        .btn-success1:after {
             position: absolute;
             content: "";
             top: 0;
@@ -584,7 +583,7 @@
             background: #F6D55C;
             transition: all .35s;
             z-index: -1;
-           
+
         }
 
         .btn-success1:hover {
@@ -707,7 +706,8 @@
             border-radius: 5px;
 
 
-        } 
+        }
+
         .btn-success1 {
             color: #fff !important;
             background: #ED553B !important;
@@ -1146,36 +1146,38 @@
             right: 0;
             top: 56%;
         }
+
         .nav-link:hover {
-    border: none!important;
-     background-color: transparent!important; 
-    /* padding: 6px 15px; */
-    padding: 10px 0!important;
-}
+            border: none !important;
+            background-color: transparent !important;
+            /* padding: 6px 15px; */
+            padding: 10px 0 !important;
+        }
+
         #MuteButton::before {
-    content:  '🔈';
-}
+            content: '🔈';
+        }
 
-#MuteButton.muted::before {
-   
-     content:  '🔇';
-}
+        #MuteButton.muted::before {
 
-#MuteButton {
-  position: fixed;
-  top: 5rem;
-  right: 1rem;
-  background: rgba(0,0,0,.5);
-  border: none;
-  color: #fff;
-  z-index: 5;
-  font-size: 1.5rem;
-  border-radius: 2rem;
-  width: 3rem;
-  height: 3rem;
-  line-height: 2.8rem;
-  text-align: center;
-}
+            content: '🔇';
+        }
+
+        #MuteButton {
+            position: fixed;
+            top: 5rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, .5);
+            border: none;
+            color: #fff;
+            z-index: 5;
+            font-size: 1.5rem;
+            border-radius: 2rem;
+            width: 3rem;
+            height: 3rem;
+            line-height: 2.8rem;
+            text-align: center;
+        }
     </style>
 
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
@@ -1199,14 +1201,14 @@
             </div>
         </nav>
     </header>
-    
+
     <section class="mt-5 mb-0">
         <section class="mt-5 mb-0">
             <div class="bg-video-wrap">
                 <video id="bg-video" src="<?php echo URL::to('/assets/img/tv.mp4'); ?>" loop muted autoplay>
                 </video>
                 <a id="MuteButton" class="muted" onclick="toggleMute();">
-</a>
+                </a>
                 <div class="overlay">
                     <div class="nemis">
                         <h1 class=" mt-5 pt-5">Welcome to <span class="">NEMISA TV</span></h1>
@@ -1264,8 +1266,10 @@
                     <div class="row m-0 p-0 justify-content-around align-items-center">
                         <div class="col-lg-6 p-0">
 
-                            <video id="player" height="618" controls autoplay muted poster="<?php echo URL::to('/assets/img/lan/tv.jpeg'); ?>">
-                                <source src="https://dev.nemisatv.co.za/public/uploads/videos/youthtech-2.mp4" type="video/mp4">
+                            <video id="player" height="618" controls autoplay muted
+                                poster="<?php echo URL::to('/assets/img/lan/tv.jpeg'); ?>">
+                                <source src="https://dev.nemisatv.co.za/public/uploads/videos/youthtech-2.mp4"
+                                    type="video/mp4">
                                 <source src="" type="video/ogg">
                             </video>
 
@@ -1301,8 +1305,10 @@
                             @foreach ($SeriesGenre as $key => $category)
                                 @if ($key <= 8)
                                     <li class="nav-item">
-                                        <a class="{{"nav-link"." "."series-category-key-id-".($key+1) }}" id="pills-profile-tab" data-toggle="pill"
-                                            data-category-id={{ $category->id }} onclick="Series_Category(this)" role="tab" aria-controls="pills-profile" aria-selected="false">
+                                        <a class="{{ 'nav-link' . ' ' . 'series-category-key-id-' . ($key + 1) }}"
+                                            id="pills-profile-tab" data-toggle="pill"
+                                            data-category-id={{ $category->id }} onclick="Series_Category(this)"
+                                            role="tab" aria-controls="pills-profile" aria-selected="false">
                                             {{ $category->name }}
                                         </a>
                                     </li>
@@ -1311,10 +1317,10 @@
 
                             <li class="nav-item">
 
-                                <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                <!-- <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More
                                     <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </a>
+                                </a>  --!>
 
                                 <div class="dropdown-menu">
                                     <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist"
@@ -1329,10 +1335,10 @@
                                                         aria-selected="false">{{ $category->name }}</a>
                                             @endif
                                         @endforeach
-                                                </li>
-                                    </ul>
-                                </div>
                             </li>
+                        </ul>
+                    </div>
+                    </li>
                 </div>
             </div>
             </div>
@@ -1407,14 +1413,14 @@
 
                             <div class="col-lg-2 p-0 ">
                                 <div class="position-relative mn">
-                                    <a href="https://dev.nemisatv.co.za/series/category/Education"> <img class="w-100"
-                                            src="<?php echo URL::to('/assets/img/lan/education.jpg'); ?>" style=>
+                                    <a href="https://dev.nemisatv.co.za/series/category/Education"> <img
+                                            class="w-100" src="<?php echo URL::to('/assets/img/lan/education.jpg'); ?>" style=>
                                         <p class="io">Education</p>
                                     </a>
                                 </div>
 
-                                <div class="position-relative mn"> <a href="https://dev.nemisatv.co.za/Live-list"> <img
-                                            class="w-100 " src="<?php echo URL::to('/assets/img/lan/live.jpg'); ?>" style=>
+                                <div class="position-relative mn"> <a href="https://dev.nemisatv.co.za/Live-list">
+                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/lan/live.jpg'); ?>" style=>
                                         <p class="io">Live <br>Streaming</p>
                                     </a>
                                 </div>
@@ -1574,7 +1580,8 @@
 
                         <div class="col-lg-6 mt-5">
                             <div class="" style="margin:4px;">
-                                <video id="player1" height="800" controls autoplay muted poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
+                                <video id="player1" height="800" controls autoplay muted
+                                    poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
                                     <source src="<?php echo URL::to('/assets/img/vq.mp4'); ?>" type="video/mp4">
                                     <source src="" type="video/ogg">
                                 </video>
@@ -1823,20 +1830,20 @@
 
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-<script>
-    function toggleMute() {
-  var button=document.getElementById("MuteButton")
-  var video=document.getElementById("bg-video")
-  
-  if(video.muted){
-    video.muted = false;
-  } else {
-    video.muted = true;
-  }
-  
-  button.classList.toggle('muted');
-}
-</script>
+        <script>
+            function toggleMute() {
+                var button = document.getElementById("MuteButton")
+                var video = document.getElementById("bg-video")
+
+                if (video.muted) {
+                    video.muted = false;
+                } else {
+                    video.muted = true;
+                }
+
+                button.classList.toggle('muted');
+            }
+        </script>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 // This is the bare minimum JavaScript. You can opt to pass no arguments to setup.
@@ -1975,8 +1982,8 @@
                 });
             }
 
-                        // On-hover Playing Series season trailer
-                        
+            // On-hover Playing Series season trailer
+
             function season_trailer(ele) {
 
                 let video_key_id = $(ele).attr('data-video-key-id');
@@ -1996,11 +2003,10 @@
                 })
             }
 
-                                // Onload - Active First Series category 
-            $( window ).load(function() {
-                $(".series-category-key-id-1").addClass("active show").attr("aria-selected","true");
+            // Onload - Active First Series category 
+            $(window).load(function() {
+                $(".series-category-key-id-1").addClass("active show").attr("aria-selected", "true");
             });
-
         </script>
 
         @php
