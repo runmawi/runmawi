@@ -170,6 +170,7 @@ class HomeSettingsController extends Controller
         $settings->AudioGenre_audios = !empty($request->AudioGenre_audios) ?  "1" : "0" ;
         $settings->AudioAlbums = !empty($request->AudioAlbums) ?  "1" : "0" ;
         $settings->my_playlist = !empty($request->my_playlist) ?  "1" : "0" ;
+        $settings->video_playlist = !empty($request->video_playlist) ?  "1" : "0" ;
 
 
 
@@ -376,6 +377,7 @@ class HomeSettingsController extends Controller
         $settings->Recommended_videos_Country = !empty($request->Recommended_videos_Country) ?  "1" : "0" ;
         $settings->continue_watching = !empty($request->continue_watching) ?  "1" : "0" ;
         $settings->my_playlist = !empty($request->my_playlist) ?  "1" : "0" ;
+        $settings->video_playlist = !empty($request->video_playlist) ?  "1" : "0" ;
         $settings->save();
 
         return redirect::to('/admin/home-settings');

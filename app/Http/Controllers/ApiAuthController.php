@@ -15316,8 +15316,8 @@ public function QRCodeMobileLogout(Request $request)
 
      $response = array(
       'status'=>'true',
-      'liked' => $new_vide_like->liked,
-      'disliked' => $new_vide_like->disliked,
+      'likes' => $new_vide_like->liked,
+      'dislike' => $new_vide_like->disliked,
       'message'=>'success'
     );
 

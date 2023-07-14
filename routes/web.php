@@ -73,6 +73,13 @@ Route::get('/get_playlist/{slug}', 'MyPlaylistController@GetMY_Audio_Playlist');
 Route::get('/playlist/play/{slug}', 'MyPlaylistController@Play_Playlist');
 Route::get('/playlist/delete/{id}', 'MyPlaylistController@Delete_Playlist');
 
+// Endpoints Playlist Audios.
+
+Route::get('/video-playlist', 'VideoPlaylistController@MyVideoPlaylist');
+Route::get('/video-playlist/{slug}', 'VideoPlaylistController@VideoPlaylist');
+Route::get('video_playlist_play', 'VideoPlaylistController@video_playlist_play')->name('video_playlist_play');
+
+
 
 
 

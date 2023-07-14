@@ -125,6 +125,7 @@
    </section>
    <?php } } ?>
 
+<!-- Playlist -->
 
    <?php 
    if(!Auth::guest()){
@@ -142,6 +143,22 @@
    </section>
    <?php } }  } ?>
 
+   <?php 
+   if(!Auth::guest()){
+      if($value->video_name == 'video_play_list'){
+      
+      if($home_settings->video_playlist == 1){ ?>
+   <section id="iq-favorites">
+      <div class="container-fluid overflow-hidden">
+         <div class="row">
+            <div class="col-sm-12 ">
+               <?php include('partials/home/playlist-videos.php'); ?>
+            </div>
+         </div>
+      </div>
+   </section>
+   <?php } }  } ?>
+   
    <!-- Audio Genre -->
    <?php
        if( $value->video_name == "Audio_Genre"){
