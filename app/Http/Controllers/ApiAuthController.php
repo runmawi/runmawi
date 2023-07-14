@@ -14643,10 +14643,11 @@ public function QRCodeMobileLogout(Request $request)
       }
       if($request->video_id){
           $video_id = $request->video_id;
-          $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
+          $count = ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)->count();
           $IOSId_count = ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)->count();
+          // print_r($count);exit;
           if ( $count > 0 ) {
-            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
+            ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
             $response = array(
               'status'=>'true',
               'message'=>'Current Time updated'
