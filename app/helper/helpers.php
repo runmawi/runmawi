@@ -949,4 +949,11 @@ function MyPlaylistfavorite($MyPlaylist_id)
 }
 
 }
+
+function tv_image_live_validation_status()
+{
+    
+   $tv_image_live_validation_status = App\CompressImage::pluck('tv_image_live_validation')->first() ? App\CompressImage::pluck('tv_image_live_validation')->first() : '0' ;
+   return $tv_image_live_validation_status ;  
+}
    
