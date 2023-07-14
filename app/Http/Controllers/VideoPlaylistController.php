@@ -87,7 +87,7 @@ class VideoPlaylistController extends Controller
 
                     $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
                     ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
-                    ->where('movies_subtitles.movie_id', $first_videos->id)
+                    ->where('movies_subtitles.movie_id', @$first_videos->id)
                     ->get();
 
                 if (count($subtitles_name) > 0) {
@@ -97,6 +97,7 @@ class VideoPlaylistController extends Controller
                     $subtitles = implode(', ', $subtitlesname);
                 } else {
                     $subtitles = [];
+                    $subtitlesname = [];
                 }
                 $subtitle = MoviesSubtitles::where('movie_id', '=', @$subtitleVideoPlaylist)->get();
 
