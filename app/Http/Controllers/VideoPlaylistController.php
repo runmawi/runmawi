@@ -98,6 +98,7 @@ class VideoPlaylistController extends Controller
                 } else {
                     $subtitles = [];
                     $subtitlesname = [];
+                    $first_videos = [];
                 }
                 $subtitle = MoviesSubtitles::where('movie_id', '=', @$subtitleVideoPlaylist)->get();
 
