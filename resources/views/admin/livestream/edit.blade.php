@@ -226,7 +226,8 @@ border-radius: 0px 4px 4px 0px;
                <input type="hidden" id="check_image" name="check_image" value="@if(!empty($video->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
                <input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($video->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
                <input type="hidden" id="tv_check_image" name="tv_check_image" value="@if(!empty($video->Tv_live_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
-                        
+               <input type="hidden" name="tv_image_live_validation_status" id="tv_image_live_validation_status" value="{{ tv_image_live_validation_status() }}" />
+
 
             <div class="row mt-3">
                 <div class="col-sm-6">
@@ -977,7 +978,18 @@ $(document).ready(function(){
         },
 
         live_stream_tv_image: {
-            required: '#tv_check_image:blank',
+
+             required: function (element) {
+
+                   var action =  $("#tv_image_live_validation_status").val(); 
+                   var tv_check_image = $('#tv_check_image').val()
+                    if (action == '1' && tv_check_image != "validate" ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+            },
+
             tv_image_dimention:[1920,1080]
         },
 

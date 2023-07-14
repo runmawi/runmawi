@@ -1058,7 +1058,7 @@ class AdminSettingsController extends Controller
                 'enable_compress_image' => $request->enable_compress_image == null ? '0' : '1',
                 'videos' => $request->videos == null ? '0' : '1',
                 'live' => $request->live == null ? '0' : '1',
-                'live_validation' => $request->live_validation == null ? '0' : '1',
+                'tv_image_live_validation' => $request->tv_image_live_validation == null ? '0' : '1',
                 'series' => $request->series == null ? '0' : '1',
                 'season' => $request->season == null ? '0' : '1',
                 'episode' => $request->episode == null ? '0' : '1',

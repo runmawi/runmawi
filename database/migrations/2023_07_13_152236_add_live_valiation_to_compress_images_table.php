@@ -14,7 +14,7 @@ class AddLiveValiationToCompressImagesTable extends Migration
     public function up()
     {
         Schema::table('compress_images', function (Blueprint $table) {
-            $table->tinyInteger('live_validation')->default(0)->after('live');
+            $table->tinyInteger('tv_image_live_validation')->default(0)->after('live');
         });
     }
 
@@ -26,7 +26,7 @@ class AddLiveValiationToCompressImagesTable extends Migration
     public function down()
     {
         Schema::table('compress_images', function (Blueprint $table) {
-            Schema::dropIfExists('live_validation');
+            Schema::dropIfExists('tv_image_live_validation');
         });
     }
 }

@@ -212,6 +212,7 @@ border-radius: 0px 4px 4px 0px;
 
                                 <input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
                                 <input type="hidden" name="hls_url" id="hls_url" value="" />
+                                <input type="hidden" name="tv_image_live_validation_status" id="tv_image_live_validation_status" value="{{ tv_image_live_validation_status() }}" />
 
 
                                 <div class="new-video-upload mt-2" id="mp4_code">
@@ -825,7 +826,14 @@ border-radius: 0px 4px 4px 0px;
             },
 
             live_stream_tv_image: {
-                required: true,
+                required: function (element) {
+                    var action =  $("#tv_image_live_validation_status").val(); 
+                    if (action == '1' ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
                 tv_image_dimention:[1920,1080]
             },
 

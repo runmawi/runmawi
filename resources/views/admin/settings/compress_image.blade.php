@@ -85,9 +85,9 @@
                                     <td> {{ 'Live Videos'}} </td>
                                     <td> 
                                         <div class="mt-1">
-                                            <p> Validation</p>
+                                            <p> Tv Image Live validation </p>
                                             <label class="switch">
-                                                <input name="live_validation" class="live_validation" id="live_validation" type="checkbox" @if(  $Compress_image != null &&  $Compress_image->live_validation == "1") checked  @endif  >
+                                                <input name="tv_image_live_validation" class="tv_image_live_validation" id="tv_image_live_validation" type="checkbox" @if(  $Compress_image != null &&  $Compress_image->tv_image_live_validation == "1") checked  @endif  >
                                                 <span class="slider round"></span>
                                             </label>
                                         </div>
