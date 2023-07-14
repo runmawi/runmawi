@@ -1,13 +1,33 @@
 <?php  if(count($latest_video) >
 0) : ?>
-<?php  if(!Auth::guest() && !empty($data['password_hash'])) { 
-                          $id = Auth::user()->id ; } else { $id = 0 ; } ?>
+<?php  if(!Auth::guest() && !empty($data['password_hash'])) {  $id = Auth::user()->id ; } else { $id = 0 ; } ?>
+
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-<h4 class="main-title"><a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>">
-                    <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[1]->header_name ;} else { echo "" ; } ?>
-                    </a></h4>  
-     <a class="see" href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>"> See All  </a>
+    
+    <!-- Header Link -->
+
+    <?php if( Route::currentRouteName() == "ChannelHome"){?>
+        <h4 class="main-title">
+            <a href="<?php echo route('Channel_videos_list',Request::segment(2)); ?>">
+                <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[1]->header_name ;} else { echo "" ; } ?>
+            </a>
+        </h4>  
+
+        <a class="see" href="<?php echo route('Channel_videos_list',Request::segment(2))  ; ?>"> See All  </a>
+
+    <?php }else{ ?>
+
+        <h4 class="main-title">
+            <a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>">
+                <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[1]->header_name ;} else { echo "" ; } ?>
+            </a>
+        </h4>  
+
+        <a class="see" href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>"> See All  </a>
+    <?php } ?>
+
 </div>
+
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($latest_video)) :

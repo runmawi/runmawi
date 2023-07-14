@@ -73,6 +73,13 @@ Route::get('/get_playlist/{slug}', 'MyPlaylistController@GetMY_Audio_Playlist');
 Route::get('/playlist/play/{slug}', 'MyPlaylistController@Play_Playlist');
 Route::get('/playlist/delete/{id}', 'MyPlaylistController@Delete_Playlist');
 
+// Endpoints Playlist Audios.
+
+Route::get('/video-playlist', 'VideoPlaylistController@MyVideoPlaylist');
+Route::get('/video-playlist/{slug}', 'VideoPlaylistController@VideoPlaylist');
+Route::get('video_playlist_play', 'VideoPlaylistController@video_playlist_play')->name('video_playlist_play');
+
+
 
 
 
@@ -490,6 +497,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
 
     Route::get('/Testwatermark', 'Testwatermark@index');
+
+    // Admin Video Playlist 
+
+    Route::get('/videos/playlist', 'AdminVideoPlayListController@index');
+    Route::get('/videos/playlist/edit/{id}', 'AdminVideoPlayListController@edit');
+    Route::post('/videos/playlist/store', 'AdminVideoPlayListController@store');
+    Route::post('/videos/playlist/update', 'AdminVideoPlayListController@update');
+    Route::get('/videos/playlist/delete/{id}', 'AdminVideoPlayListController@destroy');
 
     // Admin Video Functionality
     Route::post('/category_order', 'AdminVideoCategoriesController@category_order');
