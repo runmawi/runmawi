@@ -344,7 +344,7 @@ $settings = App\Setting::first();
                     
                         <div class="form-group">
                           <label> Email:</label>
-                          <input type="email" id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
+                          <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
                         </div> 
                     
                     
