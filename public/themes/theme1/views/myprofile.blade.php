@@ -785,7 +785,7 @@ border-radius: 5px;padding:10px;">
                         
                             <div class="form-group">
 		                         <label> Phone:</label>
-		                         <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+		                         <input type="number" id="mobile" maxlength="10" minlength="10" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
                             </div>
                             
                             <div class="form-group">
