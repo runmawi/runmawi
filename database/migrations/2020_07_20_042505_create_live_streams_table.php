@@ -30,9 +30,9 @@ class CreateLiveStreamsTable extends Migration
             $table->integer('footer')->nullable();
             $table->string('slug')->nullable();
             $table->integer('rating')->nullable();
-            $table->integer('publish_type')->nullable();
+            $table->string('publish_type')->nullable();
             $table->string('publish_status')->nullable();
-            $table->integer('publish_time')->nullable();
+            $table->string('publish_time')->nullable();
             $table->integer('status')->nullable();
             $table->string('image')->nullable();
             $table->longText('mp4_url')->nullable();

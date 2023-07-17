@@ -1,4 +1,13 @@
+<?php 
+    $user = !Auth::guest() ? Auth::User()->id : 'guest' ; 
+    $livestream_id = $video->id ; 
+    $advertisement_id = $video->live_ads ; 
+    $adverister_id = App\Advertisement::where('id',$advertisement_id)->pluck('advertiser_id')->first();
+?>
+
 <script>
+
+    let user = <?php echo json_encode($user); ?>
 
     let live_ads = <?php echo json_encode( $live_ads ); ?> ;
 
@@ -14,8 +23,20 @@
             ads:{ 
                   enabled: true, 
                   tagUrl: live_ads 
-            }
+            },
+            
         });
+
+            // Ads Views Count
+        player.on('adsloaded', (event) => {
+            Ads_Views_Count();
+        });
+
+            // Ads Redirection Count
+        player.on('adsclick', (event) => {
+            Ads_Redirection_URL_Count(event.timeStamp);
+        });
+            
     });
 
 
@@ -27,11 +48,7 @@
                         'current-time','mute','volume','captions','settings','airplay',
                         'fullscreen'
                     ],
-
-            ads:{ 
-                enabled: true, 
-                tagUrl: live_ads 
-            },
+           
         });
     });
 
@@ -43,6 +60,7 @@
                         'current-time','mute','volume','captions','settings','pip','airplay',
                         'fullscreen'
 		            ],
+                    
         });
     });
 
@@ -97,8 +115,18 @@
                     span.innerHTML = `AUTO`
                 }
             })
-      
+
             var player = new Plyr(video, defaultOptions);
+
+                // Ads Views Count
+             player.on('adsloaded', (event) => {
+                Ads_Views_Count();
+            });
+
+                // Ads Redirection Count
+            player.on('adsclick', (event) => {
+                Ads_Redirection_URL_Count(event.timeStamp);
+            });
       });	
 
         hls.attachMedia(video);
@@ -119,77 +147,41 @@
         }
     });
 
+    function Ads_Redirection_URL_Count(timestamp_time){
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const video = document.querySelector("#live_player");
-        const source = video.getElementsByTagName("source")[0].src;
-  
-        const defaultOptions = {};
-
-        if (!Hls.isSupported()) {
-
-            defaultOptions.ads = {
-                enabled: true, 
-                tagUrl: live_ads
-            }
-
-            video.src = source;
-            var player = new Plyr(video, defaultOptions);
-        } 
-        else
-        {
-            const hls = new Hls();
-            hls.loadSource(source);
-            
-                hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-                const availableQualities = hls.levels.map((l) => l.height)
-                availableQualities.unshift(0) 
-
-                defaultOptions.quality = {
-                    default: 0, //Default - AUTO
-                    options: availableQualities,
-                    forced: true,        
-                    onChange: (e) => updateQuality(e),
-        }
-
-          // Add Auto Label 
-            defaultOptions.i18n = {
-                qualityLabel: { 0: 'Auto', },
-            }
-
-            defaultOptions.ads = {
-                enabled: true, 
-                tagUrl: live_ads
-            }
-
-            hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
-                var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
-                if (hls.autoLevelEnabled) {
-                    span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
-                } else {
-                    span.innerHTML = `AUTO`
+        $.ajax({
+              type:'get',
+              url:'<?= route('Advertisement_Redirection_URL_Count') ?>',
+              data: {
+                        "Count" : 1 , 
+                        "source_type" : "livestream",
+                        "source_id"   : "<?php echo $livestream_id ?>",
+                        "adverister_id" : "<?php echo $adverister_id ?>",
+                        "adveristment_id" : "<?php echo $advertisement_id ?>",
+                        "user" : "<?php echo $user ?>",
+                        "timestamp_time" : timestamp_time ,
+                  },
+                  success:function(data) {
                 }
-            })
-      
-            var player = new Plyr(video, defaultOptions);
-      });	
-
-        hls.attachMedia(video);
-            window.hls = hls;		 
+          });
         }
 
-        function updateQuality(newQuality) {
-            if (newQuality === 0) {
-            window.hls.currentLevel = -1;
-            } else {
-            window.hls.levels.forEach((level, levelIndex) => {
-                if (level.height === newQuality) {
-                console.log("Found quality match with " + newQuality);
-                window.hls.currentLevel = levelIndex;
+    function Ads_Views_Count(){
+
+        $.ajax({
+              type:'get',
+              url:'<?= route('Advertisement_Views_Count') ?>',
+              data: {
+                        "Count" : 1 , 
+                        "source_type" : "livestream",
+                        "source_id"   : "<?php echo $livestream_id ?>",
+                        "adverister_id" : "<?php echo $adverister_id ?>",
+                        "adveristment_id" : "<?php echo $advertisement_id ?>",
+                        "user" : "<?php echo $user ?>",
+                  },
+                  success:function(data) {
                 }
-            });
-            }
-        }
-    });
+          });
+    }
 
 </script>
