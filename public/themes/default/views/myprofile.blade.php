@@ -358,7 +358,7 @@ $settings = App\Setting::first();
                     
                         <div class="form-group">
                            <label> Phone:</label>
-                           <input type="number" id="mobile" maxlength="10" minlength="10" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+                           <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
                         </div>
                         <div class="form-group">
                         <label> DOB:</label>
