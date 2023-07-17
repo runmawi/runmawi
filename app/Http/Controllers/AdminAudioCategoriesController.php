@@ -651,10 +651,12 @@ class AdminAudioCategoriesController extends Controller
         $categories = AudioAlbums::where('id', '=', $id)->get();
         $allAlbums = AudioAlbums::all();
         $allCategories = AudioCategory::all();
+        $audio_albums = Audio::where('album_id',$id)->get();
          $data = array(
                 'audioCategories' => $allCategories,
                 'allAlbums' => $allAlbums,
-                'categories' => $categories
+                'categories' => $categories,
+                'audio_albums' => $audio_albums,
             );
         
         return view('admin.audios.albums.edit',$data);
