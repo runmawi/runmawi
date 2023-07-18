@@ -2484,7 +2484,6 @@ class AdminLiveStreamController extends Controller
         try {
 
             $Advertisement = Advertisement::whereNotNull('ads_path')->where('ads_position',$request->ads_position)
-            ->where('ads_upload_type','tag_url')
             ->where('status',1)->get();
 
             $response = array(
