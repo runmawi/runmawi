@@ -105,12 +105,19 @@ if (!empty($data['password_hash'])) {
 
 <style>
     body.dark {background-color: #292c35;} /* #9b59b6 */
+    body.dark .iq-footer{background-color: #292c35;border-top: 1px solid #000;} /* #9b59b6 */
+    body.dark .iq-sidebar-menu .iq-menu li .iq-submenu li a:hover, .iq-sidebar-menu .iq-menu li.active .iq-submenu li>a{background-color: #292c35;color:#fff;} /* #9b59b6 */
+    body.dark {background-color: #292c35;} /* #9b59b6 */
+    body.dark .tab-content{background-color: #292c35;} /* #9b59b6 */
     body.dark .iq-card{background-color: #000;} /* #9b59b6 */
-    body.dark .iq-top-navbar {background-color: #292c35;} /* #9b59b6 */
-    body.dark .iq-sidebar {background-color: #292c35;} /* #9b59b6 */
+    body.dark .iq-top-navbar {background-color: #292c35;border-bottom: 1px solid #000;} /* #9b59b6 */
+    body.dark .iq-sidebar {background-color: #292c35;border-right: 1px solid #000;} /* #9b59b6 */
     body.dark .iq-menu li a span{color: #fff;} /* #9b59b6 */
     body.dark h1,h2,h3,h4,h5,h6{color: #fff;}
     body.dark label{color: #fff;}
+    body.dark div.dataTables_wrapper div.dataTables_info{color: #fff!important;}
+    body.dark .line{color: #fff;}
+    body.dark .val{color: #fff;}
     body.dark .iq-arrow-right{color: #fff;}
     body.dark p{color: #fff!important;}
 body.dark h1, body.dark .support a {color: #fff;}
