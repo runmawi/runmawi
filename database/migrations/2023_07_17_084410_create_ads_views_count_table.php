@@ -22,6 +22,9 @@ class CreateAdsViewsCountTable extends Migration
             $table->integer('adveristment_id')->nullable();
             $table->string('user')->nullable();
             $table->integer('timestamp_time')->nullable();
+            $table->longText('IP_address')->nullable();
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
             $table->timestamps();
         });
     }
