@@ -2621,3 +2621,8 @@ Route::get('/download-xml', function () {
 // Ads Vast
 
 Route::get('Ads-vast', 'AdsVastController@index');
+
+// Advertisement Count
+
+Route::get('Ads-Redirection-URL-Count', 'AdvertisementCountController@Advertisement_Redirection_URL_Count')->name('Advertisement_Redirection_URL_Count');
+Route::get('Ads-Views-Count', 'AdvertisementCountController@Advertisement_Views_Count')->name('Advertisement_Views_Count');
