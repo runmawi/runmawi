@@ -593,4 +593,13 @@ Route::group(
             Route::get('tv_livestreams', 'ApiAuthController@tv_livestreams');
             Route::post('enable_dark_light_mode', 'ApiAuthController@enable_dark_light_mode');
 
+
+            // Create Audio Playlist 
+
+
+            Route::post('add_myaudio_playlist', 'ApiAuthController@AudioMYPlaylist');
+            Route::post('add_audio_playlist', 'ApiAuthController@AddAudioPlaylist');
+            Route::post('my_audio_playlist', 'ApiAuthController@MyAudioPlaylist');
+            Route::post('audio_playlist', 'ApiAuthController@PlaylistAudio');
+
     });
