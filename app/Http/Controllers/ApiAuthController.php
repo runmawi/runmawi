@@ -14643,10 +14643,11 @@ public function QRCodeMobileLogout(Request $request)
       }
       if($request->video_id){
           $video_id = $request->video_id;
-          $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
+          $count = ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)->count();
           $IOSId_count = ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)->count();
+          // print_r($count);exit;
           if ( $count > 0 ) {
-            ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
+            ContinueWatching::where('IOSId', '=', $IOSId)->where('videoid', '=', $video_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
             $response = array(
               'status'=>'true',
               'message'=>'Current Time updated'
@@ -15322,6 +15323,56 @@ public function QRCodeMobileLogout(Request $request)
     );
 
      return response()->json($response, 200);
+
+  }
+
+  public function IOS_Video_Like(Request $request)
+  {
+    $IOSId = $request->IOSId;
+    $video_id = $request->video_id;
+
+    $like_count = Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->count();
+    $like_counts = Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->where('liked','=' ,'1')->count();
+    $unlike_count = Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->where('liked', 0)->count();
+
+    if($like_count > 0){
+
+      if($like_counts > 0){
+        Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->where('liked','=' ,'1')
+        ->update([
+                'IOSId'  => $IOSId ,
+                'video_id' => $video_id ,
+                'liked'    => '0' ,
+                'disliked'    => '0',
+              ]);
+
+      }elseif( $unlike_count > 0){
+          Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->where('liked',0)
+          ->update([
+                  'IOSId'  => $IOSId ,
+                  'video_id' => $video_id ,
+                  'liked'    => '1' ,
+                  'disliked'    => '0',
+                ]);
+      }
+
+    }
+    else{
+        Likedislike::create([
+          'IOSId'  => $IOSId ,
+          'video_id' => $video_id ,
+          'liked'    => '1' ,
+          'disliked'    => '0' ,
+        ]);
+    }
+
+    $response = array(
+      'status'=>'true',
+      'like'  =>  Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->pluck('liked')->first(),
+      'dislike'  =>   Likedislike::where("video_id",$video_id)->where("IOSId",$IOSId)->pluck('disliked')->first(),
+    );
+
+    return response()->json($response, 200);
 
   }
 
@@ -19308,4 +19359,287 @@ public function IOS_ShowVideo_favorite(Request $request) {
         return response()->json($response, 200);
   }
 
+  
+  public function episodedetailsIOS(Request $request){
+
+    $episodeid = $request->episodeid;
+
+
+    $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($request){
+       $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+       $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+       $item['shareurl'] = URL::to('/episode/') . '/' . Series::where('id',$item->series_id)->pluck('slug')->first() . '/' . $item->slug;
+       $item['m3u8url'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
+       
+       $plans_ads_enable = $this->plans_ads_enable($request->user_id);
+
+       if($plans_ads_enable == 1){
+
+        $item['episode_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+                                  // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+                                  // ->whereTime('start', '<=', $current_time)
+                                  // ->whereTime('end', '>=', $current_time)
+                                  ->where('ads_events.status',1)
+                                  ->where('advertisements.status',1)
+                                  ->where('advertisements.id',$item->episode_ads)
+                                  ->pluck('ads_path')->first();
+                        
+      }else{
+        $item['episode_ads_url'] = " ";
+      }
+      return $item;
+      
+     });
+
+    if($request->user_id != ''){
+      $user_id = $request->user_id;
+      $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
+      $wishliststatus =  ($cnt == 1) ? "true" : "false";
+    }else{
+      $wishliststatus = 'false';
+    }
+    if(!empty($request->user_id) && $request->user_id != '' ){
+      $user_id = $request->user_id;
+      $cnt = Watchlater::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
+      $watchlaterstatus =  ($cnt == 1) ? "true" : "false";
+    }else{
+      $watchlaterstatus = 'false';
+    }
+
+
+    if($request->andriodId != ''){
+      $andriodId = $request->andriodId;
+      $cnt = Wishlist::select('episode_id')->where('andriodId','=',$andriodId)->where('episode_id','=',$request->episodeid)->count();
+      $andriod_wishliststatus =  ($cnt == 1) ? "true" : "false";
+    }else{
+      $andriod_wishliststatus = 'false';
+      // $userrole = '';
+    }
+    if(!empty($request->andriodId) && $request->andriodId != '' ){
+      $andriodId = $request->andriodId;
+      $cnt = Watchlater::select('episode_id')->where('andriodId','=',$andriodId)->where('episode_id','=',$request->episodeid)->count();
+      $andriod_watchlaterstatus =  ($cnt == 1) ? "true" : "false";
+    }else{
+      $andriod_watchlaterstatus = 'false';
+    }
+    if($request->user_id != ''){
+    $like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+    $dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+    $favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->count();
+    $like = ($like_data == 1) ? "true" : "false";
+    $dislike = ($dislike_data == 1) ? "true" : "false";
+    $favorite = ($favoritestatus > 0) ? "true" : "false";
+
+  }else{
+    $like = 'false';
+    $dislike = 'false';
+    $favorite = 'false';
+  }
+
+  if($request->IOSId != ''){
+    $like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("IOSId","=",$IOSId)->where("liked","=",1)->count();
+    $dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("IOSId","=",$IOSId)->where("disliked","=",1)->count();
+    $IOS_favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("IOSId","=",$IOSId)->count();
+    $IOS_like = ($like_data == 1) ? "true" : "false";
+    $IOS_dislike = ($dislike_data == 1) ? "true" : "false";
+    $IOS_favorite = ($IOS_favoritestatus > 0) ? "true" : "false";
+    // $userrole = User::find($user_id)->pluck('role');
+
+  }else{
+    $IOS_like = 'false';
+    $IOS_dislike = 'false';
+    $IOS_favorite = 'false';
+    // $userrole = '';
+  }
+  if(!empty($request->user_id)){
+
+  if(!empty($request->user_id)){
+    $user_id = $request->user_id;
+    $users = User::where('id','=',$user_id)->first();
+    $userrole = @$users->role;
+  }else{
+    $userrole = '';
+  }
+
+  $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
+
+  $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
+
+
+
+  if(!empty($series_id) && count($series_id) > 0){
+    $series_id = $series_id[0];
+
+  $main_genre = SeriesCategory::Join('genres','genres.id','=','series_categories.category_id')
+  ->where('series_categories.series_id',$series_id)->get('name');
+
+  $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.language_id')
+  ->where('series_languages.series_id',$series_id)->get('name');
+  }
+
+  if(!empty($series_id) && !empty($main_genre)){
+  foreach($main_genre as $value){
+    $category[] = $value['name'];
+  }
+}else{
+  $category = [];
+}
+  if(!empty($category)){
+  $main_genre = implode(",",$category);
+  }else{
+    $main_genre = "";
+  }
+
+  if(!empty($series_id) && !empty($languages)){
+  foreach($languages as $value){
+    $language[] = $value['name'];
+  }
+}else{
+  $language = "";
+}
+
+  if(!empty($language)){
+  $languages = implode(",",$language);
+  }else{
+    $languages = "";
+  }
+    if (!empty($episode) && count($episode) > 0) {
+        $season = SeriesSeason::where('id',$episode[0]->season_id)->first();
+        $ppv_exist = PpvPurchase::where('user_id',$user_id)
+        ->where('series_id',$episode[0]->series_id)
+        ->count();
+  } else {
+      $ppv_exist = 0;
+      $season = null;
+  }
+  if ($ppv_exist > 0) {
+
+        $ppv_video_status = "can_view";
+
+    } else if (!empty(@$season) && @$season->access != "ppv" || @$season->access == "free") {
+      $ppv_video_status = "can_view";
+    }
+    else {
+          $ppv_video_status = "pay_now";
+    }
+
+    if(!empty($season_id) ){
+      $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
+    }
+
+  }else{
+    $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
+
+    $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
+
+    $season = SeriesSeason::where('id',$season_id)->first();
+
+    if (!empty(@$season) && @$season->access != "ppv" || @$season->access == "free") {
+      $ppv_video_status = "can_view";
+    }
+    else {
+          $ppv_video_status = "pay_now";
+    }
+
+    if(!empty($season_id) ){
+      $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
+    }
+    $userrole = 'guest';
+
+    if(!empty($series_id) && count($series_id) > 0){
+      $series_id = $series_id[0];
+  
+    $main_genre = SeriesCategory::Join('genres','genres.id','=','series_categories.category_id')
+    ->where('series_categories.series_id',$series_id)->get('name');
+  
+    $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.language_id')
+    ->where('series_languages.series_id',$series_id)->get('name');
+    }
+  
+    if(!empty($series_id) && !empty($main_genre)){
+    foreach($main_genre as $value){
+      $category[] = $value['name'];
+    }
+  }else{
+    $category = [];
+  }
+    if(!empty($category)){
+    $main_genre = implode(",",$category);
+    }else{
+      $main_genre = "";
+    }
+  
+    if(!empty($series_id) && !empty($languages)){
+    foreach($languages as $value){
+      $language[] = $value['name'];
+    }
+  }else{
+    $language = "";
+  }
+  
+    if(!empty($language)){
+    $languages = implode(",",$language);
+    }else{
+      $languages = "";
+    }
+  }
+
+    $response = array(
+      'status'=>'true',
+      'message'=>'success',
+      'episode' => $episode,
+      // 'Season_Name' => $Season_Name,
+      'season' => $Season,
+      'ppv_video_status' => $ppv_video_status,
+      'wishlist' => $wishliststatus,
+      'watchlater' => $watchlaterstatus,
+      'userrole' => $userrole,
+      'favorite' => $favorite,
+      'like' => $like,
+      'dislike' => $dislike,
+      'main_genre' =>preg_replace( "/\r|\n/", "", $main_genre ),
+      'languages' => $languages,
+      'IOS_watchlaterstatus' => $IOS_watchlaterstatus,
+      'IOS_wishliststatus' => $IOS_wishliststatus,
+      'IOS_favorite' => $IOS_favorite,
+      'IOS_dislike' => $IOS_dislike,
+      'IOS_like' => $IOS_like,
+
+    );
+    return response()->json($response, 200);
+  }
+
+
+  public function enable_dark_light_mode(Request $request){
+
+      try {
+        //code...
+        $SiteTheme  = SiteTheme::first();
+        $SiteTheme->theme_mode = $request->theme_mode;
+        $SiteTheme->save();
+
+        $Site_theme_setting = SiteTheme::get()->map(function ($item) {
+          $item['dark_mode_logo_url'] = URL::to('/public/uploads/settings/'.$item->dark_mode_logo);
+          $item['light_mode_logo_url'] = URL::to('/public/uploads/settings/'.$item->light_mode_logo);
+          return $item;
+        });
+        // print_r($SiteTheme);exit;
+
+        $response = array(
+          'status'=>'true',
+          'SiteTheme' => $SiteTheme,
+          'Site_theme_setting' => $Site_theme_setting,
+        );
+
+      } catch (\Throwable $th) {
+        throw $th;
+
+        $response = array(
+          'status'=>'false',
+        );
+      }
+
+    return response()->json($response, 200);
+
+  }
 }

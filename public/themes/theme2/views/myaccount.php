@@ -658,9 +658,9 @@ cursor: pointer;
                                  <div class="p-0">
                                     <span class="text-light font-size-13"> {{ $user->email ? $user->email : " "   }}</span></div>
                               </div>
-                              <div class="col-md-4 text-right">
+                              <!-- <div class="col-md-4 text-right">
                                     <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#update_userEmails">Change</a>
-                              </div>
+                              </div> -->
                            </div>
 
                            <form id="update_userEmail" accept-charset="UTF-8" action="{{ URL::to('/profile/update_userEmail') }}" method="post">

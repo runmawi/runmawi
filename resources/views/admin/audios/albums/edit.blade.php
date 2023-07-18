@@ -98,11 +98,42 @@
 	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 	<button type="button" class="btn btn-info" id="submit-update-cat">Update</button>
 </div>
-</div>    </div>    </div>    </div>    </div>
+</div>  
+
+
+                        <div class="row iq-card">
+                            <div class="col-md-12">
+                                <table class="table " id="audio_albums" style="width:100%">
+                                    <thead>
+                                        <tr class="r1">
+                                            <th>#</th>
+                                            <th>Audio Title</th>
+                                            <th>Access</th>
+                                        </tr>
+                                    </thead>
+                                <tbody>
+                                    @foreach($audio_albums as $key => $audioalbums)
+                                        <tr>
+                                        <td>{{ $key+1  }}</td>   
+                                        <td>{{ $audioalbums->title  }}</td>   
+                                        <td>{{ $audioalbums->access }}</td> 
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                           </table>
+                        </div>
+                    </div>
+
+
+</div>    </div>    </div>
+</div> 
+
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
 <script>
 	$(document).ready(function(){
+        $('#audio_albums').DataTable();
+
 		$('#submit-update-cat').click(function(){
 			$('#update-cat-form').submit();
 		});

@@ -772,7 +772,7 @@ border-radius: 5px;padding:10px;">
                         
                             <div class="form-group">
 		                        <label> Email:</label>
-		                        <input type="email" id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
+		                        <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
                             </div> 
                         
                         
@@ -785,7 +785,7 @@ border-radius: 5px;padding:10px;">
                         
                             <div class="form-group">
 		                         <label> Phone:</label>
-		                         <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+		                         <input type="number" id="mobile"  pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
                             </div>
                             
                             <div class="form-group">

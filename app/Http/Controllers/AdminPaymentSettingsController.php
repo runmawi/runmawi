@@ -46,6 +46,37 @@ class AdminPaymentSettingsController extends Controller
 		$stripe_status = empty($input['stripe_status']) ? 0 : 1 ;
 
 		$live_mode = empty($input['live_mode']) ? 0 : 1 ;
+		// dd($live_mode);
+		$Env_path = realpath(('.env'));
+
+		if($live_mode == 0){
+			$Replace_data =array(
+				'STRIPE_KEY'         	=>  $request['test_secret_key'],
+				'STRIPE_SECRET'         =>  $request['test_publishable_key'],
+			);
+		}else if($live_mode == 1){
+			$Replace_data =array(
+				'STRIPE_KEY'         	=>  $request['live_secret_key'],
+				'STRIPE_SECRET'         =>  $request['live_publishable_key'],
+			);
+		}else{
+			$Replace_data =array(
+				'STRIPE_KEY'         	=>  '',
+				'STRIPE_SECRET'         =>  '',
+			);
+		}
+
+		file_put_contents($Env_path, implode('', 
+		array_map(function($Env_path) use ($Replace_data) {
+			return   stristr($Env_path,'STRIPE_KEY') ? "STRIPE_KEY=".$Replace_data['STRIPE_KEY']."\n" : $Env_path;
+		}, file($Env_path))
+		));
+
+		file_put_contents($Env_path, implode('', 
+				array_map(function($Env_path) use ($Replace_data) {
+					return   stristr($Env_path,'STRIPE_SECRET') ? "STRIPE_SECRET=".$Replace_data['STRIPE_SECRET']."\n" : $Env_path;
+				}, file($Env_path))
+		));
 
 		$payment_settings->live_mode = $live_mode;
 		$payment_settings->stripe_status = $stripe_status;
@@ -101,7 +132,10 @@ class AdminPaymentSettingsController extends Controller
             
 			$payment_settings->live_publishable_key  = '';
 		}
-        
+		$Env_path = realpath(('.env'));
+
+
+
         $payment_settings->save();
 
 

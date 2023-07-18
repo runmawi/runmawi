@@ -74,6 +74,7 @@ class VideoPlaylistController extends Controller
 
                     $VideoPlaylist = VideoPlaylist::where("playlist_id", $AdminVideoPlaylist->id)->pluck("video_id")->toArray();
                     $subtitleVideoPlaylist = VideoPlaylist::where("playlist_id", $AdminVideoPlaylist->id)->pluck("video_id")->first();
+                    // dd($AdminVideoPlaylist->id); 
 
                 }else{
 
@@ -89,6 +90,7 @@ class VideoPlaylistController extends Controller
                     ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
                     ->where('movies_subtitles.movie_id', @$first_videos->id)
                     ->get();
+                    // dd($subtitles_name);
 
                 if (count($subtitles_name) > 0) {
                     foreach ($subtitles_name as $value) {
@@ -98,20 +100,17 @@ class VideoPlaylistController extends Controller
                 } else {
                     $subtitles = [];
                     $subtitlesname = [];
-                    $first_videos = [];
                 }
                 $subtitle = MoviesSubtitles::where('movie_id', '=', @$subtitleVideoPlaylist)->get();
 
                 }else{
                     $videos = [];
                     $first_videos = [];
-                    $subtitle = [];
+                    $subtitles = [];
 
                 }
 
-                // dd($subtitleVideoPlaylist); 
                 $playerui = Playerui::first();
-
                 $data = array(
                     'settings' => $settings,
                     'all_play_list_videos' => $videos,
@@ -121,8 +120,12 @@ class VideoPlaylistController extends Controller
                     'playerui_settings' => $playerui,
                     'subtitles' => $subtitles,
                 );
+            if(!empty($first_videos)){
 
-            return Theme::view('VideoPlayList', $data);
+                return Theme::view('VideoPlayList', $data);
+            }else{
+                return \Redirect('/home');
+            }
 
         } catch (\Throwable $th) {
             throw $th;

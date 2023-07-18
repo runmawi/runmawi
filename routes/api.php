@@ -126,6 +126,7 @@ Route::group(
         Route::post('seriesepisodes', 'ApiAuthController@seriesepisodes');
         Route::post('episodedetails', 'ApiAuthController@episodedetails');
         Route::post('episodedetails_android', 'ApiAuthController@episodedetailsAndriod');
+        Route::post('episodedetails_IOS', 'ApiAuthController@episodedetailsIOS');
         Route::post('relatedepisodes', 'ApiAuthController@relatedepisodes');
         Route::post('seasonepisodes', 'ApiAuthController@SeasonsEpisodes');
         Route::post('user_notifications', 'ApiAuthController@seasonepisodes');
@@ -516,6 +517,7 @@ Route::group(
             // Audio Like & dislike - IOS
             Route::post('/IOS_Videolike', 'ApiAuthController@IOS_LikeVideo');
             Route::post('/IOS_Videodislike', 'ApiAuthController@IOS_DisLikeVideo');
+            Route::post('/IOS_Video_Like', 'ApiAuthController@IOS_Video_Like');
 
             // Audio Like & dislike - IOS
             Route::post('IOS_Audiolike', 'ApiAuthController@IOS_Audiolike');
@@ -589,5 +591,6 @@ Route::group(
             Route::get('contact_email_setting', 'ApiAuthController@contact_email_setting');
 
             Route::get('tv_livestreams', 'ApiAuthController@tv_livestreams');
+            Route::post('enable_dark_light_mode', 'ApiAuthController@enable_dark_light_mode');
 
     });
