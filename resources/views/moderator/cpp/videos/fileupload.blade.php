@@ -13,6 +13,9 @@
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 @section('content')
 <style>
+    .iq-sidebar-menu .iq-menu li ul li a {
+    padding: 20px 20px 10px 40px!important;
+}
     .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background-color: #e4e4e4;
     border: 1px solid #aaa;
