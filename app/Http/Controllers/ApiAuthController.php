@@ -19608,4 +19608,38 @@ public function IOS_ShowVideo_favorite(Request $request) {
     );
     return response()->json($response, 200);
   }
+
+
+  public function enable_dark_light_mode(Request $request){
+
+      try {
+        //code...
+        $SiteTheme  = SiteTheme::first();
+        $SiteTheme->theme_mode = $request->theme_mode;
+        $SiteTheme->save();
+
+        $Site_theme_setting = SiteTheme::get()->map(function ($item) {
+          $item['dark_mode_logo_url'] = URL::to('/public/uploads/settings/'.$item->dark_mode_logo);
+          $item['light_mode_logo_url'] = URL::to('/public/uploads/settings/'.$item->light_mode_logo);
+          return $item;
+        });
+        // print_r($SiteTheme);exit;
+
+        $response = array(
+          'status'=>'true',
+          'SiteTheme' => $SiteTheme,
+          'Site_theme_setting' => $Site_theme_setting,
+        );
+
+      } catch (\Throwable $th) {
+        throw $th;
+
+        $response = array(
+          'status'=>'false',
+        );
+      }
+
+    return response()->json($response, 200);
+
+  }
 }

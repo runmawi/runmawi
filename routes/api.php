@@ -591,5 +591,6 @@ Route::group(
             Route::get('contact_email_setting', 'ApiAuthController@contact_email_setting');
 
             Route::get('tv_livestreams', 'ApiAuthController@tv_livestreams');
+            Route::post('enable_dark_light_mode', 'ApiAuthController@enable_dark_light_mode');
 
     });
