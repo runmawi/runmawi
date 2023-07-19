@@ -1100,11 +1100,16 @@ class AuthController extends Controller
         $linearCreative = $ad1
             ->createLinearCreative()
             ->setDuration(128)
-            ->setId( Str::random(23) )
+            ->setId( Str::random(23) );
             // ->setAdId('pre-'.Str::random(23));
-            ->setVideoClicksClickThrough($ads_redirection_url)
-            ->addVideoClicksClickTracking( $ads_redirection_url )
-            ->addVideoClicksCustomClick( $ads_redirection_url );
+
+            if( $ads_redirection_url != null ){
+
+                $linearCreative->setVideoClicksClickThrough($ads_redirection_url)
+                                ->addVideoClicksClickTracking( $ads_redirection_url )
+                                ->addVideoClicksCustomClick( $ads_redirection_url );
+            }
+          
             // ->addTrackingEvent('start', 'http://ad.server.com/trackingevent/start')
             // ->addTrackingEvent('pause', 'http://ad.server.com/trackingevent/stop');
 
@@ -1240,11 +1245,16 @@ class AuthController extends Controller
         $linearCreative = $ad1
             ->createLinearCreative()
             ->setDuration(128)
-            ->setId( Str::random(23) )
+            ->setId( Str::random(23) );
             // ->setAdId('pre-'.Str::random(23))
-            ->setVideoClicksClickThrough($ads_redirection_url)
-            ->addVideoClicksClickTracking( $ads_redirection_url )
-            ->addVideoClicksCustomClick( $ads_redirection_url );
+
+            if( $ads_redirection_url != null ){
+
+                $linearCreative->setVideoClicksClickThrough($ads_redirection_url)
+                                ->addVideoClicksClickTracking( $ads_redirection_url )
+                                ->addVideoClicksCustomClick( $ads_redirection_url );
+            }
+
             // ->addTrackingEvent('start', 'http://ad.server.com/trackingevent/start')
             // ->addTrackingEvent('pause', 'http://ad.server.com/trackingevent/stop');
 
