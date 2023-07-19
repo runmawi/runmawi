@@ -2335,6 +2335,20 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
     visibility: visible;
 }
 
+.playlist:hover{
+    background-color: #141414;
+    color: #000!important;
+}
 
+.playlist{
+    padding: 15px;
+    
+}
 
-
+.boder{
+    padding: 30px;
+    border-radius: 5px;
+    border:1px solid #ddd;
+    max-height: 400px;
+    overflow: scroll;
+}
