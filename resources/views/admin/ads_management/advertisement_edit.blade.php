@@ -46,7 +46,7 @@
                 @endif
 
                 <div class="modal-body">
-                    <form accept-charset="UTF-8" action="{{ URL::to('admin/advertisement/update') }}" method="post"  id="advertiser_edit">
+                    <form accept-charset="UTF-8" action="{{ URL::to('admin/advertisement/update') }}" method="post"  id="advertiser_edit" enctype="multipart/form-data" >
                         @csrf   
                         <input type="hidden" name="id" id="id" value="{{ $advertisement->id }}" />
 
@@ -76,7 +76,6 @@
                                 </div>
                                 <div class="make-switch" data-on="success" data-off="warning"></div>
                             </div>
-
                         </div>
 
                         <div class="row">
@@ -95,7 +94,7 @@
                                             {{-- Ads position --}}
                             <div class="form-group col-md-6">
                                 <label> Ads position :</label>
-                                <select class="form-control ads_type" name="ads_position">
+                                <select class="form-control" name="ads_position">
                                     <option value="pre" @if ($advertisement->ads_position == 'pre') {{ 'selected' }} @endif>Pre</option>
                                     <option value="mid" @if ($advertisement->ads_position == 'mid') {{ 'selected' }} @endif>Mid</option>
                                     <option value="post" @if ($advertisement->ads_position == 'post') {{ 'selected' }} @endif>Post</option>
@@ -105,23 +104,37 @@
                         </div>
 
 
-                        <div class="row">
+                        <div class="row d-flex">
                                             {{-- Ads upload Type --}}
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label> Ads upload Type :</label>
                                 <select class="form-control ads_type" name="ads_upload_type">
                                     <option value="null"  @if ($advertisement->ads_upload_type == 'null') {{ 'selected' }} @endif >Select Ads Type </option>
                                     <option value="tag_url" @if ($advertisement->ads_upload_type == 'tag_url') {{ 'selected' }} @endif >Ad Tag Url </option>
+                                    <option value="ads_video_upload" @if ($advertisement->ads_upload_type == 'ads_video_upload') {{ 'selected' }}  @endif > Ads Video Upload </option>
                                 </select>
                             </div>
 
-                                            {{-- Ad Tag Url: --}}
-                            <div class="form-group col-md-6">
-                                <label> Ad Tag Url: :</label>
+                                            {{-- Ad Tag Url --}}
+                            <div class="form-group col-md-6 tag_url" style="{{ $advertisement->ads_upload_type == 'tag_url' ? 'display:block;' : 'display:none;' }}" >
+                                <label>Ads Tag Url :</label>
                                 <input type="text" id="ads_path" name="ads_path" class="form-control" value="{{ $advertisement->ads_path }}" placeholder="Please! Enter the Ads Tag URL" />
                             </div>
-                        </div>
 
+                                            {{-- Ads Video Upload--}}
+                            <div class="form-group col-md-4 ads_video_upload" style="{{ $advertisement->ads_upload_type == 'ads_video_upload' ? 'display:block;' : 'display:none;' }}" >
+                                <label> Ads Video Upload :</label>
+                                <input type="file" id="ads_video" name="ads_video" accept="video/mp4" class="form-control" />
+                                <span style="font-size: small;"> {{ $advertisement->ads_path }} </span>
+                            </div>
+
+                                            {{-- Ads Redirection URL --}}
+                            <div class="form-group col-md-4 ads_video_upload" style="{{ $advertisement->ads_upload_type == 'ads_video_upload' ? 'display:block;' : 'display:none;' }}" >
+                                <label> Ads Redirection URL:</label>
+                                <input type="url" id="ads_redirection_url" name="ads_redirection_url"  
+                                        placeholder="https://example.com" pattern="https://.*" class="form-control" value="{{ $advertisement->ads_redirection_url }}" />
+                            </div>
+                        </div>
 
                         <div class="row">
                                             {{-- Age --}}
@@ -236,6 +249,21 @@
 
                 });
             });
+
+            $(document).ready(function() {
+
+                $(".ads_type").change(function() {
+                    $('.tag_url, .ads_video_upload').hide();
+                    var ads_type = $('.ads_type').val();
+
+                    if (ads_type === 'tag_url') {
+                        $('.tag_url').css("display", "block");
+                    } else if (ads_type === 'ads_video_upload') {
+                        $('.ads_video_upload').css("display", "block");
+                    }
+                });
+            });
+
     </script>
 @stop
 

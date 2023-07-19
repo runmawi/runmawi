@@ -6,34 +6,29 @@
                      <div class="iq-main-header align-items-center justify-content-between">
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
-                     <div class="favorites-contens ml-2">
-                        <ul class="favorites-slider list-inline row mb-0">
+                     <div class=" boder">
+                        <ul class=" list-inline row mb-0">
                             <?php if(isset($all_play_list_videos)) :
                            foreach($all_play_list_videos as $watchlater_video): ?>
-                           <li class="slide-item">
+                           <li class="">
                               <a href="#" data-video-id=<?php echo $watchlater_video->id; ?> onclick="Video_Playlist(this)">
-                                 <div class="block-images position-relative">
-                                    <div class="img-box">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="recom">
-                                    </div>
-                                    <div class="block-description">
+                                 <div class="position-relative row playlist" >
+                                    <div class=" col-sm-6 p-0">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>" class="img-fluid w-100" alt="recom">
+                                     </div>
+                                     <div class="col-sm-6">
                                        <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
                                        <div class="movie-time  align-items-center my-2">
                                           <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
                                           <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                        </div>
-                                       <div class="hover-buttons">
-                                           <a  href="#"data-video-id=<?php echo $watchlater_video->id; ?> onclick="Video_Playlist(this)" >	
-                                          <span class="text-white">
-                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Play Now
-                                          </span>
-                                           </a>
-                                       </div>
+                                       
 
                                         </div>
+                                  </div>
+                                    
 
-                                 </div>
+                                
                               </a>
                            </li>
                            

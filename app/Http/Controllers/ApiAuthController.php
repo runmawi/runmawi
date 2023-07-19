@@ -124,6 +124,8 @@ use App\SeriesGenre;
 use App\M3UFileParser;
 use File;
 use App\Users_Interest_Genres;
+use App\MyPlaylist;
+use App\AudioUserPlaylist;
 
 class ApiAuthController extends Controller
 {
@@ -8086,6 +8088,7 @@ public function Adstatus_upate(Request $request)
     });
     $banners = Video::where('active','=',1)->where('status','=',1)->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       $item['video_url'] = URL::to('/').'/storage/app/public/';
       return $item;
     });
@@ -19642,4 +19645,151 @@ public function IOS_ShowVideo_favorite(Request $request) {
     return response()->json($response, 200);
 
   }
+
+  
+  public function AudioMYPlaylist(Request $request){
+
+    try {
+      $Setting = Setting::first();
+            
+      $path = URL::to('/').'/public/uploads/images/';
+      $image = $request->image;
+
+      if($image != '') {
+          if($image != ''  && $image != null){
+              $file_old = $path.$image;
+              if (file_exists($file_old)){
+                    unlink($file_old);
+              }
+          }
+          $file = $image;
+          $file->move(public_path()."/uploads/images/", $file->getClientOriginalName());
+          $image  = URL::to('/').'/public/uploads/images/'.$file->getClientOriginalName();
+
+      } else {
+          $image  = URL::to('/').'/public/uploads/images/'.$Setting->default_video_image;
+      }
+
+      $MyPlaylist  = new MyPlaylist();
+      $MyPlaylist->user_id = $request->user_id;
+      $MyPlaylist->title = $request->title;
+      $MyPlaylist->slug = str_replace(" ", "-", $request->title);
+      $MyPlaylist->image = $image;
+      $MyPlaylist->save();
+
+      $response = array(
+        'status'=>'true',
+        'message' => 'Created Audio Playlist',
+      );
+
+    } catch (\Throwable $th) {
+      throw $th;
+
+      $response = array(
+        'status'=>'false',
+        'message' => 'Not Created Audio Playlist',
+      );
+    }
+
+  return response()->json($response, 200);
+
+}
+
+
+
+public function AddAudioPlaylist(Request $request){
+
+  try {
+    $Setting = Setting::first();
+
+    $AudioUserPlaylist  = new AudioUserPlaylist();
+    $AudioUserPlaylist->user_id = $request->user_id;
+    $AudioUserPlaylist->playlist_id = $request->playlist_id;
+    $AudioUserPlaylist->audio_id = $request->audio_id ;
+    $AudioUserPlaylist->save();
+
+    $response = array(
+      'status'=>'true',
+      'message' => 'Added Audio to Playlist',
+    );
+
+  } catch (\Throwable $th) {
+    throw $th;
+
+    $response = array(
+      'status'=>'false',
+      'message' => 'Not Added Audio to Playlist',
+    );
+  }
+
+return response()->json($response, 200);
+
+}
+
+
+public function MyAudioPlaylist(Request $request){
+
+  try {
+
+    $Setting = Setting::first();
+
+    $MyPlaylist  = MyPlaylist::where('user_id',$request->user_id)->get();
+
+    $response = array(
+      'status'=>'true',
+      'MyPlaylist' => $MyPlaylist,
+      'setting' => $Setting,
+
+    );
+
+  } catch (\Throwable $th) {
+    throw $th;
+
+    $response = array(
+      'status'=>'false',
+      'MyPlaylist' => [],
+      'setting' => [],
+
+    );
+  }
+
+return response()->json($response, 200);
+
+}
+
+
+
+public function PlaylistAudio(Request $request){
+
+  try {
+
+    $Setting = Setting::first();
+
+    $MyPlaylist  = MyPlaylist::where('id',$request->playlist_id)->where('user_id',$request->user_id)->get();
+
+    $playlist_audio =
+    Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
+   ->where('audio_user_playlist.user_id',$request->user_id)
+   ->where('audio_user_playlist.playlist_id',$request->playlist_id)
+   ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
+
+    $response = array(
+      'status'=>'true',
+      'playlist_audio' => $playlist_audio,
+    );
+
+  } catch (\Throwable $th) {
+    throw $th;
+
+    $response = array(
+      'status'=>'false',
+      'playlist_audio' => [],
+    );
+  }
+
+return response()->json($response, 200);
+
+}
+
+
 }
