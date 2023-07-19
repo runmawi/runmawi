@@ -20,7 +20,7 @@ use View;
 use Theme;
 use URL;
 
-class Controller extends Controller
+class MyPlaylistController extends Controller
 {
 
     private $audios_per_page = 12;
