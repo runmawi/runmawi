@@ -40,6 +40,7 @@ use Laravel\Cashier\Cashier;
 use App\SiteTheme;
 use App\Channel;
 use CinetPay\CinetPay;
+use App\Audio;
 
 
 class PaymentController extends Controller
@@ -1860,4 +1861,106 @@ public function UpgadeSubscription(Request $request){
         }
         
       }
+
+      
+  public function purchaseAudio(Request $request)
+  {
+    // dd($request->all());
+    $data = $request->all();
+    $audio_id = $data['audio_id'];
+    $setting = Setting::first();  
+    $ppv_hours = $setting->ppv_hours;
+    // $to_time =  Carbon::now()->addHour($ppv_hours);
+    $d = new \DateTime('now');
+    $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+    $now = $d->format('Y-m-d h:i:s a');
+    // dd($now);
+    $time = date('h:i:s', strtotime($now));
+    $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));                        
+    $user_id = Auth::user()->id;
+    $username = Auth::user()->username;
+    $email = Auth::user()->email;
+
+    $audio = Audio::where('id','=',$audio_id)->where('uploaded_by','CPP')->first();
+
+    $channelaudio = Audio::where('id','=',$audio_id)->where('uploaded_by','Channel')->first();
+
+    if(!empty($audio)){
+      $moderators_id = $audio->user_id;
+     }
+
+    if(!empty($moderators_id)){
+      $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+      $total_amount = $audio->ppv_price;
+      $title =  $audio->title;
+      // $commssion = VideoCommission::first();
+      $commission = VideoCommission::where('type', 'CPP')->first();
+      $percentage = $commssion->percentage; 
+      $ppv_price = $audio->ppv_price;
+      // $admin_commssion = ($percentage/100) * $ppv_price ;
+      $moderator_commssion = $ppv_price - $percentage;
+      $admin_commssion =  $ppv_price - $moderator_commssion;
+      $moderator_id = $moderators_id;
+    }elseif(!empty($channelaudio)){
+      if(!empty($channelaudio)){
+        $channelaudio_id = $audio->user_id;
+       }
+       $Channel = Channel::where('id','=',$channelaudio_id)->first();  
+       $total_amount = $audio->ppv_price;
+       $title =  $audio->title;
+       $commssion = VideoCommission::where('type','Channel')->first();;
+       $percentage = $commssion->percentage; 
+       $ppv_price = $audio->ppv_price;
+       // $admin_commssion = ($percentage/100) * $ppv_price ;
+       $moderator_commssion = $ppv_price - $percentage;
+       $admin_commssion =  $ppv_price - $moderator_commssion;
+       $channel_id = $channelaudio_id;
+
+    }
+    else{
+    $audio = audio::where('id','=',$audio_id)->first();
+
+      $total_amount = $audio->ppv_price;
+      $title =  $audio->title;
+      $commssion = VideoCommission::first();
+      $percentage = null; 
+      $ppv_price = $audio->ppv_price;
+      $admin_commssion =  null;
+      $moderator_commssion = null;
+      $moderator_id = null;
+
+    }
+
+    $payment_settings = PaymentSetting::first();  
+    $mode = $payment_settings->live_mode ;
+      if($mode == 0){
+          $secret_key = $payment_settings->test_secret_key ;
+          $publishable_key = $payment_settings->test_publishable_key ;
+      }elseif($mode == 1){
+          $secret_key = $payment_settings->live_secret_key ;
+          $publishable_key = $payment_settings->live_publishable_key ;
+      }else{
+          $secret_key= null;
+          $publishable_key= null;
+      } 
+    $stripe = Stripe::make($secret_key, '2020-03-02');
+    $charge = $stripe->charges()->create([
+      'source' => $request->get('tokenId'),
+      'currency' => 'USD',
+      'amount' => $request->get('amount')
+    ]);
+    $purchase = new PpvPurchase;
+    $purchase->user_id = $user_id;
+    $purchase->audio_id = $audio_id;
+    $purchase->total_amount = $total_amount;
+    $purchase->admin_commssion = $admin_commssion;
+    $purchase->moderator_commssion = $moderator_commssion;
+    $purchase->status = 'active';
+    $purchase->to_time = $to_time;
+    $purchase->moderator_id = $moderator_id;
+
+    $purchase->save();
+    return 1;
+  }
 }
+

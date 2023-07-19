@@ -255,8 +255,8 @@ border-radius: 20px;
     
   </style>
 
-     <div class="row m-0 p-0">
-         <div class="col-lg-8 p-0">
+     <div class="row m-0 p-0 mb-5">
+         <div class="col-lg-8">
              <div class="page-height">
                 <div class="video_playlist_content">
 
@@ -410,13 +410,14 @@ border-radius: 20px;
 
    </div>
    </div>
-   </div>
-   <div class="container-fluid video-list you-may-like  overflow-hidden">
-        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __(
-            "Playlist Videos"
-        ); ?></h4>
+         <div class="col-lg-4">
+             <div class="container-fluid video-list   overflow-hidden">
+        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __("Playlist Videos"); ?></h4>
             <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "<?= $autoplay ?>": false}'>   
                 <?php include "partials/video-playlist.php"; ?>
             </div>
     </div>
+         </div>
+   </div>
+   
     <?php include 'footer.blade.php'; ?>

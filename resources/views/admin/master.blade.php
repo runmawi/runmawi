@@ -65,6 +65,7 @@ if (!empty($data['password_hash'])) {
     
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
 <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
 
    <!--datatable CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/dataTables.bootstrap4.min.css';?>" />
@@ -103,6 +104,84 @@ if (!empty($data['password_hash'])) {
   <![endif]-->
 
 <style>
+    body.dark {background-color: #292c35;} /* #9b59b6 */
+    body.dark .form-control{background: #141414!important;} /* #9b59b6 */
+    body.dark .select2-selection__rendered{background: #141414!important;} /* #9b59b6 */
+    body.dark .r1{background-color: #000;color: #fff;} /* #9b59b6 */
+    body.dark .file{background-color: #000;} /* #9b59b6 */
+    body.dark #sidebar-wrapper .list-group{background-color: #000;} /* #9b59b6 */
+    body.dark .card-title.upload-ui{background-color: #000;color: #fff;} /* #9b59b6 */
+    body.dark .dropzone{background-color: #000;color: #fff;} /* #9b59b6 */
+    body.dark .list-group-flush .list-group-item{background-color: #000;color: #fff;} /* #9b59b6 */
+    body.dark .black{background-color: #000!important;color: #fff;} /* #9b59b6 */
+    body.dark .movie_table tbody td{background-color: #000;color: #fff;} /* #9b59b6 */
+    body.dark .table-striped tbody tr:nth-of-type(odd){background-color: #000;color: #fff;} /* #9b59b6 */
+    body.dark .movie_table thead th{background-color: #000;color: #fff!important;} /* #9b59b6 */
+    body.dark #msform fieldset{background-color: #292c35;} /* #9b59b6 */
+    body.dark .iq-footer{background-color: #292c35;border-top: 1px solid #000;} /* #9b59b6 */
+   /* #9b59b6 */
+    body.dark {background-color: #292c35;} /* #9b59b6 */
+    body.dark .tab-content{background-color: #292c35;} /* #9b59b6 */
+    body.dark .iq-card{background-color: #000;} /* #9b59b6 */
+    body.dark .iq-top-navbar {background-color: #292c35;border-bottom: 1px solid #000;} /* #9b59b6 */
+    body.dark .iq-sidebar {background-color: #292c35;border-right: 1px solid #000;} /* #9b59b6 */
+    body.dark .iq-menu li a span{color: #fff;} /* #9b59b6 */
+    body.dark h1,h2,h3,h4,h5,h6{color: #fff;}
+    body.dark label{color: #fff;}
+    body.dark .iq-submenu li>a{color: #fff;}
+    body.dark #optionradio{color: #fff;}
+    body.dark .dropzone .dz-message .dz-button{color: #fff;}
+    body.dark th{color: #fff;}
+    body.dark .upload-ui{color: #000;}
+    body.dark div.dataTables_wrapper div.dataTables_info{color: #fff!important;}
+    body.dark .line{color: #fff;}
+    body.dark .dataTables_info{color: #fff;}
+    body.dark .list-inline-item a{color: #fff;}
+    body.dark .val{color: #fff;}
+    body.dark .main-circle i{color: #fff;}
+    body.dark .text-right{color: #fff;}
+    body.dark .iq-arrow-right{color: #fff;}
+    body.dark .form-group{color: #fff;}
+    body.dark p{color: #fff!important;}
+body.dark h1, body.dark .support a {color: #fff;}
+
+.checkbox {
+  opacity: 0;
+  position: absolute;
+}
+
+.checkbox-label {
+  background-color: #111;
+  width: 50px;
+  height: 26px;
+  border-radius: 50px;
+  position: relative;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fa-moon {color: #f1c40f;}
+
+.fa-sun {color: #f39c12;}
+
+.checkbox-label .ball {
+  background-color: #fff;
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  transition: transform 0.2s linear;
+}
+
+.checkbox:checked + .checkbox-label .ball {
+  transform: translateX(24px);
+}
+
 
     .top-left-logo img {
         opacity: 0.9;
@@ -1515,7 +1594,17 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                                <div class="iq-card shadow-none m-0">
                                   <div class="iq-card-body p-0 ">
                                      <div class="bg-primary p-3">
+                                         <div class="d-flex justify-content-between align-items-center">
                                         <h5 class="mb-0 text-white line-height">Hello <?php echo Auth::user()->name; ?> </h5>
+                                            <div>
+  <input type="checkbox" class="checkbox" id="checkbox">
+  <label for="checkbox" class="checkbox-label">
+    <i class="fas fa-moon"></i>
+    <i class="fas fa-sun"></i>
+    <span class="ball"></span>
+  </label>
+</div>
+                                         </div>
                                         <span class="text-white font-size-12">Available</span>
                                      </div>
                                      <a  href="{{ URL::to('admin/users') }}" class="iq-sub-card iq-bg-primary-hover">
@@ -1971,7 +2060,12 @@ if(jQuery('#view-chart-13').length){
    //  var tourguide = new Tourguide();
    //  tourguide.start();
 </script>
-
+<script>
+    const checkbox = document.getElementById("checkbox")
+checkbox.addEventListener("change", () => {
+  document.body.classList.toggle("dark")
+})
+          </script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
 </body>
 </html>

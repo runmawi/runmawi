@@ -29,7 +29,6 @@ if ($ads_details != null) {
 
 $autoplay =  "autoplay" ;
 ?>
-@extends('Adstagurl.php')
 
 <?php
 $str = $first_videos->m3u8_url;
@@ -62,8 +61,8 @@ if (!empty($request_url)) { ?>
       echo "0";
   } ?>">
   <input type="hidden" id="base_url" value="<?php echo URL::to("/"); ?>">
-  <input type="hidden" id="video_type" value="<?php echo $first_videos->type; ?>">
-  <input type="hidden" id="video_video" value="video">
+  <input type="hidden" id="videotype" value="<?php echo $first_videos->type; ?>">
+  <input type="hidden" id="videovideo" value="video">
   <input type="hidden" id="adsurl" value="<?php if (isset($ads->ads_id)) {
       echo get_adurl($ads->ads_id);
   } ?>">
@@ -88,7 +87,7 @@ if (!empty($request_url)) { ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 
 
-          <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to(
+          <video  <?= $autoplay ?> id="video_playlist_player"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to(
     "/"
 ) .
     "/public/uploads/images/" .
@@ -108,7 +107,7 @@ if (!empty($request_url)) { ?>
   } ?>
 </video>
 
-  <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to(
+  <input type="hidden" id="hlsm3u8" name="hls_m3u8" value="<?php echo URL::to(
       "/storage/app/public/"
   ) .
       "/" .
@@ -214,11 +213,17 @@ if (!empty($request_url)) { ?>
            </div>
    <?php endif; ?>
    </div>
-
+   <link rel="stylesheet" href="https://unpkg.com/plyr@3/dist/plyr.css">
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6,Array.prototype.includes,CustomEvent,Object.entries,Object.values,URL"></script>
+<script src="https://unpkg.com/plyr@3"></script>
+<script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+ <script  src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
+ <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
 <script>
-    var type = $('#video_type').val();
+    var type = $('#videotype').val();
     var request_url = $('#request_url').val();
-    var video_video = $('#video_video').val();
+    var video_video = $('#videovideo').val();
     var hls = $('#hls').val();
 
                    
@@ -257,11 +262,12 @@ if (!empty($request_url)) { ?>
     // Normal MP4 URL Script
     // else if (type == ""){
         else{
+            alert('type');
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const video = document.querySelector("video");
-            const source = video.getElementsByTagName("source")[0].src;
-
+        // document.addEventListener("DOMContentLoaded", () => {
+            const video_playlist_player = document.querySelector("#video_playlist_player");
+            const source = video_playlist_player.getElementsByTagName("source")[0].src;
+                alert(source);
             const defaultOptions = {};
 
             if (!Hls.isSupported()) {
@@ -271,8 +277,8 @@ if (!empty($request_url)) { ?>
                     tagUrl: video_tag_url
                 }
 
-                video.src = source;
-                var player = new Plyr(video, defaultOptions);
+                video_playlist_player.src = source;
+                var player = new Plyr(video_playlist_player, defaultOptions);
             } else {
                 const hls = new Hls();
                 hls.loadSource(source);
@@ -304,11 +310,11 @@ if (!empty($request_url)) { ?>
                             span.innerHTML = `AUTO`
                         }
                     })
-                    var player = new Plyr(video, defaultOptions);
+                    var player = new Plyr(video_playlist_player, defaultOptions);
 
                 });
 
-                hls.attachMedia(video);
+                hls.attachMedia(video_playlist_player);
                 window.hls = hls;
             }
 
@@ -325,7 +331,7 @@ if (!empty($request_url)) { ?>
                     });
                 }
             }
-        });
+        // });
 
 
     }

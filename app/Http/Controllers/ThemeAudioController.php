@@ -235,14 +235,18 @@ class ThemeAudioController extends Controller{
         }
       
             if (!empty($audio_details)) {
-                $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
+                // $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
+
+                $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->count();
+
+                // dd($ppv_status);
+
                 $view_increment = $this->handleViewCount($audio); 
 
                 $current_audio   = Audio::where('album_id',$albumID)->where('id',$audio)->get();
                 $all_album_audios = Audio::where('album_id',$albumID)->get();
 
                 $merged_audios = $current_audio->merge($all_album_audios)->all();
-
 
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
             $data = array(

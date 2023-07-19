@@ -51,13 +51,13 @@ class AdminPaymentSettingsController extends Controller
 
 		if($live_mode == 0){
 			$Replace_data =array(
-				'STRIPE_KEY'         	=>  $request['test_secret_key'],
-				'STRIPE_SECRET'         =>  $request['test_publishable_key'],
+				'STRIPE_KEY'         	=>  $request['test_publishable_key'],
+				'STRIPE_SECRET'         =>  $request['test_secret_key'],
 			);
 		}else if($live_mode == 1){
 			$Replace_data =array(
-				'STRIPE_KEY'         	=>  $request['live_secret_key'],
-				'STRIPE_SECRET'         =>  $request['live_publishable_key'],
+				'STRIPE_KEY'         	=>  $request['live_publishable_key'],
+				'STRIPE_SECRET'         =>  $request['live_secret_key'],
 			);
 		}else{
 			$Replace_data =array(

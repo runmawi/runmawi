@@ -383,6 +383,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store');
     Route::post('purchase-video', 'PaymentController@purchaseVideo');
+    Route::post('purchase-audio', 'PaymentController@purchaseAudio');
     Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');
     Route::post('player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');
     Route::post('player_analytics_store', 'AdminPlayerAnalyticsController@PlayerAnalyticsStore');
@@ -2277,3 +2278,8 @@ Route::get('/download-xml', function () {
 // Ads Vast
 
 Route::get('Ads-vast', 'AdsVastController@index');
+
+// Advertisement Count
+
+Route::get('Ads-Redirection-URL-Count', 'AdvertisementCountController@Advertisement_Redirection_URL_Count')->name('Advertisement_Redirection_URL_Count');
+Route::get('Ads-Views-Count', 'AdvertisementCountController@Advertisement_Views_Count')->name('Advertisement_Views_Count');

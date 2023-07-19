@@ -151,7 +151,7 @@ class VideoPlaylistController extends Controller
         $playerui = Playerui::first();
        
         $data = array( 'first_videos' => $first_videos ,'subtitle' => $subtitle,'playerui_settings' => $playerui);
-
+        // print_r($first_videos);exit;
         $theme = Theme::uses($this->Theme);
 
         return $theme->load('public/themes/default/views/partials/home/video_playlist', $data)->render();
