@@ -742,6 +742,8 @@ class TvshowsController extends Controller
 
             return Theme::view('series', $data);
         } else {
+            
+            $payment_settings = PaymentSetting::first();
 
             $mode = $payment_settings->live_mode;
             if ($mode == 0) {
