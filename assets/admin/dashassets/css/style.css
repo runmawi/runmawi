@@ -205,7 +205,7 @@ color: #d9d5d5 !important; }
 color: #d9d5d5 !important; }
 .f-link:hover { color: var(--iqprimary); }
 .card-title {font-size:20px;font-weight: 500;}
-.card-title.upload-ui {padding: 30px; background: #f9f9f9;font-size: 1.25rem;border-top-left-radius: 10px;border-top-right-radius: 10px;}
+.card-title.upload-ui {padding: 30px; background: #f9f9f9;font-size: 1.25rem;border-top-left-radius: 10px;border-top-right-radius: 10px;color: #000;}
 .dropzone .dz-message .dz-button {/*font-size: 1.25rem;*/ color: #000;font-family: 'Inter';
 font-style: normal;
 font-weight: 500;

@@ -602,4 +602,10 @@ Route::group(
             Route::post('my_audio_playlist', 'ApiAuthController@MyAudioPlaylist');
             Route::post('audio_playlist', 'ApiAuthController@PlaylistAudio');
 
+
+            // Create Audio Playlist 
+
+
+            Route::post('video_playlist', 'ApiAuthController@VideoPlaylist');
+
     });
