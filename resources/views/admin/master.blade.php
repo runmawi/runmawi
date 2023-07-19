@@ -126,7 +126,7 @@ if (!empty($data['password_hash'])) {
     body.dark .iq-top-navbar {background-color: #292c35;border-bottom: 1px solid #000;} /* #9b59b6 */
     body.dark .iq-sidebar {background-color: #292c35;border-right: 1px solid #000;} /* #9b59b6 */
     body.dark .iq-menu li a span{color: #fff;} /* #9b59b6 */
-    body.dark h1,h2,h3,h4,h5,h6{color: #fff;}
+    /*body.dark h1,h2,h3,h4,h5,h6{color: #fff;}*/
     body.dark label{color: #fff;}
     body.dark .iq-submenu li>a{color: #fff;}
     body.dark #optionradio{color: #fff;}
