@@ -12,11 +12,10 @@ use App\User as User;
 use App\Advertiserplanhistory as Advertiserplanhistory;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Str;
 use App\Adviews;
 use App\Adrevenue;
 use App\Adcampaign;
-use View;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Carbon\Carbon;
@@ -26,6 +25,10 @@ use Auth;
 use Mail;
 use URL;
 use Hash;
+use File;
+use View;
+use DB;
+
 
 class AdminAdvertiserController extends Controller
 {
@@ -349,21 +352,121 @@ class AdminAdvertiserController extends Controller
     public function ads_Update(Request $request)
     {
         $inputs = array(
-            'advertiser_id' => $request->company_name ,
-            'ads_name' => $request->ads_name ,
-            'ads_category' => $request->ads_category ,
-            'ads_position' => $request->ads_position ,
+            'ads_name'      => $request->ads_name ,
+            'ads_category'  => $request->ads_category ,
+            'ads_position'  => $request->ads_position ,
             'ads_upload_type' => $request->ads_upload_type ,
-            'ads_path' => $request->ads_path ,
+            // 'ads_path' => $request->ads_path ,
             'age' => !empty($request->age) ? json_encode($request->age) : null,
-            'gender' => !empty($request->gender) ? json_encode($request->gender) : null,
+            'gender'   => !empty($request->gender) ? json_encode($request->gender) : null,
             'location' => $request->location === 'all_countries' || $request->location === 'India' ? $request->location : $request->locations,
-            'status' =>  $request->status == "on"  ? 1 : 0 ,
+            'status'   =>  $request->status == "on"  ? 1 : 0 ,
         );
+
+        if ( $request->ads_video != null && $request->ads_upload_type == "ads_video_upload" ) {
+         
+            $data = array (
+                "ads_videos"          => $request->ads_video ,
+                "ads_redirection_url" => $request->ads_redirection_url ,
+                "advertisement_id"    => $request->id ,
+            );
+
+            $Ads_xml_file = $this->Ads_xml_file_update( $data );
+
+            $inputs += array(
+                'ads_video' => $Ads_xml_file['Ads_upload_url'] ,
+                'ads_path' => $Ads_xml_file['Ads_xml_url'] ,
+                'ads_redirection_url' => $request->ads_redirection_url ,
+            );
+
+        }
+
+        if ( $request->ads_upload_type == "tag_url" ) {
+            $inputs += ['ads_video' => null ];
+            $inputs += ['ads_path' => $request->ads_path ];
+        }
 
         Advertisement::where('id', $request->id)->update($inputs);
         
         return Redirect::back()->with(['message' => 'Successfully Updated Advertisement Details', 'note_type' => 'success']);
+    }
+
+    private function Ads_xml_file_update( $data )
+    {
+        
+            $Ads_videos = $data["ads_videos"] ;
+            $ads_redirection_url = $data["ads_redirection_url"];
+            $advertisement_id = $data["advertisement_id"];
+
+            $Advertisement = Advertisement::find($advertisement_id);
+
+            $filename = pathinfo(parse_url($Advertisement->ads_video, PHP_URL_PATH), PATHINFO_FILENAME);
+
+            if (File::exists(base_path('public/uploads/AdsVideos/'. $filename."xml"  ))) {
+                File::delete(base_path('public/uploads/AdsVideos/'. $filename."xml"  ));
+            }
+
+            if (File::exists(base_path('public/uploads/AdsVideos/'. $filename."mp4"  ))) {
+                File::delete(base_path('public/uploads/AdsVideos/'. $filename."mp4"  ));
+            }
+
+        
+        $Ads_video_slug  =  Str::slug(pathinfo($Ads_videos->getClientOriginalName(), PATHINFO_FILENAME));
+        $Ads_video_ext   = $Ads_videos->extension();
+
+        $Ads_xml_filename = time() . '-' . $Ads_video_slug .'.xml';
+
+        $Ads_upload_filename = time() . '-' . $Ads_video_slug .'.'. $Ads_video_ext;
+        $Ads_videos->move( public_path('uploads/AdsVideos'), $Ads_upload_filename  );
+
+        $Ads_upload_url = URL::to('public/uploads/AdsVideos/'.$Ads_upload_filename);
+
+
+        $factory = new \Sokil\Vast\Factory();
+        $document = $factory->create('4.1');
+
+        $ad1 = $document
+            ->createInLineAdSection()
+            ->setId( Str::random(23) )
+            ->setAdSystem( $Ads_upload_filename )
+            ->setAdTitle(  $Ads_upload_filename );
+
+        $linearCreative = $ad1
+            ->createLinearCreative()
+            ->setDuration(128)
+            ->setId( Str::random(23) );
+            // ->setAdId('pre-'.Str::random(23))
+
+            if( $ads_redirection_url != null ){
+
+                $linearCreative->setVideoClicksClickThrough($ads_redirection_url)
+                                ->addVideoClicksClickTracking( $ads_redirection_url )
+                                ->addVideoClicksCustomClick( $ads_redirection_url );
+            }
+
+            // ->addTrackingEvent('start', 'http://ad.server.com/trackingevent/start')
+            // ->addTrackingEvent('pause', 'http://ad.server.com/trackingevent/stop');
+
+        $linearCreative
+            ->createMediaFile()
+            ->setProgressiveDelivery()
+            ->setType('video/mp4')
+            ->setHeight(200)
+            ->setWidth(200)
+            ->setBitrate(2500)
+            ->setUrl( $Ads_upload_url );
+
+        $domDocument = $document->toDomDocument();
+        $xml_file_url = URL::to('public/uploads/AdsVideos/'.$Ads_xml_filename) ;
+        $xml_file    = public_path('uploads/AdsVideos/' . $Ads_xml_filename ) ;
+        $domDocument->save($xml_file);
+
+        $data = array(
+            'Ads_xml_url' => $xml_file_url ,
+            'Ads_upload_url' => $Ads_upload_url ,
+        );
+
+        return $data ;
     }
 
     public function save_ads_status(Request $request)

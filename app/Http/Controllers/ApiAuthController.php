@@ -8088,6 +8088,7 @@ public function Adstatus_upate(Request $request)
     });
     $banners = Video::where('active','=',1)->where('status','=',1)->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       $item['video_url'] = URL::to('/').'/storage/app/public/';
       return $item;
     });
