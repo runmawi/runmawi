@@ -126,6 +126,8 @@ use File;
 use App\Users_Interest_Genres;
 use App\MyPlaylist;
 use App\AudioUserPlaylist;
+use App\VideoPlaylist;
+use App\AdminVideoPlaylist;
 
 class ApiAuthController extends Controller
 {
@@ -12849,6 +12851,26 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
+        if( $OrderHomeSetting['video_name'] == "video_play_list" ){          // Video PlayList
+         
+          $data = All_Homepage_video_playlist();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "VideoPlayList" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "my_play_list" ){          // Audio PlayList
+         
+          $data = $this->All_Homepage_my_playlist();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "AudioPlaylist" ;
+
+        }
+
         $result[] = array(
           "source"      => $source,
           "header_name" => $header_name,
@@ -12969,6 +12991,13 @@ public function QRCodeMobileLogout(Request $request)
       array_push($input,'Series_Genre');
     }
 
+    if($Homesetting->my_playlist == 1 && $this->All_Homepage_my_playlist( $user_id )->isNotEmpty() ){
+      array_push($input,'my_playlist');
+   }
+
+   if($Homesetting->video_playlist == 1 && $this->All_Homepage_video_playlist()->isNotEmpty() ){
+    array_push($input,'video_playlist');
+ }
     // if($Homesetting->artist == 1){
     //   array_push($input,'artist');
     // }
@@ -13415,6 +13444,42 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
   }
 
+  
+  private static function All_Homepage_my_playlist( $user_id ){
+
+    $my_playlist_status = MobileHomeSetting::pluck('my_playlist')->first();
+
+      if( $my_playlist_status == null || $my_playlist_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Series Genre status) is turned off in the admin panel
+      else:
+
+          $data =  MyPlaylist::where('user_id',$$user_id)->get();
+      endif;
+   
+    return $data;
+  }
+
+
+  
+  private static function All_Homepage_video_playlist(){
+
+    $video_playlist_status = MobileHomeSetting::pluck('video_playlist')->first();
+
+      if( $video_playlist_status == null || $video_playlist_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Series Genre status) is turned off in the admin panel
+      else:
+
+          $data =  AdminVideoPlaylist::get()->map(function ($item) {
+                        $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+                        $item['source']    = "VideoPlaylist";
+                        return $item;
+                    });
+      endif;
+   
+    return $data;
+  }
 
   private static function All_Homepage_Recommended_videos_site(){
 
@@ -19783,6 +19848,42 @@ public function PlaylistAudio(Request $request){
     $response = array(
       'status'=>'false',
       'playlist_audio' => [],
+    );
+  }
+
+return response()->json($response, 200);
+
+}
+
+
+public function VideoPlaylist(Request $request){
+
+  try {
+
+    $Setting = Setting::first();
+
+    $VideoPlaylist  = AdminVideoPlaylist::where('id',$request->playlist_id)->get();
+
+    $playlist_Video =
+    Video::Join('video_playlist','video_playlist.video_id','=','videos.id')
+   ->where('video_playlist.playlist_id',$request->playlist_id)
+   ->orderBy('video_playlist.created_at', 'desc')->get() ;
+
+    $response = array(
+      'status'=>'true',
+      'playlist_Video' => $playlist_Video,
+      'VideoPlaylist' => $VideoPlaylist,
+
+    );
+
+  } catch (\Throwable $th) {
+    throw $th;
+
+    $response = array(
+      'status'=>'false',
+      'playlist_Video' => [],
+      'VideoPlaylist' => [],
+
     );
   }
 
