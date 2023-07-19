@@ -8086,21 +8086,29 @@ public function Adstatus_upate(Request $request)
   {
     $sliders = Slider::where('active', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
+      $item['source'] = "Admin_slider";
       return $item;
     });
+
     $banners = Video::where('active','=',1)->where('status','=',1)->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       $item['video_url'] = URL::to('/').'/storage/app/public/';
+      $item['source'] = "videos_slider";
       return $item;
     });
+
     $live_banner = LiveStream::where('active','=',1)->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+      $item['source'] = "Livestreams_slider";
       return $item;
     });
+    
     $series_banner = Series::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+      $item['source'] = "series_slider";
       return $item;
     });
 
@@ -8108,7 +8116,7 @@ public function Adstatus_upate(Request $request)
       'status' => 'true',
       'sliders' => $sliders,
       'video_banner' => $banners,
-      'live_banner' => $live_banner,
+      'live_banner'  => $live_banner,
       'series_banner' => $series_banner,
     );
     return response()->json($response, 200);
