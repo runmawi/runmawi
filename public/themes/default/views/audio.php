@@ -301,7 +301,8 @@ Your browser does not support the audio element.
 <?php  //else: ?> -->
 
 <?php if($audio):  ?>
-<?php if ( $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin') { ?>
+<?php if ( 1 == 0 ) { ?>
+  <!--  $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin' -->
 <div id="subscribers_only">
 <a  class="text-center btn btn-success" id="paynowbutton"> Pay for View  </a>
 </div>
@@ -794,8 +795,26 @@ window.location = '<?= URL::to('login') ?>';
 
 </script>
 
+<?php 
+  //           echo "<script>
+  //           var audioppv_id = '2';
+  //           </script>";
 
+  //   $audioppv_id = "<script>document.writeln(audioppv_id);</script>";
+  //   if(!Auth::guest()){
+
+  //     $PpvPurchase = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',$audioppv_id)->count();
+
+  //   print_r($PpvPurchase); exit;
+  // }else{
+  //     $PpvPurchase = 0 ;
+  //    print_r('PpvPurchase'); exit;
+
+  //   }
+
+?>
     <script>
+
   function createTrackItem(index,name,duration){
 
     var trackItem = document.createElement('div');
@@ -866,7 +885,7 @@ window.location = '<?= URL::to('login') ?>';
 var access = listAudio[index].access
 
 var audioppv_id  = listAudio[index].id
-        
+
 var role = <?php echo json_encode($role) ?>;
 
 if(role == 'admin'){
@@ -886,6 +905,7 @@ if(role == 'admin'){
     this.updateStylePlaylist(this.indexAudio,index)
     this.indexAudio = index;
 }else{
+
         if(access == 'guest'){
           // alert(access);
 
@@ -904,52 +924,110 @@ if(role == 'admin'){
         this.indexAudio = index;
       }else if(access == 'ppv'){ 
         // alert(access);
-
         var audioppv = <?php echo json_encode($ablum_audios); ?>;
-        
-        var countaudioppv = [];    
+        var ppv_audio_status = 0 ;
+        $.ajax({
+          url: '<?php echo URL::to('purchased-audio-check'); ?>',
+          type: "post",
+          data: {
+              _token: '<?php echo csrf_token(); ?>',
+              audio_id: audioppv_id,
 
-        // audioppv.forEach(element => console.log(element));
-        audioppv.forEach(element => {
-              if(element.audio_id == audioppv_id) {
-                // alert(audioppv_id);
-                countaudioppv.push(1) 
-              }       
-            });
+          },
+          success: function(value) {
+            var ppv_audio_status  = value ;
+            localStorage.clear();
+            localStorage.setItem("audio_status_value", value);
+          alert(localStorage.getItem("audio_status_value"));
 
-          if(countaudioppv.length > 0 || role == 'subscriber'){
-              var player = document.querySelector('#source-audio')
-
-              player.src = listAudio[index].mp3_url
-
-              document.querySelector('.title').innerHTML = listAudio[index].title
-
-              this.currentAudio = document.getElementById("myAudio");
-              this.currentAudio.load()
-              this.toggleAudio()
-              this.updateStylePlaylist(this.indexAudio,index)
-              this.indexAudio = index;
-          }else{
-              var player = document.querySelector('#source-audio')
-
-              player.src = ''
-
-              document.querySelector('.title').innerHTML = listAudio[index].title
-
-              this.currentAudio = document.getElementById("myAudio");
-              this.currentAudio.load()
-              this.toggleAudio()
-              this.updateStylePlaylist(this.indexAudio,index)
-              this.indexAudio = index;
-
-              document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
-              document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
-
-              document.querySelector('#enable_button').style.display = 'block';
-              alert("Purchase Audio");   
-
-
+            return ppv_audio_status ;
+          },
+          error: (error) => {
+              swal('error');
+              
           }
+
+        });
+        //  localStorage.getItem("audio_status_value");
+        <?php 
+        //  echo "<script>
+        //  var audioppv_id  = listAudio[index].id;
+        //  </script>";
+
+        $audioppv_id = "<script>document.writeln(audioppv_id);</script>";
+        // echo $phpVar; exit;
+        if(!Auth::guest()){
+          $PpvPurchase = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',$audioppv_id)->count();
+        }else{
+          $PpvPurchase = 0 ;
+        }
+    ?>
+  var ppv_audio_status = <?php echo json_encode($PpvPurchase); ?>;
+  // alert(ppv_audio_status);
+      // alert(localStorage.getItem("audio_status_value"));
+      if(ppv_audio_status == 0){
+            // alert(ppv_audio_status);
+            var countaudioppv = [];    
+
+            // audioppv.forEach(element => console.log(element));
+            audioppv.forEach(element => {
+                  if(element.audio_id == audioppv_id) {
+                    // alert(audioppv_id);
+                    countaudioppv.push(1) 
+                  }       
+                });
+
+              if(countaudioppv.length > 0 || role == 'subscriber'){
+                  var player = document.querySelector('#source-audio')
+
+                  player.src = listAudio[index].mp3_url
+
+                  document.querySelector('.title').innerHTML = listAudio[index].title
+
+                  this.currentAudio = document.getElementById("myAudio");
+                  this.currentAudio.load()
+                  this.toggleAudio()
+                  this.updateStylePlaylist(this.indexAudio,index)
+                  this.indexAudio = index;
+              }else{
+                  var player = document.querySelector('#source-audio')
+
+                  player.src = ''
+
+                  document.querySelector('.title').innerHTML = listAudio[index].title
+
+                  this.currentAudio = document.getElementById("myAudio");
+                  this.currentAudio.load()
+                  this.toggleAudio()
+                  this.updateStylePlaylist(this.indexAudio,index)
+                  this.indexAudio = index;
+
+                  document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
+                  document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
+
+                  document.querySelector('#enable_button').style.display = 'block';
+                  alert("Purchase Audio");   
+
+
+              }
+            }else{
+
+
+            document.querySelector('#enable_button').style.display = 'none';
+
+                var player = document.querySelector('#source-audio')
+
+                player.src = listAudio[index].mp3_url
+                // alert('ppv_audio_status');
+
+                document.querySelector('.title').innerHTML = listAudio[index].title
+
+                this.currentAudio = document.getElementById("myAudio");
+                this.currentAudio.load()
+                this.toggleAudio()
+                this.updateStylePlaylist(this.indexAudio,index)
+                this.indexAudio = index;
+            }
       }else if(access == 'subscriber'){ 
 
 

@@ -1962,5 +1962,17 @@ public function UpgadeSubscription(Request $request){
     $purchase->save();
     return 1;
   }
+
+
+  
+  public function purchased_audio_check(Request $request)
+  {
+    // dd($request->all());
+    $data = $request->all();
+    $audio_id = $data['audio_id'];
+    $PpvPurchasestatus = PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',$audio_id)->count();
+    return $PpvPurchasestatus;
+  }
+
 }
 
