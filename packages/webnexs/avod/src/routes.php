@@ -25,10 +25,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/storefeatured_ad', 'Webnexs\Avod\AuthController@storefeatured_ad'); 
 		Route::post('/buyfeaturedad_stripe', 'Webnexs\Avod\AuthController@buyfeaturedad_stripe')->name('buyfeaturedad_stripe'); 
 		Route::post('/buyrz_ad', 'Webnexs\Avod\AuthController@buyrz_ad')->name('buyrz_ad'); 
-		Route::get('/list_total_cpc', 'Webnexs\Avod\AuthController@list_total_cpc'); 
-		Route::get('/list_total_cpv', 'Webnexs\Avod\AuthController@list_total_cpv'); 
 		Route::get('ads_campaign', 'Webnexs\Avod\AuthController@ads_campaign')->name('ads_campaign');
-		
 		Route::post('/buyrz_adcampaign', 'Webnexs\Avod\AuthController@buyrz_adcampaign')->name('buyrz_adcampaign'); 
 		Route::post('/buycampaign_stripe', 'Webnexs\Avod\AuthController@buycampaign_stripe')->name('buycampaign_stripe'); 
 		
@@ -42,5 +39,8 @@ Route::group(['middleware' => ['web']], function () {
 		Route::PATCH('Ads-update/{Ads_id}', 'Webnexs\Avod\AuthController@Ads_update')->name('Ads_update'); 
 		Route::get('Ads-delete/{Ads_id}', 'Webnexs\Avod\AuthController@Ads_delete')->name('Ads_delete');
 
+		Route::get('/Cost-Per-View-Analysis', 'Webnexs\Avod\AuthController@Cost_Per_View_Analysis')->name('Advertisement.Cost_Per_View_Analysis'); 
+		Route::get('/Cost-Per-Click-Analysis', 'Webnexs\Avod\AuthController@Cost_Per_Click_Analysis')->name('Advertisement.Cost_Per_Click_Analysis'); 
+		
 	});
 });

@@ -956,4 +956,17 @@ function tv_image_live_validation_status()
    $tv_image_live_validation_status = App\CompressImage::pluck('tv_image_live_validation')->first() ? App\CompressImage::pluck('tv_image_live_validation')->first() : '0' ;
    return $tv_image_live_validation_status ;  
 }
+
+
+function CPV_advertiser_share()    // Cost Pre View - advertiser
+{
+    $CPV_advertiser_share = App\Setting::pluck('cpv_advertiser')->first();
+    return  $CPV_advertiser_share;
+}
+
+function CPC_advertiser_share()   // Cost Pre Click - advertiser
+{
+    $CPC_advertiser_share = App\Setting::pluck('cpc_advertiser')->first();
+    return  $CPC_advertiser_share;
+}
    
