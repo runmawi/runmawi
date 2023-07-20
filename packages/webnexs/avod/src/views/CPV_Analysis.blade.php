@@ -7,27 +7,32 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="iq-card-body">
-                            <h2 class="text-center mb-4">Total Cost per View</h2>
+                            <h2 class="text-center mb-4">{{ ucwords('Cost per View Analytics') }}</h2>
                             <table class="data-tables table audio_table" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Ads Name</th>
-                                        <th>Video Name</th>
-                                        <th>Cost</th>
-                                        <th>View</th>
-                                        <th>Created At</th>
+                                        <th># </th>
+                                        <th> Ads Id </th>
+                                        <th> Ads Name </th>
+                                        <th> View Count </th>
+                                        <th> Cost Pre View </th>
+                                        <th> Total Cost Pre View </th>
+                                        <th> Action </th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
-                                    @foreach ($cpv_lists as $key => $cpv_list)
+                                    @foreach ($CPV_lists as $key => $CPV_list )
                                         <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ get_ad($cpv_list->ad_id) ?? "-" }}</td>
-                                            <td>{{ get_video($cpv_list->video_id) }}</td>
-                                            <td>{{ ucfirst($cpv_list->advertiser_share) }}</td>
-                                            <td>{{ ucfirst($cpv_list->views_count) }}</td>
-                                            <td>{{ date('d/M/y', strtotime($cpv_list->created_at)) }}</td>
+                                            <td> {{ $key + 1 }} </td>
+                                            <td> {{ $CPV_list->adveristment_id ?? '-' }} </td>
+                                            <td> {{ ucfirst(App\Advertisement::where('id', $CPV_list->adveristment_id)->pluck('ads_name')->first()) ?? '-' }}</td>
+                                            <td> {{ $CPV_list->view_count }} </td>
+                                            <td> {{ CPV_advertiser_share() }} </td>
+                                            <td> {{ CPV_advertiser_share() * $CPV_list->view_count }} </td>
+                                            <td> <a href="#" target="_blank" class="iq-bg-warning">
+                                                <img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}"></a> 
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -52,19 +57,12 @@
 <script src="<?= URL::to('/') . '/assets/admin/dashassets/js/dataTables.bootstrap4.min.js' ?>"></script>
 <!-- Appear JavaScript -->
 <script src="<?= URL::to('/') . '/assets/admin/dashassets/js/jquery.appear.js' ?>"></script>
-<!-- Countdown JavaScript -->
-<script src="<?= URL::to('/') . '/assets/admin/dashassets/js/countdown.min.js' ?>"></script>
-<!-- Select2 JavaScript -->
-<script src="<?= URL::to('/') . '/assets/admin/dashassets/js/select2.min.js' ?>"></script>
-<!-- Counterup JavaScript -->
-<script src="<?= URL::to('/') . '/assets/admin/dashassets/js/waypoints.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/admin/dashassets/js/jquery.counterup.min.js' ?>"></script>
 <!-- Wow JavaScript -->
 <script src="<?= URL::to('/') . '/assets/admin/dashassets/js/wow.min.js' ?>"></script>
 <!-- Slick JavaScript -->
 <script src="<?= URL::to('/') . '/assets/admin/dashassets/js/slick.min.js' ?>"></script>
 <!-- Owl Carousel JavaScript -->
-<script src="<?= URL::to('/') . '/assets/admin/dashassets/js/owl.carousel.min.js' ?>"></script>
 <!-- Magnific Popup JavaScript -->
 <script src="<?= URL::to('/') . '/assets/admin/dashassets/js/jquery.magnific-popup.min.js' ?>"></script>
 <!-- Smooth Scrollbar JavaScript -->
@@ -78,29 +76,10 @@
 <!-- End Notifications -->
 
 @yield('javascript')
-<!--   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-</script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-<script type="text/javascript">
-    <?php if(session('success')){ ?>
-    toastr.success("<?php echo session('success'); ?>");
-    <?php }else if(session('error')){  ?>
-    toastr.error("<?php echo session('error'); ?>");
-    <?php }else if(session('warning')){  ?>
-    toastr.warning("<?php echo session('warning'); ?>");
-    <?php }else if(session('info')){  ?>
-    toastr.info("<?php echo session('info'); ?>");
-
-    <?php } ?>
-</script>
-<script></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </body>
 
 </html>
