@@ -30,6 +30,8 @@ use App\Setting;
 use App\Adsplan;
 use App\AdsEvent;
 use App\User;
+use App\AdsViewCount;
+use App\AdsRedirectionURLCount;
 use DatePeriod;
 use Session;
 use Stripe;
@@ -40,6 +42,7 @@ use File;
 
 class AuthController extends Controller
 {
+
     public function index()
     {
         $data = ['settings' => Setting::first()];
@@ -637,40 +640,6 @@ class AuthController extends Controller
         return view('avod::featured_ad_history', $data);
     }
 
-    public function list_total_cpc()
-    {
-        $data = [];
-        $data['settings'] = Setting::first();
-        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
-            ->where('status', 'active')
-            ->count();
-        if (!empty(session('advertiser_id'))) {
-            $data['cpc_lists'] = Adrevenue::where('advertiser_id', session('advertiser_id'))->get();
-            return view('avod::total_cpc', $data);
-        }
-        return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
-    }
-
-    public function list_total_cpv()
-    {
-        try {
-            $data = [];
-            $data['settings'] = Setting::first();
-            $data['activeplan'] = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
-                ->where('status', 'active')
-                ->count();
-
-            if (!empty(session('advertiser_id'))) {
-                $data['cpv_lists'] = Adviews::where('advertiser_id', session('advertiser_id'))->get();
-                return view('avod::total_cpv', $data);
-            }
-
-            return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
-        } catch (\Throwable $th) {
-            return abort(404);
-        }
-    }
-
     public function ads_campaign()
     {
         $data = [];
@@ -856,7 +825,8 @@ class AuthController extends Controller
     public function ads_list()
     {
         try {
-            if (empty(session('advertiser_id'))) {
+
+            if (empty(session('advertiser_id' ) || session('advertiser_id') == 'null' )) {
                 return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
             }
 
@@ -871,12 +841,18 @@ class AuthController extends Controller
 
             return view('avod::ads_list', $data);
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
 
     public function store_ads(Request $request)
     {
+
+        if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+            return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
+        }
+        
         $data = $request->all();
 
         $Ads = new Advertisement();
@@ -1139,6 +1115,10 @@ class AuthController extends Controller
     {
         try {
 
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+                return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
+            }
+
             $Advertisement = Advertisement::where('id', $Ads_id)->first();
 
             $data = [
@@ -1160,6 +1140,11 @@ class AuthController extends Controller
 
     public function Ads_update(Request $request, $advertisement_id)
     {
+
+        if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+            return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
+        }
+
         $inputs = [
             'advertiser_id' => $advertisement_id,
             'ads_name' => $request->ads_name,
@@ -1284,6 +1269,10 @@ class AuthController extends Controller
     {
         try {
 
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+                return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
+            }
+
             $Advertisement = Advertisement::find($Ads_id);
 
             $filename = pathinfo(parse_url($Advertisement->ads_video, PHP_URL_PATH), PATHINFO_FILENAME);
@@ -1304,6 +1293,60 @@ class AuthController extends Controller
 
         } catch (\Throwable $th) {
             
+            return abort(404);
+        }
+    }
+
+    public function Cost_Per_View_Analysis()
+    {
+        try {
+
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+                return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
+            }
+
+            $data = AdsViewCount::select('ads_views_count.*', DB::raw('count(*) as view_count'))
+                            ->where('adverister_id', session('advertiser_id') )->groupBy('adveristment_id')
+                            ->whereNotNull('adveristment_id')->latest()
+                            ->get();
+
+            $response = array(
+                'settings'  =>  Setting::first() ,
+                'CPV_lists' =>  $data ,
+            );
+
+            return view('avod::CPV_Analysis', $response );
+
+        } catch (\Throwable $th) {
+
+            // return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function Cost_Per_Click_Analysis()
+    {
+        try {
+
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+                return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
+            }
+
+            $data = AdsRedirectionURLCount::select('ads_redirection_url_count.*', DB::raw('count(*) as view_count'))
+                            ->where('adverister_id', session('advertiser_id') )->groupBy('adveristment_id')
+                            ->whereNotNull('adveristment_id')->latest()
+                            ->get();
+
+            $response = array(
+                'settings'  =>  Setting::first() ,
+                'CPC_lists' =>  $data ,
+            );
+
+            return view('avod::CPC_Analysis', $response);
+    
+        } catch (\Throwable $th) {
+
+            // return $th->getMessage();
             return abort(404);
         }
     }

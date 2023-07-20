@@ -7,37 +7,54 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="iq-card-body">
-                            <h2 class="text-center mb-4">Total Cost per View</h2>
-                            <table class="data-tables table audio_table" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Ads Name</th>
-                                        <th>Video Name</th>
-                                        <th>Cost</th>
-                                        <th>View</th>
-                                        <th>Created At</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($cpv_lists as $key => $cpv_list)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ get_ad($cpv_list->ad_id) ?? "-" }}</td>
-                                            <td>{{ get_video($cpv_list->video_id) }}</td>
-                                            <td>{{ ucfirst($cpv_list->advertiser_share) }}</td>
-                                            <td>{{ ucfirst($cpv_list->views_count) }}</td>
-                                            <td>{{ date('d/M/y', strtotime($cpv_list->created_at)) }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <h2 class="text-center mb-4"> {{ ucwords('cost per click Analytics') }}</h2>
+                            <div id="nestable" class="nested-list dd with-margins">
+                                <div class="panel panel-default ">
+                                    <div class="row">
+                                        <div class="col-md-12 mx-0">
+                                            <div id="nestable" class="nested-list dd with-margins">
+                                                <table class="data-tables table audio_table " style="width:100%">
+
+                                                    <thead>
+                                                        <tr>
+                                                            <th> # </th>
+                                                            <th> Ads Id </th>
+                                                            <th> Ads Name </th>
+                                                            <th> Click Count </th>
+                                                            <th> Cost Pre Click </th>
+                                                            <th> Total Cost Pre Click </th>
+                                                            <th> Action </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        @foreach ($CPC_lists as $key => $CPC_list )
+                                                            <tr>
+                                                                <td> {{ $key + 1 }}</td>
+                                                                <td> {{ $CPC_list->adveristment_id ?? '-' }} </td>
+                                                                <td> {{ ucfirst(App\Advertisement::where('id', $CPC_list->adveristment_id)->pluck('ads_name')->first()) ?? '-' }} </td>
+                                                                <td> {{ $CPC_list->view_count }} </td>
+                                                                <td> {{ CPC_advertiser_share() }} </td>
+                                                                <td> {{ CPC_advertiser_share() * $CPC_list->view_count }} </td>
+                                                                <td> <a href="#" target="_blank" class="iq-bg-warning">
+                                                                    <img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}"></a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 @include('avod::ads_footer')
@@ -100,7 +117,6 @@
 
     <?php } ?>
 </script>
-<script></script>
 </body>
 
 </html>
