@@ -13157,7 +13157,7 @@ public function QRCodeMobileLogout(Request $request)
             }
 
         $data = $data->limit(30)->get()->map(function ($item) {
-            $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
+            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
             $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
             $item['redirect_url'] = URL::to('album/'.$item->slug);
             $item['source']    = "Audios";
