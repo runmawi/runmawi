@@ -13026,7 +13026,7 @@ public function QRCodeMobileLogout(Request $request)
 
     else:
 
-      $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict','player_image')
+      $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict','player_image','description')
         ->where('active',1)->where('status', 1)->where('draft',1);
 
           if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
@@ -13042,6 +13042,7 @@ public function QRCodeMobileLogout(Request $request)
       $data = $data->latest()->limit(30)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
         $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+        $item['description'] = $item->description ;
         $item['source']    = "Videos";
         return $item;
       });
@@ -13064,7 +13065,7 @@ public function QRCodeMobileLogout(Request $request)
       
       else:
 
-        $data = Video::select('id','player_image','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+        $data = Video::select('id','player_image','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict','description')
           ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
 
             if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
@@ -13080,6 +13081,7 @@ public function QRCodeMobileLogout(Request $request)
         $data = $data->latest()->limit(30)->get()->map(function ($item) {
             $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
             $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+            $item['description'] = $item->description ;
             $item['source']    = "Videos";
             return $item;
         });
@@ -13100,11 +13102,12 @@ public function QRCodeMobileLogout(Request $request)
 
       else:
 
-        $data = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured')
+        $data = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','featured','description')
                               ->where('active',1)->where('status', 1)->latest()->limit(30)->get()
                               ->map(function ($item) {
                                   $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
                                   $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+                                  $item['description'] = $item->description ;
                                   $item['source']    = "Livestream";
                                   return $item;
                               });
@@ -13123,10 +13126,11 @@ public function QRCodeMobileLogout(Request $request)
       
       else:
 
-        $data = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code','mp4_url','webm_url','ogg_url','url','player_image')
+        $data = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code','mp4_url','webm_url','ogg_url','url','player_image','description')
             ->where('active', '=', '1')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
                 $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+                $item['description'] = $item->description ;
                 $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                 $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                 $item['source']    = "Series";
@@ -13148,7 +13152,7 @@ public function QRCodeMobileLogout(Request $request)
 
       else:
 
-        $data = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured')
+        $data = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured','description')
           ->where('active',1)->where('status', 1)->latest();
 
             if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
@@ -13160,6 +13164,7 @@ public function QRCodeMobileLogout(Request $request)
             $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
             $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
             $item['redirect_url'] = URL::to('album/'.$item->slug);
+            $item['description'] = $item->description ;
             $item['source']    = "Audios";
             return $item;
         }); 
@@ -13183,6 +13188,7 @@ public function QRCodeMobileLogout(Request $request)
               $item['image_url'] = URL::to('/public/uploads/albums/'.$item->album);
               $item['Player_image_url'] = URL::to('/public/uploads/albums/'.$item->album); // Note - No Player Image for Albums
               $item['redirect_url'] = URL::to('audio/'.$item->slug);
+              $item['description'] = null ;
               $item['source']    = "Audios_album";
               return $item;
           });
@@ -13226,6 +13232,7 @@ public function QRCodeMobileLogout(Request $request)
         $data = VideoSchedules::where('in_home',1)->latest()->limit(30)->get()->map(function ($item) {
             $item['image_url'] = $item->image;
             $item['Player_image_url'] = $item->player_image; 
+            $item['description'] = null ;
             $item['source']    = "Videos";
             return $item;
         });
@@ -13249,6 +13256,7 @@ public function QRCodeMobileLogout(Request $request)
                     $item['image_url'] = $item->channel_image != null ? $item->channel_image : URL::to('/public/uploads/images/'.default_horizontal_image()) ;
                     $item['Player_image_url'] = $item->channel_banner != null ? $item->channel_banner : URL::to('/public/uploads/images/'.default_vertical_image())  ;
                     $item['Channel_Logo_url'] = $item->channel_logo != null ? $item->channel_logo : URL::to('/public/uploads/images/'.default_vertical_image());
+                    $item['description'] = null ;
                     $item['source']    = "Channel_Partner";
                         return $item;
                     });
@@ -13270,6 +13278,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = ModeratorsUser::where('status',1)->latest()->limit(30)->get()->map(function ($item) {
                     $item['image_url'] =  URL::to('public/uploads/picture/'.$item->picture)  ;
                     $item['Player_image_url'] = URL::to('public/uploads/picture/'.$item->banner) ; // Note - No Player Image for Moderators User
+                    $item['description'] = null ;
                     $item['source']    = "Content_Partner";
                   return $item;
               });
@@ -13298,6 +13307,7 @@ public function QRCodeMobileLogout(Request $request)
         $data = $data->get()->map(function ($item) {
           $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
           $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image); 
+          $item['description'] = $item->description ;
           $item['source']    = "Videos";
               return $item;
           });
@@ -13322,6 +13332,7 @@ public function QRCodeMobileLogout(Request $request)
                   ->get()->map(function ($item) {
                     $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
                     $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+                    $item['description'] = $item->description ;
                     $item['source']    = "Livestream";
                         return $item;
                     });
@@ -13349,6 +13360,7 @@ public function QRCodeMobileLogout(Request $request)
                     ->get()->map(function ($item) {
                       $item['image_url'] = URL::to('/public/uploads/image/'.$item->image);
                       $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+                      $item['description'] = $item->episode_description ;
                       $item['source']    = "Episode";
                           return $item;
                       });
@@ -13380,6 +13392,7 @@ public function QRCodeMobileLogout(Request $request)
             $data = $data->get()->map(function ($item) {
               $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
               $item['Player_image_url'] = URL::to('/public/uploads/audios/'.$item->player_image);
+              $item['description'] = $item->description ;
               $item['source']    = "Audios";
                   return $item;
               });
@@ -13403,6 +13416,7 @@ public function QRCodeMobileLogout(Request $request)
         $data =  LiveCategory::where('in_menu',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
                               $item['image_url'] = URL::to('public/uploads/livecategory/'.$item->image);
                               $item['Player_image_url'] = URL::to('public/uploads/livecategory/'.$item->image); // Note - No Player Image for LiveCategory
+                              $item['description'] = null ;
                               $item['source']    = "LiveCategory";
                               return $item;
                             });
@@ -13423,6 +13437,7 @@ public function QRCodeMobileLogout(Request $request)
           $data =  VideoCategory::where('in_home',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
                           $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image);
                           $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->banner_image);
+                          $item['description'] = null ;
                           $item['source']    = "VideoCategory"; 
                           return $item;
                         });
@@ -13444,6 +13459,7 @@ public function QRCodeMobileLogout(Request $request)
           $data =  SeriesGenre::where('in_home',1)->latest()->limit(30)->orderBy('order')->get()->map(function ($item) {
                         $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
                         $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->image) ;
+                        $item['description'] = null ;
                         $item['source']    = "SeriesGenre";
                         return $item;
                     });
@@ -13481,6 +13497,7 @@ public function QRCodeMobileLogout(Request $request)
 
           $data =  AdminVideoPlaylist::get()->map(function ($item) {
                         $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+                        $item['description'] = null ;
                         $item['source']    = "VideoPlaylist";
                         return $item;
                     });
@@ -13500,7 +13517,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $check_Kidmode = 0 ;
 
-        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.player_image',DB::raw('COUNT(video_id) AS count'))
+        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.description','videos.player_image',DB::raw('COUNT(video_id) AS count'))
               ->join('videos', 'videos.id', '=', 'recent_views.video_id');
 
             if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
@@ -13517,6 +13534,7 @@ public function QRCodeMobileLogout(Request $request)
                   ->orderByRaw('count DESC' )->limit(30)->get()->map(function ($item) {
                     $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
                     $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image);
+                    $item['description'] = $item->description ;
                     $item['source']    = "Videos";
                     return $item;
             });
@@ -13539,7 +13557,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $check_Kidmode = 0 ;
 
-        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.player_image',DB::raw('COUNT(video_id) AS count'))
+        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.player_image', 'videos.description',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')
                   ->groupBy('video_id')->where('recent_views.sub_user',$user_id)
                   ->orderByRaw('count DESC' );
@@ -13557,6 +13575,7 @@ public function QRCodeMobileLogout(Request $request)
                   $data = $data->limit(30)->get()->map(function ($item) {
                       $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
                       $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+                      $item['description'] = $item->description ;
                       $item['source']    = "Videos";
                   return $item;
             });
@@ -13577,7 +13596,7 @@ public function QRCodeMobileLogout(Request $request)
       
         $check_Kidmode = 0 ;
 
-        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.player_image',DB::raw('COUNT(video_id) AS count'))
+        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.player_image','videos.description',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
                   ->where('country_name', Country_name());
                   
@@ -13594,6 +13613,7 @@ public function QRCodeMobileLogout(Request $request)
                   $data = $data->limit(30)->get()->map(function ($item) {
                       $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
                       $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+                      $item['description'] = $item->description ;
                       $item['source']    = "Videos"; 
                   return $item;
             });
@@ -13628,7 +13648,8 @@ public function QRCodeMobileLogout(Request $request)
         })
 
         ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
-            $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image')
+                $video->description  = $video->description ;
+            $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description')
                 ->where('videos.active', 1)
                 ->where('videos.status', 1)
                 ->where('videos.draft', 1);
@@ -13662,6 +13683,7 @@ public function QRCodeMobileLogout(Request $request)
             $category->category_videos->map(function ($video) {
                 $video->image_url = URL::to('/public/uploads/images/'.$video->image);
                 $video->Player_image_url = URL::to('/public/uploads/images/'.$video->player_image);
+                $video->description  = $video->description ;
                 $video->source  = "Videos";
                 return $video;
             });
@@ -13689,7 +13711,7 @@ public function QRCodeMobileLogout(Request $request)
 
           ->with(['category_livestream' => function ($live_stream_videos) {
               $live_stream_videos
-                  ->select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured','live_streams.player_image')
+                  ->select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured','live_streams.player_image','live_streams.description')
                   ->where('live_streams.active',1)->where('live_streams.status', 1)
                   ->latest('live_streams.created_at');
           }])
@@ -13701,6 +13723,7 @@ public function QRCodeMobileLogout(Request $request)
               $category->category_livestream->transform(function ($item) {
                   $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
                   $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image);
+                  $item['description'] = $item->description ;
                   $item['source'] = "Livestream";
                   return $item;
               });
@@ -13725,6 +13748,7 @@ public function QRCodeMobileLogout(Request $request)
         $data = AudioCategory::query()->latest()->limit(30)->get()->map(function ($item) {
               $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
               $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
+              $item['description'] = null ;
               $item['source']    = "Audios";
             return $item;
         });
@@ -13749,7 +13773,7 @@ public function QRCodeMobileLogout(Request $request)
           })
           ->with(['category_audios' => function ($audios_videos) {
               $audios_videos
-                  ->select('audio.id','audio.title','audio.slug','audio.year','audio.rating','audio.access','audio.ppv_price','audio.duration','audio.rating','audio.image','audio.featured','audio.player_image')
+                  ->select('audio.id','audio.title','audio.slug','audio.year','audio.rating','audio.access','audio.ppv_price','audio.duration','audio.rating','audio.image','audio.featured','audio.player_image','audio.description')
                   ->where('audio.active', 1)
                   ->latest('audio.created_at');
           }])
@@ -13761,6 +13785,7 @@ public function QRCodeMobileLogout(Request $request)
               $category->category_audios->transform(function ($item) {
                   $item['image_url'] = URL::to('public/uploads/audios/'.$item->image);
                   $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
+                  $item['description'] = $item->description ;
                   $item['source']    = "Audios";
                   $item['source_Name'] = "category_audios";
                   return $item;
