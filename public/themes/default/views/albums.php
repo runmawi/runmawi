@@ -776,7 +776,7 @@ window.location = '<?= URL::to('login') ?>';
 
         var id = audioppv_id ;
         <?php 
-        $PpvPurchasestatus = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',$audio_id)->count();
+        $PpvPurchasestatus = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',@$audio_id)->count();
         ?>
         alert(id);
         $.ajax({

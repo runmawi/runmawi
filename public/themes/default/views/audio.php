@@ -960,7 +960,7 @@ if(role == 'admin'){
         $audioppv_id = "<script>document.writeln(audioppv_id);</script>";
         // echo $phpVar; exit;
         if(!Auth::guest()){
-          $PpvPurchase = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',$audioppv_id)->count();
+          $PpvPurchase = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',@$audioppv_id)->count();
         }else{
           $PpvPurchase = 0 ;
         }
