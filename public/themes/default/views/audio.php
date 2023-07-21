@@ -156,6 +156,7 @@ width: 2px;
         color: #000!important;
         font-weight: 700;
         border-radius: 5px;
+        background-color: #fff!important;
     }
 .playlist-btn-play{
     color: #fff!important;
@@ -589,8 +590,9 @@ Your browser does not support the audio element.
 <h4  class="album-title">Other Albums </h4>
     <div class="favorites-contens">
 
-    <?php foreach ($other_albums as $other_album) { ?>
+   
         <ul class="favorites-slider list-inline  row p-0 mb-0">
+             <?php foreach ($other_albums as $other_album) { ?>
         <li class="slide-item">
             <?php if($other_album->album != ''){ ?>
             
@@ -611,8 +613,9 @@ Your browser does not support the audio element.
            
           
         </li>
+             <?php } ?>
             </ul>
-    <?php } ?>
+   
 
         </div>
 </div>

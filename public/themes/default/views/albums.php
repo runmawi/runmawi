@@ -6,7 +6,9 @@
     cursor: pointer;
     border-radius: 10px;
   }
-    
+    .form-control{
+        color: #000!important;
+    }
   #myBar {
     width: 0%;
     height: 3px;
