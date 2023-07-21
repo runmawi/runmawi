@@ -62,6 +62,12 @@ border-radius: 0px 4px 4px 0px;
                               </thead>
                               <tbody>
                               @foreach($audios as $key => $audio)
+                              <?php 
+                                 $CategoryAudio = App\CategoryAudio::where('audio_id',@$audio->id)
+                                 ->Join('audio_categories','audio_categories.id','=','category_audios.category_id')->pluck('audio_categories.name');
+                                 
+                              // dd($Category_Audio);
+                              ?>
 
                                  <tr id="tr_{{ $audio->id }}">
 
@@ -81,8 +87,17 @@ border-radius: 0px 4px 4px 0px;
                                        </div>
                                     </td>
                                     <td>{{ $audio->rating }}</td>
-                                    <td>@if(isset($audio->categories->name)) {{ $audio->categories->name }} @endif</td>
-                                  
+                                    <!-- <td>@if(isset($audio->categories->name)) {{ $audio->categories->name }} @endif</td> -->
+                                    <td>
+                                   <?php 
+                                       if(count($CategoryAudio) > 0){
+                                       foreach($CategoryAudio as $Category_Audio){
+                                       echo  $Category_Audio. ' ' ;
+                                          
+                                       }
+                                    } 
+                                    ?>
+                                    </td>
                                     <td>
                                         {{ $audio->views }}
                                     </td>
