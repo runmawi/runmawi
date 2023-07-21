@@ -6,7 +6,9 @@
     cursor: pointer;
     border-radius: 10px;
   }
-    
+    .form-control{
+        color: #000!important;
+    }
   #myBar {
     width: 0%;
     height: 3px;
@@ -257,19 +259,31 @@
           <audio id="myAudio" ontimeupdate="onTimeUpdate()">
             <source id="source-audio" src="" type="audio/mpeg"> Your browser does not support the audio element.
           </audio>
-              <div class="cinetpay_button">
+              <!-- <div class="cinetpay_button"> -->
                   <!-- CinetPay Button -->
-                  <button onclick="cinetpay_checkout()" id="enable_button" style="display:none;margin-left: 72%;position: absolute;margin-top: 20px;"
+                  <!-- <button onclick="cinetpay_checkout()" id="enable_button" style="display:none;margin-left: 72%;position: absolute;margin-top: 20px;"
+                      class="btn2  btn-outline-primary">Purchase to Play Audio</button> -->
+
+                                     <!-- Subscriber Button -->
+                         
+                                      <!-- <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="display:none;margin-left: 72%;position: absolute;margin-top: 20px;"
+                      class="btn2  btn-outline-primary">Become Subscriber</button> 
+                      </a> -->
+
+
+            
+              <!-- </div> -->
+              <div class="stripe_button">
+                  <!-- stripe Button -->
+                  <button onclick="stripe_checkout()" id="enable_button" style="display:none;margin-left: 72%;position: absolute;margin-top: 20px;"
                       class="btn2  btn-outline-primary">Purchase to Play Audio</button>
 
                                      <!-- Subscriber Button -->
                          
-                                      <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="display:none;margin-left: 72%;position: absolute;margin-top: 20px;"
-                      class="btn2  btn-outline-primary">Become Subscriber</button> 
+                                      <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="display:none;margin-left: 66%;position: absolute;margin-top: 20px;"
+                      class="btn bd btn-action">Subscribe to continue listening</button> 
                       </a>
 
-
-            
               </div>
            <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
     background-repeat: no-repeat;
@@ -468,6 +482,26 @@
 </div>
 
 </div>
+
+<?php                 
+$payment_settings = App\PaymentSetting::first();
+
+$mode = $payment_settings->live_mode;
+if ($mode == 0) {
+    $secret_key = $payment_settings->test_secret_key;
+    $publishable_key = $payment_settings->test_publishable_key;
+} elseif ($mode == 1) {
+    $secret_key = $payment_settings->live_secret_key;
+    $publishable_key = $payment_settings->live_publishable_key;
+} else {
+    $secret_key = null;
+    $publishable_key = null;
+} ?>
+
+
+<input type="hidden" id="publishable_key" name="publishable_key"
+                        value="<?php echo $publishable_key; ?>">
+
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -581,116 +615,294 @@ window.location = '<?= URL::to('login') ?>';
 
   var indexAudio = 0;
 
-  function loadNewTrack(index){
+//   function loadNewTrackold(index){
 
-    var access = listAudio[index].access
+//     var access = listAudio[index].access
 
-    var audioppv_id  = listAudio[index].id
+//     var audioppv_id  = listAudio[index].id
             
 
 
-      if(access == 'guest'){
-        // alert(access);
-      var player = document.querySelector('#source-audio')
+//       if(access == 'guest'){
+//         // alert(access);
+//       var player = document.querySelector('#source-audio')
 
-      player.src = listAudio[index].mp3_url
+//       player.src = listAudio[index].mp3_url
 
-      document.querySelector('.title').innerHTML = listAudio[index].title
- var image = document.querySelector('#audio_img')
-    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image
+//       document.querySelector('.title').innerHTML = listAudio[index].title
+//  var image = document.querySelector('#audio_img')
+//     image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image
    
-      this.currentAudio = document.getElementById("myAudio");
-      this.currentAudio.load()
-      this.toggleAudio()
-      this.updateStylePlaylist(this.indexAudio,index)
-      this.indexAudio = index;
-    }else if(access == 'ppv'){ 
+//       this.currentAudio = document.getElementById("myAudio");
+//       this.currentAudio.load()
+//       this.toggleAudio()
+//       this.updateStylePlaylist(this.indexAudio,index)
+//       this.indexAudio = index;
+//     }else if(access == 'ppv'){ 
 
-      var audioppv = <?php echo json_encode($audioppv) ?>;
+//       var audioppv = <?php echo json_encode($audioppv) ?>;
       
-      var countaudioppv = [];    
+//       var countaudioppv = [];    
 
-      // audioppv.forEach(element => console.log(element));
-      audioppv.forEach(element => {
-            if(element.audio_id == audioppv_id) {
-              // alert(audioppv_id);
-              countaudioppv.push(1) 
-            }       
-          });
+//       // audioppv.forEach(element => console.log(element));
+//       audioppv.forEach(element => {
+//             if(element.audio_id == audioppv_id) {
+//               // alert(audioppv_id);
+//               countaudioppv.push(1) 
+//             }       
+//           });
 
-        if(countaudioppv.length > 0 || role == 'subscriber'){
-            var player = document.querySelector('#source-audio')
+//         if(countaudioppv.length > 0 || role == 'subscriber'){
+//             var player = document.querySelector('#source-audio')
 
-            player.src = listAudio[index].mp3_url
+//             player.src = listAudio[index].mp3_url
 
-            document.querySelector('.title').innerHTML = listAudio[index].title
+//             document.querySelector('.title').innerHTML = listAudio[index].title
 
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
-        }else{
-            var player = document.querySelector('#source-audio')
+//             this.currentAudio = document.getElementById("myAudio");
+//             this.currentAudio.load()
+//             this.toggleAudio()
+//             this.updateStylePlaylist(this.indexAudio,index)
+//             this.indexAudio = index;
+//         }else{
+//             var player = document.querySelector('#source-audio')
 
-            player.src = ''
+//             player.src = ''
 
-            document.querySelector('.title').innerHTML = listAudio[index].title
+//             document.querySelector('.title').innerHTML = listAudio[index].title
 
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
+//             this.currentAudio = document.getElementById("myAudio");
+//             this.currentAudio.load()
+//             this.toggleAudio()
+//             this.updateStylePlaylist(this.indexAudio,index)
+//             this.indexAudio = index;
 
-            document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
-            document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
+//             document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
+//             document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
 
-            document.querySelector('#enable_button').style.display = 'block';
-            alert("Purchase Audio");   
-
-
-        }
-    }else if(access == 'subscriber'){ 
+//             document.querySelector('#enable_button').style.display = 'block';
+//             alert("Purchase Audio");   
 
 
+//         }
+//     }else if(access == 'subscriber'){ 
+
+
+//       var role = <?php echo json_encode($role) ?>;
+//       // alert(role);
+
+//       if(role == 'subscriber'){
+//             var player = document.querySelector('#source-audio')
+
+//             player.src = listAudio[index].mp3_url
+
+//             document.querySelector('.title').innerHTML = listAudio[index].title
+
+//             this.currentAudio = document.getElementById("myAudio");
+//             this.currentAudio.load()
+//             this.toggleAudio()
+//             this.updateStylePlaylist(this.indexAudio,index)
+//             this.indexAudio = index;
+//         }else{
+//             var player = document.querySelector('#source-audio')
+
+//             player.src = ''
+
+//             document.querySelector('.title').innerHTML = listAudio[index].title
+
+//             this.currentAudio = document.getElementById("myAudio");
+//             this.currentAudio.load()
+//             this.toggleAudio()
+//             this.updateStylePlaylist(this.indexAudio,index)
+//             this.indexAudio = index;
+
+//             document.querySelector('#Subscriber_button').style.display = 'block';
+//             alert("Become Subscriber to Listen this Audio");   
+
+
+//         }
+
+//     }
+
+//   }
+
+
+  
+  function loadNewTrack(index){
+
+      var access = listAudio[index].access
+
+      var audioppv_id  = listAudio[index].id
+      
       var role = <?php echo json_encode($role) ?>;
-      // alert(role);
-
-      if(role == 'subscriber'){
+      if(role == 'admin'){
             var player = document.querySelector('#source-audio')
+          player.src = listAudio[index].mp3_url
+          document.querySelector('.title').innerHTML = listAudio[index].title
+          var image = document.querySelector('#audio_img')
+          image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image 
 
-            player.src = listAudio[index].mp3_url
+          var divElement = document.getElementById("player-ctn");
+          var player_imageURL = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image 
+          divElement.style.backgroundImage = "linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1))," + "url('" + player_imageURL + "')";
 
-            document.querySelector('.title').innerHTML = listAudio[index].title
+          this.currentAudio = document.getElementById("myAudio");
+          this.currentAudio.load()
+          this.toggleAudio()
+          this.updateStylePlaylist(this.indexAudio,index)
+          this.indexAudio = index;
+      }else{
 
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
-        }else{
-            var player = document.querySelector('#source-audio')
+        if(access == 'guest'){
+          // alert(access);
 
-            player.src = ''
+          document.querySelector('#enable_button').style.display = 'none';
 
-            document.querySelector('.title').innerHTML = listAudio[index].title
+        var player = document.querySelector('#source-audio')
 
-            this.currentAudio = document.getElementById("myAudio");
-            this.currentAudio.load()
-            this.toggleAudio()
-            this.updateStylePlaylist(this.indexAudio,index)
-            this.indexAudio = index;
+        player.src = listAudio[index].mp3_url
 
-            document.querySelector('#Subscriber_button').style.display = 'block';
-            alert("Become Subscriber to Listen this Audio");   
+        document.querySelector('.title').innerHTML = listAudio[index].title
+
+        this.currentAudio = document.getElementById("myAudio");
+        this.currentAudio.load()
+        this.toggleAudio()
+        this.updateStylePlaylist(this.indexAudio,index)
+        this.indexAudio = index;
+      }else if(access == 'ppv'){ 
+        // alert(audioppv_id);
+        var audioppv = <?php echo json_encode(@$ablum_audios); ?>;
+        var ppv_audio_status = 0;
+
+        var id = audioppv_id ;
+        <?php 
+        $PpvPurchasestatus = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',@$audio_id)->count();
+        ?>
+        alert(id);
+        $.ajax({
+            url: '<?php echo URL::to('purchased-audio-check'); ?>',
+            type: "post",
+            data: {
+                _token: '<?php echo csrf_token(); ?>',
+                audio_id: audioppv_id,
+
+            },
+            success: function(value) {
+                var ppv_audio_status  = value ;
+                
+                return ppv_audio_status;
+
+            },
+            error: (error) => {
+                swal('error');
+                
+            }
+
+        });
+      // alert(ppv_audio_status);
+      if(ppv_audio_status == 0){
+            // alert(value);
+            var countaudioppv = [];    
+
+            // audioppv.forEach(element => console.log(element));
+            audioppv.forEach(element => {
+                  if(element.audio_id == audioppv_id) {
+                    // alert(audioppv_id);
+                    countaudioppv.push(1) 
+                  }       
+                });
+
+              if(countaudioppv.length > 0 || role == 'subscriber'){
+                  var player = document.querySelector('#source-audio')
+
+                  player.src = listAudio[index].mp3_url
+
+                  document.querySelector('.title').innerHTML = listAudio[index].title
+
+                  this.currentAudio = document.getElementById("myAudio");
+                  this.currentAudio.load()
+                  this.toggleAudio()
+                  this.updateStylePlaylist(this.indexAudio,index)
+                  this.indexAudio = index;
+              }else{
+                  var player = document.querySelector('#source-audio')
+
+                  player.src = ''
+
+                  document.querySelector('.title').innerHTML = listAudio[index].title
+
+                  this.currentAudio = document.getElementById("myAudio");
+                  this.currentAudio.load()
+                  this.toggleAudio()
+                  this.updateStylePlaylist(this.indexAudio,index)
+                  this.indexAudio = index;
+
+                  document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
+                  document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
+
+                  document.querySelector('#enable_button').style.display = 'block';
+                  alert("Purchase Audio");   
 
 
-        }
+              }
+            }else{
 
-    }
 
-  }
+            document.querySelector('#enable_button').style.display = 'none';
+
+                var player = document.querySelector('#source-audio')
+
+                player.src = listAudio[index].mp3_url
+                // alert('ppv_audio_status');
+
+                document.querySelector('.title').innerHTML = listAudio[index].title
+
+                this.currentAudio = document.getElementById("myAudio");
+                this.currentAudio.load()
+                this.toggleAudio()
+                this.updateStylePlaylist(this.indexAudio,index)
+                this.indexAudio = index;
+            }
+      }else if(access == 'subscriber'){ 
+
+
+        var role = <?php echo json_encode($role) ?>;
+        // alert(role);
+
+        if(role == 'subscriber'){
+              var player = document.querySelector('#source-audio')
+
+              player.src = listAudio[index].mp3_url
+
+              document.querySelector('.title').innerHTML = listAudio[index].title
+
+              this.currentAudio = document.getElementById("myAudio");
+              this.currentAudio.load()
+              this.toggleAudio()
+              this.updateStylePlaylist(this.indexAudio,index)
+              this.indexAudio = index;
+          }else{
+              var player = document.querySelector('#source-audio')
+
+              player.src = ''
+
+              document.querySelector('.title').innerHTML = listAudio[index].title
+
+              this.currentAudio = document.getElementById("myAudio");
+              this.currentAudio.load()
+              this.toggleAudio()
+              this.updateStylePlaylist(this.indexAudio,index)
+              this.indexAudio = index;
+
+              document.querySelector('#Subscriber_button').style.display = 'block';
+              alert("Become Subscriber to Listen this Audio");   
+
+
+          }
+
+      }
+}
+}
 
   var playListItems = document.querySelectorAll(".playlist-track-ctn");
 
@@ -711,7 +923,25 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
 
-  document.querySelector('#source-audio').src = <?php echo json_encode($first_album_mp3_url) ; ?>  
+  var access = <?php echo json_encode(@$first_album_access) ; ?>  
+  var role = <?php echo json_encode(@$role) ; ?>  
+  var ppv_status = <?php echo json_encode(@$ppv_status) ; ?>  
+
+  // alert(ppv_status)
+  if(role == 'admin'){
+    document.querySelector('#source-audio').src = <?php echo json_encode(@$first_album_mp3_url) ; ?>  
+  }else{
+    if(access == 'ppv' && ppv_status == 0){
+      document.getElementById("enable_button").setAttribute("data-price", <?php echo json_encode(@$first_album_ppv_price) ; ?>);
+      document.getElementById("enable_button").setAttribute("audio-id", <?php echo json_encode(@$first_album_id) ; ?>);
+      document.querySelector('#enable_button').style.display = 'block';
+      document.querySelector('#source-audio').src = '';
+          alert("Purchase Audio"); 
+    }else{
+      document.querySelector('#source-audio').src = <?php echo json_encode(@$first_album_mp3_url) ; ?>  
+    }
+  }
+
   document.querySelector('.title').innerHTML = <?php echo json_encode($first_album_title) ; ?>  
   var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
   var player_imagess = player_images +'/' + <?php echo json_encode(@$album->player_image) ; ?>;
@@ -961,4 +1191,71 @@ window.location = '<?= URL::to('login') ?>';
         });
     }
 </script>
+
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+
+<script>
+
+function stripe_checkout() {
+  
+  var publishable_key = $('#publishable_key').val();
+
+  var video_id = $('#video_id').val();
+
+  var ppv_price = document.getElementById("enable_button").getAttribute("data-price");
+  var audio_id = document.getElementById("enable_button").getAttribute("audio-id");
+
+  // alert(ppv_price);
+  // alert(audio_id);
+  var handler = StripeCheckout.configure({
+
+      key: publishable_key,
+      locale: 'auto',
+      token: function(token) {
+          // You can access the token ID with `token.id`.
+          // Get the token ID to your server-side code for use.
+          console.log('Token Created!!');
+          console.log(token);
+          $('#token_response').html(JSON.stringify(token));
+
+          $.ajax({
+              url: '<?php echo URL::to('purchase-audio'); ?>',
+              method: 'post',
+              data: {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  tokenId: token.id,
+                  amount: ppv_price,
+                  audio_id: audio_id
+              },
+              success: (response) => {
+                  alert("You have done  Payment !");
+                  setTimeout(function() {
+                      location.reload();
+                  }, 2000);
+
+              },
+              error: (error) => {
+                  swal('error');
+                  //swal("Oops! Something went wrong");
+                  /* setTimeout(function() {
+                  location.reload();
+                  }, 2000);*/
+              }
+          })
+      }
+  });
+
+
+  handler.open({
+      name: '<?php $settings = App\Setting::first();
+      echo $settings->website_name; ?>',
+      description: 'Rent a Video',
+      amount: ppv_price * 100
+  });
+}
+
+
+  </script>
+
 <?php include('footer.blade.php'); ?>

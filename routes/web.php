@@ -382,6 +382,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store');
     Route::post('purchase-video', 'PaymentController@purchaseVideo');
+    Route::post('/purchased-audio-check', 'PaymentController@purchased_audio_check')->name('purchased_audio_check');
     Route::post('purchase-audio', 'PaymentController@purchaseAudio');
     Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');
     Route::post('player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');

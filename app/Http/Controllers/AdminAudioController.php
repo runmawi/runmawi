@@ -640,6 +640,7 @@ class AdminAudioController extends Controller
                 $audio->status =  $status;
                 $audio->active =  $active;
                 $audio->ppv_status =  $ppv_status;
+                $audio->rating =  $data['rating'];
                 $audio->save();
 
                 if(!empty($data['artists'])){
@@ -1160,6 +1161,7 @@ class AdminAudioController extends Controller
         $audio->status =  1;
         $audio->ppv_status =  $data['ppv_status'];
         $audio->ios_ppv_price =  $data['ios_ppv_price'];
+        $audio->rating =  $data['rating'];
         $audio->save();
 
         $audio = Audio::findOrFail($id);

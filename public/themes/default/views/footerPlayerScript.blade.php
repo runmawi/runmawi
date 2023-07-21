@@ -1,3 +1,7 @@
+<?php 
+    $user = !Auth::guest() ? Auth::User()->id : 'guest' ; 
+?>
+
 <script>
     var type = $('#video_type').val();
     var request_url = $('#request_url').val();
@@ -38,10 +42,20 @@
 
             ads: {
                 enabled: true,
-                publisherId: '',
                 tagUrl: video_tag_url
             }
         });
+
+            // Ads Views Count
+        player.on('adsloaded', (event) => {
+            Ads_Views_Count();
+        });
+
+            // Ads Redirection Count
+        player.on('adsclick', (event) => {
+            Ads_Redirection_URL_Count(event.timeStamp);
+        });
+
         player.on('seeked', () => {
             const seekedTime = player.currentTime;
             const duration = player.duration;
@@ -267,6 +281,7 @@
                         }
                     })
                     var player = new Plyr(video, defaultOptions);
+
                     addSeekedEventListener(player);
 
                 });
@@ -380,6 +395,7 @@
                 tagUrl: video_tag_url
             }
         });
+        
         player.on('seeked', () => {
             const seekedTime = player.currentTime;
             const duration = player.duration;
@@ -528,6 +544,8 @@
     }
     // Normal Video M3U8 URL Script   
     else {
+        // alert('ss');
+
         document.addEventListener("DOMContentLoaded", () => {
             const video = document.querySelector("video");
             const source = video.getElementsByTagName("source")[0].src;
@@ -576,6 +594,17 @@
 
                     // Initialize new Plyr player with quality options
                     var player = new Plyr(video, defaultOptions);
+
+                        // Ads Views Count
+                    player.on('adsloaded', (event) => {
+                        Ads_Views_Count();
+                    });
+
+                        // Ads Redirection Count
+                    player.on('adsclick', (event) => {
+                        Ads_Redirection_URL_Count(event.timeStamp);
+                    });
+
                     addSeekedEventListener(player);
 
                 });
@@ -709,7 +738,6 @@
 
                     ads: {
                         enabled: true,
-                        publisherId: '',
                         tagUrl: video_tag_url
                     }
                 });
@@ -800,4 +828,46 @@
         });
 
     }
+
+    function Ads_Redirection_URL_Count(timestamp_time){
+
+        let video_id = $('#video_id').val() ;
+        let ads_tag_url_id = $('#ads_tag_url_id').val() ;
+
+        $.ajax({
+            type:'get',
+            url:'<?= route('Advertisement_Redirection_URL_Count') ?>',
+            data: {
+                        "Count" : 1 , 
+                        "source_type" : "videos",
+                        "source_id"   : video_id ,
+                        "adveristment_id" : ads_tag_url_id ,
+                        "user" : "<?php echo $user ?>",
+                        "timestamp_time" : timestamp_time ,
+                },
+                success:function(data) {
+                }
+        });
+    }
+
+    function Ads_Views_Count(){
+
+        let video_id = $('#video_id').val() ;
+        let ads_tag_url_id = $('#ads_tag_url_id').val() ;
+
+        $.ajax({
+            type:'get',
+            url:'<?= route('Advertisement_Views_Count') ?>',
+            data: {
+                        "Count" : 1 , 
+                        "source_type" : "videos",
+                        "source_id"   : video_id ,
+                        "adveristment_id" : ads_tag_url_id ,
+                        "user" : "<?php echo $user ?>",
+                },
+                success:function(data) {
+                }
+        });
+    }
+
 </script>

@@ -966,13 +966,13 @@
       var videotypeId = <?php echo json_encode($video_type_id); ?>;
       var videoId = document.getElementById(videotypeId);
    </script>
+
    <?php
-      include('AdsvideoPre.php'); 
-      include('AdsvideoMid.php');
-      include('AdsvideoPost.php');
+      // include('AdsvideoPre.php'); 
+      // include('AdsvideoMid.php');
+      // include('AdsvideoPost.php');
       
-      
-      ?>
+   ?>
    <?php
       $player_ui = App\Playerui::pluck('show_logo')->first();
       $logo = App\Setting::pluck('logo')->first();
@@ -995,6 +995,7 @@
    <?php } ?>
 </div>
 <?php include('footer.blade.php');?>
+
 <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
 <script>
    const player = new Plyr('#videoPlayer1'); 
