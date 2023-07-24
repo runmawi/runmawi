@@ -388,12 +388,14 @@ class PaystackController extends Controller
 
         $access_code = Str::random(15);
 
+        $video_slug = Video::where('id',$video_id)->pluck('slug');
+
         $data = array(
                 'amount' => $amount * 100 ,
                 'email'  => $email ,
                 'publish_key'  =>  $this->paystack_keyId,
                 'access_code'  => $access_code ,
-                'redirect_url' => URL::to('category/videos/rent-payment'),
+                'redirect_url' => URL::to('category/videos'.'/'.$video_slug),
                 'Video_id'     =>  $video_id ,
         );
         return view('Paystack.video_rent_checkout',$data);
