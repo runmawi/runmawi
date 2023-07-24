@@ -401,7 +401,7 @@ class PaystackController extends Controller
 
     public function Paystack_Video_Rent_Paymentverify ( Request $request )
     {
-        try {
+        // try {
 
             $setting = Setting::first();  
             $ppv_hours = $setting->ppv_hours;
@@ -491,14 +491,14 @@ class PaystackController extends Controller
                 );
             }
 
-        } catch (\Exception $e) {
+        // } catch (\Exception $e) {
 
-            $response = array(
-                 "status"  => false , 
-                 "message" => $e->getMessage(), 
-            );
+        //     $response = array(
+        //          "status"  => false , 
+        //          "message" => $e->getMessage(), 
+        //     );
 
-        }
+        // }
 
         return response()->json($response, 200);
     }
