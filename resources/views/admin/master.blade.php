@@ -125,6 +125,7 @@ if (!empty($data['password_hash'])) {
     body.dark .iq-footer{background-color: #292c35;border-top: 1px solid #000;} /* #9b59b6 */
    /* #9b59b6 */
     body.dark {background-color: #292c35;} /* #9b59b6 */
+    body.dark table.dataTable tbody tr{background-color: #292c35;color: #fff;} /* #9b59b6 */
     body.dark .tab-content{background-color: #292c35;} /* #9b59b6 */
     body.dark .iq-card{background-color: #000;} /* #9b59b6 */
     body.dark .iq-top-navbar {background-color: #292c35;border-bottom: 1px solid #000;} /* #9b59b6 */
@@ -136,6 +137,7 @@ if (!empty($data['password_hash'])) {
     body.dark #optionradio{color: #fff;}
     body.dark .dropzone .dz-message .dz-button{color: #fff;}
     body.dark th{color: #fff;}
+    body.dark h4{color: #fff;}
     body.dark .upload-ui{color: #000;}
     body.dark div.dataTables_wrapper div.dataTables_info{color: #fff!important;}
     body.dark .line{color: #fff;}
@@ -153,6 +155,9 @@ body.dark h1, body.dark .support a {color: #fff;}
   opacity: 0;
   position: absolute;
 }
+    .list-user-action{
+        display: flex;
+    }
 
 .checkbox-label {
   background-color: #111;
