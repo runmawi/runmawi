@@ -24,7 +24,7 @@ if (!empty($data['password_hash'])) {
    $package = $user_package->package;
    $test = 1;
 
-   $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+   $theme_mode = App\SiteTheme::pluck('admin_theme_mode')->first();
    $theme = App\SiteTheme::first();
    // dd($theme_mode);
    ?>
@@ -1686,7 +1686,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             var theme_mode = $("#checkbox").prop("checked");
          
             $.ajax({
-            url: '<?php echo URL::to("theme-mode") ;?>',
+            url: '<?php echo URL::to("admin-theme-mode") ;?>',
             method: 'post',
             data: 
                {
