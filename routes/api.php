@@ -601,7 +601,8 @@ Route::group(
             Route::post('add_audio_playlist', 'ApiAuthController@AddAudioPlaylist');
             Route::post('my_audio_playlist', 'ApiAuthController@MyAudioPlaylist');
             Route::post('audio_playlist', 'ApiAuthController@PlaylistAudio');
-
+            Route::post('remove_audio_playlist', 'ApiAuthController@RemoveAudioPlaylist');
+            Route::post('remove_playlist', 'ApiAuthController@Remove_Playlist');
 
             // Create Audio Playlist 
 
