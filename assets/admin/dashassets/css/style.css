@@ -476,8 +476,8 @@ content Page
 .iq-user-dropdown { width: 350px; }
 body.sidebar-main .content-page { margin-left: 80px; }
 .iq-dropdown { padding: 0px 5px; }
-.sorting{color: #000000!important;}
-.sorting_asc{color: #000000!important;}
+.sorting{color: #000000;}
+.sorting_asc{color: #000000;}
 /*------dashboard----*/
 .iq-rated-box{margin: 5px;}
 .iq-rated-box .iq-card { background-color: /*var(--iq-body-bg); */}
