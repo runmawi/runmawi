@@ -388,7 +388,7 @@ class PaystackController extends Controller
 
         $access_code = Str::random(15);
 
-        $video_slug = Video::where('id',$video_id)->pluck('slug');
+        $video_slug = Video::where('id',$video_id)->pluck('slug')->first();
 
         $data = array(
                 'amount' => $amount * 100 ,
