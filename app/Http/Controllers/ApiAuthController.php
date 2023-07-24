@@ -19772,10 +19772,14 @@ public function IOS_ShowVideo_favorite(Request $request) {
       $MyPlaylist->slug = str_replace(" ", "-", $request->title);
       $MyPlaylist->image = $image;
       $MyPlaylist->save();
-
+      $id = $MyPlaylist->id;
+      // print_r($id);exit;
       $response = array(
         'status'=>'true',
         'message' => 'Created Audio Playlist',
+        'MyPlaylist_id' => $id ,
+        'Playlist' => MyPlaylist::where('id',$id)->first() ,
+
       );
 
     } catch (\Throwable $th) {

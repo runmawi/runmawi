@@ -23,6 +23,10 @@ if (!empty($data['password_hash'])) {
    $user_package =    DB::table('users')->where('id', 1)->first();
    $package = $user_package->package;
    $test = 1;
+
+   $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+   $theme = App\SiteTheme::first();
+   // dd($theme_mode);
    ?>
 <input type="hidden" id="session" value="session">
 <?php if($request_url != "filemanager") { ?>
@@ -1597,13 +1601,13 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                                          <div class="d-flex justify-content-between align-items-center">
                                         <h5 class="mb-0 text-white line-height">Hello <?php echo Auth::user()->name; ?> </h5>
                                             <div>
-  <input type="checkbox" class="checkbox" id="checkbox">
-  <label for="checkbox" class="checkbox-label">
-    <i class="fas fa-moon"></i>
-    <i class="fas fa-sun"></i>
-    <span class="ball"></span>
-  </label>
-</div>
+         <input type="checkbox" class="checkbox" id="checkbox" value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+               <label for="checkbox" class="checkbox-label">
+                  <i class="fas fa-moon"></i>
+                  <i class="fas fa-sun"></i>
+                  <span class="ball"></span>
+               </label>
+               </div>
                                          </div>
                                         <span class="text-white font-size-12">Available</span>
                                      </div>
@@ -1670,7 +1674,43 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           <!-- TOP Nav Bar END -->
         
         </div>
-        
+          
+      <script>
+         $("#checkbox").click(function(){
+         
+            var theme_mode = $("#checkbox").prop("checked");
+         
+            $.ajax({
+            url: '<?php echo URL::to("theme-mode") ;?>',
+            method: 'post',
+            data: 
+               {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  mode: theme_mode 
+               },
+               success: (response) => {
+                  console.log(response);
+               },
+            })
+         });
+         
+      </script>
+
+      <!-- Dark Mode & Light Mode  -->
+      <script>
+         let theme_modes = $("#checkbox").val();
+         
+         $(document).ready(function(){
+         
+            if( theme_modes == 'dark' ){
+               document.body.classList.toggle("dark")
+               // const checkbox = document.getElementById("checkbox")
+               //    checkbox.addEventListener("change", () => {
+               //    document.body.classList.toggle("dark")
+               // })
+            }
+         });
+      </script>
         <!--<hr />-->
     
         <div id="main-admin-content">
