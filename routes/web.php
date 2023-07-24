@@ -223,6 +223,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('kidsModeOff', 'HomeController@kidsModeOff')->name('kidsModeOff');
     Route::get('FamilyModeOff', 'HomeController@FamilyModeOff')->name('FamilyModeOff');
     Route::post('theme-mode', 'HomeController@ThemeModeSave');
+    Route::post('admin-theme-mode', 'HomeController@AdminThemeModeSave');
     Route::get('/home', 'HomeController@index')->name('home');
 
     // Reels
