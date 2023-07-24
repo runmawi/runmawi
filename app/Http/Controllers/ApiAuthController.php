@@ -19925,4 +19925,57 @@ return response()->json($response, 200);
 }
 
 
+public function RemoveAudioPlaylist(Request $request){
+
+  try {
+
+    $Setting = Setting::first();
+
+    AudioUserPlaylist::where('user_id',$request->user_id)->where('playlist_id',$request->playlist_id)
+    ->where('audio_id',$request->audio_id)->delete();
+
+    $response = array(
+      'status'=>'true',
+      'message' => 'Removed Audio to Playlist',
+    );
+
+  } catch (\Throwable $th) {
+    throw $th;
+
+    $response = array(
+      'status'=>'false',
+      'message' => 'Not Added Audio to Playlist',
+    );
+  }
+
+return response()->json($response, 200);
+
+}
+
+public function Remove_Playlist(Request $request){
+  try {
+
+      $MyPlaylist = MyPlaylist::where('user_id',$request->user_id)->get();
+      AudioUserPlaylist::where('user_id',$request->user_id)->where('playlist_id',$request->playlist_id)->delete();
+      $MyPlaylist = MyPlaylist::where('user_id',$request->user_id)->where('id', $request->playlist_id)->delete();
+
+      $response = array(
+        'status'=>'true',
+        'message' => 'Removed  Playlist',
+      );
+
+  } catch (\Throwable $th) {
+      throw $th;
+      $data = [];
+
+      $response = array(
+        'status'=>'false',
+        'message' => 'Not Removed  Playlist',
+      );
+    }
+
+return response()->json($response, 200);
+
+}
+
 }
