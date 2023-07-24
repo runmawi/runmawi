@@ -13648,7 +13648,6 @@ public function QRCodeMobileLogout(Request $request)
         })
 
         ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
-                $video->description  = $video->description ;
             $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description')
                 ->where('videos.active', 1)
                 ->where('videos.status', 1)
