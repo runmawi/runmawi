@@ -19981,4 +19981,109 @@ return response()->json($response, 200);
 
 }
 
+
+public function IOSSocialUser(Request $request) {
+  /*Parameters*/
+  $input = $request->all();
+  $username = $input['username'];
+  $email = $input['email'];
+  $user_url = $input['user_url'];
+  $login_type = $input['login_type'];//Facebook or Google
+
+
+  /*Parameters*/
+  /*Profile image move to avatar folder*/
+  if($user_url != ''){
+    $name = $username.".jpg";
+    //local site
+    //$path = $_SERVER['DOCUMENT_ROOT'].'/flicknexs/public/uploads/avatars'.$name;
+    //live site
+    $path = $_SERVER['DOCUMENT_ROOT'].'/public/uploads/avatars/'.$name;
+        $arrContextOptions=array(
+      "ssl"=>array(
+        "verify_peer"=>false,
+        "verify_peer_name"=>false,
+      ),
+    );
+    $contents = file_get_contents($user_url, false, stream_context_create($arrContextOptions));
+       file_put_contents($path, $contents);
+
+  }else{
+    $name = '';
+  }
+
+  if($login_type == 'facebook'){ //Facebook
+    // $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
+    $check_exists = User::where('email', '=', $email)->count();
+    if($check_exists > 0){//Login
+      $user_details = User::where('email', '=', $email)->get();
+      $response = array(
+        'status'      =>'true',
+        'message'     =>'Login Success',
+        'user_details'=>$user_details
+      );
+    }else{//Signup
+      $data = array(
+        'username' =>$username,
+        'email'    =>$email,
+        'user_type'=>$login_type,
+        'avatar'   =>$name,
+        'active'   => 1 ,
+        'role'     =>'registered',
+        'password' =>'null'
+      );
+
+      $user = new User;
+      $user->insert($data);
+      $user_details = User::where('username', '=', $username)->get();
+      $response = array(
+        'status'       =>'true',
+        'message'      =>'Account Created ',
+        'user_details' => $user_details
+      );
+    }
+  }
+  if($login_type == 'google'){ //Google
+    // $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
+    $check_exists = User::where('email', '=', $email)->count();
+    if($check_exists > 0) {//Login
+      $user_details = User::where('email', '=', $email)->get();
+      $response = array(
+        'status'      =>'true',
+        'message'     =>'Login Success',
+        'user_details'=>$user_details
+      );
+    }else{//Signup
+      $data = array(
+        'username' =>$username,
+        'email'    =>$email,
+        'user_type'=>$login_type,
+        'avatar'   =>$name,
+        'active'   => 1 ,
+        'role'     =>'registered',
+        'password' =>'null'
+      );
+
+      $user = new User;
+      $user->insert($data);
+      $user_details = User::where('username', '=', $username)->get();
+      $response = array(
+        'status'       =>'true',
+        'message'      =>'Account Created ',
+        'user_details' => $user_details
+      );
+    }
+  }
+
+  if($username == null || $login_type == null){
+    $response = array(
+        'status'       =>'false',
+        'message'      =>'Empty Request'
+      );
+  }
+
+  return response()->json($response, 200);
+}
+
+
 }

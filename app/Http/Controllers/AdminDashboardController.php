@@ -28,6 +28,8 @@ use GuzzleHttp\Message\Response;
 use Mail;
 use Laravel\Cashier\Invoice;
 use App\StorageSetting;
+use App\PpvPurchase;
+use App\Language;
 
 class AdminDashboardController extends Controller
 {
@@ -181,6 +183,23 @@ class AdminDashboardController extends Controller
         $recent_views = RecentView::limit(10)->orderBy('id','DESC')->get();
         $recent_view = $recent_views->unique('video_id');
         $page = 'admin-dashboard';
+        
+        $total_users = User::count();
+        $Total_Subscribers = User::where('role','subscriber')->count();
+
+        $Total_PPV_Revenue = PpvPurchase::sum('total_amount');
+        $Total_Subscription_Revenue = Subscription::sum('price');
+        $Total_Revenue = $Total_PPV_Revenue + $Total_Subscription_Revenue;
+
+        $Month_PPV_Revenue = PpvPurchase::whereMonth('created_at', Carbon::now()->month)->sum('total_amount');
+        $Month_Subscription_Revenue = Subscription::whereMonth('created_at', Carbon::now()->month)->sum('price');
+        $Total_Monthly_Revenue = $Month_PPV_Revenue + $Month_Subscription_Revenue;
+
+        $VideoCategory = VideoCategory::get();
+        $Language = Language::get();
+
+        // dd($VideoCategory);
+
         $data = array(
                 'settings' => $settings,
                 'total_subscription' => $total_subscription,
@@ -194,6 +213,12 @@ class AdminDashboardController extends Controller
                 'space_available' => $space_available,
                 'space_usage' => $space_usage,
                 'space_disk' => ($space_disk),
+                'settings' => $settings,
+                'total_users' => $total_users,
+                'Total_Subscribers' => $Total_Subscribers,
+                'Total_Monthly_Revenue' => $Total_Monthly_Revenue,
+                'VideoCategory' => $VideoCategory,
+                'Language' => $Language,
 
         );
         
