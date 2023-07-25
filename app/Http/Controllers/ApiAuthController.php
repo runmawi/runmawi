@@ -1305,63 +1305,64 @@ public function verifyandupdatepassword(Request $request)
       $current_date = date('Y-m-d h:i:s a', time());
   
       $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-          $item['details'] = strip_tags($item->details);
-          $item['description'] = strip_tags($item->description);
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-          $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-          $item['video_url'] = URL::to('/').'/storage/app/public/';
-          $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/'.$item->reelvideo;
-          $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
-          $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
-          $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
-          $item['video_tv_image'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
-          $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
-          $item['description']    = strip_tags(html_entity_decode($item->description));
-          $item['movie_duration']    = gmdate('H:i:s', $item->duration);
+          $item['details']        = strip_tags($item->details);
+          $item['description']    = strip_tags($item->description);
+          $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
+          $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+          $item['video_url']      = URL::to('/').'/storage/app/public/';
+          $item['reelvideo_url']  = URL::to('public/uploads/reelsVideos/'.$item->reelvideo) ;
+          $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
+          $item['mobile_image_url'] = URL::to('public/uploads/images/'.$item->mobile_image) ;
+          $item['tablet_image_url'] = URL::to('public/uploads/images/'.$item->tablet_image) ;
+          $item['video_tv_image']   = URL::to('public/uploads/images/'.$item->video_tv_image) ;
+          $item['transcoded_url']   = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+          $item['description']      = strip_tags(html_entity_decode($item->description));
+          $item['movie_duration']   = gmdate('H:i:s', $item->duration);
           $ads_videos = AdsVideo::where('ads_videos.video_id',$item->id)
               ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
               ->first();
   
-          $ads_mid_time  =  gmdate("H:i:s", $item->duration/2) ;
+          $ads_mid_time   =  gmdate("H:i:s", $item->duration/2) ;
           $ads_Post_time  = "00:00:00" ;
           $ads_pre_time   =  gmdate("H:i:s", $item->duration - 1) ;
   
-          $item['ads_url'] = $ads_videos ? URL::to('/').'/public/uploads/AdsVideos/'.$ads_videos->ads_video :  " " ;
+          $item['ads_url']  = $ads_videos ? URL::to('/').'/public/uploads/AdsVideos/'.$ads_videos->ads_video :  " " ;
           $item['ads_position'] = $ads_videos ? $ads_videos->ads_position : " ";
   
-          $item['pre_position_time'] = $ads_videos != null && $ads_videos->ads_position == 'pre' ? $ads_pre_time  : "0";
-          $item['mid_position_time'] = $ads_videos != null  && $ads_videos->ads_position == 'mid'  ? $ads_mid_time  : "0";
-          $item['post_position_time'] =$ads_videos != null  && $ads_videos->ads_position == 'post' ? $ads_Post_time  : "0";
-          $item['ads_seen_status'] = $item->ads_status;
-          $item['ios_publish_time']    = Carbon::parse($item->publish_time)->format('Y-m-d H:i:s');
+          $item['pre_position_time']  = $ads_videos != null && $ads_videos->ads_position == 'pre' ? $ads_pre_time  : "0";
+          $item['mid_position_time']  = $ads_videos != null  && $ads_videos->ads_position == 'mid'  ? $ads_mid_time  : "0";
+          $item['post_position_time'] = $ads_videos != null  && $ads_videos->ads_position == 'post' ? $ads_Post_time  : "0";
+          $item['ads_seen_status']    = $item->ads_status;
+          $item['ios_publish_time']   = Carbon::parse($item->publish_time)->format('Y-m-d H:i:s');
 
           // Videos URL 
-          if( $item['type'] == "mp4_url"){
 
-            $item['videos_url'] =  $item->mp4_url ;
-          }
-          elseif( $item['type'] == "m3u8_url" ){
+          switch (true) {
 
-            $item['videos_url']    = $item->m3u8_url ;
-          }
-          elseif( $item['type'] == "embed" ){
+            case $item['type'] == "mp4_url":
+              $item['videos_url'] =  $item->mp4_url ;
+              break;
 
-            $item['videos_url']    = $item->embed_code ;
-          }
-          elseif( $item['type'] == null &&   pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" ){
+            case $item['type'] == "m3u8_url":
+              $item['videos_url'] =  $item->m3u8_url ;
+              break;
 
-            $item['videos_url']    = URL::to('/storage/app/public/'.$item->path.'.m3u8');
-          }
-          else{
+            case $item['type'] == "embed":
+              $item['videos_url'] =  $item->embed_code ;
+              break;
+            
+            case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+              $item['videos_url']    = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+              break;
 
-            $item['videos_url']    = null ;
+            default:
+              $item['videos_url']    = null ;
+              break;
           }
 
           return $item;
         });
 
-
-  
         $skip_time = ContinueWatching::orderBy('created_at', 'DESC')->where('user_id',$request->user_id)->where('videoid','=',$videoid)->first();
         
         if(!empty($skip_time)){
