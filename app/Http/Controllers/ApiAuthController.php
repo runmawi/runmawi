@@ -19982,4 +19982,245 @@ return response()->json($response, 200);
 
 }
 
+
+public function IOSSocialUser(Request $request) {
+  /*Parameters*/
+  $input = $request->all();
+  $username = $input['username'];
+  $email = $input['email'];
+  $user_url = $input['user_url'];
+  $login_type = $input['login_type'];//Facebook or Google
+
+
+  /*Parameters*/
+  /*Profile image move to avatar folder*/
+  if($user_url != ''){
+    $name = $username.".jpg";
+    //local site
+    //$path = $_SERVER['DOCUMENT_ROOT'].'/flicknexs/public/uploads/avatars'.$name;
+    //live site
+    $path = $_SERVER['DOCUMENT_ROOT'].'/public/uploads/avatars/'.$name;
+        $arrContextOptions=array(
+      "ssl"=>array(
+        "verify_peer"=>false,
+        "verify_peer_name"=>false,
+      ),
+    );
+    $contents = file_get_contents($user_url, false, stream_context_create($arrContextOptions));
+       file_put_contents($path, $contents);
+
+  }else{
+    $name = '';
+  }
+
+  if($login_type == 'facebook'){ //Facebook
+    // $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
+    $check_exists = User::where('email', '=', $email)->count();
+    if($check_exists > 0){//Login
+      $user_details = User::where('email', '=', $email)->get();
+      $response = array(
+        'status'      =>'true',
+        'message'     =>'Login Success',
+        'user_details'=>$user_details
+      );
+    }else{//Signup
+      $data = array(
+        'username' =>$username,
+        'email'    =>$email,
+        'user_type'=>$login_type,
+        'avatar'   =>$name,
+        'active'   => 1 ,
+        'role'     =>'registered',
+        'password' =>'null'
+      );
+
+      $user = new User;
+      $user->insert($data);
+      $user_details = User::where('username', '=', $username)->get();
+      $response = array(
+        'status'       =>'true',
+        'message'      =>'Account Created ',
+        'user_details' => $user_details
+      );
+    }
+  }
+  if($login_type == 'google'){ //Google
+    // $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
+    $check_exists = User::where('email', '=', $email)->count();
+    if($check_exists > 0) {//Login
+      $user_details = User::where('email', '=', $email)->get();
+      $response = array(
+        'status'      =>'true',
+        'message'     =>'Login Success',
+        'user_details'=>$user_details
+      );
+    }else{//Signup
+      $data = array(
+        'username' =>$username,
+        'email'    =>$email,
+        'user_type'=>$login_type,
+        'avatar'   =>$name,
+        'active'   => 1 ,
+        'role'     =>'registered',
+        'password' =>'null'
+      );
+
+      $user = new User;
+      $user->insert($data);
+      $user_details = User::where('username', '=', $username)->get();
+      $response = array(
+        'status'       =>'true',
+        'message'      =>'Account Created ',
+        'user_details' => $user_details
+      );
+    }
+  }
+
+  if($username == null || $login_type == null){
+    $response = array(
+        'status'       =>'false',
+        'message'      =>'Empty Request'
+      );
+  }
+
+  return response()->json($response, 200);
+}
+
+public function TV_login(Request $request)
+{
+
+  $settings = Setting::first();
+  $userIp = $request->user_ip;
+  $device_name = $request->device_name;
+  $email = $request->email;
+  $token = $request->token;
+  $users = User::where('email',$email)->first();
+
+
+  $email_login = array(
+    'email' => $request->get('email'),
+    'password' => $request->get('password')
+  );
+  $username_login = array(
+    'username' => $request->get('username'),
+    'password' => $request->get('password')
+  );
+  $mobile_login = array(
+    'mobile' => $request->get('mobile'),
+    'otp' => $request->get('otp'),
+    'password' => $request->get('password')
+  );
+
+
+  if(!empty($users)){
+    $user_id = $users->id;
+    $adddevice = new LoggedDevice;
+    $adddevice->user_id = $user_id;
+    $adddevice->user_ip = $userIp;
+    $adddevice->device_name = $device_name;
+    $adddevice->save();
+  }
+
+  if ( !empty($users) && Auth::attempt($email_login) || !empty($users) && Auth::attempt($username_login) || !empty($users) && Auth::attempt($mobile_login)  ){
+
+    Paystack_Andriod_UserId::truncate();
+    Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
+
+    if($settings->free_registration && !Auth::user()->stripe_active){
+
+      if(Auth::user()->role == 'registered'){
+        $user = User::find(Auth::user()->id);
+        $user->role = 'registered';
+        $user->token = $token;
+        $user->save();
+
+      }else if(Auth::user()->role == 'admin'){
+
+        $user = User::find(Auth::user()->id);
+        $user->role = 'admin';
+        $user->token = $token;
+        $user->save();
+
+      }else if(Auth::user()->role == 'subscriber'){
+        $user = User::find(Auth::user()->id);
+        $user->role = 'subscriber';
+        $user->token = $token;
+        $user->save();
+      }
+    }
+
+    if(Auth::user()->role == 'subscriber' || (Auth::user()->role == 'admin' || Auth::user()->role == 'demo') || (Auth::user()->role == 'registered') ):
+
+      $id   = Auth::user()->id;
+      $role = Auth::user()->role;
+      $username = Auth::user()->username;
+      $password = Auth::user()->password;
+      $email  = Auth::user()->email;
+      $mobile = Auth::user()->mobile;
+      $avatar = Auth::user()->avatar;
+
+      if(Auth::user()->role == 'subscriber'){
+
+        $Subscription = Subscription::where('user_id',Auth::user()->id)->orderBy('created_at', 'DESC')->first();
+        $Subscription = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+        ->where('subscriptions.user_id',Auth::user()->id)
+        ->orderBy('subscriptions.created_at', 'desc')->first();
+
+        $plans_name = $Subscription->plans_name;
+        $plan_ends_at = $Subscription->ends_at;
+
+      }else{
+        $plans_name = '';
+        $plan_ends_at = '';
+      }
+      $userdetail = User::where('id',$id)->first();
+
+      $user_details = array([
+        'user_id'=>$id,
+        'role'=>$role,
+        'username'=>$username,
+        'email'=>$email,
+        'mobile'=>$mobile,
+        'plans_name'=>$plans_name,
+        'plan_ends_at'=>$plan_ends_at,
+        'avatar'=>URL::to('/').'/public/uploads/avatars/'.$avatar
+      ] );
+
+    $redirect = ($request->get('redirect', 'false')) ? $request->get('redirect') : '/';
+    if(Auth::user()->role == 'demo' && Setting::first()->demo_mode != 1){
+      Auth::logout();
+
+      $response = array('message' => 'Sorry, demo mode has been disabled', 'note_type' => 'error');
+      return response()->json($response, 200);
+    } elseif($settings->free_registration && $settings->activation_email && Auth::user()->active == 0) {
+      Auth::logout();
+
+      $response = array('message' => 'Please make sure to activate your account in your email before logging in.', 'note_type' => 'error','status'=>'verifyemail');
+      return response()->json($response, 200);
+    } else {
+
+      $response = array('message' => 'You have been successfully logged in.', 'note_type' => 'success','status'=>'true','userdetail'=> $userdetail,
+      'plans_name'=> $plans_name,'plan_ends_at'=> $plan_ends_at,'avatar'=> URL::to('/').'/public/uploads/avatars/'.$avatar,'user_details'=> $user_details);
+      return response()->json($response, 200);
+    }
+  else:
+    $username = Auth::user()->username;
+
+    $response = array('message' => 'Uh oh, looks like you don\'t have an active subscription, please renew to gain access to all content', 'note_type' => 'error');
+    return response()->json($response, 200);
+  endif;
+
+} else {
+  $count = User::where('email', '=', $request->get('email'))->count();
+  if($count > 0){
+    $response = array('message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch');
+    return response()->json($response, 200);
+  }else{
+    $response = array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');
+    return response()->json($response, 200);
+  }
+}
+}
+
+
 }

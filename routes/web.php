@@ -223,6 +223,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('kidsModeOff', 'HomeController@kidsModeOff')->name('kidsModeOff');
     Route::get('FamilyModeOff', 'HomeController@FamilyModeOff')->name('FamilyModeOff');
     Route::post('theme-mode', 'HomeController@ThemeModeSave');
+    Route::post('admin-theme-mode', 'HomeController@AdminThemeModeSave');
     Route::get('/home', 'HomeController@index')->name('home');
 
     // Reels
@@ -2284,3 +2285,6 @@ Route::get('Ads-vast', 'AdsVastController@index');
 
 Route::get('Ads-Redirection-URL-Count', 'AdvertisementCountController@Advertisement_Redirection_URL_Count')->name('Advertisement_Redirection_URL_Count');
 Route::get('Ads-Views-Count', 'AdvertisementCountController@Advertisement_Views_Count')->name('Advertisement_Views_Count');
+
+
+Route::get('current-currency', 'AdminCurrencySettings@currentcurrency');
