@@ -174,12 +174,14 @@ header .navbar ul li:last-child { margin-right: 0; }
     border: 3px solid #ddd;
     /* padding: 10px; */
     top: -50px;
+    box-shadow: 11px 0px 79px 24px #000;
 }
 .ContentPartner-img{
     position: absolute;
     border: 3px solid #ddd;
     /* padding: 10px; */
     top: -50px;
+    box-shadow: 11px 0px 79px 24px #000;
 }
 
 #home-slider .slick-dots li.slick-active button { background: var(--iq-primary); }
