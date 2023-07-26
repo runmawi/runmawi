@@ -30,7 +30,7 @@
                                             <td> {{ $CPV_list->view_count }} </td>
                                             <td> {{ CPV_advertiser_share() }} </td>
                                             <td> {{ CPV_advertiser_share() * $CPV_list->view_count }} </td>
-                                            <td> <a href="#" target="_blank" class="iq-bg-warning">
+                                            <td> <a href="{{ route('Advertisement.Specific_Ads_Cost_Per_View_Analysis', $CPV_list->adveristment_id ) }}" target="_blank" class="iq-bg-warning">
                                                 <img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}"></a> 
                                             </td>
                                         </tr>

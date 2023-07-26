@@ -32,6 +32,9 @@ use App\AdsEvent;
 use App\User;
 use App\AdsViewCount;
 use App\AdsRedirectionURLCount;
+use App\Video;
+use App\LiveStream;
+use App\Episode;
 use DatePeriod;
 use Session;
 use Stripe;
@@ -1347,6 +1350,87 @@ class AuthController extends Controller
         } catch (\Throwable $th) {
 
             // return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function Specific_Ads_Cost_Per_Click_Analysis(Request $request,$Ads_id)
+    {
+        try {
+
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+                return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
+            }
+
+            $data = AdsRedirectionURLCount::where('adveristment_id',$Ads_id)->where('adverister_id', session('advertiser_id') )
+                            ->whereNotNull('adveristment_id')->latest()
+                            ->get()->map(function ($item) {
+                                $item['user_name'] = User::where('id', $item->user)->pluck('name')->first();
+                               
+                                if( $item->source_type == "videos" ) {
+                                    $item['source_name'] = Video::where('id', $item->source_id )->pluck('title')->first();
+                                }elseif(  $item->source_type == "livestream"  ){
+                                    $item['source_name'] = LiveStream::where('id', $item->source_id )->pluck('title')->first();
+                                }elseif(  $item->source_type == "Episode"  ){
+                                    $item['source_name'] = Episode::where('id', $item->source_id )->pluck('title')->first();
+                                }else{
+                                    $item['source_name'] = "-";
+                                }
+
+                                return $item;
+                            });
+
+
+            $response = array(
+                'settings'  =>  Setting::first() ,
+                'CPC_lists' =>  $data ,
+            );
+
+            return view('avod::Specific_Ads_CPC_Analysis', $response);
+    
+        } catch (\Throwable $th) {
+
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function Specific_Ads_Cost_Per_View_Analysis(Request $request,$Ads_id)
+    {
+        try {
+
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+                return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
+            }
+                            
+            $data = AdsViewCount::where('adveristment_id',$Ads_id)->where('adverister_id', session('advertiser_id') )
+                                ->whereNotNull('adveristment_id')->latest()
+                                ->get()->map(function ($item) {
+                                    $item['user_name'] = User::where('id', $item->user)->pluck('name')->first();
+                                   
+                                    if( $item->source_type == "videos" ) {
+                                        $item['source_name'] = Video::where('id', $item->source_id )->pluck('title')->first();
+                                    }elseif(  $item->source_type == "livestream"  ){
+                                        $item['source_name'] = LiveStream::where('id', $item->source_id )->pluck('title')->first();
+                                    }elseif(  $item->source_type == "Episode"  ){
+                                        $item['source_name'] = Episode::where('id', $item->source_id )->pluck('title')->first();
+                                    }else{
+                                        $item['source_name'] = "-";
+                                    }
+                                    return $item;
+                                });
+
+
+            $response = array(
+                'settings'  =>  Setting::first() ,
+                'CPV_lists' =>  $data ,
+            );
+
+            return view('avod::Specific_Ads_CPV_Analysis', $response);
+    
+        } catch (\Throwable $th) {
+
+            return $th->getMessage();
             return abort(404);
         }
     }
