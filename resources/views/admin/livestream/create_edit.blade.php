@@ -271,7 +271,7 @@ border-radius: 0px 4px 4px 0px;
                                         {{-- Re-Stream  --}}
                     <div class="row mt-3 d-flex ">
                         <div class="col-sm-6">
-                            <label class="m-0">Enable ReStream</label>
+                            <label class="m-0">Enable Re-Stream</label>
                             <div class="panel-body">
                                 <div class="mt-1">
                                     <label class="switch">
@@ -458,14 +458,37 @@ border-radius: 0px 4px 4px 0px;
                     </div>
 
                     <div class="row mt-3">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
+                            <label class="m-0">Enable Free Duration</label>
+                            <p class="p1">Enable / Disable Free Duration</p>
+                            <div class="panel-body">
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="free_duration_status" class="free_duration_status" id="free_duration_status" type="checkbox" >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="m-0">Free Duration</label>
+                            <p class="p1">Enter the Live Stream Free duration in (HH : MM : SS)</p>
+                            <div class="panel-body">
+                                <input class="form-control" name="free_duration" id="free_duration" value="" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
                             <label class="m-0">Duration</label>
                             <p class="p1">Enter the Live Stream duration in (HH : MM : SS)</p>
                             <div class="panel-body">
                                 <input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <label class="m-0">User Access</label>
                             <p class="p1">Who is allowed to view this Live Stream ?</p>
                             <div class="panel-body">
@@ -479,29 +502,29 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
 
-                        <div class="row" id="ppv_price">
-                            <div class="col-sm-4">
-                                <label class="m-0">PPV Price</label>
-                                <p class="p1">Apply PPV Price from Global Settings?  <input type="checkbox" id="ppv_purchase_active" /> </p>
-                                <div class="panel-body">
-                                    <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif" />
-                                    <div class="clear"></div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <label class="m-0"> IOS PPV Price</label>
-                                <p class="p1">Apply IOS PPV Price from Global Settings?</p>
-                                <div class="panel-body">
-                                    <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
-                                        <option value= "" >Select IOS PPV Price: </option>
-                                        @foreach($InappPurchase as $Inapp_Purchase)
-                                        <option value="{{ $Inapp_Purchase->product_id }}"> {{ $Inapp_Purchase->plan_price }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                    <div class="row mt-3" id="ppv_price">
+                        <div class="col-sm-6">
+                            <label class="m-0">PPV Price</label>
+                            <p class="p1">Apply PPV Price from Global Settings?  <input type="checkbox" id="ppv_purchase_active" /> </p>
+                            <div class="panel-body">
+                                <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif" />
+                                <div class="clear"></div>
                             </div>
                         </div>
+
+                        <div class="col-sm-6">
+                            <label class="m-0"> IOS PPV Price</label>
+                            <p class="p1">Apply IOS PPV Price from Global Settings?</p>
+                            <div class="panel-body">
+                                <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+                                    <option value= "" >Select IOS PPV Price: </option>
+                                    @foreach($InappPurchase as $Inapp_Purchase)
+                                    <option value="{{ $Inapp_Purchase->product_id }}"> {{ $Inapp_Purchase->plan_price }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row mt-3">
                         <div class="col-sm-4">
@@ -644,6 +667,7 @@ border-radius: 0px 4px 4px 0px;
 
         $(document).ready(function($){
             $("#duration").mask("00:00:00");
+            $("#free_duration").mask("00:00:00");
             $("#inputTag").tagsinput('items');
         });
 
