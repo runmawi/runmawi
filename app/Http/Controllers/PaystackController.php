@@ -388,12 +388,14 @@ class PaystackController extends Controller
 
         $access_code = Str::random(15);
 
+        $video_slug = Video::where('id',$video_id)->pluck('slug')->first();
+
         $data = array(
                 'amount' => $amount * 100 ,
                 'email'  => $email ,
                 'publish_key'  =>  $this->paystack_keyId,
                 'access_code'  => $access_code ,
-                'redirect_url' => URL::to('category/videos/rent-payment'),
+                'redirect_url' => URL::to('category/videos'.'/'.$video_slug),
                 'Video_id'     =>  $video_id ,
         );
         return view('Paystack.video_rent_checkout',$data);
@@ -401,7 +403,7 @@ class PaystackController extends Controller
 
     public function Paystack_Video_Rent_Paymentverify ( Request $request )
     {
-        try {
+        // try {
 
             $setting = Setting::first();  
             $ppv_hours = $setting->ppv_hours;
@@ -491,14 +493,14 @@ class PaystackController extends Controller
                 );
             }
 
-        } catch (\Exception $e) {
+        // } catch (\Exception $e) {
 
-            $response = array(
-                 "status"  => false , 
-                 "message" => $e->getMessage(), 
-            );
+        //     $response = array(
+        //          "status"  => false , 
+        //          "message" => $e->getMessage(), 
+        //     );
 
-        }
+        // }
 
         return response()->json($response, 200);
     }

@@ -4255,4 +4255,24 @@ class HomeController extends Controller
         return Theme::View('LanguageList', $data);
     }
 
+    
+    public function AdminThemeModeSave(Request $request)
+    {
+
+        if($request->input('mode') == 'true'){
+            $theme_modes = "light";
+        }
+        elseif($request->input('mode') == 'false'){
+            $theme_modes = "dark";
+        }
+
+        $theme_mode = SiteTheme::first();
+        $theme_mode->admin_theme_mode =  $theme_modes;
+        $theme_mode->update();
+
+        return $theme_modes;
+      
+    }
+
+
 }

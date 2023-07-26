@@ -601,11 +601,15 @@ Route::group(
             Route::post('add_audio_playlist', 'ApiAuthController@AddAudioPlaylist');
             Route::post('my_audio_playlist', 'ApiAuthController@MyAudioPlaylist');
             Route::post('audio_playlist', 'ApiAuthController@PlaylistAudio');
-
+            Route::post('remove_audio_playlist', 'ApiAuthController@RemoveAudioPlaylist');
+            Route::post('remove_playlist', 'ApiAuthController@Remove_Playlist');
 
             // Create Audio Playlist 
 
 
             Route::post('video_playlist', 'ApiAuthController@VideoPlaylist');
 
-    });
+            Route::post('/IOS_social_user', 'ApiAuthController@IOSSocialUser');
+            Route::post('login_tv ', 'ApiAuthController@TV_login');
+
+        });
