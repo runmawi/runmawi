@@ -26,5 +26,6 @@ if(  plans_ads_enable() == 1 ){
   else
   {
         $episode_ads = null ;
-  }
+  } 
+
 ?>
