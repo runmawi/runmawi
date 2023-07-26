@@ -19816,7 +19816,7 @@ public function AddAudioPlaylist(Request $request){
       );
     }else{
       $response = array(
-        'status'=>'true',
+        'status'=>'false',
         'message' => 'This is already in your playlist',
       );
     }
