@@ -999,7 +999,13 @@ function TotalUsers(){
 
 function UserCurrentCurrency(){
 
-    $client = new Client();
+    $allCurrency = App\CurrencySetting::first();
+    $Currency_symbol = App\Currency::where('country',Country_name())->pluck('code')->first();
+
+    $default_Currency = App\Currency::where('country',@$allCurrency->country)->pluck('code')->first();
+
+
+    $client = new GuzzleHttp\Client();
     $url = "https://api.exchangerate.host/latest";
     $params = [
         'base' => @$Currency_symbol,

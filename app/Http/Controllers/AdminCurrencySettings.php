@@ -221,4 +221,51 @@ class AdminCurrencySettings extends Controller
     }
 
     
+    public function currentcurrency()
+    {
+       
+        $allCurrency = CurrencySetting::first();
+        $Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
+
+        $default_Currency = Currency::where('country',@$allCurrency->country)->pluck('code')->first();
+
+        // https://api.exchangerate.host/latest?base=usd&symbols=USD,EUR,GBP,JPY,SGD,AUD
+        $response = \Http::get('https://api.exchangerate.host/latest', [
+            'base' => @$default_Currency,
+            'symbols' => @$allCurrency->symbol,
+        ]);
+        // echo "<pre>";
+        // print_r(  $response   );
+
+        $client = new Client();
+        $url = "https://api.exchangerate.host/latest";
+        $params = [
+            'base' => @$default_Currency,
+            'symbols' => @$allCurrency->symbol,
+        ];
+
+        $headers = [
+            'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+        ];
+        $response = $client->request('get', $url, [
+            'json' => $params,
+            'headers' => $headers,
+            'verify'  => false,
+        ]);
+
+        $responseBody = json_decode($response->getBody());
+
+        echo "<pre>";
+        print_r(  'responseBody'   );
+
+        echo "<pre>";
+        print_r(  $responseBody   );
+
+
+        echo "<pre>";
+        print_r(  UserCurrentCurrency()   );
+
+exit;
+        }
+    
 }
