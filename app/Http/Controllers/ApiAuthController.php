@@ -20199,7 +20199,7 @@ public function TV_login(Request $request)
       return response()->json($response, 200);
     } else {
 
-      $response = array('message' => 'You have been successfully logged in.', 'note_type' => 'success','status'=>'true',
+      $response = array('message' => 'You have been successfully logged in.', 'note_type' => 'success','status'=>'true','userdetail'=> $userdetail,
       'plans_name'=> $plans_name,'plan_ends_at'=> $plan_ends_at,'avatar'=> URL::to('/').'/public/uploads/avatars/'.$avatar,'user_details'=> $user_details);
       return response()->json($response, 200);
     }
