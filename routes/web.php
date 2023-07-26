@@ -2632,3 +2632,4 @@ Route::get('Ads-Views-Count', 'AdvertisementCountController@Advertisement_Views_
 
 
 Route::get('current-currency', 'AdminCurrencySettings@currentcurrency');
+Route::get('exchangeCurrency','AdminCurrencySettings@exchangeCurrency');

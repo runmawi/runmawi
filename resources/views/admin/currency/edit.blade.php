@@ -20,13 +20,13 @@
 <div class="modal-body">
 	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/currency/update') }}" method="post" enctype="multipart/form-data">
        
-                    <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+                    <div class="col-md-6 form-group {{ $errors->has('image') ? 'has-error' : '' }}">
 					<label class="p-2">Currency :</label>
                 <select class="form-control" id="country" name="country">
                     <option selected disabled="">Choose Currency</option>
                     @foreach($currency as $value)
                     <!-- <option value="{{ $value->country }}" @if(!empty($allCurrency->country) ==  $value->country ){{ 'selected' }}@endif>{{ $value->symbol .'-'. $value->currencies }}</option> -->
-					<option value="{{ $value->country }}"  {{  ($allCurrency->country == $value->country ) ? 'selected' : '' }} > {{ $value->symbol .'-'.$value->currencies.'   '.$value->country }}</option>
+					<option value="{{ $value->country }}"  {{  ($allCurrency->country == $value->country ) ? 'selected' : '' }} > {{ $value->symbol .'-'.$value->currencies.'   '.$value->country.'   '.$value->code }}</option>
 
                     @endforeach
                 </select>
