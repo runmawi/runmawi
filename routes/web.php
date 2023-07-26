@@ -2285,3 +2285,6 @@ Route::get('Ads-vast', 'AdsVastController@index');
 
 Route::get('Ads-Redirection-URL-Count', 'AdvertisementCountController@Advertisement_Redirection_URL_Count')->name('Advertisement_Redirection_URL_Count');
 Route::get('Ads-Views-Count', 'AdvertisementCountController@Advertisement_Views_Count')->name('Advertisement_Views_Count');
+
+
+Route::get('current-currency', 'AdminCurrencySettings@currentcurrency');
