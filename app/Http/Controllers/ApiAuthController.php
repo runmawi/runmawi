@@ -19802,17 +19802,24 @@ public function AddAudioPlaylist(Request $request){
 
   try {
     $Setting = Setting::first();
-
-    $AudioUserPlaylist  = new AudioUserPlaylist();
-    $AudioUserPlaylist->user_id = $request->user_id;
-    $AudioUserPlaylist->playlist_id = $request->playlist_id;
-    $AudioUserPlaylist->audio_id = $request->audio_id ;
-    $AudioUserPlaylist->save();
-
-    $response = array(
-      'status'=>'true',
-      'message' => 'Added Audio to Playlist',
-    );
+    $AudioUserPlaylist_count = AudioUserPlaylist::where('user_id',$request->user_id)
+    ->where('playlist_id',$request->playlist_id)->where('audio_id',$request->audio_id)->count();
+    if($AudioUserPlaylist_count == 0){
+      $AudioUserPlaylist  = new AudioUserPlaylist();
+      $AudioUserPlaylist->user_id = $request->user_id;
+      $AudioUserPlaylist->playlist_id = $request->playlist_id;
+      $AudioUserPlaylist->audio_id = $request->audio_id ;
+      $AudioUserPlaylist->save();
+      $response = array(
+        'status'=>'true',
+        'message' => 'Added Audio to Playlist',
+      );
+    }else{
+      $response = array(
+        'status'=>'true',
+        'message' => 'This is already in your playlist',
+      );
+    }
 
   } catch (\Throwable $th) {
     throw $th;

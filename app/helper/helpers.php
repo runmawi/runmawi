@@ -1004,7 +1004,19 @@ function UserCurrentCurrency(){
 
     $default_Currency = App\Currency::where('country',@$allCurrency->country)->pluck('code')->first();
 
+    try {
 
+        $response = \Http::get("https://api.exchangerate.host/latest?base=".$default_Currency."&symbols=".$Currency_symbol."");
+        $responseBody = json_decode($response->getBody());
+        $current_rate = $responseBody->rates->$default_Currency;
+  
+    } catch (\Throwable $th) {
+        // throw $th;
+        $current_rate = '';
+    }
+    // echo "<pre>";
+    // print_r(  $responseBody   );exit;
+    
     $client = new GuzzleHttp\Client();
     $url = "https://api.exchangerate.host/latest";
     $params = [
