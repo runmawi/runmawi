@@ -1,3 +1,11 @@
+
+<?php 
+    $user = !Auth::guest() ? Auth::User()->id : 'guest' ; 
+    $episode_id = $episode->id ; 
+    $advertisement_id = $episode->episode_ads ; 
+    $adverister_id = App\Advertisement::where('id',$advertisement_id)->pluck('advertiser_id')->first();
+?>
+
 <script>
 
    let episode_ads = <?php echo json_encode( $episode_ads ); ?> ;
@@ -16,6 +24,17 @@
                  tagUrl: episode_ads 
            }
        });
+
+             // Ads Views Count
+        player.on('adsloaded', (event) => {
+            Ads_Views_Count();
+        });
+
+            // Ads Redirection Count
+        player.on('adsclick', (event) => {
+            Ads_Redirection_URL_Count(event.timeStamp);
+        });
+
    });
 
 
@@ -34,6 +53,16 @@
 
            video.src = source;
            var player = new Plyr(video, defaultOptions);
+
+               // Ads Views Count
+            player.on('adsloaded', (event) => {
+                Ads_Views_Count();
+            });
+
+                // Ads Redirection Count
+            player.on('adsclick', (event) => {
+                Ads_Redirection_URL_Count(event.timeStamp);
+            });
        } 
        else
        {
@@ -71,6 +100,16 @@
            })
      
            var player = new Plyr(video, defaultOptions);
+
+               // Ads Views Count
+            player.on('adsloaded', (event) => {
+                Ads_Views_Count();
+            });
+
+                // Ads Redirection Count
+            player.on('adsclick', (event) => {
+                Ads_Redirection_URL_Count(event.timeStamp);
+            });
      });	
 
        hls.attachMedia(video);
@@ -90,5 +129,43 @@
            }
        }
    });
+
+   function Ads_Views_Count(){
+
+        $.ajax({
+              type:'get',
+              url:'<?= route('Advertisement_Views_Count') ?>',
+              data: {
+                        "Count" : 1 , 
+                        "source_type" : "Episode",
+                        "source_id"   : "<?php echo $episode_id ?>",
+                        "adverister_id" : "<?php echo $adverister_id ?>",
+                        "adveristment_id" : "<?php echo $advertisement_id ?>",
+                        "user" : "<?php echo $user ?>",
+                  },
+                  success:function(data) {
+                }
+          });
+    }
+
+     function Ads_Redirection_URL_Count(timestamp_time){
+
+        $.ajax({
+              type:'get',
+              url:'<?= route('Advertisement_Redirection_URL_Count') ?>',
+              data: {
+                        "Count" : 1 , 
+                        "source_type" : "Episode",
+                        "source_id"   : "<?php echo $episode_id ?>",
+                        "adverister_id" : "<?php echo $adverister_id ?>",
+                        "adveristment_id" : "<?php echo $advertisement_id ?>",
+                        "user" : "<?php echo $user ?>",
+                        "timestamp_time" : timestamp_time ,
+                  },
+                  success:function(data) {
+                }
+          });
+        }
+
 
 </script>

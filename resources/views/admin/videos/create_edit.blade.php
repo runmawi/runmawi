@@ -1042,7 +1042,7 @@ border-radius: 0px 4px 4px 0px;
 
                         {{-- Ads Category--}}
 
-                        <div class="col-sm-3 form-group mt-3">
+                        {{-- <div class="col-sm-3 form-group mt-3">
                            <label class="">Choose Pre-Ad Category</label>
                            <select class="form-control" name="pre_ads_category" id="pre_ads_category">
                               <option value=" ">Select Pre-Ad Category</option>
@@ -1070,10 +1070,10 @@ border-radius: 0px 4px 4px 0px;
                                  <option value="{{ $ad->id }}" @if( $video->post_ads_category == $ad->id ) {{ 'selected' }} @endif  > {{ ucwords($ad->name) }}</option>
                               @endforeach
                            </select>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-sm-3 form-group mt-3">
-                           <label class="">Choose Tag-url Ads Position</label>
+                        <div class="col-sm-6 form-group mt-3">
+                           <label class="">Choose the Ads Position</label>
                            <select class="form-control" name="tag_url_ads_position" id="tag_url_ads_position">
                               <option value=" ">Select the Ads Position </option>
                               <option value="pre"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
@@ -1085,7 +1085,7 @@ border-radius: 0px 4px 4px 0px;
                         
                            {{-- Ads --}}
 
-                        <div class="col-sm-3 form-group mt-3" id="pre_ads_div" >
+                        {{-- <div class="col-sm-3 form-group mt-3" id="pre_ads_div" >
                            <label class="">Choose Pre-Ad </label>
                            <select class="form-control" name="pre_ads" id="pre_ads">
                               <option value=" ">Select Pre-Ad </option>
@@ -1114,15 +1114,15 @@ border-radius: 0px 4px 4px 0px;
                                  <option value=" ">Select Post-Ad </option>
                               @endif
                            </select>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-sm-3 form-group mt-3" id="ads_tag_url_id_div" >
-                           <label class="">Choose Tag-url Ads</label>
+                        <div class="col-sm-6 form-group mt-3" id="ads_tag_url_id_div" >
+                           <label class="">Choose Advertisement</label>
                            <select class="form-control" name="ads_tag_url_id" id="ads_tag_url_id">
                               @if( $ads_tag_urls != null)
                                  <option id="" value="{{ $ads_tag_urls->id   }} " {{ 'selected' }} > {{ $ads_tag_urls->ads_name  }} </option>
                               @else
-                                 <option value=" ">Select Tag-url</option>
+                                 <option value=" ">Select the Advertisement</option>
                               @endif
                            </select>
                         </div>

@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="iq-card-body">
-                            <h2 class="text-center mb-4"> {{ ucwords('cost per click Analytics') }}</h2>
+                            <h2 class="text-center mb-4"> {{ ucwords('cost per view Analytics') }}</h2>
                             <div id="nestable" class="nested-list dd with-margins">
                                 <div class="panel panel-default ">
                                     <div class="row">
@@ -18,27 +18,27 @@
                                                     <thead>
                                                         <tr>
                                                             <th> # </th>
-                                                            <th> Ads Id </th>
-                                                            <th> Ads Name </th>
-                                                            <th> Click Count </th>
-                                                            <th> Cost Pre Click </th>
-                                                            <th> Total Cost Pre Click </th>
-                                                            <th> Action </th>
+                                                            <th> Source </th>
+                                                            {{-- <th> Source Id </th> --}}
+                                                            <th> Source Name </th>
+                                                            <th> Country </th>
+                                                            <th> City </th>
+                                                            <th> IP Address </th>
+                                                            <th> Users </th>
                                                         </tr>
                                                     </thead>
 
                                                     <tbody>
-                                                        @foreach ($CPC_lists as $key => $CPC_list )
+                                                        @foreach ($CPV_lists as $key => $CPV_list )
                                                             <tr>
                                                                 <td> {{ $key + 1 }}</td>
-                                                                <td> {{ $CPC_list->adveristment_id ?? '-' }} </td>
-                                                                <td> {{ ucfirst(App\Advertisement::where('id', $CPC_list->adveristment_id)->pluck('ads_name')->first()) ?? '-' }} </td>
-                                                                <td> {{ $CPC_list->view_count }} </td>
-                                                                <td> {{ CPC_advertiser_share() }} </td>
-                                                                <td> {{ CPC_advertiser_share() * $CPC_list->view_count }} </td>
-                                                                <td> <a href="{{ route('Advertisement.Specific_Ads_Cost_Per_Click_Analysis', $CPC_list->adveristment_id ) }}" target="_blank" class="iq-bg-warning">
-                                                                    <img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}"></a>
-                                                                </td>
+                                                                <td> {{ ucwords( $CPV_list->source_type ) ?? "-" }} </td>
+                                                                {{-- <td> {{ $CPV_list->source_id ?? "-" }} </td> --}}
+                                                                <td> {{ $CPV_list->source_name ?? "-" }} </td>
+                                                                <td> {{ $CPV_list->country  ?? "-" }} </td>
+                                                                <td> {{ $CPV_list->city ?? "-" }} </td>
+                                                                <td> {{ $CPV_list->IP_address ?? "-"}} </td>
+                                                                <td> {{ ucwords( $CPV_list->user_name  ?? "Guest" ) }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>

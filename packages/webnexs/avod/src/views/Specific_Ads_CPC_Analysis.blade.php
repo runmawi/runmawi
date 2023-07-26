@@ -18,12 +18,14 @@
                                                     <thead>
                                                         <tr>
                                                             <th> # </th>
-                                                            <th> Ads Id </th>
-                                                            <th> Ads Name </th>
-                                                            <th> Click Count </th>
-                                                            <th> Cost Pre Click </th>
-                                                            <th> Total Cost Pre Click </th>
-                                                            <th> Action </th>
+                                                            {{-- <th> Source </th> --}}
+                                                            <th> Source Id </th>
+                                                            <th> Source Name </th>
+                                                            <th> Country </th>
+                                                            <th> City </th>
+                                                            <th> IP Address </th>
+                                                            <th> TimeStamp </th>
+                                                            <th> Users </th>
                                                         </tr>
                                                     </thead>
 
@@ -31,14 +33,14 @@
                                                         @foreach ($CPC_lists as $key => $CPC_list )
                                                             <tr>
                                                                 <td> {{ $key + 1 }}</td>
-                                                                <td> {{ $CPC_list->adveristment_id ?? '-' }} </td>
-                                                                <td> {{ ucfirst(App\Advertisement::where('id', $CPC_list->adveristment_id)->pluck('ads_name')->first()) ?? '-' }} </td>
-                                                                <td> {{ $CPC_list->view_count }} </td>
-                                                                <td> {{ CPC_advertiser_share() }} </td>
-                                                                <td> {{ CPC_advertiser_share() * $CPC_list->view_count }} </td>
-                                                                <td> <a href="{{ route('Advertisement.Specific_Ads_Cost_Per_Click_Analysis', $CPC_list->adveristment_id ) }}" target="_blank" class="iq-bg-warning">
-                                                                    <img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}"></a>
-                                                                </td>
+                                                                <td> {{ ucwords( $CPC_list->source_type ) ?? "-" }} </td>
+                                                                {{-- <td> {{ $CPC_list->source_id ?? "-" }} </td> --}}
+                                                                <td> {{ $CPC_list->source_name ?? "-" }} </td>
+                                                                <td> {{ $CPC_list->country  ?? "-" }} </td>
+                                                                <td> {{ $CPC_list->city ?? "-" }} </td>
+                                                                <td> {{ $CPC_list->IP_address ?? "-"}} </td>
+                                                                <td> {{ gmdate( 'H:i:s',$CPC_list->timestamp_time) ?? "-" }} </td>
+                                                                <td> {{ ucwords( $CPC_list->user_name  ?? "Guest" ) }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
