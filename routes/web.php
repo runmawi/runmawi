@@ -223,6 +223,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('kidsModeOff', 'HomeController@kidsModeOff')->name('kidsModeOff');
     Route::get('FamilyModeOff', 'HomeController@FamilyModeOff')->name('FamilyModeOff');
     Route::post('theme-mode', 'HomeController@ThemeModeSave');
+    Route::post('admin-theme-mode', 'HomeController@AdminThemeModeSave');
     Route::get('/home', 'HomeController@index')->name('home');
 
     // Reels
@@ -383,6 +384,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store');
     Route::post('purchase-video', 'PaymentController@purchaseVideo');
+    Route::post('/purchased-audio-check', 'PaymentController@purchased_audio_check')->name('purchased_audio_check');
     Route::post('purchase-audio', 'PaymentController@purchaseAudio');
     Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');
     Route::post('player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');
@@ -2283,3 +2285,6 @@ Route::get('Ads-vast', 'AdsVastController@index');
 
 Route::get('Ads-Redirection-URL-Count', 'AdvertisementCountController@Advertisement_Redirection_URL_Count')->name('Advertisement_Redirection_URL_Count');
 Route::get('Ads-Views-Count', 'AdvertisementCountController@Advertisement_Views_Count')->name('Advertisement_Views_Count');
+
+
+Route::get('current-currency', 'AdminCurrencySettings@currentcurrency');

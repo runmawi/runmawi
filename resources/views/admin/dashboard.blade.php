@@ -50,6 +50,20 @@
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
+                                       <div class="iq-user-box "><p class="">{{ TotalUsers() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total  
+                                          User's
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <!-- <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
                                        <div class="iq-user-box "><p class="">{{ TotalSubscribercount() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total  
@@ -59,7 +73,7 @@
                                     </div>
                                  </div>
                               </div>
-                           </div>
+                           </div> -->
                            <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
                               <div class="">
                                  <div class="iq-card-body">
@@ -92,12 +106,39 @@
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
+                                       <div class="iq-user-box "><p class="">{{ TotalRevenue() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total 
+                                          Revenue
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
+                                       <div class="iq-user-box "><p class="">{{ TotalMonthlyRevenue() }}</p></div>
+                                       <div class="media-body text-white">
+                                          <p class="mb-0 font-size-14 line-height"> Total 
+                                          Monthly Revenue
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
+                              <div class="">
+                                 <div class="iq-card-body">
+                                    <div class="media align-items-center">
                                        <div class="iq-user-box"><p class="">{{  $visitor }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">  Total
                                           Visitor's
                                           </p>
-                                       <!-- <h5 class=" mb-0">{{  $visitor }} </h5> -->
                                        </div>
                                     </div>
                                  </div>

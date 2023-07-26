@@ -522,7 +522,19 @@ class ThemeAudioController extends Controller{
             }else{
                 $json[] = array('title' => null, 'mp3'   => null);
             }
+            $first_album_access = $album_audios->first() ? $album_audios->first()->access : null ;
 
+            // dd($first_album_access);
+            if(!Auth::guest()){
+                if($first_album_access == 'ppv' ){
+                    $ppv_status = PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',$album_audios->first() ? $album_audios->first()->id : null)->count() ;
+                }else{
+                    $ppv_status = 0 ;
+                }
+            }else{
+                $ppv_status = 0 ;
+            }
+            // dd($ppv_status);
             $data = array(
                 'audioppv' => $audioppv,
                 'album' => $album,
@@ -533,13 +545,17 @@ class ThemeAudioController extends Controller{
                 'first_album_mp3_url' => $album_audios->first() ? $album_audios->first()->mp3_url : null ,
                 'first_album_title' => $album_audios->first() ? $album_audios->first()->title : null ,
                 'first_audio_image' => $album_audios->first() ? $album_audios->first()->image : null ,
+                'first_album_access' => $album_audios->first() ? $album_audios->first()->access : null ,
+                'ppv_status' => $ppv_status ,
+                'first_album_id' => $album_audios->first() ? $album_audios->first()->id : null ,
+                'first_album_ppv_price' => $album_audios->first() ? $album_audios->first()->ppv_price : null ,
                 'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
                 'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
             );
             
-            
+            // dd( $data);
             return Theme::view('albums', $data);
 
         } catch (\Throwable $th) {

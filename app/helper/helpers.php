@@ -956,4 +956,73 @@ function tv_image_live_validation_status()
    $tv_image_live_validation_status = App\CompressImage::pluck('tv_image_live_validation')->first() ? App\CompressImage::pluck('tv_image_live_validation')->first() : '0' ;
    return $tv_image_live_validation_status ;  
 }
+
+
+function CPV_advertiser_share()    // Cost Pre View - advertiser
+{
+    $CPV_advertiser_share = App\Setting::pluck('cpv_advertiser')->first();
+    return  $CPV_advertiser_share;
+}
+
+function CPC_advertiser_share()   // Cost Pre Click - advertiser
+{
+    $CPC_advertiser_share = App\Setting::pluck('cpc_advertiser')->first();
+    return  $CPC_advertiser_share;
+}
+
+function TotalRevenue(){
+
+    $Total_PPV_Revenue = App\PpvPurchase::sum('total_amount');
+    $Total_Subscription_Revenue = App\Subscription::sum('price');
+    $Total_Revenue = $Total_PPV_Revenue + $Total_Subscription_Revenue;
+
+    return  $Total_Revenue; 
+}
+
+
+function TotalMonthlyRevenue(){
+
+    $Month_PPV_Revenue = App\PpvPurchase::whereMonth('created_at', Carbon\Carbon::now()->month)->sum('total_amount');
+    $Month_Subscription_Revenue = App\Subscription::whereMonth('created_at', Carbon\Carbon::now()->month)->sum('price');
+    $Total_Monthly_Revenue = $Month_PPV_Revenue + $Month_Subscription_Revenue;
+
+    return  $Total_Monthly_Revenue; 
+}
    
+function TotalUsers(){
+
+    $TotalUsers = App\User::count();    
+    return  $TotalUsers; 
+}
+
+
+
+function UserCurrentCurrency(){
+
+    $allCurrency = App\CurrencySetting::first();
+    $Currency_symbol = App\Currency::where('country',Country_name())->pluck('code')->first();
+
+    $default_Currency = App\Currency::where('country',@$allCurrency->country)->pluck('code')->first();
+
+
+    $client = new GuzzleHttp\Client();
+    $url = "https://api.exchangerate.host/latest";
+    $params = [
+        'base' => @$Currency_symbol,
+        'symbols' => @$allCurrency->symbol,
+    ];
+
+    $headers = [
+        'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+    ];
+    $response = $client->request('get', $url, [
+        'json' => $params,
+        'headers' => $headers,
+        'verify'  => false,
+    ]);
+
+    $responseBody = json_decode($response->getBody());
+    
+    return  $responseBody; 
+
+}

@@ -23,6 +23,10 @@ if (!empty($data['password_hash'])) {
    $user_package =    DB::table('users')->where('id', 1)->first();
    $package = $user_package->package;
    $test = 1;
+
+   $theme_mode = App\SiteTheme::pluck('admin_theme_mode')->first();
+   $theme = App\SiteTheme::first();
+   // dd($theme_mode);
    ?>
 <input type="hidden" id="session" value="session">
 <?php if($request_url != "filemanager") { ?>
@@ -121,17 +125,19 @@ if (!empty($data['password_hash'])) {
     body.dark .iq-footer{background-color: #292c35;border-top: 1px solid #000;} /* #9b59b6 */
    /* #9b59b6 */
     body.dark {background-color: #292c35;} /* #9b59b6 */
+    body.dark table.dataTable tbody tr{background-color: #292c35;color: #fff;} /* #9b59b6 */
     body.dark .tab-content{background-color: #292c35;} /* #9b59b6 */
     body.dark .iq-card{background-color: #000;} /* #9b59b6 */
     body.dark .iq-top-navbar {background-color: #292c35;border-bottom: 1px solid #000;} /* #9b59b6 */
     body.dark .iq-sidebar {background-color: #292c35;border-right: 1px solid #000;} /* #9b59b6 */
     body.dark .iq-menu li a span{color: #fff;} /* #9b59b6 */
-    body.dark h1,h2,h3,h4,h5,h6{color: #fff;}
+    /*body.dark h1,h2,h3,h4,h5,h6{color: #fff;}*/
     body.dark label{color: #fff;}
     body.dark .iq-submenu li>a{color: #fff;}
     body.dark #optionradio{color: #fff;}
     body.dark .dropzone .dz-message .dz-button{color: #fff;}
     body.dark th{color: #fff;}
+    body.dark h4{color: #fff;}
     body.dark .upload-ui{color: #000;}
     body.dark div.dataTables_wrapper div.dataTables_info{color: #fff!important;}
     body.dark .line{color: #fff;}
@@ -149,6 +155,9 @@ body.dark h1, body.dark .support a {color: #fff;}
   opacity: 0;
   position: absolute;
 }
+    .list-user-action{
+        display: flex;
+    }
 
 .checkbox-label {
   background-color: #111;
@@ -1597,13 +1606,13 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                                          <div class="d-flex justify-content-between align-items-center">
                                         <h5 class="mb-0 text-white line-height">Hello <?php echo Auth::user()->name; ?> </h5>
                                             <div>
-  <input type="checkbox" class="checkbox" id="checkbox">
-  <label for="checkbox" class="checkbox-label">
-    <i class="fas fa-moon"></i>
-    <i class="fas fa-sun"></i>
-    <span class="ball"></span>
-  </label>
-</div>
+         <input type="checkbox" class="checkbox" id="checkbox" value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+               <label for="checkbox" class="checkbox-label">
+                  <i class="fas fa-moon"></i>
+                  <i class="fas fa-sun"></i>
+                  <span class="ball"></span>
+               </label>
+               </div>
                                          </div>
                                         <span class="text-white font-size-12">Available</span>
                                      </div>
@@ -1670,7 +1679,43 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           <!-- TOP Nav Bar END -->
         
         </div>
-        
+          
+      <script>
+         $("#checkbox").click(function(){
+         
+            var theme_mode = $("#checkbox").prop("checked");
+         
+            $.ajax({
+            url: '<?php echo URL::to("admin-theme-mode") ;?>',
+            method: 'post',
+            data: 
+               {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  mode: theme_mode 
+               },
+               success: (response) => {
+                  console.log(response);
+               },
+            })
+         });
+         
+      </script>
+
+      <!-- Dark Mode & Light Mode  -->
+      <script>
+         let theme_modes = $("#checkbox").val();
+         
+         $(document).ready(function(){
+         
+            if( theme_modes == 'dark' ){
+               document.body.classList.toggle("dark")
+               // const checkbox = document.getElementById("checkbox")
+               //    checkbox.addEventListener("change", () => {
+               //    document.body.classList.toggle("dark")
+               // })
+            }
+         });
+      </script>
         <!--<hr />-->
     
         <div id="main-admin-content">

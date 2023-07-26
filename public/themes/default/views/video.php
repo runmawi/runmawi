@@ -394,7 +394,9 @@ hr {
 
 $package = App\User::where('id',1)->first();
 $pack = $package->package;
-if(empty($new_date)){
+
+if(empty($new_date) || Auth::user()->role == 'admin'){
+//   dd($video_access);
 
 if(!Auth::guest()) {
 if( !empty($ppv_video_play) || $video_access == 'free' || Auth::user()->role == 'registered' || 
@@ -2510,9 +2512,9 @@ $artists = [];
                     <?php
                     
                     if (plans_ads_enable() == 1) {
-                        include 'AdsvideoPre.php';
-                        include 'AdsvideoMid.php';
-                        include 'AdsvideoPost.php';
+                        // include 'AdsvideoPre.php';
+                        // include 'AdsvideoMid.php';
+                        // include 'AdsvideoPost.php';
                     }
                     
                     ?>

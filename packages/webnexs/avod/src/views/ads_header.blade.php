@@ -450,8 +450,8 @@
                             <a href="#Ads" class="iq-waves-effect collapsed" data-toggle="collapse"  aria-expanded="false"><img class="" src="{{  URL::to('/assets/img/icon/anay.svg') }}" height="40" width="40"><span>Ads Analytics </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                            
                             <ul id="Ads" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                              <li><a href="{{ URL::to('advertiser/list_total_cpc') }}" class="iq-waves-effect"><span>CPC</span></a></li>
-                              <li><a href="{{ URL::to('advertiser/list_total_cpv') }}" class="iq-waves-effect"><span>CPV</span></a></li>
+                              <li><a href="{{ route('Advertisement.Cost_Per_Click_Analysis') }}" class="iq-waves-effect"><span>CPC</span></a></li>
+                              <li><a href="{{ route('Advertisement.Cost_Per_View_Analysis') }}" class="iq-waves-effect"><span>CPV</span></a></li>
                             </ul>
                         </li>
 

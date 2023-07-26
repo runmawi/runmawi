@@ -214,11 +214,17 @@ if (!empty($request_url)) { ?>
            </div>
    <?php endif; ?>
    </div>
-
+   <link rel="stylesheet" href="https://unpkg.com/plyr@3/dist/plyr.css">
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6,Array.prototype.includes,CustomEvent,Object.entries,Object.values,URL"></script>
+<script src="https://unpkg.com/plyr@3"></script>
+<script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+ <script  src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
+ <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
 <script>
-    var type = $('#video_type').val();
+    var type = $('#videotype').val();
     var request_url = $('#request_url').val();
-    var video_video = $('#video_video').val();
+    var video_video = $('#videovideo').val();
     var hls = $('#hls').val();
 
                    
@@ -257,11 +263,12 @@ if (!empty($request_url)) { ?>
     // Normal MP4 URL Script
     // else if (type == ""){
         else{
+            alert('type');
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const video = document.querySelector("video");
-            const source = video.getElementsByTagName("source")[0].src;
-
+        // document.addEventListener("DOMContentLoaded", () => {
+            const video_playlist_player = document.querySelector("#video_playlist_player");
+            const source = video_playlist_player.getElementsByTagName("source")[0].src;
+                alert(source);
             const defaultOptions = {};
 
             if (!Hls.isSupported()) {
@@ -271,8 +278,8 @@ if (!empty($request_url)) { ?>
                     tagUrl: video_tag_url
                 }
 
-                video.src = source;
-                var player = new Plyr(video, defaultOptions);
+                video_playlist_player.src = source;
+                var player = new Plyr(video_playlist_player, defaultOptions);
             } else {
                 const hls = new Hls();
                 hls.loadSource(source);
@@ -304,11 +311,11 @@ if (!empty($request_url)) { ?>
                             span.innerHTML = `AUTO`
                         }
                     })
-                    var player = new Plyr(video, defaultOptions);
+                    var player = new Plyr(video_playlist_player, defaultOptions);
 
                 });
 
-                hls.attachMedia(video);
+                hls.attachMedia(video_playlist_player);
                 window.hls = hls;
             }
 
@@ -325,7 +332,7 @@ if (!empty($request_url)) { ?>
                     });
                 }
             }
-        });
+        // });
 
 
     }
