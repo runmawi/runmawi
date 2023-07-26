@@ -610,5 +610,6 @@ Route::group(
             Route::post('video_playlist', 'ApiAuthController@VideoPlaylist');
 
             Route::post('/IOS_social_user', 'ApiAuthController@IOSSocialUser');
+            Route::post('login_tv ', 'ApiAuthController@TV_login');
 
         });
