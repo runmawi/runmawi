@@ -324,7 +324,7 @@ Avatar Size
 ------------------------------------------------*/
 .avatar-35 { height: 35px; width: 35px; min-width: 35px; line-height: 35px; }
 .avatar-30 { height: 30px; width: 30px; min-width: 30px; line-height: 30px; }
-.avatar-40 { height: 40px; width: 40px; min-width: 40px; line-height: 40px; }
+.avatar-40 { /*height: 40px;*/ width: 40px; min-width: 40px; line-height: 40px; }
 .avatar-45 { height: 45px; width: 45px; min-width: 45px; line-height: 45px; }
 .avatar-50 { height: 50px; width: 50px; min-width: 50px; line-height: 50px; }
 .avatar-55 { height: 55px; width: 55px; min-width: 55px; line-height: 55px; }
