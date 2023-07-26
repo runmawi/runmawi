@@ -19879,7 +19879,11 @@ public function PlaylistAudio(Request $request){
     Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
    ->where('audio_user_playlist.user_id',$request->user_id)
    ->where('audio_user_playlist.playlist_id',$request->playlist_id)
-   ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
+   ->orderBy('audio_user_playlist.created_at', 'desc')->get()->map(function ($item) {
+    $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+    $item['source'] = 'audio';
+    return $item;
+  });
 
     $response = array(
       'status'=>'true',
