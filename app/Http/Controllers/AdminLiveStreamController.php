@@ -13,6 +13,7 @@ use Intervention\Image\Filters\DemoFilter;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\File; 
+use Carbon\Carbon;
 use App\User as User;
 use \Redirect as Redirect;
 use App\LiveStream as LiveStream;
@@ -547,6 +548,11 @@ class AdminLiveStreamController extends Controller
             $movie->enable_restream      = $data['enable_restream'] ? '1' : '0' ;
         }
 
+        if (isset($request->free_duration)) {
+            $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
+            $movie->free_duration = $time_seconds;
+        }
+
         $movie->title =$data['title'];
         $movie->embed_url =$embed_url;
         $movie->m3u_url =$data['m3u_url'];
@@ -574,6 +580,7 @@ class AdminLiveStreamController extends Controller
         $movie->ads_position = $request->ads_position;
         $movie->live_ads = $request->live_ads;
         $movie->acc_audio_url  = $request->acc_audio_url;
+        $movie->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
         $movie->save();
 
         $shortcodes = $request['short_code'];
@@ -1058,6 +1065,11 @@ class AdminLiveStreamController extends Controller
             $video->enable_restream      = $data['enable_restream'] ? '1' : '0' ;
         }
 
+        if (isset($request->free_duration)) {
+            $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
+            $video->free_duration = $time_seconds;
+        }
+
         $video->rating = $rating;
         $video->banner = $banner;
         $video->status = $status;
@@ -1078,6 +1090,7 @@ class AdminLiveStreamController extends Controller
         $video->ads_position = $request->ads_position;
         $video->live_ads     = $request->live_ads;
         $video->acc_audio_url  = $request->acc_audio_url;
+        $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
         $video->save();
 
         if(!empty($data['video_category_id'])){
