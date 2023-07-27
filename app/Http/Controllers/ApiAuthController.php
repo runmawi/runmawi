@@ -19887,7 +19887,9 @@ public function PlaylistAudio(Request $request){
 
     $response = array(
       'status'=>'true',
+      'playlist_name' => MyPlaylist::where('id',$request->playlist_id)->where('user_id',$request->user_id)->pluck('title')->first(),
       'playlist_audio' => $playlist_audio,
+      'MyPlaylist' => $MyPlaylist,
     );
 
   } catch (\Throwable $th) {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6bfcd03209c00abdac309e9e572a506c",
+    "content-hash": "729405c1e306a1a57188a3d07bafd13f",
     "packages": [
         {
             "name": "acaronlex/laravel-calendar",
@@ -329,23 +329,23 @@
         },
         {
             "name": "amrshawky/laravel-currency",
-            "version": "5.0.0",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amrshawky/laravel-currency.git",
-                "reference": "34df93d1bc19758fe8bc2be63a0fc1580cb2b3bd"
+                "reference": "a6ab6c4f65b58b4a89e2f467e91cc139e59c4df7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amrshawky/laravel-currency/zipball/34df93d1bc19758fe8bc2be63a0fc1580cb2b3bd",
-                "reference": "34df93d1bc19758fe8bc2be63a0fc1580cb2b3bd",
+                "url": "https://api.github.com/repos/amrshawky/laravel-currency/zipball/a6ab6c4f65b58b4a89e2f467e91cc139e59c4df7",
+                "reference": "a6ab6c4f65b58b4a89e2f467e91cc139e59c4df7",
                 "shasum": ""
             },
             "require": {
                 "amrshawky/currency": "^1.0",
                 "ext-json": "*",
                 "guzzlehttp/guzzle": ">=6.0",
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
                 "php": ">=7.2"
             },
             "require-dev": {
@@ -386,7 +386,7 @@
             ],
             "support": {
                 "issues": "https://github.com/amrshawky/laravel-currency/issues",
-                "source": "https://github.com/amrshawky/laravel-currency/tree/5.0.0"
+                "source": "https://github.com/amrshawky/laravel-currency/tree/6.0.0"
             },
             "funding": [
                 {
@@ -394,7 +394,7 @@
                     "type": "ko_fi"
                 }
             ],
-            "time": "2022-02-08T19:26:13+00:00"
+            "time": "2023-02-17T18:40:31+00:00"
         },
         {
             "name": "anhskohbo/no-captcha",
