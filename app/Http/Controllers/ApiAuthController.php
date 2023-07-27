@@ -8113,12 +8113,20 @@ public function Adstatus_upate(Request $request)
       return $item;
     });
 
+    $audio_banner = Audio::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+      $item['source'] = "audio_slider";
+      return $item;
+    });
+
     $response = array(
       'status' => 'true',
       'sliders' => $sliders,
       'video_banner' => $banners,
       'live_banner'  => $live_banner,
       'series_banner' => $series_banner,
+      'audio_banner' => $audio_banner,
     );
     return response()->json($response, 200);
   }
