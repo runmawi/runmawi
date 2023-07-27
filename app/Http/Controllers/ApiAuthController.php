@@ -13471,7 +13471,6 @@ public function QRCodeMobileLogout(Request $request)
 
   
   private static function All_Homepage_my_playlist( $user_id ){
-
     $my_playlist_status = MobileHomeSetting::pluck('my_playlist')->first();
 
       if( $my_playlist_status == null || $my_playlist_status == 0 ): 
@@ -13479,7 +13478,8 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Series Genre status) is turned off in the admin panel
       else:
 
-          $data =  MyPlaylist::where('user_id',$$user_id)->get();
+          $data =  MyPlaylist::where('user_id',$user_id)->get();
+
       endif;
    
     return $data;
@@ -13746,8 +13746,8 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
         $data = AudioCategory::query()->latest()->limit(30)->get()->map(function ($item) {
-              $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
-              $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
+              $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+              $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image) ;
               $item['description'] = null ;
               $item['source']    = "Audios";
             return $item;
@@ -13783,8 +13783,8 @@ public function QRCodeMobileLogout(Request $request)
       
           $data->each(function ($category) {
               $category->category_audios->transform(function ($item) {
-                  $item['image_url'] = URL::to('public/uploads/audios/'.$item->image);
-                  $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
+                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+                  $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image) ;
                   $item['description'] = $item->description ;
                   $item['source']    = "Audios";
                   $item['source_Name'] = "category_audios";
