@@ -214,6 +214,7 @@ class AdminCurrencySettings extends Controller
                    'currency' => $currency , 
                    'allCurrency' => $allCurrency,
                    'current_rate' => $current_rate,
+                   'default_Currency' => $default_Currency,
 
          );
         return view('admin.currency.edit',$data);
