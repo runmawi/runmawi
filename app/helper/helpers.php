@@ -1038,3 +1038,17 @@ function UserCurrentCurrency(){
     return  $responseBody; 
 
 }
+
+function CurrencyConvert(){
+
+        $from = 'INR'; 
+        $to = 'USD';
+        $amount = 200;
+    $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
+    ->from($from)
+    ->to($to)
+    ->amount($amount)
+    ->get();  
+
+    return  $Currency_Converter; 
+}

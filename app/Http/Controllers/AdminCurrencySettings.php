@@ -31,6 +31,7 @@ use GuzzleHttp\Client;
 use AshAllenDesign\LaravelExchangeRates\ExchangeRate;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use carbon\Carbon;
+use AmrShawky\LaravelCurrency\Facade\Currency_Converter;
 
 class AdminCurrencySettings extends Controller
 {
@@ -226,7 +227,6 @@ class AdminCurrencySettings extends Controller
             $all_current_rate = '';
         }
 
-        // dd(  $all_current_rate   );
         
          $data = array(
                    'currency' => $currency , 
