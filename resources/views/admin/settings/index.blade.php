@@ -1106,6 +1106,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="panel-body mt-3" style="display: block;">
                             <label class="panel-title">Discount %:</label>
                             <div class="form-group add-profile-pic checkbox">
+                                <input type="text" class="form-control">
                                 <input type="text" class="form-control" @if(isset($settings->discount_percentage))
                                 value="
                                 <?=$settings->discount_percentage;?>"@endif placeholder="Discount %:"
