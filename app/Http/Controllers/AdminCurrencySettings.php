@@ -28,6 +28,10 @@ use App\CurrencySetting;
 use App\Setting;
 use DB;
 use GuzzleHttp\Client;
+use AshAllenDesign\LaravelExchangeRates\ExchangeRate;
+use Guzzle\Http\Exception\ClientErrorResponseException;
+use carbon\Carbon;
+use AmrShawky\LaravelCurrency\Facade\Currency_Converter;
 
 class AdminCurrencySettings extends Controller
 {
@@ -173,39 +177,63 @@ class AdminCurrencySettings extends Controller
 
         $default_Currency = Currency::where('country',@$allCurrency->country)->pluck('code')->first();
 
-        // https://api.exchangerate.host/latest?base=usd&symbols=USD,EUR,GBP,JPY,SGD,AUD
-        $response = \Http::get('https://api.exchangerate.host/latest', [
-            'base' => @$default_Currency,
-            'symbols' => @$allCurrency->symbol,
-        ]);
-        // dd(  $response   );
+         try {
 
-        $client = new Client();
-        $url = "https://api.exchangerate.host/latest";
-        $params = [
-            'base' => @$default_Currency,
-            'symbols' => @$allCurrency->symbol,
-        ];
+            $response = \Http::get("https://api.exchangerate.host/latest?base=".$default_Currency."&symbols=".$default_Currency."");
+            $responseBody = json_decode($response->getBody());
+            $current_rate = $responseBody->rates->$default_Currency;
+      
+        } catch (\Throwable $th) {
+            // throw $th;
+            $current_rate = '';
+        }
 
-        $headers = [
-            'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-        ];
-        $response = $client->request('get', $url, [
-            'json' => $params,
-            'headers' => $headers,
-            'verify'  => false,
-        ]);
+        // $client = new Client();
+        // $url = "https://api.exchangerate.host/latest";
+        // $params = [
+        //     'base' => @$default_Currency,
+        //     'symbols' => @$allCurrency->symbol,
+        // ];
 
-        $responseBody = json_decode($response->getBody());
+        // $headers = [
+        //     'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+        // ];
+        // $response = $client->request('get', $url, [
+        //     'json' => $params,
+        //     'headers' => $headers,
+        //     'verify'  => false,
+        // ]);
+
+        // $responseBody = json_decode($response->getBody());
         // $responseBody->rates->$Currency_symbol
         // dd(  $responseBody->rates->$default_Currency );
         // ->NGN 876.389432 INR
          $currency = Currency::get();
+
+         
+         try {
+
+            $response = \Http::get("https://api.exchangerate.host/latest?base=".$default_Currency."");
+            $responseBody = json_decode($response->getBody());
+            $all_current_rate = $responseBody->rates;
+
+            // foreach($all_current_rate as $key => $value){
+            //     dd(  $key   );
+
+            // }
+      
+        } catch (\Throwable $th) {
+            // throw $th;
+            $all_current_rate = '';
+        }
+
         
          $data = array(
                    'currency' => $currency , 
-                   'allCurrency' => $allCurrency        	
-
+                   'allCurrency' => $allCurrency,
+                   'current_rate' => $current_rate,
+                   'default_Currency' => $default_Currency,
+                   'all_current_rate' => $all_current_rate,
          );
         return view('admin.currency.edit',$data);
         }
@@ -229,19 +257,18 @@ class AdminCurrencySettings extends Controller
 
         $default_Currency = Currency::where('country',@$allCurrency->country)->pluck('code')->first();
 
-        // https://api.exchangerate.host/latest?base=usd&symbols=USD,EUR,GBP,JPY,SGD,AUD
-        $response = \Http::get('https://api.exchangerate.host/latest', [
-            'base' => @$default_Currency,
-            'symbols' => @$allCurrency->symbol,
-        ]);
-        // echo "<pre>";
-        // print_r(  $response   );
+        // 'https://api.exchangerate.host/latest?base=usd&symbols=USD,EUR,GBP,JPY,SGD,AUD';
+        $response = \Http::get("https://api.exchangerate.host/latest?base=".$default_Currency."&symbols=".$default_Currency."");
+        $responseBody = json_decode($response->getBody());
+    
+        echo "<pre>";
+        print_r(  $responseBody   );exit;
 
         $client = new Client();
         $url = "https://api.exchangerate.host/latest";
         $params = [
             'base' => @$default_Currency,
-            'symbols' => @$allCurrency->symbol,
+            'symbols' => @$default_Currency,
         ];
 
         $headers = [
@@ -262,10 +289,42 @@ class AdminCurrencySettings extends Controller
         print_r(  $responseBody   );
 
 
-        echo "<pre>";
-        print_r(  UserCurrentCurrency()   );
+        // echo "<pre>";
+        // print_r(  UserCurrentCurrency()   );
 
 exit;
         }
+        public function exchangeCurrency() {
+         
+            $allCurrency = CurrencySetting::first();
+            $Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
     
+            $default_Currency = Currency::where('country',@$allCurrency->country)->pluck('code')->first();
+    
+            $amount = (2)?(2):(1);
+       
+            $apikey = 'd1ded944220ca6b0c442';
+       
+            $from_Currency = 'INR';
+            $to_Currency = 'USD';
+            $query =  "{$from_Currency}_{$to_Currency}";
+       
+            // change to the free URL if you're using the free version
+            $json = file_get_contents("https://free.currencyconverterapi.com/api/v5/convert?q={$query}&compact=y&apiKey={$apikey}");
+       
+            $obj = json_decode($json, true);
+             
+            $val = $obj["$query"];
+       
+            $total = $val['val'] * 1;
+       
+            $formatValue = number_format($total, 2, '.', '');
+             
+            $data = "$amount $from_Currency = $to_Currency $formatValue";
+       
+            echo $data; die;
+       
+       
+           
+         }
 }

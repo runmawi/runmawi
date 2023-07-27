@@ -8113,12 +8113,20 @@ public function Adstatus_upate(Request $request)
       return $item;
     });
 
+    $audio_banner = Audio::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+      $item['source'] = "audio_slider";
+      return $item;
+    });
+
     $response = array(
       'status' => 'true',
       'sliders' => $sliders,
       'video_banner' => $banners,
       'live_banner'  => $live_banner,
       'series_banner' => $series_banner,
+      'audio_banner' => $audio_banner,
     );
     return response()->json($response, 200);
   }
@@ -13471,7 +13479,6 @@ public function QRCodeMobileLogout(Request $request)
 
   
   private static function All_Homepage_my_playlist( $user_id ){
-
     $my_playlist_status = MobileHomeSetting::pluck('my_playlist')->first();
 
       if( $my_playlist_status == null || $my_playlist_status == 0 ): 
@@ -13479,7 +13486,8 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Series Genre status) is turned off in the admin panel
       else:
 
-          $data =  MyPlaylist::where('user_id',$$user_id)->get();
+          $data =  MyPlaylist::where('user_id',$user_id)->get();
+
       endif;
    
     return $data;
@@ -13746,8 +13754,8 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
         $data = AudioCategory::query()->latest()->limit(30)->get()->map(function ($item) {
-              $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
-              $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
+              $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+              $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image) ;
               $item['description'] = null ;
               $item['source']    = "Audios";
             return $item;
@@ -13783,8 +13791,8 @@ public function QRCodeMobileLogout(Request $request)
       
           $data->each(function ($category) {
               $category->category_audios->transform(function ($item) {
-                  $item['image_url'] = URL::to('public/uploads/audios/'.$item->image);
-                  $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
+                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+                  $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image) ;
                   $item['description'] = $item->description ;
                   $item['source']    = "Audios";
                   $item['source_Name'] = "category_audios";
@@ -19802,17 +19810,24 @@ public function AddAudioPlaylist(Request $request){
 
   try {
     $Setting = Setting::first();
-
-    $AudioUserPlaylist  = new AudioUserPlaylist();
-    $AudioUserPlaylist->user_id = $request->user_id;
-    $AudioUserPlaylist->playlist_id = $request->playlist_id;
-    $AudioUserPlaylist->audio_id = $request->audio_id ;
-    $AudioUserPlaylist->save();
-
-    $response = array(
-      'status'=>'true',
-      'message' => 'Added Audio to Playlist',
-    );
+    $AudioUserPlaylist_count = AudioUserPlaylist::where('user_id',$request->user_id)
+    ->where('playlist_id',$request->playlist_id)->where('audio_id',$request->audio_id)->count();
+    if($AudioUserPlaylist_count == 0){
+      $AudioUserPlaylist  = new AudioUserPlaylist();
+      $AudioUserPlaylist->user_id = $request->user_id;
+      $AudioUserPlaylist->playlist_id = $request->playlist_id;
+      $AudioUserPlaylist->audio_id = $request->audio_id ;
+      $AudioUserPlaylist->save();
+      $response = array(
+        'status'=>'true',
+        'message' => 'Added Audio to Playlist',
+      );
+    }else{
+      $response = array(
+        'status'=>'false',
+        'message' => 'This is already in your playlist',
+      );
+    }
 
   } catch (\Throwable $th) {
     throw $th;
@@ -19872,11 +19887,17 @@ public function PlaylistAudio(Request $request){
     Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
    ->where('audio_user_playlist.user_id',$request->user_id)
    ->where('audio_user_playlist.playlist_id',$request->playlist_id)
-   ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
+   ->orderBy('audio_user_playlist.created_at', 'desc')->get()->map(function ($item) {
+    $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+    $item['source'] = 'audio';
+    return $item;
+  });
 
     $response = array(
       'status'=>'true',
+      'playlist_name' => MyPlaylist::where('id',$request->playlist_id)->where('user_id',$request->user_id)->pluck('title')->first(),
       'playlist_audio' => $playlist_audio,
+      'MyPlaylist' => $MyPlaylist,
     );
 
   } catch (\Throwable $th) {
@@ -20048,6 +20069,38 @@ public function IOSSocialUser(Request $request) {
     // $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
     $check_exists = User::where('email', '=', $email)->count();
     if($check_exists > 0) {//Login
+      $user_details = User::where('email', '=', $email)->get();
+      $response = array(
+        'status'      =>'true',
+        'message'     =>'Login Success',
+        'user_details'=>$user_details
+      );
+    }else{//Signup
+      $data = array(
+        'username' =>$username,
+        'email'    =>$email,
+        'user_type'=>$login_type,
+        'avatar'   =>$name,
+        'active'   => 1 ,
+        'role'     =>'registered',
+        'password' =>'null'
+      );
+
+      $user = new User;
+      $user->insert($data);
+      $user_details = User::where('username', '=', $username)->get();
+      $response = array(
+        'status'       =>'true',
+        'message'      =>'Account Created ',
+        'user_details' => $user_details
+      );
+    }
+  }
+
+  if($login_type == 'apple'){ //Apple
+    // $check_exists = User::where('email', '=', $email)->where('user_type', '=', $login_type)->count();
+    $check_exists = User::where('email', '=', $email)->count();
+    if($check_exists > 0){//Login
       $user_details = User::where('email', '=', $email)->get();
       $response = array(
         'status'      =>'true',
