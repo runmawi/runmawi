@@ -524,40 +524,63 @@ border-radius: 0px 4px 4px 0px;
             </div>
 
                         {{-- Ads --}}
-                <div class="row mt-3">
-                    <div class="col-sm-6"  >
-                        <label class="m-0">Choose Ads Position</label>
-                        <select class="form-control" name="ads_position" id="ads_position" >
+            <div class="row mt-3">
+                <div class="col-sm-6"  >
+                    <label class="m-0">Choose Ads Position</label>
+                    <select class="form-control" name="ads_position" id="ads_position" >
 
-                           <option value=" ">Select the Ads Position </option>
-                           <option value="pre"  @if(($video->ads_position != null ) && $video->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
-                           <option value="mid"  @if(($video->ads_position != null ) && $video->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
-                           <option value="post" @if(($video->ads_position != null ) && $video->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
-                           <option value="all"  @if(($video->ads_position != null ) && $video->ads_position == 'all'){{ 'selected' }}@endif >   All Ads Position</option>
-                        </select>
-                    </div>
+                        <option value=" ">Select the Ads Position </option>
+                        <option value="pre"  @if(($video->ads_position != null ) && $video->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
+                        <option value="mid"  @if(($video->ads_position != null ) && $video->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
+                        <option value="post" @if(($video->ads_position != null ) && $video->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
+                        <option value="all"  @if(($video->ads_position != null ) && $video->ads_position == 'all'){{ 'selected' }}@endif >   All Ads Position</option>
+                    </select>
+                </div>
 
-                    <div class="col-sm-6"  >
-                        <label class="">Choose Advertisement </label>
-                        <select class="form-control" name="live_ads" id="live_ads" >
-                           <option value=" ">Select the Advertisement </option>
-                            @if( $video->live_ads != null)
-                                @php $ads_name = App\Advertisement::where('id',$video->live_ads)->pluck('ads_name')->first() ;@endphp
-                                <option value="{{ $video->live_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
-                            @endif
-                        </select>
+                <div class="col-sm-6"  >
+                    <label class="">Choose Advertisement </label>
+                    <select class="form-control" name="live_ads" id="live_ads" >
+                        <option value=" ">Select the Advertisement </option>
+                        @if( $video->live_ads != null)
+                            @php $ads_name = App\Advertisement::where('id',$video->live_ads)->pluck('ads_name')->first() ;@endphp
+                            <option value="{{ $video->live_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
+                        @endif
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-sm-6">
+                    <label class="m-0">Enable Free Duration</label>
+                    <p class="p1">Enable / Disable Free Duration</p>
+                    <div class="panel-body">
+                        <div class="mt-1">
+                            <label class="switch">
+                                <input name="free_duration_status"  id="free_duration_status" type="checkbox"  {{ !empty($video->free_duration_status) && $video->free_duration_status == 1 ? "checked" : null }} >
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
+
+                <div class="col-sm-6">
+                    <label class="m-0">Free Duration</label>
+                    <p class="p1">Enter the Live Stream Free duration in (HH : MM : SS)</p>
+                    <div class="panel-body">
+                        <input class="form-control" name="free_duration" id="free_duration" value="@if(!empty($video->free_duration)){{ gmdate('H:i:s', $video->free_duration) }}@endif" />
+                    </div>
+                </div>
+            </div>
             
             <div class="row mt-3">
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <label class="m-0">Duration</label>
                     <p class="p1">Enter the Live Stream duration in (HH : MM : SS)</p>
                     <div class="panel-body">
                         <input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <label class="m-0">User Access</label>
                     <p class="p1">Who is allowed to view this Live Stream?</p>
                     <div class="panel-body">
@@ -572,7 +595,7 @@ border-radius: 0px 4px 4px 0px;
             </div>
 
             <div class="row" id="ppv_price">
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <label class="m-0">PPV Price</label>
                     <p class="p1">Apply PPV Price from Global Settings?</p>
                     <div class="panel-body">
@@ -581,7 +604,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
 
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <label class="m-0"> IOS PPV Price</label>
                     <p class="p1">Apply IOS PPV Price from Global Settings?</p>
                     <div class="panel-body">
@@ -731,6 +754,8 @@ border-radius: 0px 4px 4px 0px;
 
    $(document).ready(function($){
     $("#duration").mask("00:00:00");
+    $("#free_duration").mask("00:00:00");
+
    });
   
     var Stream_error = '{{ $liveStreamVideo_errors }}';

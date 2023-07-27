@@ -11499,7 +11499,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $response = array(
           'status'=> 'true',
-          'message' => ucwords('comment Message destroy successfully !!'),
+          'message' => ucwords('comment message deleted successfully !!'),
         );
 
     } catch (\Throwable $th) {
