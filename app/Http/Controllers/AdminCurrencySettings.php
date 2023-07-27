@@ -31,6 +31,7 @@ use GuzzleHttp\Client;
 use AshAllenDesign\LaravelExchangeRates\ExchangeRate;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use carbon\Carbon;
+use AmrShawky\LaravelCurrency\Facade\Currency_Converter;
 
 class AdminCurrencySettings extends Controller
 {
@@ -208,13 +209,31 @@ class AdminCurrencySettings extends Controller
         // dd(  $responseBody->rates->$default_Currency );
         // ->NGN 876.389432 INR
          $currency = Currency::get();
-        // dd(  $current_rate   );
+
+         
+         try {
+
+            $response = \Http::get("https://api.exchangerate.host/latest?base=".$default_Currency."");
+            $responseBody = json_decode($response->getBody());
+            $all_current_rate = $responseBody->rates;
+
+            // foreach($all_current_rate as $key => $value){
+            //     dd(  $key   );
+
+            // }
+      
+        } catch (\Throwable $th) {
+            // throw $th;
+            $all_current_rate = '';
+        }
+
         
          $data = array(
                    'currency' => $currency , 
                    'allCurrency' => $allCurrency,
                    'current_rate' => $current_rate,
-
+                   'default_Currency' => $default_Currency,
+                   'all_current_rate' => $all_current_rate,
          );
         return view('admin.currency.edit',$data);
         }
