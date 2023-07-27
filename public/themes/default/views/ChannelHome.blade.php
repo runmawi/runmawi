@@ -12,7 +12,9 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         height: 1px;
          background-image: linear-gradient(90deg, white, transparent);
     }
-    
+    .lkn{
+        cursor: pointer;
+    }
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
@@ -57,7 +59,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             </div>
             @if(!empty(@$channel_partner) && $channel_partner->intro_video != null):
             <div class="col-2 col-lg-2">
-            <a data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false" >	
+            <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
                 <span class="text-white">
                 <i class="fa fa-play mr-1" aria-hidden="true"></i> About Channel Partner
                 </span>

@@ -713,7 +713,7 @@ class AdminVideosController extends Controller
                 "ads_category" => Adscategory::all(),
                 "InappPurchase" => InappPurchase::all(),
                 "post_dropzone_url" => $dropzone_url,
-                "ads_tag_urls" => Advertisement::where('ads_upload_type','tag_url')->where('status',1)->get(),
+                "ads_tag_urls" => Advertisement::where('status',1)->get(),
                 "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
             ];
 
@@ -1297,7 +1297,7 @@ class AdminVideosController extends Controller
                                 ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
                                 ->where('videos.id',$id)->first(),
     
-                "ads_tag_urls" => Advertisement::where('status',1)->where('ads_upload_type','tag_url')->where('id',$video->ads_tag_url_id)->first(),
+                "ads_tag_urls" => Advertisement::where('status',1)->where('id',$video->ads_tag_url_id)->first(),
                 "MoviesSubtitles" => $MoviesSubtitles ,
                 "subtitlescount" => $subtitlescount,
                 "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
