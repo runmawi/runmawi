@@ -1041,14 +1041,49 @@ function UserCurrentCurrency(){
 
 function CurrencyConvert(){
 
-        $from = 'INR'; 
-        $to = 'USD';
-        $amount = 200;
+
+    $To_Currency_symbol = App\Currency::where('country',Country_name())->pluck('code')->first();
+    $From_Currency_symbol = 'INR'; 
+    $to = $To_Currency_symbol;
+    $amount = 200;
+
     $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
-    ->from($from)
-    ->to($to)
+    ->from($From_Currency_symbol)
+    ->to($To_Currency_symbol)
     ->amount($amount)
     ->get();  
 
     return  $Currency_Converter; 
+}
+
+
+
+function Currency_Convert($amount){
+
+
+    $To_Currency_symbol = App\Currency::where('country',Country_name())->pluck('code')->first();
+
+    $Currency_symbol = App\Currency::where('country',Country_name())->pluck('symbol')->first();
+
+    $allCurrency = App\CurrencySetting::first();
+
+    $From_Currency_symbol = App\Currency::where('country',@$allCurrency->country)->pluck('code')->first();
+
+    $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
+    ->from($From_Currency_symbol)
+    ->to($To_Currency_symbol)
+    ->amount($amount)
+    ->get();  
+
+    return  $Currency_symbol.' '.$Currency_Converter; 
+}
+
+
+
+function Current_currency_symbol($From_Currency_symbol,$amount){
+
+
+    $Current_currency_symbol = App\Currency::where('country',Country_name())->pluck('symbol')->first();
+
+    return  $Current_currency_symbol; 
 }
