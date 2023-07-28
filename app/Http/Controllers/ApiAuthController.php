@@ -13479,11 +13479,12 @@ public function QRCodeMobileLogout(Request $request)
 
   
   private static function All_Homepage_my_playlist( $user_id ){
+
     $my_playlist_status = MobileHomeSetting::pluck('my_playlist')->first();
 
       if( $my_playlist_status == null || $my_playlist_status == 0 ): 
 
-          $data = array();      // Note - if the home-setting (Series Genre status) is turned off in the admin panel
+          $data = array();      // Note - if the home-setting (Audio Playlist status) is turned off in the admin panel
       else:
 
           $data =  MyPlaylist::where('user_id',$user_id)->get();
@@ -13501,7 +13502,7 @@ public function QRCodeMobileLogout(Request $request)
 
       if( $video_playlist_status == null || $video_playlist_status == 0 ): 
 
-          $data = array();      // Note - if the home-setting (Series Genre status) is turned off in the admin panel
+          $data = array();      // Note - if the home-setting (Video Playlist status) is turned off in the admin panel
       else:
 
           $data =  AdminVideoPlaylist::get()->map(function ($item) {
