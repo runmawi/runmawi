@@ -159,7 +159,7 @@ class SignupController extends Controller
     {
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
-        
+        dd('test');
         $SiteTheme = SiteTheme::first();
         // dd($SiteTheme->signup_theme);
             $signup_status = FreeRegistration();
