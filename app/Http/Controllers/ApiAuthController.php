@@ -12880,7 +12880,7 @@ public function QRCodeMobileLogout(Request $request)
 
         if( $OrderHomeSetting['video_name'] == "my_play_list" ){          // Audio PlayList
          
-          $data = $this->All_Homepage_my_playlist();
+          $data = $this->All_Homepage_my_playlist($user_id);
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
           $header_name_IOS = $OrderHomeSetting['header_name'] ;
@@ -13009,7 +13009,7 @@ public function QRCodeMobileLogout(Request $request)
     }
 
     if($Homesetting->my_playlist == 1 && $this->All_Homepage_my_playlist( $user_id )->isNotEmpty() ){
-      array_push($input,'my_playlist');
+      array_push($input,'my_play_list');
    }
 
    if($Homesetting->video_playlist == 1 && $this->All_Homepage_video_playlist()->isNotEmpty() ){
