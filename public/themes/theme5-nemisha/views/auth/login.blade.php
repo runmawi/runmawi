@@ -429,7 +429,7 @@ font-weight: 600;
            
         </div></div>
     </section>-->
-
+ </section>
     
 @php
     include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
@@ -475,7 +475,7 @@ font-weight: 600;
     });
 });
        </script>
-
+   
 </body>
 
       <!-- jQuery, Popper JS -->
