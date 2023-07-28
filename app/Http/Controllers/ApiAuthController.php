@@ -20276,5 +20276,99 @@ public function TV_login(Request $request)
 }
 }
 
+    public function Master_list_videos()
+    {
+   
+        $videos = Video::latest()->get()->map(function ($item) {
+   
+                        switch (true) {
+
+                            case $item['type'] == "mp4_url":
+                            $item['videos_url'] =  $item->mp4_url ;
+                            break;
+                
+                            case $item['type'] == "m3u8_url":
+                            $item['videos_url'] =  $item->m3u8_url ;
+                            break;
+                
+                            case $item['type'] == "embed":
+                            $item['videos_url'] =  $item->embed_code ;
+                            break;
+                            
+                            case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                            $item['videos_url']    = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                            break;
+                
+                            default:
+                            $item['videos_url']    = null ;
+                            break;
+                        }
+
+                        switch (true) {
+
+                            case $item['publish_type'] == "mp4_url" && $item['publish_status'] == 1 :
+                            $item['releaseDate'] =  $item->publish_time ;
+                            break;
+                
+                            default:
+                            $item['releaseDate']    = $item->created_at  ;
+                            break;
+                        }
+                    
+                        return [
+                            'id'    => $item->id,
+                            'title' => $item->title,
+                            'shortDescription' => $item->description,
+                            'thumbnail'  => URL::to('public/uploads/images/' . $item->image),
+                            'releaseDate' => $item['releaseDate'] ,
+
+                            "genres" => CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')->where('video_id', $item->id)->get()
+                                ->pluck('name')->map(function ($name) {
+                                    return $name ;
+                                })->toArray(),
+                            'content'      => array(
+                            'dateAdded' => $item->created_at ,
+                            'duration' =>  $item->duration ,
+                            'videos' => array( 
+                                array(
+                                    "url" => $item->videos_url,
+                                    "quality" => "HD",
+                                    "videoType" => $item->type,
+                                )
+                            ),
+                            ),
+                        ];
+                    });
+   
+                    $playlists = AdminVideoPlaylist::latest()->get()->map(function ($item) {
+                        return [
+                            "name" => $item->title,
+                            "itemIds" => VideoPlaylist::where('playlist_id', $item->id)
+                                ->pluck('video_id')
+                                ->map(function ($videoId) {
+                                    return $videoId ;
+                                })
+                                ->toArray(),
+                        ];
+                    });
+                
+                    $VideoCategory = VideoCategory::latest()->get()->map(function ($item) {
+                        return [
+                            "name" =>  $item->name,
+                            "order" => $item->order
+                        ];
+                    });
+
+                $response = array(
+                "providerName" => GetWebsiteName(),
+                "language" => "en-US",
+                "lastUpdated"=> Video::latest()->pluck('updated_at')->first() ,
+                "movies"  =>  $videos ,
+                "playlists" => $playlists ,
+                "categories"  => $VideoCategory ,
+                );
+   
+                return response()->json($response, 200);
+    }
 
 }
