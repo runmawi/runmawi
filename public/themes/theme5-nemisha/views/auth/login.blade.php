@@ -246,8 +246,6 @@ font-weight: 600;
     </head>
 
 <body>
-<section class="mb-0" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;height:100vh;">
-    
     <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
   <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/assets/img/nem-b.png'); ?>" style=""></a>
@@ -263,18 +261,23 @@ font-weight: 600;
     
   </div>
 </div></nav>
-<div class="position-relative pad" style="padding:50px;" >
+<section class="mb-0" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;height:100vh;display: flex;
+    justify-content: center;
+    align-items: center;">
+    
+    
+<div class="position-relative pad"  >
 <div class="fixe">
      <h1 class="in mt-3 text-center">SIGN IN TO <span class="nemi">NEMISA TV</span></h1>
     <div class="row m-0 p-0 justify-content-center">
         
       
-        <div class="col-md-6 col-lg-5">
+        <div class="col-md-12 col-lg-12 p-0">
               
           
                 <div class="sign-user_card  mb-2 p-0 ">                    
                <div class="sign-in-page-data">
-                  <div class="sign-in-from  m-auto" align="center">
+                  <div class="mt-5  " align="center">
                      
                      <!-- <p class="get">Get 5 free days of Nemisa Tv</p>-->
                     
