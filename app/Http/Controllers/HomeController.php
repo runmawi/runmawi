@@ -4274,5 +4274,62 @@ class HomeController extends Controller
       
     }
 
+        
+    public function CPPThemeModeSave(Request $request)
+    {
+
+        if($request->input('mode') == 'true'){
+            $theme_modes = "light";
+        }
+        elseif($request->input('mode') == 'false'){
+            $theme_modes = "dark";
+        }
+        // print_r('theme_modes');exit;
+        $theme_mode = SiteTheme::first();
+        $theme_mode->CPP_theme_mode =  $theme_modes;
+        $theme_mode->update();
+
+        return $theme_modes;
+      
+    }
+
+        
+    public function ChannelThemeModeSave(Request $request)
+    {
+
+        if($request->input('mode') == 'true'){
+            $theme_modes = "light";
+        }
+        elseif($request->input('mode') == 'false'){
+            $theme_modes = "dark";
+        }
+
+        $theme_mode = SiteTheme::first();
+        $theme_mode->Channel_theme_mode =  $theme_modes;
+        $theme_mode->update();
+
+        return $theme_modes;
+      
+    }
+
+        
+    public function AdsThemeModeSave(Request $request)
+    {
+
+        if($request->input('mode') == 'true'){
+            $theme_modes = "light";
+        }
+        elseif($request->input('mode') == 'false'){
+            $theme_modes = "dark";
+        }
+
+        $theme_mode = SiteTheme::first();
+        $theme_mode->Ads_theme_mode =  $theme_modes;
+        $theme_mode->update();
+
+        return $theme_modes;
+      
+    }
+
 
 }
