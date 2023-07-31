@@ -3,7 +3,12 @@
     $livestream_id = $video->id ; 
     $advertisement_id = $video->live_ads ; 
     $adverister_id = App\Advertisement::where('id',$advertisement_id)->pluck('advertiser_id')->first();
+
+    $free_duration_condition = ($video->free_duration_status == 1 && $video->free_duration != null && $video->access == "ppv" && Auth::guest()) || ($video->free_duration_status == 1 && $video->free_duration != null && $video->access == "ppv" && Auth::user()->role == "registered") ? 1 : 0;
 ?>
+
+<input type="hidden" id="free_duration_seconds" value="<?php echo $video->free_duration ?>" >
+<input type="hidden" id="free_duration_condition" value="<?php echo $free_duration_condition ?>" >
 
 <script>
 
@@ -68,7 +73,10 @@
     document.addEventListener("DOMContentLoaded", () => {
         const video = document.querySelector("#live_player");
         const source = video.getElementsByTagName("source")[0].src;
-  
+
+        const free_duration_seconds = document.getElementById("free_duration_seconds");
+        const free_duration_condition = $("#free_duration_condition").val();
+
         const defaultOptions = {};
 
         if (!Hls.isSupported()) {
@@ -132,16 +140,24 @@
         hls.attachMedia(video);
             window.hls = hls;		 
         }
+        
 
-        video.addEventListener('timeupdate', () => {
-            const thirtyMinutesInSeconds = 30 * 1;
-            if (video.currentTime >= thirtyMinutesInSeconds) {
-                video.pause();
-                hidePlayerControls(player);
-                displayModal();
-            }
-        });
+        if( free_duration_condition == 1 ){
 
+            video.addEventListener('timeupdate', () => {
+
+                const freeduration_sec = free_duration_seconds.defaultValue  ;
+
+                if (video.currentTime >= freeduration_sec ) {
+
+                        video.pause();
+                        const controlsElements = document.getElementsByClassName("plyr__controls");
+                        displayModal();
+                    }
+            });
+
+        }
+    
         function updateQuality(newQuality) {
             if (newQuality === 0) {
             window.hls.currentLevel = -1;
@@ -161,17 +177,8 @@
             modal.style.display = "block";
 
         }
-
-        function hidePlayerControls(player) {
-            const controlsElements = document.getElementsByClassName("plyr__controls");
-
-            if (controlsElements.length > 0) {
-                const controlsElement = controlsElements[0];
-
-                controlsElement.style.display = "none";
-            }
-        }       
     });
+
 
     function Ads_Redirection_URL_Count(timestamp_time){
 
