@@ -133,6 +133,15 @@
             window.hls = hls;		 
         }
 
+        video.addEventListener('timeupdate', () => {
+            const thirtyMinutesInSeconds = 30 * 1;
+            if (video.currentTime >= thirtyMinutesInSeconds) {
+                video.pause();
+                hidePlayerControls(player);
+                displayModal();
+            }
+        });
+
         function updateQuality(newQuality) {
             if (newQuality === 0) {
             window.hls.currentLevel = -1;
@@ -145,6 +154,23 @@
             });
             }
         }
+
+        function displayModal() {
+
+            const modal = document.getElementById("modal");
+            modal.style.display = "block";
+
+        }
+
+        function hidePlayerControls(player) {
+            const controlsElements = document.getElementsByClassName("plyr__controls");
+
+            if (controlsElements.length > 0) {
+                const controlsElement = controlsElements[0];
+
+                controlsElement.style.display = "none";
+            }
+        }       
     });
 
     function Ads_Redirection_URL_Count(timestamp_time){
@@ -185,3 +211,25 @@
     }
 
 </script>
+
+<div id="modal" class="modal">
+
+    <div class="modal-content">
+        <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+            <div id="video_bg_dim"></div>
+            <div class="row justify-content-center pay-live">
+                <div class="col-md-4 col-sm-offset-4">
+                    <div class="ppv-block">
+                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+                        <div class="clear"></div>
+                        <?php if(Auth::guest()){ ?>
+                            <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                        <?php }else{ ?>
+                            <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
