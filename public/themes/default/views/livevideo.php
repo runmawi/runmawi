@@ -1,173 +1,194 @@
 <?php include ('header.php');  ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
+
 <style type="text/css">
-    .close{
-        color: red;
-        text-shadow: none;
-    }
-    .come-from-modal.left .modal-dialog,
-.come-from-modal.right .modal-dialog {
-   
-    margin: auto;
-    width: 400px;
-    background-color: #000!important;
-    height: 100%;
-    -webkit-transform: translate3d(0%, 0, 0);
-    -ms-transform: translate3d(0%, 0, 0);
-    -o-transform: translate3d(0%, 0, 0);
-    transform: translate3d(0%, 0, 0);
-}
+   .close {
+      color: red;
+      text-shadow: none;
+   }
 
-.come-from-modal.left .modal-content,
-.come-from-modal.right .modal-content {
-    height: 100%;
-    overflow-y: auto;
-    border-radius: 0px;
-}
+   .come-from-modal.left .modal-dialog,
+   .come-from-modal.right .modal-dialog {
 
-.come-from-modal.left .modal-body,
-.come-from-modal.right .modal-body {
-    padding: 15px 15px 80px;
-}
-.come-from-modal.right.fade .modal-dialog {
-    right: 0;
-    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
-    transition: opacity 0.3s linear, right 0.3s ease-out;
-}
+      margin: auto;
+      width: 400px;
+      background-color: #000 !important;
+      height: 100%;
+      -webkit-transform: translate3d(0%, 0, 0);
+      -ms-transform: translate3d(0%, 0, 0);
+      -o-transform: translate3d(0%, 0, 0);
+      transform: translate3d(0%, 0, 0);
+   }
 
-.come-from-modal.right.fade.in .modal-dialog {
-    right: 0;
-}
-    #sidebar-wrapper {
-  height: calc(100vh - 80px - 75px)!important;
-  /*background-color: #000;*/
-        border-radius: 10px;
-        box-shadow: inset 0 0 10px #000000;
-        color: #fff;
-  transition: margin 0.25s ease-out;
-    }.list-group-item-action:hover {
-        color: #000!important;
-    }
-    .list-group-item-light{
-         background-color:transparent;
-       
-         
-    }
-     .list-group-item-light:hover{
-        background-color: #fff;
-        color: #000!important;
-    }
-    a.list-group-item{
-        border:none;
-      
-    }
-    .list-group-flush::-webkit-scrollbar-thumb {
-    background-color: red;
-    border-radius: 2px;
-    border: 2px solid red;
+   .come-from-modal.left .modal-content,
+   .come-from-modal.right .modal-content {
+      height: 100%;
+      overflow-y: auto;
+      border-radius: 0px;
+   }
+
+   .come-from-modal.left .modal-body,
+   .come-from-modal.right .modal-body {
+      padding: 15px 15px 80px;
+   }
+
+   .come-from-modal.right.fade .modal-dialog {
+      right: 0;
+      -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+      -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+      -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+      transition: opacity 0.3s linear, right 0.3s ease-out;
+   }
+
+   .come-from-modal.right.fade.in .modal-dialog {
+      right: 0;
+   }
+
+   #sidebar-wrapper {
+      height: calc(100vh - 80px - 75px) !important;
+      /*background-color: #000;*/
+      border-radius: 10px;
+      box-shadow: inset 0 0 10px #000000;
+      color: #fff;
+      transition: margin 0.25s ease-out;
+   }
+
+   .list-group-item-action:hover {
+      color: #000 !important;
+   }
+
+   .list-group-item-light {
+      background-color: transparent;
+   }
+
+   .list-group-item-light:hover {
+      background-color: #fff;
+      color: #000 !important;
+   }
+
+   a.list-group-item {
+      border: none;
+   }
+
+   .list-group-flush::-webkit-scrollbar-thumb {
+      background-color: red;
+      border-radius: 2px;
+      border: 2px solid red;
       width: 2px;
-  }
-    .list-group-flush{
-        overflow-x: hidden!important;
-        overflow: scroll;
-       height: calc(91vh - 80px - 75px)!important;
-         scroll-behavior: auto;
-     
-      scrollbar-color: rebeccapurple green!important;
+   }
 
-    }
-     .list-group-flush::-webkit-scrollbar {
-  width: 8px;
-  }
-    .list-group-flush::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.2);
-      
-  }
-#sidebar-wrapper .sidebar-heading {
-  padding: 10px 10px;
-  font-size: 1.2rem;
-    
-}
+   .list-group-flush {
+      overflow-x: hidden !important;
+      overflow: scroll;
+      height: calc(91vh - 80px - 75px) !important;
+      scroll-behavior: auto;
 
+      scrollbar-color: rebeccapurple green !important;
 
+   }
 
-	 .plyr__video-embed{
-          position: relative;
-      }
-#video_bg_dim{
-/*background: rgb(0 0 0 / 45%);*/
-position: absolute;
-top: 0;
-bottom: 0;
-left: 0;
-right: 0;
-}
-.countdown {
-text-align: center;
-font-size: 60px;
-margin-top: 0px;
-color:red;
-}
-    .fp-ratio{
-        padding-top: 64%!important;
-    }
-h2{
-text-align: center;
-font-size: 35px;
-margin-top: 0px;
-font-weight: 400;
-}
-#videoPlayer {
-    width: 100%;
-    height: 100%;
-    margin: 20px auto;
-}
-    .plyr audio, .plyr iframe, .plyr video {
-    display: block;
-    /* height: 100%; */
-    /* width: 100%; */
-}
-    .plyr--video{
-         height: calc(100vh - 80px - 75px);
-    max-width: none;
-    width: 100%;
-    }  
-    .modal {
-    position: fixed;
-    top: 0;
-        right:auto;
-    bottom: 0;
-    left: 0;
-    z-index: 1050;
-    display: none;
-    overflow: hidden;
-    outline: 0;
-}
+   .list-group-flush::-webkit-scrollbar {
+      width: 8px;
+   }
 
-      /* <!-- BREADCRUMBS  */
+   .list-group-flush::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.2);
 
-      .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
-          content: none; 
-      } 
+   }
 
-      ol.breadcrumb {
-            color: white;
-            background-color: transparent !important  ;
-            font-size: revert;
-      }
+   #sidebar-wrapper .sidebar-heading {
+      padding: 10px 10px;
+      font-size: 1.2rem;
 
+   }
 
-</style>
+   .plyr__video-embed {
+      position: relative;
+   }
 
-<style>
+   #video_bg_dim {
+      /*background: rgb(0 0 0 / 45%);*/
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+   }
 
-.vjs-skin-hotdog-stand { color: #FF0000; }
-.vjs-skin-hotdog-stand .vjs-control-bar { background: #FFFF00; }
-.vjs-skin-hotdog-stand .vjs-play-progress { background: #FF0000; }
+   .countdown {
+      text-align: center;
+      font-size: 60px;
+      margin-top: 0px;
+      color: red;
+   }
 
+   .fp-ratio {
+      padding-top: 64% !important;
+   }
+
+   h2 {
+      text-align: center;
+      font-size: 35px;
+      margin-top: 0px;
+      font-weight: 400;
+   }
+
+   #videoPlayer {
+      width: 100%;
+      height: 100%;
+      margin: 20px auto;
+   }
+
+   .plyr audio,
+   .plyr iframe,
+   .plyr video {
+      display: block;
+      /* height: 100%; */
+      /* width: 100%; */
+   }
+
+   .plyr--video {
+      height: calc(100vh - 80px - 75px);
+      max-width: none;
+      width: 100%;
+   }
+
+   .modal {
+      position: fixed;
+      top: 0;
+      right: auto;
+      bottom: 0;
+      left: 0;
+      z-index: 1050;
+      display: none;
+      overflow: hidden;
+      outline: 0;
+   }
+
+   /* <!-- BREADCRUMBS  */
+
+   .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+      content: none;
+   }
+
+   ol.breadcrumb {
+      color: white;
+      background-color: transparent !important;
+      font-size: revert;
+   }
+
+   .vjs-skin-hotdog-stand {
+      color: #FF0000;
+   }
+
+   .vjs-skin-hotdog-stand .vjs-control-bar {
+      background: #FFFF00;
+   }
+
+   .vjs-skin-hotdog-stand .vjs-play-progress {
+      background: #FF0000;
+   }
 </style>
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
@@ -193,319 +214,572 @@ $Rtmp_url = str_replace ('rtmp', 'http', $rtmp_url);
 if(empty($new_date)){
 
 if(!Auth::guest()){
-if(!empty($password_hash)){
-if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
-<div id="video_bg"> 
-        <div class="">
-            <div id="video sda" class="fitvid" style="margin: 0 auto;">
+    if(!empty($password_hash)){ ?>
+        <?php if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+            <div id="video_bg"> 
+                <div class="">
+                    <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
-            <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
+                    <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-                    <video id="live_player_mp4" <?= $autoplay ?> class="" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
-                        <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
-                        <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-                        <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
-                    </video>
+                            <video id="live_player_mp4" <?= $autoplay ?> class="" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                                <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
+                                <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                                <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
+                            </video>
 
-            <?php } elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
+                    <?php } elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
 
-                    <div class="plyr__video-embed" id="live_player">
-                        <iframe
-                            src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
-                            allowfullscreen
-                            allowtransparency
-                            allow="autoplay" >
-                        </iframe>
-                    </div>
+                            <div class="plyr__video-embed" id="live_player">
+                                <iframe
+                                    src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+                                    allowfullscreen
+                                    allowtransparency
+                                    allow="autoplay" >
+                                </iframe>
+                            </div>
 
-            <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
+                    <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
 
-                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
-                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                    <input type="hidden" id="live" name="live" value="live">
-                    <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+                            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                            <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                            <input type="hidden" id="live" name="live" value="live">
+                            <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
 
-                    <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
-                    </video>
-                    
-            <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
+                            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
+                            </video>
+                            
+                    <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
 
-                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
-                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                    <input type="hidden" id="live" name="live" value="live">
-                    <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                            <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                            <input type="hidden" id="live" name="live" value="live">
+                            <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                    <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
-                    </video>
+                            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                            </video>
 
-            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
 
-                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
-                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                    <input type="hidden" id="live" name="live" value="live">
-                    <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                            <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                            <input type="hidden" id="live" name="live" value="live">
+                            <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                    <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  type="application/x-mpegURL"  src="<?php echo $video->live_stream_video ; ?>" >
-                    </video>
+                            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $video->live_stream_video ; ?>" >
+                            </video>
 
-            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
 
-                    <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  src="<?php echo $video->acc_audio_url ; ?>" >
-                    </video>
+                            <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  src="<?php echo $video->acc_audio_url ; ?>" >
+                            </video>
 
-            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_file"){  ?>
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_file"){  ?>
 
-                    <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  src="<?php echo $video->acc_audio_file ; ?>" >
-                    </video>
+                            <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  src="<?php echo $video->acc_audio_file ; ?>" >
+                            </video>
 
-            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 
-                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
-                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                    <input type="hidden" id="live" name="live" value="live">
-                    <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                            <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                            <input type="hidden" id="live" name="live" value="live">
+                            <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                    <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
-                    </video>
+                            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                            </video>
 
-            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-3 ">
-                            <div class="border-end" id="sidebar-wrapper">
-                                <div class="sidebar-heading border-bottom">Channels</div>
-                                <div class="list-group list-group-flush">
-                                    <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
-                                        <a data-toggle="modal" data-target="#M3U-Modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
-                                    <?php } ?>
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-3 ">
+                                    <div class="border-end" id="sidebar-wrapper">
+                                        <div class="sidebar-heading border-bottom">Channels</div>
+                                        <div class="list-group list-group-flush">
+                                            <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                                <a data-toggle="modal" data-target="#M3U-Modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9">
+
+                                    <?php $m3u_url = session('m3u_url_link') ; ?>
+                                    
+                                    <video controls  <?= $autoplay ?> crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  style="height:100%;">
+                                        <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
+                                    </video>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-9">
-
-                            <?php $m3u_url = session('m3u_url_link') ; ?>
                             
-                            <video controls  <?= $autoplay ?> crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  style="height:100%;">
-                                <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
-                           </video>
-                        </div>
-                    </div>
-                </div>
-	              
-            <?php } ?>
+                    <?php } ?>
 
-                                        <!-- Modal - M3U Modal  -->
+                                                <!-- Modal - M3U Modal  -->
 
-            <div class="modal fade  come-from-modal right" id="M3U-Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content" style="background:#1B1212;">
+                    <div class="modal fade  come-from-modal right" id="M3U-Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content" style="background:#1B1212;">
 
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        </div>
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                </div>
 
-                        <div class="modal-body data-plans ">
-                            <div class="list-group list-group-flush"  style="height: calc(100vh - 80px - 75px)!important;">
-                               <p > <?= "Please wait a short while" ?></p>
+                                <div class="modal-body data-plans ">
+                                    <div class="list-group list-group-flush"  style="height: calc(100vh - 80px - 75px)!important;">
+                                        <p > <?= "Please wait a short while" ?></p>
+                                    </div>
+                                </div>
+                            
                             </div>
                         </div>
-                    
+                    </div>
+
+                <div class="playertextbox hide">
+                    <p> <?php if (isset($videonext)) { ?>
+                        <?=App\LiveStream::where('id', '=', $videonext->id)->pluck('title'); ?>
+                        <?php } elseif (isset($videoprev)) { ?>
+                        <?=App\LiveStream::where('id', '=', $videoprev->id)->pluck('title'); ?>
+                        <?php } ?>
+
+                        <?php if (isset($videos_category_next)) { ?>
+                        <?=App\LiveStream::where('id', '=', $videos_category_next->id)->pluck('title'); ?>
+                        <?php } elseif (isset($videos_category_prev)) { ?>
+                        <?=App\LiveStream::where('id', '=', $videos_category_prev->id)->pluck('title'); ?>
+                        <?php } ?>
+                    </p>
+                </div>
+            </div>
+
+            <?php  } elseif ( Auth::user()->role == "registered" && $video->access == 'ppv' && $video->free_duration_status == 1 && $video->free_duration != null  ) { ?>       
+
+
+            <div id="video_bg"> 
+            <div class="">
+                <div id="video sda" class="fitvid" style="margin: 0 auto;">
+
+                    <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
+
+                            <video id="live_player_mp4" <?= $autoplay ?>  onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                                <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
+                                <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                            </video>
+
+                    <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
+
+                        <div class="plyr__video-embed" id="Embed_player">
+                            <iframe
+                                src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+                                allowfullscreen
+                                allowtransparency
+                                allow="autoplay">
+                            </iframe>
+                        </div>
+
+                    <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
+
+                            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                            <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                            <input type="hidden" id="live" name="live" value="live">
+                            <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+
+                            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
+                            </video>
+
+                    <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
+
+                            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                            <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                            <input type="hidden" id="live" name="live" value="live">
+                            <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+
+                                <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                            </video>
+
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+
+                        <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
+                        </video>
+
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
+
+                        <video id="acc_audio" <?= $autoplay ?>  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  src="<?php echo $video->acc_audio_url ; ?>" >
+                        </video>
+
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_file"){  ?>
+
+                        <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  src="<?php echo $video->acc_audio_file ; ?>" >
+                        </video>
+                        
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
+
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+
+                        <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                        </video>
+
+                    <?php }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
+
+                    <div class="container-fluid">
+                        <div class="row ">
+                            <div class="col-lg-3 p-0">
+                                <div class="border-end" id="sidebar-wrapper">
+                                    <div class="sidebar-heading border-bottom">Channels</div>
+                                    <div class="list-group list-group-flush">
+                                        <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                            <a data-toggle="modal" data-target="#M3U-url-modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+
+                                <?php $m3u_url = session('m3u_url_link') ; ?>
+                                
+                                <video  controls  <?= $autoplay ?> crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                    <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                                                <!-- Modal - M3U Modal  -->
+
+                    <div class="modal fade  come-from-modal right" id="M3U-url-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content" style="background:#1B1212;">
+
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                </div>
+
+                                <div class="modal-body data-plans ">
+                                    <div class="list-group list-group-flush"  style="height: calc(100vh - 80px - 75px)!important;">
+                                        <p > <?= "Please wait a short while" ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            <?php } ?>
+
+
+        <?php  } else {  ?>       
+            <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
+                <div class="row justify-content-center pay-live">
+                    <div class="col-md-4 col-sm-offset-4">
+                        <div class="ppv-block">
+                            <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+
+                                <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+
+                            <!-- PPV button -->
+                                    <?php $users = Auth::user();  ?>
+
+                                    <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                                        <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
+                                        <?php echo __('Purchase Now ');?> </button>
+                                    <?php } ?>
+                            </div>
                     </div>
                 </div>
             </div>
+        <?php } }
+    }
 
-        <div class="playertextbox hide">
-            <p> <?php if (isset($videonext)) { ?>
-                <?=App\LiveStream::where('id', '=', $videonext->id)->pluck('title'); ?>
-                <?php } elseif (isset($videoprev)) { ?>
-                <?=App\LiveStream::where('id', '=', $videoprev->id)->pluck('title'); ?>
-                <?php } ?>
-
-                <?php if (isset($videos_category_next)) { ?>
-                <?=App\LiveStream::where('id', '=', $videos_category_next->id)->pluck('title'); ?>
-                <?php } elseif (isset($videos_category_prev)) { ?>
-                <?=App\LiveStream::where('id', '=', $videos_category_prev->id)->pluck('title'); ?>
-                <?php } ?>
-            </p>
-        </div>
-    </div>
-
-    <?php  } else {  ?>       
-        <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
-            <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
-            <div class="row justify-content-center pay-live">
-                <div class="col-md-4 col-sm-offset-4">
-                    <div class="ppv-block">
-                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
-
-                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
-
-                           <!-- PPV button -->
-                                <?php $users = Auth::user();  ?>
-
-                                <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
-                                    <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
-                                    <?php echo __('Purchase Now ');?> </button>
-                                <?php } ?>
-                        </div>
-                </div>
-            </div>
-        </div>
-    <?php } }
-}
-
-else{  
+    else{  
 
         if (Auth::guest() && empty($video->ppv_price)) {  ?>
-       <div id="video_bg"> 
-<div class="">
-    <div id="video sda" class="fitvid" style="margin: 0 auto;">
+            <div id="video_bg"> 
+            <div class="">
+                <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
-    <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
+                    <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-            <video id="live_player_mp4" <?= $autoplay ?>  onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
-                <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
-                <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-            </video>
+                            <video id="live_player_mp4" <?= $autoplay ?>  onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                                <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
+                                <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                            </video>
 
-    <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
-        <div class="plyr__video-embed" id="Embed_player">
-            <iframe
-                src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
-                allowfullscreen
-                allowtransparency
-                allow="autoplay"    >
-            </iframe>
-        </div>
-        <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
+                    <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
 
-                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
-                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                <input type="hidden" id="live" name="live" value="live">
-                <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+                        <div class="plyr__video-embed" id="Embed_player">
+                            <iframe
+                                src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+                                allowfullscreen
+                                allowtransparency
+                                allow="autoplay">
+                            </iframe>
+                        </div>
 
-                <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                    <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
-                </video>
+                    <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
 
-    <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
+                            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                            <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                            <input type="hidden" id="live" name="live" value="live">
+                            <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
 
-                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
-                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                <input type="hidden" id="live" name="live" value="live">
-                <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
+                            </video>
 
-                 <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                    <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
-                </video>
+                    <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
 
-       <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+                            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                            <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                            <input type="hidden" id="live" name="live" value="live">
+                            <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
-        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-        <input type="hidden" id="live" name="live" value="live">
-        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                                <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                            </video>
 
-            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                    <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
-            </video>
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
 
-        <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                <video id="acc_audio" <?= $autoplay ?>  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                    <source  src="<?php echo $video->acc_audio_url ; ?>" >
-                </video>
+                        <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
+                        </video>
 
-        <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_file"){  ?>
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
 
-                <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                    <source  src="<?php echo $video->acc_audio_file ; ?>" >
-                </video>
-            
-        <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
+                        <video id="acc_audio" <?= $autoplay ?>  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  src="<?php echo $video->acc_audio_url ; ?>" >
+                        </video>
 
-                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
-                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                <input type="hidden" id="live" name="live" value="live">
-                <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_file"){  ?>
 
-                <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                    <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
-                </video>
+                        <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  src="<?php echo $video->acc_audio_file ; ?>" >
+                        </video>
+                        
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 
-        <?php }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-        <div class="container-fluid">
-            <div class="row ">
-                <div class="col-lg-3 p-0">
-                    <div class="border-end" id="sidebar-wrapper">
-                        <div class="sidebar-heading border-bottom">Channels</div>
-                        <div class="list-group list-group-flush">
-                            <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
-                                <a data-toggle="modal" data-target="#M3U-url-modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                        <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                        </video>
+
+                    <?php }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
+
+                    <div class="container-fluid">
+                        <div class="row ">
+                            <div class="col-lg-3 p-0">
+                                <div class="border-end" id="sidebar-wrapper">
+                                    <div class="sidebar-heading border-bottom">Channels</div>
+                                    <div class="list-group list-group-flush">
+                                        <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                            <a data-toggle="modal" data-target="#M3U-url-modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+
+                                <?php $m3u_url = session('m3u_url_link') ; ?>
+                                
+                                <video  controls  <?= $autoplay ?> crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                    <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                                                <!-- Modal - M3U Modal  -->
+
+                    <div class="modal fade  come-from-modal right" id="M3U-url-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content" style="background:#1B1212;">
+
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                </div>
+
+                                <div class="modal-body data-plans ">
+                                    <div class="list-group list-group-flush"  style="height: calc(100vh - 80px - 75px)!important;">
+                                        <p > <?= "Please wait a short while" ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+        <?php } ?>
+
+        <?php  } elseif ( Auth::guest() && $video->access == 'ppv' && $video->free_duration_status == 1 && $video->free_duration != null  ) { ?>       
+
+
+            <div id="video_bg"> 
+            <div class="">
+                <div id="video sda" class="fitvid" style="margin: 0 auto;">
+
+                    <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
+
+                            <video id="live_player_mp4" <?= $autoplay ?>  onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                                <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
+                                <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                            </video>
+
+                    <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
+
+                        <div class="plyr__video-embed" id="Embed_player">
+                            <iframe
+                                src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+                                allowfullscreen
+                                allowtransparency
+                                allow="autoplay">
+                            </iframe>
+                        </div>
+
+                    <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
+
+                            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                            <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                            <input type="hidden" id="live" name="live" value="live">
+                            <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+
+                            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
+                            </video>
+
+                    <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
+
+                            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                            <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                            <input type="hidden" id="live" name="live" value="live">
+                            <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+
+                                <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                            </video>
+
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+
+                        <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
+                        </video>
+
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
+
+                        <video id="acc_audio" <?= $autoplay ?>  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  src="<?php echo $video->acc_audio_url ; ?>" >
+                        </video>
+
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_file"){  ?>
+
+                        <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  src="<?php echo $video->acc_audio_file ; ?>" >
+                        </video>
+                        
+                    <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
+
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+
+                        <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                        </video>
+
+                    <?php }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
+
+                    <div class="container-fluid">
+                        <div class="row ">
+                            <div class="col-lg-3 p-0">
+                                <div class="border-end" id="sidebar-wrapper">
+                                    <div class="sidebar-heading border-bottom">Channels</div>
+                                    <div class="list-group list-group-flush">
+                                        <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                            <a data-toggle="modal" data-target="#M3U-url-modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+
+                                <?php $m3u_url = session('m3u_url_link') ; ?>
+                                
+                                <video  controls  <?= $autoplay ?> crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                    <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                                                <!-- Modal - M3U Modal  -->
+
+                    <div class="modal fade  come-from-modal right" id="M3U-url-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content" style="background:#1B1212;">
+
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                </div>
+
+                                <div class="modal-body data-plans ">
+                                    <div class="list-group list-group-flush"  style="height: calc(100vh - 80px - 75px)!important;">
+                                        <p > <?= "Please wait a short while" ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            <?php } ?>
+
+        <?php  } else { ?>       
+            <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
+                <div class="row justify-content-center pay-live">
+                    <div class="col-md-4 col-sm-offset-4">
+                        <div class="ppv-block">
+                            <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+                            <div class="clear"></div>
+                            <?php if(Auth::guest()){ ?>
+                                <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                            <?php }else{ ?>
+                                <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                             <?php } ?>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-9">
-
-                    <?php $m3u_url = session('m3u_url_link') ; ?>
-                    
-                    <video  controls  <?= $autoplay ?> crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
-                    </video>
-                </div>
-
-                
             </div>
-        </div>
-                                        <!-- Modal - M3U Modal  -->
-
-        <div class="modal fade  come-from-modal right" id="M3U-url-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content" style="background:#1B1212;">
-
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        </div>
-
-                        <div class="modal-body data-plans ">
-                            <div class="list-group list-group-flush"  style="height: calc(100vh - 80px - 75px)!important;">
-                               <p > <?= "Please wait a short while" ?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-     <?php } ?>
-
-    <?php  } else { ?>       
-        <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
-            <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
-            <div class="row justify-content-center pay-live">
-                <div class="col-md-4 col-sm-offset-4">
-                    <div class="ppv-block">
-                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
-                        <div class="clear"></div>
-                        <?php if(Auth::guest()){ ?>
-                            <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
-                        <?php }else{ ?>
-                            <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-   <?php }
+    <?php }
     }
     } elseif(!empty($new_date)){ ?>
         <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
