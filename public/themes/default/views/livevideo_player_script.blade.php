@@ -3,7 +3,12 @@
     $livestream_id = $video->id ; 
     $advertisement_id = $video->live_ads ; 
     $adverister_id = App\Advertisement::where('id',$advertisement_id)->pluck('advertiser_id')->first();
+
+    $free_duration_condition = ($video->free_duration_status == 1 && $video->free_duration != null && $video->access == "ppv" && Auth::guest()) || ($video->free_duration_status == 1 && $video->free_duration != null && $video->access == "ppv" && Auth::user()->role == "registered") ? 1 : 0;
 ?>
+
+<input type="hidden" id="free_duration_seconds" value="<?php echo $video->free_duration ?>" >
+<input type="hidden" id="free_duration_condition" value="<?php echo $free_duration_condition ?>" >
 
 <script>
 
@@ -68,7 +73,10 @@
     document.addEventListener("DOMContentLoaded", () => {
         const video = document.querySelector("#live_player");
         const source = video.getElementsByTagName("source")[0].src;
-  
+
+        const free_duration_seconds = document.getElementById("free_duration_seconds");
+        const free_duration_condition = $("#free_duration_condition").val();
+
         const defaultOptions = {};
 
         if (!Hls.isSupported()) {
@@ -132,7 +140,24 @@
         hls.attachMedia(video);
             window.hls = hls;		 
         }
+        
 
+        if( free_duration_condition == 1 ){
+
+            video.addEventListener('timeupdate', () => {
+
+                const freeduration_sec = free_duration_seconds.defaultValue  ;
+
+                if (video.currentTime >= freeduration_sec ) {
+
+                        video.pause();
+                        const controlsElements = document.getElementsByClassName("plyr__controls");
+                        displayModal();
+                    }
+            });
+
+        }
+    
         function updateQuality(newQuality) {
             if (newQuality === 0) {
             window.hls.currentLevel = -1;
@@ -145,7 +170,15 @@
             });
             }
         }
+
+        function displayModal() {
+
+            const modal = document.getElementById("modal");
+            modal.style.display = "block";
+
+        }
     });
+
 
     function Ads_Redirection_URL_Count(timestamp_time){
 
@@ -185,3 +218,25 @@
     }
 
 </script>
+
+<div id="modal" class="modal">
+
+    <div class="modal-content">
+        <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+            <div id="video_bg_dim"></div>
+            <div class="row justify-content-center pay-live">
+                <div class="col-md-4 col-sm-offset-4">
+                    <div class="ppv-block">
+                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+                        <div class="clear"></div>
+                        <?php if(Auth::guest()){ ?>
+                            <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                        <?php }else{ ?>
+                            <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1286,7 +1286,7 @@
                                         <input id="password" type="hidden" name="password"
                                             value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
                                         <button type="submit" class="btn  "
-                                            style="">Visit CPP Portal </button>
+                                            style="">Visit Content Portal </button>
                                     </form>
                                 </div>
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -1371,7 +1371,7 @@
                                         <input id="password" type="hidden" name="password"
                                             value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
                                         <button type="submit" class="btn btn-primary "
-                                            style="margin-top: -14%;margin-left: -14%;font-size: 14px;">Visit CPP Portal </button>
+                                            style="margin-top: -14%;margin-left: -14%;font-size: 14px;">Visit Content Portal </button>
                                     </form>
                                 </div>
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
