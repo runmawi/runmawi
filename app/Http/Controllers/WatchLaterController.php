@@ -98,6 +98,7 @@ class WatchLaterController extends Controller
                      'channelwatchlater' => $videos,
                      'episode_videos' => $episode_videos,
                      'ThumbnailSetting' => ThumbnailSetting::first(),
+                     'currency' => CurrencySetting::first(),
               );
 
              return Theme::view('mywatchlater', $data);
