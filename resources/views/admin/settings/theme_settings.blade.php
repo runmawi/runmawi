@@ -104,7 +104,44 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                 </div> 
 
-
+                <div class="row mt-4 align-items-center">
+                            <div class="col-md-6">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-6">
+                                         <div class="panel-heading"> <div class="panel-title"> <p>Admin Site Background Color</p></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                <div class="input-group color-picker" >
+                                    <label class="mt-2">Admin Dark Mode</label>
+                                    <input type="color" class="form-control ml-1"  name="admin_dark_bg_color" data-format="hex" value="{{ $settings->admin_dark_bg_color}}" />
+                                </div>
+                                    </div>
+                                    <div class="col-sm-6 mt-5">
+                                          <div class="input-group color-picker" >
+                                    <label class="mt-2">Admin Light Mode</label>
+                                    <input type="color" class="form-control ml-1"  name="admin_light_bg_color" data-format="hex" value="{{ $settings->admin_light_bg_color}}" />
+                                </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                 <div class="row align-items-center">
+                                    <div class="col-sm-6">
+                                         <div class="panel-heading"> <div class="panel-title mb-0"> <p>Admin Site Text Color</p></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                <div class="input-group color-picker">
+                                    <label class="mt-2">Admin Dark Mode</label>
+                                    <input type="color" class="form-control ml-1"  name="admin_dark_text_color" data-format="hex" value="{{ $settings->admin_dark_text_color  }}" />
+                                </div>
+                                     </div>
+                                    <div class="col-sm-6 mt-5">
+                                     <div class="input-group color-picker" >
+                                    <label class="mt-2">Admin Light Mode</label>
+                                    <input type="color" class="form-control ml-1"  name="admin_light_text_color" data-format="hex" value="{{ $settings->admin_light_text_color }}" />
+                                </div>
+                                     </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                </div> 
                
                 <div class="panel-body"> 
                         <div class="row mt-2">
