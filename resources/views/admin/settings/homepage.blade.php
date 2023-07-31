@@ -4,7 +4,9 @@
         background-color: #FFF;
         color: #000;
     }
-
+    label {
+        font-size: 16px!important;
+    }
     .make-switch {
         z-index: 2;
     }
@@ -105,7 +107,7 @@
                                 <div class="row align-items-center p-2">
                                     <!-- <div class="row"> -->
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -128,7 +130,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -152,7 +154,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -175,7 +177,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -198,7 +200,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -221,7 +223,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -244,7 +246,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -268,7 +270,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -292,7 +294,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -316,7 +318,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -343,7 +345,7 @@
                                     <!-- </div> -->
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -369,7 +371,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -394,7 +396,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1"> {{ 'Artist' }}</label></div>
@@ -411,7 +413,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1"> Auto Intro Skip </label></div>
@@ -430,7 +432,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1"> {{ ucwords('continue watching') }} </label></div>
@@ -446,7 +448,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -470,7 +472,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -495,7 +497,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -520,7 +522,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -545,7 +547,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -570,7 +572,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -595,7 +597,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -620,7 +622,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -645,7 +647,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -670,7 +672,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -695,7 +697,7 @@
                                     </div>
 
                                     
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -719,7 +721,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -742,7 +744,7 @@
 
                                         </div>
                                     </div>
-                                    <!-- <div class="col-sm-4">
+                                    <!-- <div class="col-sm-6">
                                                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                                                 <div><label class="mt-1"> @if (@$order_settings_list[23]->header_name)
     {{ @$order_settings_list[23]->header_name }}
@@ -763,7 +765,7 @@
                                                             </div> -->
                                     {{-- This option moved to Pop-up setting  --}}
 
-                                    {{-- <div class="col-sm-4">
+                                    {{-- <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Pop up  </label></div>
                               
@@ -827,7 +829,7 @@
                         <div class="row align-items-center p-2">
                             <!-- <div class="row"> -->
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -850,7 +852,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -874,7 +876,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -897,7 +899,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -920,7 +922,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -943,7 +945,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -966,7 +968,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -990,7 +992,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1014,7 +1016,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1038,7 +1040,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1065,7 +1067,7 @@
                             <!-- </div> -->
 
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1090,7 +1092,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1115,7 +1117,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1"> Auto Intro Skip </label></div>
@@ -1134,7 +1136,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1"> Auto Intro Skip </label></div>
@@ -1152,7 +1154,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1176,7 +1178,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1201,7 +1203,7 @@
                             </div>
 
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1226,7 +1228,7 @@
                             </div>
 
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1251,7 +1253,7 @@
                             </div>
 
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1276,7 +1278,7 @@
                             </div>
 
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1301,7 +1303,7 @@
                             </div>
                             <!-- </div> -->
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1324,7 +1326,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1348,7 +1350,7 @@
                             </div>
 
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
@@ -1372,7 +1374,7 @@
                             </div>
 
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between">
                                     <div>
                                         <label class="mt-1">
@@ -1394,7 +1396,7 @@
 
 
                             {{-- Recommended videos site --}}
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between">
                                     <div>
                                         <label class="mt-1">
@@ -1415,7 +1417,7 @@
                             </div>
 
                             {{-- Recommended videos users --}}
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between">
                                     <div>
                                         <label class="mt-1">
@@ -1437,7 +1439,7 @@
 
 
                             {{-- Recommended videos Country --}}
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between">
                                     <div>
                                         <label class="mt-1">
@@ -1456,7 +1458,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -1479,7 +1481,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1">
@@ -1502,7 +1504,7 @@
 
                                         </div>
                                     </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                         <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                             style="width: ;">
                                             <div><label class="mt-1"> {{ ucwords('continue watching') }} </label></div>
@@ -1518,7 +1520,7 @@
                                             </div>
                                         </div>
                                     </div>
-                            {{-- <div class="col-sm-4">
+                            {{-- <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">
                                     <div><label class="mt-1">
