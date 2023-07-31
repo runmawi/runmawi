@@ -3364,7 +3364,7 @@ class AdminVideosController extends Controller
             return View::make('admin.expired_storage', $data);
         } else {
             
-            $videos = Video::where("active", 1)->where('status',0)->where('uploaded_by','CPP')->latest()->get();
+            $videos = Video::where("active", 1)->orWhere('active', '=', 1)->where('status',0)->where('uploaded_by','CPP')->latest()->get();
 
             $data = [ "videos" => $videos, ];
 
