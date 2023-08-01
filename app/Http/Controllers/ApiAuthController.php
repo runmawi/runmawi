@@ -3583,14 +3583,14 @@ public function verifyandupdatepassword(Request $request)
                                   return $item;
                                 });
 
-          $audio = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured')
+          $audio = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured','mp3_url')
                                 ->orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
                                 ->orwhere('audio.title', 'LIKE', '%' .$search_value . '%')
                                 ->where('active', '=', '1')
                                 ->where('status', '=', '1')
                                 ->limit('10')
                                 ->get()->map(function ($item) {
-                                  $item['image_url'] = URL::to('public/uploads/audios/'.$item->image);
+                                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
                                   $item['source']    = "Audios";
                                   return $item;
                                 });
