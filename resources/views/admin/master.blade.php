@@ -109,6 +109,7 @@ if (!empty($data['password_hash'])) {
 
 <style>
     body.dark {background-color: #1d1d1d;} /* #9b59b6 */
+    body.dark .modal-content{background-color: #1d1d1d!important;} /* #9b59b6 */
     body.dark .iq-sidebar-menu .iq-menu li ul li a:hover {
     background-color: #222428;
     color: #ffffffe6;
@@ -147,6 +148,7 @@ if (!empty($data['password_hash'])) {
     body.dark th{color: #ffffffe6;}
     body.dark .table-bordered td, .table-bordered th {color: #ffffffe6;}
     body.dark .tags-input-wrapper input{color: #ffffffe6;}
+    body.dark h3{color: #ffffffe6;}
     body.dark h4{color: #ffffffe6;}
     body.dark h5{color: #ffffffe6;}
     body.dark .theme_name{color: #ffffffe6;}
