@@ -78,7 +78,15 @@ class LoginController extends Controller
      */
     public function __construct(Request $request)
     {
+
         $data = $request->all();
+        // dd($data);
+        $data['email'] = str_replace(' ', '', $data['email']);
+        $data['password'] = str_replace(' ', '', $data['password']);
+
+        $request['email'] = str_replace(' ', '', $request['email']);
+        $request['password'] = str_replace(' ', '', $request['password']);
+        
             if(!empty($data)){
 
                 $user = User::where('email',$data['email'])->first('provider');
