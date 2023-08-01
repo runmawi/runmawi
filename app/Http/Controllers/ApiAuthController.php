@@ -13998,7 +13998,7 @@ public function QRCodeMobileLogout(Request $request)
     $data = $query->latest()->get();
 
     $data->transform(function ($item) {
-      $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
+      $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
       $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
       $item['source']    = "Audios";
       return $item;
@@ -14036,8 +14036,8 @@ public function QRCodeMobileLogout(Request $request)
     $data = $query->latest()->get();
 
     $data->transform(function ($item) {
-      $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
-      $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
+      $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+      $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image) ;
       $item['source']    = "Audios";
       return $item;
     });
@@ -14248,13 +14248,13 @@ public function QRCodeMobileLogout(Request $request)
   private static function Audios_Pagelist(){
 
       $query = Audio::query()
-        ->select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured')
+        ->select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured','mp3_url')
         ->where('active',1)->where('status', 1);
 
         $data = $query->latest()->get();
 
         $data->transform(function ($item) {
-          $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
+          $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
           $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
           $item['source']    = "Audios";
           return $item;
