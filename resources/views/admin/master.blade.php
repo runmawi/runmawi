@@ -108,7 +108,14 @@ if (!empty($data['password_hash'])) {
   <![endif]-->
 
 <style>
+    /*table.dataTable thead .sorting{
+        display: none!important;
+    }*/
+    table.dataTable thead .sorting_asc{
+        background-image: none!important;
+    }
     body.dark {background-color: #1d1d1d;} /* #9b59b6 */
+    body.dark .list-group-item-action:active{background-color: #1d1d1d!important;} /* #9b59b6 */
     body.dark #progressbar li{background-color: transparent;color: #fff;} /* #9b59b6 */
     body.dark .modal-content{background-color: #1d1d1d!important;} /* #9b59b6 */
     body.dark .iq-sidebar-menu .iq-menu li ul li a:hover {
@@ -117,22 +124,22 @@ if (!empty($data['password_hash'])) {
 } /* #9b59b6 */
     body.dark .content-page{background-color: #1d1d1d;} /* #9b59b6 */
     body.dark .btn-black{background-color: #fff!important;} /* #9b59b6 */
-    body.dark .bg-white{background-color: #1d1d1d!important;} /* #9b59b6 */
+    body.dark .bg-white{background-color: transparent!important;} /* #9b59b6 */
     body.dark #video{background-color: transparent!important;} /* #9b59b6 */
-    body.dark .form-control{background: #141414!important;color: #fff!important;} /* #9b59b6 */
-    body.dark .form-control option{background: #141414!important;color: #fff!important;} /* #9b59b6 */
-    body.dark .select2-selection__rendered{background: #141414!important;} /* #9b59b6 */
+    body.dark .form-control{background: #3e3e3e!important;color: #fff!important;} /* #9b59b6 */
+    body.dark .form-control option{background: #3e3e3e!important;color: #fff!important;} /* #9b59b6 */
+    body.dark .select2-selection__rendered{background: #3e3e3e!important;} /* #9b59b6 */
     body.dark .r1{background-color:  #222428;color: #ffffffe6;} /* #9b59b6 */
     body.dark .file{background-color: #292c35;} /* #9b59b6 */
-    body.dark #sidebar-wrapper .list-group{background-color: #292c35;} /* #9b59b6 */
-    body.dark .card-title.upload-ui{background-color: #222428;color: #ffffffe6;} /* #9b59b6 */
-    body.dark .dropzone{background-color: #000;color: #ffffffe6;} /* #9b59b6 */
-    body.dark .list-group-flush .list-group-item{background-color: #292c35;color: #fff;} /* #9b59b6 */
+    body.dark #sidebar-wrapper .list-group{background-color: ;} /* #9b59b6 */
+    body.dark .card-title.upload-ui{background-color: transparent;color: #ffffffe6;} /* #9b59b6 */
+    body.dark .dropzone{background-color: transparent;color: #ffffffe6;} /* #9b59b6 */
+    body.dark .list-group-flush .list-group-item{background-color: #292c35;color: #fff;box-shadow: 0px 0px 1px #3e3e3e;} /* #9b59b6 */
     body.dark .black{background-color: #222428!important;color: #ffffffe6!important;} /* #9b59b6 */
     body.dark .movie_table tbody td{background-color: #222428;color: #ffffffe6;} /* #9b59b6 */
     body.dark .table-striped tbody tr:nth-of-type(odd){background-color:  #222428;color: #fff;} /* #9b59b6 */
     body.dark .movie_table thead th{background-color: #292c35;color: #ffffffe6!important;} /* #9b59b6 */
-    body.dark #msform fieldset{background-color: #292c35;padding: 10px;} /* #9b59b6 */
+    body.dark #msform fieldset{background-color: transparent;padding: 10px;} /* #9b59b6 */
     body.dark .iq-footer{background-color: #1d1d1d;border-top: 1px solid #000;} /* #9b59b6 */
    /* #9b59b6 */
    
@@ -144,14 +151,20 @@ if (!empty($data['password_hash'])) {
     body.dark .iq-menu li a span{color: #ffffffe6;} /* #9b59b6 */
     /*body.dark h1,h2,h3,h4,h5,h6{color: #fff;}*/
     body.dark label{color: #ffffffe6;}
+    body.dark .iq-bg-warning{color: #fff!importan; background:transparent!important;}
+    body.dark .iq-bg-success{color: #fff!important; background:transparent!important;}
+    body.dark .iq-bg-danger{ color: #fff!important; background:transparent!important;}
     body.dark #progressbar li.active{color: blue!important;}
+    body.dark #progressbar li img{filter: invert(1);}
+    body.dark .ply{filter: invert(1);}
     body.dark .fs-title{color: #ffffffe6;}
+    body.dark .panel-body{color: #ffffffe6!important;}
     body.dark .iq-submenu li>a{color: #ffffffe6;}
     body.dark #optionradio{color: #fff;}
     body.dark .dropzone .dz-message .dz-button{color: #fff;}
     body.dark th{color: #ffffffe6;}
     body.dark .table-bordered td, .table-bordered th {color: #ffffffe6;}
-    body.dark .tags-input-wrapper input{color: #ffffffe6;}
+    body.dark .tags-input-wrapper input{color: #000;background: #fff!important;}
     body.dark h3{color: #ffffffe6;}
     body.dark h4{color: #ffffffe6;}
     body.dark h5{color: #ffffffe6;}

@@ -165,7 +165,7 @@ border-radius: 0px 4px 4px 0px;
 
 	
 .tags-input-wrapper{
-    background: transparent;
+    background: #fff;
     padding: 10px;
     border-radius: 4px;
     max-width: 400px;
