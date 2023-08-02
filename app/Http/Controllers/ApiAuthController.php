@@ -2923,6 +2923,7 @@ public function verifyandupdatepassword(Request $request)
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
     $user = User::find($user_id);
+    $amount_ppv = Video::where('id',$video_id)->pluck('ppv_price')->first();
     if($payment_type == 'stripe'){
 
     $paymentMethod = $request->get('py_id');
@@ -2935,7 +2936,7 @@ public function verifyandupdatepassword(Request $request)
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
         send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
       } else {
@@ -2959,7 +2960,7 @@ public function verifyandupdatepassword(Request $request)
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
       } else {
         DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
@@ -3583,14 +3584,14 @@ public function verifyandupdatepassword(Request $request)
                                   return $item;
                                 });
 
-          $audio = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured')
+          $audio = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured','mp3_url')
                                 ->orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
                                 ->orwhere('audio.title', 'LIKE', '%' .$search_value . '%')
                                 ->where('active', '=', '1')
                                 ->where('status', '=', '1')
                                 ->limit('10')
                                 ->get()->map(function ($item) {
-                                  $item['image_url'] = URL::to('public/uploads/audios/'.$item->image);
+                                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
                                   $item['source']    = "Audios";
                                   return $item;
                                 });
@@ -12880,7 +12881,7 @@ public function QRCodeMobileLogout(Request $request)
 
         if( $OrderHomeSetting['video_name'] == "my_play_list" ){          // Audio PlayList
          
-          $data = $this->All_Homepage_my_playlist();
+          $data = $this->All_Homepage_my_playlist($user_id);
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
           $header_name_IOS = $OrderHomeSetting['header_name'] ;
@@ -13009,7 +13010,7 @@ public function QRCodeMobileLogout(Request $request)
     }
 
     if($Homesetting->my_playlist == 1 && $this->All_Homepage_my_playlist( $user_id )->isNotEmpty() ){
-      array_push($input,'my_playlist');
+      array_push($input,'my_play_list');
    }
 
    if($Homesetting->video_playlist == 1 && $this->All_Homepage_video_playlist()->isNotEmpty() ){
@@ -13035,7 +13036,7 @@ public function QRCodeMobileLogout(Request $request)
 
     else:
 
-      $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict','player_image','description')
+      $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict','player_image','description','trailer','trailer_type')
         ->where('active',1)->where('status', 1)->where('draft',1);
 
           if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
@@ -13074,7 +13075,7 @@ public function QRCodeMobileLogout(Request $request)
       
       else:
 
-        $data = Video::select('id','player_image','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict','description')
+        $data = Video::select('id','player_image','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict','description','trailer','trailer_type')
           ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
 
             if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
@@ -13161,7 +13162,7 @@ public function QRCodeMobileLogout(Request $request)
 
       else:
 
-        $data = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured','description')
+        $data = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured','description','mp3_url')
           ->where('active',1)->where('status', 1)->latest();
 
             if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
@@ -13479,11 +13480,12 @@ public function QRCodeMobileLogout(Request $request)
 
   
   private static function All_Homepage_my_playlist( $user_id ){
+
     $my_playlist_status = MobileHomeSetting::pluck('my_playlist')->first();
 
       if( $my_playlist_status == null || $my_playlist_status == 0 ): 
 
-          $data = array();      // Note - if the home-setting (Series Genre status) is turned off in the admin panel
+          $data = array();      // Note - if the home-setting (Audio Playlist status) is turned off in the admin panel
       else:
 
           $data =  MyPlaylist::where('user_id',$user_id)->get();
@@ -13501,7 +13503,7 @@ public function QRCodeMobileLogout(Request $request)
 
       if( $video_playlist_status == null || $video_playlist_status == 0 ): 
 
-          $data = array();      // Note - if the home-setting (Series Genre status) is turned off in the admin panel
+          $data = array();      // Note - if the home-setting (Video Playlist status) is turned off in the admin panel
       else:
 
           $data =  AdminVideoPlaylist::get()->map(function ($item) {
@@ -13526,7 +13528,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $check_Kidmode = 0 ;
 
-        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.description','videos.player_image',DB::raw('COUNT(video_id) AS count'))
+        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.description','videos.player_image','videos.trailer','videos.trailer_type',DB::raw('COUNT(video_id) AS count'))
               ->join('videos', 'videos.id', '=', 'recent_views.video_id');
 
             if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
@@ -13566,7 +13568,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $check_Kidmode = 0 ;
 
-        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.player_image', 'videos.description',DB::raw('COUNT(video_id) AS count'))
+        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.player_image', 'videos.description','videos.trailer','videos.trailer_type',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')
                   ->groupBy('video_id')->where('recent_views.sub_user',$user_id)
                   ->orderByRaw('count DESC' );
@@ -13605,7 +13607,7 @@ public function QRCodeMobileLogout(Request $request)
       
         $check_Kidmode = 0 ;
 
-        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.player_image','videos.description',DB::raw('COUNT(video_id) AS count'))
+        $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.player_image','videos.trailer','videos.trailer_type','videos.description',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
                   ->where('country_name', Country_name());
                   
@@ -13657,7 +13659,7 @@ public function QRCodeMobileLogout(Request $request)
         })
 
         ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
-            $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description')
+            $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type')
                 ->where('videos.active', 1)
                 ->where('videos.status', 1)
                 ->where('videos.draft', 1);
@@ -13781,7 +13783,7 @@ public function QRCodeMobileLogout(Request $request)
           })
           ->with(['category_audios' => function ($audios_videos) {
               $audios_videos
-                  ->select('audio.id','audio.title','audio.slug','audio.year','audio.rating','audio.access','audio.ppv_price','audio.duration','audio.rating','audio.image','audio.featured','audio.player_image','audio.description')
+                  ->select('audio.id','audio.title','audio.slug','audio.year','audio.rating','audio.access','audio.ppv_price','audio.duration','audio.rating','audio.image','audio.featured','audio.player_image','audio.description','audio.mp3_url')
                   ->where('audio.active', 1)
                   ->latest('audio.created_at');
           }])
@@ -13997,7 +13999,7 @@ public function QRCodeMobileLogout(Request $request)
     $data = $query->latest()->get();
 
     $data->transform(function ($item) {
-      $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
+      $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
       $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
       $item['source']    = "Audios";
       return $item;
@@ -14035,8 +14037,8 @@ public function QRCodeMobileLogout(Request $request)
     $data = $query->latest()->get();
 
     $data->transform(function ($item) {
-      $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
-      $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
+      $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+      $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image) ;
       $item['source']    = "Audios";
       return $item;
     });
@@ -14247,13 +14249,13 @@ public function QRCodeMobileLogout(Request $request)
   private static function Audios_Pagelist(){
 
       $query = Audio::query()
-        ->select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured')
+        ->select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured','mp3_url')
         ->where('active',1)->where('status', 1);
 
         $data = $query->latest()->get();
 
         $data->transform(function ($item) {
-          $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
+          $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
           $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
           $item['source']    = "Audios";
           return $item;
@@ -20275,5 +20277,99 @@ public function TV_login(Request $request)
 }
 }
 
+    public function Master_list_videos()
+    {
+   
+        $videos = Video::latest()->get()->map(function ($item) {
+   
+                        switch (true) {
+
+                            case $item['type'] == "mp4_url":
+                            $item['videos_url'] =  $item->mp4_url ;
+                            break;
+                
+                            case $item['type'] == "m3u8_url":
+                            $item['videos_url'] =  $item->m3u8_url ;
+                            break;
+                
+                            case $item['type'] == "embed":
+                            $item['videos_url'] =  $item->embed_code ;
+                            break;
+                            
+                            case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                            $item['videos_url']    = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                            break;
+                
+                            default:
+                            $item['videos_url']    = null ;
+                            break;
+                        }
+
+                        switch (true) {
+
+                            case $item['publish_type'] == "mp4_url" && $item['publish_status'] == 1 :
+                            $item['releaseDate'] =  $item->publish_time ;
+                            break;
+                
+                            default:
+                            $item['releaseDate']    = $item->created_at  ;
+                            break;
+                        }
+                    
+                        return [
+                            'id'    => $item->id,
+                            'title' => $item->title,
+                            'shortDescription' => $item->description,
+                            'thumbnail'  => URL::to('public/uploads/images/' . $item->image),
+                            'releaseDate' => $item['releaseDate'] ,
+
+                            "genres" => CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')->where('video_id', $item->id)->get()
+                                ->pluck('name')->map(function ($name) {
+                                    return $name ;
+                                })->toArray(),
+                            'content'      => array(
+                            'dateAdded' => $item->created_at ,
+                            'duration' =>  $item->duration ,
+                            'videos' => array( 
+                                array(
+                                    "url" => $item->videos_url,
+                                    "quality" => "HD",
+                                    "videoType" => $item->type,
+                                )
+                            ),
+                            ),
+                        ];
+                    });
+   
+                    $playlists = AdminVideoPlaylist::latest()->get()->map(function ($item) {
+                        return [
+                            "name" => $item->title,
+                            "itemIds" => VideoPlaylist::where('playlist_id', $item->id)
+                                ->pluck('video_id')
+                                ->map(function ($videoId) {
+                                    return $videoId ;
+                                })
+                                ->toArray(),
+                        ];
+                    });
+                
+                    $VideoCategory = VideoCategory::latest()->get()->map(function ($item) {
+                        return [
+                            "name" =>  $item->name,
+                            "order" => $item->order
+                        ];
+                    });
+
+                $response = array(
+                "providerName" => GetWebsiteName(),
+                "language" => "en-US",
+                "lastUpdated"=> Video::latest()->pluck('updated_at')->first() ,
+                "movies"  =>  $videos ,
+                "playlists" => $playlists ,
+                "categories"  => $VideoCategory ,
+                );
+   
+                return response()->json($response, 200);
+    }
 
 }

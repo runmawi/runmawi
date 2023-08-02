@@ -380,9 +380,10 @@ i.fa.fa-google-plus {
                             </select>
                             </div>
                             <div class="col-md-7 col-sm-8">
-                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
-                                <span class="verify-error"></span>
-                                
+                                <!-- <input id="text" type="text"  onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <span class="verify-error"></span> -->
+                                <input type="text" id="mobile" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" class="form-control" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" required autocomplete="off" autofocus/>
+                                <span id="error" style="color: Red; display: none">* Enter Only Numbers</span>
                                  @error('mobile')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -398,6 +399,44 @@ i.fa.fa-google-plus {
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                 <label id="fileLabel">Choose Profile Image</label>
                                  </div>
+                                 <div class="col-md-12">
+                                <select class="phselect form-control" name="country" id="country" >
+                                    <option>Select Country</option>
+                                        @foreach($jsondata as $code)
+                                        <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
+                                        @endforeach
+                                </select>  
+                            </div>
+
+                            <div class="col-md-12">
+                                <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus>
+                                @error('state')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-12">
+                                <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus>
+
+                                @error('city')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-12">
+                                <select class="phselect form-control" name="support_username" id="support_username" >
+                                        <option>Select Support User</option>
+                                            @foreach($Artists as $Artist)
+                                            <option value="{{  $Artist['artist_name'] }}">{{ $Artist['artist_name'] }}</option>
+                                            @endforeach
+                                    </select>  
+                            </div>
+                            
+
                                  <div class="col-md-12">
                                      <div class="row">
                                      <div class="col-md-12">
@@ -438,9 +477,6 @@ i.fa.fa-google-plus {
                                  
                             </div>
                           
-                        
-                            
-
                        
                          
                         <div class="form-group row">
@@ -608,6 +644,29 @@ i.fa.fa-google-plus {
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
+
+var specialKeys = new Array();
+        specialKeys.push(8); //Backspace
+
+    function IsNumeric(e) {
+    var keyCode = e.which ? e.which : e.keyCode;
+    var inputField = e.target || e.srcElement;
+    var inputValue = inputField.value;
+    var digitCount = inputValue.replace(/[^0-9]/g, '').length;
+
+    var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
+
+    if (digitCount >= 10) {
+        alert('Please enter at least 10 characters');
+        ret = ret || specialKeys.indexOf(keyCode) !== -1;
+        document.getElementById("error").style.display = ret ? "none" : "inline";
+        return false;
+    }
+
+    document.getElementById("error").style.display = ret ? "none" : "inline";
+    return ret;
+}
+
     function visibility1() {
   var x = document.getElementById('password');
   if (x.type === 'password') {

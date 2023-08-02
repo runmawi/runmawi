@@ -62,7 +62,9 @@
                                         src="{{ $user->intro_video }}"  type="video/mp4" >
                                         </td>
                                     <td colspan="2">
-
+                                    <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit" href="{{ URL::to('admin/channel/user/edit') . '/' . $user->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                       
                                        <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete" onclick="return confirm('Are you sure?')" 
                                              href="{{ URL::to('/admin/channel/user/delete') . '/' . $user->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>

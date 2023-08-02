@@ -140,7 +140,11 @@ class ChannelController extends Controller
 
     public function play_videos($slug)
     {
-        
+        $settings = Setting::first();
+        if ($settings->access_free == 0 && Auth::guest())
+        {
+            return Redirect::to('/');
+        }
         $data['password_hash'] = '';
         $data = session()->all();
         $getfeching = \App\Geofencing::first();

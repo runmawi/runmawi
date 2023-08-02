@@ -327,6 +327,53 @@ i.fa.fa-google-plus {
                             </div>            
                                 @endif
                             
+                                @if(!empty($SignupMenu) && $SignupMenu->country == 1)
+                                <div class="col-md-12" style="postion:relative;">
+                                    <select class="phselect form-control" name="country" id="country" >
+                                        <option>Select Country</option>
+                                            @foreach($jsondata as $code)
+                                            <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
+                                            @endforeach
+                                    </select>  
+                                </div>
+                                 @endif
+                            
+                                 @if (!empty($SignupMenu) && $SignupMenu->state == 1)
+                                    <div class="col-md-12">
+                                        <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus>
+
+                                        @error('state')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    @endif
+
+                                    
+                                @if (!empty($SignupMenu) && $SignupMenu->city == 1)
+                                    <div class="col-md-12">
+                                        <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus>
+
+                                        @error('city')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    @endif
+
+                                    
+                                @if(!empty($SignupMenu) && $SignupMenu->support_username == 1)
+                                <div class="col-md-12" style="postion:relative;">
+                                    <select class="phselect form-control" name="support_username" id="support_username" >
+                                        <option>Select Support User</option>
+                                            @foreach($Artists as $Artist)
+                                            <option value="{{  $Artist['artist_name'] }}">{{ $Artist['artist_name'] }}</option>
+                                            @endforeach
+                                    </select>  
+                                </div>
+                                 @endif
                             
                        <div class="form-group row">
                         </div>

@@ -159,8 +159,9 @@ class SignupController extends Controller
     {
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
-        
-        $SiteTheme = SiteTheme::first();
+      
+            $Artists = \App\Artist::get();
+            $SiteTheme = SiteTheme::first();
         // dd($SiteTheme->signup_theme);
             $signup_status = FreeRegistration();
 //            if ( $signup_status == 1 ) {
@@ -173,9 +174,9 @@ class SignupController extends Controller
             $settings = \App\Setting::first();
             if($SiteTheme->signup_theme == 0){
                 if($settings->free_registration == 1) {
-                    return Theme::view('register.step1',compact('register'));
+                    return Theme::view('register.step1',compact('register','Artists'));
                 } else {
-                    return Theme::view('register.step1',compact('register'));
+                    return Theme::view('register.step1',compact('register','Artists'));
                 }
         }elseif($SiteTheme->signup_theme == 1){
 
@@ -183,7 +184,8 @@ class SignupController extends Controller
             $data = array(
                 'SignupMenu' => $SignupMenu,
                 'register' => $register,
-                'admin_user' => Auth::user()
+                'admin_user' => Auth::user(),
+                'Artists' => $Artists,
             );
             if($settings->free_registration == 1) {
                 return Theme::view('register.signup_step1',$data);

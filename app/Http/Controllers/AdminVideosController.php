@@ -2061,28 +2061,15 @@ class AdminVideosController extends Controller
 
             $video->video_title_image = $video_title_image_filename;
         }
-
                 // Ads videos
         if($data["ads_tag_url_id"] == null ){
             $video->ads_tag_url_id = null;
             $video->tag_url_ads_position = null;
-            $video->pre_ads_category = $data["pre_ads_category"];
-            $video->mid_ads_category = $data["mid_ads_category"];
-            $video->post_ads_category = $data["post_ads_category"];
-            $video->pre_ads = $data["pre_ads"];
-            $video->mid_ads = $data["mid_ads"];
-            $video->post_ads = $data["post_ads"];
         }
         
         if($data["ads_tag_url_id"] != null){
             $video->ads_tag_url_id = $data["ads_tag_url_id"];
             $video->tag_url_ads_position = $data["tag_url_ads_position"];
-            $video->pre_ads_category = null;
-            $video->mid_ads_category = null;
-            $video->post_ads_category = null;
-            $video->pre_ads = null;
-            $video->mid_ads = null;
-            $video->post_ads = null;
         }
         
         $shortcodes = $request["short_code"];
@@ -3016,23 +3003,11 @@ class AdminVideosController extends Controller
         if ($data['ads_tag_url_id'] == null) {
             $video->ads_tag_url_id = null;
             $video->tag_url_ads_position = null;
-            $video->pre_ads_category = $data['pre_ads_category'];
-            $video->mid_ads_category = $data['mid_ads_category'];
-            $video->post_ads_category = $data['post_ads_category'];
-            $video->pre_ads = $data['pre_ads'];
-            $video->mid_ads = $data['mid_ads'];
-            $video->post_ads = $data['post_ads'];
         }
 
         if ($data['ads_tag_url_id'] != null) {
             $video->ads_tag_url_id = $data['ads_tag_url_id'];
             $video->tag_url_ads_position = $data['tag_url_ads_position'];
-            $video->pre_ads_category = null;
-            $video->mid_ads_category = null;
-            $video->post_ads_category = null;
-            $video->pre_ads = null;
-            $video->mid_ads = null;
-            $video->post_ads = null;
         }
 
         if (!empty($data['default_ads'])) {
@@ -3389,7 +3364,7 @@ class AdminVideosController extends Controller
             return View::make('admin.expired_storage', $data);
         } else {
             
-            $videos = Video::where("active", 1)->where('status',0)->where('uploaded_by','CPP')->latest()->get();
+            $videos = Video::where("active", 1)->orWhere('active', '=', 1)->where('status',0)->where('uploaded_by','CPP')->latest()->get();
 
             $data = [ "videos" => $videos, ];
 
