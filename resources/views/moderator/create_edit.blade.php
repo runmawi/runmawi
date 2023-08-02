@@ -115,7 +115,7 @@
                       
                             </div>
                             @if(!empty($moderators->picture))
-                            <img src="<?php if($moderators->picture == "Default.png") { echo  URL::to('/public/uploads/avatars/profile.png') ; }else { echo  $moderators->picture; }?>"  />
+                            <img class="w-50 mt-2 rounded" src="<?php if($moderators->picture == "Default.png") { echo  URL::to('/public/uploads/avatars/profile.png') ; }else { echo  $moderators->picture; }?>"  />
                             @endif
                         </div>
 
