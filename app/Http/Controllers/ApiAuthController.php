@@ -2960,7 +2960,7 @@ public function verifyandupdatepassword(Request $request)
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
       } else {
         DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
