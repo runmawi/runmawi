@@ -5,7 +5,11 @@
     // print_r($moderators->user_role);
     // exit();
     ?>
-
+<style>
+    .form-group{
+        margin: 8px auto;
+    }
+</style>
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -22,6 +26,7 @@
 	
 	<div class="moderator-section-title">
 		<h4><i class="entypo-globe"></i>Update Moderator Users</h4> 
+        <hr>
 	</div>
 	<div class="clear"></div>
 	@if (Session::has('message'))
@@ -38,7 +43,8 @@
 
                     <form method="POST" action="{{ URL::to('admin/moderatoruser/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
                         @csrf
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="row container-fluid">
+                        <div class="col-md-6" >
 
                         <div class="form-group row">
                             <label for="name" class=" col-form-label text-md-right">{{ __('User Name') }}</label>
@@ -48,7 +54,7 @@
                                 <input id="name" type="text" class="form-control" name="username" value="{{ $moderators->username }}"  autocomplete="username" autofocus>
                             </div>
                         </div>
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
 
                         <div class="form-group row">
                             <label for="email" class=" col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
@@ -57,7 +63,7 @@
                                 <input id="email_id" type="email" class="form-control " name="email_id" value="{{ $moderators->email }}"  autocomplete="email">
                             </div>
                         </div>
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
 
                         <div class="form-group row">
                             <label for="mobile_number" class=" col-form-label text-md-right">{{ __('Mobile Number') }}</label>
@@ -85,7 +91,7 @@
                         </div>
  -->
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
 
                         <div class="form-group row">
                             <label for="description" class=" col-form-label text-md-right">{{ __('Description') }}</label>
@@ -97,7 +103,7 @@
                         </div>
 
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
 
                         <div class="form-group row">
                             <label for="picture" class=" col-form-label text-md-right">{{ __('Picture') }}</label>
@@ -113,7 +119,7 @@
                             @endif
                         </div>
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
 
 
                         <div class="form-group row">
@@ -139,9 +145,9 @@
                     </div>
                     <br>
                                             <div class="form-group row mb-0">
-                                                <div class="col-md-12 offset-md-4">
+                                                <div class="col-md-12 text-right">
                                                     <button type="submit" id ="submit" class="btn btn-primary">
-                                                        {{ __('Register') }}
+                                                        {{ __('Update') }}
                                                     </button>
                                                 </div>
                                             </div>
