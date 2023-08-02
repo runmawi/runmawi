@@ -40,9 +40,16 @@ use View;
 use Session;
 use Auth;
 use Hash;
+use App\PPVFreeDurationLogs;
 
 class AdminLiveStreamController extends Controller
 {
+
+    public function __construct()
+    {
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $this->userIp = $geoip->getip();
+    }
     
     public function index()
         {
@@ -2568,5 +2575,33 @@ class AdminLiveStreamController extends Controller
             // return $th->getMessage();
            return abort(404);
         }
+    }
+
+    public function PPV_Free_Duration_Logs(Request $request)
+    {
+
+        $data = PPVFreeDurationLogs::where('source_id',$request->source_id)->where('source_type',$request->source_type);
+        
+                                if( !Auth::guest()  ){
+                                    $data = $data->where('user_id',Auth::user()->id) ;
+                                }
+                                else{
+                                    $data =  $data->where('IP_address', $this->userIp ) ;
+                                }
+
+        $result = $data->first();
+
+        $inputs = array(
+            "user_id"     => !Auth::guest() ? Auth::user()->id : null ,
+            "IP_address"  => Auth::guest() ? $this->userIp : null ,
+            "source_id"   => $request->source_id ,
+            "source_type" => $request->source_type ,
+            "duration"    => $result == null ?  $request->duration : $result->duration + $request->duration ,
+
+        );
+
+        $result == null ? PPVFreeDurationLogs::create($inputs) : PPVFreeDurationLogs::where('id',$result->id)->update($inputs) ;
+
+        return response()->json($inputs['duration'], 200);
     }
 }
