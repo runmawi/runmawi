@@ -390,7 +390,7 @@ if(!Auth::guest()){
                             <input type="hidden" id="live" name="live" value="live">
                             <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
 
-                            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <video id="live_player_M3U8_url" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                                 <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
                             </video>
 
@@ -645,7 +645,7 @@ if(!Auth::guest()){
 
                     <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-                            <video id="live_player_mp4" <?= $autoplay ?>  onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                            <video id="live_player_mp4" <?= $autoplay ?>  onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" >
                                 <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
                                 <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
                             </video>
@@ -668,7 +668,7 @@ if(!Auth::guest()){
                             <input type="hidden" id="live" name="live" value="live">
                             <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
 
-                            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <video id="live_player_M3U8_url" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                                 <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
                             </video>
 
