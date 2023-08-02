@@ -2326,6 +2326,26 @@ class HomeController extends Controller
                     'password_confirmation' => 'required'
                 ]);
             }
+            if($SignupMenu->country == 1){
+                $validatedData = $request->validate([
+                    'country' =>  ['required'],
+                ]);
+            }
+            if($SignupMenu->state == 1){
+                $validatedData = $request->validate([
+                    'state' =>  ['required'],
+                ]);
+            }
+            if($SignupMenu->city == 1){
+                $validatedData = $request->validate([
+                    'city' =>  ['required'],
+                ]);
+            }
+            if($SignupMenu->support_username == 1){
+                $validatedData = $request->validate([
+                    'support_username' =>  ['required'],
+                ]);
+            }
             // dd(1);
 
         }else{
@@ -2414,6 +2434,10 @@ class HomeController extends Controller
                 $new_user->password = Hash::make($get_password);
                 $new_user->activation_code = $string;
                 $new_user->countryname = Country_name();
+                $new_user->country = $request->get('country');
+                $new_user->state = $request->get('state');
+                $new_user->city = $request->get('city');
+                $new_user->support_username = $request->get('support_username');
                 $new_user->save();
                 $settings = Setting::first();
 
@@ -2509,6 +2533,10 @@ class HomeController extends Controller
                 $new_user->activation_code = null;
                 $new_user->active = 1;
                 $new_user->countryname = Country_name();
+                $new_user->country = $request->get('country');
+                $new_user->state = $request->get('state');
+                $new_user->city = $request->get('city');
+                $new_user->support_username = $request->get('support_username');
                 $new_user->save();
 
                  // welcome Email
