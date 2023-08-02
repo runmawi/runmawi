@@ -115,6 +115,7 @@ if (!empty($data['password_hash'])) {
     color: #ffffffe6;
 } /* #9b59b6 */
     body.dark .content-page{background-color: #1d1d1d;} /* #9b59b6 */
+    body.dark .btn{background-color: #4895d1!important;} /* #9b59b6 */
     body.dark .bg-white{background-color: #1d1d1d!important;} /* #9b59b6 */
     body.dark #video{background-color: transparent!important;} /* #9b59b6 */
     body.dark .form-control{background: #141414!important;color: #fff!important;} /* #9b59b6 */
