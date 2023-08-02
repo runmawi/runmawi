@@ -109,6 +109,7 @@ if (!empty($data['password_hash'])) {
 
 <style>
     body.dark {background-color: #1d1d1d;} /* #9b59b6 */
+    body.dark #progressbar li{background-color: transparent;color: #fff;} /* #9b59b6 */
     body.dark .modal-content{background-color: #1d1d1d!important;} /* #9b59b6 */
     body.dark .iq-sidebar-menu .iq-menu li ul li a:hover {
     background-color: #222428;
@@ -131,7 +132,7 @@ if (!empty($data['password_hash'])) {
     body.dark .movie_table tbody td{background-color: #222428;color: #ffffffe6;} /* #9b59b6 */
     body.dark .table-striped tbody tr:nth-of-type(odd){background-color:  #222428;color: #fff;} /* #9b59b6 */
     body.dark .movie_table thead th{background-color: #292c35;color: #ffffffe6!important;} /* #9b59b6 */
-    body.dark #msform fieldset{background-color: #292c35;} /* #9b59b6 */
+    body.dark #msform fieldset{background-color: #292c35;padding: 10px;} /* #9b59b6 */
     body.dark .iq-footer{background-color: #1d1d1d;border-top: 1px solid #000;} /* #9b59b6 */
    /* #9b59b6 */
    
@@ -143,6 +144,8 @@ if (!empty($data['password_hash'])) {
     body.dark .iq-menu li a span{color: #ffffffe6;} /* #9b59b6 */
     /*body.dark h1,h2,h3,h4,h5,h6{color: #fff;}*/
     body.dark label{color: #ffffffe6;}
+    body.dark #progressbar li.active{color: blue!important;}
+    body.dark .fs-title{color: #ffffffe6;}
     body.dark .iq-submenu li>a{color: #ffffffe6;}
     body.dark #optionradio{color: #fff;}
     body.dark .dropzone .dz-message .dz-button{color: #fff;}

@@ -1,7 +1,11 @@
 @extends('admin.master')
 @section('content')
 
-
+<style>
+    .form-group{
+        margin: 8px auto;
+    }
+</style>
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -24,28 +28,29 @@
 
                     <form method="POST" action="{{ URL::to('moderatoruser/create') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_form">
                         @csrf
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="row">
+                        <div class="col-md-6" >
                             <div class="form-group row">
                                 <label for="name" class=" col-form-label text-md-right">{{ __('User Name') }}</label>
                                     <input id="name" type="text" class="form-control" name="username" value="{{ old('username') }}"  autocomplete="username" autofocus>
                             </div>
                         </div>
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
                             <div class="form-group row">
                                 <label for="email" class=" col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
                                 <input id="email_id" type="email" class="form-control " name="email_id" value="{{ old('email_id') }}"  autocomplete="email">
                             </div>
                         </div>
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
                             <div class="form-group row">
                                 <label for="mobile_number" class=" col-form-label text-md-right">{{ __('Mobile Number') }}</label>
                                 <input id="mobile_number" type="number" class="form-control " name="mobile_number" value="{{ old('mobile_number') }}"  autocomplete="email">
                             </div>
                         </div>
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
                             <div class="form-group row">
                                 <label for="password" class=" col-form-label text-md-right">{{ __('Password') }}</label>
                                 <input id="password" type="password" class="form-control " name="password"  autocomplete="new-password">
@@ -53,14 +58,14 @@
                         </div>
 
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
                             <div class="form-group row">
                                 <label for="password-confirm" class=" col-form-label text-md-right">{{ __('Confirm Password') }}</label>
                                 <input id="confirm_password" type="password" class="form-control" name="confirm_password"  autocomplete="new-password">
                             </div>
                         </div>
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
                             <div class="form-group row">
                                 <label for="user_role" class=" col-form-label text-md-right">{{ __('User Roles') }}</label>
                                     <select class="form-control" id="user_role" name="user_role">
@@ -77,7 +82,7 @@
                         </div>
 
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
                             <div class="form-group row">
                                 <label for="description" class=" col-form-label text-md-right">{{ __('Description') }}</label>
                                 <input id="description" type="textarea" class="form-control" name="description"  autocomplete="description">
@@ -85,7 +90,7 @@
                         </div>
 
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" >
                              <div class="form-group row">
                                 <label for="picture" class=" col-form-label text-md-right">{{ __('Picture') }}</label>
                                     <input id="picture" type="file" class="form-control"  id= "picture" name="picture" >
@@ -135,10 +140,11 @@
 </div> -->
 
 
-<br>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-12 ">
+
+                       </div>
+                         <div class=" row mb-0">
+                            <div class="col-md-12 text-right mt-4 mb-5 ">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
