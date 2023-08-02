@@ -2923,6 +2923,7 @@ public function verifyandupdatepassword(Request $request)
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
     $user = User::find($user_id);
+    $amount_ppv = Video::where('id',$video_id)->pluck('ppv_price')->first();
     if($payment_type == 'stripe'){
 
     $paymentMethod = $request->get('py_id');
@@ -2935,7 +2936,7 @@ public function verifyandupdatepassword(Request $request)
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
         send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
       } else {
