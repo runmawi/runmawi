@@ -593,6 +593,27 @@ border-radius: 0px 4px 4px 0px;
                                  <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
                               </div>
                            </div>
+
+                           <div class="row">
+
+                              <div class="col-sm-6">
+                                 <label class="m-0"> Enable Free Duration <small>(Enable / Disable Free Duration)</small></label>                        
+                                 <div class="panel-body">
+                                     <div class="mt-1">
+                                         <label class="switch">
+                                          <input name="free_duration_status"  id="free_duration_status" type="checkbox" >
+                                          <span class="slider round"></span>
+                                         </label>
+                                     </div>
+                                 </div>
+                             </div>
+         
+                              <div class="col-sm-6 form-group">
+                                 <label class="m-0"> Free Duration <small>Enter The Live Stream Free Duration In (HH : MM : SS)</small></label>
+                                 <input type="text" class="form-control" placeholder="HH:MM:SS" name="free_duration" id="free_duration" >
+                              </div>
+                           </div>
+
                            <div class="row">
                               <div class="col-sm-6 form-group">
                                  <label class="mb-2" style="display:block;">Publish Type</label>
