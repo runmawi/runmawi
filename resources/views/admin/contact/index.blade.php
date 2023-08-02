@@ -18,7 +18,7 @@
                             </div>
                      <div class="iq-card-body table-responsive">
                         <div class="table-view">
-                           <table class="table table-striped table-bordered table movie_table " id="player_table" style="width:100%">
+                           <table class="table  movie_table " id="player_table" style="width:100%">
                               <thead>
                                  <tr class="r1">
                                     <th>#</th>
