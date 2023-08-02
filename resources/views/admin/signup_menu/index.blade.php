@@ -108,7 +108,62 @@
                                         </label>
                                     </div>
                                 </td>
-                            </tbody>                           
+                            </tbody>      
+
+                            <tbody>
+                                <td> {{ '7'}} </td>
+                                <td> {{ 'Profile Country'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="country" class="country" id="country" type="checkbox" @if( @$SignupMenu->country == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>    
+
+
+                            <tbody>
+                                <td> {{ '8'}} </td>
+                                <td> {{ 'Profile State'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="state" class="state" id="state" type="checkbox" @if( @$SignupMenu->state == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>    
+
+
+                            <tbody>
+                                <td> {{ '9'}} </td>
+                                <td> {{ 'Profile City'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="city" class="city" id="city" type="checkbox" @if( @$SignupMenu->city == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>    
+
+
+                            <tbody>
+                                <td> {{ '10'}} </td>
+                                <td> {{ 'Profile Support UserName'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="support_username" class="support_username" id="support_username" type="checkbox" @if( @$SignupMenu->support_username == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>    
 
                         </table>
 
