@@ -36,7 +36,7 @@
                         @endforeach
                         @endif	
 
-                    <form method="POST" action="{{ URL::to('admin/channel/user/store') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
+                    <form method="POST" action="{{ URL::to('admin/  ') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
                         @csrf
                         <div class="col-md-6" style="width: 50%; float: left;">
 
@@ -81,12 +81,19 @@
                         <div class="form-group row">
                             <label for="picture" class=" col-form-label text-md-right">{{ __('Channel Logo') }}</label>
                            
-                                <input id="channel_logo" type="file" class="form-control" id= "channel_logo" name="picture"  value="DefaultImageName">
+                                <input id="channel_logo" type="file" class="form-control" id= "channel_logo" name="channel_logo"  value="DefaultImageName">
                                <p class="text" id= "error_picture"> </p>
                       
                             </div>
                         </div>
+                        <div class="col-md-6" style="width: 50%; float: left;">
 
+                        <div class="form-group row">
+                                <label for="" style="color: white;">Upload your best work ( Intro Video )  :</label>
+                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video"/>
+                       
+                            </div>
+                        </div>
                     <br>
                                             <div class="form-group row mb-0">
                                                 <div class="col-md-12 offset-md-4">
