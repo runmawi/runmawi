@@ -439,7 +439,7 @@ $settings  = App\Setting::first();?>
 		<!-- Manage Season -->
 		@if(!empty($series->id))
 		
-		<div class="admin-section-title">
+		<div class="iq-card">
             <div class="row p-3">
                 <div class="col-md-8">
                     <h3 class="fs-title">Manage Season &amp; Episodes</h3> 

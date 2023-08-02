@@ -25,7 +25,7 @@
 <!-- This is where -->
 	
 	<div class="moderator-section-title">
-		<h4><i class="entypo-globe"></i>Update Moderator Users</h4> 
+		<h4><i class="entypo-globe"></i>Update Channel Partner</h4> 
         <hr>
 	</div>
 	<div class="clear"></div>
@@ -41,17 +41,16 @@
                         @endforeach
                         @endif	
 
-                    <form method="POST" action="{{ URL::to('admin/moderatoruser/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
+                    <form method="POST" action="{{ URL::to('admin/channel/user/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
                         @csrf
                         <div class="row container-fluid">
                         <div class="col-md-6" >
 
                         <div class="form-group row">
-                            <label for="name" class=" col-form-label text-md-right">{{ __('User Name') }}</label>
-                            <input id="id" type="hidden" class="form-control" name="id" value="{{  $moderators->id }}"  autocomplete="username" autofocus>
-                            <input id="status" type="hidden" class="form-control" name="status" value="{{  $moderators->status }}"  autocomplete="username" autofocus>
+                            <label for="name" class=" col-form-label text-md-right">{{ __('Channel Name') }}</label>
+                            <input id="id" type="hidden" class="form-control" name="id" value="{{  $Channel->id }}"  autocomplete="channel_name" autofocus>
 
-                                <input id="name" type="text" class="form-control" name="username" value="{{ $moderators->username }}"  autocomplete="username" autofocus>
+                                <input id="name" type="text" class="form-control" name="channel_name" value="{{ $Channel->channel_name }}"  autocomplete="channel_name" autofocus>
                             </div>
                         </div>
                         <div class="col-md-6" >
@@ -60,7 +59,7 @@
                             <label for="email" class=" col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             
-                                <input id="email_id" type="email" class="form-control " name="email_id" value="{{ $moderators->email }}"  autocomplete="email">
+                                <input id="email" type="email" class="form-control " name="email" value="{{ $Channel->email }}"  autocomplete="email">
                             </div>
                         </div>
                         <div class="col-md-6" >
@@ -69,80 +68,49 @@
                             <label for="mobile_number" class=" col-form-label text-md-right">{{ __('Mobile Number') }}</label>
 
                        
-                                <input id="mobile_number" type="number" class="form-control " name="mobile_number" value="{{ $moderators->mobile_number }}"  autocomplete="email">
+                                <input id="mobile_number" type="number" class="form-control " name="mobile_number" value="{{ $Channel->mobile_number }}"  autocomplete="email">
                             </div>
                         </div>
-                        <!-- <div class="col-md-6" style="width: 50%; float: left;">
-
-                        <div class="form-group row">
-                            <label for="password" class=" col-form-label text-md-right">{{ __('Password') }}</label>
-
-                
-                                <input id="password" type="password" class="form-control " name="password"  autocomplete="new-password">
-                            </div>
-                        </div> -->
-                        <!-- <div class="col-md-6" style="width: 50%; float: left;">
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class=" col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                                <input id="confirm_password" type="password" class="form-control" name="confirm_password"  autocomplete="new-password">
-                            </div>
-                        </div>
- -->
-
+                        
                         <div class="col-md-6" >
 
                         <div class="form-group row">
-                            <label for="description" class=" col-form-label text-md-right">{{ __('Description') }}</label>
+                        <label for="channel_about" class=" col-form-label text-md-right">{{ __('Channel About') }}</label>
 
                            
                                
-                            <input id="description" type="textarea" class="form-control" name="description" value ="{{ $moderators->description }}" autocomplete="description">
+                            <input id="channel_about" type="textarea" class="form-control" name="channel_about" value ="{{ $Channel->channel_about }}" autocomplete="channel_about">
                             </div>
                         </div>
-
-
-                        <div class="col-md-6" >
+                        <div class="col-md-6" style="width: 50%; float: left;">
 
                         <div class="form-group row">
-                            <label for="picture" class=" col-form-label text-md-right">{{ __('Picture') }}</label>
-
-                            <input id="picture" type="hidden" class="form-control" id= "picture" name="picture"  value="">
+                            <label for="picture" class=" col-form-label text-md-right">{{ __('Channel Logo') }}</label>
                            
-                                <input id="picture" type="file" class="form-control" id= "picture" name="picture"  value="DefaultImageName">
+                                <input id="channel_logo" type="file" class="form-control" id= "channel_logo" name="channel_logo"  value="DefaultImageName">
                                <p class="text" id= "error_picture"> </p>
                       
                             </div>
-                            @if(!empty($moderators->picture))
-                            <img class="w-50 mt-2 rounded" src="<?php if($moderators->picture == "Default.png") { echo  URL::to('/public/uploads/avatars/profile.png') ; }else { echo  $moderators->picture; }?>"  />
+                            @if(!empty($Channel->channel_logo)) i
+                            <img class="w-50 mt-2 rounded" src="<?php echo  $Channel->channel_logo; ?>"  />
                             @endif
                         </div>
 
                         <div class="col-md-6" >
 
-
                         <div class="form-group row">
-                            <label for="user_role" class=" col-form-label text-md-right">{{ __('User Roles') }}</label>
-
-                     
-                            <select class="form-control" id="user_role" name="user_role">
-                            <option value="">Select Roles</option>
-
-                                    @if($roles->count() > 0)
-                                    @foreach($roles as $value)
-                                    <!-- <option value="{{$value->id}}">{{$value->role_name}}</option> -->
-                                    <option value="{{ $value->id }}" @if(!empty($moderators->user_role) && $moderators->user_role == $value->id){{ 'selected' }}@endif>{{ $value->role_name }}</option>
-
-                                    @endForeach
-                                    @else
-                                    No Record Found
-                                    @endif   
-
-                        </select>         
+                        <label for="" style="color: white;">Upload your best work ( Intro Video )  :</label>
+                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video"/>
+                       
+                            </div>
+                            @if(!empty($Channel->intro_video))
+                            <video  width="100" height="100" id="videoPlayer" class="" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' 
+                            src="{{ $Channel->intro_video }}"  type="video/mp4" >
+                            @endif
                         </div>
-                        </div>
-                    </div>
+
+
+
                     <br>
                                             <div class="form-group row mb-0">
                                                 <div class="col-md-12 text-right">
@@ -189,18 +157,25 @@
 
 
 @section('javascript')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+         <script src="<?= URL::to('/'). '/assets/js/playerjs.js';?>"></script>
 
+<script>
+            $(document).ready(function(){
+              var players_multiple = Plyr.setup('#videoPlayer');
+});
+</script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
 $('form[id="Moderator_edit"]').validate({
 	rules: {
-        username : 'required',
+        channel_name : 'required',
         mobile_number : 'required',
         user_role : 'required',
         email_id : 'required'
 	},
 	messages: {
-        username: 'This field is required',
+        channel_name: 'This field is required',
         mobile_number: 'This field is required',
 	},
 	submitHandler: function(form) {
@@ -209,4 +184,8 @@ $('form[id="Moderator_edit"]').validate({
   });
 
 </script>
+
+
+
+
 	@stop

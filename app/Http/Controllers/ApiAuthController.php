@@ -2923,6 +2923,7 @@ public function verifyandupdatepassword(Request $request)
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
     $user = User::find($user_id);
+    $amount_ppv = Video::where('id',$video_id)->pluck('ppv_price')->first();
     if($payment_type == 'stripe'){
 
     $paymentMethod = $request->get('py_id');
@@ -2935,7 +2936,7 @@ public function verifyandupdatepassword(Request $request)
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
         send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
       } else {
@@ -2959,7 +2960,7 @@ public function verifyandupdatepassword(Request $request)
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
       } else {
         DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
@@ -3583,14 +3584,14 @@ public function verifyandupdatepassword(Request $request)
                                   return $item;
                                 });
 
-          $audio = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured')
+          $audio = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured','mp3_url')
                                 ->orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
                                 ->orwhere('audio.title', 'LIKE', '%' .$search_value . '%')
                                 ->where('active', '=', '1')
                                 ->where('status', '=', '1')
                                 ->limit('10')
                                 ->get()->map(function ($item) {
-                                  $item['image_url'] = URL::to('public/uploads/audios/'.$item->image);
+                                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
                                   $item['source']    = "Audios";
                                   return $item;
                                 });
@@ -13782,7 +13783,7 @@ public function QRCodeMobileLogout(Request $request)
           })
           ->with(['category_audios' => function ($audios_videos) {
               $audios_videos
-                  ->select('audio.id','audio.title','audio.slug','audio.year','audio.rating','audio.access','audio.ppv_price','audio.duration','audio.rating','audio.image','audio.featured','audio.player_image','audio.description')
+                  ->select('audio.id','audio.title','audio.slug','audio.year','audio.rating','audio.access','audio.ppv_price','audio.duration','audio.rating','audio.image','audio.featured','audio.player_image','audio.description','audio.mp3_url')
                   ->where('audio.active', 1)
                   ->latest('audio.created_at');
           }])
@@ -13998,7 +13999,7 @@ public function QRCodeMobileLogout(Request $request)
     $data = $query->latest()->get();
 
     $data->transform(function ($item) {
-      $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
+      $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
       $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
       $item['source']    = "Audios";
       return $item;
@@ -14036,8 +14037,8 @@ public function QRCodeMobileLogout(Request $request)
     $data = $query->latest()->get();
 
     $data->transform(function ($item) {
-      $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
-      $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
+      $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+      $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image) ;
       $item['source']    = "Audios";
       return $item;
     });
@@ -14248,13 +14249,13 @@ public function QRCodeMobileLogout(Request $request)
   private static function Audios_Pagelist(){
 
       $query = Audio::query()
-        ->select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured')
+        ->select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','player_image','featured','mp3_url')
         ->where('active',1)->where('status', 1);
 
         $data = $query->latest()->get();
 
         $data->transform(function ($item) {
-          $item['image_url'] = URL::to('/public/uploads/audios/'.$item->image);
+          $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
           $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
           $item['source']    = "Audios";
           return $item;

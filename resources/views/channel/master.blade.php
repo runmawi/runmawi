@@ -15,6 +15,8 @@ $uppercase =  ucfirst($request_url);
 $channel = Session::get('channel'); 
 $channel = App\Channel::where('id',$channel->id)->first();
 
+$theme_mode = App\SiteTheme::pluck('Channel_theme_mode')->first();
+$theme = App\SiteTheme::first();
 // echo "<pre>";
 // print_r($channel);
 // exit();
@@ -72,31 +74,32 @@ $channel = App\Channel::where('id',$channel->id)->first();
     <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
   <![endif]-->
 <style>
-    body.dark {background-color: #1d1d1d;} /* #9b59b6 */
- body.dark .iq-card1{background-color: #1d1d1d;} /* #9b59b6 */
- body.dark .iq-card0{background-color: #222428;} /* #9b59b6 */
- body.dark .card-title{background-color: #222428;} /* #9b59b6 */
+   body.dark {background-color: #1d1d1d;} /* #9b59b6 */
+    body.dark .list-group-item-action:active{background-color: #1d1d1d!important;} /* #9b59b6 */
+    body.dark #progressbar li{background-color: transparent;color: #fff;} /* #9b59b6 */
+    body.dark .modal-content{background-color: #1d1d1d!important;} /* #9b59b6 */
     body.dark .iq-sidebar-menu .iq-menu li ul li a:hover {
     background-color: #222428;
     color: #ffffffe6;
 } /* #9b59b6 */
     body.dark .content-page{background-color: #1d1d1d;} /* #9b59b6 */
-    body.dark .bg-white{background-color: #1d1d1d!important;} /* #9b59b6 */
-    body.dark #video{background-color: transparent;} /* #9b59b6 */
-    body.dark .form-control{background: #141414!important;color: #fff!important;} /* #9b59b6 */
-    body.dark .form-control option{background: #141414!important;color: #fff!important;} /* #9b59b6 */
-    body.dark .select2-selection__rendered{background: #141414!important;} /* #9b59b6 */
+    body.dark .btn-black{background-color: #fff!important;} /* #9b59b6 */
+    body.dark .bg-white{background-color: transparent!important;} /* #9b59b6 */
+    body.dark #video{background-color: transparent!important;} /* #9b59b6 */
+    body.dark .form-control{background: #3e3e3e!important;color: #fff!important;} /* #9b59b6 */
+    body.dark .form-control option{background: #3e3e3e!important;color: #fff!important;} /* #9b59b6 */
+    body.dark .select2-selection__rendered{background: #3e3e3e!important;} /* #9b59b6 */
     body.dark .r1{background-color:  #222428;color: #ffffffe6;} /* #9b59b6 */
     body.dark .file{background-color: #292c35;} /* #9b59b6 */
-    body.dark #sidebar-wrapper .list-group{background-color: #292c35;} /* #9b59b6 */
-    body.dark .card-title.upload-ui{background-color: #222428;color: #ffffffe6;} /* #9b59b6 */
-    body.dark .dropzone{background-color: #000;color: #ffffffe6;} /* #9b59b6 */
-    body.dark .list-group-flush .list-group-item{background-color: #292c35;color: #fff;} /* #9b59b6 */
+    body.dark #sidebar-wrapper .list-group{background-color: ;} /* #9b59b6 */
+    body.dark .card-title.upload-ui{background-color: transparent;color: #ffffffe6;} /* #9b59b6 */
+    body.dark .dropzone{background-color: transparent;color: #ffffffe6;} /* #9b59b6 */
+    body.dark .list-group-flush .list-group-item{background-color: #292c35;color: #fff;box-shadow: 0px 0px 1px #3e3e3e;} /* #9b59b6 */
     body.dark .black{background-color: #222428!important;color: #ffffffe6!important;} /* #9b59b6 */
     body.dark .movie_table tbody td{background-color: #222428;color: #ffffffe6;} /* #9b59b6 */
     body.dark .table-striped tbody tr:nth-of-type(odd){background-color:  #222428;color: #fff;} /* #9b59b6 */
     body.dark .movie_table thead th{background-color: #292c35;color: #ffffffe6!important;} /* #9b59b6 */
-    body.dark #msform fieldset{background-color: #292c35;} /* #9b59b6 */
+    body.dark #msform fieldset{background-color: transparent;padding: 10px;} /* #9b59b6 */
     body.dark .iq-footer{background-color: #1d1d1d;border-top: 1px solid #000;} /* #9b59b6 */
    /* #9b59b6 */
    
@@ -108,12 +111,20 @@ $channel = App\Channel::where('id',$channel->id)->first();
     body.dark .iq-menu li a span{color: #ffffffe6;} /* #9b59b6 */
     /*body.dark h1,h2,h3,h4,h5,h6{color: #fff;}*/
     body.dark label{color: #ffffffe6;}
+    body.dark .iq-bg-warning{color: #fff!importan; background:transparent!important;}
+    body.dark .iq-bg-success{color: #fff!important; background:transparent!important;}
+    body.dark .iq-bg-danger{ color: #fff!important; background:transparent!important;}
+    body.dark #progressbar li.active{color: blue!important;}
+    body.dark #progressbar li img{filter: invert(1);}
+    body.dark .ply{filter: invert(1);}
+    body.dark .fs-title{color: #ffffffe6;}
+    body.dark .panel-body{color: #ffffffe6!important;}
     body.dark .iq-submenu li>a{color: #ffffffe6;}
     body.dark #optionradio{color: #fff;}
     body.dark .dropzone .dz-message .dz-button{color: #fff;}
     body.dark th{color: #ffffffe6;}
     body.dark .table-bordered td, .table-bordered th {color: #ffffffe6;}
-    body.dark .tags-input-wrapper input{color: #ffffffe6;}
+    body.dark .tags-input-wrapper input{color: #000;background: #fff!important;}
     body.dark h3{color: #ffffffe6;}
     body.dark h4{color: #ffffffe6;}
     body.dark h5{color: #ffffffe6;}
@@ -460,7 +471,7 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                                   <div class="iq-card-body p-0 ">
                                      <div class="bg-primary p-3 d-flex justify-content-between align-items-center">
                                         <h5 class="mb-0 text-white line-height">Hello <?php echo $channel->channel_name; ?> </h5><div>
-         <input type="checkbox" class="checkbox" id="checkbox" value="" />
+              <input type="checkbox" class="checkbox" id="checkbox" value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                <label for="checkbox" class="checkbox-label">
                   <i class="fas fa-moon"></i>
                   <i class="fas fa-sun"></i>
@@ -896,7 +907,39 @@ if(jQuery('#view-chart-13').length){
             });
         </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
-                           
+              
+  <script>
+         $("#checkbox").click(function(){
+         
+            var theme_mode = $("#checkbox").prop("checked");
+        //  alert(theme_mode);
+            $.ajax({
+            url: '<?php echo URL::to("channel-theme-mode") ;?>',
+            method: 'post',
+            data: 
+               {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  mode: theme_mode 
+               },
+               success: (response) => {
+                  console.log(response);
+               },
+            })
+         });
+         
+      </script>
+
+        <!-- Dark Mode & Light Mode  -->
+        <script>
+         let theme_modes = $("#checkbox").val();
+         
+         $(document).ready(function(){
+         
+            if( theme_modes == 'dark' ){
+               document.body.classList.toggle("dark")
+            }
+         });
+      </script>             
     <script>
     const checkbox = document.getElementById("checkbox")
 checkbox.addEventListener("change", () => {

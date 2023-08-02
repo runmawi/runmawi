@@ -1063,6 +1063,247 @@ public function destroy($id)
   
 }
 
+public function ChannelCreate(Request $request)
+{
+    $settings = Setting::first();
+    $data = array(
+        'settings' => $settings,
+    );
+
+    return \View::make('channel.admin.create', $data);
+}
+
+public function ChannelStore(Request $request)
+{
+    $settings = Setting::first();
+
+    try {
+
+        $input = $request->all();
+        $request->validate(['email' => 'required|email|unique:channels,email' ]);
+
+            $channel_logo = (isset($input['channel_logo'])) ? $input['channel_logo'] : '';
+
+
+            $logopath = URL::to("/public/uploads/channel/");
+            $path = public_path() . "/uploads/channel/";
+
+
+            if ($channel_logo != '')
+            {
+                //code for remove old file
+                if ($channel_logo != '' && $channel_logo != null)
+                {
+                    $file_old = $path . $channel_logo;
+                    if (file_exists($file_old))
+                    {
+                        unlink($file_old);
+                    }
+                }
+                //upload new file
+                $randval = Str::random(16);
+                $file = $channel_logo;
+                $channel_logo_ext = $randval . '.' . $request->file('channel_logo')
+                    ->extension();
+                $file->move($path, $channel_logo_ext);
+
+                $channel_logo = URL::to('/') . '/public/uploads/channel/' . $channel_logo_ext;
+
+            }
+            else
+            {
+                $channel_logo = "default_image.jpg";
+            }
+
+            $intro_video = (isset($input['intro_video'])) ? $input['intro_video'] : '';
+
+            if ($intro_video != '')
+            {
+                //code for remove old file
+                if ($intro_video != '' && $intro_video != null)
+                {
+                    $file_old = $path . $intro_video;
+                    if (file_exists($file_old))
+                    {
+                        unlink($file_old);
+                    }
+                }
+                //upload new file
+                $randval = Str::random(16);
+                $file = $intro_video;
+                $intro_video_ext = $randval . '.' . $request->file('intro_video')
+                    ->extension();
+                $file->move($path, $intro_video_ext);
+
+                $intro_video = URL::to('/') . '/public/uploads/channel/' . $intro_video_ext;
+
+            }
+            else
+            {
+                $intro_video = null;
+            }
+
+            $string = Str::random(60);
+            $channel = new Channel;
+            $channel->channel_name = $request->channel_name;
+            $channel->channel_slug = str_replace(' ', '_', $request->channel_name);
+            $channel->email = $request->email;
+            $channel->mobile_number = $request->mobile_number;
+            $channel->channel_logo = $channel_logo;
+            $channel->intro_video = $intro_video;
+            $channel->status = 1;
+            $channel->save();
+
+            $user_data = User::where('email', $request->email_id)->first();
+
+            if(empty($user_data)){
+
+                $user = new User();
+                $user->package = 'Channel';
+                $user->name = $request->channel_name;
+                $user->role = 'admin';
+                $user->username = $request->channel_name;
+                $user->email = $request->email_id;
+                $user->active = 1;
+                $user->save();
+
+            }
+
+    } catch (\Throwable $th) {
+        throw $th;
+    }
+
+    return Redirect::to('admin/channel/view-channel-members')->with('message', 'Channel Partner Created Sucessfully');
+}
+
+public function ChannelEdit( $id)
+{
+    $Channel = Channel::where('id',$id)->first();
+    $data = array(
+        'Channel' => $Channel,
+    );
+
+    return \View::make('channel.admin.edit', $data);
+}
+
+
+public function ChannelUpdate(Request $request)
+{
+    $Session = Session::all();
+    $data = $request->all();
+    
+    $id = $data['id'];
+
+    
+    $channel = Channel::where('id',$id)->first();
+    if(!empty($data['channel_name'])){
+        $channel_name = $data['channel_name'];
+    }else{
+        $channel_name = $channel->channel_name;
+    } 
+
+    if(!empty($data['email'])){
+        $email = $data['email'];
+    }else{
+        $email = $channel->email;
+    }  
+    if(!empty($data['mobile_number'])){
+        $mobile_number = $data['mobile_number'];
+    }else{
+        $mobile_number = $channel->mobile_number;
+    }  
+
+
+    $channel_logo = (isset($data['channel_logo'])) ? $data['channel_logo'] : '';
+    // dd($channel_logo);
+
+    $logopath = URL::to("/public/uploads/channel/");
+    $path = public_path() . "/uploads/channel/";
+
+    $image_path = public_path() . "/uploads/channel/";
+    
+    if ($channel_logo != '')
+    {
+        //code for remove old file
+        if ($channel_logo != '' && $channel_logo != null)
+        {
+            $file_old = $path . $channel_logo;
+            if (file_exists($file_old))
+            {
+                unlink($file_old);
+            }
+        }
+        //upload new file
+        $randval = Str::random(16);
+        $file = $channel_logo;
+
+        if(compress_image_enable() == 1){
+          
+          $filename  = time().'.'.compress_image_format();
+          $channel_logo_ext     =  'channel_logo_'.$filename ;
+
+          Image::make($file)->save(base_path().'/public/uploads/channel/'.$channel_logo_ext,compress_image_resolution() );
+          
+          $channel_logo = URL::to('/') . '/public/uploads/channel/' . $channel_logo_ext;
+      
+        }else{
+
+          $filename  = time().'.'.$file->getClientOriginalExtension();
+          $channel_logo_ext     =  'channel_logo_'.$filename ;
+          Image::make($file)->save(base_path().'/public/uploads/channel/'.$channel_logo_ext );
+          $channel_logo = URL::to('/') . '/public/uploads/channel/' . $channel_logo_ext;
+
+      }
+    
+
+    }elseif(!empty($channel->channel_logo)){
+      $channel_logo = $channel->channel_logo;
+    }
+    else
+    {
+        $channel_logo = null;
+    }
+    // dd($channel_logo);
+    $intro_video = (isset($data['intro_video'])) ? $data['intro_video'] : '';
+
+    if ($intro_video != '')
+    {
+        //code for remove old file
+        if ($intro_video != '' && $intro_video != null)
+        {
+            $file_old = $path . $intro_video;
+            if (file_exists($file_old))
+            {
+                unlink($file_old);
+            }
+        }
+        //upload new file
+        $randval = Str::random(16);
+        $file = $intro_video;
+        $intro_video_ext = $randval . '.' . $request->file('intro_video')
+            ->extension();
+        $file->move($path, $intro_video_ext);
+
+        $intro_video = URL::to('/') . '/public/uploads/channel/' . $intro_video_ext;
+
+    }
+    else
+    {
+        $intro_video = $channel->intro_video;
+    }
+
+    $channel->channel_name = $channel_name;
+    $channel->email = $email;
+    $channel->mobile_number = $mobile_number;
+    $channel->channel_logo = $channel_logo;
+    $channel->intro_video = $intro_video;
+    $channel->channel_about = $request->channel_about;
+    $channel->channel_slug = str_replace(' ', '_', $request->channel_name);
+    $channel->save();
+
+    return \Redirect::back()->with('message','Update User Profile');
+
+}
 
 }
 

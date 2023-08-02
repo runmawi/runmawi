@@ -132,7 +132,7 @@
                             <div class="form-group col-md-4 ads_video_upload" style="{{ $advertisement->ads_upload_type == 'ads_video_upload' ? 'display:block;' : 'display:none;' }}" >
                                 <label> Ads Redirection URL:</label>
                                 <input type="url" id="ads_redirection_url" name="ads_redirection_url"  
-                                        placeholder="https://example.com" pattern="https://.*" class="form-control" value="{{ $advertisement->ads_redirection_url }}" />
+                                        placeholder="https://example.com"  class="form-control" value="{{ $advertisement->ads_redirection_url }}" />
                             </div>
                         </div>
 
