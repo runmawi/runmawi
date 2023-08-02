@@ -116,7 +116,7 @@ if (!empty($data['password_hash'])) {
 } /* #9b59b6 */
     body.dark .content-page{background-color: #1d1d1d;} /* #9b59b6 */
     body.dark .bg-white{background-color: #1d1d1d!important;} /* #9b59b6 */
-    body.dark #video{background-color: transparent;} /* #9b59b6 */
+    body.dark #video{background-color: transparent!important;} /* #9b59b6 */
     body.dark .form-control{background: #141414!important;color: #fff!important;} /* #9b59b6 */
     body.dark .form-control option{background: #141414!important;color: #fff!important;} /* #9b59b6 */
     body.dark .select2-selection__rendered{background: #141414!important;} /* #9b59b6 */
