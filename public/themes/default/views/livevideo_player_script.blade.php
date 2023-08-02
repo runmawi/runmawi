@@ -40,19 +40,26 @@
         const free_duration_seconds = document.getElementById("free_duration_seconds");
         const free_duration_condition = $("#free_duration_condition").val();
 
-        const player = new Plyr('#live_player_mp4',{
+        let playerOptions = {
+                
+            controls: ['play-large', 'restart', 'rewind', 'play', 'fast-forward', 'progress', 'rewind',
+                'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'
+            ],
 
-           controls: [   'play-large','rewind','play','fast-forward','progress','rewind',
-                        'current-time','mute','volume','captions','settings','pip','airplay',
-                        'fullscreen'
-		            ],
+            ads: {
+                enabled: true,
+                tagUrl: live_ads
+            }
+        };
 
-            ads:{ 
-                  enabled: true, 
-                  tagUrl: live_ads 
-            },
-            
-        });
+        if ( free_duration_condition == 1) {
+            playerOptions.keyboard = {
+                focused: false,
+                global: false
+            };
+        }
+
+        const player = new Plyr('#live_player_mp4', playerOptions);
 
             // Ads Views Count
         player.on('adsloaded', (event) => {
@@ -143,6 +150,14 @@
         const free_duration_start_time = $("#free_duration_start_time").val();
 
         const defaultOptions = {};
+
+        if ( free_duration_condition == 1) {
+
+            defaultOptions.keyboard = {
+                focused: false,
+                global: false
+            };
+        }
 
         if (!Hls.isSupported()) {
 
@@ -294,6 +309,15 @@
         const free_duration_condition = $("#free_duration_condition").val();
 
         const defaultOptions = {};
+
+        if ( free_duration_condition == 1) {
+
+            defaultOptions.keyboard = {
+                focused: false,
+                global: false
+            };
+
+        }
 
         if (!Hls.isSupported()) {
 
