@@ -63,7 +63,7 @@
                                 </tr>
                                     @foreach($moderatorsuser as $user)
                                     <tr id="{{ $user->id }}">
-                                    	<td valign="bottom" class="text-center"><img src="{{ URL::to('/') . '/public/uploads/picture/' . $user->picture }}" width="50" height="50"></td>
+                                    	<td valign="bottom" class="text-center"><img src="{{  $user->picture }}" width="50" height="50"></td>
                                         <td valign="bottom"><p>{{ $user->username }}</p></td>
                                         <td valign="bottom"><p>{{ $user->email }}</p></td>
                                         <td valign="bottom"><p>{{ $user->mobile_number }}</p></td>
