@@ -16,7 +16,8 @@ $user = Session::get('user');
 $user = App\ModeratorsUser::where('id',$user->id)->first();
 $userrolepermissiom = Session::get('userrolepermissiom '); 
 
-
+$theme_mode = App\SiteTheme::pluck('CPP_theme_mode')->first();
+$theme = App\SiteTheme::first();
 // echo "<pre>";
 // print_r(auth()->user()->role);
 // exit();
@@ -550,7 +551,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                                      <div class="bg-primary p-3 d-flex justify-content-between align-items-center">
                                         <h5 class="mb-0 text-white line-height">Hello <?php echo $user->username; ?> </h5>
                                          <div>
-         <input type="checkbox" class="checkbox" id="checkbox" value= />
+              <input type="checkbox" class="checkbox" id="checkbox" value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                <label for="checkbox" class="checkbox-label">
                   <i class="fas fa-moon"></i>
                   <i class="fas fa-sun"></i>
@@ -986,6 +987,40 @@ if(jQuery('#view-chart-13').length){
             });
         </script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+
+        
+  <script>
+         $("#checkbox").click(function(){
+         
+            var theme_mode = $("#checkbox").prop("checked");
+        //  alert(theme_mode);
+            $.ajax({
+            url: '<?php echo URL::to("cpp-theme-mode") ;?>',
+            method: 'post',
+            data: 
+               {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  mode: theme_mode 
+               },
+               success: (response) => {
+                  console.log(response);
+               },
+            })
+         });
+         
+      </script>
+
+        <!-- Dark Mode & Light Mode  -->
+        <script>
+         let theme_modes = $("#checkbox").val();
+         
+         $(document).ready(function(){
+         
+            if( theme_modes == 'dark' ){
+               document.body.classList.toggle("dark")
+            }
+         });
+      </script>
      <script>
     const checkbox = document.getElementById("checkbox")
 checkbox.addEventListener("change", () => {

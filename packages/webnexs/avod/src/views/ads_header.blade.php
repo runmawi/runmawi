@@ -507,7 +507,10 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
 </head>
 
 <body>
-    <?php $settings = App\Setting::first(); ?>
+    <?php $settings = App\Setting::first(); 
+    $theme_mode = App\SiteTheme::pluck('Ads_theme_mode')->first();
+    $theme = App\SiteTheme::first();
+    ?>
     <div class="page-container sidebar-collapsed">
 
       <!-- Sidebar-->
@@ -625,7 +628,7 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                                                     <div class="bg-primary p-3 d-flex justify-content-between align-items-center">
                                                         <h5 class="mb-0 text-white line-height">Hello </h5>
                                                        <div>
-         <input type="checkbox" class="checkbox" id="checkbox" value="" />
+            <input type="checkbox" class="checkbox" id="checkbox" value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                <label for="checkbox" class="checkbox-label">
                   <i class="fas fa-moon"></i>
                   <i class="fas fa-sun"></i>
@@ -667,6 +670,40 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                     </div>
                 </div>
             </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            
+  <script>
+         $("#checkbox").click(function(){
+         
+            var theme_mode = $("#checkbox").prop("checked");
+        //  alert(theme_mode);
+            $.ajax({
+            url: '<?php echo URL::to("ads-theme-mode") ;?>',
+            method: 'post',
+            data: 
+               {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  mode: theme_mode 
+               },
+               success: (response) => {
+                  console.log(response);
+               },
+            })
+         });
+         
+      </script>
+
+        <!-- Dark Mode & Light Mode  -->
+        <script>
+         let theme_modes = $("#checkbox").val();
+         
+         $(document).ready(function(){
+         
+            if( theme_modes == 'dark' ){
+               document.body.classList.toggle("dark")
+            }
+         });
+      </script>
             <script>
     const checkbox = document.getElementById("checkbox")
 checkbox.addEventListener("change", () => {
