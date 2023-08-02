@@ -1063,6 +1063,89 @@ public function destroy($id)
   
 }
 
+public function ChannelCreate(Request $request)
+{
+    $settings = Setting::first();
+    $data = array(
+        'settings' => $settings,
+    );
+
+    return \View::make('channel.admin.create', $data);
+}
+
+public function ChannelStore(Request $request)
+{
+    $settings = Setting::first();
+
+    try {
+
+        $input = $request->all();
+        $request->validate(['email' => 'required|email|unique:channels,email' ]);
+
+            $channel_logo = (isset($input['channel_logo'])) ? $input['channel_logo'] : '';
+
+
+            $logopath = URL::to("/public/uploads/channel/");
+            $path = public_path() . "/uploads/channel/";
+
+
+            if ($channel_logo != '')
+            {
+                //code for remove old file
+                if ($channel_logo != '' && $channel_logo != null)
+                {
+                    $file_old = $path . $channel_logo;
+                    if (file_exists($file_old))
+                    {
+                        unlink($file_old);
+                    }
+                }
+                //upload new file
+                $randval = Str::random(16);
+                $file = $channel_logo;
+                $channel_logo_ext = $randval . '.' . $request->file('channel_logo')
+                    ->extension();
+                $file->move($path, $channel_logo_ext);
+
+                $channel_logo = URL::to('/') . '/public/uploads/channel/' . $channel_logo_ext;
+
+            }
+            else
+            {
+                $channel_logo = "default_image.jpg";
+            }
+
+                    $string = Str::random(60);
+            $channel = new Channel;
+            $channel->channel_name = $request->channel_name;
+            $channel->channel_slug = str_replace(' ', '_', $request->channel_name);
+            $channel->email = $request->email;
+            $channel->mobile_number = $request->mobile_number;
+            $channel->channel_logo = $channel_logo;
+            $channel->status = 1;
+            $channel->save();
+
+            $user_data = User::where('email', $request->email_id)->first();
+
+            if(empty($user_data)){
+
+                $user = new User();
+                $user->package = 'Channel';
+                $user->name = $request->channel_name;
+                $user->role = 'admin';
+                $user->username = $request->channel_name;
+                $user->email = $request->email_id;
+                $user->active = 1;
+                $user->save();
+
+            }
+
+    } catch (\Throwable $th) {
+        throw $th;
+    }
+
+    return Redirect::to('admin/channel/view-channel-members')->with('message', 'Channel Partner Created Sucessfully');
+}
 
 }
 
