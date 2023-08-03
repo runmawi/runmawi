@@ -289,6 +289,10 @@ class ApiAuthController extends Controller
               $user->referrer_id = $referred_user_id;
               $user->token = $user_data['token'];
               $user->referral_token = $ref_token;
+              $user->country = $country;
+              $user->state = $state;
+              $user->city = $city;
+              $user->support_username = $support_username;
               $user->active = 1;
               $user->save();
               $userdata = User::where('email', '=', $request->get('email'))->first();
@@ -20370,6 +20374,24 @@ public function TV_login(Request $request)
                 );
    
                 return response()->json($response, 200);
+    }
+
+    
+    public function RegisterDropdownData()
+    {
+   
+
+      $Artists = \App\Artist::get();
+      $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+
+      $jsondata = json_decode($jsonString, true);
+
+        $response = array(
+        "Artists" => $Artists ,
+        "country"  => $jsondata ,
+        );
+   
+        return response()->json($response, 200);
     }
 
 }
