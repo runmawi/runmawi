@@ -2071,6 +2071,13 @@ class AdminVideosController extends Controller
             $video->ads_tag_url_id = $data["ads_tag_url_id"];
             $video->tag_url_ads_position = $data["tag_url_ads_position"];
         }
+
+        if (isset($request->free_duration)) {
+            $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
+            $video->free_duration = $time_seconds;
+        }
+
+        $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
         
         $shortcodes = $request["short_code"];
         $languages = $request["sub_language"];
@@ -2968,6 +2975,8 @@ class AdminVideosController extends Controller
             $video->urlEnd_linksec = $startSec + 60;
         }
 
+       
+
         $shortcodes = $request['short_code'];
         $languages = $request['sub_language'];
         $video->video_category_id = null;
@@ -2997,7 +3006,12 @@ class AdminVideosController extends Controller
         $video->player_image = $data["player_image"] ;
         $video->video_tv_image = $data["video_tv_image"] ;
 
-        
+        if (isset($request->free_duration)) {
+            $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
+            $video->free_duration = $time_seconds;
+        }
+
+        $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
 
         // Ads videos
         if ($data['ads_tag_url_id'] == null) {

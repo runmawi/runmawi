@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
-@section('content')
 @php
     include(public_path('themes\theme1\views\header.php'));
 @endphp
+
+@section('content')
 
 <head>
      <?php
