@@ -2298,3 +2298,5 @@ Route::get('current-currency', 'AdminCurrencySettings@currentcurrency');
 // Route::get('exchangeCurrency','AdminCurrencySettings@exchangeCurrency');
 
 Route::get('exchangeCurrency','AdminCurrencyConvert@Index');
+
+Route::get('PPV-Free-Duration-Logs', 'AdminLiveStreamController@PPV_Free_Duration_Logs')->name('PPV_Free_Duration_Logs');
