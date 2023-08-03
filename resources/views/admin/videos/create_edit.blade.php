@@ -493,16 +493,39 @@ border-radius: 0px 4px 4px 0px;
                         <span><p id="error_recap_end_time" style="color:red;" >* Fill Recap End Time </p></span>
                     </div>
                 </div>
-               <div class="row">
-                   <div class="col-sm-6 form-group">
-                       <label class="m-0">Video Duration:</label>
-                       <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
-                   </div> 
-                   <div class="col-sm-6 form-group">
-                       <label class="m-0">Year:</label>
-                       <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
-                   </div>
-               </div>
+
+                  <div class="row">
+                     <div class="col-sm-6 form-group">
+                        <label class="m-0">Video Duration:</label>
+                        <input type="text" class="form-control" placeholder="Video Duration" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
+                     </div> 
+                     <div class="col-sm-6 form-group">
+                        <label class="m-0">Year:</label>
+                        <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
+                     </div>
+                  </div>
+
+                  <div class="row">
+
+                     <div class="col-sm-6">
+                        <label class="m-0"> Enable Free Duration <small>(Enable / Disable Free Duration)</small></label>                        
+                        <div class="panel-body">
+                            <div class="mt-1">
+                                <label class="switch">
+                                 <input name="free_duration_status"  id="free_duration_status" type="checkbox"  {{ !empty($video->free_duration_status) && $video->free_duration_status == 1 ? "checked" : null }} >
+                                 <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="col-sm-6 form-group">
+                        <label class="m-0"> Free Duration <small>Enter The Live Stream Free Duration In (HH : MM : SS)</small></label>
+                        <input type="text" class="form-control" placeholder="HH:MM:SS" name="free_duration" id="free_duration"  value="@if(!empty($video->free_duration)){{ gmdate('H:i:s', $video->free_duration) }}@endif" />
+                     </div>
+                  </div>
+
+
                 <div class="row">
                     <div class="col-sm-6 form-group mt-3" >
                         <label class="mb-2" style="display:block;">Publish Type</label>
@@ -1760,7 +1783,7 @@ $('#error_video_Category').hide();
       $('#skip_intro').mask("00:00:00");
       $('#skip_recap').mask("00:00:00");
       $('#url_linktym').mask("00:00:00");
-
+      $("#free_duration").mask("00:00:00");
    });
 </script>
 
