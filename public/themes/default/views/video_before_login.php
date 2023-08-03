@@ -117,224 +117,211 @@
 <input type="hidden" id="user_logged_out" value="<?php echo Auth::guest();?>">
 <input type="hidden" id="video_video" value="video">
 <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){echo get_adurl($ads->ads_id);}?>">
-<!-- For Guest users -->      
-<?php if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)
-   //  || Auth::guest() && $video->access == "subscriber"  && empty($video->ppv_price)
-    ) {
-       ?>
-<div id="video_bg">
-<div class=" page-height">
-   <?php 
-      //  $paypal_id = Auth::user()->paypal_id;
-       if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
-       $paypal_subscription = PaypalSubscriptionStatus();
-       } else {
-         $paypal_subscription = "";  
-       }
-       ?>
-   <?php if( $video->access == "guest"  && $video->type == 'embed'): ?>
-   <div id="video_container" class="fitvid">
-      <?php
-         if(!empty($video->embed_code)){?>
-      <div class="plyr__video-embed" id="player">
-         <iframe
-            src="<?php if(!empty($video->embed_code)){ echo $video->embed_code; }else { echo $video->trailer;} ?>"
-            allowfullscreen
-            allowtransparency
-            allow="<?= $autoplay ?>"
-            ></iframe>
-      </div>
-      <?php } ?>
+
+<!-- For Guest users -->   
+
+ <!-- if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)  || Auth::guest() && $video->access == "subscriber"  && empty($video->ppv_price))  -->
+
+<?php if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)) {?>
+
+   <div id="video_bg">
+   <div class=" page-height">
+      <?php 
+         if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
+            $paypal_subscription = PaypalSubscriptionStatus();
+         } else {
+            $paypal_subscription = "";  
+         }
+      ?>
+
+      <?php if( $video->access == "guest"  && $video->type == 'embed'): ?>
+
+         <div id="video_container" class="fitvid">
+            <?php if(!empty($video->embed_code)){?>
+               <div class="plyr__video-embed" id="player">
+                  <iframe src="<?php if(!empty($video->embed_code)){ echo $video->embed_code; }else { echo $video->trailer;} ?>"
+                     allowfullscreen
+                     allowtransparency
+                     allow="<?= $autoplay ?>" >
+                  </iframe>
+               </div>
+            <?php } ?>
+         </div>
+
+      <?php  elseif($video->type == '' && $video->processed_low != 100 || $video->processed_low == null ): ?>
+
+         <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+            <video id="videoPlayer" <?= $autoplay ?>  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+               <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+               
+               <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
+               
+               <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
+                  <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
+               <?php } if($value->sub_language == "German"){?>
+                  <track label="German" kind="subtitles" srclang="de" src="<?= $value->url ?>" >
+               <?php } if($value->sub_language == "Spanish"){ ?>
+                  <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value->url ?>" >
+               <?php } if($value->sub_language == "Hindi"){ ?>
+                  <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value->url ?>" >
+               <?php }
+                  } } else {  } ?>
+
+            </video>
+         </div>
+
+      <?php  elseif($video->type == ''&& $video->processed_low == 100 || $video->processed_low != null): ?>
+
+         <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+            
+            <video id="video" <?= $autoplay ?>  class="adstime_url" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+               <source  type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
+               <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+                  <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+               <?php } if($value['sub_language'] == "German"){ ?>
+                  <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+               <?php } if($value['sub_language'] == "Spanish"){ ?>
+                  <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+               <?php } if($value['sub_language'] == "Hindi"){ ?>
+                  <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+               <?php } } } else { }  ?>  
+            </video>
+         </div>
+
+      <?php  elseif($video->type == 'mp4_url'): ?>
+
+         <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+            <video id="videoPlayer"  <?= $autoplay ?>  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+               <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+               <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
+                  <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
+                     <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
+                  <?php } if($value->sub_language == "German"){?>
+                     <track label="German" kind="subtitles" srclang="de" src="<?= $value->url ?>" >
+                  <?php } if($value->sub_language == "Spanish"){ ?>
+                     <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value->url ?>" >
+                  <?php } if($value->sub_language == "Hindi"){ ?>
+                     <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value->url ?>" >
+                  <?php }
+                  } } else {  } ?>  
+            </video>
+
+            <div class="playertextbox hide">
+               <p><?php if(isset($videonext)){ ?>
+                  <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                     <?php }elseif(isset($videoprev)){ ?>
+                  <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                  <?php } ?>
+                  <?php if(isset($videos_category_next)){ ?>
+                     <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                  <?php }elseif(isset($videos_category_prev)){ ?>
+                     <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                  <?php } ?>
+               </p>
+            </div>
+         </div>
+
+      <?php  elseif($video->type == 'm3u8_url'):  ?>
+
+         <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+            <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' >
+            <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+            <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+            <?php } if($value['sub_language'] == "German"){?>
+            <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+            <?php } if($value['sub_language'] == "Spanish"){ ?>
+            <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+            <?php } if($value['sub_language'] == "Hindi"){ ?>
+            <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+            <?php }
+               } } else {  } ?>  
+         </video>
+
+      <?php  else: ?>
+
+         <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+            <video  id="videoPlayer" <?= $autoplay ?> class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+               <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+                  <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+               <?php } if($value['sub_language'] == "German"){?>
+                  <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+               <?php } if($value['sub_language'] == "Spanish"){ ?>
+                  <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+               <?php } if($value['sub_language'] == "Hindi"){ ?>
+                  <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+               <?php }
+                  } } else {  } ?>  
+            </video>
+
+            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
+            <div class="playertextbox hide">
+               <p><?php if(isset($videonext)){ ?>
+                     <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
+                  <?php }elseif(isset($videoprev)){ ?>
+                     <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
+                  <?php } if(isset($videos_category_next)){ ?>
+                     <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
+                  <?php }elseif(isset($videos_category_prev)){ ?>
+                     <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
+                  <?php } ?>
+               </p>
+            </div>
+         </div>
+      <?php endif; ?>
    </div>
-   <?php  elseif($video->type == '' && $video->processed_low != 100 || $video->processed_low == null ): ?>
+
+<?php }elseif( Auth::guest() && $video->access == "guest" && empty($video->ppv_price ) && !empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path != "public" && empty($video->ppv_price )){  ?>
+  
    <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-      <!-- Current time: <div id="current_time"></div> -->
-      <video id="videoPlayer" <?= $autoplay ?>  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
-         <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-         <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
-         <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
-         <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
-         <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
-         <?php } if($value->sub_language == "German"){?>
-         <track label="German" kind="subtitles" srclang="de" src="<?= $value->url ?>" >
-         <?php } if($value->sub_language == "Spanish"){ ?>
-         <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value->url ?>" >
-         <?php } if($value->sub_language == "Hindi"){ ?>
-         <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value->url ?>" >
-         <?php }
-            } } else {  } ?>  
-      </video>
-   </div>
-   <?php  elseif($video->type == ''&& $video->processed_low == 100 || $video->processed_low != null): ?>
-   <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-      <!-- Current time: <div id="current_time"></div> -->
-      <video id="video" <?= $autoplay ?>  class="adstime_url" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-         <source 
-            type="application/x-mpegURL" 
-            src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
-            >
-         <!-- </video> -->
-         <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
-         <!-- Captions are optional -->
+      <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+         <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type='application/x-mpegURL' label='auto' >
          <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
-         <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+            <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
          <?php } if($value['sub_language'] == "German"){ ?>
-         <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+            <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
          <?php } if($value['sub_language'] == "Spanish"){ ?>
-         <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+            <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
          <?php } if($value['sub_language'] == "Hindi"){ ?>
-         <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+            <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
          <?php } } } else { }  ?>  
       </video>
    </div>
-   <?php  elseif($video->type == 'mp4_url'): 
-      // dd($video->type );
+
+   <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
+
+
+<?php } else {  ?>
+
+   <?php if(!empty($video->path) && $video->path != "public"){ $hls = "hls" ;}else{ $hls = "" ;} ?>
+      <input type="hidden" id="hls" name="hls" value="<?php echo $hls; ?>">
+
+      <div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
+         <div class="container-fluid">
+            <h2 class="text-left"><?php echo $video->title; ?></h2>
+
+            <div class="text-white col-lg-7 p-0">
+               <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
+            </div>
+
+            <h4 class="mb-3">Sorry, this video is only available to
+               <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users<?php endif; ?>
+            </h4>
+            
+            <div class="clear"></div>
+
+            <?php if(Auth::guest() && $video->access == 'registered'): ?>
+               <form method="get" action="<?= URL::to('/signup') ?>">
+                  <button  class="btn btn-primary" id="button">Become a Registered to watch this video</button>
+               </form>
+            <?php else: ?>
+               <form method="get" action="<?= URL::to('signup') ?>"></form>
+            <?php endif; ?>
+         </div>
+      </div>
+      </div>
       
-      ?>
-   <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-      <!-- Current time: <div id="current_time"></div> -->
-      <video id="videoPlayer"  <?= $autoplay ?>  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
-         <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-         <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
-         <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
-         <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
-         <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
-         <?php } if($value->sub_language == "German"){?>
-         <track label="German" kind="subtitles" srclang="de" src="<?= $value->url ?>" >
-         <?php } if($value->sub_language == "Spanish"){ ?>
-         <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value->url ?>" >
-         <?php } if($value->sub_language == "Hindi"){ ?>
-         <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value->url ?>" >
-         <?php }
-            } } else {  } ?>  
-      </video>
-      <div class="playertextbox hide">
-         <!--<h2>Up Next</h2>-->
-         <p><?php if(isset($videonext)){ ?>
-            <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
-            <?php }elseif(isset($videoprev)){ ?>
-            <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
-            <?php } ?>
-            <?php if(isset($videos_category_next)){ ?>
-            <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
-            <?php }elseif(isset($videos_category_prev)){ ?>
-            <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
-            <?php } ?>
-         </p>
-      </div>
-   </div>
-   <?php  elseif($video->type == 'm3u8_url'):  ?>
-   <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
-      <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' >
-      <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
-      <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
-      <?php } if($value['sub_language'] == "German"){?>
-      <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
-      <?php } if($value['sub_language'] == "Spanish"){ ?>
-      <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-      <?php } if($value['sub_language'] == "Hindi"){ ?>
-      <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
-      <?php }
-         } } else {  } ?>  
-   </video>
-   <?php  else: ?>
-   <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-      <!-- Current time: <div id="current_time"></div> -->
-      <video  id="videoPlayer" <?= $autoplay ?> class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
-         <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-         <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' >
-         <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
-         <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
-         <?php } if($value['sub_language'] == "German"){?>
-         <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
-         <?php } if($value['sub_language'] == "Spanish"){ ?>
-         <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-         <?php } if($value['sub_language'] == "Hindi"){ ?>
-         <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
-         <?php }
-            } } else {  } ?>  
-      </video>
-      <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
-      <div class="playertextbox hide">
-         <!--<h2>Up Next</h2>-->
-         <p><?php if(isset($videonext)){ ?>
-            <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
-            <?php }elseif(isset($videoprev)){ ?>
-            <?= Video::where('id','=',$videoprev->id)->pluck('title'); ?>
-            <?php } ?>
-            <?php if(isset($videos_category_next)){ ?>
-            <?= Video::where('id','=',$videos_category_next->id)->pluck('title');  ?>
-            <?php }elseif(isset($videos_category_prev)){ ?>
-            <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
-            <?php } ?>
-         </p>
-      </div>
-   </div>
-   <?php endif; ?>
-</div>
-<?php }elseif( Auth::guest() && $video->access == "guest" && empty($video->ppv_price ) && !empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path != "public" && empty($video->ppv_price )){  ?>
-<div id="video_container" class="fitvid" atyle="z-index: 9999;">
-   <!-- Current time: <div id="current_time"></div> -->
-   <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
-      <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type='application/x-mpegURL' label='auto' >
-      <!-- Captions are optional -->
-      <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
-      <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
-      <?php } if($value['sub_language'] == "German"){ ?>
-      <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
-      <?php } if($value['sub_language'] == "Spanish"){ ?>
-      <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-      <?php } if($value['sub_language'] == "Hindi"){ ?>
-      <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
-      <?php } } } else { }  ?>  
-   </video>
-</div>
-<input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
-<?php }else{  
-   if(!empty($video->path) && $video->path != "public"){ $hls = "hls" ;}else{ $hls = "" ;}
-   ?>
-<input type="hidden" id="hls" name="hls" value="<?php echo $hls; ?>">
-<!-- <div id="video" class="fitvid" style="margin: 0 auto;">
-   <video id="videoPlayer" <?= $autoplay ?> class="video-js vjs-default-skin vjs-big-play-centered  adstime_url" 
-      poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" 
-      controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-      src="<?php echo $video->trailer; ?>"  type="video/mp4" >
-      <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
-      <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
-      <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
-      <?php } if($value['sub_language'] == "German"){ ?>
-      <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
-      <?php } if($value['sub_language'] == "Spanish"){ ?>
-      <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-      <?php } if($value['sub_language'] == "Hindi"){ ?>
-      <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
-      <?php } } } else { } ?>  
-   </video>
-</div> -->
-
-<div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
-    <div class="container-fluid">
-      <h2 class="text-left"><?php echo $video->title; ?></h2>
-      <div class="text-white col-lg-7 p-0"><p style="margin:0 auto;">
-          <?php echo $video->description; ?></p></div>
-      <h4 class="mb-3">Sorry, this video is only available to
-         <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered
-         Users<?php endif; ?></h4>
-      <div class="clear"></div>
-      <?php if(Auth::guest() && $video->access == 'registered'): ?>
-      <form method="get"
-         action="<?= URL::to('/signup') ?>">
-         <button   class="btn btn-primary" id="button">Become a Registered to watch this video</button>
-      </form>
-      <?php else: ?>
-      <form method="get" action="<?= URL::to('signup') ?>">
-      </form>
-      <?php endif; ?>
-</div>
-</div>
-
-                        </div>
 <?php  } ?>
+
 <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
 
                    <!-- BREADCRUMBS -->
@@ -967,12 +954,7 @@
       var videoId = document.getElementById(videotypeId);
    </script>
 
-   <?php
-      // include('AdsvideoPre.php'); 
-      // include('AdsvideoMid.php');
-      // include('AdsvideoPost.php');
-      
-   ?>
+
    <?php
       $player_ui = App\Playerui::pluck('show_logo')->first();
       $logo = App\Setting::pluck('logo')->first();
