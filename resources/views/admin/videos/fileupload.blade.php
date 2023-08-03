@@ -1721,8 +1721,7 @@ $(document).ready(function($){
       $('#skip_intro').mask("00:00:00");
       $('#skip_recap').mask("00:00:00");
       $('#url_linktym').mask("00:00:00");
-
-      
+      $('#free_duration').mask("00:00:00");
    });
    
    

@@ -20,7 +20,7 @@ class Video extends Model
 		'footer', 'duration', 'image', 'embed_code', 'mp4_url', 'webm_url', 'ogg_url','views','rating',
 		'language' ,'year','trailer','created_at','path','Recommendation','country','pdf_files',
 		'reelvideo','url_link','url_linktym','url_linksec','urlEnd_linksec','search_tags',
-		'trailer_description','trailer_type','reels_thumbnail','tag_url_ads_position','video_tv_image');
+		'trailer_description','trailer_type','reels_thumbnail','tag_url_ads_position','video_tv_image','free_duration_status','free_duration');
 
 	public function tags(){
 		return $this->belongsToMany('Tag');
