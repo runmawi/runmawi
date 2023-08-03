@@ -395,682 +395,709 @@ hr {
 $package = App\User::where('id',1)->first();
 $pack = $package->package;
 
+                                // Auth Users 
+
 if(empty($new_date) || Auth::user()->role == 'admin'){
-//   dd($video_access);
 
-if(!Auth::guest()) {
-if( !empty($ppv_video_play) || $video_access == 'free' || Auth::user()->role == 'registered' || 
- $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
+    if(!Auth::guest()) {
 
-  // dd($video_access);
-if ( $ppv_exist > 0 || $video_access == 'free' || Auth::user()->subscribed() && $video->type != "" || 
-Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="subscriber" && $video->type != ""
-|| (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { ?>
-<?php //dd($video->type);
-?>
+        if( !empty($ppv_video_play) || $video_access == 'free' || Auth::user()->role == 'registered' || 
+            $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'
+            || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
-<div id="video_bg">
-    <div class="col-sm-12 intro_skips">
-        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
-        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
-    </div>
-    <div class="col-md-7 end_card_video" id="end_card_video"
-        style="position: absolute; top: 15%; width: 300%; height: 300%;z-index:1;">
-        <div class="col-md-12">
-            <?php foreach($endcardvideo as $val) { ?>
-            <a href="<?php echo URL::to('category'); ?><?= '/videos/' . $val->slug ?>">
-                <img id="endcard" src="<?php echo URL::to('/') . '/public/uploads/images/' . $val->image; ?>" alt="">
-            </a>
-            <?php  } ?>
-        </div>
-        <div class="col-md-6"></div>
+                if ( $ppv_exist > 0 || $video_access == 'free' || Auth::user()->subscribed() && $video->type != "" || 
+                Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="subscriber" && $video->type != ""
+                || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { ?>
 
-    </div>
-    <div class=" page-height">
-        <?php 
-           $paypal_id = Auth::user()->paypal_id;
-           if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
-           $paypal_subscription = PaypalSubscriptionStatus();
-           } else {
-             $paypal_subscription = "";  
-           }
-           if($ppv_exist > 0  || $video_access == 'free' || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
-        <?php if($video->type == 'embed'): ?>
-        <div id="video_container" class="fitvid">
-            <?php
-              if(!empty($video->embed_code)){?>
-            <div class="plyr__video-embed" id="player">
-                <iframe src="<?php if (!empty($video->embed_code)) {
-                    echo $video->embed_code;
-                } else {
-                    echo $video->trailer;
-                } ?>" allowfullscreen allowtransparency allow="<?= $autoplay ?>"></iframe>
-            </div>
-            <?php } ?>
-        </div>
-        <?php  elseif($video->type == ''):  ?>
-        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-
-            <video <?= $autoplay ?> id="video" allow="autoplay" class="adstime_url"
-                poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
-                data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
-                <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>" type='application/x-mpegURL' label='auto'>
-                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-                        foreach ($subtitles as $key => $subtitles_file) { ?>
-                    <track kind="captions" src="<?= $subtitles_file->url ?>"
-                        srclang="<?= $subtitles_file->sub_language ?>"
-                        label="<?= $subtitles_file->shortcode ?>" default>
-                    <?php } } } ?>
-            </video>
-            <div class="playertextbox hide">
-                <!--<h2>Up Next</h2>-->
-                <p><?php if(isset($videonext)){ ?>
-                    <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
-                    <?php }elseif(isset($videoprev)){ ?>
-                    <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
-                    <?php } ?>
-
-                    <?php if(isset($videos_category_next)){ ?>
-                    <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
-                    <?php }elseif(isset($videos_category_prev)){ ?>
-                    <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
-                    <?php } ?></p>
-            </div>
-            <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">
-
-        </div>
-    </div>
-    <?php  elseif($video->type == 'aws_m3u8'):  ?>
-    <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-
-        <video <?= $autoplay ?> id="video" allow="<?= $autoplay ?>" class="adstime_url"
-            poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
-            data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
-            <source src="<?php echo $video->m3u8_url; ?>" type='application/x-mpegURL' label='auto'>
-            <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-            foreach ($subtitles as $key => $subtitles_file) { ?>
-        <track kind="captions" src="<?= $subtitles_file->url ?>"
-            srclang="<?= $subtitles_file->sub_language ?>"
-            label="<?= $subtitles_file->shortcode ?>" default>
-        <?php } } } ?>
-        </video>
-    </div>
-    <?php  elseif($video->type == 'mp4_url'):  ?>
-
-
-    <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-        <!-- Current time: <div id="current_time"></div> -->
-        <video id="videoPlayer" <?= $autoplay ?> class="adstime_url"
-            poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
-            data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
-            <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-            <source src="<?php if (!empty($video->mp4_url)) {
-                echo $video->mp4_url;
-            } else {
-                echo $video->trailer;
-            } ?>" type='video/mp4' label='auto'>
-        <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-            foreach ($subtitles as $key => $subtitles_file) { ?>
-        <track kind="captions" src="<?= $subtitles_file->url ?>"
-            srclang="<?= $subtitles_file->sub_language ?>"
-            label="<?= $subtitles_file->shortcode ?>" default>
-        <?php } } } ?>
-        </video>
-
-
-
-
-        <div class="playertextbox hide">
-            <!--<h2>Up Next</h2>-->
-            <p><?php if(isset($videonext)){ ?>
-                <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
-                <?php }elseif(isset($videoprev)){ ?>
-                <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
-                <?php } ?>
-
-                <?php if(isset($videos_category_next)){ ?>
-                <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
-                <?php }elseif(isset($videos_category_prev)){ ?>
-                <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
-                <?php } ?></p>
-        </div>
-    </div>
-
-    <?php  elseif($video->type == 'm3u8_url'):  ?>
-
-    <video <?= $autoplay ?> id="video" allow="<?= $autoplay ?>" class="adstime_url"
-        poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
-        data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
-        <source src="<?php if (!empty($video->m3u8_url)) {
-            echo $video->m3u8_url;
-        } else {
-            echo $video->trailer;
-        } ?>" type='application/x-mpegURL' label='auto'>
-        <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-            foreach ($subtitles as $key => $subtitles_file) { ?>
-        <track kind="captions" src="<?= $subtitles_file->url ?>"
-            srclang="<?= $subtitles_file->sub_language ?>"
-            label="<?= $subtitles_file->shortcode ?>" default>
-        <?php } } } ?>
-    </video>
-    <?php  else: ?>
-    <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-        <!-- Current time: <div id="current_time"></div> -->
-        <video id="videoPlayer" class="adstime_url"
-            poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
-            data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
-            <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-            <source src="<?php if (!empty($video->m3u8_url)) {
-                echo $video->m3u8_url;
-            } else {
-                echo $video->trailer;
-            } ?>" type='application/x-mpegURL' label='auto'>
-
-        <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-            foreach ($subtitles as $key => $subtitles_file) { ?>
-        <track kind="captions" src="<?= $subtitles_file->url ?>"
-            srclang="<?= $subtitles_file->sub_language ?>"
-            label="<?= $subtitles_file->shortcode ?>" default>
-        <?php } } } ?>
-        </video>
-
-        <div class="playertextbox hide">
-            <!--<h2>Up Next</h2>-->
-            <p><?php if(isset($videonext)){ ?>
-                <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
-                <?php }elseif(isset($videoprev)){ ?>
-                <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
-                <?php } ?>
-
-                <?php if(isset($videos_category_next)){ ?>
-                <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
-                <?php }elseif(isset($videos_category_prev)){ ?>
-                <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
-                <?php } ?></p>
-        </div>
-    </div>
-    <?php endif; ?>
-    <?php else: ?>
-
-    <div id="subscribers_only">
-        <div class="container-fluid">
-        <h2 class="text-left"><?php echo $video->title; ?></h2>
-        <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo $video->description; ?></p>
-
-
-        <h4>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered
-            Users<?php endif; ?></h4>
-        <div class="clear"></div>
-        <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
-        <form method="get" action="<?= URL::to('/') ?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
-            <button id="button">Become a subscriber to watch this video</button>
-        </form>
-        <?php else: ?>
-        <form method="get" action="<?= URL::to('signup') ?>">
-            <button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($video->access == 'registered'): ?>for
-                Free!<?php endif; ?></button>
-        </form>
-        <?php endif; ?>
-        <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-        <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
-            class="view-count rent-video btn btn-primary">
-            <?php echo __('Purchase Now'); ?> </button>
-        <?php } ?>
-    </div></div>
-
-    <?php endif; ?>
-</div>
-
-
-
-<?php }elseif( $ppv_exist > 0 || $video_access == 'free' || Auth::user()->subscribed() && $pack == "Business" || Auth::user()->role == 'admin' && $pack == "Business" || Auth::user()->role =="subscriber" && $pack == "Business"
-   || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Business")) {
- if(!empty($video->path)){
-    ?>
-<div id="video_container" class="fitvid" atyle="z-index: 9999;">
-    <!-- Current time: <div id="current_time"></div> -->
-    <video id="video" class="adstime_url" controls crossorigin playsinline
-        poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
-        data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
-        <source type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">
-        <!-- </video> -->
-        <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
-        <!-- Captions are optional -->
-        <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-            foreach ($subtitles as $key => $subtitles_file) { ?>
-        <track kind="captions" src="<?= $subtitles_file->url ?>"
-            srclang="<?= $subtitles_file->sub_language ?>"
-            label="<?= $subtitles_file->shortcode ?>" default>
-        <?php } } } ?>
-
-    </video>
-</div>
-<input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">
-<?php } }
-/* For Registered User */       
-   else {  
-    // dd( $video_access );
-
-    ?>
-<div
-    id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)),url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
-    <div id="subscribers_only">
-        <div class="clear"></div>
-        <div class="container-fluid">
-        <div style="padding-top:8%;">
-            <h4 class=""><?php echo $video->title; ?></h4>
-            <div class="text-white col-lg-7 p-0">
-            <p class=" " style="margin:0 auto";><?php echo $video->description; ?></p>
-</div>
-
-            <h4>
-               Sorry, this video is only available to Subscribers or PPV users
-                <?php if($video->access == 'subscriber'): ?><?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?>
-            </h4>
-            <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
-            <div class="d-flex align-items-baseline">
-            <form class="text-center" method="get" action="<?= route('payment_becomeSubscriber') ?>">
-                <button style="margin-top: 0%;" class="btn btn-primary"id="button"> subscribe to watch this
-                    video</button>
-
-            </form>
-
-            <?php }elseif(Auth::guest()){ ?>
-            <form method="get" action="<?= URL::to('signup') ?>">
-                <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video
-                    <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
-            </form>
-            <?php } 
-  if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-            <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
-                class="view-count rent-video btn btn-primary">
-                <?php echo __('Purchase Now'); ?> </button>
-            <?php } 
-?></div>
-        </div></div>
-    </div>
-</div>
-<!-- <div id="video" class="adstime_url" class="fitvid" style="margin: 0 auto;"> -->
-
-<!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
-<!-- <video   id="videoPlayer" class="pop_up_register_user" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
-           <source src="<?= $video->trailer ?>" type='video/mp4' label='Auto' res='auto' />
-
-           <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
-           <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
-           <?php } if($value['sub_language'] == "German"){ ?>
-           <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
-           <?php } if($value['sub_language'] == "Spanish"){ ?>
-           <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-           <?php } if($value['sub_language'] == "Hindi"){ ?>
-           <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
-           <?php } } } else { }  ?>
-       </video>  -->
-
-<!-- </div> -->
-<?php } } 
- else { ?>
-<?php if($video->access == 'subscriber' && Auth::user()->role == 'registered'){  ?>
-<div
-    id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
-    <div id="subscribers_only">
-        <div class="clear"></div>
-        <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
-            <h4 class="text-center"><?php echo $video->title; ?></h4>
-            <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
-
-            <h6>
-                <p style="margin-left:14%">Sorry, this video is only available to</p>
-                <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?>
-            </h6>
-            <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
-            <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-                <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button">Purchase to
-                    watch this video</button>
-            </form>
-
-            <?php }elseif(Auth::guest()){ ?>
-            <form method="get" action="<?= URL::to('signup') ?>">
-                <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video
-                    <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
-            </form>
-            <?php }
-    if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-            <button style="margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
-                class="view-count rent-video btn btn-primary">
-                <?php echo __('Purchase Now'); ?> </button>
-            <?php }  ?>
-            <?php }else if($video->access == 'subscriber' && $video->global_ppv == 1 && Auth::user()->role == 'subscriber'){   ?>
-            <div
-                id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
-                <div id="subscribers_only">
-                    <div class="clear"></div>
-                    <div style="margin-left: -20%;position: absolute;top: 20%;left: 20%;width: 100%;">
-                        <h4 class="text-center"><?php echo $video->title; ?></h4>
-                        <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
-
-                        <h2>
-                            <p style="margin-left:14%">Purchase to watch this PPV video</p>
-                        </h2>
-                        <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
-                        <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-                            <button style="margin-left: 27%;margin-top: 0%;"
-                                class="btn btn-primary"id="button">Purchase to watch this video</button>
-                        </form>
-                        <button style="margin-left: 46%;margin-top: 0%;" data-toggle="modal"
-                            data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                            <?php echo __('Purchase Now'); ?> </button>
-                        <?php }else{ ?>
-                        <form method="get" action="<?= URL::to('signup') ?>">
-                            <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase
-                                this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
-                        </form>
-                        <?php } }else{ ?>
-                        <div
-                            id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
-                            <div id="subscribers_only">
-                                <div class="clear"></div>
-                                <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
-                                    <h4 class="text-center"><?php echo $video->title; ?></h4>
-                                    <p class="text-center text-white col-lg-8" style="margin:0 auto";>
-                                        <?php echo $video->description; ?></p>
-
-                                    <h2>
-                                        <p style="margin-left:14%">Sorry, this video is only available to</p>
-                                        <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered
-                                        Users<?php endif; ?>
-                                    </h2>
-                                    <?php if(!Auth::guest() && $video->access == 'subscriber'  ){ ?>
-                                    <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-                                        <button style="margin-left: 27%;margin-top: 0%;"
-                                            class="btn btn-primary"id="button">Purchase to watch this
-                                            video</button>
-                                    </form>
-
-                                    <?php }elseif(Auth::guest()){ ?>
-                                    <form method="get" action="<?= URL::to('signup') ?>">
-                                        <button id="button" style="margin-top: 0%;">Signup Now
-                                            <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for
-                                            Free!<?php endif; ?></button>
-                                    </form>
-                                    <?php }
-     if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-                                    <button style="margin-top: 1%;" data-toggle="modal"
-                                        data-target="#exampleModalCenter"
-                                        class="view-count rent-video btn btn-primary">
-                                        <?php echo __('Purchase Now'); ?> </button>
-                                    <?php } 
-} ?>
-                                </div>
-                            </div>
-                        </div>
-                        <?php }
-}elseif($video->access == 'subscriber' && Auth::user()->role == 'registered' || $video->access == 'ppv' && Auth::user()->role == 'registered'){  ?>
-                        <div
-                            id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
-
-                            <div id="subscribers_only">
-                                <h4 class="text-center"><?php echo $video->title; ?></h4>
-                                <p class="text-center text-white col-lg-8" style="margin:0 auto";>
-                                    <?php echo $video->description; ?></p>
-                                <h2 style="margin-left:14%">Sorry, this video is only available to
-                                    <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered
-                                    Users<?php endif; ?></h2>
-                                <div class="clear"></div>
-                                <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
-                                <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-                                    <button style="margin-left: 27%;" id="button">Become a subscriber to watch this
-                                        video</button>
-                                </form>
-                                <?php else: ?>
-                                
-                                <form method="get" action="<?= URL::to('signup') ?>">
-                                    <button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a
-                                        Subscriber<?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
-                                </form>
-                                <?php endif; ?>
-                                <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-                                <button style="margin-top: 1%;" data-toggle="modal"
-                                    data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                    <?php echo __('Purchase Now'); ?> </button>
-                                <?php } ?>
-                            </div>
-                            <?php }
-}elseif(!empty($new_date)){ ?>
-                            <div
-                                id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0.5),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 550px; margin-top: 20px;padding-top:100px;">
-                                <h2> COMING SOON </h2>
-                                 <?php if(!empty($video->description) && $settings->show_description == 1 ) : ?>
-                                <div class="text-white col-lg-7 text-center" style="margin:0 auto;">
-                                              <p class="  mt-2 ">
-                                                <?php echo __($video->description); ?>
-                                              </p></div>
-                                            <?php endif; ?>
-                                <hr>
-                                <p class="countdown mb-0" id="demo">
-                                </p><hr>
-                            </div>
-                            <?php } ?>
-                            <!-- For Guest users -->
-                            <?php if(Auth::guest()) {  ?>
-                            <div id="video" class="adstime_url" class="fitvid" style="margin: 0 auto;">
-
-                                <video id="videoPlayer" class="adstime_url"
-                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                    controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                    src="<?php echo $video->trailer; ?>" type="video/mp4">
-                                    <source src="<?= $video->trailer ?>" type='video/mp4' label='Auto'
-                                        res='auto' />
-                                    <!--
-   <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
-
-   <source src="<? //= $video->trailer; ?>" type='video/mp4' label='auto' >
-                    -->
-                    <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-                                foreach ($subtitles as $key => $subtitles_file) { ?>
-                            <track kind="captions" src="<?= $subtitles_file->url ?>"
-                                srclang="<?= $subtitles_file->sub_language ?>"
-                                label="<?= $subtitles_file->shortcode ?>" default>
-                            <?php } } } ?>
-                                </video>
-                            </div>
-                        </div>
-                    </div>
-                    <?php }elseif(Auth::guest() && empty($video->ppv_price)){ ?>
                     <div id="video_bg">
-                        <div class=" page-height">
-                            <?php 
-        if( Auth::guest() ): ?>
-                            <?php if($video->type == 'embed'): ?>
-                            <div id="video_container" class="fitvid">
-                                <?php
-                                if (!empty($video->embed_code)) {
-                                    echo $video->embed_code;
-                                } else {
-                                    echo $video->trailer;
-                                } ?>
+                        <div class="col-sm-12 intro_skips">
+                            <input type="button" class="skips" value="Skip Intro" id="intro_skip">
+                            <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+                        </div>
+
+                        <div class="col-md-7 end_card_video" id="end_card_video" style="position: absolute; top: 15%; width: 300%; height: 300%;z-index:1;">
+                            <div class="col-md-12">
+                                <?php foreach($endcardvideo as $val) { ?>
+                                    <a href="<?php echo URL::to('category'); ?><?= '/videos/' . $val->slug ?>">
+                                        <img id="endcard" src="<?php echo URL::to('/') . '/public/uploads/images/' . $val->image; ?>" alt="">
+                                    </a>
+                                <?php  } ?>
                             </div>
-                            <?php  elseif($video->type == 'file'): ?>
+                            <div class="col-md-6"></div>
+                        </div>
 
-                            <div id="video sda" class="fitvid" style="margin: 0 auto;">
+                    <div class=" page-height">
+                        <?php $paypal_id = Auth::user()->paypal_id;
 
+                        $paypal_subscription = !empty($paypal_id) && !empty(PaypalSubscriptionStatus() ) ? PaypalSubscriptionStatus() : " ";
 
-                                <video id="videoPlayer" <?= $autoplay ?> class=""
-                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                    controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                    src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>" type="application/x-mpegURL">
-                                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p'
-                                        res='360' />
-                                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p'
-                                        res='480' />
-                                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p'
-                                        res='720' />
+                        if($ppv_exist > 0  || $video_access == 'free' || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
+                            
+                            <?php if($video->type == 'embed'): ?>
+                                <div id="video_container" class="fitvid">
+                                    <?php if(!empty($video->embed_code)){?>
+                                        <div class="plyr__video-embed" id="player">
+                                            <iframe src="<?php if (!empty($video->embed_code)) {
+                                                echo $video->embed_code;
+                                            } else {
+                                                echo $video->trailer;
+                                            } ?>" allowfullscreen allowtransparency allow="<?= $autoplay ?>"></iframe>
+                                        </div>
+                                    <?php } ?>
+                                </div>
 
+                            <?php  elseif($video->type == ''):  ?>
+
+                                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+
+                                    <video <?= $autoplay ?> id="video" allow="autoplay" class="adstime_url"
+                                        poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
+                                        data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
+                                        <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>" type='application/x-mpegURL' label='auto'>
+                                        <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
+                                                foreach ($subtitles as $key => $subtitles_file) { ?>
+                                            <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                                srclang="<?= $subtitles_file->sub_language ?>"
+                                                label="<?= $subtitles_file->shortcode ?>" default>
+                                            <?php } } } ?>
+                                    </video>
+
+                                    <div class="playertextbox hide">
+                                        <!--<h2>Up Next</h2>-->
+                                        <p><?php if(isset($videonext)){ ?>
+                                            <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
+                                            <?php }elseif(isset($videoprev)){ ?>
+                                            <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
+                                            <?php } ?>
+
+                                            <?php if(isset($videos_category_next)){ ?>
+                                            <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
+                                            <?php }elseif(isset($videos_category_prev)){ ?>
+                                            <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
+                                            <?php } ?></p>
+                                    </div>
+
+                                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">
+                                </div>
+                                </div>
+
+                            <?php  elseif($video->type == 'aws_m3u8'):  ?>
+
+                                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+
+                                    <video <?= $autoplay ?> id="video" allow="<?= $autoplay ?>" class="adstime_url"
+                                        poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
+                                        data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
+                                        <source src="<?php echo $video->m3u8_url; ?>" type='application/x-mpegURL' label='auto'>
                                         <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
                                         foreach ($subtitles as $key => $subtitles_file) { ?>
                                     <track kind="captions" src="<?= $subtitles_file->url ?>"
                                         srclang="<?= $subtitles_file->sub_language ?>"
                                         label="<?= $subtitles_file->shortcode ?>" default>
                                     <?php } } } ?>
-                                </video>
-
-
-                                <div class="playertextbox hide">
-                                    <!--<h2>Up Next</h2>-->
-                                    <p><?php if(isset($videonext)){ ?>
-                                        <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
-                                        <?php }elseif(isset($videoprev)){ ?>
-                                        <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
-                                        <?php } ?>
-
-                                        <?php if(isset($videos_category_next)){ ?>
-                                        <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
-                                        <?php }elseif(isset($videos_category_prev)){ ?>
-                                        <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
-                                        <?php } ?></p>
+                                    </video>
                                 </div>
-                            </div>
-                            <?php  elseif($video->type == 'aws_m3u8'):  ?>
-                            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 
-                                <video <?= $autoplay ?> id="video" allow="<?= $autoplay ?>" class="adstime_url"
-                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                    controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                    type="video/mp4">
-                                    <source src="<?php echo $video->m3u8_url; ?>" type='application/x-mpegURL' label='auto'>
-                                    <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-                                        foreach ($subtitles as $key => $subtitles_file) { ?>
-                                    <track kind="captions" src="<?= $subtitles_file->url ?>"
-                                        srclang="<?= $subtitles_file->sub_language ?>"
-                                        label="<?= $subtitles_file->shortcode ?>" default>
-                                    <?php } } } ?>
-                                </video>
-                            </div>
-                            <?php  elseif($video->type == 'mp4_url'):   ?>
+                            <?php  elseif($video->type == 'mp4_url'):  ?>
 
+                                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                                    <video id="videoPlayer" <?= $autoplay ?> class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
+                                    
+                                        <source src="<?php if (!empty($video->mp4_url)) { echo $video->mp4_url; } else { echo $video->trailer; } ?>" type='video/mp4' label='auto'>
+                                    
+                                        <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
+                                                foreach ($subtitles as $key => $subtitles_file) { ?>
+                                                    <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                                        srclang="<?= $subtitles_file->sub_language ?>"
+                                                            label="<?= $subtitles_file->shortcode ?>" default>
+                                        <?php } } } ?>
+                                    </video>
 
-                            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                                <!-- Current time: <div id="current_time"></div> -->
-                                <video id="videoPlayer" <?= $autoplay ?> class=""
-                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                    controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                    type="video/mp4">
-                                    <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-                                    <source src="<?php if (!empty($video->mp4_url)) {
-                                        echo $video->mp4_url;
-                                    } else {
-                                        echo $video->trailer;
-                                    } ?>" type='video/mp4' label='auto'>
-                                    <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-                                        foreach ($subtitles as $key => $subtitles_file) { ?>
-                                    <track kind="captions" src="<?= $subtitles_file->url ?>"
-                                        srclang="<?= $subtitles_file->sub_language ?>"
-                                        label="<?= $subtitles_file->shortcode ?>" default>
-                                    <?php } } } ?>
+                                    <div class="playertextbox hide">
+                                        <p>
+                                            <?php if(isset($videonext)){ ?>
+                                                <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
+                                            <?php }elseif(isset($videoprev)){ ?>
+                                            <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
+                                                <?php } ?>
 
-                                </video>
-
-                                <div class="playertextbox hide">
-                                    <!--<h2>Up Next</h2>-->
-                                    <p><?php if(isset($videonext)){ ?>
-                                        <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
-                                        <?php }elseif(isset($videoprev)){ ?>
-                                        <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
-                                        <?php } ?>
-
-                                        <?php if(isset($videos_category_next)){ ?>
-                                        <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
-                                        <?php }elseif(isset($videos_category_prev)){ ?>
-                                        <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
-                                        <?php } ?></p>
+                                            <?php if(isset($videos_category_next)){ ?>
+                                                <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
+                                            <?php }elseif(isset($videos_category_prev)){ ?>
+                                                <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
+                                            <?php } ?>
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
 
                             <?php  elseif($video->type == 'm3u8_url'):  ?>
 
-                            <video <?= $autoplay ?> id="video" class="adstime_url"
-                                poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                                <video <?= $autoplay ?> id="video" allow="<?= $autoplay ?>" class="adstime_url"
+                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
+                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
+                                    <source src="<?php if (!empty($video->m3u8_url)) {
+                                        echo $video->m3u8_url;
+                                    } else {
+                                        echo $video->trailer;
+                                    } ?>" type='application/x-mpegURL' label='auto'>
+                                    <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
+                                        foreach ($subtitles as $key => $subtitles_file) { ?>
+                                    <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                        srclang="<?= $subtitles_file->sub_language ?>"
+                                        label="<?= $subtitles_file->shortcode ?>" default>
+                                    <?php } } } ?>
+                                </video>
+                            <?php  else: ?>
+
+                                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                                    <video id="videoPlayer" class="adstime_url"
+                                            poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
+                                            data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
+                                            <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
+                                            <source src="<?php if (!empty($video->m3u8_url)) {
+                                                echo $video->m3u8_url;
+                                            } else {
+                                                echo $video->trailer;
+                                            } ?>" type='application/x-mpegURL' label='auto'>
+
+                                        <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
+                                            foreach ($subtitles as $key => $subtitles_file) { ?>
+                                        <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                            srclang="<?= $subtitles_file->sub_language ?>"
+                                            label="<?= $subtitles_file->shortcode ?>" default>
+                                        <?php } } } ?>
+                                    </video>
+
+                                    <div class="playertextbox hide">
+                                        <!--<h2>Up Next</h2>-->
+                                        <p><?php if(isset($videonext)){ ?>
+                                            <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
+                                            <?php }elseif(isset($videoprev)){ ?>
+                                            <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
+                                            <?php } ?>
+
+                                            <?php if(isset($videos_category_next)){ ?>
+                                            <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
+                                            <?php }elseif(isset($videos_category_prev)){ ?>
+                                            <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
+                                            <?php } ?></p>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php else: ?>
+
+                            <div id="subscribers_only">
+                                <div class="container-fluid">
+
+                                <h2 class="text-left"><?php echo $video->title; ?></h2>
+
+                                <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo $video->description; ?></p>
+
+                                <h4>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h4>
+                                <div class="clear"></div>
+
+                                    <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
+
+                                        <form method="get" action="<?= URL::to('/') ?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
+                                            <button id="button">Become a subscriber to watch this video</button>
+                                        </form>
+
+                                    <?php else: ?>
+
+                                        <form method="get" action="<?= URL::to('signup') ?>">
+                                            <button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($video->access == 'registered'): ?>for
+                                                Free!<?php endif; ?></button>
+                                        </form>
+
+                                    <?php endif; ?>
+
+                                <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                                    <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+                                        class="view-count rent-video btn btn-primary">
+                                        <?php echo __('Purchase Now'); ?> </button>
+                                    <?php } ?>
+                            </div></div>
+
+                        <?php endif; ?>
+                    </div>
+
+
+                <?php } elseif( $ppv_exist > 0 || $video_access == 'free' || Auth::user()->subscribed() && $pack == "Business" || Auth::user()->role == 'admin' && $pack == "Business" || Auth::user()->role =="subscriber" && $pack == "Business"
+                        || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Business")) {
+
+                    if(!empty($video->path)){ ?>
+
+                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                            <video id="video" class="adstime_url" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
+                                data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
+
+                                <source type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">
+                            
+                                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
+                                    foreach ($subtitles as $key => $subtitles_file) { ?>
+                                <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                    srclang="<?= $subtitles_file->sub_language ?>"
+                                    label="<?= $subtitles_file->shortcode ?>" default>
+                                <?php } } } ?>
+
+                            </video>
+                        </div>
+
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">
+                    <?php } 
+                }
+        
+            else {  ?>
+
+                <div id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)),url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
+                    <div id="subscribers_only">
+                        <div class="clear"></div>
+                        <div class="container-fluid">
+
+                            <div style="padding-top:8%;">
+                                <h4 class=""><?php echo $video->title; ?></h4>
+                                <div class="text-white col-lg-7 p-0">
+                                    <p class=" " style="margin:0 auto";><?php echo $video->description; ?></p>
+                                </div>
+
+                                <h4>
+                                    Sorry, this video is only available to Subscribers or PPV users
+                                    <?php if($video->access == 'subscriber'): ?><?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?>
+                                </h4>
+
+                                <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
+                                    
+                                    <div class="d-flex align-items-baseline">
+                                        <form class="text-center" method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                                            <button style="margin-top: 0%;" class="btn btn-primary"id="button"> subscribe to watch this video</button>
+                                        </form>
+
+                                <?php }elseif(Auth::guest()){ ?>
+
+                                    <form method="get" action="<?= URL::to('signup') ?>">
+                                        <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video
+                                            <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+                                    </form>
+
+                                <?php } ?>
+
+                                <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                                    <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                        <?php echo __('Purchase Now'); ?> 
+                                    </button>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            <?php }
+        
+        } else { ?>
+
+            <?php if($video->access == 'subscriber' && Auth::user()->role == 'registered'){  ?>
+                <div  id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
+                <div id="subscribers_only">
+                    <div class="clear"></div>
+                    <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+                        <h4 class="text-center"><?php echo $video->title; ?></h4>
+                        <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
+
+                        <h6>
+                            <p style="margin-left:14%">Sorry, this video is only available to</p>
+                            <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?>
+                        </h6>
+                        
+                        <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
+                            <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                                <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button">Purchase to
+                                    watch this video</button>
+                            </form>
+
+                        <?php }elseif(Auth::guest()){ ?>
+                            <form method="get" action="<?= URL::to('signup') ?>">
+                                <button id="button" style="margin-top: 0%;">
+                                    Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video
+                                    <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?>
+                                </button>
+                            </form>
+                        <?php } ?>
+
+                        <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                            <button style="margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"bclass="view-count rent-video btn btn-primary">
+                                <?php echo __('Purchase Now'); ?>
+                            </button>
+                        <?php }  ?>
+
+            <?php } else if($video->access == 'subscriber' && $video->global_ppv == 1 && Auth::user()->role == 'subscriber'){   ?>
+                
+                    <div id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
+                    <div id="subscribers_only">
+                        <div class="clear"></div>
+                        <div style="margin-left: -20%;position: absolute;top: 20%;left: 20%;width: 100%;">
+                            <h4 class="text-center"><?php echo $video->title; ?></h4>
+                            <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
+                            <h2>
+                                <p style="margin-left:14%">Purchase to watch this PPV video</p>
+                            </h2>
+                            <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
+                                
+                                <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                                    <button style="margin-left: 27%;margin-top: 0%;"
+                                        class="btn btn-primary"id="button">Purchase to watch this video
+                                    </button>
+                                </form>
+
+                                <button style="margin-left: 46%;margin-top: 0%;" data-toggle="modal"
+                                    data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                    <?php echo __('Purchase Now'); ?> 
+                                </button>
+
+                            <?php }else{ ?>
+
+                                <form method="get" action="<?= URL::to('signup') ?>">
+                                    <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase
+                                        this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?>
+                                    </button>
+                                </form>
+                                
+                            <?php } 
+            }else{ ?>
+
+                    <div id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
+                        <div id="subscribers_only">
+                            <div class="clear"></div>
+                            <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+                                <h4 class="text-center"><?php echo $video->title; ?></h4>
+                                <p class="text-center text-white col-lg-8" style="margin:0 auto";>
+                                    <?php echo $video->description; ?>
+                                </p>
+
+                                <h2>
+                                    <p style="margin-left:14%">Sorry, this video is only available to</p>
+                                    <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered
+                                    Users<?php endif; ?>
+                                </h2>
+
+                                <?php if(!Auth::guest() && $video->access == 'subscriber'  ){ ?>
+                                    <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                                        <button style="margin-left: 27%;margin-top: 0%;"
+                                            class="btn btn-primary"id="button">Purchase to watch this
+                                            video</button>
+                                    </form>
+
+                                <?php }elseif(Auth::guest()){ ?>
+                                    <form method="get" action="<?= URL::to('signup') ?>">
+                                        <button id="button" style="margin-top: 0%;">Signup Now
+                                            <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for
+                                            Free!<?php endif; ?></button>
+                                    </form>
+                                <?php }
+
+                                if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                                    <button style="margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                        <?php echo __('Purchase Now'); ?> 
+                                    </button>
+                                <?php } 
+            } ?>
+                                    </div>
+                                </div>
+                            </div>
+        <?php }
+    }
+
+    elseif($video->access == 'subscriber' && Auth::user()->role == 'registered' || $video->access == 'ppv' && Auth::user()->role == 'registered'){  ?>
+            <div id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
+                <div id="subscribers_only">
+                    <h4 class="text-center"><?php echo $video->title; ?></h4>
+
+                    <p class="text-center text-white col-lg-8" style="margin:0 auto";>
+                        <?php echo $video->description; ?>
+                    </p>
+
+                    <h2 style="margin-left:14%">Sorry, this video is only available to
+                        <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered
+                        Users<?php endif; ?>
+                    </h2>
+
+                    <div class="clear"></div>
+                    <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
+                        <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                            <button style="margin-left: 27%;" id="button">Become a subscriber to watch this
+                                video</button>
+                        </form>
+                    <?php else: ?>
+                    
+                        <form method="get" action="<?= URL::to('signup') ?>">
+                            <button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a
+                                Subscriber<?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+                        </form>
+                    <?php endif; ?>
+
+                    <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                        <button style="margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                            <?php echo __('Purchase Now'); ?>
+                            </button>
+                    <?php } ?>
+                </div>
+    <?php }
+
+}elseif(!empty($new_date)){ ?>
+        <div id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0.5),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 550px; margin-top: 20px;padding-top:100px;">
+            
+            <h2> COMING SOON </h2>
+
+                <?php if(!empty($video->description) && $settings->show_description == 1 ) : ?>
+                    <div class="text-white col-lg-7 text-center" style="margin:0 auto;">
+                        <p class="  mt-2 "><?php echo __($video->description); ?> </p>
+                    </div>
+                <?php endif; ?><hr>
+
+            <p class="countdown mb-0" id="demo"></p><hr>
+        </div>
+<?php } ?>
+
+                            <!-- For Guest users -->
+<?php if(Auth::guest()) {  ?>
+
+        <div id="video" class="adstime_url" class="fitvid" style="margin: 0 auto;">
+            <video id="videoPlayer" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>" type="video/mp4">
+                <source src="<?= $video->trailer ?>" type='video/mp4' label='Auto' res='auto' />
+                    <?php if(@$playerui_settings['subtitle'] == 1 ){ 
+                                if(isset($subtitles)){
+                                    foreach ($subtitles as $key => $subtitles_file) { ?>
+                                        <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                            srclang="<?= $subtitles_file->sub_language ?>"
+                                            label="<?= $subtitles_file->shortcode ?>" default>
+                                    <?php } 
+                                } 
+                            } 
+                    ?>
+            </video>
+        </div>
+        </div>
+        </div>
+
+<?php }elseif(Auth::guest() && empty($video->ppv_price)){ ?>
+
+        <div id="video_bg">
+            <div class=" page-height">
+                <?php  if( Auth::guest() ): ?>
+
+                    <?php if($video->type == 'embed'): ?>
+
+                        <div id="video_container" class="fitvid">
+                            <?php
+                                if (!empty($video->embed_code)) {
+                                    echo $video->embed_code;
+                                } else {
+                                    echo $video->trailer;
+                                } 
+                            ?>
+                        </div>
+
+                    <?php elseif($video->type == 'file'): ?>
+
+                        <div id="video sda" class="fitvid" style="margin: 0 auto;">
+
+                            <video id="videoPlayer" <?= $autoplay ?> class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
                                 controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                type="video/mp4">
-                                <source src="<?php if (!empty($video->m3u8_url)) {
+                                src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>" type="application/x-mpegURL">
+                                <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_1_500.m3u8'; ?>" type='application/x-mpegURL' label='360p' res='360' />
+                                <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480' />
+                                <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720' />
+
+                                    <?php  if(@$playerui_settings['subtitle'] == 1 ){ 
+                                                if(isset($subtitles)){
+                                                    foreach ($subtitles as $key => $subtitles_file) { ?>
+                                                        <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                                        srclang="<?= $subtitles_file->sub_language ?>"
+                                                        label="<?= $subtitles_file->shortcode ?>" default>
+                                                    <?php }
+                                                } 
+                                            } ?>
+                            </video>
+
+                            <div class="playertextbox hide">
+                                <p>
+                                    <?php if(isset($videonext)){ ?>
+
+                                        <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
+                                    <?php }elseif(isset($videoprev)){ ?>
+
+                                        <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
+                                    <?php } ?>
+
+                                    <?php if(isset($videos_category_next)){ ?>
+                                        <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
+                                    <?php }elseif(isset($videos_category_prev)){ ?>
+                                        <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
+                                    <?php } ?>
+                                </p>
+                            </div>
+                        </div>
+
+                    <?php elseif($video->type == 'aws_m3u8'):  ?>
+
+                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                            <video <?= $autoplay ?> id="video" allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                                controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
+                                <source src="<?php echo $video->m3u8_url; ?>" type='application/x-mpegURL' label='auto'>
+                                    
+                                    <?php  if(@$playerui_settings['subtitle'] == 1 ){ 
+                                                if(isset($subtitles)){
+                                                    foreach ($subtitles as $key => $subtitles_file) { ?>
+                                                        <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                                            srclang="<?= $subtitles_file->sub_language ?>"
+                                                            label="<?= $subtitles_file->shortcode ?>" default>
+                                                    <?php } 
+                                                } 
+                                            } ?>
+                            </video>
+                        </div>
+
+                    <?php elseif($video->type == 'mp4_url'):   ?>
+
+                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+
+                            <video id="videoPlayer" <?= $autoplay ?> class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                                controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
+                            
+                            <source src="<?php 
+                                    if (!empty($video->mp4_url)) {
+                                        echo $video->mp4_url;
+                                    } else {
+                                        echo $video->trailer;
+                                    } ?>" 
+                                type='video/mp4' label='auto'>
+
+                                <?php  if(@$playerui_settings['subtitle'] == 1 ){
+                                            if(isset($subtitles)){
+                                                foreach ($subtitles as $key => $subtitles_file) { ?>
+                                                        <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                                        srclang="<?= $subtitles_file->sub_language ?>"
+                                                        label="<?= $subtitles_file->shortcode ?>" default>
+                                                <?php } 
+                                            } 
+                                        } ?>
+
+                            </video>
+
+                            <div class="playertextbox hide">
+                            
+                                <p>
+                                    <?php if(isset($videonext)){ ?>
+                                        <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
+                                    <?php }elseif(isset($videoprev)){ ?>
+                                        <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
+                                    <?php } ?>
+
+                                    <?php if(isset($videos_category_next)){ ?>
+                                        <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
+                                    <?php }elseif(isset($videos_category_prev)){ ?>
+                                        <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
+                                    <?php } ?>
+                                </p>
+                            </div>
+                        </div>
+
+                    <?php elseif($video->type == 'm3u8_url'):  ?>
+
+                        <video <?= $autoplay ?> id="video" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
+                            
+                            <source src="<?php
+                                if (!empty($video->m3u8_url)) {
                                     echo $video->m3u8_url;
                                 } else {
                                     echo $video->trailer;
                                 } ?>" type='application/x-mpegURL' label='auto'>
-                                    <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-                                        foreach ($subtitles as $key => $subtitles_file) { ?>
-                                    <track kind="captions" src="<?= $subtitles_file->url ?>"
-                                        srclang="<?= $subtitles_file->sub_language ?>"
-                                        label="<?= $subtitles_file->shortcode ?>" default>
-                                    <?php } } } ?>
+
+                                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
+                                    foreach ($subtitles as $key => $subtitles_file) { ?>
+                                <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                    srclang="<?= $subtitles_file->sub_language ?>"
+                                    label="<?= $subtitles_file->shortcode ?>" default>
+                                <?php } } } ?>
+                        </video>
+
+                    <?php else: ?>
+
+                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+
+                            <video <?= $autoplay ?> id="videoPlayer" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
+                                src="<?php echo $video->trailer; ?>" type="video/mp4">
+
+                                <source src="<?php if ($video->type == 'm3u8_url') {
+                                    echo $video->m3u8_url;
+                                } else {
+                                    echo $video->trailer;
+                                } ?>" type="application/x-mpegURL" label='auto'>
+
+                                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
+                                    foreach ($subtitles as $key => $subtitles_file) { ?>
+                                <track kind="captions" src="<?= $subtitles_file->url ?>"
+                                    srclang="<?= $subtitles_file->sub_language ?>"
+                                    label="<?= $subtitles_file->shortcode ?>" default>
+                                <?php } } } ?>
                             </video>
 
-                            <?php  else: ?>
-                            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                                <!-- Current time: <div id="current_time"></div> -->
-                                <video <?= $autoplay ?> id="videoPlayer" class="adstime_url"
-                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                    controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                    src="<?php echo $video->trailer; ?>" type="video/mp4">
-                                    <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-                                    <source src="<?php if ($video->type == 'm3u8_url') {
-                                        echo $video->m3u8_url;
-                                    } else {
-                                        echo $video->trailer;
-                                    } ?>" type="application/x-mpegURL" label='auto'>
-                                    <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
-                                        foreach ($subtitles as $key => $subtitles_file) { ?>
-                                    <track kind="captions" src="<?= $subtitles_file->url ?>"
-                                        srclang="<?= $subtitles_file->sub_language ?>"
-                                        label="<?= $subtitles_file->shortcode ?>" default>
-                                    <?php } } } ?>
-                                </video>
-
-                                <div class="playertextbox hide">
-                                    <!--<h2>Up Next</h2>-->
-                                    <p><?php if(isset($videonext)){ ?>
-                                        <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
+                            <div class="playertextbox hide">
+                                <p><?php if(isset($videonext)){ ?>
+                                    <?= Video::where('id', '=', $videonext->id)->pluck('title') ?>
                                         <?php }elseif(isset($videoprev)){ ?>
-                                        <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
-                                        <?php } ?>
+                                    <?= Video::where('id', '=', $videoprev->id)->pluck('title') ?>
+                                    <?php } ?>
 
-                                        <?php if(isset($videos_category_next)){ ?>
+                                    <?php if(isset($videos_category_next)){ ?>
                                         <?= Video::where('id', '=', $videos_category_next->id)->pluck('title') ?>
-                                        <?php }elseif(isset($videos_category_prev)){ ?>
+                                    <?php }elseif(isset($videos_category_prev)){ ?>
                                         <?= Video::where('id', '=', $videos_category_prev->id)->pluck('title') ?>
-                                        <?php } ?></p>
-                                </div>
+                                    <?php } ?>
+                                </p>
                             </div>
-                            <?php endif; ?>
-                            <?php else: ?>
+                        </div>
+                    <?php endif; ?>
+                
+                <?php else: ?>
 
-                            <div id="subscribers_only">
-                                <h4 class="text-center"><?php echo $video->title; ?></h4>
-                                <p class="text-center text-white col-lg-8" style="margin:0 auto";>
-                                    <?php echo $video->description; ?></p>
-                                <h2>Sorry, this video is only available to
-                                    <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered
-                                    Users<?php elseif($video->access == 'ppv' ): ?>PPV<?php endif; ?></h2>
-                                <div class="clear"></div>
-                                <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
+                    <div id="subscribers_only">
+                        <h4 class="text-center"><?php echo $video->title; ?></h4>
+
+                        <p class="text-center text-white col-lg-8" style="margin:0 auto";>
+                            <?php echo $video->description; ?>
+                        </p>
+
+                        <h2>Sorry, this video is only available to
+                            <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered
+                            Users<?php elseif($video->access == 'ppv' ): ?>PPV<?php endif; ?>
+                        </h2>
+
+                        <div class="clear"></div>
+                            <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
                                 <form method="get"
                                     action="<?= URL::to('/') ?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
                                     <button id="button">Become a subscriber to watch this video</button>
                                 </form>
-                                <?php else: ?>
+                            <?php else: ?>
                                 <form method="get" action="<?= URL::to('signup') ?>">
                                 </form>
-                                <?php endif; ?>
-                                <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                            <?php endif; ?>
+
+                            <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
                                 <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal"
                                     data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                    <?php echo __('Purchase Now'); ?> </button>
-                                <?php } ?>
-                            </div>
+                                    <?php echo __('Purchase Now'); ?> 
+                                </button>
+                            <?php } ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+<?php }  ?>
 
-                            <?php endif; ?>
-                        </div>
-                        <?php }  ?>
+<!-- Video Player Condition End -->
 
                         <!-- logo In player -->
 
