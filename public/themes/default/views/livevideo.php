@@ -374,14 +374,26 @@ if(!Auth::guest()){
 
                     <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
 
-                        <div class="plyr__video-embed" id="Embed_player">
-                            <iframe
-                                src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
-                                allowfullscreen
-                                allowtransparency
-                                allow="autoplay">
-                            </iframe>
+                        <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                            <div id="video_bg_dim"  class="darker" ></div>
+                            <div class="row justify-content-center pay-live">
+                                <div class="col-md-4 col-sm-offset-4">
+                                    <div class="ppv-block">
+                                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+
+                                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+
+                                                <?php $users = Auth::user();  ?>
+
+                                                <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                                                    <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
+                                                    <?php echo __('Purchase Now ');?> </button>
+                                                <?php } ?>
+                                        </div>
+                                </div>
+                            </div>
                         </div>
+                        
 
                     <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
 
@@ -418,15 +430,47 @@ if(!Auth::guest()){
 
                     <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
 
-                        <video id="acc_audio" <?= $autoplay ?>  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                            <source  src="<?php echo $video->acc_audio_url ; ?>" >
-                        </video>
+                        <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                            <div id="video_bg_dim"  class="darker" ></div>
+                            <div class="row justify-content-center pay-live">
+                                <div class="col-md-4 col-sm-offset-4">
+                                    <div class="ppv-block">
+                                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+
+                                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+
+                                                <?php $users = Auth::user();  ?>
+
+                                                <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                                                    <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
+                                                    <?php echo __('Purchase Now ');?> </button>
+                                                <?php } ?>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
 
                     <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_file"){  ?>
 
-                        <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                            <source  src="<?php echo $video->acc_audio_file ; ?>" >
-                        </video>
+                        <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                            <div id="video_bg_dim"  class="darker" ></div>
+                            <div class="row justify-content-center pay-live">
+                                <div class="col-md-4 col-sm-offset-4">
+                                    <div class="ppv-block">
+                                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+
+                                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+
+                                                <?php $users = Auth::user();  ?>
+
+                                                <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                                                    <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
+                                                    <?php echo __('Purchase Now ');?> </button>
+                                                <?php } ?>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
                         
                     <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 
@@ -652,13 +696,24 @@ if(!Auth::guest()){
 
                     <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
 
-                        <div class="plyr__video-embed" id="Embed_player">
-                            <iframe
-                                src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
-                                allowfullscreen
-                                allowtransparency
-                                allow="autoplay">
-                            </iframe>
+                        <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                            <div id="video_bg_dim"  class="darker" ></div>
+                            <div class="row justify-content-center pay-live">
+                                <div class="col-md-4 col-sm-offset-4">
+                                    <div class="ppv-block">
+                                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+
+                                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+
+                                                <?php $users = Auth::user();  ?>
+
+                                                <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                                                    <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
+                                                    <?php echo __('Purchase Now ');?> </button>
+                                                <?php } ?>
+                                        </div>
+                                </div>
+                            </div>
                         </div>
 
                     <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
@@ -696,15 +751,47 @@ if(!Auth::guest()){
 
                     <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
 
-                        <video id="acc_audio" <?= $autoplay ?>  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                            <source  src="<?php echo $video->acc_audio_url ; ?>" >
-                        </video>
+                        <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                            <div id="video_bg_dim"  class="darker" ></div>
+                            <div class="row justify-content-center pay-live">
+                                <div class="col-md-4 col-sm-offset-4">
+                                    <div class="ppv-block">
+                                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+
+                                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+
+                                                <?php $users = Auth::user();  ?>
+
+                                                <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                                                    <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
+                                                    <?php echo __('Purchase Now ');?> </button>
+                                                <?php } ?>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
 
                     <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_file"){  ?>
 
-                        <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                            <source  src="<?php echo $video->acc_audio_file ; ?>" >
-                        </video>
+                        <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                            <div id="video_bg_dim"  class="darker" ></div>
+                            <div class="row justify-content-center pay-live">
+                                <div class="col-md-4 col-sm-offset-4">
+                                    <div class="ppv-block">
+                                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+
+                                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+
+                                                <?php $users = Auth::user();  ?>
+
+                                                <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                                                    <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
+                                                    <?php echo __('Purchase Now ');?> </button>
+                                                <?php } ?>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
                         
                     <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 

@@ -4,13 +4,13 @@
     $userIp = $geoip->getip();
 
     $user = !Auth::guest() ? Auth::User()->id : 'guest' ; 
-    $livestream_id = $video->id ; 
-    $advertisement_id = $video->live_ads ; 
+    $video_id = $video->id ; 
+    $advertisement_id = $video->ads_tag_url_id ;
     $adverister_id = App\Advertisement::where('id',$advertisement_id)->pluck('advertiser_id')->first();
 
     $free_duration_condition = ($video->free_duration_status == 1 && $video->free_duration != null && $video->access == "ppv" && Auth::guest()) || ($video->free_duration_status == 1 && $video->free_duration != null && $video->access == "ppv" && Auth::user()->role == "registered") ? 1 : 0;
 
-    $data = App\PPVFreeDurationLogs::where('source_id', $livestream_id )->where('source_type','livestream');
+    $data = App\PPVFreeDurationLogs::where('source_id', $video_id )->where('source_type','video');
         
         if( !Auth::guest()  ){
             $data = $data->where('user_id',Auth::user()->id) ;
@@ -29,7 +29,6 @@
                 .plyr__controls__item.plyr__progress__container{ pointer-events: none;  cursor: not-allowed; }
             </style>' ;
     }
-
 ?>
 
 <input type="hidden" id="free_duration_seconds" value="<?php echo $video->free_duration ?>" >
@@ -40,7 +39,7 @@
 
     let user = <?php echo json_encode($user); ?>
 
-    let live_ads = <?php echo json_encode( $live_ads ); ?> ;
+    let video_ads = <?php echo json_encode( $video_tag_url ); ?> ;
 
     document.addEventListener('DOMContentLoaded', () => { 
 
@@ -55,7 +54,7 @@
 
             ads: {
                 enabled: true,
-                tagUrl: live_ads
+                tagUrl: video_ads
             }
         };
 
@@ -66,7 +65,7 @@
             };
         }
 
-        const player = new Plyr('#live_player_mp4', playerOptions);
+        const player = new Plyr('#PPV_free_duration_videoPlayer_MP4', playerOptions);
 
             // Ads Views Count
         player.on('adsloaded', (event) => {
@@ -80,7 +79,7 @@
 
         if( free_duration_condition == 1 ){
 
-            const video = document.getElementById('live_player_mp4');
+            const video = document.getElementById('PPV_free_duration_videoPlayer_MP4');
             
             video.addEventListener('timeupdate', () => {
 
@@ -88,8 +87,8 @@
                     type:'get',
                     url:'<?= route('PPV_Free_Duration_Logs') ?>',
                     data: {
-                            "source_id"   : "<?php echo $livestream_id ?>",
-                            "source_type" : "livestream",
+                            "source_id"   : "<?php echo $video_id ?>",
+                            "source_type" : "video",
                             "duration"    : "0.20" ,
                         },
                         success:function(data) {
@@ -105,7 +104,7 @@
                                 const controlsElements = document.getElementsByClassName("plyr__controls");
 
                                 $('.plyr__controls').hide();
-                                $('#live_player_M3U8_url').hide();
+                                $('#PPV_free_duration_videoPlayer').hide();
                                 
                                 displayModal();
                             }
@@ -121,35 +120,9 @@
         }
     });
 
-
-    document.addEventListener('DOMContentLoaded', () => { 
-
-    const player = new Plyr('#acc_audio',{
-
-        controls: [   'play-large','play','progress',
-                        'current-time','mute','volume','captions','settings','airplay',
-                        'fullscreen'
-                    ],
-           
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', () => { 
-
-    const player = new Plyr('#Embed_player',{
-
-          controls: [   'play-large','rewind','play','fast-forward','progress',
-                        'current-time','mute','volume','captions','settings','pip','airplay',
-                        'fullscreen'
-		            ],
-
-        });
-    });
-
-
     document.addEventListener("DOMContentLoaded", () => {
 
-        const video = document.querySelector("#live_player");
+        const video = document.querySelector("#PPV_free_duration_videoPlayer");
         const source = video.getElementsByTagName("source")[0].src;
 
         const free_duration_seconds = document.getElementById("free_duration_seconds");
@@ -170,7 +143,7 @@
 
             defaultOptions.ads = {
                 enabled: true, 
-                tagUrl: live_ads
+                tagUrl: video_ads
             }
 
             video.src = source;
@@ -199,7 +172,7 @@
 
             defaultOptions.ads = {
                 enabled: true, 
-                tagUrl: live_ads
+                tagUrl: video_ads
             }
 
             hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
@@ -233,7 +206,7 @@
                         const controlsElements = document.getElementsByClassName("plyr__controls");
 
                         $('.plyr__controls').hide();
-                        $('#live_player_M3U8_url').hide();
+                        $('#PPV_free_duration_videoPlayer').hide();
 
                         displayModal();
                     }
@@ -258,9 +231,9 @@
                     type:'get',
                     url:'<?= route('PPV_Free_Duration_Logs') ?>',
                     data: {
-                            "source_id"   : "<?php echo $livestream_id ?>",
-                            "source_type" : "livestream",
-                            "duration"    : "0.30" ,
+                            "source_id"   : "<?php echo $video_id ?>",
+                            "source_type" : "video",
+                            "duration"    : "0.20" ,
                         },
                         success:function(data) {
 
@@ -275,7 +248,7 @@
                                 const controlsElements = document.getElementsByClassName("plyr__controls");
 
                                 $('.plyr__controls').hide();
-                                $('#live_player_M3U8_url').hide();
+                                $('#PPV_free_duration_videoPlayer').hide();
                                 
                                 displayModal();
                             }
@@ -309,7 +282,7 @@
     
     document.addEventListener("DOMContentLoaded", () => {
 
-        const video = document.querySelector("#live_player_M3U8_url");
+        const video = document.querySelector("#PPV_free_duration_videoPlayer_M3U8_url");
         const source = video.getElementsByTagName("source")[0].src;
 
         const free_duration_seconds = document.getElementById("free_duration_seconds");
@@ -330,7 +303,7 @@
 
             defaultOptions.ads = {
                 enabled: true, 
-                tagUrl: live_ads
+                tagUrl: video_ads
             }
 
             video.src = source;
@@ -359,7 +332,7 @@
 
             defaultOptions.ads = {
                 enabled: true, 
-                tagUrl: live_ads
+                tagUrl: video_ads
             }
 
             hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
@@ -383,14 +356,6 @@
                 Ads_Redirection_URL_Count(event.timeStamp);
             });
 
-
-                // On-Play current time
-            // player.on('play', (event) => {
-            //     let onplay_current_time = video.currentTime ;
-            //     sessionStorage.setItem("onplay_current_time", onplay_current_time );
-            // });
-
-
             if( free_duration_condition == 1 ){
 
                 video.addEventListener('timeupdate', () => {
@@ -402,8 +367,8 @@
                     type:'get',
                     url:'<?= route('PPV_Free_Duration_Logs') ?>',
                     data: {
-                            "source_id"   : "<?php echo $livestream_id ?>",
-                            "source_type" : "livestream",
+                            "source_id"   : "<?php echo $video_id ?>",
+                            "source_type" : "video",
                             "duration"    : "0.20" ,
                         },
                         success:function(data) {
@@ -419,7 +384,7 @@
                                 const controlsElements = document.getElementsByClassName("plyr__controls");
 
                                 $('.plyr__controls').hide();
-                                $('#live_player_M3U8_url').hide();
+                                $('#PPV_free_duration_videoPlayer_M3U8_url').hide();
                                 
                                 displayModal();
                             }
@@ -464,8 +429,8 @@
             url:'<?= route('Advertisement_Redirection_URL_Count') ?>',
             data: {
                     "Count" : 1 , 
-                    "source_type" : "livestream",
-                    "source_id"   : "<?php echo $livestream_id ?>",
+                    "source_type" : "video",
+                    "source_id"   : "<?php echo $video_id ?>",
                     "adverister_id" : "<?php echo $adverister_id ?>",
                     "adveristment_id" : "<?php echo $advertisement_id ?>",
                     "user" : "<?php echo $user ?>",
@@ -483,8 +448,8 @@
               url:'<?= route('Advertisement_Views_Count') ?>',
               data: {
                         "Count" : 1 , 
-                        "source_type" : "livestream",
-                        "source_id"   : "<?php echo $livestream_id ?>",
+                        "source_type" : "video",
+                        "source_id"   : "<?php echo $video_id ?>",
                         "adverister_id" : "<?php echo $adverister_id ?>",
                         "adveristment_id" : "<?php echo $advertisement_id ?>",
                         "user" : "<?php echo $user ?>",
