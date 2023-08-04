@@ -3009,9 +3009,11 @@ class AdminVideosController extends Controller
         if (isset($request->free_duration)) {
             $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
             $video->free_duration = $time_seconds;
+            unset($video->free_duration);
         }
 
         $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
+
 
         // Ads videos
         if ($data['ads_tag_url_id'] == null) {

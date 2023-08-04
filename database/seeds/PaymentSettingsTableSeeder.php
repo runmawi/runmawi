@@ -59,7 +59,31 @@ class PaymentSettingsTableSeeder extends Seeder
             'status' => null,
             'created_at' => Carbon::now(),
             'updated_at' => null,
+            ],
+
+          [  
+            'payment_type' => 'Razorpay', 
+            'live_mode' => '0',
+            'stripe_status' => null,
+            'test_secret_key' => 'rzp_test_qgj9OqZvMHs9PG',
+            'test_publishable_key' => 'CwJeM2tNZmhSv1UUAsaKE7FO',
+            'live_secret_key' => null,
+            'plan_name' => 'Razorpay',
+            'live_publishable_key' => null,
+            'paypal_live_mode' => null,
+            'paypal_status' => null,
+            'test_paypal_username' => null,
+            'test_paypal_password' => null ,
+            'test_paypal_signature' => null,
+            'live_paypal_username' => null,
+            'live_paypal_password' => null,
+            'live_paypal_signature' => null,
+            'paypal_plan_name' => null,
+            'status' => 1 ,
+            'created_at' => Carbon::now(),
+            'updated_at' => null,
           ]
+
         ];
         PaymentSetting::insert($PaymentSetting);
     }
