@@ -29,6 +29,7 @@
                 .plyr__controls__item.plyr__progress__container{ pointer-events: none;  cursor: not-allowed; }
             </style>' ;
     }
+
 ?>
 
 <input type="hidden" id="free_duration_seconds" value="<?php echo $video->free_duration ?>" >
