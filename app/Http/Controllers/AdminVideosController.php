@@ -2497,6 +2497,13 @@ class AdminVideosController extends Controller
             $data['slug'] = $this->createSlug($data['slug']);
         }
 
+        $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
+
+        if (isset($request->free_duration)) {
+            $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
+            $video->free_duration = $time_seconds;
+        }
+
         $trailer = isset($data['trailer']) ? $data['trailer'] : '';
         $files = isset($data['subtitle_upload']) ? $data['subtitle_upload'] : '';
         $image_path = public_path() . '/uploads/images/';
@@ -3005,13 +3012,6 @@ class AdminVideosController extends Controller
         $video->ios_ppv_price = $data['ios_ppv_price'];
         $video->player_image = $data["player_image"] ;
         $video->video_tv_image = $data["video_tv_image"] ;
-
-        if (isset($request->free_duration)) {
-            $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
-            $video->free_duration = $time_seconds;
-        }
-
-        $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
 
         // Ads videos
         if ($data['ads_tag_url_id'] == null) {
