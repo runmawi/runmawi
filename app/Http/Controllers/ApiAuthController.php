@@ -8411,11 +8411,11 @@ public function Adstatus_upate(Request $request)
           $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->get();
         }
 
-      $status = "true";
+      $status = true;
 
     }
     catch (\Throwable $th) {
-       $status = "fail";
+       $status = false;
     }
 
     $response = array(
