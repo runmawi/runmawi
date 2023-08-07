@@ -539,12 +539,12 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                            <a href="{{  URL::to('advertiser') }}" class="iq-waves-effect"> <img height="40"width="40" src="{{  URL::to('/assets/img/icon/home.svg') }} "><span>Dashboard</span></a></li><li>
                            <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="{{ URL::to('/assets/img/icon/user.svg') }} " height="40" width="40"><span>Advertisements </span> <i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                             <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li><a href="{{ URL::to('advertiser/ads-list') }}" class="iq-waves-effect"><span>All advertisement</span></a></li>
-                                <li><a href="{{ URL::to('advertiser/upload_ads') }}" class="iq-waves-effect"><span> Add New Advertisement</span></a></li>
-                                {{-- <li><a href="{{ URL::to('advertiser/upload_featured_ad') }}" class="iq-waves-effect"><span>Upload Payperview Ads</span></a></li>
-                                <li><a href="{{ URL::to('advertiser/featured_ads') }}" class="iq-waves-effect"><span>View PPV Ads</span></a></li> --}}
-                                <li><a href="{{ URL::to('advertiser/Ads_Scheduled') }}" class="iq-waves-effect"><span>Schedule Advertisement</span></a></li>
-                                {{-- <li><a href="{{ URL::to('advertiser/ads_campaign') }}" class="iq-waves-effect"><span>Ads campaign</span></a></li> --}}
+                                <li><a href="{{ URL::to('advertiser/ads-list') }}" class="iq-waves-effect">All advertisement</a></li>
+                                <li><a href="{{ URL::to('advertiser/upload_ads') }}" class="iq-waves-effect"> Add New Advertisement</a></li>
+                                {{-- <li><a href="{{ URL::to('advertiser/upload_featured_ad') }}" class="iq-waves-effect">Upload Payperview Ads</a></li>
+                                <li><a href="{{ URL::to('advertiser/featured_ads') }}" class="iq-waves-effect">View PPV Ads</a></li> --}}
+                                <li><a href="{{ URL::to('advertiser/Ads_Scheduled') }}" class="iq-waves-effect">Schedule Advertisement</a></li>
+                                {{-- <li><a href="{{ URL::to('advertiser/ads_campaign') }}" class="iq-waves-effect">Ads campaign</a></li> --}}
                             </ul>
                         </li>
 
@@ -552,8 +552,8 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                             <a href="#Ads" class="iq-waves-effect collapsed" data-toggle="collapse"  aria-expanded="false"><img class="" src="{{  URL::to('/assets/img/icon/anay.svg') }}" height="40" width="40"><span>Ads Analytics </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                            
                             <ul id="Ads" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                              <li><a href="{{ route('Advertisement.Cost_Per_Click_Analysis') }}" class="iq-waves-effect"><span>CPC</span></a></li>
-                              <li><a href="{{ route('Advertisement.Cost_Per_View_Analysis') }}" class="iq-waves-effect"><span>CPV</span></a></li>
+                              <li><a href="{{ route('Advertisement.Cost_Per_Click_Analysis') }}" class="iq-waves-effect">CPC</a></li>
+                              <li><a href="{{ route('Advertisement.Cost_Per_View_Analysis') }}" class="iq-waves-effect">CPV</a></li>
                             </ul>
                         </li>
 
@@ -564,8 +564,8 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                            </a>
 
                             <ul id="his" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li><a href="{{ URL::to('advertiser/featured_ad_history') }}" class="iq-waves-effect"><span>Featured Ad History</span></a></li>
-                                <li><a href="{{ URL::to('advertiser/plan_history') }}" class="iq-waves-effect"><span> Plans History</span></a></li>
+                                <li><a href="{{ URL::to('advertiser/featured_ad_history') }}" class="iq-waves-effect">Featured Ad History</a></li>
+                                <li><a href="{{ URL::to('advertiser/plan_history') }}" class="iq-waves-effect"> Plans History</a></li>
                             </ul>
                         </li>
 
