@@ -615,5 +615,6 @@ Route::group(
             Route::post('login_tv ', 'ApiAuthController@TV_login');
 
             Route::get('Master-List-videos', 'ApiAuthController@Master_list_videos');
+            Route::get('register-dropdown-data', 'ApiAuthController@RegisterDropdownData');
 
         });

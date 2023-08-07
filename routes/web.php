@@ -1198,6 +1198,10 @@ Route::get('admin/channel/view-channel-members', 'ChannelLoginController@ViewCha
 Route::get('admin/channel/commission', 'ChannelLoginController@Commission');
 Route::post('admin/channel/add/commission', 'ChannelLoginController@AddCommission');
 Route::get('admin/channel/user/delete/{id}', 'ChannelLoginController@destroy');
+Route::get('admin/channel/user/create', 'ChannelLoginController@ChannelCreate');
+Route::get('admin/channel/user/edit/{id}', 'ChannelLoginController@ChannelEdit');
+Route::post('admin/channel/user/update', 'ChannelLoginController@ChannelUpdate');
+Route::post('admin/channel/user/store', 'ChannelLoginController@ChannelStore');
 
 Route::get('admin/ChannelUsersApproval/{id}', 'ChannelLoginController@ChannelUsersApproval');
 Route::get('admin/ChannelUsersReject/{id}', 'ChannelLoginController@ChannelUsersReject');
@@ -2294,3 +2298,5 @@ Route::get('current-currency', 'AdminCurrencySettings@currentcurrency');
 // Route::get('exchangeCurrency','AdminCurrencySettings@exchangeCurrency');
 
 Route::get('exchangeCurrency','AdminCurrencyConvert@Index');
+
+Route::get('PPV-Free-Duration-Logs', 'AdminLiveStreamController@PPV_Free_Duration_Logs')->name('PPV_Free_Duration_Logs');

@@ -289,6 +289,10 @@ class ApiAuthController extends Controller
               $user->referrer_id = $referred_user_id;
               $user->token = $user_data['token'];
               $user->referral_token = $ref_token;
+              $user->country = $country;
+              $user->state = $state;
+              $user->city = $city;
+              $user->support_username = $support_username;
               $user->active = 1;
               $user->save();
               $userdata = User::where('email', '=', $request->get('email'))->first();
@@ -2923,6 +2927,7 @@ public function verifyandupdatepassword(Request $request)
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
     $user = User::find($user_id);
+    $amount_ppv = Video::where('id',$video_id)->pluck('ppv_price')->first();
     if($payment_type == 'stripe'){
 
     $paymentMethod = $request->get('py_id');
@@ -2935,7 +2940,7 @@ public function verifyandupdatepassword(Request $request)
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
         send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
       } else {
@@ -2959,7 +2964,7 @@ public function verifyandupdatepassword(Request $request)
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
       } else {
         DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
@@ -8406,11 +8411,11 @@ public function Adstatus_upate(Request $request)
           $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->get();
         }
 
-      $status = "true";
+      $status = true;
 
     }
     catch (\Throwable $th) {
-       $status = "fail";
+       $status = false;
     }
 
     $response = array(
@@ -20369,6 +20374,24 @@ public function TV_login(Request $request)
                 );
    
                 return response()->json($response, 200);
+    }
+
+    
+    public function RegisterDropdownData()
+    {
+   
+
+      $Artists = \App\Artist::get();
+      $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+
+      $jsondata = json_decode($jsonString, true);
+
+        $response = array(
+        "Artists" => $Artists ,
+        "country"  => $jsondata ,
+        );
+   
+        return response()->json($response, 200);
     }
 
 }
