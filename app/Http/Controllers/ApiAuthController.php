@@ -13492,9 +13492,15 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Audio Playlist status) is turned off in the admin panel
       else:
 
-          $data =  MyPlaylist::select('id','title','slug', 'image as image_url', 'description')
-          ->where('user_id',$user_id)->get();
-
+          // $data =  MyPlaylist::select('id','title','slug', 'image as image_url', 'description')
+          // ->where('user_id',$user_id)->get();
+          $data =  MyPlaylist::where('user_id',$user_id)->get()->map(function ($item) {
+            $item['image_url'] = $item->image ;
+            $item['description'] = null ;
+            $item['source']    = "my_play_list";
+            return $item;
+          });
+          
       endif;
    
     return $data;
