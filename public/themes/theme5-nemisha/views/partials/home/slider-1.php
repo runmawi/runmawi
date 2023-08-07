@@ -73,7 +73,7 @@ data-delay-in="0.6">
     </span>
     <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
 </div>
-<div data-animation-in="fadeInUp" data-delay-in="1.2"
+<div 
 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
@@ -141,7 +141,7 @@ endif; ?>
                                     </span>
                                 </div>
 
-                                <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                                <div 
                                     style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                     -webkit-line-clamp: 3; -webkit-box-orient: vertical;  overflow: hidden;">
                                     <p><?php echo __($live_event_banner->description); ?></p>
@@ -304,7 +304,7 @@ if(Route::current()->getName() == "home"){
                                 </a>
                                                             <!-- Video Title  -->
                             <?php }else{ ?>
-                                <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                <h1 class=" text-white title text-uppercase mb-3" >
                                      <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
                                 </h1>
                             <?php } ?>
@@ -313,7 +313,7 @@ if(Route::current()->getName() == "home"){
                                    <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                                 </div>
 
-                                <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                                <div 
                                         style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                             -webkit-line-clamp: 3;   -webkit-box-orient: vertical;  overflow: hidden;">
                                     <p>  <?php echo __($videos->description); ?></p>
@@ -431,8 +431,7 @@ if(Route::current()->getName() == "home"){
 <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs">
 </div>
 </a>-->
-<h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
-data-delay-in="0.6">
+<h1 class="slider-text big-title title text-uppercase" >
 <?php
 echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
 //  echo __($slider_video->title);
@@ -451,7 +450,7 @@ echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'..
     </span>
     <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
 </div>
-<div data-animation-in="fadeInUp" data-delay-in="1.2"
+<div 
 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
