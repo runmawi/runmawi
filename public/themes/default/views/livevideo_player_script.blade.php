@@ -81,37 +81,56 @@
         if( free_duration_condition == 1 ){
 
             const video = document.getElementById('live_player_mp4');
-            
-            video.addEventListener('timeupdate', () => {
+        
+            let isVideoPlaying = false;
+            let interval;
 
-                $.ajax({
-                    type:'get',
-                    url:'<?= route('PPV_Free_Duration_Logs') ?>',
-                    data: {
-                            "source_id"   : "<?php echo $livestream_id ?>",
-                            "source_type" : "livestream",
-                            "duration"    : "0.20" ,
+            function checkPPVFreeDuration() {
+
+                if (isVideoPlaying == true ) {
+
+                    $.ajax({
+                        type: 'get',
+                        url: '<?= route('PPV_Free_Duration_Logs') ?>',
+                        data: {
+                            "source_id": "<?php echo $livestream_id ?>",
+                            "source_type": "livestream",
+                            "duration": "3",
                         },
-                        success:function(data) {
+                        success: function (data) {
+                            let PPVFreeDuration = data;
 
-                            let PPVFreeDuration = data ;
+                            console.log( PPVFreeDuration );
 
-                            let freeduration_sec = free_duration_seconds.defaultValue  ;
-                            
-                            if ( PPVFreeDuration >= freeduration_sec ) {
+                            let freeduration_sec = free_duration_seconds.defaultValue;
 
+                            if (PPVFreeDuration >= freeduration_sec) {
                                 video.pause();
-
                                 const controlsElements = document.getElementsByClassName("plyr__controls");
-
                                 $('.plyr__controls').hide();
                                 $('#live_player_M3U8_url').hide();
-                                
                                 displayModal();
                             }
                         }
-                });
+                    });
+                }
+            }
+
+            video.addEventListener('play', () => {
+                isVideoPlaying = true;
+                interval = setInterval(checkPPVFreeDuration, 3000); //3 seconds
             });
+
+            video.addEventListener('pause', () => {
+                isVideoPlaying = false;
+                clearInterval(interval);
+            });
+
+            video.addEventListener('ended', () => {
+                isVideoPlaying = false;
+                clearInterval(interval);
+            });
+
         }
 
         function displayModal() {
@@ -250,38 +269,50 @@
         
         if( free_duration_condition == 1  ){
 
-            video.addEventListener('timeupdate', () => {
+            let isVideoPlaying = false;
+            let interval;
 
-                if( video.duration >= free_duration_start_time  ){
+            function checkPPVFreeDuration() {
+
+                if ( (video.duration >= free_duration_start_time) && isVideoPlaying == true ) {
 
                     $.ajax({
-                    type:'get',
-                    url:'<?= route('PPV_Free_Duration_Logs') ?>',
-                    data: {
-                            "source_id"   : "<?php echo $livestream_id ?>",
-                            "source_type" : "livestream",
-                            "duration"    : "0.30" ,
+                        type: 'get',
+                        url: '<?= route('PPV_Free_Duration_Logs') ?>',
+                        data: {
+                            "source_id": "<?php echo $livestream_id ?>",
+                            "source_type": "livestream",
+                            "duration": "3",
                         },
-                        success:function(data) {
+                        success: function (data) {
+                            let PPVFreeDuration = data;
+                            let freeduration_sec = free_duration_seconds.defaultValue;
 
-                            let PPVFreeDuration = data ;
-
-                            let freeduration_sec = free_duration_seconds.defaultValue  ;
-                            
-                            if ( PPVFreeDuration >= freeduration_sec ) {
-
+                            if (PPVFreeDuration >= freeduration_sec) {
                                 video.pause();
-
                                 const controlsElements = document.getElementsByClassName("plyr__controls");
-
                                 $('.plyr__controls').hide();
                                 $('#live_player_M3U8_url').hide();
-                                
                                 displayModal();
                             }
                         }
                     });
                 }
+            }
+
+            video.addEventListener('play', () => {
+                isVideoPlaying = true;
+                interval = setInterval(checkPPVFreeDuration, 3000); //3 seconds
+            });
+
+            video.addEventListener('pause', () => {
+                isVideoPlaying = false;
+                clearInterval(interval);
+            });
+
+            video.addEventListener('ended', () => {
+                isVideoPlaying = false;
+                clearInterval(interval);
             });
         }
     
@@ -383,51 +414,54 @@
                 Ads_Redirection_URL_Count(event.timeStamp);
             });
 
-
-                // On-Play current time
-            // player.on('play', (event) => {
-            //     let onplay_current_time = video.currentTime ;
-            //     sessionStorage.setItem("onplay_current_time", onplay_current_time );
-            // });
-
-
             if( free_duration_condition == 1 ){
 
-                video.addEventListener('timeupdate', () => {
-                
-                let onplay_CurrentTime = sessionStorage.getItem("onplay_current_time") ;
-                let seconds_count   = Math.abs(onplay_CurrentTime - video.currentTime)  ;
+                let isVideoPlaying = false;
+                let interval;
 
-                $.ajax({
-                    type:'get',
-                    url:'<?= route('PPV_Free_Duration_Logs') ?>',
-                    data: {
-                            "source_id"   : "<?php echo $livestream_id ?>",
-                            "source_type" : "livestream",
-                            "duration"    : "0.20" ,
-                        },
-                        success:function(data) {
+                function checkPPVFreeDuration() {
 
-                            let PPVFreeDuration = data ;
+                    if ( isVideoPlaying == true ) {
 
-                            let freeduration_sec = free_duration_seconds.defaultValue  ;
-                            
-                            if ( PPVFreeDuration >= freeduration_sec ) {
+                        $.ajax({
+                            type: 'get',
+                            url: '<?= route('PPV_Free_Duration_Logs') ?>',
+                            data: {
+                                "source_id": "<?php echo $livestream_id ?>",
+                                "source_type": "livestream",
+                                "duration": "3",
+                            },
+                            success: function (data) {
+                                let PPVFreeDuration = data;
+                                let freeduration_sec = free_duration_seconds.defaultValue;
 
-                                video.pause();
-
-                                const controlsElements = document.getElementsByClassName("plyr__controls");
-
-                                $('.plyr__controls').hide();
-                                $('#live_player_M3U8_url').hide();
-                                
-                                displayModal();
+                                if (PPVFreeDuration >= freeduration_sec) {
+                                    video.pause();
+                                    const controlsElements = document.getElementsByClassName("plyr__controls");
+                                    $('.plyr__controls').hide();
+                                    $('#live_player_M3U8_url').hide();
+                                    displayModal();
+                                }
                             }
-                        }
-                 });
+                        });
+                    }
+                }
 
-            });
-        }
+                video.addEventListener('play', () => {
+                    isVideoPlaying = true;
+                    interval = setInterval(checkPPVFreeDuration, 3000); //3 seconds
+                });
+
+                video.addEventListener('pause', () => {
+                    isVideoPlaying = false;
+                    clearInterval(interval);
+                });
+
+                video.addEventListener('ended', () => {
+                    isVideoPlaying = false;
+                    clearInterval(interval);
+                });
+            }
         });	
 
         hls.attachMedia(video);
