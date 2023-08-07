@@ -13926,6 +13926,15 @@ public function QRCodeMobileLogout(Request $request)
                 $Page_List_Name = 'Specific_Genre_Series_Pagelist';
                 break;  
 
+              case 'my_play_list':
+                $data = $this->Specific_Audio_Playlist_Pagelist($request->user_id);
+                $Page_List_Name = 'Specific_Audio_Playlist_Pagelist';
+                break;  
+                
+              case 'video_play_list':
+                $data = $this->Video_Playlist_Pagelist();
+                $Page_List_Name = 'Video_Playlist_Pagelist';
+                break;  
           }
       }
 
@@ -14387,6 +14396,35 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
 
   }
+
+  private static function Specific_Audio_Playlist_Pagelist( $user_id ){
+    
+    $data =  MyPlaylist::where('user_id',$user_id)->get()->map(function ($item) {
+      $item['image_url'] = $item->image ;
+      $item['description'] = null ;
+      $item['source']    = "my_play_list";
+      return $item;
+    });
+  
+    return $data;
+    
+  }
+
+  
+  private static function Video_Playlist_Pagelist(){
+    
+
+    $data =  AdminVideoPlaylist::get()->map(function ($item) {
+      $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+      $item['description'] = null ;
+      $item['source']    = "video_play_list";
+      return $item;
+    });  
+    
+    return $data;
+    
+  }
+
 
   public function website_baseurl()
   {
