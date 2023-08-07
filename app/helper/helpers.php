@@ -1088,7 +1088,7 @@ function Current_currency_symbol($From_Currency_symbol,$amount){
     return  $Current_currency_symbol; 
 }
 
-function PPV_CurrencyConvert(){
+function PPV_CurrencyConvert($amount){
 
 
 
