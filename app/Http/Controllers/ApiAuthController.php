@@ -289,10 +289,10 @@ class ApiAuthController extends Controller
               $user->referrer_id = $referred_user_id;
               $user->token = $user_data['token'];
               $user->referral_token = $ref_token;
-              $user->country = $country;
-              $user->state = $state;
-              $user->city = $city;
-              $user->support_username = $support_username;
+              $user->country = $request->country;
+              $user->state = $request->state;
+              $user->city = $request->city;
+              $user->support_username = $request->support_username;
               $user->active = 1;
               $user->save();
               $userdata = User::where('email', '=', $request->get('email'))->first();
