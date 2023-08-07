@@ -1087,3 +1087,25 @@ function Current_currency_symbol($From_Currency_symbol,$amount){
 
     return  $Current_currency_symbol; 
 }
+
+function PPV_CurrencyConvert(){
+
+
+
+    $To_Currency_symbol = App\Currency::where('country',Country_name())->pluck('code')->first();
+
+    $Currency_symbol = App\Currency::where('country',Country_name())->pluck('symbol')->first();
+
+    $allCurrency = App\CurrencySetting::first();
+
+    $From_Currency_symbol = App\Currency::where('country',@$allCurrency->country)->pluck('code')->first();
+
+    $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
+    ->from($From_Currency_symbol)
+    ->to($To_Currency_symbol)
+    ->amount($amount)
+    ->get();  
+
+
+    return  $Currency_Converter; 
+}
