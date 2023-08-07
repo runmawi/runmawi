@@ -289,6 +289,10 @@ class ApiAuthController extends Controller
               $user->referrer_id = $referred_user_id;
               $user->token = $user_data['token'];
               $user->referral_token = $ref_token;
+              $user->country = $request->country;
+              $user->state = $request->state;
+              $user->city = $request->city;
+              $user->support_username = $request->support_username;
               $user->active = 1;
               $user->save();
               $userdata = User::where('email', '=', $request->get('email'))->first();
@@ -8407,11 +8411,11 @@ public function Adstatus_upate(Request $request)
           $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->get();
         }
 
-      $status = "true";
+      $status = true;
 
     }
     catch (\Throwable $th) {
-       $status = "fail";
+       $status = false;
     }
 
     $response = array(
@@ -13488,7 +13492,8 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Audio Playlist status) is turned off in the admin panel
       else:
 
-          $data =  MyPlaylist::where('user_id',$user_id)->get();
+          $data =  MyPlaylist::select('id','title','slug', 'image as image_url', 'description')
+          ->where('user_id',$user_id)->get();
 
       endif;
    
@@ -13921,6 +13926,15 @@ public function QRCodeMobileLogout(Request $request)
                 $Page_List_Name = 'Specific_Genre_Series_Pagelist';
                 break;  
 
+              case 'my_play_list':
+                $data = $this->Specific_Audio_Playlist_Pagelist($request->user_id);
+                $Page_List_Name = 'Specific_Audio_Playlist_Pagelist';
+                break;  
+                
+              case 'video_play_list':
+                $data = $this->Video_Playlist_Pagelist();
+                $Page_List_Name = 'Video_Playlist_Pagelist';
+                break;  
           }
       }
 
@@ -14382,6 +14396,35 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
 
   }
+
+  private static function Specific_Audio_Playlist_Pagelist( $user_id ){
+    
+    $data =  MyPlaylist::where('user_id',$user_id)->get()->map(function ($item) {
+      $item['image_url'] = $item->image ;
+      $item['description'] = null ;
+      $item['source']    = "my_play_list";
+      return $item;
+    });
+  
+    return $data;
+    
+  }
+
+  
+  private static function Video_Playlist_Pagelist(){
+    
+
+    $data =  AdminVideoPlaylist::get()->map(function ($item) {
+      $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+      $item['description'] = null ;
+      $item['source']    = "video_play_list";
+      return $item;
+    });  
+    
+    return $data;
+    
+  }
+
 
   public function website_baseurl()
   {
@@ -20370,6 +20413,24 @@ public function TV_login(Request $request)
                 );
    
                 return response()->json($response, 200);
+    }
+
+    
+    public function RegisterDropdownData()
+    {
+   
+
+      $Artists = \App\Artist::get();
+      $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+
+      $jsondata = json_decode($jsonString, true);
+
+        $response = array(
+        "Artists" => $Artists ,
+        "country"  => $jsondata ,
+        );
+   
+        return response()->json($response, 200);
     }
 
 }

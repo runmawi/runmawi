@@ -21,8 +21,8 @@
                                                             <th> Ads Id </th>
                                                             <th> Ads Name </th>
                                                             <th> Click Count </th>
-                                                            <th> Cost Pre Click </th>
-                                                            <th> Total Cost Pre Click </th>
+                                                            <th> Cost Per Click </th>
+                                                            <th> Total Cost Per Click </th>
                                                             <th> Action </th>
                                                         </tr>
                                                     </thead>
