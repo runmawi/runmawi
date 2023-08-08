@@ -45,7 +45,7 @@
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($cont_video->title) > 17) ? substr($cont_video->title,0,18).'...' : $cont_video->title; ?></h6>
+                    <h6><?php  echo (strlen($cont_video->title) > 150) ? substr($cont_video->title,0,150).'...' : $cont_video->title; ?></h6>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>
