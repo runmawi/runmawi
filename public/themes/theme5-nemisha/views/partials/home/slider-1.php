@@ -126,8 +126,7 @@ endif; ?>
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-5 col-lg-12 col-md-12">
-                                <h1 class="slider-text big-title title text-uppercase text-white" data-animation-in="fadeInLeft"
-                                    data-delay-in="0.6">
+                                <h1 class="slider-text big-title title text-uppercase text-white" >
                                     <?php echo (strlen($live_event_banner->title) > 15) ? substr($live_event_banner->title,0,80).'...' : $live_event_banner->title; ?>
                                 </h1>
 
@@ -135,7 +134,7 @@ endif; ?>
                                     <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                                 </div>
 
-                                <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                <div class="d-flex align-items-center" >
                                     <span class="badge badge-secondary p-2">
                                         <?php echo __($live_event_banner->year); ?>
                                     </span>
