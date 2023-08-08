@@ -1839,7 +1839,7 @@ $artists = [];
                                                         <a type="button" class="mb-3 mt-3" data-dismiss="modal"
                                                             style="font-weight:400;">Amount: <span class="pl-2"
                                                                 style="font-size:20px;font-weight:700;">
-                                                                <?php echo __(Currency_Convert($video->ppv_price)); ?></span></a><br>
+                                                                <?php if($video->access == 'ppv' && $video->ppv_price != null){ echo __(Currency_Convert(@$video->ppv_price)); } ?></span></a><br>
                                                                 <!-- $currency->symbol . ' ' . $video->ppv_price -->
                                                         <label class="mb-0 mt-3 p-0" for="method">
                                                             <h5 style="font-size:20px;line-height: 23px;"
@@ -1971,8 +1971,8 @@ $artists = [];
                                             <div class="modal-footer">
                                                 <div class="Stripe_button">
                                                     <!-- Stripe Button -->
-                                                    <!-- Currency_Convert($video->ppv_price) -->
-                                                    <a onclick="pay(<?php echo PPV_CurrencyConvert($video->ppv_price); ?>)">
+                                                    <!-- Currency_Convert(@$video->ppv_price) -->
+                                                    <a onclick="pay(<?php if($video->access == 'ppv' && $video->ppv_price != null){ echo PPV_CurrencyConvert($video->ppv_price); } ?>)">
                                                         <button type="button"
                                                             class="btn2  btn-outline-primary">Continue</button>
                                                     </a>
