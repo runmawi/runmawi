@@ -53,7 +53,7 @@
                   
                 <div class="movie-time align-items-center justify-content-between my-2">
                      <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> ">
-                        <h6><?php echo __($latest_serie->title); ?></h6>
+                        <h6><?php  echo (strlen($latest_serie->title) > 17) ? substr($latest_serie->title,0,18).'...' : $latest_serie->title; ?></h6>
                     </a>
 
                     <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_serie->age_restrict.' '.'+' ?></div>
