@@ -316,7 +316,7 @@
                         player.elements.controls.insertBefore(fastForwardIcon, playButton.nextSibling);
                         });
 
-                });
+                // });
 
                 hls.attachMedia(video);
                 window.hls = hls;
@@ -544,7 +544,7 @@
                         player.elements.controls.insertBefore(fastForwardIcon, playButton.nextSibling);
                         });
 
-                });
+                // });
 
                 hls.attachMedia(video);
                 window.hls = hls;
