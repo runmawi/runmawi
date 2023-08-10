@@ -4359,5 +4359,95 @@ class HomeController extends Controller
       
     }
 
+    
+    public function LikeAudio(Request $request)
+    {
+        if(!Auth::guest()){
+            $user_id = Auth::user()->id ;
+        }else{
+            $user_id = 0 ;
+        }
+        $audio_id = $request->audio_id;
+        $like = $request->like;
+        $user_id = $user_id;
+        $audio = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->get();
+        $audio_count = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->count();
+        if ($audio_count > 0)
+        {
+            $audio_new = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->first();
+            $audio_new->liked = $like;
+            $audio_new->disliked = 0;
+            $audio_new->audio_id = $audio_id;
+            $audio_new->save();
+            $response = array(
+                'status' => true
+            );
+        }
+        else
+        {
+            $audio_new = new LikeDisLike;
+            $audio_new->audio_id = $audio_id;
+            $audio_new->user_id = $user_id;
+            $audio_new->disliked = 0;
+            $audio_new->liked = $like;
+            $audio_new->save();
+            $response = array(
+                'status' => true
+            );
+        }
+
+    }
+
+    public function DisLikeAudio(Request $request)
+    {
+        if(!Auth::guest()){
+            $user_id = Auth::user()->id ;
+        }else{
+            $user_id = 0 ;
+        }        $audio_id = $request->audio_id;
+        $dislike = $request->dislike;
+        $d_like = Likedislike::where("audio_id", $audio_id)->where("user_id", $user_id)->count();
+
+        if ($d_like > 0)
+        {
+            $new_audio_dislike = Likedislike::where("audio_id", $audio_id)->where("user_id", $user_id)->first();
+            if ($dislike == 1)
+            {
+                $new_audio_dislike->user_id = $user_id;
+                $new_audio_dislike->audio_id = $audio_id;
+                $new_audio_dislike->liked = 0;
+                $new_audio_dislike->disliked = 1;
+                $new_audio_dislike->save();
+                $response = array(
+                    'status' => "disliked"
+                );
+            }
+            else
+            {
+                $new_audio_dislike->user_id = $user_id;
+                $new_audio_dislike->audio_id = $audio_id;
+                $new_audio_dislike->liked = 0;
+                $new_audio_dislike->disliked = 1;
+                $new_audio_dislike->save();
+                $response = array(
+                    'status' => "liked"
+                );
+            }
+        }
+        else
+        {
+            $new_audio_dislike = new Likedislike;
+            $new_audio_dislike->user_id = $user_id;
+            $new_audio_dislike->audio_id = $audio_id;
+            $new_audio_dislike->liked = 0;
+            $new_audio_dislike->disliked = 1;
+            $new_audio_dislike->save();
+            $response = array(
+                'status' => "disliked"
+            );
+        }
+        return response()->json($response, 200);
+    }
+
 
 }
