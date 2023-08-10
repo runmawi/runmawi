@@ -325,6 +325,9 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('/dislike-episode', 'TvshowsController@DisLikeEpisode');
     Route::post('/remove_dislike-episode', 'TvshowsController@RemoveDisLikeEpisode');
 
+    Route::post('/like-audio', 'HomeController@LikeAudio');
+    Route::post('/dislike-audio', 'HomeController@DisLikeAudio');
+
     // Become subscriber - single page
     Route::get('become_subscriber', 'PaymentController@become_subscriber')->name('become_subscriber');
     Route::get('retrieve_stripe_coupon', 'PaymentController@retrieve_stripe_coupon')->name('retrieve_stripe_coupon');
