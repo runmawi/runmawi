@@ -560,7 +560,7 @@ class AdminAudioController extends Controller
                         Image::make($image)->save(base_path().'/public/uploads/images/'.$audio_image,compress_image_resolution() );
                     }else{
 
-                        $audio_filename  = time().'.'.$audio_image->getClientOriginalExtension();
+                        $audio_filename  = time().'.'.$image->getClientOriginalExtension();
                         $audio_image     =  'audio_'.$audio_filename ;
                         Image::make($image)->save(base_path().'/public/uploads/images/'.$audio_image );
                     }  
@@ -593,7 +593,7 @@ class AdminAudioController extends Controller
                         Image::make($image)->save(base_path().'/public/uploads/images/'.$audio_player_image,compress_image_resolution() );
                     }else{
             
-                        $audio_player_filename  = time().'.'.$audio_player_image->getClientOriginalExtension();
+                        $audio_player_filename  = time().'.'.$player_image->getClientOriginalExtension();
                         $audio_player_image     =  'audio_player_'.$audio_player_filename ;
                         Image::make($image)->save(base_path().'/public/uploads/images/'.$audio_player_image );
                     }  
