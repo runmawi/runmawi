@@ -1026,6 +1026,8 @@ class ThemeAudioController extends Controller{
                     }
                 }              
             }
+        }else{
+            $mergedArrayAudios = $merged_related_Audioartist;
         }
         
             // dd($mergedArrayAudios);
