@@ -251,7 +251,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::post('artist/following', 'ThemeAudioController@ArtistFollow');
     Route::get('audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
-    Route::get('audio/newplaylist', 'ThemeAudioController@Newplaylist')->name('newplaylist');
+    Route::get('audio/related-playlist/{slug}', 'ThemeAudioController@Newplaylist')->name('newplaylist');
     Route::get('datafree/audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
     Route::get('album/{album_slug}', 'ThemeAudioController@album');
     Route::get('/albums-list', 'ThemeAudioController@albums_list')->name('albums_list');
@@ -1134,6 +1134,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/currency/delete/{id}', 'AdminCurrencySettings@DeleteCurrencySettings');
     Route::get('/Allregionvideos', 'AdminUsersController@AllRegionVideos');
     Route::post('/VideoByRegionCSV', 'AdminUsersController@VideoByRegionCSV');
+    Route::post('/enable_multi_currency', 'AdminCurrencySettings@enable_multi_currency');
 
     // Geofencing
     Route::get('/Geofencing', 'GeofencingController@index');

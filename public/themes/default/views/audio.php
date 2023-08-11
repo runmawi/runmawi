@@ -897,6 +897,7 @@ if(role == 'admin'){
       var player = document.querySelector('#source-audio')
     player.src = listAudio[index].mp3_url
     document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+    document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
     document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
     document.querySelector('.title').innerHTML = listAudio[index].title
     var image = document.querySelector('#audio_img')
@@ -918,6 +919,7 @@ if(role == 'admin'){
 
           document.querySelector('#enable_button').style.display = 'none';
           document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+          document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
           document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
 
         var player = document.querySelector('#source-audio')
@@ -936,6 +938,7 @@ if(role == 'admin'){
         var audioppv = <?php echo json_encode($ablum_audios); ?>;
         var ppv_audio_status = 0 ;
         document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+        document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
         document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
         $.ajax({
           url: '<?php echo URL::to('purchased-audio-check'); ?>',
@@ -1045,6 +1048,7 @@ if(role == 'admin'){
         var role = <?php echo json_encode($role) ?>;
         // alert(role);
         document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+        document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
         document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
 
         if(role == 'subscriber'){
@@ -1105,11 +1109,13 @@ if(role == 'admin'){
   var role = <?php echo json_encode(@$role) ; ?>  
   var ppv_status = <?php echo json_encode(@$ppv_status) ; ?>  
   var audiosid = <?php echo json_encode(@$audios->id) ; ?>  
+  var audioslug = <?php echo json_encode(@$audios->slug) ; ?>  
 
   if(role == 'admin'){
   // alert(audiosid)
     document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
     document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
+    document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
     document.querySelector(".like").setAttribute("data-audio-id", audiosid);
   }else{
     if(access == 'ppv' && ppv_status == 0){
@@ -1118,11 +1124,13 @@ if(role == 'admin'){
       document.querySelector('#enable_button').style.display = 'block';
       document.querySelector('#source-audio').src = '';
       document.querySelector(".like").setAttribute("data-audio-id", audiosid);
+      document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
       document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
           alert("Purchase Audio"); 
     }else{
       document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
       document.querySelector(".like").setAttribute("data-audio-id", audiosid);
+      document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
       document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
     }
   }
@@ -1180,8 +1188,12 @@ if(role == 'admin'){
           var index = parseInt(this.indexAudio)+1
           this.loadNewTrack(index)
       }else{
-        var Excel_url =  "<?php echo URL::to('audio/newplaylist')  ?>";
-                location.href = link_url;
+              var url =  "<?php echo URL::to('audio/related-playlist')  ?>";
+              var  audio_id = document.querySelector(".like").getAttribute("data-audio-id");
+              var  audio_slug = document.querySelector(".like").getAttribute("data-audio-slug");
+              var link_url = url+'/'+audio_slug;
+              location.href = link_url;
+
       }
     }
   }
