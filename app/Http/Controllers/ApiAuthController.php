@@ -14625,6 +14625,7 @@ public function QRCodeMobileLogout(Request $request)
       ->limit(10)
       ->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         return $item;
       });
       $response = array(
