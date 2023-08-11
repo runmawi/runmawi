@@ -251,6 +251,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::post('artist/following', 'ThemeAudioController@ArtistFollow');
     Route::get('audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
+    Route::get('audio/newplaylist', 'ThemeAudioController@Newplaylist')->name('newplaylist');
     Route::get('datafree/audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
     Route::get('album/{album_slug}', 'ThemeAudioController@album');
     Route::get('/albums-list', 'ThemeAudioController@albums_list')->name('albums_list');

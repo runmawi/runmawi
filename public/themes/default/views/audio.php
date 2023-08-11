@@ -1179,6 +1179,9 @@ if(role == 'admin'){
       if (this.indexAudio < listAudio.length-1) {
           var index = parseInt(this.indexAudio)+1
           this.loadNewTrack(index)
+      }else{
+        var Excel_url =  "<?php echo URL::to('audio/newplaylist')  ?>";
+                location.href = link_url;
       }
     }
   }
