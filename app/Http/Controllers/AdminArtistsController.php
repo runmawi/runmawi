@@ -202,7 +202,7 @@ class AdminArtistsController extends Controller
                             Image::make($file)->save(base_path().'/public/uploads/artists/'.$artist_image,compress_image_resolution() );
                         }else{
         
-                            $artist_filename  = time().'.'.$artist_image->getClientOriginalExtension();
+                            $artist_filename  = time().'.'.$image->getClientOriginalExtension();
                             $artist_image     =  'Artist_'.$artist_filename ;
                             Image::make($file)->save(base_path().'/public/uploads/artists/'.$artist_image );
                         }  
