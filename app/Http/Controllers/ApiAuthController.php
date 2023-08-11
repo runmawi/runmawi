@@ -14623,6 +14623,7 @@ public function QRCodeMobileLogout(Request $request)
       ->where('videos.status',  1)
       ->where('videos.draft',  1)
       ->orderBy('videos.created_at', 'desc')
+      ->groupBy('videos.id')
       ->limit(10)
       ->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
