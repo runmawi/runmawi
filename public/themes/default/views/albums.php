@@ -256,8 +256,8 @@
       <div class="row album-top-30 mt-4 align-items-center">
 
         <div class="col-lg-8">
-          <audio id="myAudio" ontimeupdate="onTimeUpdate()">
-            <source id="source-audio" src="" type="audio/mpeg"> Your browser does not support the audio element.
+          <audio id="myAudio" ontimeupdate="onTimeUpdate()" autoplay >
+            <source id="source-audio" src="" autoplay type="audio/mpeg"> Your browser does not support the audio element.
           </audio>
               <!-- <div class="cinetpay_button"> -->
                   <!-- CinetPay Button -->
