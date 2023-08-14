@@ -218,12 +218,23 @@ border-radius: 0px 4px 4px 0px;
                                 <input type="text" placeholder="Signup Agree Message" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
                             </div>
                     </div>
-                                    {{-- Sign up - Step 2 Title  --}}
+
                     <div class="row"> 
+                                    {{-- Sign up - Step 2 Title  --}}
                         <div class="col-sm-6">
                              <p>{{ ucfirst(trans('Sign up - Step 2 Title')) }}</p>
                             <input type="text" placeholder="Sign up - Step 2 Title" name="signup_step2_title" class="form-control signup_step2_title" id="signup_step2_title" value="@if(!empty($settings->signup_step2_title)){{ $settings->signup_step2_title }}@endif">
                         </div>
+
+                        <div class="col-sm-6">
+                            <p>{{ ucfirst(trans('enable search dropdown')) }}</p>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="search_dropdown_setting" class="search_dropdown_setting" id="search_dropdown_setting" type="checkbox" @if( $settings->search_dropdown_setting == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                       </div>
                     </div>
                 </div>
 
