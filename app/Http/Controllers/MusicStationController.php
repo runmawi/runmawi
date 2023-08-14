@@ -56,7 +56,7 @@ class MusicStationController extends Controller
     public function MusicStation(Request $request){
         try {
             //code...
-          $MusicStation = MusicStation::where('user_id',Auth::user()->id)->get();
+          $MusicStation = MusicStation::get();
           $data = [
             'MusicStation' => $MusicStation,
         ];
@@ -64,7 +64,7 @@ class MusicStationController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
-        // return Theme::view('MyPlaylist', $data);
+        return Theme::view('ListMusicStation', $data);
     }
 
     public function CreateStation(Request $request){

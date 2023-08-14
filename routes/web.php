@@ -67,6 +67,7 @@ Route::post('/user/DOB', 'AdminUsersController@DOB');
 Route::get('/create-station', 'MusicStationController@CreateStation');
 Route::post('/station/store', 'MusicStationController@StoreStation');
 Route::get('/music-station/{slug}', 'MusicStationController@PlayerMusicStation');
+Route::get('/list-music-station', 'MusicStationController@MusicStation');
 
 // Endpoints Playlist Audios.
 
