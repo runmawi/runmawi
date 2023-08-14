@@ -256,8 +256,8 @@
       <div class="row album-top-30 mt-4 align-items-center">
 
         <div class="col-lg-8">
-          <audio id="myAudio" ontimeupdate="onTimeUpdate()" autoplay >
-            <source id="source-audio" src="" autoplay type="audio/mpeg"> Your browser does not support the audio element.
+          <audio id="myAudio" ontimeupdate="onTimeUpdate()"  >
+            <source id="source-audio" src=""  type="audio/mpeg"> Your browser does not support the audio element.
           </audio>
               <!-- <div class="cinetpay_button"> -->
                   <!-- CinetPay Button -->
@@ -409,7 +409,7 @@
 <div class="container-fluid overflow-hidden">
 <div class="row album-top-30 mt-3 p-0">  
 <div class="col-sm-12">
-<p  class="album-title">Other Albums </p>
+<!-- <p  class="album-title">Other Albums </p> -->
 <div class="favorites-contens">
     
                    <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -970,6 +970,7 @@ window.location = '<?= URL::to('login') ?>';
   var player_imagess = player_images +'/' + <?php echo json_encode(@$album->player_image) ; ?>;
 
   var first_audio_image = player_images +'/' + <?php echo json_encode($first_audio_image) ; ?>;
+//   alert(first_audio_image);
   $("#audio_img").attr('src', first_audio_image);
     
   var currentAudio = document.getElementById("myAudio");
