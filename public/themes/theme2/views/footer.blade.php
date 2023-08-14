@@ -386,6 +386,9 @@ function about(evt , id) {
 //document.getElementById("defaultOpen").click();
 </script>
 
+<?php  $search_dropdown_setting = App\SiteTheme::pluck('search_dropdown_setting')->first(); ?>
+<input type="hidden" value="<?= $search_dropdown_setting ?>" id="search_dropdown_setting" >
+
 <script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {
@@ -411,14 +414,19 @@ function about(evt , id) {
                      );
     $(document).on('click', 'li', function(){
       var value = $(this).text();
+      let search_dropdown_setting = $('#search_dropdown_setting').val() ;
+
       $('.search').val(value);
       $('.search_list').html("");
-      $(".home-search").show();
+      
+      if( search_dropdown_setting == 1 ){
+        $(".home-search").show();
+      }else{
+        $(".home-search").hide();
+      }
 
-    }
-                  );
-  }
-                   );
+    });
+  });
 </script>
 <!--<script>
 window.onscroll = function() {myFunction()};
