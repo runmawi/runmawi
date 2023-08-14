@@ -14108,7 +14108,7 @@ public function QRCodeMobileLogout(Request $request)
     $data->transform(function ($item) {
       $item['image_url'] = asset('public/uploads/videocategory/'.$item->image);
       $item['Player_image_url'] = asset('public/uploads/videocategory/'.$item->banner_image);
-      $item['source'] = "VideoCategory";
+      $item['source'] = "VideoCategories";
       return $item;
     });
 
