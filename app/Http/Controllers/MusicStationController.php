@@ -284,7 +284,7 @@ class MusicStationController extends Controller
             );
             
             // dd( $data);
-            return Theme::view('albums', $data);
+            return Theme::view('MusicStation', $data);
 
         } catch (\Throwable $th) {
                 return $th->getMessage();
