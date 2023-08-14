@@ -794,4 +794,280 @@ class ThemeAudioController extends Controller{
             return $th->getMessage();
         }
     }
+
+    public function newplaylist($slug,$name = '')
+    {
+
+      if(Auth::guest()):
+          return Redirect::to('/login');
+      endif;
+
+      $getfeching= Geofencing::first();
+      $getfeching= Geofencing::first();
+      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+      $userIp = $geoip->getip();    
+      $countryName = $geoip->getCountry();
+
+      $source_id = Audio::where('slug',$slug)->pluck('id')->first();
+      $category_name = CategoryAudio::select('audio_categories.id as category_id','audio_categories.name as categories_name','audio_categories.slug as categories_slug','category_audios.audio_id')
+      ->Join('audio_categories', 'category_audios.category_id', '=', 'audio_categories.id')
+      ->where('category_audios.audio_id', $source_id)
+      ->get();
+
+      if(count($category_name) > 0){
+        foreach($category_name as $category){
+
+            $CategoryAudio = CategoryAudio::Join('audio_categories', 'category_audios.category_id', '=', 'audio_categories.id')
+                ->where('category_audios.category_id', @$category->category_id)
+                ->pluck('category_audios.audio_id');
+        }
+
+      }else{
+        $CategoryAudio = [];        
+      }
+      $related_category_Audios = Audio::whereIn('id', $CategoryAudio)->get();
+
+      if(!Auth::guest()){
+        $user_id = Auth::user()->id ;
+        if(Auth::user()->support_username != null){
+            $artist_id = Artist::where('artist_name',Auth::user()->support_username)->pluck('id')->first();
+            
+        }else{
+            $artist_id = null;
+        }
+        if($artist_id != null ){
+            $Audioartist = Audioartist::where('artist_id' ,$artist_id)->pluck('audio_id');
+            if(count($Audioartist) > 0){
+                    $related_Audioartist = Audio::whereIn('id', $Audioartist)->get();
+              }else{
+                $related_Audioartist = [];        
+              }
+        }else{
+            $related_Audioartist = [];        
+        }
+
+      }else{
+        $Audioartist = [];
+        $related_Audioartist = [];
+      }
+
+      $merged_related_Audioartist = $related_category_Audios->merge($related_Audioartist)->all();
+
+
+      if (!empty($name)) {
+        
+           $audio = Audio::select('id')->where('slug','=',$name)->where('status','=',1)->first();
+           $audio = $audio->id;
+           $albumID = Audio::select('album_id')->where('slug','=',$name)->where('status','=',1)->first();
+      
+           $check_audio_details = Audio::where('slug','=',$name)->where('status','=',1)->first();
+          
+          
+            if (!empty($check_audio_details)) {
+                $audio_details = Audio::where('slug','=',$name)->where('status','=',1)->first();
+              } else {
+                   $audio_details = Audio::where('id','=',$albumID)->where('status','=',1)->first();
+              }
+          
+              $audio_cat_id  = Audio::select('audio_category_id')->where('album_id','=',$albumID)->where('status','=',1)->first();
+      
+
+              $audionext = Audio::select('slug')->where('id', '>', $audio)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+              $audioprev = Audio::where('id', '<', $audio)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+
+                // blocked Audio
+                $block_Audio=BlockAudio::where('country',$countryName)->get();
+                if(!$block_Audio->isEmpty()){
+                   foreach($block_Audio as $blocked_Audios){
+                      $blocked_Audio[]=$blocked_Audios->audio_id;
+                   }
+                }    
+                $blocked_Audio[]='';
+              
+                $related_audio  = Audio::where('album_id','=',$albumID)->where('id','!=',$audio)->where('status','=',1);
+                  if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                       $related_audio = $related_audio  ->whereNotIn('id',$blocked_Audio);
+                }
+                 $related_audio = $related_audio ->get();
+
+          
+              $favorited = false;
+              if(!Auth::guest()):
+                  $favorited = Favorite::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+              endif;
+              $wishlisted = false;
+              if(!Auth::guest()):
+                  $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+              endif;
+              $watchlater = false;
+              if(!Auth::guest()):
+                  $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+              endif;
+          
+          
+      } else {
+         
+          $audio = Audio::where('slug','=',$slug)->where('status','=',1)->first();
+          if(!empty($audio)){
+          $audio = $audio->id;
+          }else{
+          $audio = "";
+          }
+
+          $view = new RecentView;
+          $view->audio_id = $audio;
+          $view->user_id = Auth::user()->id;
+          $view->visited_at = date('Y-m-d');
+          $view->save();
+           if (!empty($audio)) {
+            $check_audio_details = Audio::where('id','=',$audio)->where('status','=',1)->first();
+            $albumID = $check_audio_details->album_id;
+              
+            if (!empty($check_audio_details) && empty($name)) {
+          //   echo "<pre>";dd($albumID);exit();
+
+                $audio_details = Audio::where('slug','=',$slug)->where('status','=',1)->first();
+                 
+              } else {
+                   $audio_details = Audio::where('album_id','=',$albumID)->where('status','=',1)->first();
+      
+              }
+              $audio_cat_id  = Audio::select('audio_category_id')->where('album_id','=',$albumID)->where('status','=',1)->first();
+      
+              $audiocurrent = Audio::select('id')->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+              $audionext = Audio::select('slug')->where('id', '>', $audiocurrent)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+              $audioprev = Audio::where('id', '<', $audiocurrent)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+                 // blocked Audio
+                 $block_Audio=BlockAudio::where('country',$countryName)->get();
+                 if(!$block_Audio->isEmpty()){
+                    foreach($block_Audio as $blocked_Audios){
+                       $blocked_Audio[]=$blocked_Audios->audio_id;
+                    }
+                 }    
+                 $blocked_Audio[]='';
+               
+                 $related_audio  = Audio::where('album_id','=',$albumID)->where('id','!=',$audio)->where('status','=',1);
+                   if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                        $related_audio = $related_audio  ->whereNotIn('id',$blocked_Audio);
+                 }
+                  $related_audio = $related_audio ->get();
+
+               
+              $favorited = false;
+              if(!Auth::guest()):
+                  $favorited = Favorite::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+              endif;
+              $wishlisted = false;
+              if(!Auth::guest()):
+                  $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+              endif;
+              $watchlater = false;
+              if(!Auth::guest()):
+                  $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio)->first();
+              endif;
+               
+           } else {
+                $data = array(
+              'message' => 'No Audio Found',
+              'error' =>'error',
+              'json_list' => null ,
+              'audios'  => null ,
+              'ablum_audios' =>  null,
+              'source_id'   => $source_id,    
+              'commentable_type' => "play_audios" ,
+              'category_name'    => $category_name ,
+              'ThumbnailSetting' => ThumbnailSetting::first(),
+
+              );
+
+              return Theme::view('audio', $data);
+          }
+          
+          
+      }
+    
+          if (!empty($audio_details)) {
+              // $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
+
+              $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->count();
+
+              // dd($ppv_status);
+
+              $view_increment = $this->handleViewCount($audio); 
+
+              $current_audio   = Audio::where('album_id',$albumID)->where('id',$audio)->get();
+              $all_album_audios = Audio::where('album_id',$albumID)->get();
+
+            $merged_audios = $current_audio->merge($all_album_audios)->all();
+            if(count($merged_related_Audioartist) > 0 ){
+                foreach($merged_related_Audioartist as $value){
+                    $liked_related_Audioartist = Audio::Join('like_dislikes', 'audio.id', '=', 'like_dislikes.audio_id')
+                    ->where('like_dislikes.liked',1)->get();
+                    $dislikes_related_Audio = Likedislike::where('audio_id','!=',null)->where('disliked',1)->pluck('audio_id');
+                }
+            }else{
+                $liked_related_Audioartist = [];
+                $dislikes_related_Audio = [];
+            }
+
+        if(count($dislikes_related_Audio) > 0 ){
+            foreach($merged_related_Audioartist as $value){  
+                foreach($dislikes_related_Audio as $value_id){
+                    // $liked_related_Audioartist = Audio::where('like_dislikes.liked',1)->get();
+                    if($value->id == $value_id){
+                        // $mergedArrayAudios[] = '';
+                    }else{
+                        $mergedArrayAudios[] =  $value;
+                    }
+                }              
+            }
+        }else{
+            $mergedArrayAudios = $merged_related_Audioartist;
+        }
+        
+            // dd($mergedArrayAudios);
+
+          $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
+          $data = array(
+              'audios' => Audio::findOrFail($audio),
+              'json_list' => json_encode($json),
+              'album_name' => AudioAlbums::findOrFail($albumID)->albumname,
+              'album_slug' => AudioAlbums::findOrFail($albumID)->slug,
+              'other_albums' => AudioAlbums::where('id','!=', $albumID)->get(),
+              'audio_details' => $audio_details,
+              'related_audio' => $related_audio,
+              'audionext' => $audionext,
+              'audioprev' => $audioprev,
+              'current_slug' =>$slug,
+              'url' => 'audio',
+              'ppv_status' => $ppv_status,
+              'view_increment' => $view_increment,
+              'menu' => Menu::orderBy('order', 'ASC')->get(),
+              'favorited' => $favorited,
+              'media_url' => URL::to('/').'/audio/'.$slug,
+              'mywishlisted' => $wishlisted,
+              'watchlatered' => $watchlater,
+              'audio_categories' => AudioCategory::all(),
+              'pages' => Page::where('active', '=', 1)->get(),
+              'ablum_audios' =>  $mergedArrayAudios,
+              'source_id'   => $source_id,
+              'commentable_type' => "play_audios" ,
+              'category_name'    => $category_name ,
+              'ThumbnailSetting' => ThumbnailSetting::first(),
+              );
+          } else {
+              $data = array(
+              'messge' => 'No Audio Found'
+              );
+              
+          }
+
+          return Theme::view('audio', $data);
+  }
+
 }

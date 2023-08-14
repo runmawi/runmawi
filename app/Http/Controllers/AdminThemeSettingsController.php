@@ -204,6 +204,8 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->prevent_inspect = !empty($data['prevent_inspect']) ? '1' : '0';
 
+        $theme_settings->search_dropdown_setting = !empty($data['search_dropdown_setting']) ? '1' : '0';
+
         $theme_settings->loader_setting = !empty($data['loader_setting']) ? '1' : '0';
 
         $theme_settings->style_sheet_link = !empty($data['style_sheet_link']) ? $data['style_sheet_link'] : null;
