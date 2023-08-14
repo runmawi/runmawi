@@ -14,7 +14,7 @@ class AddSearchSettingToSiteThemesTable extends Migration
     public function up()
     {
         Schema::table('site_themes', function (Blueprint $table) {
-            $table->tinyInteger('search_dropdown_setting')->default(0);
+            $table->tinyInteger('search_dropdown_setting')->default(1);
         });
     }
 
