@@ -73,7 +73,7 @@ data-delay-in="0.6">
     </span>
     <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
 </div>
-<div data-animation-in="fadeInUp" data-delay-in="1.2"
+<div 
 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
@@ -81,11 +81,11 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
     <p><?php echo __($slider_video->description); ?></p>
 </div>
 <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
-data-delay-in="1.2">
-<a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
-    class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
-    <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>
-    <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>-->
+    data-delay-in="1.2">
+    <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
+        class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+        <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>
+        <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>-->
 </div>
 </div>
 </div>
@@ -126,8 +126,7 @@ endif; ?>
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-5 col-lg-12 col-md-12">
-                                <h1 class="slider-text big-title title text-uppercase text-white" data-animation-in="fadeInLeft"
-                                    data-delay-in="0.6">
+                                <h1 class="slider-text big-title title text-uppercase text-white" >
                                     <?php echo (strlen($live_event_banner->title) > 15) ? substr($live_event_banner->title,0,80).'...' : $live_event_banner->title; ?>
                                 </h1>
 
@@ -135,13 +134,13 @@ endif; ?>
                                     <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                                 </div>
 
-                                <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                <div class="d-flex align-items-center" >
                                     <span class="badge badge-secondary p-2">
                                         <?php echo __($live_event_banner->year); ?>
                                     </span>
                                 </div>
 
-                                <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                                <div 
                                     style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                     -webkit-line-clamp: 3; -webkit-box-orient: vertical;  overflow: hidden;">
                                     <p><?php echo __($live_event_banner->description); ?></p>
@@ -182,7 +181,7 @@ endif; ?>
                                     </a>
                                                         <!-- Video Title  -->
                             <?php }else{ ?>
-                                    <h1 class="text-white title text-uppercase mb-3" >
+                                    <h1 class="text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6" >
                                         <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
                                     </h1>
                             <?php } ?>
@@ -190,12 +189,21 @@ endif; ?>
                             <div class="mb-3">
                             <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                             </div>
-                    <div  style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
-                        -webkit-line-clamp: 3;
-                        -webkit-box-orient: vertical;  
-                        overflow: hidden;">
-                        <p> <?php echo __($videos->description); ?></p>
-                        </div>
+
+                            
+                            <?php if( $videos->year != null ):?>
+                                <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                    <span class="badge badge-secondary p-2">
+                                        <?php echo __($videos->year); ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                        
+                            <div style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                                        -webkit-line-clamp: 3;  -webkit-box-orient: vertical; overflow: hidden;">
+                                <p><?php echo html_entity_decode($videos->description); ?></p>
+                            </div>
+
                             <div class="row justify r-mb-23  p-0 mb-4 text-center align-items-center" >
                                 <!--<div class="col-3 col-md-3">
                                   <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
@@ -213,13 +221,10 @@ endif; ?>
                                       </div>
                                 Share</a> -->
                             </div></div>
-                            <div class="justify r-mb-23  p-0" >
-                                
-                            <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Start Watching</a>
-                               <!-- <a href="#vide
-                                 o-trailer"
-                            class="video-open playbtn btn bd ml-2"  href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> Watch Trailer</a>-->
+                            <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
+                                    data-delay-in="1.2" >                                
+                                <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
+                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play </a>
                             </div>
                             
                 </div>
@@ -304,7 +309,7 @@ if(Route::current()->getName() == "home"){
                                 </a>
                                                             <!-- Video Title  -->
                             <?php }else{ ?>
-                                <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                <h1 class=" text-white title text-uppercase mb-3" >
                                      <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
                                 </h1>
                             <?php } ?>
@@ -313,7 +318,7 @@ if(Route::current()->getName() == "home"){
                                    <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                                 </div>
 
-                                <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                                <div 
                                         style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                             -webkit-line-clamp: 3;   -webkit-box-orient: vertical;  overflow: hidden;">
                                     <p>  <?php echo __($videos->description); ?></p>
@@ -431,8 +436,7 @@ if(Route::current()->getName() == "home"){
 <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs">
 </div>
 </a>-->
-<h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
-data-delay-in="0.6">
+<h1 class="slider-text big-title title text-uppercase" >
 <?php
 echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
 //  echo __($slider_video->title);
@@ -451,7 +455,7 @@ echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'..
     </span>
     <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
 </div>
-<div data-animation-in="fadeInUp" data-delay-in="1.2"
+<div 
 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
@@ -522,27 +526,35 @@ endif; ?>
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-5 col-lg-12 col-md-12">
-                            <h1 class=" text-white title text-uppercase mb-3" >
-                                <?php echo __($series_slider->title); ?>
+                        <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                <?php echo (strlen($series_slider->title) > 15) ? substr($series_slider->title,0,80).'...' : $series_slider->title; ?>
                             </h1>
 
                             <div class="mb-3">
                                 <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                             </div>
 
-                            <div 
-                                style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                            <?php if( $series_slider->year != null ):?>
+                                <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                    <span class="badge badge-secondary p-2">
+                                        <?php echo __($series_slider->year); ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+
+                            <div style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                         -webkit-line-clamp: 3;  -webkit-box-orient: vertical; overflow: hidden;">
-                                <p><?php echo __($series_slider->description); ?></p>
+                                <p><?php echo html_entity_decode($series_slider->details); ?></p>
                             </div>
 
 
-                            <div class="justify r-mb-23  p-0" >    
+                            <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
+                                    data-delay-in="1.2" >    
                                 <a href="<?php echo URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>" class="btn bd">
                                     <i class="fa fa-play mr-2" aria-hidden="true"></i> Start Watching
                                 </a>
                             </div>
-                            
+
                         </div>
                         <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">  </div>
                         <div class="col-xl-4 col-lg-12 col-md-12 text-center">   </div>

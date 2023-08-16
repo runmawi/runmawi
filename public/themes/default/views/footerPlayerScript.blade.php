@@ -280,11 +280,43 @@
                             span.innerHTML = `AUTO`
                         }
                     })
-                    var player = new Plyr(video, defaultOptions);
+                    // var player = new Plyr(video, defaultOptions);
+
+                    var player = new Plyr(video, {
+        ...defaultOptions, // Keep existing default options
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'airplay', 'fullscreen'],
+        // Specify only the controls you want to use (excluding rewind and fast-forward)
+    });
+
 
                     addSeekedEventListener(player);
 
-                });
+                    
+                    // Create and append custom rewind icon to Plyr control bar
+                    const rewindIcon = document.createElement("button");
+                        rewindIcon.className = "plyr__controls__item plyr__control";
+                        rewindIcon.innerHTML = '<i class="fas fa-backward"></i>';
+                        rewindIcon.addEventListener("click", () => {
+                            const seekTime = Math.max(0, player.currentTime - 10); // Rewind by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(rewindIcon);
+                        const playButton = player.elements.controls.querySelector(".plyr__controls__item[data-plyr='play']");
+
+                        // Create and append custom fast-forward icon to Plyr control bar
+                        const fastForwardIcon = document.createElement("button");
+                        fastForwardIcon.className = "plyr__controls__item plyr__control";
+                        fastForwardIcon.innerHTML = '<i class="fas fa-forward"></i>';
+                        fastForwardIcon.addEventListener("click", () => {
+                            const seekTime = Math.min(player.duration, player.currentTime + 10); // Fast-forward by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(fastForwardIcon);
+                        player.elements.controls.insertBefore(rewindIcon, playButton);
+                        player.elements.controls.insertBefore(fastForwardIcon, playButton.nextSibling);
+                        });
+
+                // });
 
                 hls.attachMedia(video);
                 window.hls = hls;
@@ -479,10 +511,40 @@
                     })
 
                     // Initialize new Plyr player with quality options
-                    var player = new Plyr(video, defaultOptions);
+                    // var player = new Plyr(video, defaultOptions);
+                    var player = new Plyr(video, {
+        ...defaultOptions, // Keep existing default options
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'airplay', 'fullscreen'],
+        // Specify only the controls you want to use (excluding rewind and fast-forward)
+    });
+
                     addSeekedEventListener(player);
 
-                });
+                    // Create and append custom rewind icon to Plyr control bar
+                    const rewindIcon = document.createElement("button");
+                        rewindIcon.className = "plyr__controls__item plyr__control";
+                        rewindIcon.innerHTML = '<i class="fas fa-backward"></i>';
+                        rewindIcon.addEventListener("click", () => {
+                            const seekTime = Math.max(0, player.currentTime - 10); // Rewind by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(rewindIcon);
+                        const playButton = player.elements.controls.querySelector(".plyr__controls__item[data-plyr='play']");
+
+                        // Create and append custom fast-forward icon to Plyr control bar
+                        const fastForwardIcon = document.createElement("button");
+                        fastForwardIcon.className = "plyr__controls__item plyr__control";
+                        fastForwardIcon.innerHTML = '<i class="fas fa-forward"></i>';
+                        fastForwardIcon.addEventListener("click", () => {
+                            const seekTime = Math.min(player.duration, player.currentTime + 10); // Fast-forward by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(fastForwardIcon);
+                        player.elements.controls.insertBefore(rewindIcon, playButton);
+                        player.elements.controls.insertBefore(fastForwardIcon, playButton.nextSibling);
+                        });
+
+                // });
 
                 hls.attachMedia(video);
                 window.hls = hls;
@@ -593,7 +655,12 @@
                     })
 
                     // Initialize new Plyr player with quality options
-                    var player = new Plyr(video, defaultOptions);
+                    // var player = new Plyr(video, defaultOptions);
+                    var player = new Plyr(video, {
+        ...defaultOptions, // Keep existing default options
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'airplay', 'fullscreen'],
+        // Specify only the controls you want to use (excluding rewind and fast-forward)
+    });
 
                         // Ads Views Count
                     player.on('adsloaded', (event) => {
@@ -607,7 +674,29 @@
 
                     addSeekedEventListener(player);
 
-                });
+                    // Create and append custom rewind icon to Plyr control bar
+                        const rewindIcon = document.createElement("button");
+                        rewindIcon.className = "plyr__controls__item plyr__control";
+                        rewindIcon.innerHTML = '<i class="fas fa-backward"></i>';
+                        rewindIcon.addEventListener("click", () => {
+                            const seekTime = Math.max(0, player.currentTime - 10); // Rewind by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(rewindIcon);
+                        const playButton = player.elements.controls.querySelector(".plyr__controls__item[data-plyr='play']");
+
+                        // Create and append custom fast-forward icon to Plyr control bar
+                        const fastForwardIcon = document.createElement("button");
+                        fastForwardIcon.className = "plyr__controls__item plyr__control";
+                        fastForwardIcon.innerHTML = '<i class="fas fa-forward"></i>';
+                        fastForwardIcon.addEventListener("click", () => {
+                            const seekTime = Math.min(player.duration, player.currentTime + 10); // Fast-forward by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(fastForwardIcon);
+                        player.elements.controls.insertBefore(rewindIcon, playButton);
+                        player.elements.controls.insertBefore(fastForwardIcon, playButton.nextSibling);
+                        });
 
                 hls.attachMedia(video);
                 window.hls = hls;

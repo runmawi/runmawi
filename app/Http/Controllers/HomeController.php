@@ -66,6 +66,7 @@ use App\VideoSchedules as VideoSchedules;
 use App\ScheduleVideos as ScheduleVideos;
 use App\Language as Language;
 use GuzzleHttp\Client;
+use App\MusicStation as MusicStation;
 
 class HomeController extends Controller
 {
@@ -2659,6 +2660,12 @@ class HomeController extends Controller
                             ->limit('10')
                             ->get();  
 
+            $station_audio = MusicStation::where('station_name', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('station_slug', 'LIKE', '%' . $request->country . '%')
+                            ->limit('10')
+                            ->get(); 
+
+                          
             if (count($videos) > 0 || count($livestream) > 0 || count($Episode) > 0 || count($audio) > 0 || count($Series) > 0 && !empty($request->country) )
             {
 
@@ -2741,7 +2748,23 @@ class HomeController extends Controller
                     $Series_search = null ;
                 }
 
-                return $output.$audios.$livestreams.$Episodes.$Series_search;
+                // station Search
+
+                if(count($station_audio) > 0){
+
+                    $station_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
+                    $station_search .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Music Station </h6>";
+                    foreach ($station_audio as $row)
+                    {
+                        $station_search .= '<li class="list-group-item">
+                        <img width="35px" height="35px" src="' . $row->image . '"><a href="' . URL::to('/') . '/music-station' .'/'. $row->station_slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->station_name . '</a></li>';
+                    }
+                }
+                else{
+                    $station_search = null ;
+                }
+
+                return $output.$audios.$livestreams.$Episodes.$Series_search.$station_search;
             }
             else
             {
@@ -4357,6 +4380,96 @@ class HomeController extends Controller
 
         return $theme_modes;
       
+    }
+
+    
+    public function LikeAudio(Request $request)
+    {
+        if(!Auth::guest()){
+            $user_id = Auth::user()->id ;
+        }else{
+            $user_id = 0 ;
+        }
+        $audio_id = $request->audio_id;
+        $like = $request->like;
+        $user_id = $user_id;
+        $audio = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->get();
+        $audio_count = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->count();
+        if ($audio_count > 0)
+        {
+            $audio_new = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->first();
+            $audio_new->liked = $like;
+            $audio_new->disliked = 0;
+            $audio_new->audio_id = $audio_id;
+            $audio_new->save();
+            $response = array(
+                'status' => true
+            );
+        }
+        else
+        {
+            $audio_new = new LikeDisLike;
+            $audio_new->audio_id = $audio_id;
+            $audio_new->user_id = $user_id;
+            $audio_new->disliked = 0;
+            $audio_new->liked = $like;
+            $audio_new->save();
+            $response = array(
+                'status' => true
+            );
+        }
+
+    }
+
+    public function DisLikeAudio(Request $request)
+    {
+        if(!Auth::guest()){
+            $user_id = Auth::user()->id ;
+        }else{
+            $user_id = 0 ;
+        }        $audio_id = $request->audio_id;
+        $dislike = $request->dislike;
+        $d_like = Likedislike::where("audio_id", $audio_id)->where("user_id", $user_id)->count();
+
+        if ($d_like > 0)
+        {
+            $new_audio_dislike = Likedislike::where("audio_id", $audio_id)->where("user_id", $user_id)->first();
+            if ($dislike == 1)
+            {
+                $new_audio_dislike->user_id = $user_id;
+                $new_audio_dislike->audio_id = $audio_id;
+                $new_audio_dislike->liked = 0;
+                $new_audio_dislike->disliked = 1;
+                $new_audio_dislike->save();
+                $response = array(
+                    'status' => "disliked"
+                );
+            }
+            else
+            {
+                $new_audio_dislike->user_id = $user_id;
+                $new_audio_dislike->audio_id = $audio_id;
+                $new_audio_dislike->liked = 0;
+                $new_audio_dislike->disliked = 1;
+                $new_audio_dislike->save();
+                $response = array(
+                    'status' => "liked"
+                );
+            }
+        }
+        else
+        {
+            $new_audio_dislike = new Likedislike;
+            $new_audio_dislike->user_id = $user_id;
+            $new_audio_dislike->audio_id = $audio_id;
+            $new_audio_dislike->liked = 0;
+            $new_audio_dislike->disliked = 1;
+            $new_audio_dislike->save();
+            $response = array(
+                'status' => "disliked"
+            );
+        }
+        return response()->json($response, 200);
     }
 
 

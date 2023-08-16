@@ -1267,7 +1267,7 @@ $artists = [];
         <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('videos')->first() == 1 ): ?>
             <div class=" container-fluid">
                 <div class="  video-list you-may-like overflow-hidden">
-                    <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
+                    <h4 class="" style="color:#fffff;"><?php echo __('Comments');?> <img class="" height="30" width="30" src="<?php echo  URL::to('/assets/img/qem.png')?>" /> :</h4>
                     <?php include('comments/index.blade.php');?>
                 </div>
             </div>

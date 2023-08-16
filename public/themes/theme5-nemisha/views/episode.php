@@ -459,7 +459,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 			<?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
 				<div class="row">
 					<div class=" container-fluid video-list you-may-like overflow-hidden" style="padding:0px 15px;">
-						<h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>
+						<h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?> <img class="" height="30" width="30" src="<?php echo  URL::to('/assets/img/qem.png')?>" /> :</h4>
 						<?php include 'comments/index.blade.php'; ?>
 					</div>
 				</div>

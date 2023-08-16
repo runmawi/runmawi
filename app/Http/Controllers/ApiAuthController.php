@@ -289,6 +289,10 @@ class ApiAuthController extends Controller
               $user->referrer_id = $referred_user_id;
               $user->token = $user_data['token'];
               $user->referral_token = $ref_token;
+              $user->country = $request->country;
+              $user->state = $request->state;
+              $user->city = $request->city;
+              $user->support_username = $request->support_username;
               $user->active = 1;
               $user->save();
               $userdata = User::where('email', '=', $request->get('email'))->first();
@@ -8407,11 +8411,11 @@ public function Adstatus_upate(Request $request)
           $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->get();
         }
 
-      $status = "true";
+      $status = true;
 
     }
     catch (\Throwable $th) {
-       $status = "fail";
+       $status = false;
     }
 
     $response = array(
@@ -13488,8 +13492,15 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Audio Playlist status) is turned off in the admin panel
       else:
 
-          $data =  MyPlaylist::where('user_id',$user_id)->get();
-
+          // $data =  MyPlaylist::select('id','title','slug', 'image as image_url', 'description')
+          // ->where('user_id',$user_id)->get();
+          $data =  MyPlaylist::where('user_id',$user_id)->get()->map(function ($item) {
+            $item['image_url'] = $item->image ;
+            $item['description'] = null ;
+            $item['source']    = "my_play_list";
+            return $item;
+          });
+          
       endif;
    
     return $data;
@@ -13921,6 +13932,15 @@ public function QRCodeMobileLogout(Request $request)
                 $Page_List_Name = 'Specific_Genre_Series_Pagelist';
                 break;  
 
+              case 'my_play_list':
+                $data = $this->Specific_Audio_Playlist_Pagelist($request->user_id);
+                $Page_List_Name = 'Specific_Audio_Playlist_Pagelist';
+                break;  
+                
+              case 'video_play_list':
+                $data = $this->Video_Playlist_Pagelist();
+                $Page_List_Name = 'Video_Playlist_Pagelist';
+                break;  
           }
       }
 
@@ -14088,7 +14108,7 @@ public function QRCodeMobileLogout(Request $request)
     $data->transform(function ($item) {
       $item['image_url'] = asset('public/uploads/videocategory/'.$item->image);
       $item['Player_image_url'] = asset('public/uploads/videocategory/'.$item->banner_image);
-      $item['source'] = "VideoCategory";
+      $item['source'] = "VideoCategories";
       return $item;
     });
 
@@ -14383,6 +14403,35 @@ public function QRCodeMobileLogout(Request $request)
 
   }
 
+  private static function Specific_Audio_Playlist_Pagelist( $user_id ){
+    
+    $data =  MyPlaylist::where('user_id',$user_id)->get()->map(function ($item) {
+      $item['image_url'] = $item->image ;
+      $item['description'] = null ;
+      $item['source']    = "my_play_list";
+      return $item;
+    });
+  
+    return $data;
+    
+  }
+
+  
+  private static function Video_Playlist_Pagelist(){
+    
+
+    $data =  AdminVideoPlaylist::get()->map(function ($item) {
+      $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
+      $item['description'] = null ;
+      $item['source']    = "video_play_list";
+      return $item;
+    });  
+    
+    return $data;
+    
+  }
+
+
   public function website_baseurl()
   {
     try {
@@ -14573,9 +14622,12 @@ public function QRCodeMobileLogout(Request $request)
       ->where('videos.active',  1)
       ->where('videos.status',  1)
       ->where('videos.draft',  1)
+      ->orderBy('videos.created_at', 'desc')
+      ->groupBy('videos.id')
       ->limit(10)
       ->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         return $item;
       });
       $response = array(
@@ -20370,6 +20422,116 @@ public function TV_login(Request $request)
                 );
    
                 return response()->json($response, 200);
+    }
+
+    
+    public function RegisterDropdownData()
+    {
+   
+
+      $Artists = \App\Artist::get();
+      $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+
+      $jsondata = json_decode($jsonString, true);
+
+        $response = array(
+        "Artists" => $Artists ,
+        "country"  => $jsondata ,
+        );
+   
+        return response()->json($response, 200);
+    }
+
+
+    public function Related_Audios_LikeDisLike(Request $request)
+    {
+   
+      $slug = $request->slug;
+     
+      try {
+        
+      $source_id = Audio::where('slug',$slug)->pluck('id')->first();
+      $category_name = CategoryAudio::select('audio_categories.id as category_id','audio_categories.name as categories_name','audio_categories.slug as categories_slug','category_audios.audio_id')
+      ->Join('audio_categories', 'category_audios.category_id', '=', 'audio_categories.id')
+      ->where('category_audios.audio_id', $source_id)
+      ->get();
+
+      if(count($category_name) > 0){
+        foreach($category_name as $category){
+
+            $CategoryAudio = CategoryAudio::Join('audio_categories', 'category_audios.category_id', '=', 'audio_categories.id')
+                ->where('category_audios.category_id', @$category->category_id)
+                ->pluck('category_audios.audio_id');
+        }
+
+      }else{
+        $CategoryAudio = [];        
+      }
+      $related_category_Audios = Audio::whereIn('id', $CategoryAudio)->get();
+
+      if(!Auth::guest()){
+        $user_id = Auth::user()->id ;
+        if(Auth::user()->support_username != null){
+            $artist_id = Artist::where('artist_name',Auth::user()->support_username)->pluck('id')->first();
+            
+        }else{
+            $artist_id = null;
+        }
+        if($artist_id != null ){
+            $Audioartist = Audioartist::where('artist_id' ,$artist_id)->pluck('audio_id');
+            if(count($Audioartist) > 0){
+                    $related_Audioartist = Audio::whereIn('id', $Audioartist)->get();
+              }else{
+                $related_Audioartist = [];        
+              }
+        }else{
+          $related_Audioartist = [];        
+        }
+
+      }else{
+        $Audioartist = [];
+        $related_Audioartist = [];
+      }
+
+      $merged_related_Audioartist = $related_category_Audios->merge($related_Audioartist)->all();
+
+      if(count($merged_related_Audioartist) > 0 ){
+        foreach($merged_related_Audioartist as $value){
+                    $liked_related_Audioartist = Audio::Join('like_dislikes', 'audio.id', '=', 'like_dislikes.audio_id')
+                    ->where('like_dislikes.liked',1)->get();
+                    $dislikes_related_Audio = Likedislike::where('audio_id','!=',null)->where('disliked',1)->pluck('audio_id');
+                }
+            }else{
+                $liked_related_Audioartist = [];
+                $dislikes_related_Audio = [];
+            }
+
+        if(count($dislikes_related_Audio) > 0 ){
+            foreach($merged_related_Audioartist as $value){  
+                foreach($dislikes_related_Audio as $value_id){
+                    // $liked_related_Audioartist = Audio::where('like_dislikes.liked',1)->get();
+                    if($value->id == $value_id){
+                        // $mergedArrayAudios[] = '';
+                    }else{
+                        $mergedArrayAudios[] =  $value;
+                    }
+                }              
+            }
+        }
+
+        $response = array(
+          "status"  => true ,
+          "mergedArrayAudios" => $mergedArrayAudios ,
+          );
+
+      } catch (\Throwable $th) {
+        throw $th;
+        $response = array(
+          "status"  => false ,
+          "mergedArrayAudios" => [] ,
+          );
+      }
+        return response()->json($response, 200);
     }
 
 }

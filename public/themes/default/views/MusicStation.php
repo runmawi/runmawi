@@ -233,6 +233,9 @@
   .aud-lp{
   border-bottom: 1px solid #141414;
   }
+  .music-station{
+    display:none;
+  }
 </style>
 
 <?php if( count($album_audios) == 0 ){ ?>
@@ -254,10 +257,18 @@
   <div id="audio_bg" >
     <div class="container-fluid">
       <div class="row album-top-30 mt-4 align-items-center">
+        <div class="col-lg-12">
 
-        <div class="col-lg-8">
-          <audio id="myAudio" ontimeupdate="onTimeUpdate()" autoplay >
-            <source id="source-audio" src="" autoplay type="audio/mpeg"> Your browser does not support the audio element.
+         <?php if (!Auth::guest() && Auth::user()->id == $album->user_id){ ?>
+          <div class="pull-right" >
+            <a href="<?php echo URL::to('/delete-station').'/'. @$album->id  ?>">
+                          <button  class="btn btn-primary"> Delete Station</button>
+                </a>
+          </div>
+        <?php } ?>
+        <br><br>
+          <audio id="myAudio" ontimeupdate="onTimeUpdate()"  >
+            <source id="source-audio" src=""  type="audio/mpeg"> Your browser does not support the audio element.
           </audio>
               <!-- <div class="cinetpay_button"> -->
                   <!-- CinetPay Button -->
@@ -285,7 +296,7 @@
                       </a>
 
               </div>
-           <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
+           <div class="player-ctn" id="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= $album->image ?>');background-size: cover;
     background-repeat: no-repeat;
     background-position: right;">
             <div class="row align-items-center mb-4">
@@ -393,7 +404,7 @@
   </div>
 </div>
 
-      <div class="col-lg-4">
+      <div class="col-lg-4 music-station">
         <div class="play-border">
           <div class="playlist-ctn"> <h6 class="mb-2 font-weight-bold">AUDIO LIST <i class="fa fa-arrow-right" aria-hidden="true"></i></h6>
         </div>
@@ -409,7 +420,7 @@
 <div class="container-fluid overflow-hidden">
 <div class="row album-top-30 mt-3 p-0">  
 <div class="col-sm-12">
-<p  class="album-title">Other Albums </p>
+<!-- <p  class="album-title">Other Albums </p> -->
 <div class="favorites-contens">
     
                    <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -788,7 +799,7 @@ window.location = '<?= URL::to('login') ?>';
         <?php 
         $PpvPurchasestatus = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',@$audio_id)->count();
         ?>
-        alert(id);
+        // alert(id);
         $.ajax({
             url: '<?php echo URL::to('purchased-audio-check'); ?>',
             type: "post",
@@ -970,6 +981,7 @@ window.location = '<?= URL::to('login') ?>';
   var player_imagess = player_images +'/' + <?php echo json_encode(@$album->player_image) ; ?>;
 
   var first_audio_image = player_images +'/' + <?php echo json_encode($first_audio_image) ; ?>;
+//   alert(first_audio_image);
   $("#audio_img").attr('src', first_audio_image);
     
   var currentAudio = document.getElementById("myAudio");
@@ -1123,6 +1135,7 @@ window.location = '<?= URL::to('login') ?>';
       volUp.style.display = "block"
     }
   }
+
 </script>
 
 

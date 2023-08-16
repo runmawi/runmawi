@@ -171,39 +171,50 @@ function about(evt , id) {
 }
 </script>
 
+<?php  $search_dropdown_setting = App\SiteTheme::pluck('search_dropdown_setting')->first(); ?>
+<input type="hidden" value="<?= $search_dropdown_setting ?>" id="search_dropdown_setting" >
+
 <script type="text/javascript">
+
   $(document).ready(function () {
+
     $('.searches').on('keyup',function() {
       var query = $(this).val();
       
        if (query !=''){
-      $.ajax({
-        url:"<?php echo URL::to('/search');?>",
-        type:"GET",
-        data:{
-          'country':query}
-        ,
-        success:function (data) {
-          $(".home-search").hide();
-          $('.search_list').html(data);
-        }
-      }
-            )
+      
+          $.ajax({
+          url:"<?php echo URL::to('/search');?>",
+          type:"GET",
+          data:{
+                'country':query
+              },
+            success:function (data) {
+              $(".home-search").hide();
+              $('.search_list').html(data);
+            }
+          })
        } else {
             $('.search_list').html("");
        }
-    }
-                     );
+    });
+
     $(document).on('click', 'li', function(){
+
       var value = $(this).text();
+      let search_dropdown_setting = $('#search_dropdown_setting').val() ;
+
       $('.search').val(value);
       $('.search_list').html("");
-      $(".home-search").show();
 
-    }
-                  );
-  }
-                   );
+      if( search_dropdown_setting == 1 ){
+        $(".home-search").show();
+      }else{
+        $(".home-search").hide();
+      }
+    });
+  });
+
 </script>
 
 <?php 
