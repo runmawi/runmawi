@@ -62,6 +62,14 @@ Route::post('/user/DOB', 'AdminUsersController@DOB');
 
 // Route::get('/admin/filemanager', 'FileManagerController@index');
 
+// Endpoints Stations Audios.
+
+Route::get('/create-station', 'MusicStationController@CreateStation');
+Route::post('/station/store', 'MusicStationController@StoreStation');
+Route::get('/music-station/{slug}', 'MusicStationController@PlayerMusicStation');
+Route::get('/list-music-station', 'MusicStationController@MusicStation');
+Route::get('/delete-station/{id}', 'MusicStationController@DeleteStation');
+Route::get('/my-music-station', 'MusicStationController@MY_MusicStation');
 
 // Endpoints Playlist Audios.
 

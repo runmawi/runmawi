@@ -66,6 +66,7 @@ use App\VideoSchedules as VideoSchedules;
 use App\ScheduleVideos as ScheduleVideos;
 use App\Language as Language;
 use GuzzleHttp\Client;
+use App\MusicStation as MusicStation;
 
 class HomeController extends Controller
 {
@@ -2659,6 +2660,12 @@ class HomeController extends Controller
                             ->limit('10')
                             ->get();  
 
+            $station_audio = MusicStation::where('station_name', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('station_slug', 'LIKE', '%' . $request->country . '%')
+                            ->limit('10')
+                            ->get(); 
+
+                          
             if (count($videos) > 0 || count($livestream) > 0 || count($Episode) > 0 || count($audio) > 0 || count($Series) > 0 && !empty($request->country) )
             {
 
@@ -2741,7 +2748,23 @@ class HomeController extends Controller
                     $Series_search = null ;
                 }
 
-                return $output.$audios.$livestreams.$Episodes.$Series_search;
+                // station Search
+
+                if(count($station_audio) > 0){
+
+                    $station_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
+                    $station_search .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Music Station </h6>";
+                    foreach ($station_audio as $row)
+                    {
+                        $station_search .= '<li class="list-group-item">
+                        <img width="35px" height="35px" src="' . $row->image . '"><a href="' . URL::to('/') . '/music-station' .'/'. $row->station_slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->station_name . '</a></li>';
+                    }
+                }
+                else{
+                    $station_search = null ;
+                }
+
+                return $output.$audios.$livestreams.$Episodes.$Series_search.$station_search;
             }
             else
             {
