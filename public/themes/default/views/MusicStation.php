@@ -285,7 +285,7 @@
                       </a>
 
               </div>
-           <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
+           <div class="player-ctn" id="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= $album->image ?>');background-size: cover;
     background-repeat: no-repeat;
     background-position: right;">
             <div class="row align-items-center mb-4">
@@ -747,10 +747,9 @@ window.location = '<?= URL::to('login') ?>';
           var image = document.querySelector('#audio_img')
           image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image 
 
-          var divElement = document.querySelector("#player-ctn");
+          var divElement = document.getElementById("player-ctn");
           var player_imageURL = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image 
-          // alert(player_imageURL);
-          // divElement.style.backgroundImage = "linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1))," + "url('" + player_imageURL + "')";
+          divElement.style.backgroundImage = "linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1))," + "url('" + player_imageURL + "')";
 
           this.currentAudio = document.getElementById("myAudio");
           this.currentAudio.load()
@@ -927,11 +926,10 @@ window.location = '<?= URL::to('login') ?>';
     for (let i = 0; i < playListItems.length; i++){
       if(playListItems[i] == event.target){
         var clickedIndex = event.target.getAttribute("data-index")
-        if (clickedIndex == this.indexAudio ) {  //alert('Same audio');
+        if (clickedIndex == this.indexAudio ) { // alert('Same audio');
             this.toggleAudio()
         }else{
             loadNewTrack(clickedIndex);
-            // alert('Same audio');
         }
       }
     }
