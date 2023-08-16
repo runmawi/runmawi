@@ -26,7 +26,9 @@
                                 <a href="{{ URL::to('music-station').'/'.$Music_Station->station_slug   }} ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
-                                            <img src="<?php echo $Music_Station->image;  ?>" class="img-fluid w-100" alt="">
+                                            <img src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=<?= ucfirst(substr($Music_Station->station_name,0,1)) ?>"
+                                             class="img-fluid w-100" alt="">
+                                             <!-- src="<?php //echo $Music_Station->image;  ?>" -->
                                         </div>
                             
                                         <div class="Music_Station" >

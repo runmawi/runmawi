@@ -51,7 +51,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="station_name" class="col-form-label text-md-right">{{ __('Station Name') }}</label>
+                            <label for="station_name" class="col-form-label text-md-right">{{ __('Station Name (country, hip hop, rock, etc.)') }}</label>
                             <input type="text" class="form-control @error('station_name') is-invalid @enderror" name="station_name"  autofocus>
                         </div>
                     </div>
