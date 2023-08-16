@@ -56,15 +56,15 @@
                         </div>
                     </div>
                     
-                    <div class="col-6">
+                    <!-- <div class="col-6">
                         <div class="form-group">
                             <label for="image" class="col-form-label text-md-right">{{ __('Station Image') }}</label>
                             <input type="file" class="form-control @error('image') is-invalid @enderror" name="image" id="image" autofocus>
                         </div>
-                    </div>
-                </div>
+                    </div> -->
+                <!-- </div>
 
-                <div class="row">
+                <div class="row"> -->
 
                     <div class="col-md-6">
                 <label for="password" class="col-form-label text-md-right">{{ __('Station Type') }}</label>
@@ -74,7 +74,8 @@
                             <input type="radio" class="text-white" value="keyword"  id="keyword" name="station_type"> <span class='artist'> Choose By KeyWords</span>                
                         </div>
                         </div>
-                    
+                        </div>
+                        <div class="row">
                     <div class="col-md-6">
                         <div class="form-group" id='based_artists'>
                         <label for="password" class="col-form-label text-md-right">{{ __('Station Based Artist') }}</label>

@@ -285,7 +285,7 @@
                       </a>
 
               </div>
-           <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
+           <div class="player-ctn" id="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= $album->image ?>');background-size: cover;
     background-repeat: no-repeat;
     background-position: right;">
             <div class="row align-items-center mb-4">
