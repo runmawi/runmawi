@@ -257,8 +257,16 @@
   <div id="audio_bg" >
     <div class="container-fluid">
       <div class="row album-top-30 mt-4 align-items-center">
-
         <div class="col-lg-12">
+
+         <?php if (!Auth::guest() && Auth::user()->id == $album->user_id){ ?>
+          <div class="pull-right" >
+            <a href="<?php echo URL::to('/delete-station').'/'. @$album->id  ?>">
+                          <button  class="btn btn-primary"> Delete Station</button>
+                </a>
+          </div>
+        <?php } ?>
+        <br><br>
           <audio id="myAudio" ontimeupdate="onTimeUpdate()"  >
             <source id="source-audio" src=""  type="audio/mpeg"> Your browser does not support the audio element.
           </audio>
