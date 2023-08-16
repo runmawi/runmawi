@@ -297,4 +297,37 @@ class MusicStationController extends Controller
         }
     }
 
+    public function DeleteStation($id){
+        try {
+            // dd($id);
+           MusicStation::where('id',$id)->delete();
+           UserMusicStation::where('station_id',$id)->delete();
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        return redirect::to('/list-music-station');
+    }
+
+    public function MY_MusicStation(Request $request){
+        try {
+
+
+            if (Auth::guest())
+            {
+                return Redirect::to('/');
+            }
+
+          $MusicStation = MusicStation::where('user_id',Auth::user()->id)->get();
+
+            $data = [
+                'MusicStation' => $MusicStation,
+            ];
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        return Theme::view('ListMusicStation', $data);
+    }
+
 }
