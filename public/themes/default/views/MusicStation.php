@@ -233,6 +233,9 @@
   .aud-lp{
   border-bottom: 1px solid #141414;
   }
+  .music-station{
+    display:none;
+  }
 </style>
 
 <?php if( count($album_audios) == 0 ){ ?>
@@ -255,7 +258,7 @@
     <div class="container-fluid">
       <div class="row album-top-30 mt-4 align-items-center">
 
-        <div class="col-lg-8">
+        <div class="col-lg-12">
           <audio id="myAudio" ontimeupdate="onTimeUpdate()"  >
             <source id="source-audio" src=""  type="audio/mpeg"> Your browser does not support the audio element.
           </audio>
@@ -393,7 +396,7 @@
   </div>
 </div>
 
-      <div class="col-lg-4">
+      <div class="col-lg-4 music-station">
         <div class="play-border">
           <div class="playlist-ctn"> <h6 class="mb-2 font-weight-bold">AUDIO LIST <i class="fa fa-arrow-right" aria-hidden="true"></i></h6>
         </div>
@@ -788,7 +791,7 @@ window.location = '<?= URL::to('login') ?>';
         <?php 
         $PpvPurchasestatus = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',@$audio_id)->count();
         ?>
-        alert(id);
+        // alert(id);
         $.ajax({
             url: '<?php echo URL::to('purchased-audio-check'); ?>',
             type: "post",
@@ -1124,6 +1127,7 @@ window.location = '<?= URL::to('login') ?>';
       volUp.style.display = "block"
     }
   }
+
 </script>
 
 
