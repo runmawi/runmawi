@@ -56,6 +56,11 @@ class MusicStationController extends Controller
     public function MusicStation(Request $request){
         try {
             //code...
+            if (Auth::guest())
+            {
+                return Redirect::to('/');
+
+            }
           $MusicStation = MusicStation::get();
           $data = [
             'MusicStation' => $MusicStation,
@@ -124,7 +129,7 @@ class MusicStationController extends Controller
 
         $artist_audios = [];
 
-        if(count($request->station_based_artists) > 0){
+        if(!empty($request->station_based_artists) && count($request->station_based_artists) > 0){
 
             foreach($request->station_based_artists as $value){
 
@@ -137,7 +142,7 @@ class MusicStationController extends Controller
 
         $category_audios = [];
 
-        if(count($request->station_based_keywords) > 0){
+        if(!empty($request->station_based_keywords) && count($request->station_based_keywords) > 0){
 
             foreach($request->station_based_keywords as $value){
 

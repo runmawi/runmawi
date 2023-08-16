@@ -747,9 +747,10 @@ window.location = '<?= URL::to('login') ?>';
           var image = document.querySelector('#audio_img')
           image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image 
 
-          var divElement = document.getElementById("player-ctn");
+          var divElement = document.querySelector("#player-ctn");
           var player_imageURL = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image 
-          divElement.style.backgroundImage = "linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1))," + "url('" + player_imageURL + "')";
+          // alert(player_imageURL);
+          // divElement.style.backgroundImage = "linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1))," + "url('" + player_imageURL + "')";
 
           this.currentAudio = document.getElementById("myAudio");
           this.currentAudio.load()
@@ -926,10 +927,11 @@ window.location = '<?= URL::to('login') ?>';
     for (let i = 0; i < playListItems.length; i++){
       if(playListItems[i] == event.target){
         var clickedIndex = event.target.getAttribute("data-index")
-        if (clickedIndex == this.indexAudio ) { // alert('Same audio');
+        if (clickedIndex == this.indexAudio ) {  //alert('Same audio');
             this.toggleAudio()
         }else{
             loadNewTrack(clickedIndex);
+            // alert('Same audio');
         }
       }
     }
