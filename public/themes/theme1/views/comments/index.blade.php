@@ -1,4 +1,4 @@
-<?php $comment_loop = App\WebComment::where('source_id', $source_id)
+<?php $comment_loop = App\WebComment::where('source_id', $source_id)->where('approved',1)
     ->where('commentable_type', $commentable_type)
     ->whereNull('child_id')
     ->latest()
@@ -47,7 +47,7 @@
         <?php
 
                 $reply_comment = App\WebComment::where('source_id',$source_id)->where('commentable_type',$commentable_type)
-                                ->where('child_id',$comment->id)->latest()->get();
+                                        ->where('approved',1)->where('child_id',$comment->id)->latest()->get();
 
         if(count($reply_comment) > 0 ):
 
