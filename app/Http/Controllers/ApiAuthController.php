@@ -14622,9 +14622,12 @@ public function QRCodeMobileLogout(Request $request)
       ->where('videos.active',  1)
       ->where('videos.status',  1)
       ->where('videos.draft',  1)
+      ->orderBy('videos.created_at', 'desc')
+      ->groupBy('videos.id')
       ->limit(10)
       ->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         return $item;
       });
       $response = array(
@@ -20436,6 +20439,98 @@ public function TV_login(Request $request)
         "country"  => $jsondata ,
         );
    
+        return response()->json($response, 200);
+    }
+
+
+    public function Related_Audios_LikeDisLike(Request $request)
+    {
+   
+      $slug = $request->slug;
+     
+      try {
+        
+      $source_id = Audio::where('slug',$slug)->pluck('id')->first();
+      $category_name = CategoryAudio::select('audio_categories.id as category_id','audio_categories.name as categories_name','audio_categories.slug as categories_slug','category_audios.audio_id')
+      ->Join('audio_categories', 'category_audios.category_id', '=', 'audio_categories.id')
+      ->where('category_audios.audio_id', $source_id)
+      ->get();
+
+      if(count($category_name) > 0){
+        foreach($category_name as $category){
+
+            $CategoryAudio = CategoryAudio::Join('audio_categories', 'category_audios.category_id', '=', 'audio_categories.id')
+                ->where('category_audios.category_id', @$category->category_id)
+                ->pluck('category_audios.audio_id');
+        }
+
+      }else{
+        $CategoryAudio = [];        
+      }
+      $related_category_Audios = Audio::whereIn('id', $CategoryAudio)->get();
+
+      if(!Auth::guest()){
+        $user_id = Auth::user()->id ;
+        if(Auth::user()->support_username != null){
+            $artist_id = Artist::where('artist_name',Auth::user()->support_username)->pluck('id')->first();
+            
+        }else{
+            $artist_id = null;
+        }
+        if($artist_id != null ){
+            $Audioartist = Audioartist::where('artist_id' ,$artist_id)->pluck('audio_id');
+            if(count($Audioartist) > 0){
+                    $related_Audioartist = Audio::whereIn('id', $Audioartist)->get();
+              }else{
+                $related_Audioartist = [];        
+              }
+        }else{
+          $related_Audioartist = [];        
+        }
+
+      }else{
+        $Audioartist = [];
+        $related_Audioartist = [];
+      }
+
+      $merged_related_Audioartist = $related_category_Audios->merge($related_Audioartist)->all();
+
+      if(count($merged_related_Audioartist) > 0 ){
+        foreach($merged_related_Audioartist as $value){
+                    $liked_related_Audioartist = Audio::Join('like_dislikes', 'audio.id', '=', 'like_dislikes.audio_id')
+                    ->where('like_dislikes.liked',1)->get();
+                    $dislikes_related_Audio = Likedislike::where('audio_id','!=',null)->where('disliked',1)->pluck('audio_id');
+                }
+            }else{
+                $liked_related_Audioartist = [];
+                $dislikes_related_Audio = [];
+            }
+
+        if(count($dislikes_related_Audio) > 0 ){
+            foreach($merged_related_Audioartist as $value){  
+                foreach($dislikes_related_Audio as $value_id){
+                    // $liked_related_Audioartist = Audio::where('like_dislikes.liked',1)->get();
+                    if($value->id == $value_id){
+                        // $mergedArrayAudios[] = '';
+                    }else{
+                        $mergedArrayAudios[] =  $value;
+                    }
+                }              
+            }
+        }
+
+        $response = array(
+          "status"  => true ,
+          "mergedArrayAudios" => $mergedArrayAudios ,
+          );
+
+      } catch (\Throwable $th) {
+        throw $th;
+        $response = array(
+          "status"  => false ,
+          "mergedArrayAudios" => [] ,
+          );
+      }
         return response()->json($response, 200);
     }
 

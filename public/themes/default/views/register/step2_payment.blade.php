@@ -542,6 +542,7 @@ background-color: #000;padding: 10px!important;}
     $paystack_lable = App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() : "paystack";
     $Razorpay_lable = App\PaymentSetting::where('payment_type','Razorpay_lable')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type','Razorpay')->pluck('Razorpay_lable')->first() : "Razorpay";
     $CinetPay_lable = App\PaymentSetting::where('payment_type','CinetPay')->pluck('CinetPay_Lable')->first() ? App\PaymentSetting::where('payment_type','CinetPay')->pluck('CinetPay_Lable')->first() : "CinetPay";
+    $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
 
 @endphp
 
@@ -610,14 +611,14 @@ background-color: #000;padding: 10px!important;}
                                 $plan_name = $plan->plans_name;
                             @endphp
 
-                            <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ Currency_Convert($plan->price) }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
+                            <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ ($CurrencySetting == 1) ? Currency_Convert($plan->price) : $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
                                 
                                 <a href="#payment_card_scroll">
                                     <div class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
                                         <div class="col-md-12 ambk p-0 text-center" >
                                             <div>
                                                 <h6 class=" font-weight-bold"> {{ $plan->plans_name  }} </h6>
-                                                <p class="text-white mb-0"> {{ Currency_Convert($plan->price) }} Membership</p>
+                                                <p class="text-white mb-0"> {{ ($CurrencySetting == 1) ? Currency_Convert($plan->price) : $plan->price }} Membership</p>
                                             </div>
                                         </div>
                                         <div class="col-md-12 blk" >

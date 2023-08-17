@@ -343,6 +343,8 @@ Your browser does not support the audio element.
 </div>
 
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
+    <i class="ri-thumb-up-line like" aria-hidden="true"  id="ff"  data-authenticated="<?= !Auth::guest() ?>"></i>
+    <i class="ri-thumb-down-line dislike" aria-hidden="true"   id="ff" data-authenticated="<?= !Auth::guest() ?>"></i>
 <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
 <div class="dropdown">
     <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
@@ -899,6 +901,9 @@ var role = <?php echo json_encode($role) ?>;
 if(role == 'admin'){
       var player = document.querySelector('#source-audio')
     player.src = listAudio[index].mp3_url
+    document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+    document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+    document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
     document.querySelector('.title').innerHTML = listAudio[index].title
     var image = document.querySelector('#audio_img')
     image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image 
@@ -918,6 +923,9 @@ if(role == 'admin'){
           // alert(access);
 
           document.querySelector('#enable_button').style.display = 'none';
+          document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+          document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+          document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
 
         var player = document.querySelector('#source-audio')
 
@@ -934,6 +942,9 @@ if(role == 'admin'){
         // alert(access);
         var audioppv = <?php echo json_encode($ablum_audios); ?>;
         var ppv_audio_status = 0 ;
+        document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+        document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+        document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
         $.ajax({
           url: '<?php echo URL::to('purchased-audio-check'); ?>',
           type: "post",
@@ -1041,6 +1052,9 @@ if(role == 'admin'){
 
         var role = <?php echo json_encode($role) ?>;
         // alert(role);
+        document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+        document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+        document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
 
         if(role == 'subscriber'){
               var player = document.querySelector('#source-audio')
@@ -1099,27 +1113,38 @@ if(role == 'admin'){
   var access = <?php echo json_encode(@$audios->access) ; ?>  
   var role = <?php echo json_encode(@$role) ; ?>  
   var ppv_status = <?php echo json_encode(@$ppv_status) ; ?>  
+  var audiosid = <?php echo json_encode(@$audios->id) ; ?>  
+  var audioslug = <?php echo json_encode(@$audios->slug) ; ?>  
 
-  // alert(role)
   if(role == 'admin'){
+  // alert(audiosid)
     document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
+    document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
+    document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
+    document.querySelector(".like").setAttribute("data-audio-id", audiosid);
   }else{
     if(access == 'ppv' && ppv_status == 0){
       document.getElementById("enable_button").setAttribute("data-price", <?php echo json_encode(@$audios->ppv_price) ; ?>);
       document.getElementById("enable_button").setAttribute("audio-id", <?php echo json_encode(@$audios->id) ; ?>);
       document.querySelector('#enable_button').style.display = 'block';
       document.querySelector('#source-audio').src = '';
+      document.querySelector(".like").setAttribute("data-audio-id", audiosid);
+      document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
+      document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
           alert("Purchase Audio"); 
     }else{
       document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
+      document.querySelector(".like").setAttribute("data-audio-id", audiosid);
+      document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
+      document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
     }
   }
 
   document.querySelector('.title').innerHTML = <?php echo json_encode(@$audios->title) ; ?>  
+
   var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
   var audio_images = player_images +'/' + <?php echo json_encode(@$audio->image) ; ?>;
   $("#audio_img").attr('src', audio_images);
-  
   var currentAudio = document.getElementById("myAudio");
   currentAudio.load()
   currentAudio.onloadedmetadata = function() {
@@ -1167,6 +1192,13 @@ if(role == 'admin'){
       if (this.indexAudio < listAudio.length-1) {
           var index = parseInt(this.indexAudio)+1
           this.loadNewTrack(index)
+      }else{
+              var url =  "<?php echo URL::to('audio/related-playlist')  ?>";
+              var  audio_id = document.querySelector(".like").getAttribute("data-audio-id");
+              var  audio_slug = document.querySelector(".like").getAttribute("data-audio-slug");
+              var link_url = url+'/'+audio_slug;
+              location.href = link_url;
+
       }
     }
   }
@@ -1328,6 +1360,43 @@ if(role == 'admin'){
     });
   }
 
+	$('.like').click(function(){
+        var  audio_id = document.querySelector(".like").getAttribute("data-audio-id");
+        // alert(audio_id);
+                var like = 1;
+                $.ajax({
+                url: "<?php echo URL::to('/').'/like-audio';?>",
+                type: "POST",
+                data: {like: like,audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function(data) {
+                    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have liked this media</div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+                    
+                }
+            });           
+  });
 
+  
+	$('.dislike').click(function(){
+        var  audio_id = document.querySelector(".dislike").getAttribute("data-audio-id");
+        // alert(audio_id);
+                var like = 1;
+                $.ajax({
+                url: "<?php echo URL::to('/').'/dislike-audio';?>",
+                type: "POST",
+                data: {like: like,audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function(data) {
+                  $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from liked this media </div>');
+                setTimeout(function() {
+                  $('.remove_watch').slideUp('fast');
+                }, 3000);
+                    
+                }
+            });           
+  });
     </script>
 <?php include(public_path('themes/default/views/footer.blade.php')); ?>
