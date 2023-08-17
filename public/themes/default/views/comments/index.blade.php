@@ -101,6 +101,6 @@
     $(document).ready(function () {
         setTimeout(function () {
             $("#successMessage").fadeOut("fast");
-        }, 3000);
+        }, 5000);
     });
 </script>

@@ -263,9 +263,7 @@ border-radius: 50%;
 </style>
 
 <?php if (Session::has('message')): ?>
-  <div class="row" style="float:right;" >
-    <div id="successMessage" class="alert alert-info col-md-4" ><?php  echo Session::get('message') ?></div>
-  </div>
+    <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  echo Session::get('message') ?></div>
 <?php endif ;?>
 
 
