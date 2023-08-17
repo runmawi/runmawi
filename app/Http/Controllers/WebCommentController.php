@@ -55,7 +55,7 @@ class WebCommentController extends Controller
             'source'      => $source ,
             'source_id'   => $request->source_id ,
             'comment'  => $request->message ,
-            'approved' => 1 ,
+            'approved' => Auth::user()->role == "admin" ? 1 : 0 ,
         );
         
         WebComment::create($inputs);
@@ -90,7 +90,7 @@ class WebCommentController extends Controller
             'source'      => $source ,
             'source_id'   => $request->source_id ,
             'comment'  => $request->message ,
-            'approved' => 1 ,
+            'approved' => Auth::user()->role == "admin" ? 1 : 0 ,
         );
 
         WebComment::findorfail($id)->update($inputs);
@@ -130,7 +130,7 @@ class WebCommentController extends Controller
             'source_id'   => $request->source_id ,
             'comment'   => $request->message ,
             'child_id'  => $id ,
-            'approved' => 1 ,
+            'approved' => Auth::user()->role == "admin" ? 1 : 0 ,
         );
 
         WebComment::create($inputs);

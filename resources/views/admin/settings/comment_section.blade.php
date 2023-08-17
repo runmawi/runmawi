@@ -77,6 +77,9 @@
     </div>
 </div>
 
+{{-- comment Section Table --}}
+
+@include('admin.settings.comment_section_table')
 
 {{-- Header alert message Script  --}}
 
