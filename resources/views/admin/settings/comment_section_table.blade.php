@@ -3,7 +3,7 @@
         <div class="iq-card">
             <div class="iq-card-body table-responsive p-0">
                 <div class="table-view">
-                    <table class="table table-striped table-bordered table movie_table iq-card">
+                    <table class="table table-striped table-bordered table movie_table iq-card" id="comment_section">
                         <thead>
                             <tr class="r1">
                                 <th> S.No</th>
@@ -19,7 +19,7 @@
                             <tbody>
                                 <td> {{ $key + 1 }} </td>
                                 <td> {{ $webcomment->user_name }} </td>
-                                <td> {{ $webcomment->commentable_type }} </td>
+                                <td> {{  str_replace(['_','play'],'', $webcomment->commentable_type ) }} </td>
                                 <td> {{ $webcomment->comment }} </td>
                                 <td class={{'status-'.$webcomment->id }} >
                                     <button class="btn btn-success status_change" onclick="return confirmAction(event)" value="1" data-id="{{ $webcomment->id }}"> Approve </button>
@@ -34,10 +34,7 @@
     </div>
 </div>
 
-
 @section('javascript')
-
-    <script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
 
     <script>
         $(document).ready(function() {
@@ -69,6 +66,11 @@
                 });
             });
         });
+
+            $(document).ready(function() {
+
+                $('#comment_section').DataTable({ });
+            });
     </script>
 
 @stop

@@ -23,6 +23,12 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
       }
 </style>
 
+<?php if (Session::has('message')): ?>
+  <div class="row" style="float:right;" >
+    <div id="successMessage" class="alert alert-info col-md-4" ><?php  echo Session::get('message') ?></div>
+  </div>
+<?php endif ;?>
+
 <!-- free content - hide & show -->
 
 <!-- <div class="row free_content">

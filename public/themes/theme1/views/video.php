@@ -30,6 +30,12 @@ if($ads_details != null){
    
 ?>
 
+<?php if (Session::has('message')): ?>
+  <div class="row" style="float:right;" >
+    <div id="successMessage" class="alert alert-info col-md-4" ><?php  echo Session::get('message') ?></div>
+  </div>
+<?php endif ;?>
+
 <?php
 $str = $video->m3u8_url;
 if(!empty($str)){

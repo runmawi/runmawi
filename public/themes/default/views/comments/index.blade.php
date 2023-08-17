@@ -95,3 +95,12 @@
 
     <?php endforeach; ?>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("#successMessage").fadeOut("fast");
+        }, 3000);
+    });
+</script>

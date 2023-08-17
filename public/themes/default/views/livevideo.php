@@ -193,6 +193,12 @@
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
 
+<?php if (Session::has('message')): ?>
+  <div class="row" style="float:right;" >
+    <div id="successMessage" class="alert alert-info col-md-4" ><?php  echo Session::get('message') ?></div>
+  </div>
+<?php endif ;?>
+
 <?php
 
 include('livevideo_ads.blade.php');  
