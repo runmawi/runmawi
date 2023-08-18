@@ -9693,7 +9693,7 @@ $cpanel->end();
 
           $audios = Audio::orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-            $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             return $item;
           });
 
@@ -9705,7 +9705,7 @@ $cpanel->end();
         if($HomeSetting->albums == 1){
 
           $albums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) {
-            $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
+            $item['player_image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
             return $item;
           });
 
@@ -9771,7 +9771,7 @@ $cpanel->end();
         }
 
         $Alllanguage   = Language::latest('created_at')->get()->map(function ($item) {
-            $item['image_url'] =$item->language_image ?  URL::to('/').'/public/uploads/Language/'.$item->language_image : null ;
+            $item['player_image_url'] =$item->language_image ?  URL::to('/').'/public/uploads/Language/'.$item->language_image : null ;
             return $item;
         });
 
@@ -9816,7 +9816,7 @@ $cpanel->end();
           'series' => $series,
           'audios' => $audios,
           'albums' => $albums,
-          'movies' => $movies,
+          // 'movies' => $movies,
           // 'LiveCategory' => $LiveCategory,
           'Alllanguage' => $Alllanguage  ,
           // 'VideoLanguage' => $VideoLanguage  ,
