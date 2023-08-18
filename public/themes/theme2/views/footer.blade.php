@@ -460,18 +460,25 @@ function myFunction() {
 </script>
 
 <?php
-  if(Route::currentRouteName() == "LiveStream_play"){
+
+try {
+  
+  if(Route::currentRouteName() == "LiveStream_play"):
 
     include('livevideo_player_script.blade.php');
-  }
-  elseif ( Route::currentRouteName() == "play_episode"){
+
+  elseif ( Route::currentRouteName() == "play_episode"):
 
     include('episode_player_script.blade.php');
-  }
-  else{
+  else:
 
     include('footerPlayerScript.blade.php');
-  }
+  endif;
+
+} catch (\Throwable $th) {
+  //throw $th;
+}
+  
 ?>
 <script>
   if ('loading' in HTMLImageElement.prototype) {
