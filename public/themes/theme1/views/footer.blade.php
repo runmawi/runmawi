@@ -376,18 +376,24 @@ function myFunction() {
 <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
         
 <?php
-  if(Route::currentRouteName() == "LiveStream_play"){
 
-    include('livevideo_player_script.blade.php');
-  }
-  elseif ( Route::currentRouteName() == "play_episode"){
+    try {
+    
+      if(Route::currentRouteName() == "LiveStream_play"):
 
-      include('episode_player_script.blade.php');
-  }
-  else{
+        include('livevideo_player_script.blade.php');
+      elseif ( Route::currentRouteName() == "play_episode"):
 
-    include('footerPlayerScript.blade.php');
-  }
+        include('episode_player_script.blade.php');
+      else:
+
+        include('footerPlayerScript.blade.php');
+      endif;
+
+    } catch (\Throwable $th) {
+      //throw $th;
+    }
+  
 ?>
   <script type="text/javascript">
 	$("img").lazyload({

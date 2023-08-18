@@ -245,6 +245,9 @@ function about(evt , id) {
         
 
 <?php
+
+try {
+  
   if(Route::currentRouteName() == "LiveStream_play"){
 
     include('livevideo_player_script.blade.php');
@@ -257,6 +260,11 @@ function about(evt , id) {
 
     include('footerPlayerScript.blade.php');
   }
+
+} catch (\Throwable $th) {
+  //throw $th;
+}
+
 ?>
 
   <script type="text/javascript">
