@@ -617,5 +617,6 @@ Route::group(
             Route::get('Master-List-videos', 'ApiAuthController@Master_list_videos');
             Route::get('register-dropdown-data', 'ApiAuthController@RegisterDropdownData');
             Route::post('Related_Audios_LikeDisLike ', 'ApiAuthController@Related_Audios_LikeDisLike');
+            Route::get('featured_videos ', 'ApiAuthController@FeaturedVideos');
 
         });

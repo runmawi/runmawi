@@ -1105,6 +1105,7 @@ public function verifyandupdatepassword(Request $request)
 
           $data = $data->latest()->limit(30)->get()->map(function ($item) {
             $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+            $item['player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
             $item['source']    = "Videos";
             return $item;
           });
@@ -20533,5 +20534,52 @@ public function TV_login(Request $request)
       }
         return response()->json($response, 200);
     }
+
+    
+  public function FeaturedVideos()
+  {
+    try {
+
+        $check_Kidmode = 0 ;
+
+        $data = Video::where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
+
+              if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+              {
+                $data = $data->whereNotIn('videos.id',Block_videos());
+              }
+
+              if( $check_Kidmode == 1 )
+              {
+                $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
+              }
+
+          $data = $data->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+            $item['player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+            $item['source']    = "Featured Videos";
+            return $item;
+          });
+
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'Featured Retrieved successfully',
+          'featured_videos' => $data
+        );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+      
+    }
+
+    
+        
+        return response()->json($response, 200);
+  }
+
 
 }
