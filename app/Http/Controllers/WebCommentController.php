@@ -55,12 +55,36 @@ class WebCommentController extends Controller
             'source'      => $source ,
             'source_id'   => $request->source_id ,
             'comment'  => $request->message ,
-            'approved' => 1 ,
+            'approved' => Auth::user()->role == "admin" ? 1 : 0 ,
         );
         
         WebComment::create($inputs);
+        
+        try {
+            \Mail::send('emails.comment_admin_approval', 
+                array(
+                    'website_name' => GetWebsiteName()
+                ) , 
+                function ($message) {
+                    $message->to( AdminMail(), AdminMail())->subject('Comment Is Pending & Waiting For Admin Approval !');
+                });
 
-        return Redirect::back();
+            $email_log      = 'Mail Sent Successfully from Comment Is Pending & Waiting For Admin Approval !';
+            $email_template = null;
+            $user_id = Auth::user()->id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = null ;
+            $user_id =  Auth::user()->id;
+        
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+
+        return Redirect::back()->with(['message' => 'Comment Submitted Successfully and Waiting for Admin Approval !', 'note_type' => 'success']);
     }
 
 
@@ -90,7 +114,7 @@ class WebCommentController extends Controller
             'source'      => $source ,
             'source_id'   => $request->source_id ,
             'comment'  => $request->message ,
-            'approved' => 1 ,
+            'approved' => Auth::user()->role == "admin" ? 1 : 0 ,
         );
 
         WebComment::findorfail($id)->update($inputs);
@@ -130,7 +154,7 @@ class WebCommentController extends Controller
             'source_id'   => $request->source_id ,
             'comment'   => $request->message ,
             'child_id'  => $id ,
-            'approved' => 1 ,
+            'approved' => Auth::user()->role == "admin" ? 1 : 0 ,
         );
 
         WebComment::create($inputs);

@@ -246,17 +246,25 @@ function about(evt , id) {
     }
 </script>
 <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+
 <?php
-  if( Route::currentRouteName() == "LiveStream_play" ){
-    include('livevideo_player_script.blade.php');
-  }
-  elseif ( Route::currentRouteName() == "play_episode"){
-    include('episode_player_script.blade.php');
-  }
-  else{
-    include('footerPlayerScript.blade.php');
-  }
+    try {
+
+      if( Route::currentRouteName() == "LiveStream_play" ){
+        include('livevideo_player_script.blade.php');
+      }
+      elseif ( Route::currentRouteName() == "play_episode"){
+        include('episode_player_script.blade.php');
+      }
+      else{
+        include('footerPlayerScript.blade.php');
+      }
+
+    } catch (\Throwable $th) {
+      //throw $th;
+    }
 ?>
+
 <script>
   if ('loading' in HTMLImageElement.prototype) {
     const images = document.querySelectorAll('img[loading="lazy"]');

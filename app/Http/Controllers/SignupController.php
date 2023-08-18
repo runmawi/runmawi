@@ -162,7 +162,9 @@ class SignupController extends Controller
       
             $Artists = \App\Artist::get();
             $SiteTheme = SiteTheme::first();
-        // dd($SiteTheme->signup_theme);
+            $City = \App\City::get();
+            $State = \App\State::get();
+            // dd($SiteTheme->signup_theme);
             $signup_status = FreeRegistration();
 //            if ( $signup_status == 1 ) {
 //                return redirect('/signup');
@@ -174,9 +176,9 @@ class SignupController extends Controller
             $settings = \App\Setting::first();
             if($SiteTheme->signup_theme == 0){
                 if($settings->free_registration == 1) {
-                    return Theme::view('register.step1',compact('register','Artists'));
+                    return Theme::view('register.step1',compact('register','Artists','State','City'));
                 } else {
-                    return Theme::view('register.step1',compact('register','Artists'));
+                    return Theme::view('register.step1',compact('register','Artists','State','City'));
                 }
         }elseif($SiteTheme->signup_theme == 1){
 
@@ -186,6 +188,8 @@ class SignupController extends Controller
                 'register' => $register,
                 'admin_user' => Auth::user(),
                 'Artists' => $Artists,
+                'City' => \App\City::get(),
+                'State' => \App\State::get(),
             );
             if($settings->free_registration == 1) {
                 return Theme::view('register.signup_step1',$data);
@@ -1382,5 +1386,26 @@ public function PostcreateStep3(Request $request)
 //     } */
 //   }
 
+public function GetState(Request $request)
+{
+    
+    $country_id = \App\Region::where('name',$request->country_id)->pluck('id')->first();
+
+    $data['states'] = \App\State::where("country_id", $country_id)
+        ->get(["name", "id"]);
+    return response()
+        ->json($data);
+}
+
+public function GetCity(Request $request)
+{
+
+    $state_id = \App\State::where('name',$request->state_id)->pluck('id')->first();
+
+    $data['cities'] = \App\City::where("state_id", $state_id)
+        ->get(["name", "id"]);
+    return response()
+        ->json($data);
+}
 
 }

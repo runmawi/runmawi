@@ -336,8 +336,13 @@ i.fa.fa-google-plus {
                             
                                  @if (!empty($SignupMenu) && $SignupMenu->state == 1)
                                     <div class="col-md-12">
-                                        <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus>
-
+                                        <!-- <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus> -->
+                                        <select class="phselect form-control" name="state" id="state-dropdown" >
+                                        <option>Select State</option>
+                                            <!-- @foreach($State as $code)
+                                            <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
+                                            @endforeach -->
+                                    </select>  
                                         @error('state')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -349,8 +354,13 @@ i.fa.fa-google-plus {
                                     
                                 @if (!empty($SignupMenu) && $SignupMenu->city == 1)
                                     <div class="col-md-12">
-                                        <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus>
-
+                                        <!-- <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus> -->
+                                        <select class="phselect form-control" name="city" id="city-dropdown" >
+                                        <option>Select City</option>
+                                            <!-- @foreach($State as $code)
+                                            <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
+                                            @endforeach -->
+                                    </select>  
                                         @error('city')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -363,7 +373,7 @@ i.fa.fa-google-plus {
                                 @if(!empty($SignupMenu) && $SignupMenu->support_username == 1)
                                 <div class="col-md-12" style="postion:relative;">
                                     <select class="phselect form-control" name="support_username" id="support_username" >
-                                        <option>Select Support User</option>
+                                        <option>Select Support Musician</option>
                                             @foreach($Artists as $Artist)
                                             <option value="{{  $Artist['artist_name'] }}">{{ $Artist['artist_name'] }}</option>
                                             @endforeach
@@ -403,8 +413,7 @@ i.fa.fa-google-plus {
                             <div class="sign-up-buttons col-md-12" align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <!-- <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button> -->
-                                  <input class="btn btn-hover btn-primary btn-block signup" style="border: #f3ece0 !important;color: white;background-color: #006aff!important;display: block;" type="submit" name="create-account" value="Sign Up Today">
-
+                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                             </div>
                         
@@ -498,6 +507,59 @@ i.fa.fa-google-plus {
   
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
+
+$(document).ready(function() {
+
+$('#country').on('change', function() {
+    
+    var country_id = this.value;
+    // alert(country_id);
+    $("#state-dropdown").html('');
+        $.ajax({
+        url:"{{url::to('/getState')}}",
+        type: "POST",
+        data: {
+        country_id: country_id,
+        _token: '{{csrf_token()}}' 
+        },
+        dataType : 'json',
+        success: function(result){
+        $('#state-dropdown').html('<option value="">Select State</option>'); 
+        $.each(result.states,function(key,value){
+        $("#state-dropdown").append('<option value="'+value.name+'">'+value.name+'</option>');
+        });
+        $('#city-dropdown').html('<option value="">Select State First</option>'); 
+        }
+    });
+
+}); 
+
+
+
+        $('#state-dropdown').on('change', function() {
+            var state_id = this.value;
+            // alert(state_id);
+            $("#city-dropdown").html('');
+            $.ajax({
+            url:"{{url::to('/getCity')}}",
+            type: "POST",
+            data: {
+            state_id: state_id,
+            _token: '{{csrf_token()}}' 
+            },
+            dataType : 'json',
+            success: function(result){
+            $('#city-dropdown').html('<option value="">Select City</option>'); 
+            $.each(result.cities,function(key,value){
+            $("#city-dropdown").append('<option value="'+value.name+'">'+value.name+'</option>');
+            });
+            }
+            });
+        });
+});
+
+
+
     $(document).ready(function(){
          $('#error_password').hide();
 

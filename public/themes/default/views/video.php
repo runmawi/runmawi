@@ -391,6 +391,11 @@ hr {
     }
 
 </style>
+
+<?php if (Session::has('message')): ?>
+    <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  echo Session::get('message') ?></div>
+<?php endif ;?>
+
 <?php
 
 
@@ -1431,7 +1436,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                 <li>
                                                     <?php //if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin" || ($user->role="subscriber" && $video->global_ppv == 1 ))  ) {
                                                     ?>
-                                                    <?php if ( $video->global_ppv != null && $user->role!="admin" || $video->ppv_price != null  && $user->role!="admin") { ?>
+                                                    <?php if ( $ppv_exist == 0 && $video->global_ppv != null && $user->role!="admin" || $ppv_exist == 0 && $video->ppv_price != null  && $user->role!="admin") { ?>
 
                                                     <!-- && ($video->global_ppv == 1 ) -->
                                                     <button data-toggle="modal" data-target="#exampleModalCenter"
