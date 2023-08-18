@@ -128,6 +128,8 @@ use App\MyPlaylist;
 use App\AudioUserPlaylist;
 use App\VideoPlaylist;
 use App\AdminVideoPlaylist;
+use App\MusicStation as MusicStation;
+use App\UserMusicStation as UserMusicStation;
 
 class ApiAuthController extends Controller
 {
@@ -20588,6 +20590,213 @@ public function TV_login(Request $request)
     
         
         return response()->json($response, 200);
+  }
+
+
+  
+  public function MusicStation()
+  {
+
+    try {
+
+        $data = MusicStation::get();
+
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'Music Station Retrieved successfully',
+          'music_station' => MusicStation::get(),
+        );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+      
+    }
+        return response()->json($response, 200);
+  }
+
+  
+  public function MyMusicSation(Request $request)
+  {
+
+    try {
+      
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'My Music Station Retrieved successfully',
+          'my_music_station' => MusicStation::where('user_id',$request->user_id)->get(),
+        );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+      
+    }
+        return response()->json($response, 200);
+  }
+
+  
+  public function StoreMusicSation(Request $request)
+  {
+
+    try {
+      
+      $Setting = Setting::first();
+            
+      $path = URL::to('/').'/public/uploads/images/';
+
+      $image = $request->image;
+
+      if($image != '') {
+          if($image != ''  && $image != null){
+              $file_old = $path.$image;
+              if (file_exists($file_old)){
+                    unlink($file_old);
+              }
+          }
+          $file = $image;
+          $file->move(public_path()."/uploads/images/", $file->getClientOriginalName());
+          $image  = URL::to('/').'/public/uploads/images/'.$file->getClientOriginalName();
+
+      } else {
+          $image  = URL::to('/').'/public/uploads/images/'.$Setting->default_video_image;
+      }
+
+      $station_based_artists = json_encode($request->station_based_artists);
+
+      $artist_audios = [];
+
+      if(!empty($request->station_based_artists) && count($request->station_based_artists) > 0){
+
+          foreach($request->station_based_artists as $value){
+
+              $artist_audios = Audioartist::select('audio.id')->join('audio', 'audio.id', '=', 'audio_artists.audio_id')
+              ->where('artist_id',$value)->groupBy('audio_artists.audio_id')->get();
+
+          }
+          
+      }
+
+      $category_audios = [];
+
+      if(!empty($request->station_based_keywords) && count($request->station_based_keywords) > 0){
+
+          foreach($request->station_based_keywords as $value){
+
+              $category_audios = CategoryAudio::select('audio.id')->join('audio', 'audio.id', '=', 'category_audios.audio_id')
+              ->where('category_id',$value)->groupBy('category_audios.audio_id')->get();
+
+          }
+
+      }
+
+          $MusicStation = new MusicStation();
+          $MusicStation->station_name = $request->station_name;
+          $MusicStation->station_slug = str_replace(" ", "-", $request->station_name);
+          $MusicStation->station_type = $request->station_type;
+          $MusicStation->station_based_artists = json_encode($request->station_based_artists);
+          $MusicStation->station_based_keywords = json_encode($request->station_based_keywords);
+          $MusicStation->image = $image;
+          $MusicStation->user_id = $request->user_id;
+          $MusicStation->save();
+
+          $station_id = $MusicStation->id;
+
+           if(count($artist_audios) > 0){
+
+              foreach($artist_audios as $value){
+  
+                  $UserMusicStation = new UserMusicStation();
+                  $UserMusicStation->user_id = $request->user_id;
+                  $UserMusicStation->station_id = $station_id;
+                  $UserMusicStation->audio_id = $value->id;
+                  $UserMusicStation->save();
+
+              }
+
+          }
+
+          if(count($category_audios) > 0){
+
+              foreach($category_audios as $value){
+  
+                  $UserMusicStation = new UserMusicStation();
+                  $UserMusicStation->user_id = $request->user_id;
+                  $UserMusicStation->station_id = $station_id;
+                  $UserMusicStation->audio_id = $value->id;
+                  $UserMusicStation->save();
+
+              }
+
+          }
+
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'Music Station successfully Created',
+          'music_station' => MusicStation::where('station_slug',$MusicStation->station_slug)->get(),
+        );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+      
+    }
+        return response()->json($response, 200);
+  }
+
+  public function PlayerMusicStation(Request $request)
+  {
+
+    try {
+
+      $MusicStation_id = MusicStation::where('station_slug', $request->station_slug)->first()->id;
+      $MusicStation = MusicStation::where('id', $MusicStation_id)->first();
+      $UserMusicStation = UserMusicStation::where('station_id', $MusicStation_id)->pluck('audio_id');
+      $station_music = Audio::whereIn('id', $UserMusicStation)->where('active',1)->get();
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'My Music Station Retrieved successfully',
+          'station_music' => $station_music,
+        );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+      
+    }
+        return response()->json($response, 200);
+  }
+
+  
+  public function DeleteStation(Request $request){
+    try {
+        // dd($id);
+       MusicStation::where('id',$request->id)->delete();
+       UserMusicStation::where('station_id',$request->id)->delete();
+       $response = array(
+        'status'  => 'true',
+        'Message' => 'Music Station Deleted successfully',
+      );
+    } catch (\Throwable $th) {
+        throw $th;
+        $response = array(
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+        );
+    }
+    return response()->json($response, 200);
   }
 
 
