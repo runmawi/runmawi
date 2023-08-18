@@ -1261,7 +1261,7 @@
                                              </div>
                                           </div>
                                        </a>
-                                       <a href="<?php echo URL::to('my-playlist') ?>" class="iq-sub-card setting-dropdown">
+                                       <!-- <a href="<?php echo URL::to('my-playlist') ?>" class="iq-sub-card setting-dropdown">
                                           <div class="media align-items-center">
                                              <div class="right-icon">
                                              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -1287,8 +1287,8 @@
                                                 <h6 class="mb-0 ">My Playlist</h6>
                                              </div>
                                           </div>
-                                       </a>
-                                       <a href="<?php echo URL::to('my-music-station') ?>" class="iq-sub-card setting-dropdown">
+                                       </a> -->
+                                       <!-- <a href="<?php echo URL::to('my-music-station') ?>" class="iq-sub-card setting-dropdown">
                                           <div class="media align-items-center">
                                              <div class="right-icon">
                                              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -1314,7 +1314,7 @@
                                                 <h6 class="mb-0 ">Music Station</h6>
                                              </div>
                                           </div>
-                                       </a>
+                                       </a> -->
                                        <?php
                                        if(Auth::User()->role == "admin"){ 
                                        if(Auth::user()->package != 'Channel' && Auth::user()->package != 'CPP'){ ?>
