@@ -619,4 +619,10 @@ Route::group(
             Route::post('Related_Audios_LikeDisLike ', 'ApiAuthController@Related_Audios_LikeDisLike');
             Route::get('featured_videos ', 'ApiAuthController@FeaturedVideos');
 
+            Route::get('music_station ', 'ApiAuthController@MusicStation');
+            Route::post('my_music_station ', 'ApiAuthController@MyMusicSation');
+            Route::post('store_music_station ', 'ApiAuthController@StoreMusicSation');
+            Route::post('play_music_station ', 'ApiAuthController@PlayerMusicStation');
+            Route::post('delete_music_station ', 'ApiAuthController@DeleteStation');
+
         });
