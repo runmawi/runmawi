@@ -9572,6 +9572,8 @@ $cpanel->end();
                 $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
 
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
+                $details = html_entity_decode($item->description);
+                $item['description'] = strip_tags($details);
                 return $item;
             });
 
@@ -9589,6 +9591,8 @@ $cpanel->end();
               $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
 
               $item['video_url'] = URL::to('/').'/storage/app/public/';
+              $details = html_entity_decode($item->description);
+              $item['description'] = strip_tags($details);
               return $item;
             });
 
@@ -9664,7 +9668,8 @@ $cpanel->end();
               $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
               $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
               $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
-
+              $details = html_entity_decode($item->description);
+              $item['description'] = strip_tags($details);
               return $item;
             });
         }
@@ -9682,6 +9687,8 @@ $cpanel->end();
                                       ->join('series_artists', 'series_artists.series_id', '=', 'series.id')
                                       ->join('artists', 'artists.id', '=', 'series_artists.artist_id')
                                       ->pluck('artist_name');
+              $details = html_entity_decode($item->description);
+              $item['description'] = strip_tags($details);
               return $item;
             });
         }else{
@@ -9694,6 +9701,8 @@ $cpanel->end();
           $audios = Audio::orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            $details = html_entity_decode($item->description);
+            $item['description'] = strip_tags($details);
             return $item;
           });
 
