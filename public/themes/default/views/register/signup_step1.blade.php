@@ -413,8 +413,7 @@ i.fa.fa-google-plus {
                             <div class="sign-up-buttons col-md-12" align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <!-- <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button> -->
-                                  <input class="btn btn-hover btn-primary btn-block signup" style="border: #f3ece0 !important;color: white;background-color: #006aff!important;display: block;" type="submit" name="create-account" value="Sign Up Today">
-
+                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                             </div>
                         
