@@ -262,6 +262,11 @@ border-radius: 50%;
 
 </style>
 
+<?php if (Session::has('message')): ?>
+    <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  echo Session::get('message') ?></div>
+<?php endif ;?>
+
+
 <?php if (isset($error)) { ?>
                 <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;">
                     <p ><h3 class="text-center"><?php echo $message;?></h3>
