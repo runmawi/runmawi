@@ -54,6 +54,20 @@
 						</div>
                     </div>
 
+					<div class="row">
+                        <div class="col-sm-6 d-flex">
+                            <label class="m-0">Enable / Disable Multiple Plans  </label>
+                            <div class="panel-body">
+                                <div class="mt-1 p-1">
+                                    <label class="switch">
+                                        <input name="multiple_subscription_plan" class="Multiple_Subscription_Plan" type="checkbox" {{ ($setting->multiple_subscription_plan) == "1" ? 'checked' : ''  }}  onchange="Update_Multiple_Subscription_Plans(this)" >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+
                     @if (Session::has('message'))
                         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                     @endif
@@ -207,7 +221,7 @@
 
                     <div class="panel-body mt-3 p-0">
                         <div id="nestable" class="nested-list dd with-margins">
-                            <table class="table plan_table iq-card text-center">
+                            <table class="table plan_table iq-card text-center" id="Subscription_Plans">
                                 <thead>
                                     <tr class="r1">
                                         <th>S.No</th>
@@ -222,15 +236,17 @@
                                         <tr>
                                             <td>{{  $i++  }}</td>
                                             <td>{{ $plan[0]->plans_name }}</td>
-                                            <td class="list-user-action">
+                                            <td class="">
 												<a href="{{ URL::to('/') }}/admin/subscription-plans/edit/{{ $plan[0]->id }}"
-                                                    class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><img class="ply" src="<?php echo URL::to('assets/img/icon/edit.svg'); ?>"></a>
+                                                    class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+													<img class="ply" src="<?php echo URL::to('assets/img/icon/edit.svg'); ?>">
+												</a>
                                                 
 												<a onclick="return confirm('Are you sure?')"
                                                     href="{{ URL::to('/') }}/admin/subscription-plans/delete/{{ $plan[0]->id }}"
-                                                    class="iq-bg-danger" data-toggle="tooltip" data-placement="top"
-                                                    title="" data-original-title="Delete"><img class="ply"
-                                                        src="<?php echo URL::to('/') . '/assets/img/icon/delete.svg'; ?>"></a>
+													class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
+													<img class="ply" src="<?php echo URL::to('/') . '/assets/img/icon/delete.svg'; ?>">
+												</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -292,6 +308,7 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script>
 		$(document).ready(function() {
@@ -301,6 +318,51 @@
 		})
 
 		CKEDITOR.replace('plan_content');
-	</script>
+
+		$(document).ready(function() {
+
+			$('#Subscription_Plans').DataTable({ });
+		});
+        
+        function Update_Multiple_Subscription_Plans(ele) {
+
+            var Status = $('.Multiple_Subscription_Plan').prop("checked");
+
+            var actionText = Status ? "active" : "remove";
+
+            var Multiple_Subscription_Plan = Status ? '1' : '0';
+
+            var confirmationMessage = "Are you sure you want to " + actionText + " this Multiple Subscription Plan?";
+            var check = confirm(confirmationMessage);
+
+            if (check) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "{{ route('Update_Multiple_Subscription_Plans') }}",
+                    data: {
+                        _token: "{{csrf_token()}}",
+                        Multiple_Subscription_Plan: Multiple_Subscription_Plan,
+                    },
+                    success: function (data) {
+                        if (data.message == 'false') {
+                            swal.fire({
+                                title: 'Oops',
+                                text: 'Something went wrong!',
+                                allowOutsideClick: false,
+                                icon: 'error',
+                                title: 'Oops...',
+                            }).then(function () {
+                                location.href = '{{ URL::to('admin/subscription-plans') }}';
+                            });
+                        }
+                    },
+                });
+            } else {
+                $(ele).prop('checked', !Status);
+            }
+        }
+
+    </script>
 
 @stop

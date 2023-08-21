@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-use App\User as User;
-use \Redirect as Redirect;
+use App\User ;
+use \Redirect ;
 use URL;
-use App\Video as Video;
-use App\Plan as Plan;
-use App\VideoCategory as VideoCategory;
-use App\VideoResolution as VideoResolution;
-use App\VideosSubtitle as VideosSubtitle;
-use App\Language as Language;
-use App\Subtitle as Subtitle;
-use App\PaypalPlan as PaypalPlan;
-use App\Tag as Tag;
 use Auth;
 use Hash;
+use App\Video ;
+use App\Plan ;
+use App\VideoCategory ;
+use App\VideoResolution ;
+use App\VideosSubtitle ;
+use App\Language ;
+use App\Subtitle ;
+use App\PaypalPlan ;
+use App\Tag ;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use View;
@@ -26,8 +26,8 @@ use Response;
 use App\PaylPlan;
 use App\Devices;
 use App\Setting;
-use App\PaymentSetting as PaymentSetting;
-use App\SubscriptionPlan as SubscriptionPlan;
+use App\PaymentSetting  ;
+use App\SubscriptionPlan;
 use GuzzleHttp\Client;
 use App\Currency;
 use App\CurrencySetting;
@@ -39,11 +39,13 @@ class AdminPlansController extends Controller
         $slug = Str::slug('Laravel 5 Framework', '-');
         $plans = Plan::all();
         $devices = Devices::all();
+        $setting = Setting::first();
 
         $data = [
-            'plans' => $plans,
-            'allplans' => $plans,
-            'devices' => $devices,
+            'plans' => $plans ,
+            'allplans' => $plans ,
+            'devices'  => $devices ,
+            'setting'  => $setting ,
         ];
         return view('admin.plans.index', $data);
     }
@@ -128,6 +130,7 @@ class AdminPlansController extends Controller
                 'payment_settings' => $payment_settings,
                 'allCurrency' => $allCurrency,
                 'paystack_status' => $paystack_status,
+                'setting'  => Setting::first() ,
             ];
 
             return view('admin.subscription_plans.index', $data);
@@ -422,7 +425,7 @@ class AdminPlansController extends Controller
 
         $devices = $input['devices'];
         $plan_devices = implode(',', $devices);
-        
+
         $id = $request['id'];
         $plans = PaypalPlan::find($id);
         $plans->name = $request['plans_name'];
@@ -642,5 +645,22 @@ class AdminPlansController extends Controller
         $devices->save();
 
         return Redirect::back()->with(['note' => 'You have been successfully Added New Coupon', 'note_type' => 'success']);
+    }
+
+    public function Update_Multiple_Subscription_Plans(Request $request)
+    {
+        try {
+
+            Setting::first()->update([
+                "multiple_subscription_plan" => $request->Multiple_Subscription_Plan,
+            ]);
+
+            return response()->json(["message" => "true"]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json(["message" => "false"]);
+
+        }
     }
 }
