@@ -295,6 +295,8 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('stripe1', 'PaymentController@stripe');
     Route::post('stripe', 'PaymentController@stripePost')->name('stripe.post');
 
+    Route::post('/getState', 'SignupController@GetState');
+    Route::post('/getCity', 'SignupController@GetCity');
     // search
     Route::get('search', 'HomeController@search');
     Route::post('searchResult', 'HomeController@searchResult')->name('searchResult');

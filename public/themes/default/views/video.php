@@ -1436,7 +1436,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                 <li>
                                                     <?php //if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin" || ($user->role="subscriber" && $video->global_ppv == 1 ))  ) {
                                                     ?>
-                                                    <?php if ( $video->global_ppv != null && $user->role!="admin" || $video->ppv_price != null  && $user->role!="admin") { ?>
+                                                    <?php if ( $ppv_exist == 0 && $video->global_ppv != null && $user->role!="admin" || $ppv_exist == 0 && $video->ppv_price != null  && $user->role!="admin") { ?>
 
                                                     <!-- && ($video->global_ppv == 1 ) -->
                                                     <button data-toggle="modal" data-target="#exampleModalCenter"
