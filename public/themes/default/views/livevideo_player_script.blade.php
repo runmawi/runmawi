@@ -95,7 +95,7 @@
                         data: {
                             "source_id": "<?php echo $livestream_id ?>",
                             "source_type": "livestream",
-                            "duration": "3",
+                            "duration": "2",
                         },
                         success: function (data) {
                             let PPVFreeDuration = data;
@@ -118,7 +118,7 @@
 
             video.addEventListener('play', () => {
                 isVideoPlaying = true;
-                interval = setInterval(checkPPVFreeDuration, 3000); //3 seconds
+                interval = setInterval(checkPPVFreeDuration, 2000 ); //2 seconds
             });
 
             video.addEventListener('pause', () => {
@@ -282,7 +282,7 @@
                         data: {
                             "source_id": "<?php echo $livestream_id ?>",
                             "source_type": "livestream",
-                            "duration": "3",
+                            "duration": "2",
                         },
                         success: function (data) {
                             let PPVFreeDuration = data;
@@ -302,7 +302,7 @@
 
             video.addEventListener('play', () => {
                 isVideoPlaying = true;
-                interval = setInterval(checkPPVFreeDuration, 3000); //3 seconds
+                interval = setInterval(checkPPVFreeDuration, 2000 ); //2 seconds
             });
 
             video.addEventListener('pause', () => {
@@ -429,7 +429,7 @@
                             data: {
                                 "source_id": "<?php echo $livestream_id ?>",
                                 "source_type": "livestream",
-                                "duration": "3",
+                                "duration": "2",
                             },
                             success: function (data) {
                                 let PPVFreeDuration = data;
@@ -449,7 +449,7 @@
 
                 video.addEventListener('play', () => {
                     isVideoPlaying = true;
-                    interval = setInterval(checkPPVFreeDuration, 3000); //3 seconds
+                    interval = setInterval(checkPPVFreeDuration, 2000 ); //2 seconds
                 });
 
                 video.addEventListener('pause', () => {

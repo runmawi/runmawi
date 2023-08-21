@@ -291,7 +291,7 @@
 
    <!-- ppv purchase free time -->
 
-<?php  } elseif ( Auth::guest() && $video->access == 'ppv' && $video->free_duration_status == 1 && $video->free_duration != null  ) { ?>       
+   <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  $video->access = "ppv"  ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>       
 
       <?php  include('Free_duration_video_player.php'); ?>  
 

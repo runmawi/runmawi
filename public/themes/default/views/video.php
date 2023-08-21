@@ -653,11 +653,11 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                         <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">
                     <?php } 
 
-                } elseif ( $video->free_duration_status == 1 && $video->free_duration != null && ( ($video->access = "subscriber" && ( Auth::user()->role == "registered" || Auth::guest() )) ||  $video->access = "ppv"  ) ) { ?>       
+                } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  $video->access = "ppv"  ) && $video->free_duration_status == 1 && $video->free_duration != null ) {   ?>       
 
                     <?php  include('Free_duration_video_player.php'); ?>  
 
-                    <?php if( $video->access == "ppv"  && $video->type == 'embed'): ?>
+                    <?php if(  $video->type == 'embed'): ?>
               
                         <div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
                             <div class="container-fluid">
@@ -715,7 +715,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                           </video>
                        </div>
               
-                    <?php  elseif(  $video->access == "ppv"  &&  $video->type == 'mp4_url'): ?>
+                    <?php  elseif(   $video->type == 'mp4_url'): ?>
               
                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                           <video id="PPV_free_duration_videoPlayer_MP4"  <?= $autoplay ?>    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
