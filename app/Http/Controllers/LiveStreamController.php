@@ -133,7 +133,7 @@ class LiveStreamController extends Controller
 
           // Admin Livestream videos
       }else{
-          if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' ||  @$categoryVideos->access  == 'subscriber' && Auth::user()->role != 'admin' ){
+          if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' ||  @$categoryVideos->access  == 'subscriber' &&  !Auth::guest() && Auth::user()->role != 'admin' ){
               $video_access = 'pay';
           }else{
               $video_access = 'free';
@@ -280,7 +280,7 @@ class LiveStreamController extends Controller
           // }
         } catch (\Throwable $th) {
 
-          // return $th->getMessage();
+          return $th->getMessage();
             return abort(404);
         }
         }
