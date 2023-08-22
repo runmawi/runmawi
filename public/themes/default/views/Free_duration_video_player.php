@@ -8,7 +8,12 @@
     $advertisement_id = $video->ads_tag_url_id ;
     $adverister_id = App\Advertisement::where('id',$advertisement_id)->pluck('advertiser_id')->first();
 
-    $free_duration_condition = ($video->free_duration_status == 1 && $video->free_duration != null && $video->access == "ppv" && Auth::guest()) || ($video->free_duration_status == 1 && $video->free_duration != null && $video->access == "ppv" && Auth::user()->role == "registered") ? 1 : 0;
+    if(!Auth::guest()){
+        $free_duration_condition = ( ( $ppv_exist == 0 && $video->access = "subscriber" &&  Auth::user()->role == "registered"  ) ||  $video->access = "ppv"  ) && $video->free_duration_status == 1 && $video->free_duration != null  ? 1 : 0;
+
+    }else{
+        $free_duration_condition = $video->access !="guest" && $video->free_duration_status == 1 && $video->free_duration != null ? 1 : 0;
+    }
 
     $data = App\PPVFreeDurationLogs::where('source_id', $video_id )->where('source_type','video');
         
