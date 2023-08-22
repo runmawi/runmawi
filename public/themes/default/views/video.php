@@ -653,7 +653,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                         <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">
                     <?php } 
 
-                } elseif ( $ppv_exist == 0 &&  ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  $video->access = "ppv"  ) && $video->free_duration_status == 1 && $video->free_duration != null ) {   ?>       
+                } elseif ( ( $ppv_exist == 0 &&  ($video->access = "subscriber" &&  Auth::user()->role == "registered"  ) ||  $video->access = "ppv"  ) && $video->free_duration_status == 1 && $video->free_duration != null ) {   ?>       
 
                     <?php  include('Free_duration_video_player.php'); ?>  
 
