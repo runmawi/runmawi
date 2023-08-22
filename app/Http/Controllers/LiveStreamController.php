@@ -245,7 +245,23 @@ class LiveStreamController extends Controller
                                 ->where('livecategories.live_id', $vid)
                                 ->get();
 
+                    // Free duration PPV purchase - Note(If PPV purchase - 0 , otherwise 1)
+              
+            if ($categoryVideos->access == "ppv" && !Auth::guest()) {
 
+                $live_purchase_exists = LivePurchase::where('video_id', $vid)->where('user_id', Auth::user()->id)
+                    ->where('status', 1)->latest()->first();
+
+                $live_purchase_status = $live_purchase_exists != null ? 1 : 0;
+
+            } elseif ($categoryVideos->access == "guest") {
+
+                $live_purchase_status = 1;
+            } else {
+
+                $live_purchase_status = 0;
+            }
+                  
            $data = array(
                  'currency' => $currency,
                  'video_access' => $video_access,
@@ -270,6 +286,7 @@ class LiveStreamController extends Controller
                  'commentable_type' => "LiveStream_play" ,
                  'CinetPay_payment_settings' => PaymentSetting::where('payment_type','CinetPay')->first() ,
                  'category_name'   => $category_name ,
+                 'live_purchase_status' => $live_purchase_status ,
            );
 
            return Theme::view('livevideo', $data);
