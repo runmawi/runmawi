@@ -622,6 +622,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subscription-plans/edit/{id}', 'AdminPlansController@subscriptionedit');
     Route::get('/subscription-plans/delete/{id}', 'AdminPlansController@subscriptiondelete');
     Route::post('/subscription-plans/update', 'AdminPlansController@subscriptionupdate');
+    
+    // Multiple Subscription Plans
+    Route::post('Update-Multiple-Subscription-Plans', 'AdminPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');
 
     // Life-Time Subscription Plans
     Route::get('/Life-time-subscription', 'AdminLifeTimeSubscriptionController@index')->name('Life-time-subscription-index');

@@ -362,8 +362,7 @@ if(!Auth::guest()){
                 </div>
             </div>
 
-            <?php  } elseif ( Auth::user()->role == "registered" && $video->access == 'ppv' && $video->free_duration_status == 1 && $video->free_duration != null  ) { ?>       
-
+            <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  $video->access = "ppv"  ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>       
 
             <div id="video_bg"> 
             <div class="">
@@ -558,8 +557,8 @@ if(!Auth::guest()){
     }
 
     else{  
-
-        if (Auth::guest() && empty($video->ppv_price)) {  ?>
+        
+        if (Auth::guest() && empty($video->ppv_price) && $video->free_duration_status == 0  ) { ?>
             <div id="video_bg"> 
             <div class="">
                 <div id="video sda" class="fitvid" style="margin: 0 auto;">
@@ -684,8 +683,7 @@ if(!Auth::guest()){
 
         <?php } ?>
 
-        <?php  } elseif ( Auth::guest() && $video->access == 'ppv' && $video->free_duration_status == 1 && $video->free_duration != null  ) { ?>       
-
+        <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  $video->access = "ppv"  ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>       
 
             <div id="video_bg"> 
             <div class="">
