@@ -20599,12 +20599,17 @@ public function TV_login(Request $request)
 
     try {
 
-        $data = MusicStation::get();
+        // $data = MusicStation::get();
+
+        $MusicStation = MusicStation::get()->map(function ($item) {
+          $item['image']    = 'https://via.placeholder.com/128/fe669e/ffcbde.png?text='. ucfirst(substr($item->station_name,0,1));
+          return $item;
+        });
 
         $response = array(
           'status'  => 'true',
           'Message' => 'Music Station Retrieved successfully',
-          'music_station' => MusicStation::get(),
+          'music_station' => $MusicStation,
         );
 
     } catch (\Throwable $th) {
@@ -20624,10 +20629,15 @@ public function TV_login(Request $request)
 
     try {
       
+      $MusicStation = MusicStation::where('user_id',$request->user_id)->get()->map(function ($item) {
+        $item['image']    = 'https://via.placeholder.com/128/fe669e/ffcbde.png?text='. ucfirst(substr($item->station_name,0,1));
+        return $item;
+      });
+
         $response = array(
           'status'  => 'true',
           'Message' => 'My Music Station Retrieved successfully',
-          'my_music_station' => MusicStation::where('user_id',$request->user_id)->get(),
+          'my_music_station' => $MusicStation,
         );
 
     } catch (\Throwable $th) {
