@@ -4,6 +4,7 @@
 @section('code', '503')
 
 @section('message')
-    <img src="https://3.imimg.com/data3/OD/DQ/MY-9110935/web-site-maintenance-service-and-technical-support-500x500.gif" >
-    <div>Sorry, we are now undergoing maintenance.<br>Please check back soon.</div>
+    <div>Your OTT is down due to Subscription Failure. <br />Please connect with your site administrator immediately to help you!</div>
+    <img width="200" style="margin-top: 30px;" src="https://flicknexs.com/assets/new.svg" >
+
 @endsection

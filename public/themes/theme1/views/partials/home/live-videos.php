@@ -109,7 +109,8 @@
                             <img class="ply mr-2" style="width: 20%; height: 20%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                <!-- Live Now-->
                         </a>
-                    </div></div>
+                    </div>
+                </div>
                    <?php if($ThumbnailSetting->title == 1) { ?>
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                             <span class="text-white"><?= (strlen($video->title) > 17) ? substr($video->title,0,18).'...' : $video->title; ?></span>
