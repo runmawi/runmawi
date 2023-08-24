@@ -36,19 +36,17 @@
               </div>
 
               <div class="block-description">
-                <a href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?> ">
-
-              <h6><?php echo __($Audio_Category->name); ?></h6>
-                               <!-- </div> -->
                 <div class="hover-buttons d-flex">
                   <a class="text-white" href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                   Visit Audio Category
                   </a>
                 </div>
-                     </a>
+                
               </div>
             </div>
+          </a>
+          <a href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?> ">
+            <h6><?php echo __($Audio_Category->name); ?></h6>
           </a>
         </li>
       <?php endforeach; 
