@@ -12917,6 +12917,7 @@ public function QRCodeMobileLogout(Request $request)
 
       $response = array(
         'status' => 'true',
+        'lists'   => OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->pluck('video_name'),
         'Home_page' => $result,
       );
   
