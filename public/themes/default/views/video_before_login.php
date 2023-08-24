@@ -66,6 +66,20 @@
             font-size: revert;
       }
 
+      #videoPlayer {
+        width: 100%;
+        height: 100%;
+        /* margin: 0 auto !important;  */
+        object-fit: contain;
+      }
+
+      #video {
+         width: 100%;
+         height: 100%;
+         /* margin: 0 auto !important;  */
+         object-fit: contain;
+      }
+
 </style>
 <?php 
    $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
