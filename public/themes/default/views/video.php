@@ -390,6 +390,20 @@ hr {
         font-size: revert;
     }
 
+    #videoPlayer {
+        width: 100%;
+        height: 100%;
+        /* margin: 0 auto !important;  */
+        object-fit: contain;
+    }
+
+    #video {
+        width: 100%;
+        height: 100%;
+        /* margin: 0 auto !important;  */
+        object-fit: contain;
+    }
+
 </style>
 
 <?php if (Session::has('message')): ?>
@@ -397,7 +411,6 @@ hr {
 <?php endif ;?>
 
 <?php
-
 
 $package = App\User::where('id',1)->first();
 $pack = $package->package;
