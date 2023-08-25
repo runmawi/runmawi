@@ -18,7 +18,7 @@ class CreateSettingsTable extends Migration
             $table->string('website_name')->nullable();
             $table->string('website_description')->nullable();
             $table->string('logo')->nullable();
-            $table->string('login_content')->nullable();
+            $table->longText('login_content')->nullable();
             $table->integer('coupon_status')->nullable();
             $table->string('favicon')->nullable();
             $table->string('system_email')->nullable();
@@ -34,7 +34,7 @@ class CreateSettingsTable extends Migration
             $table->integer('ppv_price')->nullable();
             $table->string('discount_percentage')->nullable();
             $table->string('new_subscriber_coupon')->nullable();
-            $table->string('login_text')->nullable();
+            $table->longText('login_text')->nullable();
             $table->string('facebook_page_id')->nullable();
             $table->string('google_page_id')->nullable();
             $table->string('twitter_page_id')->nullable();
