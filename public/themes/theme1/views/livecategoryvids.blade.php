@@ -13,7 +13,7 @@ $currency = App\CurrencySetting::first();
 
       <div class="main-content">
          <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header align-items-center">
@@ -41,8 +41,16 @@ $currency = App\CurrencySetting::first();
                                                 <!-- </div> -->
 
                                             <div class="block-description">
-                                                    
-                                                <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
+                                                <div class="hover-buttons">
+                                                    <a  class="text-white"  href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
+                                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            </div>
+                                        </a>
+                                        <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                                     <a  href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                                                              <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
                                                     </a>
@@ -114,20 +122,6 @@ $currency = App\CurrencySetting::first();
                                                         </span>
                                                         <?php } ?>
                                                     </div>
-                                                    
-
-                                                    <div class="hover-buttons">
-                                                        <a  class="text-white"  href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
-                                                        </a>
-                   
-    
-                                        </div>
-
-                                                </div>
-
-                                            </div>
-                                        </a>
                                     </li>
                             
  <?php } } else { ?>
