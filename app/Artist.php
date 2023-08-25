@@ -10,5 +10,5 @@ class Artist extends Model
 	protected $guarded = array();
 	public static $rules = array();
 
-	protected $fillable = array('artist_name','artist_email','description','image','artist_slug','artist_type','user_id','artist_type');
+	protected $fillable = array('artist_name','artist_email','description','image','artist_slug','artist_type','user_id','uploaded_by');
 }
