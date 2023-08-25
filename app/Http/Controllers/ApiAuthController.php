@@ -13906,7 +13906,7 @@ public function QRCodeMobileLogout(Request $request)
 
               case 'liveCategories':
                     $data = $this->live_category_Pagelist();
-                    $Page_List_Name = 'live_category_Pagelist';
+                    $Page_List_Name = 'live_categories_Pagelist';
                     break;   
                     
               case 'video_schedule':
