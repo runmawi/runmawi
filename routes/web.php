@@ -1419,9 +1419,10 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
     Route::get('/artists/create', 'CPPAdminArtistsController@CPPcreate');
     Route::post('/artists/store', 'CPPAdminArtistsController@CPPstore');
     Route::get('/artists/edit/{id}', 'CPPAdminArtistsController@CPPedit');
-    Route::post('/cpp/artists/update', 'CPPAdminArtistsController@CPPupdate');
+    Route::post('/artists/update', 'CPPAdminArtistsController@CPPupdate');
     Route::get('/artists/delete/{id}', 'CPPAdminArtistsController@CPPdestroy');
     Route::post('/audios/audioupdate', ['before' => 'demo', 'uses' => 'CPPAdminAudioController@CPPaudioupdate']);
+    Route::get('/artist_slug_validation', 'CPPAdminArtistsController@artist_slug_validation');
 
     //Admin Audio Albums
     Route::get('/audios/albums', 'CPPAdminAudioCategoriesController@CPPalbumIndex');
