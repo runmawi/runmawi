@@ -35,9 +35,7 @@
               </div>
 
               <div class="block-description">
-                <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> ">
-
-              <h6><?php echo __($content_user->username); ?></h6>
+                
                                <!-- </div> -->
                 <div class="hover-buttons d-flex">
                   <a class="text-white" href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> " >
@@ -45,9 +43,12 @@
                    Visit Content Partner
                   </a>
                 </div>
-                     </a>
+                
               </div>
             </div>
+          </a>
+          <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> ">
+            <h6><?php echo __($content_user->username); ?></h6>
           </a>
         </li>
       <?php endforeach; 
