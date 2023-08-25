@@ -288,6 +288,13 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
               <?php }else{ } ?>    
             </ul>
           </li>
+          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/art.svg')?>"><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+              <li><a href="{{ URL::to('cpp/artists') }}">All Artists</a></li>
+              <li><a href="{{ URL::to('cpp/artists/create') }}"> Add New Artist</a></li>
+
+            </ul>
+          </li>
           <?php }else{ } ?>    
           <?php if( in_array( "Artist Management" ,$role)){ ?>
 
