@@ -536,8 +536,8 @@
         let free_duration_seconds    = Number($("#free_duration_seconds").val()); 
 
         if (free_duration_condition === 1 && free_duration_start_time >= free_duration_seconds) {
-            console.log('ddd');
             $("#modal").css("display", "block");
+            $('.plyr__controls').hide();
         }
     });
 </script>
