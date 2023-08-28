@@ -1,6 +1,9 @@
 <?php
-$settings = App\Setting::find(1);
-$system_settings = App\SystemSetting::find(1);
+    $settings = App\Setting::find(1);
+    $system_settings = App\SystemSetting::find(1);
+
+    $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+    $theme = App\SiteTheme::first();
 ?>
 <html>
 <head>
@@ -104,7 +107,15 @@ i.fa.fa-google-plus {
                   <div class="sign-in-from  m-auto" align="center">
                       <div class="row justify-content-center">
                           <div class="col-md-12">
-                          <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+
+                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                            <?php }else { ?> 
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                            <?php } ?>
+
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
                             <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">Demo Login</p>
