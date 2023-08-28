@@ -199,80 +199,43 @@ border-radius: 0px 4px 4px 0px;
                 
                 <div class="panel-heading mt-3"> 
                     <div class="panel-title"> 	
-                        <h4><i class="entypo-monitor"></i> Checkout Theme Setting</h4> 
+                        <h4><i class="entypo-monitor"></i> Checkout Theme Setting</h4> <br>
                     </div> 
-                    <div class="row"> 
-                        
-                            <div class="col-sm-6">
-                                  <p>{{ ucfirst(trans('signup page theme')) }}</p>
-                                <div class="mt-1">
-                                    <label class="switch">
-                                        <input name="signup_theme" class="signup_theme" id="signup_theme" type="checkbox" @if( $settings->signup_theme == "1") checked  @endif >
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                            </div>
-                   
-                            <div class="col-sm-6">
-                                 <p>{{ ucfirst(trans('signup Agree Message')) }}</p>
-                                <input type="text" placeholder="Signup Agree Message" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
-                            </div>
-                    </div>
 
                     <div class="row"> 
-                                    {{-- Sign up - Step 2 Title  --}}
-                        <div class="col-sm-6">
-                             <p>{{ ucfirst(trans('Sign up - Step 2 Title')) }}</p>
-                            <input type="text" placeholder="Sign up - Step 2 Title" name="signup_step2_title" class="form-control signup_step2_title" id="signup_step2_title" value="@if(!empty($settings->signup_step2_title)){{ $settings->signup_step2_title }}@endif">
-                        </div>
-
-                        <div class="col-sm-6">
-                            <p>{{ ucfirst(trans('enable search dropdown')) }}</p>
+                        <div class="col-sm-12">
+                                <label>{{ ucfirst(trans('Enable signup page theme')) }}</label>
                             <div class="mt-1">
                                 <label class="switch">
-                                    <input name="search_dropdown_setting" class="search_dropdown_setting" id="search_dropdown_setting" type="checkbox" @if( $settings->search_dropdown_setting == "1") checked  @endif >
+                                    <input name="signup_theme" class="signup_theme" id="signup_theme" type="checkbox" @if( $settings->signup_theme == "1") checked  @endif >
                                     <span class="slider round"></span>
                                 </label>
                             </div>
+                        </div>
+                    </div><br>
+
+                    <div class="row"> 
+                        <div class="col-sm-6">
+                            <label>{{ ucfirst(trans('signup Agree Message')) }}</label>
+                           <input type="text" placeholder="Signup Agree Message" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
                        </div>
-                    </div>
-                </div>
 
-                                 {{-- Prevent Viewing Page Source --}}
-
-                    <div class="panel-heading mt-3"> 
-
-                        <div class="row"> 
-                                <div class="col-sm-6">
-                                    <p>{{ ucfirst(trans(' Enable Developer Tools')) }}</p>
-                                    <div class="mt-1">
-                                        <label class="switch">
-                                            <input name="prevent_inspect" class="prevent_inspect" id="prevent_inspect" type="checkbox" @if( $settings->prevent_inspect == "1") checked  @endif >
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                    
-                                <div class="col-sm-6">
-                                    <p>{{ ucfirst(trans('Enable Loader')) }}</p>
-                                    <div class="mt-1">
-                                        <label class="switch">
-                                            <input name="loader_setting" class="loader_setting" id="loader_setting" type="checkbox" @if( $settings->loader_setting == "1") checked  @endif >
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                </div>
+                                    {{-- Sign up - Step 2 Title  --}}
+                        <div class="col-sm-6">
+                             <label>{{ ucfirst(trans('Sign up - Step 2 Title')) }}</label>
+                            <input type="text" placeholder="Sign up - Step 2 Title" name="signup_step2_title" class="form-control signup_step2_title" id="signup_step2_title" value="@if(!empty($settings->signup_step2_title)){{ $settings->signup_step2_title }}@endif">
                         </div>
                     </div>
-              
-                        {{-- Style sheet  --}}
+                </div> <br>
+
+                  {{-- Style sheet  --}}
 
                 <div>
                     <div class="row">
                         <div class="col-lg-6">
                              <div class="panel-heading mt-3 "> 
                         <div class="panel-title"> 	
-                            <h4><i class="entypo-monitor"></i> Style Sheet Link</h4> 
+                            <h5><i class="entypo-monitor"></i> Style Sheet Link</h5> 
                         </div>             
                     </div> 
     
@@ -285,7 +248,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-lg-6">
                             <div class="panel-heading mt-3 "> 
                         <div class="panel-title"> 	
-                            <h4><i class="entypo-monitor"></i> Typography Link</h4> 
+                            <h5><i class="entypo-monitor"></i> Typography Link</h5> 
                         </div>             
                     </div> 
                     
@@ -297,12 +260,44 @@ border-radius: 0px 4px 4px 0px;
                     </div> 
                         </div>
                     </div>
-                </div>
-                
-                <div class="row"> 
-                        
-                        <div class="col-sm-6">
-                        <h4><i class="entypo-monitor"></i>{{ ucfirst(trans('MyProfile page theme')) }}</h4>
+                </div> <br>
+
+                                 {{-- Prevent Viewing Page Source --}}
+
+                <div class="panel-heading mt-3"> 
+                    <div class="row"> 
+                        <div class="col-sm-4">
+                            <label>{{ ucfirst(trans(' Enable Developer Tools')) }}</label>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="prevent_inspect" class="prevent_inspect" id="prevent_inspect" type="checkbox" @if( $settings->prevent_inspect == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+            
+                        <div class="col-sm-4">
+                            <label>{{ ucfirst(trans('Enable Loader')) }}</label>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="loader_setting" class="loader_setting" id="loader_setting" type="checkbox" @if( $settings->loader_setting == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label>{{ ucfirst(trans('enable search dropdown')) }}</label>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="search_dropdown_setting" class="search_dropdown_setting" id="search_dropdown_setting" type="checkbox" @if( $settings->search_dropdown_setting == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label>{{ ucfirst(trans('Enable Profile Page')) }}</label>
                             <div class="mt-1">
                                 <label class="switch">
                                     <input name="my_profile_theme" class="my_profile_theme" id="my_profile_theme" type="checkbox" @if( $settings->my_profile_theme == "1") checked  @endif >
@@ -310,8 +305,18 @@ border-radius: 0px 4px 4px 0px;
                                 </label>
                             </div>
                         </div>  
-                </div>
 
+                        <div class="col-sm-4">
+                            <label>{{ ucfirst(('Enable SignIn / SignUp Link')) }} <span> ( Header )</span></label>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="signin_header"  type="checkbox" @if( $settings->signin_header == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
                 
                 <div class="panel-body mt-4" style="display: flex; justify-content: flex-end;">
                     <button type="submit" class="btn btn-primary " name="submit"> Save Settings</button>
