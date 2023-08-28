@@ -136,7 +136,7 @@
 
  <!-- if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)  || Auth::guest() && $video->access == "subscriber"  && empty($video->ppv_price))  -->
 
-<?php if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)) {?>
+<?php if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price) && $video->free_duration_status != 1  ) {?>
 
    <div id="video_bg">
    <div class=" page-height">
@@ -284,7 +284,7 @@
       <?php endif; ?>
    </div>
 
-<?php }elseif( Auth::guest() && $video->access == "guest" && empty($video->ppv_price ) && !empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path != "public" && empty($video->ppv_price )){  ?>
+<?php }elseif( Auth::guest() && $video->access == "guest" && empty($video->ppv_price ) && !empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path != "public" && empty($video->ppv_price) && $video->free_duration_status != 1 && $video->free_duration != null ){  ?>
   
    <div id="video_container" class="fitvid" atyle="z-index: 9999;">
       <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
@@ -330,7 +330,7 @@
       <?php  elseif( $video->type == '' && ($video->processed_low != 100 || $video->processed_low == null) ):  ?>
 
          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-            <video id="" <?= $autoplay ?>  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+            <video id=""   class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                
                <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
@@ -353,7 +353,7 @@
 
          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
             
-            <video id="PPV_free_duration_videoPlayer" <?= $autoplay ?>   controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+            <video id="PPV_free_duration_videoPlayer"    controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                <source  type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
                <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
                   <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
@@ -370,7 +370,7 @@
       <?php  elseif( $video->type == 'mp4_url'): ?>
 
          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-            <video id="PPV_free_duration_videoPlayer_MP4"  <?= $autoplay ?>    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+            <video id="PPV_free_duration_videoPlayer_MP4"   poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
                   <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
@@ -388,7 +388,7 @@
 
       <?php  elseif( $video->type == 'm3u8_url' ):  ?>
 
-         <video  <?= $autoplay ?> id="PPV_free_duration_videoPlayer_M3U8_url"  allow="<?= $autoplay ?>"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+         <video  id="PPV_free_duration_videoPlayer_M3U8_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
             <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' >
             <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
             <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
