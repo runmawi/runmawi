@@ -15,6 +15,8 @@
         $free_duration_condition = $video->access !="guest" && $video->free_duration_status == 1 && $video->free_duration != null ? 1 : 0;
     }
 
+    // dd( $free_duration_condition );
+
     $data = App\PPVFreeDurationLogs::where('source_id', $video_id )->where('source_type','video');
         
         if( !Auth::guest()  ){
@@ -28,7 +30,6 @@
 
     $free_duration_start_time = $result != null ? $result : 0 ;
 
-
     if( $free_duration_condition == 1 ){
         echo '<style>
                 .plyr__controls__item.plyr__progress__container{ pointer-events: none;  cursor: not-allowed; }
@@ -37,8 +38,8 @@
 
 ?>
 
-<input type="hidden" id="free_duration_seconds" value="<?php echo $video->free_duration ?>" >
-<input type="hidden" id="free_duration_condition" value="<?php echo $free_duration_condition ?>" >
+<input type="hidden" id="free_duration_seconds"    value="<?php echo $video->free_duration ?>" >
+<input type="hidden" id="free_duration_condition"  value="<?php echo $free_duration_condition ?>" >
 <input type="hidden" id="free_duration_start_time" value="<?php echo $free_duration_start_time ?>" >
 
 <script>
@@ -86,6 +87,8 @@
         if( free_duration_condition == 1 ){
 
             const video = document.getElementById('PPV_free_duration_videoPlayer_MP4');
+
+            video.pause();
         
             let isVideoPlaying = false;
             let interval;
@@ -111,7 +114,7 @@
                                 video.pause();
                                 const controlsElements = document.getElementsByClassName("plyr__controls");
                                 $('.plyr__controls').hide();
-                                $('#PPV_free_duration_videoPlayer').hide();
+                                $('#PPV_free_duration_videoPlayer_MP4').hide();
                                 displayModal();
                             }
                         }
@@ -507,6 +510,22 @@
         });
     }
 
+    $(document).ready(function() {
+
+        let free_duration_condition  = Number($("#free_duration_condition").val());
+        let free_duration_start_time = Number($("#free_duration_start_time").val());
+        let free_duration_seconds    = Number($("#free_duration_seconds").val()); 
+
+        if (free_duration_condition === 1 && free_duration_start_time >= free_duration_seconds) {
+            
+            const modal = document.getElementById("modal");
+            modal.style.display = "block";
+            $("#PPV_free_duration_videoPlayer_M3U8_url").hide();
+            $("#PPV_free_duration_videoPlayer_MP4").hide();
+            $(".plyr__controls").css("display", "none");
+        }
+    });
+
 </script>
 
 <style>
@@ -514,30 +533,73 @@
         right: 0 !important ;
         position: absolute !important ;
         top : 15% !important ;
-        height: 500px !important;
+        height: 570px !important;
     }
 </style>
 
-
-
 <div id="modal" class="modal modal-ppv-free-purchase">
     <div class="modal-content">
-        <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:250px 10px;">
+        <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 100vh;">
             <div id="video_bg_dim"></div>
             <div class="row justify-content-center pay-live">
                 <div class="col-md-4 col-sm-offset-4">
-                    <div class="ppv-block">
-                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
-                        <div class="clear"></div>
-                        <?php if(Auth::guest()){ ?>
-                            <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
-                        <?php }else{ ?>
-                            <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
-                            <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
-                        <?php } ?>
+                    <div class="ppv-block freeblock" style="">
+                        <div style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-repeat: no-repeat;background-size: cover;height: 25vh;background-position: center;border-top-left-radius: 5px;border-top-right-radius: 5px;"></div>
+                            <div class="row freebwrapper" style="" >
+                                <div class="col-md-9">
+                                    <h2 class="mb-3" style="">Pay now to watch <br /><?php echo $video->title; ?></h2>
+                                    <?php if(Auth::guest()){ ?>
+                                        <a href="<?= URL::to('/login'); ?>" class="btn btn-primary btn-block" style="">
+                                            <?php echo $currency->symbol.''.$video->ppv_price; ?> Purchase Now
+                                        </a>
+                                    <?php }else{ ?>
+                                        <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)"><?php echo $currency->symbol.''.$video->ppv_price; ?> Purchase Now</button>
+                                    <?php } ?>
+                                </div>
+
+                                <div class="col-md-3 text-right" style=""> 
+                                    <p class="free_price">
+                                        <?php echo $currency->symbol.''.$video->ppv_price; ?>
+                                    </p>
+                                    <small style="color: #fff;">Per <?php echo $video->ppv_hours; ?> Hrs</small> 
+                                </div>
+                            </div>
+                            
+                            <div class="freebwrapper_footer">
+                                <div class="row">
+                                    <?php if(Auth::guest()){ ?>
+                                        <div class="col-md-8">
+                                            <p>If you are already a member Login using this link</p>
+                                        </div>
+                                        <div class="col-md-4 text-right" style="">
+                                            <a href="<?= URL::to('/login') ?>" class="btn btn-primary btn-block">Login </a>
+                                        </div>
+                                    <?php }else{ ?>
+                                        <div class="col-md-8">
+                                            <h3 style=""><a href="<?=URL::to('/') . '/stripe/billings-details' ?>">Get a Subscription and Watch unlimited Contents</a></h3>
+                                        </div>
+                                        <div class="col-md-4 text-right" style="">
+                                            <a class="btn btn-primary btn-block" href="<?=URL::to('/') . '/stripe/billings-details' ?>">Subscribe Now</a>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .freeblock{box-shadow: 0 0 10px #000000;border-radius: 5px;margin: 30px 0;}
+    .freebwrapper{background: #0f0f0f;margin: 0 auto;border-bottom: 1px solid #2a2a2a;padding: 15px 0;}
+    .freebwrapper h2{font-size: 25px;font-weight: 700;text-align: left;}
+    .freebwrapper a{ width: 60%; font-weight: 500;color: #ffffff !important; }
+    .free_price{font-size: 35px;font-weight: 700;line-height: 44px;color: #ffffff;padding: 15px 0 0;margin: 0;}
+    .freebwrapper_footer{padding: 15px;background: #000;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;}
+    .freebwrapper_footer p{color: #ffffff;}
+    .freebwrapper_footer a {font-weight: 500;color: #ffffff !important;}
+    .freebwrapper_footer h3{font-size: 18px;text-align:left;font-weight: 400;}
+</style>

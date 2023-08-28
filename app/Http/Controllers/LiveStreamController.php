@@ -262,6 +262,8 @@ class LiveStreamController extends Controller
                 $live_purchase_status = 0;
             }
                   
+            $free_duration_condition = $live_purchase_status == 0 && ( ( $categoryVideos->access == "ppv" && Auth::check() == true && Auth::user()->role != "admin" ) || ( $categoryVideos->access == "subscriber" && ( Auth::guest() || Auth::user()->role == "registered"))) && $categoryVideos->free_duration_status == 1 && $categoryVideos->free_duration !== null ? 1 : 0;
+
            $data = array(
                  'currency' => $currency,
                  'video_access' => $video_access,
@@ -287,6 +289,7 @@ class LiveStreamController extends Controller
                  'CinetPay_payment_settings' => PaymentSetting::where('payment_type','CinetPay')->first() ,
                  'category_name'   => $category_name ,
                  'live_purchase_status' => $live_purchase_status ,
+                 'free_duration_condition' => $free_duration_condition ,
            );
 
            return Theme::view('livevideo', $data);
