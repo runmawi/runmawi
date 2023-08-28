@@ -206,11 +206,10 @@ hr {
 
     .modal-content {
         background-color: #fff;
-        border: 1px solid #F1F1F1;
+        border: 0px solid #F1F1F1;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         border-radius: 20px;
-        padding: 20px;
-
+        padding: 0;
     }
 
     .modal-dialog {
@@ -390,9 +389,27 @@ hr {
         font-size: revert;
     }
 
-</style>
-<?php
+    #videoPlayer {
+        width: 100%;
+        height: 100%;
+        /* margin: 0 auto !important;  */
+        object-fit: contain;
+    }
 
+    #video {
+        width: 100%;
+        height: 100%;
+        /* margin: 0 auto !important;  */
+        object-fit: contain;
+    }
+
+</style>
+
+<?php if (Session::has('message')): ?>
+    <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  echo Session::get('message') ?></div>
+<?php endif ;?>
+
+<?php
 
 $package = App\User::where('id',1)->first();
 $pack = $package->package;
@@ -648,11 +665,11 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                         <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">
                     <?php } 
 
-                } elseif ( Auth::user()->role == "registered" && $video->access == 'ppv' && $video->free_duration_status == 1 && $video->free_duration != null   ){ ?>
+                } elseif ( ( $ppv_exist == 0 &&  ($video->access = "subscriber" &&  Auth::user()->role == "registered"  ) ||  $video->access = "ppv"  ) && $video->free_duration_status == 1 && $video->free_duration != null ) {   ?>       
 
                     <?php  include('Free_duration_video_player.php'); ?>  
 
-                    <?php if( $video->access == "ppv"  && $video->type == 'embed'): ?>
+                    <?php if(  $video->type == 'embed'): ?>
               
                         <div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
                             <div class="container-fluid">
@@ -662,7 +679,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                 <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
                                 </div>
 
-                                <h4 class="mb-3">Sorry, this video is only available to Subscribers / PPV Rent </h4>
+                                <h4 class="mb-3">Sorry, this video is only available to  Subscribers / PPV Rent </h4>
                                 
                                 <div>
                                 <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this vide</a> 
@@ -673,7 +690,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                     <?php  elseif( $video->type == '' && ($video->processed_low != 100 || $video->processed_low == null) ):  ?>
               
                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                          <video id="" <?= $autoplay ?>  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+                          <video id=""  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                              <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                              
                              <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
@@ -696,7 +713,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
               
                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                           
-                          <video id="PPV_free_duration_videoPlayer" <?= $autoplay ?>   controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                          <video id="PPV_free_duration_videoPlayer" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                              <source  type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
                              <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
                                 <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
@@ -710,10 +727,10 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                           </video>
                        </div>
               
-                    <?php  elseif(  $video->access == "ppv"  &&  $video->type == 'mp4_url'): ?>
+                    <?php  elseif(   $video->type == 'mp4_url'): ?>
               
                        <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                          <video id="PPV_free_duration_videoPlayer_MP4"  <?= $autoplay ?>    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+                          <video id="PPV_free_duration_videoPlayer_MP4" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                              <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                              <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
                                 <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
@@ -731,7 +748,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
               
                     <?php  elseif($video->type == 'm3u8_url'):  ?>
               
-                       <video  <?= $autoplay ?> id="PPV_free_duration_videoPlayer_M3U8_url"  allow="<?= $autoplay ?>"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+                       <video  id="PPV_free_duration_videoPlayer_M3U8_url"  allow="<?= $autoplay ?>"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
                           <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' >
                           <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
                           <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
@@ -861,7 +878,106 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                 </form>
                                 
                             <?php } 
-            }else{ ?>
+
+                        } elseif ( ( ($video->access = "subscriber" &&  Auth::user()->role == "registered"  ) ||  $video->access = "ppv"  ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>       
+
+                            <?php  include('Free_duration_video_player.php'); ?>  
+
+                            <?php if(  $video->type == 'embed'): ?>
+
+                                <div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
+                                    <div class="container-fluid">
+                                        <h2 class="text-left"><?php echo $video->title; ?></h2>
+
+                                        <div class="text-white col-lg-7 p-0">
+                                        <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
+                                        </div>
+
+                                        <h4 class="mb-3"> / PPV Rent </h4>
+                                        
+                                        <div>
+                                        <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this vide</a> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <?php  elseif( $video->type == '' && ($video->processed_low != 100 || $video->processed_low == null) ):  ?>
+
+                                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                                    <video id="" <?= $autoplay ?>  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+                                        <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+                                        
+                                        <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
+                                        
+                                        <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
+                                        <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
+                                        <?php } if($value->sub_language == "German"){?>
+                                        <track label="German" kind="subtitles" srclang="de" src="<?= $value->url ?>" >
+                                        <?php } if($value->sub_language == "Spanish"){ ?>
+                                        <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value->url ?>" >
+                                        <?php } if($value->sub_language == "Hindi"){ ?>
+                                        <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value->url ?>" >
+                                        <?php }
+                                        } } else {  } ?>
+
+                                    </video>
+                                </div>
+
+                            <?php  elseif( $video->type == '' && ($video->processed_low == 100 || $video->processed_low != null)): ?>
+
+                                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                                    
+                                    <video id="PPV_free_duration_videoPlayer" <?= $autoplay ?>   controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                        <source  type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
+                                        <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+                                        <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+                                        <?php } if($value['sub_language'] == "German"){ ?>
+                                        <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+                                        <?php } if($value['sub_language'] == "Spanish"){ ?>
+                                        <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+                                        <?php } if($value['sub_language'] == "Hindi"){ ?>
+                                        <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                                        <?php } } } else { }  ?>  
+                                    </video>
+                                </div>
+
+                            <?php  elseif(   $video->type == 'mp4_url'): ?>
+
+                                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                                    <video id="PPV_free_duration_videoPlayer_MP4"  <?= $autoplay ?>    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+                                        <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+                                        <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
+                                        <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
+                                            <track label="English" kind="subtitles" srclang="en" src="<?= $value->url ?>" >
+                                        <?php } if($value->sub_language == "German"){?>
+                                            <track label="German" kind="subtitles" srclang="de" src="<?= $value->url ?>" >
+                                        <?php } if($value->sub_language == "Spanish"){ ?>
+                                            <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value->url ?>" >
+                                        <?php } if($value->sub_language == "Hindi"){ ?>
+                                            <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value->url ?>" >
+                                        <?php }
+                                        } } else {  } ?>  
+                                    </video>
+                                </div>
+
+                            <?php  elseif($video->type == 'm3u8_url'):  ?>
+
+                                <video  <?= $autoplay ?> id="PPV_free_duration_videoPlayer_M3U8_url"  allow="<?= $autoplay ?>"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+                                    <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' >
+                                    <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+                                    <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+                                    <?php } if($value['sub_language'] == "German"){?>
+                                    <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+                                    <?php } if($value['sub_language'] == "Spanish"){ ?>
+                                    <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+                                    <?php } if($value['sub_language'] == "Hindi"){ ?>
+                                    <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                                    <?php }
+                                        } } else {  } ?>  
+                                </video>
+                            <?php endif; 
+                    } else {  ?>
+
 
                     <div id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
                         <div id="subscribers_only">
@@ -1431,7 +1547,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                 <li>
                                                     <?php //if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin" || ($user->role="subscriber" && $video->global_ppv == 1 ))  ) {
                                                     ?>
-                                                    <?php if ( $video->global_ppv != null && $user->role!="admin" || $video->ppv_price != null  && $user->role!="admin") { ?>
+                                                    <?php if ( $ppv_exist == 0 && $video->global_ppv != null && $user->role!="admin" || $ppv_exist == 0 && $video->ppv_price != null  && $user->role!="admin") { ?>
 
                                                     <!-- && ($video->global_ppv == 1 ) -->
                                                     <button data-toggle="modal" data-target="#exampleModalCenter"

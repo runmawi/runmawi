@@ -240,6 +240,15 @@
 
 <?php if( count($album_audios) == 0 ){ ?>
 
+  <?php if (!Auth::guest() && Auth::user()->id == $album->user_id){ ?>
+          <div class="pull-right" >
+            <a href="<?php echo URL::to('/delete-station').'/'. @$album->id  ?>">
+                          <button  class="btn btn-primary"> Delete Station</button>
+                </a>
+          </div>
+        <?php } ?>
+        <br><br>
+
   <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
       <p ><h3 class="text-center">No Audio Available</h3>
   </div>

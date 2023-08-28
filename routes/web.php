@@ -295,6 +295,8 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('stripe1', 'PaymentController@stripe');
     Route::post('stripe', 'PaymentController@stripePost')->name('stripe.post');
 
+    Route::post('/getState', 'SignupController@GetState');
+    Route::post('/getCity', 'SignupController@GetCity');
     // search
     Route::get('search', 'HomeController@search');
     Route::post('searchResult', 'HomeController@searchResult')->name('searchResult');
@@ -620,6 +622,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subscription-plans/edit/{id}', 'AdminPlansController@subscriptionedit');
     Route::get('/subscription-plans/delete/{id}', 'AdminPlansController@subscriptiondelete');
     Route::post('/subscription-plans/update', 'AdminPlansController@subscriptionupdate');
+    
+    // Multiple Subscription Plans
+    Route::post('Update-Multiple-Subscription-Plans', 'AdminPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');
 
     // Life-Time Subscription Plans
     Route::get('/Life-time-subscription', 'AdminLifeTimeSubscriptionController@index')->name('Life-time-subscription-index');
@@ -767,9 +772,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/compress-image-setting', 'AdminSettingsController@compress_image')->name('compress_image');
     Route::post('/compress-image-store', 'AdminSettingsController@compress_image_store')->name('compress_image_store');
 
-    // Comment Section Image
+    // Comment Section 
     Route::get('/comment-section-setting', 'AdminSettingsController@comment_section')->name('comment_section');
     Route::post('/comment-section-update', 'AdminSettingsController@comment_section_update')->name('comment_section_update');
+    Route::post('/comment-status-update', 'AdminSettingsController@comment_status_update')->name('comments.status_update');
 
     //   Home Page Popup
     Route::get('/pop-up', 'AdminHomePopupController@index')->name('homepage_popup');
@@ -1413,9 +1419,10 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
     Route::get('/artists/create', 'CPPAdminArtistsController@CPPcreate');
     Route::post('/artists/store', 'CPPAdminArtistsController@CPPstore');
     Route::get('/artists/edit/{id}', 'CPPAdminArtistsController@CPPedit');
-    Route::post('/cpp/artists/update', 'CPPAdminArtistsController@CPPupdate');
+    Route::post('/artists/update', 'CPPAdminArtistsController@CPPupdate');
     Route::get('/artists/delete/{id}', 'CPPAdminArtistsController@CPPdestroy');
     Route::post('/audios/audioupdate', ['before' => 'demo', 'uses' => 'CPPAdminAudioController@CPPaudioupdate']);
+    Route::get('/artist_slug_validation', 'CPPAdminArtistsController@artist_slug_validation');
 
     //Admin Audio Albums
     Route::get('/audios/albums', 'CPPAdminAudioCategoriesController@CPPalbumIndex');

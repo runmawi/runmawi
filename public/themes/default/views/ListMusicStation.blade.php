@@ -9,15 +9,17 @@
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
                     <h4 class="main-title">{{ "All Music Station" }}</h4>  
-
-                    
                     <div class="pull-right"> 
                     <a href="{{ URL::to('/create-station')   }}">
                         <button  class="btn btn-primary"> Create Station</button>
                     </a>
                     </div>
                 </div>
-
+                @if(count($MusicStation) == 0)
+                    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                        <p ><h3 class="text-center">No Station Available</h3>
+                    </div>
+                @else
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
                       @if(isset($MusicStation)) 
@@ -45,6 +47,8 @@
                     @endif
                     </ul>
                 </div>
+                @endif
+
             </div>
         </div>
     </div>
