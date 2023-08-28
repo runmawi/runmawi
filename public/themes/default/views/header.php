@@ -524,7 +524,7 @@
                            <ul id="top-menu" class=" mt-2 nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                
                               <?php if(Auth::guest()){ ?>
-                                 <?php if($signin_header == 0 ):?>
+                                 <?php if($signin_header == 1 ):?>
 
                                     <li class="menu-item dk" style="display:none;">
                                        <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
@@ -897,7 +897,7 @@
                               </div>
                            </li>
                            <?php if(Auth::guest()): ?>
-                              <?php if( $signin_header ==  0 ): ?>
+                              <?php if( $signin_header == 1 ): ?>
                                  <li class="nav-item nav-icon">
                                     <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
                                     <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
