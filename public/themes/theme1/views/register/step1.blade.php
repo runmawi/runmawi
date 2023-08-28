@@ -8,6 +8,11 @@ $uri_path = $_SERVER['REQUEST_URI'];
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
+
+
+$theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+$theme = App\SiteTheme::first();
+
 // print_r($uppercase);
 // exit();
       ?>
@@ -368,7 +373,15 @@ i.fa.fa-google-plus {
           
          <div class="col-sm-10 col-md-7 col-lg-6 align-self-center text-center">
              <div class="text-center">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">  
+                        
+                <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                    <img  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;">
+                <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                    <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;">
+                <?php }else { ?> 
+                    <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
+                <?php } ?>
+
           </div>
             <div class="sign-user_card "> 
 
