@@ -67,6 +67,7 @@ use App\ScheduleVideos as ScheduleVideos;
 use App\Language as Language;
 use GuzzleHttp\Client;
 use App\MusicStation as MusicStation;
+use App\GuestLoggedDevice as GuestLoggedDevice;
 
 class HomeController extends Controller
 {
@@ -295,6 +296,23 @@ class HomeController extends Controller
 
         if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
         {
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $countryName = $geoip->getCountry();
+
+            $guest_devices_check = GuestLoggedDevice::where('user_ip', '=',$userIp)
+                ->where('device_name', '=', 'desktop')->first();
+
+                if (empty($guest_devices_check))
+                {
+                    $adddevice = new GuestLoggedDevice;
+                    $adddevice->device_name = 'desktop';
+                    $adddevice->user_ip = $userIp;
+                    $adddevice->country_name = $countryName;
+                    $adddevice->save();
+                }
+
             $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
             ->get(); 
             
@@ -1370,6 +1388,22 @@ class HomeController extends Controller
         }
         if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
         {
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $countryName = $geoip->getCountry();
+
+            $guest_devices_check = GuestLoggedDevice::where('user_ip', '=',$userIp)
+            ->where('device_name', '=', 'desktop')->first();
+
+            if (empty($guest_devices_check))
+            {
+                $adddevice = new GuestLoggedDevice;
+                $adddevice->device_name = 'desktop';
+                $adddevice->user_ip = $userIp;
+                $adddevice->country_name = $countryName;
+                $adddevice->save();
+            }
+
             return Redirect::to('/');
         }
         else
