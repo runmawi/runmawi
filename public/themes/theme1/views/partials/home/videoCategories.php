@@ -16,33 +16,27 @@ if(count($latest_video) > 0) : ?>
                        <li class="slide-item">
                           <a href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>">
                              <!-- block-images -->
-                             <div class="block-images position-relative">
+                              <div class="block-images position-relative">
                                 <div class="img-box">
                                 <a  href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>">
                                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Categories->image;  ?>" class="img-fluid loading w-100" alt="l-img">
                                     </a>  
                                 </div>
                                 <div class="block-description">
-                                     <a  href="<?php URL::to('/category/').'/'.$Categories->slug ?>">
-                                <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                     <h6><?php  echo (strlen($Categories->name) > 17) ? substr($Categories->name,0,18).'...' : $Categories->name; ?></h6>
                                  
-                                <?php } ?> 
-
-                                    
-                                   <div class="hover-buttons">
+                                    <div class="hover-buttons">
                                        <a class="text-white d-flex align-items-center" href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>" >
-                                         <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                         <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/>
                                        </a>
-                                       <div class="hover-buttons d-flex">
-
                                     </div>
-                              
-                             </div>
-                                          </a>
+                                 
                                  </div>
                               </div>
-                              
+                              <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
+                                 <a  href="<?php echo URL::to('/category/').'/'.$Categories->slug ?>">
+                                    <h6><?php  echo (strlen($Categories->name) > 17) ? substr($Categories->name,0,18).'...' : $Categories->name; ?></h6>
+                                 </a>
+                                <?php } ?> 
                           </a>
                        </li>
                        <?php                     

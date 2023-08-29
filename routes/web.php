@@ -621,6 +621,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subscription-plans/edit/{id}', 'AdminPlansController@subscriptionedit');
     Route::get('/subscription-plans/delete/{id}', 'AdminPlansController@subscriptiondelete');
     Route::post('/subscription-plans/update', 'AdminPlansController@subscriptionupdate');
+    
+    // Multiple Subscription Plans
+    Route::post('Update-Multiple-Subscription-Plans', 'AdminPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');
 
     // Life-Time Subscription Plans
     Route::get('/Life-time-subscription', 'AdminLifeTimeSubscriptionController@index')->name('Life-time-subscription-index');
@@ -1415,9 +1418,10 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
     Route::get('/artists/create', 'CPPAdminArtistsController@CPPcreate');
     Route::post('/artists/store', 'CPPAdminArtistsController@CPPstore');
     Route::get('/artists/edit/{id}', 'CPPAdminArtistsController@CPPedit');
-    Route::post('/cpp/artists/update', 'CPPAdminArtistsController@CPPupdate');
+    Route::post('/artists/update', 'CPPAdminArtistsController@CPPupdate');
     Route::get('/artists/delete/{id}', 'CPPAdminArtistsController@CPPdestroy');
     Route::post('/audios/audioupdate', ['before' => 'demo', 'uses' => 'CPPAdminAudioController@CPPaudioupdate']);
+    Route::get('/artist_slug_validation', 'CPPAdminArtistsController@artist_slug_validation');
 
     //Admin Audio Albums
     Route::get('/audios/albums', 'CPPAdminAudioCategoriesController@CPPalbumIndex');

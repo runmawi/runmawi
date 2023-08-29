@@ -218,6 +218,8 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->my_profile_theme = !empty($data['my_profile_theme']) ? '1' : '0';
 
+        $theme_settings->signin_header = !empty($data['signin_header']) ? '1' : '0';
+
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);
