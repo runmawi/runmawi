@@ -3,7 +3,7 @@
       $Script = App\Script::pluck('header_script')->toArray();
       // dd(($Script[2]));
       $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
-      $theme = App\SiteTheme::first();
+      $theme = App\SiteTheme::first();      
 
       $signin_header = App\SiteTheme::pluck('signin_header')->first();
 
@@ -465,11 +465,25 @@
 <body>
    <!-- loader Start -->
    <?php if( get_image_loader() == 1) { ?>
-   <div class="fullpage-loader">
-      <div class="fullpage-loader__logo">
-         <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+      <div class="fullpage-loader">
+         <div class="fullpage-loader__logo">
+
+            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+
+            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+
+            <?php }else { ?> 
+
+               <img src="<?php echo URL::to('public/uploads/settings/'. $settings->logo ); ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+
+            <?php } ?>
+ 
+         </div>
       </div>
-   </div>
    <?php } ?>
    <!-- <div id="loading">
       <div id="loading-center">
