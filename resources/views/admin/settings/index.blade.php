@@ -874,9 +874,17 @@ border-radius: 0px 4px 4px 0px;
                     <input type="text" class="form-control" name="instagram_page_id" id="instagram_page_id"
                         placeholder="Instagram "
                         value="@if(!empty($settings->instagram_page_id)){{ $settings->instagram_page_id }}@endif" />
-                    <br /></div>
+                    <br />
+
+                    <p class="p1">TikTok:</p>
+                    <input type="text" class="form-control" name="tiktok_page_id" id="tiktok_page_id" placeholder="TikTok User ID:"
+                        value="@if(!empty($settings->tiktok_page_id)){{ $settings->tiktok_page_id }}@endif" />
+
                 </div>
-                    <div class="col-md-6">
+
+                </div>
+
+                <div class="col-md-6">
                     <p class="p1"> Linkedin:</p>
                     <input type="text" class="form-control" name="linkedin_page_id" id="linkedin_page_id"
                         placeholder="Linkedin "
@@ -891,10 +899,14 @@ border-radius: 0px 4px 4px 0px;
                     <input type="text" class="form-control" name="skype_page_id" id="skype_page_id" placeholder="Skype "
                         value="@if(!empty($settings->skype_page_id)){{ $settings->skype_page_id }}@endif" />
                     <br />
+
                     <p class="p1">YouTube Channel ex. youtube.com/channel_name:</p>
                     <input type="text" class="form-control" name="youtube_page_id" id="youtube_page_id"
                         placeholder="YouTube Channel"
                         value="@if(!empty($settings->youtube_page_id)){{ $settings->youtube_page_id }}@endif" />
+                        <br />
+
+                  
                 </div>
             </div>
         </div></div>
