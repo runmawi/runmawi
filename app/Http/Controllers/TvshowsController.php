@@ -221,8 +221,11 @@ class TvshowsController extends Controller
     public function play_episode($series_name, $episode_name)
     {
         try {
+
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
            
-            $Theme = HomeSetting::pluck('theme_choosen')->first();
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         $settings = Setting::first();
 
@@ -246,9 +249,16 @@ class TvshowsController extends Controller
             ->where('user_id', $auth_user_id)
             ->first();
 
-        $episode_Wishlist = Wishlist::where('episode_id', $episodess->id)
-            ->where('user_id', $auth_user_id)
-            ->first();
+        $episode_Wishlist = Wishlist::where('episode_id', $episodess->id);
+
+        if(!Auth::guest()){
+            $episode_Wishlist = $episode_Wishlist->where('user_id', $auth_user_id);
+
+        }else{
+            $episode_Wishlist = $episode_Wishlist->where('users_ip_address', $geoip->getIP());
+            
+        }
+        $episode_Wishlist = $episode_Wishlist->first();
 
             // Subtitle Data 
             
@@ -601,6 +611,8 @@ class TvshowsController extends Controller
         }
 
         } catch (\Throwable $th) {
+
+            // return $th->getMessage();
             return abort(404);
         }
     }

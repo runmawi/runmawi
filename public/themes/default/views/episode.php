@@ -363,7 +363,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '"  allowfullscreen></iframe>';
                 ?>
 
-                <div class="col-md-5">
+                <div class="col-md-12">
                     <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                         <li>
                             <?php if($episode_watchlater == null){ ?>
