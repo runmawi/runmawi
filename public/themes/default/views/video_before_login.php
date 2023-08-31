@@ -604,10 +604,10 @@
       <div class="col-sm-6 col-md-6 col-xs-12">
          <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                <!-- Watchlater -->
-            <li><span class="watchlater <?php if( ($Watchlater == null )): ?>active<?php endif; ?>" data-authenticated="<?= Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(($Watchlater == null )): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
+            <li><span class="watchlater <?php if( ($Watchlater != null )): ?>active<?php endif; ?>" data-authenticated="<?= Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(($Watchlater != null )): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
               
                <!-- Wishlist -->
-            <li><span class="mywishlist <?php if($wishlisted == null ): ?>active<?php endif; ?>" data-authenticated="<?= Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if($wishlisted == null ): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
+            <li><span class="mywishlist <?php if($wishlisted != null ): ?>active<?php endif; ?>" data-authenticated="<?= Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if($wishlisted != null ): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
            
                <!-- Social Share, Like Dislike -->
             <?php include('partials/social-share.php'); ?>                     
@@ -1041,11 +1041,27 @@
             $(this).toggleClass('active');
             $(this).html("");
 
-               if($(this).hasClass('active')){
-                 $(this).html('<i class="ri-add-circle-fill"></i>');
-               }else{
-                  $(this).html('<i class="ri-add-circle-line"></i>');
-               }
+            $('.add_watch,.remove_watch').remove();
+
+            if($(this).hasClass('active')){
+
+               $(this).html('<i class="ri-add-circle-fill"></i>');
+
+               $("body").append( '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;"> Media added to watchlater </div>' );
+                  setTimeout(function() {
+                        $('.add_watch').slideUp('fast');
+                  }, 3000);
+                  
+            }else{
+
+               $(this).html('<i class="ri-add-circle-line"></i>');
+
+               $("body").append( '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;"> Media removed from watchlater </div>' );
+               setTimeout(function() {
+                     $('.remove_watch').slideUp('fast');
+               }, 3000);
+
+            }
                
          } else {
              window.location = '<?= URL::to('login') ?>';
@@ -1065,12 +1081,29 @@
 
                $(this).toggleClass('active');
                $(this).html("");
-                  if($(this).hasClass('active')){
-                     $(this).html('<i class="ri-heart-fill"></i>');
-                  }else{
-                     $(this).html('<i class="ri-heart-line"></i>');
-                  }
-               } 
+
+               $('.add_watch,.remove_watch').remove();
+
+               if($(this).hasClass('active')){
+
+                  $(this).html('<i class="ri-heart-fill"></i>');
+
+                  $("body").append( '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;"> Media added to wishlist </div>' );
+                     setTimeout(function() {
+                           $('.add_watch').slideUp('fast');
+                     }, 3000);
+
+               }else{
+
+                  $(this).html('<i class="ri-heart-line"></i>');
+
+                  $("body").append( '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;"> Media removed from wishlist </div>' );
+                     setTimeout(function() {
+                           $('.remove_watch').slideUp('fast');
+                     }, 3000);
+
+               }
+            } 
             else {
                window.location = '<?= URL::to('login') ?>';
             }
