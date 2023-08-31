@@ -291,10 +291,26 @@
                   endif; ?> Views 
                </span>
             </div>
-            <div class="col-md-4">
-               <div class="ml-2 btn bd video-open playbtn mb-2 "  aria-hidden="true"  onclick="episodewishlist(this)"> Add to Watch Later </div>
-               <div class="ml-2 btn bd video-open playbtn mb-2 "  aria-hidden="true"  onclick="episodewishlist(this)" > Add to Wish list </div>
-            </div>
+            
+            <div class="col-md-12">
+                    <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+
+                        <li>
+                            <?php if($episode_Wishlist == null){ ?>
+                            <span id="<?php echo 'episode_add_wishlist_' . $episode->id; ?>" class="episode_add_wishlist_" aria-hidden="true"
+                                data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodewishlist(this)"><i class="fa fa-heart-o" aria-hidden="true"></i>
+                            </span>
+                            <?php }else{?>
+                            <span id="<?php echo 'episode_add_wishlist_' . $episode->id; ?>" class="episode_add_wishlist_" aria-hidden="true"
+                                data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodewishlist(this)"> <i class="fa  fa-heart"
+                                    aria-hidden="true"></i></span>
+                            <?php } ?>
+                        </li>
+
+                    </ul>
+                </div>
             <!-- <div>
                <?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") {
                   ?>
@@ -772,11 +788,59 @@
      });
    
    
-   function episodewishlist(ele) 
-   {
-       var redirect_page = "<?php echo URL::to('/login')?>";
-       window.location.replace(redirect_page);
+
+   function episodewishlist(ele) {
+
+         var episode_id = $(ele).attr('data-video-id');
+         var key_value = $(ele).attr('data-list');
+         var id = '#episode_add_wishlist_' + key_value;
+         var my_value = $(id).data('myval');
+
+         if (my_value != "remove") {
+               var url = '<?= URL::to('/episode_wishlist') ?>';
+         } else if (my_value == "remove") {
+               var url = '<?= URL::to('/episode_wishlist_remove') ?>';
+         }
+
+         $.ajax({
+               url: url,
+               type: 'get',
+               data: {
+                  episode_id: episode_id,
+               },
+               success: function(data) {
+
+                  if (data.message == "Remove the Watch list") {
+
+                     $(id).data('myval');
+                     $(id).data('myval', 'remove');
+                     $(id).find($(".fa")).toggleClass('fa fa-heart-o').toggleClass('fa fa-heart');
+
+                     $("body").append(
+                           '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
+                           );
+                     setTimeout(function() {
+                           $('.add_watch').slideUp('fast');
+                     }, 3000);
+
+                  } else if (data.message == "Add the Watch list") {
+                     $(id).data('myval');
+                     $(id).data('myval', 'add');
+                     $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa fa-heart-o');
+
+                     $("body").append(
+                           '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
+                           );
+                     setTimeout(function() {
+                           $('.remove_watch').slideUp('fast');
+                     }, 3000);
+                  } else if (data.message == "guest") {
+                     window.location.replace('<?php echo URL::to('/login'); ?>');
+                  }
+               }
+         })
    }
+
 </script>
 
 <?php
