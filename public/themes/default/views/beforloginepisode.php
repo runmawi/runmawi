@@ -296,6 +296,20 @@
                     <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
 
                         <li>
+                            <?php if($episode_watchlater == null){ ?>
+                            <span id="<?php echo 'episode_add_watchlist_' . $episode->id; ?>" class="slider_add_watchlist" aria-hidden="true"
+                                data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodewatchlater(this)"> <i class="fa fa-plus-circle"
+                                    aria-hidden="true"></i> </span>
+                            <?php }else{?>
+                            <span id="<?php echo 'episode_add_watchlist_' . $episode->id; ?>" class="slider_add_watchlist" aria-hidden="true"
+                                data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodewatchlater(this)"> <i class="fa fa-minus-circle"
+                                    aria-hidden="true"></i> </span>
+                            <?php } ?>
+                        </li>
+
+                        <li>
                             <?php if($episode_Wishlist == null){ ?>
                             <span id="<?php echo 'episode_add_wishlist_' . $episode->id; ?>" class="episode_add_wishlist_" aria-hidden="true"
                                 data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
@@ -787,7 +801,54 @@
                }
      });
    
-   
+   function episodewatchlater(ele) {
+      var episode_id = $(ele).attr('data-video-id');
+      var key_value = $(ele).attr('data-list');
+      var id = '#episode_add_watchlist_' + key_value;
+      var my_value = $(id).data('myval');
+
+      if (my_value != "remove") {
+            var url = '<?= URL::to('/episode_watchlist') ?>';
+      } else if (my_value == "remove") {
+            var url = '<?= URL::to('/episode_watchlist_remove') ?>';
+      }
+
+      $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+               episode_id: episode_id,
+            },
+            success: function(data) {
+
+               if (data.message == "Remove the Watch list") {
+
+                  $(id).data('myval');
+                  $(id).data('myval', 'remove');
+                  $(id).find($(".fa")).toggleClass('fa fa-plus-circle').toggleClass('fa fa-minus-circle');
+
+                  $("body").append(
+                        '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
+                        );
+                  setTimeout(function() {
+                        $('.add_watch').slideUp('fast');
+                  }, 3000);
+
+               } else if (data.message == "Add the Watch list") {
+                  $(id).data('myval');
+                  $(id).data('myval', 'add');
+                  $(id).find($(".fa")).toggleClass('fa fa-minus-circle').toggleClass('fa fa-plus-circle');
+
+                  $("body").append(
+                        '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
+                        );
+                  setTimeout(function() {
+                        $('.remove_watch').slideUp('fast');
+                  }, 3000);
+               } 
+            }
+      })
+   }
 
    function episodewishlist(ele) {
 
@@ -840,6 +901,7 @@
                }
          })
    }
+
 
 </script>
 
