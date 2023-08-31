@@ -1315,7 +1315,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                         <!-- logo In player -->
 
-                        <!-- <div class="logo_player"> </div> -->
+                        <div class="logo_player"> </div>
 
                         <!-- url link -->
 
