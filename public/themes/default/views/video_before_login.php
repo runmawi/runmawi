@@ -104,13 +104,38 @@
    $autoplay = $video_tag_url == null ? "autoplay" : "" ;    
 
 ?>
+
 <?php
    $category_name = App\CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
    ->where('categoryvideos.video_id', $video->id)->get();
    
    $Movie_name = App\LanguageVideo::select('languages.name as movie_name','languages.id as id')->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
    ->where('languagevideos.video_id', $video->id)->get();
-   
+
+   $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+   $Watchlater = App\Watchlater::where('video_id', $video->id)->where('type', 'channel');
+
+      if(!Auth::guest()){
+         $Watchlater = $Watchlater->where('user_id', Auth::user()->id);
+
+      }else{
+         $Watchlater = $Watchlater->where('users_ip_address',$geoip->getIP() );
+
+      }
+   $Watchlater = $Watchlater->first();
+
+               
+   $wishlisted =  App\Wishlist::where('video_id', '=', $video->id)->where('type', '=', 'channel');
+      if(!Auth::guest()){
+         $wishlisted = $wishlisted->where('user_id', Auth::user()->id);
+
+      }else{
+         $wishlisted = $wishlisted->where('users_ip_address', $geoip->getIP() );
+
+      }
+   $wishlisted = $wishlisted->first();
+
    $str = $video->m3u8_url;
    if(!empty($str)){
    $request_url = 'm3u8';
@@ -312,20 +337,33 @@
       <?php if( $video->type == 'embed'): ?>
 
          <div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
-         <div class="container-fluid">
-            <h2 class="text-left"><?php echo $video->title; ?></h2>
+            <div class="container-fluid">
+               <h2 class="text-left"><?php echo $video->title; ?></h2>
 
-            <div class="text-white col-lg-7 p-0">
-               <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
-            </div>
+               <div class="text-white col-lg-7 p-0">
+                  <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
+               </div>
 
-            <h4 class="mb-3">Sorry, this video is only available to Subscribers / PPV Rent </h4>
-            
-            <div>
-               <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this vide</a> 
+               
+               <div>
+                  <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this video</a> 
+               </div>
+               <div class="text-white col-lg-5 p-0">
+               <a href="<?= URL::to('/become a') ?>" class="btn btn-primary" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
+                  <?php if($video->access == 'subscriber'): ?>
+                     Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users
+                  <?php endif; ?>           
+               </a>
+            </div>            
+               <h4 class="mb-3" style="color: red;">Sorry, this video is only available to Subscribers / PPV Rent </h4>
+               <a href="<?= URL::to('/becomesubscriber') ?>" class="btn btn-primary" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
+                  To Become a 
+                  <?php if($video->access == 'subscriber'): ?>
+                     Subscriber <?php elseif($video->access == 'registered' ): ?>Registered User
+                  <?php endif; ?>           
+               </a>
             </div>
          </div>
-      </div>
 
       <?php  elseif( $video->type == '' && ($video->processed_low != 100 || $video->processed_low == null) ):  ?>
 
@@ -415,11 +453,15 @@
             <div class="text-white col-lg-7 p-0">
                <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
             </div>
-
-            <h4 class="mb-3">Sorry, this video is only available to
-               <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users<?php endif; ?>
-            </h4>
-            
+            <div class="text-white col-lg-5 p-0">
+               <a href="<?= URL::to('/becomesubscriber') ?>" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
+                  Become a 
+                  <?php if($video->access == 'subscriber'): ?>
+                     Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users
+                  <?php endif; ?> 
+                   to view this Video!
+               </a>
+            </div>
             <div class="clear"></div>
 
             <?php if(Auth::guest() && $video->access == 'registered'): ?>
@@ -578,11 +620,13 @@
    <div class="row">
       <div class="col-sm-6 col-md-6 col-xs-12">
          <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-            <!-- Watchlater -->
-            <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
-            <!-- Wishlist -->
-            <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
-            <!-- Social Share, Like Dislike -->
+               <!-- Watchlater -->
+            <li><span class="watchlater <?php if( ($Watchlater != null )): ?>active<?php endif; ?>" data-authenticated="<?= Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(($Watchlater != null )): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
+              
+               <!-- Wishlist -->
+            <li><span class="mywishlist <?php if($wishlisted != null ): ?>active<?php endif; ?>" data-authenticated="<?= Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if($wishlisted != null ): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
+           
+               <!-- Social Share, Like Dislike -->
             <?php include('partials/social-share.php'); ?>                     
          </ul>
       </div>
@@ -1000,36 +1044,86 @@
         }
       
       //watchlater
+
       $('.watchlater').click(function(){
+
       if($(this).data('authenticated')){
-      $.post('<?= URL::to('watchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-      $(this).toggleClass('active');
-      $(this).html("");
-          if($(this).hasClass('active')){
-            $(this).html('<i class="ri-add-circle-fill"></i>');
-          }else{
-            $(this).html('<i class="ri-add-circle-line"></i>');
-          }
-      } else {
-      window.location = '<?= URL::to('login') ?>';
-      }
+         $.post('<?= URL::to('watchlater') ?>',
+
+            {
+               video_id : $(this).data('videoid'), 
+               _token: '<?= csrf_token(); ?>'
+            }, function(data){});
+
+            $(this).toggleClass('active');
+            $(this).html("");
+
+            $('.add_watch,.remove_watch').remove();
+
+            if($(this).hasClass('active')){
+
+               $(this).html('<i class="ri-add-circle-fill"></i>');
+
+               $("body").append( '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;"> Media added to watchlater </div>' );
+                  setTimeout(function() {
+                        $('.add_watch').slideUp('fast');
+                  }, 3000);
+                  
+            }else{
+
+               $(this).html('<i class="ri-add-circle-line"></i>');
+
+               $("body").append( '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;"> Media removed from watchlater </div>' );
+               setTimeout(function() {
+                     $('.remove_watch').slideUp('fast');
+               }, 3000);
+
+            }
+               
+         } else {
+             window.location = '<?= URL::to('login') ?>';
+         }
       });
       
       //My Wishlist
       $('.mywishlist').click(function(){
-      if($(this).data('authenticated')){
-      $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-      $(this).toggleClass('active');
-      $(this).html("");
-          if($(this).hasClass('active')){
-            $(this).html('<i class="ri-heart-fill"></i>');
-          }else{
-            $(this).html('<i class="ri-heart-line"></i>');
-          }
-          
-      } else {
-      window.location = '<?= URL::to('login') ?>';
-      }
+         
+         if($(this).data('authenticated')){
+
+            $.post('<?= URL::to('mywishlist') ?>',
+                  {
+                     video_id : $(this).data('videoid'), 
+                     _token: '<?= csrf_token(); ?>'
+                  }, function(data){});
+
+               $(this).toggleClass('active');
+               $(this).html("");
+
+               $('.add_watch,.remove_watch').remove();
+
+               if($(this).hasClass('active')){
+
+                  $(this).html('<i class="ri-heart-fill"></i>');
+
+                  $("body").append( '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;"> Media added to wishlist </div>' );
+                     setTimeout(function() {
+                           $('.add_watch').slideUp('fast');
+                     }, 3000);
+
+               }else{
+
+                  $(this).html('<i class="ri-heart-line"></i>');
+
+                  $("body").append( '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;"> Media removed from wishlist </div>' );
+                     setTimeout(function() {
+                           $('.remove_watch').slideUp('fast');
+                     }, 3000);
+
+               }
+            } 
+            else {
+               window.location = '<?= URL::to('login') ?>';
+            }
       });
       
    </script>

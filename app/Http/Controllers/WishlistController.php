@@ -18,37 +18,49 @@ class WishlistController extends Controller
 {
     public function mywishlist(Request $request)
     {
+            
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
         $video_id = $request['video_id'];
         Session::flash('success', __('Password change successfully. Please Login again'));
 
         if ($video_id)
         {
-            $watchlater = Wishlist::where('user_id', '=', Auth::user()->id)
-                ->where('video_id', '=', $video_id)->where('type', '=', 'channel')
-                ->first();
-            if (isset($watchlater->id))
+            $wishlist = Wishlist::where('video_id', '=', $video_id)->where('type', '=', 'channel');
+
+            if( !Auth::guest() ){
+                $wishlist = $wishlist->where('user_id', Auth::user()->id) ;
+            }else{
+                $wishlist = $wishlist->where('users_ip_address', $geoip->getIP() );
+            }
+
+            $wishlist = $wishlist->first();
+
+            if (isset($wishlist->id))
             {
-                $watchlater->delete();
+                $wishlist->delete();
                 $response = "Removed From Wishlist";
                 return $response;
             }
             else
             {
-                $watchlater = new Wishlist;
-                $watchlater->user_id = Auth::user()->id;
-                $watchlater->video_id = $video_id;
-                $watchlater->type = 'channel';
-                $watchlater->save();
+                $wishlist = new Wishlist;
+
+                if( !Auth::guest() ){
+                    $wishlist->user_id = Auth::user()->id;
+
+                }else{
+                    $wishlist->users_ip_address = $geoip->getIP() ;
+                }
+
+                $wishlist->video_id = $video_id;
+                $wishlist->type = 'channel';
+                $wishlist->save();
+
                 Session::flash('success', 'Product Suucess!');
-                // Session::flash('success','Product Suucess!');
                 $response = "Added To Wishlist";
-
                 return $response;
-             
-                
             }
-
         }
     }
 
@@ -184,22 +196,25 @@ class WishlistController extends Controller
     public function episode_wishlist(Request $request)
     {
 
-       if(Auth::guest()){
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
-         $data = array(
-           "message" => "guest" ,
-         );
+         $Wishlist = Wishlist::where('episode_id',$request->episode_id);
 
-         return $data ;
+         if(!Auth::guest()){
+            $Wishlist = $Wishlist->where('user_id',Auth::user()->id);
 
-       }else{
+         }else{
+            $Wishlist = $Wishlist->where('users_ip_address', $geoip->getIP() );
 
-         $watchlater = Wishlist::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->get();
+         }
+         $Wishlist = $Wishlist->get();
+
        
-         if(count($watchlater) == 0){
- 
+         if(count($Wishlist) == 0){
+
             Wishlist::create([
-             'user_id'  => Auth::user()->id,
+             'user_id'  => !Auth::guest() ? Auth::user()->id : null ,
+             'users_ip_address'  => Auth::guest() ?  $geoip->getIP() : null ,
              'episode_id' => $request->episode_id,
              'type'     => 0,
            ]);
@@ -209,31 +224,44 @@ class WishlistController extends Controller
            );
  
          }else{
+
+            $Wishlist = Wishlist::where('episode_id',$request->episode_id);
            
-            Wishlist::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->delete();
- 
+            if(!Auth::guest()){
+                $Wishlist = $Wishlist->where('user_id',Auth::user()->id);
+    
+             }else{
+                $Wishlist = $Wishlist->where('users_ip_address', $geoip->getIP() );
+    
+             }
+             $Wishlist = $Wishlist->delete();
+
              $data = array(
                "message" => "Add the Watch list" ,
              );
          }
           return $data ;
-         
-       }
-
     }   
 
     public function episode_wishlist_remove(Request $request)
     {
-        Wishlist::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->delete();
-    
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+        $Wishlist = Wishlist::where('episode_id',$request->episode_id);
+
+        if(!Auth::guest()){
+            $Wishlist = $Wishlist->where('user_id',Auth::user()->id);
+
+         }else{
+            $Wishlist = $Wishlist->where('users_ip_address', $geoip->getIP() );
+
+         }
+         $Wishlist = $Wishlist->delete();
+
         $data = array(
           "message" => "Add the Watch list" ,
         );
   
         return $data ;
     }
-
-
-
 }
-

@@ -486,14 +486,26 @@ class ChannelController extends Controller
                         ->first();
                 endif;
                 $watchlater = false;
+
                 if (!Auth::guest()):
+
                     $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
                         ->where('video_id', '=', $vid)
                         ->where('type', '=', 'channel')
                         ->first();
+
                     $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)
                         ->where('video_id', '=', $vid)
                         ->get();
+                else:
+
+                  $watchlater = Watchlater::where('users_ip_address', $geoip->getIP() )->where('video_id', '=', $vid)
+                            ->where('type', '=', 'channel')->first();
+
+                  $like_dislike = LikeDislike::where('users_ip_address', $geoip->getIP())
+                      ->where('video_id', '=', $vid)
+                      ->get();
+
                 endif;
 
                 $ppv_video_play = [];
@@ -1020,14 +1032,29 @@ class ChannelController extends Controller
                         ->first();
                 endif;
                 $watchlater = false;
+
                 if (!Auth::guest()):
+
                     $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
                         ->where('video_id', '=', $vid)
                         ->where('type', '=', 'channel')
                         ->first();
+
                     $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)
                         ->where('video_id', '=', $vid)
                         ->get();
+
+                else:
+
+                  $watchlater = Watchlater::where('users_ip_address', $geoip->getIP() )
+                      ->where('video_id',  $vid)
+                      ->where('type',  'channel')
+                      ->first();
+
+                  $like_dislike = LikeDislike::where('users_ip_address', $geoip->getIP() )
+                      ->where('video_id',  $vid)
+                      ->get();
+
                 endif;
 
                 $currency = CurrencySetting::first();
@@ -1430,6 +1457,28 @@ class ChannelController extends Controller
                         $video_access = 'free';
                     }
                 }
+
+                if (!Auth::guest()):
+
+                    $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)
+                        ->where('type', '=', 'channel')
+                        ->first();
+  
+                    $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)
+                        ->get();
+                  else:
+  
+                    $watchlater = Watchlater::where('users_ip_address', $geoip->getIP() )->where('video_id', '=', $vid)
+                            ->where('type', '=', 'channel')->first();
+  
+                    $like_dislike = LikeDislike::where('users_ip_address', $geoip->getIP())
+                      ->where('video_id', $vid)
+                      ->get();
+  
+                  endif;
+
                 $data = [
                     'video_access' => $video_access,
                     'StorageSetting' => $StorageSetting,
@@ -1439,6 +1488,7 @@ class ChannelController extends Controller
                     'playerui_settings' => $playerui,
                     'subtitles' => $subtitle,
                     'watched_time' => 0,
+                    'like_dislike'  => $like_dislike ,
                     'ads' => \App\AdsVideo::where('video_id', $vid)->first(),
                     'category_name' => $category_name,
                     'langague_Name' => $langague_Name,
