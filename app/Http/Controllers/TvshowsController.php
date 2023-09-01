@@ -221,51 +221,51 @@ class TvshowsController extends Controller
     public function play_episode($series_name, $episode_name)
     {
         try {
-
-
+    
+    
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-           
+            
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         $settings = Setting::first();
-
+    
         $auth_user = Auth::user();
-
+    
         if ($auth_user == null) {
             $auth_user_id = null;
         } else {
             $auth_user_id = Auth::user()->id;
         }
-
+    
         $episodess = Episode::where('slug', '=', $episode_name)
             ->orderBy('id', 'DESC')
             ->first();
-
+    
         $source_id = Episode::where('slug', '=', $episode_name)
             ->pluck('id')
             ->first();
-
+    
         $episode_watchlater = Watchlater::where('episode_id', $episodess->id)
             ->where('user_id', $auth_user_id)
             ->first();
-
+    
         $episode_Wishlist = Wishlist::where('episode_id', $episodess->id);
-
+    
         if(!Auth::guest()){
             $episode_Wishlist = $episode_Wishlist->where('user_id', $auth_user_id);
-
+    
         }else{
             $episode_Wishlist = $episode_Wishlist->where('users_ip_address', $geoip->getIP());
             
         }
         $episode_Wishlist = $episode_Wishlist->first();
-
+    
             // Subtitle Data 
             
         $playerui = Playerui::first();
         
         $subtitle = SeriesSubtitle::where('episode_id', '=', $episodess->id)->get();
-
+    
         $subtitles_name = SeriesSubtitle::select('subtitles.language as language')
             ->Join('subtitles', 'series_subtitles.shortcode', '=', 'subtitles.short_code')
             ->where('series_subtitles.episode_id', $episodess->id)
@@ -274,33 +274,33 @@ class TvshowsController extends Controller
         if (Auth::guest() && $settings->access_free == 0):
             return Redirect::to('/login');
         endif;
-
+    
         $episode = Episode::where('slug', '=', $episode_name)
             ->orderBy('id', 'DESC')
             ->first();
-
+    
         $id = $episode->id;
-
+    
         $season = SeriesSeason::where('series_id', '=', $episode->series_id)
             ->with('episodes')
             ->get();
-
+    
         $series = Series::find($episode->series_id);
-
+    
         $episodenext = Episode::where('id', '>', $id)
             ->where('series_id', '=', $episode->series_id)
             ->first();
         $episodeprev = Episode::where('id', '<', $id)
             ->where('series_id', '=', $episode->series_id)
             ->first();
-
+    
         $category_name = SeriesGenre::select('series_genre.name as categories_name','series_genre.slug as categories_slug')
             ->Join('series_categories', 'series_categories.category_id', '=', 'series_genre.id')
             ->where('series_categories.series_id', $episode->series_id)
             ->get();
-
+    
         //Make sure series is active
-
+    
         $view = new RecentView();
         $view->user_id = Auth::User() ? Auth::User()->id : null;
         $view->sub_user = null;
@@ -308,7 +308,7 @@ class TvshowsController extends Controller
         $view->visited_at = Carbon::now()->year;
         $view->episode_id = $id;
         $view->save();
-
+    
         $wishlisted = false;
         if (!Auth::guest()):
             $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)
@@ -317,7 +317,7 @@ class TvshowsController extends Controller
         endif;
         
         // use App\PpvPurchase as PpvPurchase;
-
+    
         if (!empty($episode->ppv_price) && $settings->access_free == 0) {
             $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
                 ->where('episode_id', '=', $id)
@@ -325,7 +325,7 @@ class TvshowsController extends Controller
         } else {
             $ppv_exits = 0;
         }
-
+    
         if ($series->ppv_status == 1 && $settings->access_free == 0) {
             $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
                 ->where('series_id', '=', $series->id)
@@ -333,19 +333,19 @@ class TvshowsController extends Controller
         } else {
             $ppv_exits = 0;
         }
-
+    
         $watchlater = false;
-
+    
         if (!Auth::guest()):
             $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
                 ->where('episode_id', '=', $id)
                 ->first();
         endif;
-
+    
         if ((!Auth::guest() && Auth::user()->role == 'admin') || $series->active) {
             $view_increment = $this->handleViewCount($id);
             $currency = CurrencySetting::first();
-
+    
             $playerui = Playerui::first();
             $payment_settings = PaymentSetting::first();
             $mode = $payment_settings->live_mode;
@@ -359,7 +359,7 @@ class TvshowsController extends Controller
                 $secret_key = null;
                 $publishable_key = null;
             }
-
+    
             if (!empty($season)) {
                 $ppv_price = $season[0]->ppv_price;
                 $ppv_interval = $season[0]->ppv_interval;
@@ -384,14 +384,14 @@ class TvshowsController extends Controller
                     $free_episode = 0;
                 }
             }
-
+    
             // Season Ppv Purchase exit check
             if (($ppv_price != 0 && !Auth::guest()) || ($ppv_price != null && !Auth::guest())) {
                 $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
                     // ->where('season_id', '=', $season_id)
                     ->where('series_id', '=', $episode->series_id)
                     ->count();
-
+    
                     $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
                     ->where('season_id', '=', $episode->season_id)
                     ->count();
@@ -423,7 +423,7 @@ class TvshowsController extends Controller
             } else {
                 $checkseasonppv = SeriesSeason::where('series_id', '=', $episode->series_id)
                 ->first();
-
+    
                 $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
                 ->where('season_id', '=', $episode->season_id)
                 ->count();
@@ -451,14 +451,14 @@ class TvshowsController extends Controller
                 }
                 $ppv_exits = 0;
             }
-
+    
             if (($series->ppv_status == 0 && $ppv_price == 0) || $ppv_price == null) {
                 $series_ppv_status = 0;
                 $free_episode = 1;
             } else {
                 $series_ppv_status = 1;
             }
-
+    
             if (!Auth::guest()) {
                 if (Auth::user()->role == 'admin') {
                     $free_episode = 1;
@@ -468,24 +468,29 @@ class TvshowsController extends Controller
                     $free_episode = 1;
                 }
             }
-
+    
             if (!Auth::guest()):
-                $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)
-                    ->where('episode_id', '=', $id)
+    
+              $like_dislike = LikeDislike::where('user_id',  Auth::user()->id)
+                    ->where('episode_id', $id)
+                    ->first();
+              
+            else:
+              
+              $like_dislike = LikeDislike::where('users_ip_address', $geoip->getIP() )
+                    ->where('episode_id', $id)
                     ->first();
             endif;
-            if (Auth::guest()):
-                $like_dislike = [];
-            endif;
-
+          
+    
             if (@$episode->uploaded_by == 'Channel') {
                 $user_id = $episode->user_id;
-
+    
                 $user = Channel::where('channels.id', '=', $user_id)
                     ->join('users', 'channels.email', '=', 'users.email')
                     ->select('users.id as user_id')
                     ->first();
-
+    
                 if (!Auth::guest() && $user_id == Auth::user()->id) {
                     $video_access = 'free';
                 } else {
@@ -493,7 +498,7 @@ class TvshowsController extends Controller
                 }
             } elseif (@$episode->uploaded_by == 'CPP') {
                 $user_id = $episode->user_id;
-
+    
                 $user = ModeratorsUser::where('moderators_users.id', '=', $user_id)
                     ->join('users', 'moderators_users.email', '=', 'users.email')
                     ->select('users.id as user_id')
@@ -510,17 +515,17 @@ class TvshowsController extends Controller
                     $video_access = 'free';
                 }
             }
-
+    
             $series_categories = Series::join('series_categories', 'series.id', '=', 'series_categories.series_id')
                                     ->where('series.id',$series->id)->pluck('series_categories.category_id');
-
+    
             $series_lists = Series::join('series_categories', 'series.id', '=', 'series_categories.series_id')
                 ->whereIn('series_categories.category_id',$series_categories)
                 ->where('series.id','!=',$series->id)
                 ->where('series.active',1)
                 ->groupBy('series.id')->get();
-
-
+    
+    
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
                     'currency' => $currency,
@@ -597,21 +602,21 @@ class TvshowsController extends Controller
                     'episodesubtitles' =>   $subtitle ,
                     'category_name'             => $category_name ,
                 ];
-
+    
                 if (Auth::guest() && $settings->access_free == 1) {
                     return Theme::view('beforloginepisode', $data);
                 } else {
                     return Theme::view('episode', $data);
                 }
-
+    
                 // return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
             }
         } else {
             return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
         }
-
+    
         } catch (\Throwable $th) {
-
+    
             // return $th->getMessage();
             return abort(404);
         }
@@ -871,73 +876,96 @@ class TvshowsController extends Controller
 
     public function LikeEpisode(Request $request)
     {
-        if (Auth::guest()) {
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+        $episode = LikeDisLike::where('episode_id', '=', $request->episode_id)
+            ->when(!Auth::guest(), function ($query) {
+                return $query->where('user_id', Auth::user()->id);
+            })
+            ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                return $query->where('users_ip_address', $geoip->getIP());
+            })->get();
+
+        $episode_count = LikeDisLike::where('episode_id', '=', $request->episode_id)
+            ->when(!Auth::guest(), function ($query) {
+                return $query->where('user_id', Auth::user()->id);
+            })
+            ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                return $query->where('users_ip_address', $geoip->getIP());
+            })->count();
+
+        if ($episode_count > 0) {
+
+            $episode_new = LikeDisLike::where('episode_id', '=', $request->episode_id)
+                ->when(!Auth::guest(), function ($query) {
+                    return $query->where('user_id', Auth::user()->id);
+                })
+                ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                    return $query->where('users_ip_address', $geoip->getIP());
+                })->first();
+
+            $episode_new->liked = 1;
+            $episode_new->episode_id = $request->episode_id;
+            $episode_new->save();
+
+            $data = ['message' => 'Added to Like Episode', ];
+
+        } else {
+
+            $episode_new = new LikeDisLike();
+            $episode_new->user_id = !Auth::guest() ? Auth::user()->id : null ;
+            $episode_new->users_ip_address = Auth::guest() ?  $geoip->getIP() : null ;
+            $episode_new->liked = 1;
+            $episode_new->episode_id = $request->episode_id;
+            $episode_new->save();
+
             $data = [
-                'message' => 'guest',
+                'message' => 'Added to Like Episode',
             ];
 
-            return $data;
-        } else {
-            $user_id = Auth::user()->id;
-
-            $episode = LikeDisLike::where('episode_id', '=', $request->episode_id)
-                ->where('user_id', '=', $user_id)
-                ->get();
-            $episode_count = LikeDisLike::where('episode_id', '=', $request->episode_id)
-                ->where('user_id', '=', $user_id)
-                ->count();
-
-            if ($episode_count > 0) {
-                $episode_new = LikeDisLike::where('episode_id', '=', $request->episode_id)
-                    ->where('user_id', '=', $user_id)
-                    ->first();
-                $episode_new->liked = 1;
-                $episode_new->episode_id = $request->episode_id;
-                $episode_new->save();
-                $data = [
-                    'message' => 'Added to Like Episode',
-                ];
-            } else {
-                $user_id = Auth::user()->id;
-
-                $episode_new = new LikeDisLike();
-                $episode_new->user_id = $user_id;
-                $episode_new->liked = 1;
-                $episode_new->episode_id = $request->episode_id;
-                $episode_new->save();
-                $episode_new->save();
-                $data = [
-                    'message' => 'Added to Like Episode',
-                ];
-            }
-            return $data;
         }
+        return $data;
     }
 
     public function RemoveLikeEpisode(Request $request)
     {
-        $user_id = Auth::user()->id;
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
         $episode = LikeDisLike::where('episode_id', '=', $request->episode_id)
-            ->where('user_id', '=', $user_id)
-            ->get();
+            ->when(!Auth::guest(), function ($query) {
+                return $query->where('user_id', Auth::user()->id);
+            })
+            ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                return $query->where('users_ip_address', $geoip->getIP());
+            })->get();
+
         $episode_count = LikeDisLike::where('episode_id', '=', $request->episode_id)
-            ->where('user_id', '=', $user_id)
-            ->count();
+            ->when(!Auth::guest(), function ($query) {
+                return $query->where('user_id', Auth::user()->id);
+            })
+            ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                return $query->where('users_ip_address', $geoip->getIP());
+            })->count();
+
         if ($episode_count > 0) {
+
             $episode_new = LikeDisLike::where('episode_id', '=', $request->episode_id)
-                ->where('user_id', '=', $user_id)
-                ->first();
+                ->when(!Auth::guest(), function ($query) {
+                    return $query->where('user_id', Auth::user()->id);
+                })
+                ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                    return $query->where('users_ip_address', $geoip->getIP());
+                })->first();
+
             $episode_new->liked = 0;
             $episode_new->episode_id = $request->episode_id;
             $episode_new->save();
-            $data = [
-                'message' => 'Removed from Liked Episode',
-            ];
+
+            $data = [ 'message' => 'Removed from Liked Episode', ];
+
         } else {
-            $data = [
-                'message' => 'NO Data',
-            ];
+            
+            $data = [ 'message' => 'NO Data', ];
         }
 
         return $data;
@@ -945,73 +973,97 @@ class TvshowsController extends Controller
 
     public function DisLikeEpisode(Request $request)
     {
-        if (Auth::guest()) {
-            $data = [
-                'message' => 'guest',
-            ];
+        
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+       
+        $episode = LikeDisLike::where('episode_id', $request->episode_id)
+                ->when(!Auth::guest(), function ($query) {
+                    return $query->where('user_id', Auth::user()->id);
+                })
+                ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                    return $query->where('users_ip_address', $geoip->getIP());
+            })->get();
 
-            return $data;
+
+        $episode_count = LikeDisLike::where('episode_id', $request->episode_id)
+                ->when(!Auth::guest(), function ($query) {
+                    return $query->where('user_id', Auth::user()->id);
+                })
+                ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                    return $query->where('users_ip_address', $geoip->getIP());
+            })->count();
+
+        if ($episode_count > 0) {
+            
+            $episode_new = LikeDisLike::where('episode_id', $request->episode_id)
+                ->when(!Auth::guest(), function ($query) {
+                    return $query->where('user_id', Auth::user()->id);
+                })
+                ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                    return $query->where('users_ip_address', $geoip->getIP());
+            })->first();
+
+            $episode_new->disliked = 1;
+            $episode_new->episode_id = $request->episode_id;
+            $episode_new->save();
+
+            $data = [ 'message' => 'Added to DisLike Episode', ];
+
         } else {
-            $user_id = Auth::user()->id;
 
-            $episode = LikeDisLike::where('episode_id', '=', $request->episode_id)
-                ->where('user_id', '=', $user_id)
-                ->get();
-            $episode_count = LikeDisLike::where('episode_id', '=', $request->episode_id)
-                ->where('user_id', '=', $user_id)
-                ->count();
+            $episode_new = new LikeDisLike();
+            $episode_new->user_id = !Auth::guest() ? Auth::user()->id : null ;
+            $episode_new->users_ip_address = Auth::guest() ?  $geoip->getIP() : null ;
+            $episode_new->disliked = 1;
+            $episode_new->episode_id = $request->episode_id;
+            $episode_new->save();
 
-            if ($episode_count > 0) {
-                $episode_new = LikeDisLike::where('episode_id', '=', $request->episode_id)
-                    ->where('user_id', '=', $user_id)
-                    ->first();
-                $episode_new->disliked = 1;
-                $episode_new->episode_id = $request->episode_id;
-                $episode_new->save();
-                $data = [
-                    'message' => 'Added to DisLike Episode',
-                ];
-            } else {
-                $user_id = Auth::user()->id;
-
-                $episode_new = new LikeDisLike();
-                $episode_new->user_id = $user_id;
-                $episode_new->disliked = 1;
-                $episode_new->episode_id = $request->episode_id;
-                $episode_new->save();
-                $episode_new->save();
-                $data = [
-                    'message' => 'Added to DisLike Episode',
-                ];
-            }
-            return $data;
+            $data = [ 'message' => 'Added to DisLike Episode', ];
         }
+
+        return $data;
     }
 
     public function RemoveDisLikeEpisode(Request $request)
     {
-        $user_id = Auth::user()->id;
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
-        $episode = LikeDisLike::where('episode_id', '=', $request->episode_id)
-            ->where('user_id', '=', $user_id)
-            ->get();
-        $episode_count = LikeDisLike::where('episode_id', '=', $request->episode_id)
-            ->where('user_id', '=', $user_id)
-            ->count();
+        $episode = LikeDisLike::where('episode_id', $request->episode_id)
+                ->when(!Auth::guest(), function ($query) {
+                    return $query->where('user_id', Auth::user()->id);
+                })
+                ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                    return $query->where('users_ip_address', $geoip->getIP());
+            })->get();
+
+
+        $episode_count = LikeDisLike::where('episode_id', $request->episode_id)
+                ->when(!Auth::guest(), function ($query) {
+                    return $query->where('user_id', Auth::user()->id);
+                })
+                ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                    return $query->where('users_ip_address', $geoip->getIP());
+            })->count();
+
         if ($episode_count > 0) {
-            $episode_new = LikeDisLike::where('episode_id', '=', $request->episode_id)
-                ->where('user_id', '=', $user_id)
-                ->first();
+
+            $episode_new = LikeDisLike::where('episode_id', $request->episode_id)
+                ->when(!Auth::guest(), function ($query) {
+                    return $query->where('user_id', Auth::user()->id);
+                })
+                ->unless(!Auth::guest(), function ($query) use ($geoip) {
+                    return $query->where('users_ip_address', $geoip->getIP());
+                })->first();
+
+
             $episode_new->disliked = 0;
             $episode_new->episode_id = $request->episode_id;
             $episode_new->save();
-            $data = [
-                'message' => 'Removed from Liked Episode',
-            ];
-        } else {
-            $data = [
-                'message' => 'NO Data',
-            ];
+
+            $data = [  'message' => 'Removed from Liked Episode',];
+        } 
+        else {
+            $data = [ 'message' => 'NO Data',];
         }
 
         return $data;

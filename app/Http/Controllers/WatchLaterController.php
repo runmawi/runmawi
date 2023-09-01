@@ -157,48 +157,69 @@ class WatchLaterController extends Controller
         
       public function episode_watchlist(Request $request)
       {
- 
-         if(Auth::guest()){
- 
-           $data = array(
-             "message" => "guest" ,
-           );
- 
-           return $data ;
- 
-         }else{
- 
-           $watchlater = Watchlater::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->get();
-         
-           if(count($watchlater) == 0){
-   
-             Watchlater::create([
-               'user_id'  => Auth::user()->id,
-               'episode_id' => $request->episode_id,
-               'type'     => 0,
-             ]);
-   
-             $data = array(
-               "message" => "Remove the Watch list" ,
-             );
-   
-           }else{
-             
-             Watchlater::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->delete();
-   
-               $data = array(
-                 "message" => "Add the Watch list" ,
-               );
-           }
-            return $data ;
-           
-         }
+
+          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+          $watchlater = Watchlater::where('episode_id',$request->episode_id);
+
+          if( !Auth::guest()){
+
+            $watchlater = $watchlater->where('user_id',Auth::user()->id) ; 
+          }else{
+            $watchlater = $watchlater->where('users_ip_address', $geoip->getIP() );
+          }
+
+          $watchlater = $watchlater->get();
+        
+          if(count($watchlater) == 0){
+  
+            Watchlater::create([
+              'user_id'  => !Auth::guest() ? Auth::user()->id : null ,
+              'users_ip_address' => !Auth::guest() ? null : $geoip->getIP() ,
+              'episode_id' => $request->episode_id,
+              'type'     => 0,
+            ]);
+  
+            $data = array(
+              "message" => "Remove the Watch list" ,
+            );
+  
+          }else{
+            
+            $watchlater = Watchlater::where('episode_id',$request->episode_id);
+
+            if( !Auth::guest()){
+  
+              $watchlater = $watchlater->where('user_id',Auth::user()->id) ; 
+            }else{
+              $watchlater = $watchlater->where('users_ip_address', $geoip->getIP() );
+            }
+  
+            $watchlater = $watchlater->delete();
+  
+              $data = array(
+                "message" => "Add the Watch list" ,
+              );
+          }
+          return $data ;
  
       }   
  
       public function episode_watchlist_remove(Request $request)
       {
-          Watchlater::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->delete();
+        
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+        $watchlater = Watchlater::where('episode_id',$request->episode_id);
+
+          if( !Auth::guest()){
+
+            $watchlater = $watchlater->where('user_id',Auth::user()->id) ; 
+          }else{
+            $watchlater = $watchlater->where('users_ip_address', $geoip->getIP() );
+          }
+
+        $watchlater = $watchlater->delete();
       
           $data = array(
             "message" => "Add the Watch list" ,
