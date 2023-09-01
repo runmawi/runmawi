@@ -199,6 +199,7 @@ class AdminSettingsController extends Controller
         $settings->access_free = $request['access_free'];
         $settings->enable_landing_page = $request['enable_landing_page'];
         $settings->facebook_page_id = $request['facebook_page_id'];
+        $settings->tiktok_page_id = $request['tiktok_page_id'];
         $settings->google_page_id = $request['google_page_id'];
         $settings->twitter_page_id = $request['twitter_page_id'];
         $settings->instagram_page_id = $instagram_page_id;

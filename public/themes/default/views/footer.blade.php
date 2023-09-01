@@ -94,6 +94,12 @@ $settings = App\Setting::first();
                           <i class="fa fa-google-plus"></i>
                       </a>-->
                       <?php } ?>
+
+                      <?php if(!empty($settings->tiktok_page_id)){?>
+                        <a href="https://www.tiktok.com/en/<?php echo $settings->tiktok_page_id;?>" target="_blank" class="ml-1">
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/tiktok.png')?>" style="" />
+                        </a>
+                        <?php } ?>
                         
                   </div>
              
