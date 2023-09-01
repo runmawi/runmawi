@@ -93,7 +93,7 @@ i.fa.fa-google-plus {
     </head>
 
 <body>
-<section class="sign-in-page" style="url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
    <div class="container">
       <div class="row mb-4  align-items-center height-self-center">
           <div class="col-lg-7  col-12">
