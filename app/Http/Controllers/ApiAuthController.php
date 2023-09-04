@@ -1520,7 +1520,7 @@ public function verifyandupdatepassword(Request $request)
             $IOS_dislike = "false";
           }
          
-  
+          $videodetailaccess = Video::where('id',$videoid)->pluck('access')->first();
       if ($ppv_exist > 0) {
   
             $ppv_time_expire = PpvPurchase::where('user_id','=',$user_id)->where('video_id','=',$videoid)->pluck('to_time');
@@ -1533,7 +1533,11 @@ public function verifyandupdatepassword(Request $request)
                   $ppv_video_status = "expired";
             }
   
-      } else {
+      } else if($videodetailaccess == "ppv" && $ppv_exist == 0){
+        
+        $ppv_video_status = "pay_now";
+        
+      }else {
             $ppv_video_status = "can_view";
       }
   

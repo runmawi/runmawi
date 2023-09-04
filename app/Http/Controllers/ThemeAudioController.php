@@ -1070,4 +1070,9 @@ class ThemeAudioController extends Controller{
           return Theme::view('audio', $data);
   }
 
+  public function MusicAudioPlayer(Request $request)
+  {
+    return Theme::view('MusicAudioPlayer');
+    }
+
 }
