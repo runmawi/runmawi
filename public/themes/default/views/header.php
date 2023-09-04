@@ -461,6 +461,13 @@
    .Search_error_class {
       color: red;
    }
+@media  (min-width:1025px)  { li.logout_mobile_view.menu-item{
+   display:none !important;
+} }
+@media (min-width:801px) { li.logout_mobile_view.menu-item{
+   display:none !important;
+} }
+
 </style>
 <body>
    <!-- loader Start -->
@@ -713,8 +720,21 @@
                                           <?php echo __($menu->name);?>
                                        </a>
                                  </li>
-                              <?php } } ?>
 
+                              <?php  } } ?>
+                              <?php if(!Auth::guest()){ ?>
+                                 <li class="logout_mobile_view menu-item">
+                                       <a href="<?php echo URL::to('/logout'); ?>">
+                                          <?php echo __('Logout');?>
+                                       </a>
+                                 </li>
+                                 <li class="logout_mobile_view menu-item">
+                                       <a href="<?php echo URL::to('myprofile') ?>">
+                                          <?php echo __('My Profile');?>
+                                       </a>
+                                 </li>
+                              
+                              <?php } ?>
                               <!-- <li class="nav-item dropdown menu-item"> -->
                               <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/').@$menu->url;?>" data-toggle="dropdown">   -->
                               <!-- Movies <i class="fa fa-angle-down"></i> -->
