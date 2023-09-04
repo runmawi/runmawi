@@ -20,6 +20,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('video_chat', 'VideoChatController@index');
     Route::post('auth/video_chat', 'VideoChatController@auth');
   });
+  Route::get('/MusicAudioPlayer', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
 
 // Endpoints to call or receive calls.
 Route::post('/video/call-user', 'VideoChatController@callUser');
