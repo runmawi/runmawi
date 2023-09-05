@@ -2,8 +2,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <?php include(public_path('themes/default/views/header.php')); ?>
 
-<div class="floating-icon"><a href="https://jewel998.github.io/playlist" style="color:white"><i class="fa fa-github"></i></a></div>
-<div class="floating-icon"><a href="https://codepen.io/jewel998" style="color:white"><i class="fa fa-codepen"></i></a></div>
+<!-- <div class="floating-icon"><a href="https://jewel998.github.io/playlist" style="color:white"><i class="fa fa-github"></i></a></div> -->
+<!-- <div class="floating-icon"><a href="https://codepen.io/jewel998" style="color:white"><i class="fa fa-codepen"></i></a></div> -->
 <div id="music-player">
         <img id="album-art"/>
         <div id="top-bar">
@@ -12,8 +12,12 @@
         </div>
         <div id="lyrics">
           <h2 class="song-name"></h2><h4 class="artist-name"></h4>
-          <div id="lyrics-content">
-          </div>
+          <!-- <div id="lyrics-content">
+          </div> -->
+          <div class="">
+              <img height="250" width="250"  id="audio_img" src="">
+              <!-- height="150" width="150"  -->
+           </div>
         </div>
         <audio id="audioFile" preload="true">
         </audio>
@@ -31,6 +35,7 @@
             <button id="play"><i class="fa fa-play"></i></button>
             <button id="next"><i class="fa fa-step-forward"></i></button>
             <button id="shuffle" style="color:grey"><i class="fa fa-random"></i></button>
+            <button id="lyrics-toggle"><i class="fa fa-microphone"></i></button>
           </div>
         </div>
         <div id="playlist">
@@ -335,14 +340,12 @@
                     );
                 }
                 function next(){
-                    alert();
                     var current = $('#lyrics .current');
                     if(current.length == 0){ $('#lyrics-content h2:nth-child(1)').addClass("current"); return; }
                     current.removeClass('current');
                     current.next().addClass('current');
                 }
                 function previous(){
-                    alert();
 
                     var current = $('#lyrics .current');
                     if(current.length == 0){ return; }
@@ -392,11 +395,15 @@
                     setAlbumArt(indexing.image_url);
                     var html = "";
                     timeList=[];
+                    // html = html + indexing.image_url;
                     // for(var i=0;i<data.lyrics.length;i++){
                     //     timeList.push(data.lyrics[i].time);
                     //     html = html + "<h2>"+data.lyrics[i].line+"</h2>";
                     // }
                     // $('#lyrics-content').html(html);
+                    var image = document.querySelector('#audio_img')
+                    image.src =  indexing.image_url 
+
                     $('#totalTime').html(processTime(totalTime));
                     $('#currentTime').html(processTime(time));
                     var percent = time/totalTime * 100;
