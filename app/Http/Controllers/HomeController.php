@@ -66,6 +66,8 @@ use App\VideoSchedules as VideoSchedules;
 use App\ScheduleVideos as ScheduleVideos;
 use App\Language as Language;
 use GuzzleHttp\Client;
+use App\MusicStation as MusicStation;
+use App\GuestLoggedDevice as GuestLoggedDevice;
 
 class HomeController extends Controller
 {
@@ -294,6 +296,23 @@ class HomeController extends Controller
 
         if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
         {
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $countryName = $geoip->getCountry();
+
+            $guest_devices_check = GuestLoggedDevice::where('user_ip', '=',$userIp)
+                ->where('device_name', '=', 'desktop')->first();
+
+                if (empty($guest_devices_check))
+                {
+                    $adddevice = new GuestLoggedDevice;
+                    $adddevice->device_name = 'desktop';
+                    $adddevice->user_ip = $userIp;
+                    $adddevice->country_name = $countryName;
+                    $adddevice->save();
+                }
+
             $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
             ->get(); 
             
@@ -1369,6 +1388,22 @@ class HomeController extends Controller
         }
         if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
         {
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $countryName = $geoip->getCountry();
+
+            $guest_devices_check = GuestLoggedDevice::where('user_ip', '=',$userIp)
+            ->where('device_name', '=', 'desktop')->first();
+
+            if (empty($guest_devices_check))
+            {
+                $adddevice = new GuestLoggedDevice;
+                $adddevice->device_name = 'desktop';
+                $adddevice->user_ip = $userIp;
+                $adddevice->country_name = $countryName;
+                $adddevice->save();
+            }
+
             return Redirect::to('/');
         }
         else
@@ -2659,6 +2694,12 @@ class HomeController extends Controller
                             ->limit('10')
                             ->get();  
 
+            $station_audio = MusicStation::where('station_name', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('station_slug', 'LIKE', '%' . $request->country . '%')
+                            ->limit('10')
+                            ->get(); 
+
+                          
             if (count($videos) > 0 || count($livestream) > 0 || count($Episode) > 0 || count($audio) > 0 || count($Series) > 0 && !empty($request->country) )
             {
 
@@ -2741,7 +2782,23 @@ class HomeController extends Controller
                     $Series_search = null ;
                 }
 
-                return $output.$audios.$livestreams.$Episodes.$Series_search;
+                // station Search
+
+                if(count($station_audio) > 0){
+
+                    $station_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
+                    $station_search .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Music Station </h6>";
+                    foreach ($station_audio as $row)
+                    {
+                        $station_search .= '<li class="list-group-item">
+                        <img width="35px" height="35px" src="' . $row->image . '"><a href="' . URL::to('/') . '/music-station' .'/'. $row->station_slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->station_name . '</a></li>';
+                    }
+                }
+                else{
+                    $station_search = null ;
+                }
+
+                return $output.$audios.$livestreams.$Episodes.$Series_search.$station_search;
             }
             else
             {
@@ -3389,71 +3446,168 @@ class HomeController extends Controller
 
     public function LikeVideo(Request $request)
     {
-        $video_id = $request->videoid;
-        $like = $request->like;
-        $user_id = $request->user_id;
-        $video = LikeDisLike::where("video_id", "=", $video_id)->where("user_id", "=", $user_id)->get();
-        $video_count = LikeDisLike::where("video_id", "=", $video_id)->where("user_id", "=", $user_id)->count();
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+        $video_id = $request->videoid ;
+        $like     = $request->like ;
+
+        // return $like ;
+
+        $video_count = LikeDisLike::where("video_id", $video_id);
+
+        if( !Auth::guest() ){
+            $video_count = $video_count->where("user_id", Auth::User()->id);
+
+        }else{
+            $video_count = $video_count->where("users_ip_address",  $geoip->getIP() );
+        }
+
+        $video_count = $video_count->count();
+
         if ($video_count > 0)
         {
-            $video_new = LikeDisLike::where("video_id", "=", $video_id)->where("user_id", "=", $user_id)->first();
-            $video_new->liked = $like;
-            $video_new->video_id = $video_id;
-            $video_new->save();
-            $response = array(
-                'status' => true
-            );
+
+            $video_new = LikeDisLike::where("video_id", $video_id);
+
+            if( !Auth::guest() ){
+                $video_new = $video_new->where("user_id", Auth::User()->id);
+    
+            }else{
+                $video_new = $video_new->where("users_ip_address",  $geoip->getIP() );
+            }
+    
+            $video_new = $video_new->first();
+
+            if ($like == 1)
+            {
+                if( !Auth::guest() ){
+                    $video_new->user_id = Auth::user()->id;
+    
+                }else{
+                    $video_new->users_ip_address = $geoip->getIP() ;
+                }
+
+                $video_new->video_id = $video_id;
+                $video_new->liked = 1;
+                $video_new->disliked = 0;
+                $video_new->save();
+
+                $response = array('status' => "liked" );
+            }
+            elseif( $like == 0 )
+            {
+                if( !Auth::guest() ){
+                    $video_new->user_id = Auth::user()->id;
+    
+                }else{
+                    $video_new->users_ip_address = $geoip->getIP() ;
+                }
+                $video_new->video_id = $video_id;
+                $video_new->liked = 0;
+                $video_new->save();
+
+                $response = array(
+                    'status' => "unliked"
+                );
+            }
         }
         else
         {
             $video_new = new LikeDisLike;
             $video_new->video_id = $video_id;
-            $video_new->user_id = $user_id;
+
+            if( !Auth::guest() ){
+                $video_new->user_id = Auth::user()->id;
+
+            }else{
+                $video_new->users_ip_address = $geoip->getIP() ;
+            }
+            
             $video_new->liked = $like;
+            $video_new->disliked = 0;
             $video_new->save();
-            $response = array(
-                'status' => true
-            );
+            $response = array( 'status' => 'liked');
         }
+
+        return response()->json($response, 200);
 
     }
 
     public function DisLikeVideo(Request $request)
     {
-        $user_id = $request->user_id;
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+     
         $video_id = $request->videoid;
         $dislike = $request->dislike;
-        $d_like = Likedislike::where("video_id", $video_id)->where("user_id", $user_id)->count();
+
+        $d_like = Likedislike::where("video_id", $video_id);
+        
+            if( !Auth::guest() ){
+                $d_like = $d_like->where("user_id", Auth::User()->id);
+
+            }else{
+                $d_like = $d_like->where("users_ip_address",  $geoip->getIP() );
+            }
+
+        $d_like = $d_like->count();
 
         if ($d_like > 0)
         {
-            $new_vide_dislike = Likedislike::where("video_id", $video_id)->where("user_id", $user_id)->first();
+            $new_vide_dislike = Likedislike::where("video_id", $video_id);
+            
+                if( !Auth::guest() ){
+                    $new_vide_dislike = $new_vide_dislike->where("user_id", Auth::User()->id);
+
+                }else{
+                    $new_vide_dislike = $new_vide_dislike->where("users_ip_address",  $geoip->getIP() );
+                }
+
+            $new_vide_dislike = $new_vide_dislike->first();
+
             if ($dislike == 1)
             {
-                $new_vide_dislike->user_id = $request->user_id;
+                if( !Auth::guest() ){
+                    $new_vide_dislike->user_id = Auth::user()->id;
+    
+                }else{
+                    $new_vide_dislike->users_ip_address = $geoip->getIP() ;
+                }
+
                 $new_vide_dislike->video_id = $video_id;
                 $new_vide_dislike->liked = 0;
                 $new_vide_dislike->disliked = 1;
                 $new_vide_dislike->save();
-                $response = array(
-                    'status' => "disliked"
-                );
+
+                $response = array('status' => "disliked" );
             }
             else
             {
-                $new_vide_dislike->user_id = $request->user_id;
+                if( !Auth::guest() ){
+                    $new_vide_dislike->user_id = Auth::user()->id;
+    
+                }else{
+                    $new_vide_dislike->users_ip_address = $geoip->getIP() ;
+                }
                 $new_vide_dislike->video_id = $video_id;
                 $new_vide_dislike->disliked = 0;
+                // $new_vide_dislike->liked = 0;
                 $new_vide_dislike->save();
                 $response = array(
-                    'status' => "liked"
+                    'status' => "undisliked"
                 );
             }
         }
         else
         {
             $new_vide_dislike = new Likedislike;
-            $new_vide_dislike->user_id = $request->user_id;
+
+            if( !Auth::guest() ){
+                $new_vide_dislike->user_id = Auth::user()->id;
+
+            }else{
+                $new_vide_dislike->users_ip_address = $geoip->getIP() ;
+            }
             $new_vide_dislike->video_id = $video_id;
             $new_vide_dislike->liked = 0;
             $new_vide_dislike->disliked = 1;
@@ -4357,6 +4511,96 @@ class HomeController extends Controller
 
         return $theme_modes;
       
+    }
+
+    
+    public function LikeAudio(Request $request)
+    {
+        if(!Auth::guest()){
+            $user_id = Auth::user()->id ;
+        }else{
+            $user_id = 0 ;
+        }
+        $audio_id = $request->audio_id;
+        $like = $request->like;
+        $user_id = $user_id;
+        $audio = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->get();
+        $audio_count = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->count();
+        if ($audio_count > 0)
+        {
+            $audio_new = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->first();
+            $audio_new->liked = $like;
+            $audio_new->disliked = 0;
+            $audio_new->audio_id = $audio_id;
+            $audio_new->save();
+            $response = array(
+                'status' => true
+            );
+        }
+        else
+        {
+            $audio_new = new LikeDisLike;
+            $audio_new->audio_id = $audio_id;
+            $audio_new->user_id = $user_id;
+            $audio_new->disliked = 0;
+            $audio_new->liked = $like;
+            $audio_new->save();
+            $response = array(
+                'status' => true
+            );
+        }
+
+    }
+
+    public function DisLikeAudio(Request $request)
+    {
+        if(!Auth::guest()){
+            $user_id = Auth::user()->id ;
+        }else{
+            $user_id = 0 ;
+        }        $audio_id = $request->audio_id;
+        $dislike = $request->dislike;
+        $d_like = Likedislike::where("audio_id", $audio_id)->where("user_id", $user_id)->count();
+
+        if ($d_like > 0)
+        {
+            $new_audio_dislike = Likedislike::where("audio_id", $audio_id)->where("user_id", $user_id)->first();
+            if ($dislike == 1)
+            {
+                $new_audio_dislike->user_id = $user_id;
+                $new_audio_dislike->audio_id = $audio_id;
+                $new_audio_dislike->liked = 0;
+                $new_audio_dislike->disliked = 1;
+                $new_audio_dislike->save();
+                $response = array(
+                    'status' => "disliked"
+                );
+            }
+            else
+            {
+                $new_audio_dislike->user_id = $user_id;
+                $new_audio_dislike->audio_id = $audio_id;
+                $new_audio_dislike->liked = 0;
+                $new_audio_dislike->disliked = 1;
+                $new_audio_dislike->save();
+                $response = array(
+                    'status' => "liked"
+                );
+            }
+        }
+        else
+        {
+            $new_audio_dislike = new Likedislike;
+            $new_audio_dislike->user_id = $user_id;
+            $new_audio_dislike->audio_id = $audio_id;
+            $new_audio_dislike->liked = 0;
+            $new_audio_dislike->disliked = 1;
+            $new_audio_dislike->save();
+            $response = array(
+                'status' => "disliked"
+            );
+        }
+        return response()->json($response, 200);
     }
 
 

@@ -327,4 +327,16 @@ exit;
        
            
          }
+
+        public function enable_multi_currency(Request $request) {
+
+            $input = $request->all();
+            $CurrencySetting = CurrencySetting::first();
+            $CurrencySetting->enable_multi_currency = $request['enable_multi_currency'];
+            $CurrencySetting->save();
+    
+            return 'added';
+
+        }
+
 }

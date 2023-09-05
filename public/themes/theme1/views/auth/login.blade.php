@@ -1,6 +1,9 @@
 <?php
-$settings = App\Setting::find(1);
-$system_settings = App\SystemSetting::find(1);
+    $settings = App\Setting::find(1);
+    $system_settings = App\SystemSetting::find(1);
+
+    $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+    $theme = App\SiteTheme::first();
 ?>
 <html>
 
@@ -152,7 +155,15 @@ $system_settings = App\SystemSetting::find(1);
             <div class="row  align-items-center justify-content-center height-self-center">
                 <div class="col-lg-6 col-12 col-md-12 align-self-center">
                     <div class="text-center">
-                        <img src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" style="margin-bottom:1rem;">
+
+                        <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                            <img  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;">
+                        <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                            <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;">
+                        <?php }else { ?> 
+                            <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
+                        <?php } ?>
+
                     </div>
                     <div class="sign-user_card "
                         style=" background: linear-gradient(rgba(136, 136, 136, 0.1) , rgba(64, 32, 32, 0.13), rgba(81, 57, 57, 0.12));!important;">

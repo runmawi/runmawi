@@ -66,6 +66,20 @@
             font-size: revert;
       }
 
+      #videoPlayer {
+        width: 100%;
+        height: 100%;
+        /* margin: 0 auto !important;  */
+        object-fit: contain;
+      }
+
+      #video {
+         width: 100%;
+         height: 100%;
+         /* margin: 0 auto !important;  */
+         object-fit: contain;
+      }
+
 </style>
 <?php 
    $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
@@ -90,13 +104,38 @@
    $autoplay = $video_tag_url == null ? "autoplay" : "" ;    
 
 ?>
+
 <?php
    $category_name = App\CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
    ->where('categoryvideos.video_id', $video->id)->get();
    
    $Movie_name = App\LanguageVideo::select('languages.name as movie_name','languages.id as id')->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
    ->where('languagevideos.video_id', $video->id)->get();
-   
+
+   $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+   $Watchlater = App\Watchlater::where('video_id', $video->id)->where('type', 'channel');
+
+      if(!Auth::guest()){
+         $Watchlater = $Watchlater->where('user_id', Auth::user()->id);
+
+      }else{
+         $Watchlater = $Watchlater->where('users_ip_address',$geoip->getIP() );
+
+      }
+   $Watchlater = $Watchlater->first();
+
+               
+   $wishlisted =  App\Wishlist::where('video_id', '=', $video->id)->where('type', '=', 'channel');
+      if(!Auth::guest()){
+         $wishlisted = $wishlisted->where('user_id', Auth::user()->id);
+
+      }else{
+         $wishlisted = $wishlisted->where('users_ip_address', $geoip->getIP() );
+
+      }
+   $wishlisted = $wishlisted->first();
+
    $str = $video->m3u8_url;
    if(!empty($str)){
    $request_url = 'm3u8';
@@ -122,7 +161,7 @@
 
  <!-- if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)  || Auth::guest() && $video->access == "subscriber"  && empty($video->ppv_price))  -->
 
-<?php if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price)) {?>
+<?php if(Auth::guest() && $video->access == "guest"  && empty($video->ppv_price) && $video->free_duration_status != 1  ) {?>
 
    <div id="video_bg">
    <div class=" page-height">
@@ -270,7 +309,7 @@
       <?php endif; ?>
    </div>
 
-<?php }elseif( Auth::guest() && $video->access == "guest" && empty($video->ppv_price ) && !empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path != "public" && empty($video->ppv_price )){  ?>
+<?php }elseif( Auth::guest() && $video->access == "guest" && empty($video->ppv_price ) && !empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path != "public" && empty($video->ppv_price) && $video->free_duration_status != 1 && $video->free_duration != null ){  ?>
   
    <div id="video_container" class="fitvid" atyle="z-index: 9999;">
       <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
@@ -291,32 +330,45 @@
 
    <!-- ppv purchase free time -->
 
-<?php  } elseif ( Auth::guest() && $video->access == 'ppv' && $video->free_duration_status == 1 && $video->free_duration != null  ) { ?>       
+   <?php  } elseif (  $video->free_duration_status == 1 && $video->free_duration != null  ) {  ?>       
 
       <?php  include('Free_duration_video_player.php'); ?>  
 
-      <?php if( $video->access == "ppv"  && $video->type == 'embed'): ?>
+      <?php if( $video->type == 'embed'): ?>
 
          <div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
-         <div class="container-fluid">
-            <h2 class="text-left"><?php echo $video->title; ?></h2>
+            <div class="container-fluid">
+               <h2 class="text-left"><?php echo $video->title; ?></h2>
 
-            <div class="text-white col-lg-7 p-0">
-               <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
-            </div>
+               <div class="text-white col-lg-7 p-0">
+                  <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
+               </div>
 
-            <h4 class="mb-3">Sorry, this video is only available to Subscribers / PPV Rent </h4>
-            
-            <div>
-               <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this vide</a> 
+               
+               <div>
+                  <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this video</a> 
+               </div>
+               <div class="text-white col-lg-5 p-0">
+               <a href="<?= URL::to('/become a') ?>" class="btn btn-primary" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
+                  <?php if($video->access == 'subscriber'): ?>
+                     Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users
+                  <?php endif; ?>           
+               </a>
+            </div>            
+               <h4 class="mb-3" style="color: red;">Sorry, this video is only available to Subscribers / PPV Rent </h4>
+               <a href="<?= URL::to('/becomesubscriber') ?>" class="btn btn-primary" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
+                  To Become a 
+                  <?php if($video->access == 'subscriber'): ?>
+                     Subscriber <?php elseif($video->access == 'registered' ): ?>Registered User
+                  <?php endif; ?>           
+               </a>
             </div>
          </div>
-      </div>
 
       <?php  elseif( $video->type == '' && ($video->processed_low != 100 || $video->processed_low == null) ):  ?>
 
          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-            <video id="" <?= $autoplay ?>  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+            <video id=""   class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                
                <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
@@ -339,7 +391,7 @@
 
          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
             
-            <video id="PPV_free_duration_videoPlayer" <?= $autoplay ?>   controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+            <video id="PPV_free_duration_videoPlayer"    controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                <source  type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
                <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
                   <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
@@ -353,10 +405,10 @@
             </video>
          </div>
 
-      <?php  elseif(  $video->access == "ppv"  &&  $video->type == 'mp4_url'): ?>
+      <?php  elseif( $video->type == 'mp4_url'): ?>
 
          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-            <video id="PPV_free_duration_videoPlayer_MP4"  <?= $autoplay ?>    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+            <video id="PPV_free_duration_videoPlayer_MP4"   poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
                   <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){  if($value->sub_language == "English"){ ?>
@@ -372,9 +424,9 @@
             </video>
          </div>
 
-      <?php  elseif($video->type == 'm3u8_url'):  ?>
+      <?php  elseif( $video->type == 'm3u8_url' ):  ?>
 
-         <video  <?= $autoplay ?> id="PPV_free_duration_videoPlayer_M3U8_url"  allow="<?= $autoplay ?>"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+         <video  id="PPV_free_duration_videoPlayer_M3U8_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
             <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' >
             <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
             <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
@@ -401,11 +453,15 @@
             <div class="text-white col-lg-7 p-0">
                <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
             </div>
-
-            <h4 class="mb-3">Sorry, this video is only available to
-               <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users<?php endif; ?>
-            </h4>
-            
+            <div class="text-white col-lg-5 p-0">
+               <a href="<?= URL::to('/becomesubscriber') ?>" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
+                  Become a 
+                  <?php if($video->access == 'subscriber'): ?>
+                     Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users
+                  <?php endif; ?> 
+                   to view this Video!
+               </a>
+            </div>
             <div class="clear"></div>
 
             <?php if(Auth::guest() && $video->access == 'registered'): ?>
@@ -564,11 +620,13 @@
    <div class="row">
       <div class="col-sm-6 col-md-6 col-xs-12">
          <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-            <!-- Watchlater -->
-            <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
-            <!-- Wishlist -->
-            <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
-            <!-- Social Share, Like Dislike -->
+               <!-- Watchlater -->
+            <li><span class="watchlater <?php if( ($Watchlater != null )): ?>active<?php endif; ?>" data-authenticated="<?= Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(($Watchlater != null )): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
+              
+               <!-- Wishlist -->
+            <li><span class="mywishlist <?php if($wishlisted != null ): ?>active<?php endif; ?>" data-authenticated="<?= Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if($wishlisted != null ): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
+           
+               <!-- Social Share, Like Dislike -->
             <?php include('partials/social-share.php'); ?>                     
          </ul>
       </div>
@@ -986,36 +1044,86 @@
         }
       
       //watchlater
+
       $('.watchlater').click(function(){
+
       if($(this).data('authenticated')){
-      $.post('<?= URL::to('watchlater') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-      $(this).toggleClass('active');
-      $(this).html("");
-          if($(this).hasClass('active')){
-            $(this).html('<i class="ri-add-circle-fill"></i>');
-          }else{
-            $(this).html('<i class="ri-add-circle-line"></i>');
-          }
-      } else {
-      window.location = '<?= URL::to('login') ?>';
-      }
+         $.post('<?= URL::to('watchlater') ?>',
+
+            {
+               video_id : $(this).data('videoid'), 
+               _token: '<?= csrf_token(); ?>'
+            }, function(data){});
+
+            $(this).toggleClass('active');
+            $(this).html("");
+
+            $('.add_watch,.remove_watch').remove();
+
+            if($(this).hasClass('active')){
+
+               $(this).html('<i class="ri-add-circle-fill"></i>');
+
+               $("body").append( '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;"> Media added to watchlater </div>' );
+                  setTimeout(function() {
+                        $('.add_watch').slideUp('fast');
+                  }, 3000);
+                  
+            }else{
+
+               $(this).html('<i class="ri-add-circle-line"></i>');
+
+               $("body").append( '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;"> Media removed from watchlater </div>' );
+               setTimeout(function() {
+                     $('.remove_watch').slideUp('fast');
+               }, 3000);
+
+            }
+               
+         } else {
+             window.location = '<?= URL::to('login') ?>';
+         }
       });
       
       //My Wishlist
       $('.mywishlist').click(function(){
-      if($(this).data('authenticated')){
-      $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-      $(this).toggleClass('active');
-      $(this).html("");
-          if($(this).hasClass('active')){
-            $(this).html('<i class="ri-heart-fill"></i>');
-          }else{
-            $(this).html('<i class="ri-heart-line"></i>');
-          }
-          
-      } else {
-      window.location = '<?= URL::to('login') ?>';
-      }
+         
+         if($(this).data('authenticated')){
+
+            $.post('<?= URL::to('mywishlist') ?>',
+                  {
+                     video_id : $(this).data('videoid'), 
+                     _token: '<?= csrf_token(); ?>'
+                  }, function(data){});
+
+               $(this).toggleClass('active');
+               $(this).html("");
+
+               $('.add_watch,.remove_watch').remove();
+
+               if($(this).hasClass('active')){
+
+                  $(this).html('<i class="ri-heart-fill"></i>');
+
+                  $("body").append( '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;"> Media added to wishlist </div>' );
+                     setTimeout(function() {
+                           $('.add_watch').slideUp('fast');
+                     }, 3000);
+
+               }else{
+
+                  $(this).html('<i class="ri-heart-line"></i>');
+
+                  $("body").append( '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;"> Media removed from wishlist </div>' );
+                     setTimeout(function() {
+                           $('.remove_watch').slideUp('fast');
+                     }, 3000);
+
+               }
+            } 
+            else {
+               window.location = '<?= URL::to('login') ?>';
+            }
       });
       
    </script>

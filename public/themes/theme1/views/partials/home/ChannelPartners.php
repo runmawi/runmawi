@@ -27,17 +27,17 @@
     <?php  if(isset($channels)) :
       foreach($channels as $channel): ?>
         <li class="slide-item">
-          <a href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug  ) ?>">
+          
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="channel">                 
+              <a href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug  ) ?>">
+                <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="channel"> 
+              </a>                
               </div>
 
               <div class="block-description">
-                <a href="<?php echo URL::to('/channel'.'/'.$channel->slug) ?> ">
-
-              <h6><?php echo __($channel->channel_name); ?></h6>
+                
                                <!-- </div> -->
                 <div class="hover-buttons d-flex">
                   <a class="text-white" href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?> " >
@@ -45,10 +45,13 @@
                    Visit Channel
                   </a>
                 </div>
-                     </a>
               </div>
             </div>
-          </a>
+            <a href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?> ">
+
+              <h6><?php echo __($channel->channel_name); ?></h6>
+              </a>
+          
         </li>
       <?php endforeach; 
     endif; ?>

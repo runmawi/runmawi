@@ -94,6 +94,12 @@ $settings = App\Setting::first();
                           <i class="fa fa-google-plus"></i>
                       </a>-->
                       <?php } ?>
+
+                      <?php if(!empty($settings->tiktok_page_id)){?>
+                        <a href="https://www.tiktok.com/en/<?php echo $settings->tiktok_page_id;?>" target="_blank" class="ml-1">
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/tiktok.png')?>" style="" />
+                        </a>
+                        <?php } ?>
                         
                   </div>
              
@@ -171,39 +177,50 @@ function about(evt , id) {
 }
 </script>
 
+<?php  $search_dropdown_setting = App\SiteTheme::pluck('search_dropdown_setting')->first(); ?>
+<input type="hidden" value="<?= $search_dropdown_setting ?>" id="search_dropdown_setting" >
+
 <script type="text/javascript">
+
   $(document).ready(function () {
+
     $('.searches').on('keyup',function() {
       var query = $(this).val();
       
        if (query !=''){
-      $.ajax({
-        url:"<?php echo URL::to('/search');?>",
-        type:"GET",
-        data:{
-          'country':query}
-        ,
-        success:function (data) {
-          $(".home-search").hide();
-          $('.search_list').html(data);
-        }
-      }
-            )
+      
+          $.ajax({
+          url:"<?php echo URL::to('/search');?>",
+          type:"GET",
+          data:{
+                'country':query
+              },
+            success:function (data) {
+              $(".home-search").hide();
+              $('.search_list').html(data);
+            }
+          })
        } else {
             $('.search_list').html("");
        }
-    }
-                     );
+    });
+
     $(document).on('click', 'li', function(){
+
       var value = $(this).text();
+      let search_dropdown_setting = $('#search_dropdown_setting').val() ;
+
       $('.search').val(value);
       $('.search_list').html("");
-      $(".home-search").show();
 
-    }
-                  );
-  }
-                   );
+      if( search_dropdown_setting == 1 ){
+        $(".home-search").show();
+      }else{
+        $(".home-search").hide();
+      }
+    });
+  });
+
 </script>
 
 <?php 
@@ -235,17 +252,25 @@ function about(evt , id) {
     }
 </script>
 <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+
 <?php
-  if( Route::currentRouteName() == "LiveStream_play" ){
-    include('livevideo_player_script.blade.php');
-  }
-  elseif ( Route::currentRouteName() == "play_episode"){
-    include('episode_player_script.blade.php');
-  }
-  else{
-    include('footerPlayerScript.blade.php');
-  }
+    try {
+
+      if( Route::currentRouteName() == "LiveStream_play" ){
+        include('livevideo_player_script.blade.php');
+      }
+      elseif ( Route::currentRouteName() == "play_episode"){
+        include('episode_player_script.blade.php');
+      }
+      else{
+        include('footerPlayerScript.blade.php');
+      }
+
+    } catch (\Throwable $th) {
+      //throw $th;
+    }
 ?>
+
 <script>
   if ('loading' in HTMLImageElement.prototype) {
     const images = document.querySelectorAll('img[loading="lazy"]');

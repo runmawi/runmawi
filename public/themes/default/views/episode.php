@@ -23,6 +23,10 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
       }
 </style>
 
+<?php if (Session::has('message')): ?>
+    <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  echo Session::get('message') ?></div>
+<?php endif ;?>
+
 <!-- free content - hide & show -->
 
 <!-- <div class="row free_content">
@@ -359,7 +363,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '"  allowfullscreen></iframe>';
                 ?>
 
-                <div class="col-md-5">
+                <div class="col-md-12">
                     <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                         <li>
                             <?php if($episode_watchlater == null){ ?>

@@ -193,11 +193,25 @@
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
 
+<?php if (Session::has('message')): ?>
+    <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  echo Session::get('message') ?></div>
+<?php endif ;?>
+
 <?php
 
 include('livevideo_ads.blade.php');  
 
-$autoplay = $live_ads == null ? "autoplay" : "" ;    
+
+    if( $live_ads == null ){
+
+        $autoplay = " "  ;  
+
+    }elseif( $video->free_duration_status == 1 && $video->free_duration != null ){
+        $autoplay = " "  ;  
+
+    }else{
+        $autoplay = "autoplay"  ;  
+    }
 
 $str = $video->mp4_url;
 
@@ -358,8 +372,7 @@ if(!Auth::guest()){
                 </div>
             </div>
 
-            <?php  } elseif ( Auth::user()->role == "registered" && $video->access == 'ppv' && $video->free_duration_status == 1 && $video->free_duration != null  ) { ?>       
-
+            <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  ( $video->access = "ppv" && Auth::check() == true ? Auth::user()->role != "admin" : Auth::guest() ) ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>       
 
             <div id="video_bg"> 
             <div class="">
@@ -554,8 +567,8 @@ if(!Auth::guest()){
     }
 
     else{  
-
-        if (Auth::guest() && empty($video->ppv_price)) {  ?>
+        
+        if (Auth::guest() && empty($video->ppv_price) && $video->free_duration_status == 0  ) { ?>
             <div id="video_bg"> 
             <div class="">
                 <div id="video sda" class="fitvid" style="margin: 0 auto;">
@@ -680,8 +693,7 @@ if(!Auth::guest()){
 
         <?php } ?>
 
-        <?php  } elseif ( Auth::guest() && $video->access == 'ppv' && $video->free_duration_status == 1 && $video->free_duration != null  ) { ?>       
-
+        <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  ( $video->access = "ppv" && Auth::check() == true ? Auth::user()->role != "admin" : Auth::guest() ) ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>       
 
             <div id="video_bg"> 
             <div class="">
@@ -689,7 +701,7 @@ if(!Auth::guest()){
 
                     <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-                            <video id="live_player_mp4" <?= $autoplay ?>  onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" >
+                            <video id="live_player_mp4" <?= $autoplay ?>  class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" >
                                 <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
                                 <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
                             </video>

@@ -25,6 +25,10 @@ border-radius: 0px 4px 4px 0px;
         color: rgba(66, 149, 210, 1);
 
     }
+
+body.dark .table-bordered td, .table-bordered th {
+    color: black;
+}
 </style>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
 <div id="content-page" class="content-page">
@@ -141,6 +145,7 @@ border-radius: 0px 4px 4px 0px;
                     <th class="text-center">Currency Symbol</th>
                     <th class="text-center">Currency Country</th>
                     <th class="text-center">Action</th>
+                    <th class="text-center">Enable Multi Currency</th>
                 </tr>
                     @foreach($allCurrency as $Currency)
                     <tr class="dd" id="{{ $Currency->id }}">
@@ -153,6 +158,15 @@ border-radius: 0px 4px 4px 0px;
 											 onclick="return confirm('Are you sure?')"   data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
                            
                         </td>
+						<td>
+						<!-- enable_multi_currency -->
+							<div class="mr-2">Disable</div>
+									<label class="switch mt-2">
+									<input  type="checkbox" name="enable_multi_currency" class="enable_multi_currency" id="enable_multi_currency">
+									<span class="slider round"></span>
+									</label>
+							<div class="ml-2">Enable</div>
+						</td>
                     </tr>
                     @endforeach
             </table>
@@ -167,6 +181,8 @@ border-radius: 0px 4px 4px 0px;
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 </div>
 	@section('javascript')
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 		<script type="text/javascript">
@@ -200,6 +216,46 @@ border-radius: 0px 4px 4px 0px;
 			    return false;
 			});
 
+					$('.enable_multi_currency').on('change', function(event) {
+						var enable_multi_currency    = $("#enable_multi_currency").prop("checked");      
+                        if(enable_multi_currency == true){
+                            Swal.fire({
+                                title: 'Multi Currency Enable',
+                            })
+
+                            var enable_multi_currency = 1;
+
+                                $.ajax({
+                                    url: "{{ URL::to('/admin/enable_multi_currency') }}",
+                                    type: "post",
+                            data: {
+                                            _token: '{{ csrf_token() }}',
+                                            enable_multi_currency: enable_multi_currency
+
+                                        },        success: function(value){
+                                        console.log(value);
+                                    }
+                                });
+                        }else{
+
+                            Swal.fire({
+                                title: 'Multi Currency Disable',
+                            })
+
+                            var enable_multi_currency = 0;
+                                $.ajax({
+                                    url: "{{ URL::to('/admin/enable_multi_currency') }}",
+                                    type: "post",
+                            data: {
+                                            _token: '{{ csrf_token() }}',
+                                            enable_multi_currency: enable_multi_currency
+
+                                        },        success: function(value){
+                                        console.log(value);
+                                    }
+                                });
+                        }
+					});
 
 		});
 		</script>

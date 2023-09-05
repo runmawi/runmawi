@@ -291,10 +291,70 @@
                   endif; ?> Views 
                </span>
             </div>
-            <div class="col-md-4">
-               <div class="ml-2 btn bd video-open playbtn mb-2 "  aria-hidden="true"  onclick="episodewishlist(this)"> Add to Watch Later </div>
-               <div class="ml-2 btn bd video-open playbtn mb-2 "  aria-hidden="true"  onclick="episodewishlist(this)" > Add to Wish list </div>
-            </div>
+            
+            <div class="col-md-12">
+                    <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+
+                        <li>
+                            <?php if($episode_watchlater == null){ ?>
+                            <span id="<?php echo 'episode_add_watchlist_' . $episode->id; ?>" class="slider_add_watchlist" aria-hidden="true"
+                                data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodewatchlater(this)"> <i class="fa fa-plus-circle"
+                                    aria-hidden="true"></i> </span>
+                            <?php }else{?>
+                            <span id="<?php echo 'episode_add_watchlist_' . $episode->id; ?>" class="slider_add_watchlist" aria-hidden="true"
+                                data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodewatchlater(this)"> <i class="fa fa-minus-circle"
+                                    aria-hidden="true"></i> </span>
+                            <?php } ?>
+                        </li>
+
+                        <li>
+                            <?php if($episode_Wishlist == null){ ?>
+                            <span id="<?php echo 'episode_add_wishlist_' . $episode->id; ?>" class="episode_add_wishlist_" aria-hidden="true"
+                                data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodewishlist(this)"><i class="fa fa-heart-o" aria-hidden="true"></i>
+                            </span>
+                            <?php }else{?>
+                            <span id="<?php echo 'episode_add_wishlist_' . $episode->id; ?>" class="episode_add_wishlist_" aria-hidden="true"
+                                data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodewishlist(this)"> <i class="fa  fa-heart"
+                                    aria-hidden="true"></i></span>
+                            <?php } ?>
+                        </li>
+
+                        <li>
+                        <?php if(empty($like_dislike->liked) || !empty($like_dislike->liked) && $like_dislike->liked == 0){ ?>
+                            <span id="<?php echo 'episode_like_' . $episode->id; ?>" class="episode_like_" aria-hidden="true"
+                                data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodelike(this)"><i class="ri-thumb-up-line" aria-hidden="true"></i>
+                            </span>
+                            <?php }else{?>
+                            <span id="<?php echo 'episode_like_' . $episode->id; ?>" class="episode_like_" aria-hidden="true"
+                                data-list="remove" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodelike(this)"> <i class="ri-thumb-up-fill"
+                                    aria-hidden="true"></i></span>
+                            <?php } ?>
+                        </li>
+
+                        <li>
+                            <?php if(empty($like_dislike->disliked) ||  !empty($like_dislike->disliked) &&  $like_dislike->disliked == 0){ ?>
+                            <span id="<?php echo 'episode_dislike_' . $episode->id; ?>" class="episode_dislike_" aria-hidden="true"
+                                data-list="<?php echo $episode->id; ?>" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodedislike(this)"><i class="ri-thumb-down-line" aria-hidden="true"></i>
+                            </span>
+
+                            <?php }else{?>
+                            <span id="<?php echo 'episode_dislike_' . $episode->id; ?>" class="episode_dislike_" aria-hidden="true"
+                                data-list="remove" data-myval="10" data-video-id="<?php echo $episode->id; ?>"
+                                onclick="episodedislike(this)"> <i class="ri-thumb-down-fill"
+                                    aria-hidden="true"></i></span>
+
+                            <?php } ?>
+                        </li>
+
+                    </ul>
+                </div>
             <!-- <div>
                <?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") {
                   ?>
@@ -771,12 +831,211 @@
                }
      });
    
-   
-   function episodewishlist(ele) 
-   {
-       var redirect_page = "<?php echo URL::to('/login')?>";
-       window.location.replace(redirect_page);
+   function episodewatchlater(ele) {
+      var episode_id = $(ele).attr('data-video-id');
+      var key_value = $(ele).attr('data-list');
+      var id = '#episode_add_watchlist_' + key_value;
+      var my_value = $(id).data('myval');
+
+      if (my_value != "remove") {
+            var url = '<?= URL::to('/episode_watchlist') ?>';
+      } else if (my_value == "remove") {
+            var url = '<?= URL::to('/episode_watchlist_remove') ?>';
+      }
+
+      $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+               episode_id: episode_id,
+            },
+            success: function(data) {
+
+               if (data.message == "Remove the Watch list") {
+
+                  $(id).data('myval');
+                  $(id).data('myval', 'remove');
+                  $(id).find($(".fa")).toggleClass('fa fa-plus-circle').toggleClass('fa fa-minus-circle');
+
+                  $("body").append(
+                        '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
+                        );
+                  setTimeout(function() {
+                        $('.add_watch').slideUp('fast');
+                  }, 3000);
+
+               } else if (data.message == "Add the Watch list") {
+                  $(id).data('myval');
+                  $(id).data('myval', 'add');
+                  $(id).find($(".fa")).toggleClass('fa fa-minus-circle').toggleClass('fa fa-plus-circle');
+
+                  $("body").append(
+                        '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
+                        );
+                  setTimeout(function() {
+                        $('.remove_watch').slideUp('fast');
+                  }, 3000);
+               } 
+            }
+      })
    }
+
+   function episodewishlist(ele) {
+
+         var episode_id = $(ele).attr('data-video-id');
+         var key_value = $(ele).attr('data-list');
+         var id = '#episode_add_wishlist_' + key_value;
+         var my_value = $(id).data('myval');
+
+         if (my_value != "remove") {
+               var url = '<?= URL::to('/episode_wishlist') ?>';
+         } else if (my_value == "remove") {
+               var url = '<?= URL::to('/episode_wishlist_remove') ?>';
+         }
+
+         $.ajax({
+               url: url,
+               type: 'get',
+               data: {
+                  episode_id: episode_id,
+               },
+               success: function(data) {
+
+                  if (data.message == "Remove the Watch list") {
+
+                     $(id).data('myval');
+                     $(id).data('myval', 'remove');
+                     $(id).find($(".fa")).toggleClass('fa fa-heart-o').toggleClass('fa fa-heart');
+
+                     $("body").append(
+                           '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
+                           );
+                     setTimeout(function() {
+                           $('.add_watch').slideUp('fast');
+                     }, 3000);
+
+                  } else if (data.message == "Add the Watch list") {
+                     $(id).data('myval');
+                     $(id).data('myval', 'add');
+                     $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa fa-heart-o');
+
+                     $("body").append(
+                           '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
+                           );
+                     setTimeout(function() {
+                           $('.remove_watch').slideUp('fast');
+                     }, 3000);
+                  } else if (data.message == "guest") {
+                     window.location.replace('<?php echo URL::to('/login'); ?>');
+                  }
+               }
+         })
+   }
+
+      function episodelike(ele) {
+
+         var episode_id = $(ele).attr('data-video-id');
+         var key_value = $(ele).attr('data-list');
+         var id = '#episode_like_dislike_' + key_value;
+         var my_value = $(id).data('myval');
+         
+         if (key_value != "remove") {
+               var url = '<?= URL::to('/like-episode') ?>';
+         } else if (key_value == "remove") {
+               var url = '<?= URL::to('/remove_like-episode') ?>';
+         }
+         $.ajax({
+               url: url,
+               type: 'post',
+               data: {
+                  episode_id: episode_id,
+                  _token: '<?= csrf_token() ?>'
+               },
+               success: function(data) {
+
+                  if (data.message == "Removed from Liked Episode") {
+
+                     $(id).data('myval');
+                     $(id).data('myval', 'remove');
+                     $(id).find($(".fa")).toggleClass('ri-thumb-up-fill').toggleClass('ri-thumb-up-line');
+
+
+                     $("body").append(
+                           '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from Liked Episode</div>'
+                           );
+                     setTimeout(function() {
+                           $('.remove_watch').slideUp('fast');
+                     }, 3000);
+
+                  } else if (data.message == "Added to Like Episode") {
+                     $(id).data('myval');
+                     $(id).data('myval', 'add');
+                     $(id).find($(".fa")).toggleClass('ri-thumb-up-line').toggleClass('fri-thumb-up-fill');
+
+                     $("body").append(
+                           '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to Like Episode</div>'
+                           );
+                     setTimeout(function() {
+                           $('.add_watch').slideUp('fast');
+                     }, 3000);
+                  } 
+               }
+         })
+      }
+
+      function episodedislike(ele) {
+
+         var episode_id = $(ele).attr('data-video-id');
+         var key_value = $(ele).attr('data-list');
+         var id = '#episode_like_dislike_' + key_value;
+         var my_value = $(id).data('myval');
+         
+         if (key_value != "remove") {
+               var url = '<?= URL::to('/dislike-episode') ?>';
+         } else if (key_value == "remove") {
+               var url = '<?= URL::to('/remove_dislike-episode') ?>';
+         }
+         $.ajax({
+               url: url,
+               type: 'post',
+               data: {
+                  episode_id: episode_id,
+                  _token: '<?= csrf_token() ?>'
+               },
+               success: function(data) {
+
+                  if (data.message == "Removed from DisLiked Episode") {
+
+                     $(id).data('myval');
+                     $(id).data('myval', 'remove');
+                     $(id).find($(".fa")).toggleClass('ri-thumb-down-fill').toggleClass(
+                     'ri-thumb-down-line');
+
+
+                     $("body").append(
+                           '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from DisLiked Episode</div>'
+                           );
+                     setTimeout(function() {
+                           $('.remove_watch').slideUp('fast');
+                     }, 3000);
+
+                  } else if (data.message == "Added to DisLike Episode") {
+                     $(id).data('myval');
+                     $(id).data('myval', 'add');
+                     $(id).find($(".fa")).toggleClass('ri-thumb-down-line').toggleClass(
+                           'fri-thumb-down-fill');
+
+                     $("body").append(
+                           '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to DisLike Episode</div>'
+                           );
+                     setTimeout(function() {
+                           $('.add_watch').slideUp('fast');
+                     }, 3000);
+                  }
+               }
+         })
+      }
+
 </script>
 
 <?php

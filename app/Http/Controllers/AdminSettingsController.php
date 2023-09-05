@@ -27,6 +27,7 @@ use App\CompressImage;
 use App\Captcha;
 use App\TimeZone;
 use App\CommentSection;
+use App\WebComment;
 use Illuminate\Support\Facades\File;
 
 //use Illuminate\Http\Request;
@@ -198,6 +199,7 @@ class AdminSettingsController extends Controller
         $settings->access_free = $request['access_free'];
         $settings->enable_landing_page = $request['enable_landing_page'];
         $settings->facebook_page_id = $request['facebook_page_id'];
+        $settings->tiktok_page_id = $request['tiktok_page_id'];
         $settings->google_page_id = $request['google_page_id'];
         $settings->twitter_page_id = $request['twitter_page_id'];
         $settings->instagram_page_id = $instagram_page_id;
@@ -1126,9 +1128,18 @@ class AdminSettingsController extends Controller
 
     public function comment_section(Request $request)
     {
-        $comment_section = CommentSection::first();
+        try {
+            
+            $data = array(
+                'comment_section' => CommentSection::first() ,
+                'webcomments'     => WebComment::where('approved',0 )->get(),
+            );
 
-        return view('admin.settings.comment_section', compact('comment_section', $comment_section));
+            return view('admin.settings.comment_section', $data);
+
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     public function comment_section_update(Request $request)
@@ -1155,4 +1166,14 @@ class AdminSettingsController extends Controller
             ->route('comment_section')
             ->with(['message' => 'Successfully Updated!', 'note_type' => 'success']);
     }
+
+
+    public function comment_status_update(Request $request)
+    {
+        WebComment::find($request->id)->update(['approved' => $request->status ]);
+
+        $status_button = $request->status == 1 ? "<td><span style='color:green'> Approved </span></td>" : "<td> <span style=color:red'> Not Approved </span></td>" ;
+
+        return response()->json(['success' => true , 'id' => 'status-'.$request->id , 'status_button' => $status_button  ]);
+    }   
 }

@@ -8,6 +8,10 @@ $uri_path = $_SERVER['REQUEST_URI'];
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
+
+$theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+$theme = App\SiteTheme::first();
+
 // print_r($uppercase);
 // exit();
       ?>
@@ -206,8 +210,18 @@ i.fa.fa-google-plus {
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
+
                       <div align="center">
-                          <img class="" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Sign Up</h3>
+                                      
+                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
+                            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                                <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
+                            <?php }else { ?> 
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                            <?php } ?>
+
+                          <h3 class="mb-3 text-center">Sign Up</h3>
                       </div>
                       <form onsubmit="return ValidationEvent()" action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
@@ -336,8 +350,13 @@ i.fa.fa-google-plus {
                             
                                  @if (!empty($SignupMenu) && $SignupMenu->state == 1)
                                     <div class="col-md-12">
-                                        <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus>
-
+                                        <!-- <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus> -->
+                                        <select class="phselect form-control" name="state" id="state-dropdown" >
+                                        <option>Select State</option>
+                                            <!-- @foreach($State as $code)
+                                            <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
+                                            @endforeach -->
+                                    </select>  
                                         @error('state')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -349,8 +368,13 @@ i.fa.fa-google-plus {
                                     
                                 @if (!empty($SignupMenu) && $SignupMenu->city == 1)
                                     <div class="col-md-12">
-                                        <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus>
-
+                                        <!-- <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus> -->
+                                        <select class="phselect form-control" name="city" id="city-dropdown" >
+                                        <option>Select City</option>
+                                            <!-- @foreach($State as $code)
+                                            <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
+                                            @endforeach -->
+                                    </select>  
                                         @error('city')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -363,7 +387,7 @@ i.fa.fa-google-plus {
                                 @if(!empty($SignupMenu) && $SignupMenu->support_username == 1)
                                 <div class="col-md-12" style="postion:relative;">
                                     <select class="phselect form-control" name="support_username" id="support_username" >
-                                        <option>Select Support User</option>
+                                        <option>Select Support Musician</option>
                                             @foreach($Artists as $Artist)
                                             <option value="{{  $Artist['artist_name'] }}">{{ $Artist['artist_name'] }}</option>
                                             @endforeach
@@ -394,17 +418,16 @@ i.fa.fa-google-plus {
                                 @endif
                             </div>
 
-							<div class="col-md-12" id="mob">
+							<div class="col-md-12 d-flex" id="mob">
                                 <input id="password-confirm" type="checkbox" name="terms" value="1" required>
 								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;text-decoration: underline;
     cursor: pointer;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
 
-                            <div class="sign-up-buttons col-md-12" align="right">
+                            <div class="sign-up-buttons col-md-12 ">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <!-- <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button> -->
-                                  <input class="btn btn-hover btn-primary btn-block signup" style="border: #f3ece0 !important;color: white;background-color: #006aff!important;display: block;" type="submit" name="create-account" value="Sign Up Today">
-
+                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                             </div>
                         
@@ -498,6 +521,59 @@ i.fa.fa-google-plus {
   
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
+
+$(document).ready(function() {
+
+$('#country').on('change', function() {
+    
+    var country_id = this.value;
+    // alert(country_id);
+    $("#state-dropdown").html('');
+        $.ajax({
+        url:"{{url::to('/getState')}}",
+        type: "POST",
+        data: {
+        country_id: country_id,
+        _token: '{{csrf_token()}}' 
+        },
+        dataType : 'json',
+        success: function(result){
+        $('#state-dropdown').html('<option value="">Select State</option>'); 
+        $.each(result.states,function(key,value){
+        $("#state-dropdown").append('<option value="'+value.name+'">'+value.name+'</option>');
+        });
+        $('#city-dropdown').html('<option value="">Select State First</option>'); 
+        }
+    });
+
+}); 
+
+
+
+        $('#state-dropdown').on('change', function() {
+            var state_id = this.value;
+            // alert(state_id);
+            $("#city-dropdown").html('');
+            $.ajax({
+            url:"{{url::to('/getCity')}}",
+            type: "POST",
+            data: {
+            state_id: state_id,
+            _token: '{{csrf_token()}}' 
+            },
+            dataType : 'json',
+            success: function(result){
+            $('#city-dropdown').html('<option value="">Select City</option>'); 
+            $.each(result.cities,function(key,value){
+            $("#city-dropdown").append('<option value="'+value.name+'">'+value.name+'</option>');
+            });
+            }
+            });
+        });
+});
+
+
+
     $(document).ready(function(){
          $('#error_password').hide();
 

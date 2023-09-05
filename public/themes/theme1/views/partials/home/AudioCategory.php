@@ -63,23 +63,18 @@ ol.breadcrumb {
                                     </div>
 
                                     <div class="block-description">
-                                        <a href="<?php echo URL::to('/audio/').'/'.$Audio_Category->slug  ?>">
-                                            <h6><?php  echo (strlen(@$Audio_Category->title) > 17) ? substr(@$Audio_Category->title,0,18).'...' : @$Audio_Category->title; ?>
-                                            </h6>
-                                        </a>
-                                        <div class="hover-buttons">
-                                            <div>
-                                            </div>
-                                        </div>
                                         <div>
-                                            <a class="text-white"
-                                                href="<?php echo URL::to('/audio'.'/'.$Audio_Category->slug  ) ?> ">
+                                            <a class="text-white" href="<?php echo URL::to('/audio'.'/'.$Audio_Category->slug  ) ?> ">
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                 Visit Audio Player
                                             </a>
                                         </div>
                                     </div>
                                 </div>
+                            </a>
+                            <a href="<?php echo URL::to('/audio/').'/'.$Audio_Category->slug  ?>">
+                                <h6><?php  echo (strlen(@$Audio_Category->title) > 17) ? substr(@$Audio_Category->title,0,18).'...' : @$Audio_Category->title; ?>
+                                </h6>
                             </a>
                         </li>
 

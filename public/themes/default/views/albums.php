@@ -256,8 +256,8 @@
       <div class="row album-top-30 mt-4 align-items-center">
 
         <div class="col-lg-8">
-          <audio id="myAudio" ontimeupdate="onTimeUpdate()">
-            <source id="source-audio" src="" type="audio/mpeg"> Your browser does not support the audio element.
+          <audio id="myAudio" ontimeupdate="onTimeUpdate()" autoplay >
+            <source id="source-audio" src="" autoplay type="audio/mpeg"> Your browser does not support the audio element.
           </audio>
               <!-- <div class="cinetpay_button"> -->
                   <!-- CinetPay Button -->
@@ -310,7 +310,9 @@
                         </div>
 
                       <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
-                      
+                        <i class="ri-thumb-up-line like" aria-hidden="true"  id="ff"  data-authenticated="<?= !Auth::guest() ?>"></i>
+                        <i class="ri-thumb-down-line dislike" aria-hidden="true"   id="ff" data-authenticated="<?= !Auth::guest() ?>"></i>
+
                       <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
 
                       <div class="dropdown">
@@ -738,7 +740,10 @@ window.location = '<?= URL::to('login') ?>';
       if(role == 'admin'){
             var player = document.querySelector('#source-audio')
           player.src = listAudio[index].mp3_url
-          document.querySelector('.title').innerHTML = listAudio[index].title
+          document.querySelector('.title').innerHTML = listAudio[index].title    
+          document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+          document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+          document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
           var image = document.querySelector('#audio_img')
           image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image 
 
@@ -757,7 +762,9 @@ window.location = '<?= URL::to('login') ?>';
           // alert(access);
 
           document.querySelector('#enable_button').style.display = 'none';
-
+          document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+          document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+          document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
         var player = document.querySelector('#source-audio')
 
         player.src = listAudio[index].mp3_url
@@ -771,7 +778,10 @@ window.location = '<?= URL::to('login') ?>';
         this.indexAudio = index;
       }else if(access == 'ppv'){ 
         // alert(audioppv_id);
-        var audioppv = <?php echo json_encode(@$ablum_audios); ?>;
+        var audioppv = <?php echo json_encode(@$ablum_audios); ?>;    
+          document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+          document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+          document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
         var ppv_audio_status = 0;
 
         var id = audioppv_id ;
@@ -868,7 +878,9 @@ window.location = '<?= URL::to('login') ?>';
 
         var role = <?php echo json_encode($role) ?>;
         // alert(role);
-
+        document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+        document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+        document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
         if(role == 'subscriber'){
               var player = document.querySelector('#source-audio')
 
@@ -926,19 +938,30 @@ window.location = '<?= URL::to('login') ?>';
   var access = <?php echo json_encode(@$first_album_access) ; ?>  
   var role = <?php echo json_encode(@$role) ; ?>  
   var ppv_status = <?php echo json_encode(@$ppv_status) ; ?>  
-
+  var audiosid = <?php echo json_encode(@$first_album_id) ; ?>  
+  var audioslug = <?php $first_album_slug = $album_audios->first() ? $album_audios->first()->image : null;
+                   echo json_encode(@$first_album_slug) ; ?>
   // alert(ppv_status)
   if(role == 'admin'){
     document.querySelector('#source-audio').src = <?php echo json_encode(@$first_album_mp3_url) ; ?>  
+    document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
+    document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
+    document.querySelector(".like").setAttribute("data-audio-id", audiosid);
   }else{
     if(access == 'ppv' && ppv_status == 0){
       document.getElementById("enable_button").setAttribute("data-price", <?php echo json_encode(@$first_album_ppv_price) ; ?>);
       document.getElementById("enable_button").setAttribute("audio-id", <?php echo json_encode(@$first_album_id) ; ?>);
       document.querySelector('#enable_button').style.display = 'block';
       document.querySelector('#source-audio').src = '';
+      document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
+      document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
+      document.querySelector(".like").setAttribute("data-audio-id", audiosid);
           alert("Purchase Audio"); 
     }else{
       document.querySelector('#source-audio').src = <?php echo json_encode(@$first_album_mp3_url) ; ?>  
+      document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
+      document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
+      document.querySelector(".like").setAttribute("data-audio-id", audiosid);
     }
   }
 
@@ -998,6 +1021,12 @@ window.location = '<?= URL::to('login') ?>';
       if (this.indexAudio < listAudio.length-1) {
           var index = parseInt(this.indexAudio)+1
           this.loadNewTrack(index)
+      }else{
+              var url =  "<?php echo URL::to('audio/related-playlist')  ?>";
+              var  audio_id = document.querySelector(".like").getAttribute("data-audio-id");
+              var  audio_slug = document.querySelector(".like").getAttribute("data-audio-slug");
+              var link_url = url+'/'+audio_slug;
+              location.href = link_url;
       }
     }
   }

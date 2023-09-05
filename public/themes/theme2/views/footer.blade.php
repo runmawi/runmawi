@@ -386,6 +386,9 @@ function about(evt , id) {
 //document.getElementById("defaultOpen").click();
 </script>
 
+<?php  $search_dropdown_setting = App\SiteTheme::pluck('search_dropdown_setting')->first(); ?>
+<input type="hidden" value="<?= $search_dropdown_setting ?>" id="search_dropdown_setting" >
+
 <script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {
@@ -411,14 +414,19 @@ function about(evt , id) {
                      );
     $(document).on('click', 'li', function(){
       var value = $(this).text();
+      let search_dropdown_setting = $('#search_dropdown_setting').val() ;
+
       $('.search').val(value);
       $('.search_list').html("");
-      $(".home-search").show();
+      
+      if( search_dropdown_setting == 1 ){
+        $(".home-search").show();
+      }else{
+        $(".home-search").hide();
+      }
 
-    }
-                  );
-  }
-                   );
+    });
+  });
 </script>
 <!--<script>
 window.onscroll = function() {myFunction()};
@@ -452,18 +460,25 @@ function myFunction() {
 </script>
 
 <?php
-  if(Route::currentRouteName() == "LiveStream_play"){
+
+try {
+  
+  if(Route::currentRouteName() == "LiveStream_play"):
 
     include('livevideo_player_script.blade.php');
-  }
-  elseif ( Route::currentRouteName() == "play_episode"){
+
+  elseif ( Route::currentRouteName() == "play_episode"):
 
     include('episode_player_script.blade.php');
-  }
-  else{
+  else:
 
     include('footerPlayerScript.blade.php');
-  }
+  endif;
+
+} catch (\Throwable $th) {
+  //throw $th;
+}
+  
 ?>
 <script>
   if ('loading' in HTMLImageElement.prototype) {

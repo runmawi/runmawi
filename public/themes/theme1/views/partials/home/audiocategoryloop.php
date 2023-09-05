@@ -54,11 +54,12 @@
                             foreach($audios as $audio): 
                         ?>
                     <li class="slide-item">
-                        <a href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
                             <div class="block-images position-relative">
                                 <div class="img-box">
                                     <!-- block-images -->
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $audio->image; ?>" class="img-fluid w-100" alt="cate">
+                                    <a href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
+                                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $audio->image; ?>" class="img-fluid w-100" alt="cate">
+                                    </a>
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
                                         <?php  if($audio->access == 'subscriber' ){ ?>
@@ -76,11 +77,24 @@
                                 </div>
                                 <div class="block-description">
                                     <a href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
-                                        <?php if($ThumbnailSetting->title == 1) { ?>
+                                        <div class="hover-buttons">
+                                            <a type="button" class="text-white d-flex align-items-center"
+                                                href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
+                                                <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
+                                                    width="10%" height="10%" />
+                                            </a>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                        <?php if($ThumbnailSetting->title == 1) { ?>
                                         <!-- Title -->
+                                        <a href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
                                         <h6>
                                             <?php echo strlen($audio->title) > 17 ? substr($audio->title, 0, 18) . '...' : $audio->title; ?>
                                         </h6>
+                                        </a>
                                         <?php } ?>
                                         <div class="movie-time d-flex align-items-center pt-1">
                                             
@@ -135,17 +149,6 @@
                                             </span>
                                             <?php } ?>
                                         </div>
-                                        <div class="hover-buttons">
-                                            <a type="button" class="text-white d-flex align-items-center"
-                                                href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
-                                                <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
-                                                    width="10%" height="10%" /> Watch Now
-                                            </a>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </a>
                     </li>
                     <?php   endforeach;  endif; ?>
 

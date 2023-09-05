@@ -204,6 +204,8 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->prevent_inspect = !empty($data['prevent_inspect']) ? '1' : '0';
 
+        $theme_settings->search_dropdown_setting = !empty($data['search_dropdown_setting']) ? '1' : '0';
+
         $theme_settings->loader_setting = !empty($data['loader_setting']) ? '1' : '0';
 
         $theme_settings->style_sheet_link = !empty($data['style_sheet_link']) ? $data['style_sheet_link'] : null;
@@ -215,6 +217,8 @@ class AdminThemeSettingsController extends Controller
         $theme_settings->signup_step2_title = $request->signup_step2_title ? $request->signup_step2_title : null;
 
         $theme_settings->my_profile_theme = !empty($data['my_profile_theme']) ? '1' : '0';
+
+        $theme_settings->signin_header = !empty($data['signin_header']) ? '1' : '0';
 
         $theme_settings->save();
 
