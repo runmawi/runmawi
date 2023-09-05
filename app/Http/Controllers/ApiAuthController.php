@@ -131,7 +131,6 @@ use App\AdminVideoPlaylist;
 use App\MusicStation as MusicStation;
 use App\UserMusicStation as UserMusicStation;
 use Stripe\Stripe;
-use Stripe\Checkout\Session as StripeSession;
 
 class ApiAuthController extends Controller
 {
@@ -2939,57 +2938,21 @@ public function verifyandupdatepassword(Request $request)
     $amount_ppv = Video::where('id',$video_id)->pluck('ppv_price')->first();
     if($payment_type == 'stripe'){
 
-
-      Stripe::setApiKey(env('STRIPE_SECRET'));
-
-      // Create a Stripe Checkout session
-      $session = StripeSession::create([
-          'payment_method_types' => ['card'],
-          'line_items' => [
-              [
-                  'price_data' => [
-                      'currency' => 'usd',
-                      'unit_amount' => $request->get('amount'), // Set the price in cents
-                      'product_data' => [
-                          'name' => 'PPV Content',
-                          'description' => 'Access to PPV content',
-                      ],
-                  ],
-                  'quantity' => 1,
-              ],
-          ],
-          'mode' => 'payment',
-          'success_url' => route('checkout.success'), // Redirect URL on successful payment
-          'cancel_url' => route('checkout.cancel'),   // Redirect URL on canceled payment
-      ]);
-
     $paymentMethod = $request->get('py_id');
-    // $payment_settings = PaymentSetting::first();
+    $payment_settings = PaymentSetting::first();
 
-    // $pay_amount = PvvPrice();
-    // $pay_amount = $pay_amount*100;
-    // $charge = $user->charge($pay_amount, $paymentMethod);
-    $setting = Setting::first();  
-    $ppv_hours = $setting->ppv_hours;
-    // $to_time =  Carbon::now()->addHour($ppv_hours);
-    $d = new \DateTime('now');
-    $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
-    $now = $d->format('Y-m-d h:i:s a');
-    // dd($now);
-    $time = date('h:i:s', strtotime($now));
-    $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));
-
-  
-
-    if($session->id != ''){
+    $pay_amount = PvvPrice();
+    $pay_amount = $pay_amount*100;
+    $charge = $user->charge($pay_amount, $paymentMethod);
+    if($charge->id != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $to_time,'total_amount'=> $amount_ppv, ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
         send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
       } else {
-        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $to_time]);
+        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
       }
 
       $response = array(
