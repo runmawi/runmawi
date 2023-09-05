@@ -203,16 +203,22 @@ class AdminVideosController extends Controller
                         elseif(isset($video->type) && $video->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
                         elseif(isset($video->type) && $video->type == "embed"){ $type = 'Embed Video'; }
                         else{ $type = ''; }
-                        if ($row->active == 0) {
-                            $active = "Pending";
-                            $class = "bg-warning";
-                        } elseif ($row->active == 1) {
-                            $active = "Approved";
-                            $class = "bg-success";
+
+                        if ($row->draft == null ) {
+                            $active = "Draft";
+                            $class = "bg-warning video_active";
+                        } elseif ( $row->draft == 1 && $row->status == 1 && $row->active == 1 ) {
+                            $active = "Published";
+                            $class = "bg-success video_active";
                         } else {
-                            $active = "Rejected";
-                            $class = "bg-danger";
+                            $active = "Draft";
+                            $class = "bg-warning video_active";
                         }
+                        if($video->draft != null && $video->draft == 1 && $video->status != null && $video->status == 1 && $video->active != null && $video->active == 1){ 
+                                $style = "";
+                         } else{
+                                $style = "opacity: 0.6; cursor: not-allowed;";
+                         }
                         $username = @$row->cppuser->username
                             ? "Upload By" . " " . @$row->cppuser->username
                             : "Upload By Admin";
@@ -253,7 +259,7 @@ class AdminVideosController extends Controller
                 '</label>'.
                     '</td>
          <td> ' .
-                            "<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
+                            "<a class='iq-bg-warning' data-toggle='tooltip' style = .$style . data-original-title='Disable View' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
         </a>" .
                             '
         ' .
