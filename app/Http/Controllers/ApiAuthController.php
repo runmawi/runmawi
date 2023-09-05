@@ -2959,8 +2959,8 @@ public function verifyandupdatepassword(Request $request)
               ],
           ],
           'mode' => 'payment',
-          // 'success_url' => route('checkout.success'), // Redirect URL on successful payment
-          // 'cancel_url' => route('checkout.cancel'),   // Redirect URL on canceled payment
+          'success_url' => '', // Redirect URL on successful payment
+          'cancel_url' => '',   // Redirect URL on canceled payment
       ]);
 
     $paymentMethod = $request->get('py_id');
