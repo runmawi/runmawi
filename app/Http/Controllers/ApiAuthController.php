@@ -130,6 +130,8 @@ use App\VideoPlaylist;
 use App\AdminVideoPlaylist;
 use App\MusicStation as MusicStation;
 use App\UserMusicStation as UserMusicStation;
+use Stripe\Stripe;
+use Stripe\Checkout\Session as StripeSession;
 
 class ApiAuthController extends Controller
 {
@@ -2937,6 +2939,30 @@ public function verifyandupdatepassword(Request $request)
     $amount_ppv = Video::where('id',$video_id)->pluck('ppv_price')->first();
     if($payment_type == 'stripe'){
 
+
+      Stripe::setApiKey(env('STRIPE_SECRET'));
+
+      // Create a Stripe Checkout session
+      $session = StripeSession::create([
+          'payment_method_types' => ['card'],
+          'line_items' => [
+              [
+                  'price_data' => [
+                      'currency' => 'usd',
+                      'unit_amount' => $request->get('amount'), // Set the price in cents
+                      'product_data' => [
+                          'name' => 'PPV Content',
+                          'description' => 'Access to PPV content',
+                      ],
+                  ],
+                  'quantity' => 1,
+              ],
+          ],
+          'mode' => 'payment',
+          // 'success_url' => route('checkout.success'), // Redirect URL on successful payment
+          // 'cancel_url' => route('checkout.cancel'),   // Redirect URL on canceled payment
+      ]);
+
     $paymentMethod = $request->get('py_id');
     // $payment_settings = PaymentSetting::first();
 
@@ -2953,27 +2979,9 @@ public function verifyandupdatepassword(Request $request)
     $time = date('h:i:s', strtotime($now));
     $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));
 
-    $payment_settings = PaymentSetting::first();  
-    $mode = $payment_settings->live_mode ;
-      if($mode == 0){
-          $secret_key = $payment_settings->test_secret_key ;
-          $publishable_key = $payment_settings->test_publishable_key ;
-      }elseif($mode == 1){
-          $secret_key = $payment_settings->live_secret_key ;
-          $publishable_key = $payment_settings->live_publishable_key ;
-      }else{
-          $secret_key= null;
-          $publishable_key= null;
-      } 
-    // $stripe = Stripe::make($secret_key, '2020-03-02');
-    $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+  
 
-    $charge = $stripe->charges()->create([
-      'currency' => 'USD',
-      'amount' => $request->get('amount')
-    ]);
-
-    if($charge->id != ''){
+    if($session->id != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
