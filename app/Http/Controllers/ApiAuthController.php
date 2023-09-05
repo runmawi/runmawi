@@ -2940,7 +2940,19 @@ public function verifyandupdatepassword(Request $request)
 
     $paymentMethod = $request->get('py_id');
     $payment_settings = PaymentSetting::first();
+    Stripe::setApiKey(env('STRIPE_SECRET'));
 
+    // Retrieve the customer by their ID
+    $customer = Customer::retrieve('customer_id');
+    
+    // Access the PaymentMethods associated with the customer
+    $paymentMethods = $customer->payment_methods->all();
+    
+    // Loop through and inspect the PaymentMethods
+    foreach ($paymentMethods as $paymentMethod) {
+      $paymentMethod = $paymentMethod->id;
+    }
+    
     $pay_amount = PvvPrice();
     $pay_amount = $pay_amount*100;
     $charge = $user->charge($pay_amount, $paymentMethod);
