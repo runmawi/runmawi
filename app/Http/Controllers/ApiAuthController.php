@@ -9676,6 +9676,7 @@ $cpanel->end();
               $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
               $details = html_entity_decode($item->description);
               $item['description'] = strip_tags($details);
+              $item['type'] = $item->url_type;
               return $item;
             });
         }
@@ -9750,6 +9751,7 @@ $cpanel->end();
 
                             $item['category_name'] = LiveCategory::where('id',$item->category_id)->pluck('slug')->first();
                             $item['category_order'] = LiveCategory::where('id',$item->category_id)->pluck('order')->first();
+                            $item['type'] = $item->url_type;
 
                             return $item;
                           });
