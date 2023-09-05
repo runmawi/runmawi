@@ -2938,20 +2938,50 @@ public function verifyandupdatepassword(Request $request)
     if($payment_type == 'stripe'){
 
     $paymentMethod = $request->get('py_id');
-    $payment_settings = PaymentSetting::first();
+    // $payment_settings = PaymentSetting::first();
 
-    $pay_amount = PvvPrice();
-    $pay_amount = $pay_amount*100;
-    $charge = $user->charge($pay_amount, $paymentMethod);
+    // $pay_amount = PvvPrice();
+    // $pay_amount = $pay_amount*100;
+    // $charge = $user->charge($pay_amount, $paymentMethod);
+    $setting = Setting::first();  
+    $ppv_hours = $setting->ppv_hours;
+    // $to_time =  Carbon::now()->addHour($ppv_hours);
+    $d = new \DateTime('now');
+    $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+    $now = $d->format('Y-m-d h:i:s a');
+    // dd($now);
+    $time = date('h:i:s', strtotime($now));
+    $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));
+
+    $payment_settings = PaymentSetting::first();  
+    $mode = $payment_settings->live_mode ;
+      if($mode == 0){
+          $secret_key = $payment_settings->test_secret_key ;
+          $publishable_key = $payment_settings->test_publishable_key ;
+      }elseif($mode == 1){
+          $secret_key = $payment_settings->live_secret_key ;
+          $publishable_key = $payment_settings->live_publishable_key ;
+      }else{
+          $secret_key= null;
+          $publishable_key= null;
+      } 
+    // $stripe = Stripe::make($secret_key, '2020-03-02');
+    $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+
+    $charge = $stripe->charges()->create([
+      'currency' => 'USD',
+      'amount' => $request->get('amount')
+    ]);
+
     if($charge->id != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $to_time,'total_amount'=> $amount_ppv, ]
         );
         send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
       } else {
-        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $to_time]);
       }
 
       $response = array(
