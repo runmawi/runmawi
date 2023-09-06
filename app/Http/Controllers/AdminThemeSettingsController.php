@@ -220,6 +220,8 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->signin_header = !empty($data['signin_header']) ? '1' : '0';
 
+        $theme_settings->audio_page_checkout = !empty($data['audio_page_checkout']) ? '1' : '0';
+
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);

@@ -54,6 +54,7 @@ use App\ThumbnailSetting;
 use App\AdminLandingPage;
 use App\PaymentSetting;
 use App\CategoryAudio;
+use App\SiteTheme;
 
 class ThemeAudioController extends Controller{
 
@@ -248,6 +249,18 @@ class ThemeAudioController extends Controller{
 
                 $merged_audios = $current_audio->merge($all_album_audios)->all();
 
+                $current_audio_lyrics   = Audio::where('album_id',$albumID)->get()->map(function ($item) {
+                    $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
+                    $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                return $item;
+                });
+                $all_album_audio_lyrics = Audio::where('album_id',$albumID)->get()->map(function ($item) {
+                    $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
+                    $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    return $item;
+                  });
+                  $merged_audios_lyrics = $current_audio_lyrics->merge($all_album_audio_lyrics)->all();
+
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
             $data = array(
                 'audios' => Audio::findOrFail($audio),
@@ -275,7 +288,8 @@ class ThemeAudioController extends Controller{
                 'commentable_type' => "play_audios" ,
                 'category_name'    => $category_name ,
                 'ThumbnailSetting' => ThumbnailSetting::first(),
-                );
+                'songs' => (array("songs" => $merged_audios_lyrics)),
+            );
             } else {
                 $data = array(
                 'messge' => 'No Audio Found'
@@ -283,7 +297,13 @@ class ThemeAudioController extends Controller{
                 
             }
 
-            return Theme::view('audio', $data);
+            $theme_settings = SiteTheme::pluck('audio_page_checkout')->first();
+            
+            if($theme_settings == 1){
+                return Theme::view('MusicAudioPlayer',$data);
+            }else{
+                return Theme::view('audio', $data);
+            }
     }
 
     /*
