@@ -1011,6 +1011,9 @@ class HomeController extends Controller
                     {
 
                         $most_watch_user = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                            ->where('videos.status', '=', '1')
+                            ->where('videos.draft', '=', '1')
+                            ->where('videos.active', '=', '1')
                             ->groupBy('video_id');
                         if ($multiuser != null)
                         {
@@ -1063,6 +1066,9 @@ class HomeController extends Controller
                     if ($Recomended->Recommendation == 1)
                     {
                         $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                            ->where('videos.status', '=', '1')
+                            ->where('videos.draft', '=', '1')
+                            ->where('videos.active', '=', '1')
                             ->groupBy('video_id')
                             ->whereNotIn('videos.id', $blocking_videos);
                         if ($Family_Mode == 1)
@@ -1087,6 +1093,9 @@ class HomeController extends Controller
                     {
 
                         $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                            ->where('videos.status', '=', '1')
+                            ->where('videos.draft', '=', '1')
+                            ->where('videos.active', '=', '1')
                             ->groupBy('video_id')
                             ->orderByRaw('count DESC');
                         if ($Family_Mode == 1)
@@ -1934,6 +1943,9 @@ class HomeController extends Controller
                 {
 
                     $most_watch_user = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')
+                        ->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')
                         ->groupBy('video_id');
                     if ($multiuser != null)
                     {
@@ -1986,6 +1998,9 @@ class HomeController extends Controller
                 if ($Recomended->Recommendation == 1)
                 {
                     $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')
+                        ->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')
                         ->groupBy('video_id')
                         ->whereNotIn('videos.id', $blocking_videos);
                     if ($Family_Mode == 1)
@@ -2010,6 +2025,9 @@ class HomeController extends Controller
                 {
 
                     $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')
+                        ->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')
                         ->groupBy('video_id')
                         ->orderByRaw('count DESC');
                     if ($Family_Mode == 1)
@@ -2041,7 +2059,11 @@ class HomeController extends Controller
                     if ($preference_genres != null)
                     {
                         $video_genres = json_decode($preference_genres);
-                        $preference_gen = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')->whereIn('category_id', $video_genres)->whereNotIn('videos.id', $blocking_videos)->groupBy('categoryvideos.video_id');
+                        $preference_gen = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                        ->where('videos.status', '=', '1')
+                        ->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')
+                        ->whereIn('category_id', $video_genres)->whereNotIn('videos.id', $blocking_videos)->groupBy('categoryvideos.video_id');
                         if ($Family_Mode == 1)
                         {
                             $preference_gen = $preference_gen->where('age_restrict', '<', 18);
@@ -2062,8 +2084,9 @@ class HomeController extends Controller
                         $preference_Lan = Video::Select('videos.*','languagevideos.*','videos.id as pre_video_id')->join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
                                             ->whereIn('language_id', $video_language)
                                             ->whereNotIn('videos.id', $blocking_videos)
-                                            ->where('status', '=', '1')
-                                            ->where('draft', '=', '1')
+                                            ->where('videos.status', '=', '1')
+                                            ->where('videos.draft', '=', '1')
+                                            ->where('videos.active', '=', '1')
                                             ->groupBy('languagevideos.video_id');
                         if ($Family_Mode == 1)
                         {
