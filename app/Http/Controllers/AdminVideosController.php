@@ -215,10 +215,10 @@ class AdminVideosController extends Controller
                             $class = "bg-warning video_active";
                         }
                         if($video->draft != null && $video->draft == 1 && $video->status != null && $video->status == 1 && $video->active != null && $video->active == 1){ 
-                                $style = "";
-                         } else{
+                            $style = "";
+                        } else{
                                 $style = "opacity: 0.6; cursor: not-allowed;";
-                         }
+                        }
                         $username = @$row->cppuser->username
                             ? "Upload By" . " " . @$row->cppuser->username
                             : "Upload By Admin";
@@ -259,7 +259,7 @@ class AdminVideosController extends Controller
                 '</label>'.
                     '</td>
          <td> ' .
-                            "<a class='iq-bg-warning' data-toggle='tooltip' style = .$style . data-original-title='Disable View' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
+                            "<a class='iq-bg-warning' data-toggle='tooltip' style = .$style . data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
         </a>" .
                             '
         ' .
