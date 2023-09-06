@@ -56,7 +56,7 @@ class VideoCategory extends Model
         public function specific_category_videos()
         {
             return $this->belongsToMany('App\Video', 'categoryvideos','category_id','video_id')
-            ->wherePivot('active', 1)->wherePivot('status', 1)->wherePivot('draft', 1);
+            ->wherePivot('videos.active', 1)->wherePivot('videos.status', 1)->wherePivot('videos.draft', 1);
         }
 
         public function category_videos()
