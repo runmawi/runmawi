@@ -85,7 +85,7 @@ $settings = App\Setting::first();
 
                       <?php if(!empty($settings->youtube_page_id)){?>
                       <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank" class="ml-1">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/y.png')?>" style="" />
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/youtube.png')?>" style="" />
                       </a>
                       <?php } ?>
 
