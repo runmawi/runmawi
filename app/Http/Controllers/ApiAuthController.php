@@ -2944,8 +2944,8 @@ public function verifyandupdatepassword(Request $request)
     
     $pay_amount = PvvPrice();
     $pay_amount = $pay_amount*100;
-    $charge = $user->charge($pay_amount, $paymentMethod);
-    if($charge->id != '' && $live_id == ''){
+    $charge = $user->charge($amount_ppv, $paymentMethod);
+    if($charge->id != '' && $video_id != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
