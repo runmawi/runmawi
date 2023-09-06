@@ -46,7 +46,7 @@ $settings = App\Setting::first();
                       <p>Follow us :</p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/i.png')?>" style="" />
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/inst.png')?>" style="" />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
@@ -57,7 +57,7 @@ $settings = App\Setting::first();
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1">
                           <img class="" width="40" height="40"
-                               src="<?php echo  URL::to('/assets/img/lan/f.png')?>" style="" />
+                               src="<?php echo  URL::to('/assets/img/lan/fb.png')?>" style="" />
                       </a>
                       <?php } ?>
 
