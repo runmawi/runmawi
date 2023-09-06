@@ -130,6 +130,7 @@ use App\VideoPlaylist;
 use App\AdminVideoPlaylist;
 use App\MusicStation as MusicStation;
 use App\UserMusicStation as UserMusicStation;
+use Stripe\Stripe;
 
 class ApiAuthController extends Controller
 {
@@ -1520,7 +1521,7 @@ public function verifyandupdatepassword(Request $request)
             $IOS_dislike = "false";
           }
          
-  
+          $videodetailaccess = Video::where('id',$videoid)->pluck('access')->first();
       if ($ppv_exist > 0) {
   
             $ppv_time_expire = PpvPurchase::where('user_id','=',$user_id)->where('video_id','=',$videoid)->pluck('to_time');
@@ -1533,7 +1534,11 @@ public function verifyandupdatepassword(Request $request)
                   $ppv_video_status = "expired";
             }
   
-      } else {
+      } else if($videodetailaccess == "ppv" && $ppv_exist == 0){
+        
+        $ppv_video_status = "pay_now";
+        
+      }else {
             $ppv_video_status = "can_view";
       }
   
@@ -2921,6 +2926,7 @@ public function verifyandupdatepassword(Request $request)
   {
     $payment_type = $request->payment_type;
     $video_id = $request->video_id;
+    $live_id = $request->live_id;
     $episode_id = $request->episode_id;
     $season_id = $request->season_id;
     $series_id = $request->series_id;
@@ -2935,11 +2941,11 @@ public function verifyandupdatepassword(Request $request)
 
     $paymentMethod = $request->get('py_id');
     $payment_settings = PaymentSetting::first();
-
+    
     $pay_amount = PvvPrice();
     $pay_amount = $pay_amount*100;
-    $charge = $user->charge($pay_amount, $paymentMethod);
-    if($charge->id != ''){
+    $charge = $user->charge($amount_ppv, $paymentMethod);
+    if($charge->id != '' && $video_id != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
@@ -2953,6 +2959,21 @@ public function verifyandupdatepassword(Request $request)
       $response = array(
         'status' => 'true',
         'message' => "video has been added"
+      );
+    }else if($charge->id != '' && $live_id != ''){
+      $ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      if ( $ppv_count == 0 ) {
+        DB::table('live_purchases')->insert(
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
+        );
+        send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
+      } else {
+        DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+      }
+
+      $response = array(
+        'status' => 'true',
+        'message' => "Live has been added"
       );
     }else{
       $response = array(
@@ -9672,6 +9693,7 @@ $cpanel->end();
               $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
               $details = html_entity_decode($item->description);
               $item['description'] = strip_tags($details);
+              $item['type'] = $item->url_type;
               return $item;
             });
         }
@@ -9746,6 +9768,7 @@ $cpanel->end();
 
                             $item['category_name'] = LiveCategory::where('id',$item->category_id)->pluck('slug')->first();
                             $item['category_order'] = LiveCategory::where('id',$item->category_id)->pluck('order')->first();
+                            $item['type'] = $item->url_type;
 
                             return $item;
                           });

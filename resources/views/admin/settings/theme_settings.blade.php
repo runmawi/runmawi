@@ -203,7 +203,7 @@ border-radius: 0px 4px 4px 0px;
                     </div> 
 
                     <div class="row"> 
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                                 <label>{{ ucfirst(trans('Enable signup page theme')) }}</label>
                             <div class="mt-1">
                                 <label class="switch">
@@ -212,8 +212,16 @@ border-radius: 0px 4px 4px 0px;
                                 </label>
                             </div>
                         </div>
+                    <div class="col-sm-6">
+                                <label>{{ ucfirst(trans('Enable Audio page theme')) }}</label>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="audio_page_checkout" class="audio_page_checkout" id="audio_page_checkout" type="checkbox" @if( $settings->audio_page_checkout == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div><br>
-
                     <div class="row"> 
                         <div class="col-sm-6">
                             <label>{{ ucfirst(trans('signup Agree Message')) }}</label>

@@ -337,20 +337,33 @@
       <?php if( $video->type == 'embed'): ?>
 
          <div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
-         <div class="container-fluid">
-            <h2 class="text-left"><?php echo $video->title; ?></h2>
+            <div class="container-fluid">
+               <h2 class="text-left"><?php echo $video->title; ?></h2>
 
-            <div class="text-white col-lg-7 p-0">
-               <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
-            </div>
+               <div class="text-white col-lg-7 p-0">
+                  <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
+               </div>
 
-            <h4 class="mb-3">Sorry, this video is only available to Subscribers / PPV Rent </h4>
-            
-            <div>
-               <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this vide</a> 
+               
+               <div>
+                  <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this video</a> 
+               </div>
+               <div class="text-white col-lg-5 p-0">
+               <a href="<?= URL::to('/become a') ?>" class="btn btn-primary" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
+                  <?php if($video->access == 'subscriber'): ?>
+                     Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users
+                  <?php endif; ?>           
+               </a>
+            </div>            
+               <h4 class="mb-3" style="color: red;">Sorry, this video is only available to Subscribers / PPV Rent </h4>
+               <a href="<?= URL::to('/becomesubscriber') ?>" class="btn btn-primary" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
+                  To Become a 
+                  <?php if($video->access == 'subscriber'): ?>
+                     Subscriber <?php elseif($video->access == 'registered' ): ?>Registered User
+                  <?php endif; ?>           
+               </a>
             </div>
          </div>
-      </div>
 
       <?php  elseif( $video->type == '' && ($video->processed_low != 100 || $video->processed_low == null) ):  ?>
 
@@ -440,11 +453,15 @@
             <div class="text-white col-lg-7 p-0">
                <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
             </div>
-
-            <h4 class="mb-3">Sorry, this video is only available to
-               <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users<?php endif; ?>
-            </h4>
-            
+            <div class="text-white col-lg-5 p-0">
+               <a href="<?= URL::to('/becomesubscriber') ?>" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
+                  Become a 
+                  <?php if($video->access == 'subscriber'): ?>
+                     Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users
+                  <?php endif; ?> 
+                   to view this Video!
+               </a>
+            </div>
             <div class="clear"></div>
 
             <?php if(Auth::guest() && $video->access == 'registered'): ?>
