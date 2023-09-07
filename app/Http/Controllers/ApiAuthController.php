@@ -645,7 +645,8 @@ class ApiAuthController extends Controller
     );
 
 
-    if(!empty($users)){
+    if(!empty($users)){ 
+      LoggedDevice::where('user_id', '=', $users->id)->delete();
       $user_id = $users->id;
       $adddevice = new LoggedDevice;
       $adddevice->user_id = $user_id;
@@ -2944,36 +2945,36 @@ public function verifyandupdatepassword(Request $request)
     
     $pay_amount = PvvPrice();
     $pay_amount = $pay_amount*100;
-    $charge = $user->charge($amount_ppv, $paymentMethod);
+    $charge = $user->charge($request->amount, $paymentMethod);
     if($charge->id != '' && $video_id != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       if ( $ppv_count == 0 ) {
-        DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
-        );
-        send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
+        if(!empty($video_id) && $video_id != ''){
+          DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $request->amount, ]
+          );
+          send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
+  
+        }else if(!empty($live_id) && $live_id != ''){
+          DB::table('live_purchases')->insert(
+            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'total_amount'=> $request->amount, ]
+          );
+          send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
+  
+        }
       } else {
-        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
-      }
+        if(!empty($video_id) && $video_id != ''){
+          DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+
+        }else if(!empty($live_id) && $live_id != ''){
+          DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+
+        }
+    }
 
       $response = array(
         'status' => 'true',
         'message' => "video has been added"
-      );
-    }else if($charge->id != '' && $live_id != ''){
-      $ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
-      if ( $ppv_count == 0 ) {
-        DB::table('live_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
-        );
-        send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
-      } else {
-        DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
-      }
-
-      $response = array(
-        'status' => 'true',
-        'message' => "Live has been added"
       );
     }else{
       $response = array(
@@ -20833,5 +20834,82 @@ public function TV_login(Request $request)
     return response()->json($response, 200);
   }
 
+  public function StationCreate(Request $request){
+    try {
+       $response = array(
+        'status'  => 'true',
+        'Message' => 'Music Station Create successfully',
+        'station_artist' => Artist::get(),
+        'station_key_word' => AudioCategory::get(),
+      );
+    } catch (\Throwable $th) {
+        throw $th;
+        $response = array(
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+        );
+    }
+    return response()->json($response, 200);
+  }
 
+  public function CheckUserLoggedIn(Request $request){
+    try {
+      $device_name = $request->device_name;
+      $user_id = $request->user_id;
+
+      if($device_name == 'android'){
+
+        $android_user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
+            ->where('device_name', '=', $device_name)
+        ->count();
+        if($android_user_check == 0){
+            $status = 'false' ;
+            $message = 'Not Logged IN' ;
+            $user_check = 0 ;
+        }elseif($android_user_check > 0){
+            $status = 'true' ;
+            $message = 'Logged IN' ;
+            $user_check = 1 ;
+        }else{
+            $status = 'false' ;
+            $message = 'Not Logged IN' ;
+            $user_check = 0 ;
+        }
+      }else if($device_name == 'ios'){
+        $ios_user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
+            ->where('device_name', '=', $device_name)
+        ->count();
+        if($ios_user_check == 0){
+            $status = 'false' ;
+            $message = 'Not Logged IN' ;
+            $user_check = 0 ;
+        }elseif($ios_user_check > 0){
+            $status = 'true' ;
+            $message = 'Logged IN' ;
+            $user_check = 1 ;
+        }else{
+            $status = 'false' ;
+            $message = 'Not Logged IN' ;
+            $user_check = 0 ;
+        }
+      }else{
+            $status = 'false' ;
+            $message = 'Not Logged IN' ;
+            $user_check = 0 ;
+      }
+       $response = array(
+        'status'  => $status,
+        'Message' => $message,
+        'user_check' => $user_check,
+      );
+    } catch (\Throwable $th) {
+        throw $th;
+        $response = array(
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+        );
+    }
+    return response()->json($response, 200);
+  }
 }
+
