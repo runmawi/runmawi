@@ -2946,9 +2946,11 @@ public function verifyandupdatepassword(Request $request)
     $pay_amount = PvvPrice();
     $pay_amount = $pay_amount*100;
     $charge = $user->charge($request->amount, $paymentMethod);
-    if($charge->id != '' && $video_id != ''){
+    if($charge != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
-      if ( $ppv_count == 0 ) {
+      $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      // print_r($live_ppv_count);exit;
+      if ( $ppv_count == 0 || $live_ppv_count == 0 ) {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->insert(
             ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $request->amount, ]
@@ -2957,7 +2959,7 @@ public function verifyandupdatepassword(Request $request)
   
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->insert(
-            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'total_amount'=> $request->amount, ]
+            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
