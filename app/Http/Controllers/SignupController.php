@@ -671,7 +671,8 @@ public function PostcreateStep3(Request $request)
             $stripe_plan = SubscriptionPlan();
             $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
             
-            if ( NewSubscriptionCoupon() == 1 ) {                      
+            if ( NewSubscriptionCoupon() == 1 ) {     
+
                 try {
 
                     if( subscription_trails_status() == 1 ){
@@ -688,7 +689,7 @@ public function PostcreateStep3(Request $request)
 
                     $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
 
-                    if( subscription_trails_status() == 1 ){
+                    if(subscription_trails_status() == 1 ){
 
                         $subscription_days_count = $subscription['plan']['interval_count'];
                 
