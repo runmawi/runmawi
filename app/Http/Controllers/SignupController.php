@@ -396,8 +396,11 @@ public function createStep2(Request $request)
         $profile_checkout = SiteTheme::pluck('profile_checkout')->first();  // Note - for Nemisha
 
         $free_registration = Setting::pluck('free_registration')->first();  // Note - Free Registration 
+        
+        $website_name = Setting::pluck('website_name')->first();  // Note - Free Registration 
         if(@$free_registration == 1) {
-            session()->put('message',"You have successfully registered your account. Please login below.");
+            // session()->put('message',"You have successfully registered your account. Please login below.");
+            session()->put('message',"You have successfully registered for $website_name. Welcome to a world of endless entertainment. 🎉");
             return Theme::view('auth.login');
         }
 
@@ -436,7 +439,7 @@ public function createStep2(Request $request)
                     $intent_stripe = User::where("email","=",$user_mail)->first();
                     $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
                     session()->put('intent_stripe_key',$intent_key);
-                    session()->put('message',"Thanks, Your Account has been Submitted for Approval.");
+                    session()->put('message',"You have successfully registered for $website_name. Welcome to a world of endless entertainment. 🎉");
 
 
                     return Theme::view('register.step2_payment', compact(['register', 'plans_data', 'plans_data_signup_checkout','user_mail','intent_stripe']));
