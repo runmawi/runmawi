@@ -2277,7 +2277,6 @@ public function verifyandupdatepassword(Request $request)
           if(!empty($request->ios_avatar)){
             $input+= [ 'ios_avatar' => $request->ios_avatar ] ;
           }
-          
           $user->update($input);
           
           $response = array(
@@ -9638,7 +9637,8 @@ $cpanel->end();
 
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
                 $details = html_entity_decode($item->description);
-                $item['description'] = strip_tags($details);
+                $description = strip_tags($details);
+                $item['description'] = str_replace("\r", '', $description);
                 return $item;
             });
 
@@ -9657,7 +9657,8 @@ $cpanel->end();
 
               $item['video_url'] = URL::to('/').'/storage/app/public/';
               $details = html_entity_decode($item->description);
-              $item['description'] = strip_tags($details);
+              $description = strip_tags($details);
+              $item['description'] = str_replace("\r", '', $description);
               return $item;
             });
 
@@ -9734,7 +9735,8 @@ $cpanel->end();
               $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
               $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
               $details = html_entity_decode($item->description);
-              $item['description'] = strip_tags($details);
+              $description = strip_tags($details);
+              $item['description'] = str_replace("\r", '', $description);
               $item['type'] = $item->url_type;
               return $item;
             });
@@ -9753,9 +9755,10 @@ $cpanel->end();
                                       ->join('series_artists', 'series_artists.series_id', '=', 'series.id')
                                       ->join('artists', 'artists.id', '=', 'series_artists.artist_id')
                                       ->pluck('artist_name');
-              $details = html_entity_decode($item->description);
-              $item['description'] = strip_tags($details);
-              return $item;
+                                      $details = html_entity_decode($item->description);
+                                      $description = strip_tags($details);
+                                      $item['description'] = str_replace("\r", '', $description);
+                                      return $item;
             });
         }else{
 
@@ -9768,7 +9771,9 @@ $cpanel->end();
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $details = html_entity_decode($item->description);
-            $item['description'] = strip_tags($details);
+            $description = strip_tags($details);
+            
+            $item['description'] = str_replace("\r", '', $description);
             return $item;
           });
 
