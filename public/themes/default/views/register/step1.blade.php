@@ -412,7 +412,7 @@ i.fa.fa-google-plus {
                                  <div class="col-md-12">
                                 <select class="phselect form-control" name="country" id="country" >
                                     <option>Select Country</option>
-                                        @foreach($jsondata as $code)
+                                        @foreach($AllCountry as $code)
                                         <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
                                         @endforeach
                                 </select>  
@@ -515,7 +515,7 @@ i.fa.fa-google-plus {
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror                                    
-                            </div>
+                            </div>x
 						</div>-->
                         </div>
                        
