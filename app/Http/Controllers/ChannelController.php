@@ -140,6 +140,11 @@ class ChannelController extends Controller
 
     public function play_videos($slug)
     {
+        if ( choosen_player() == 1 ){
+
+            return $this->video_js_player($slug);
+        }
+
         $settings = Setting::first();
         if ($settings->access_free == 0 && Auth::guest())
         {
@@ -3857,8 +3862,62 @@ class ChannelController extends Controller
         exit;
     }
 
-    public function video_js_player()
-    {
-        return Theme::view('video_js_player');
-    }
+    private static function video_js_player( $slug ){
+
+        try {
+            
+            $video_id = Video::where('slug',$slug)->pluck('id')->first();
+
+            $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+
+                $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
+                $item['player_image_url']   = URL::to('public/uploads/images/'.$item->player_image );
+                $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
+                $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+
+                // Videos URL 
+
+                switch (true) {
+
+                    case $item['type'] == "mp4_url":
+                        $item['videos_url']  =  $item->mp4_url ;
+                        $item['video_player_type'] =  'video/mp4' ;
+                    break;
+
+                    case $item['type'] == "m3u8_url":
+                        $item['videos_url']  =  $item->m3u8_url ;
+                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                    break;
+
+                    case $item['type'] == "embed":
+                        $item['videos_url']  =  $item->embed_code ;
+                        $item['video_player_type'] =  'video/webm' ;
+                    break;
+                    
+                    case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                        $item['videos_url']    =   URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                        $item['video_player_type']   =  'application/x-mpegURL' ;
+                    break;
+
+                    default:
+                        $item['videos_url']    = null ;
+                        $item['video_player_type']   =  null ;
+                    break;
+                }
+
+                return $item;
+            })->first();
+
+            $data = array(
+                'videodetail' => $videodetail ,
+            );
+
+            return Theme::view('video-js-Player.video.videos', $data);
+
+        } catch (\Throwable $th) {
+            
+            // return $th->getMessage();
+            return abort(404);
+        }
+    } 
 }
