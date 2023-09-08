@@ -229,7 +229,7 @@ class MyPlaylistController extends Controller
             // dd($id);
             $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
             AudioUserPlaylist::where('user_id',Auth::user()->id)->where('playlist_id',$id)->delete();
-            $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->where('id', $MyPlaylist_id)->delete();
+            $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->where('id', $id)->delete();
         } catch (\Throwable $th) {
             throw $th;
             $data = [];

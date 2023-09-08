@@ -2,8 +2,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <?php include(public_path('themes/default/views/header.php')); ?>
 
-<div class="floating-icon"><a href="https://jewel998.github.io/playlist" style="color:white"><i class="fa fa-github"></i></a></div>
-<div class="floating-icon"><a href="https://codepen.io/jewel998" style="color:white"><i class="fa fa-codepen"></i></a></div>
+<!-- <div class="floating-icon"><a href="https://jewel998.github.io/playlist" style="color:white"><i class="fa fa-github"></i></a></div> -->
+<!-- <div class="floating-icon"><a href="https://codepen.io/jewel998" style="color:white"><i class="fa fa-codepen"></i></a></div> -->
 <div id="music-player">
         <img id="album-art"/>
         <div id="top-bar">
@@ -12,8 +12,12 @@
         </div>
         <div id="lyrics">
           <h2 class="song-name"></h2><h4 class="artist-name"></h4>
-          <div id="lyrics-content">
-          </div>
+          <!-- <div id="lyrics-content">
+          </div> -->
+          <div class="">
+              <img height="250" width="250"  id="audio_img" src="">
+              <!-- height="150" width="150"  -->
+           </div>
         </div>
         <audio id="audioFile" preload="true">
         </audio>
@@ -31,6 +35,7 @@
             <button id="play"><i class="fa fa-play"></i></button>
             <button id="next"><i class="fa fa-step-forward"></i></button>
             <button id="shuffle" style="color:grey"><i class="fa fa-random"></i></button>
+            <button id="lyrics-toggle"><i class="fa fa-microphone"></i></button>
           </div>
         </div>
         <div id="playlist">
@@ -302,11 +307,15 @@
             });
             var buttonColorOnPress = "white";
             $(document).ready(function(){
-            $.getJSON('https://jewel998.github.io/playlist/playlist.json',function(data){
+            var listAudio = <?php echo json_encode($songs); ?>;
+                // console.log(listAudio);
+            // $.getJSON('https://jewel998.github.io/playlist/playlist.json',function(data){
+                // console.log(data);
+
                 var abort_other_json;
-                var playlist = data;
+                var playlist = listAudio;
                 var index = 0;
-                var indexing = playlist.songs[index];
+                var indexing = listAudio.songs[index];
                 var time = 0;
                 var totalTime = 0;
                 var timeList = [];
@@ -337,6 +346,7 @@
                     current.next().addClass('current');
                 }
                 function previous(){
+
                     var current = $('#lyrics .current');
                     if(current.length == 0){ return; }
                     var first = $('#lyrics-content h2:nth-child(1)');
@@ -375,21 +385,25 @@
                     if(play==0){play = 1;audio.play();$('#menu button#play i').removeClass("fa-play");$('#menu button#play i').addClass("fa-pause");}
                     else{play = 0;audio.pause();$('#menu button#play i').removeClass("fa-pause");$('#menu button#play i').addClass("fa-play");}
                 }
-                function processing(data,indexing){
-                    if(data.author == ""){ data.author = "Unknown"; }
-                    // alert(indexing.song);
-                    // console.log(data );
+                function processing(indexing){
+                    // if(data.author == ""){ data.author = "Unknown"; }
+                    // alert('indexing');
+                    // console.log(indexing.title);
 
-                    setSongName(indexing.song);
-                    setArtistName(indexing.author);
-                    setAlbumArt(indexing.albumart);
+                    setSongName(indexing.title);
+                    setArtistName(indexing.slug);
+                    setAlbumArt(indexing.image_url);
                     var html = "";
                     timeList=[];
-                    for(var i=0;i<data.lyrics.length;i++){
-                        timeList.push(data.lyrics[i].time);
-                        html = html + "<h2>"+data.lyrics[i].line+"</h2>";
-                    }
-                    $('#lyrics-content').html(html);
+                    // html = html + indexing.image_url;
+                    // for(var i=0;i<data.lyrics.length;i++){
+                    //     timeList.push(data.lyrics[i].time);
+                    //     html = html + "<h2>"+data.lyrics[i].line+"</h2>";
+                    // }
+                    // $('#lyrics-content').html(html);
+                    var image = document.querySelector('#audio_img')
+                    image.src =  indexing.image_url 
+
                     $('#totalTime').html(processTime(totalTime));
                     $('#currentTime').html(processTime(time));
                     var percent = time/totalTime * 100;
@@ -475,6 +489,7 @@
                     loadSong();
                 }
                 function nextSong(){
+                    // alert()
                     if(abort_other_json){abort_other_json.abort();}reset();timeList=[];previousTime=0;counter=0;
                     clearInterval(stopTimer);
                     index = (index+1)%playlist.songs.length;
@@ -504,12 +519,17 @@
                     }
                 }
                 function loadSong(){
-                    $('#audioFile').attr('src',indexing.audio);
-                    abort_other_json = $.getJSON(indexing.json,function(data){
-                        processing(data,indexing);
+                    // console.log(indexing);
+                    data = [];
+                    $('#audioFile').attr('src',indexing.mp3_url);
+                    // abort_other_json = $.getJSON(indexing,function(data){
+                        index = (index+1)%playlist.songs.length;
+                        indexing = playlist.songs[index];
+                        // alert(indexing)
+                        processing(indexing);
                         totalTime = NaN;
-                        stopTimer = setInterval(function(){updateTimer(data);},1000);
-                    });
+                        stopTimer = setInterval(function(){updateTimer(indexing);},1000);
+                    // });
                 }
                 loadSong();
                 $('#prev').on('click',prevSong);
@@ -526,16 +546,22 @@
                     $('#audioFile').attr('src',indexing.audio);
                     loadSong();
                 }
-                function addToPlayList(data,index){
-                    var html = "";html = $('#show-list').html();html +="<div class=\"float-song-card\" data-index=\""+index+"\"><img class=\"album-art\" src=\""+data.albumart+"\"><h2 class=\"song\">"+data.song+"</h2><h4 class=\"artist\">"+data.author+"</h4></div>";$('#show-list').html(html);$('.float-song-card').on('click',function(){playSongAtIndex($(this).attr("data-index"));});
+                function addToPlayList(data,index,playlistsongs){
+                    var html = "";html = $('#show-list').html();html +="<div class=\"float-song-card\" data-index=\""+index+"\"><img class=\"album-art\" src=\""+playlistsongs.image_url+"\"><h2 class=\"song\">"+playlistsongs.title+"</h2><h4 class=\"artist\">"+playlistsongs.slug+"</h4></div>";$('#show-list').html(html);$('.float-song-card').on('click',function(){playSongAtIndex($(this).attr("data-index"));});
                 }
                 function setPlaylist(){
+                    // alert();
                     for(var i=0;i<playlist.songs.length;i++){
-                        $.getJSON(playlist.songs[i].json,function(i){ return function(data){addToPlayList(data,i)}; }(i));
-                    }
+                    // (playlist.songs[i].json,function(i){ return function(data){  
+                        data = [];
+                    // console.log(playlist.songs[i]);
+                    // console.log(playlist.songs[i]);
+                            addToPlayList(data,i,playlist.songs[i])}; 
+                        //  }(i));
+                    // }
                 }
                 setPlaylist();
-            });
+            // });
             $('#search').keyup(function(){
                 var toSearch = $(this).val();
                 $('.float-song-card').css("display","none");

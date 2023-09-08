@@ -1554,6 +1554,7 @@ public function UpgadeSubscription(Request $request){
                     return redirect('/')->with( ['data' => "Successfully Updated your subscription"] );
          }  
 
+
         public function become_subscriber(Request $request)
         {
 
@@ -1581,11 +1582,41 @@ public function UpgadeSubscription(Request $request){
                   // Retrieve Subscriptions
                 $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
 
-                $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
-                $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
-                $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+                if( subscription_trails_status() == 1 ){
+
+                  $subscription_days_count = $subscription['plan']['interval_count'];
+          
+                  switch ($subscription['plan']['interval']) {
         
-                  Subscription::create([
+                    case 'day':
+                      break;
+
+                    case 'week':
+                      $subscription_days_count *= 7;
+                    break;
+
+                    case 'month':
+                      $subscription_days_count *= 30;
+                    break;
+
+                    case 'year':
+                      $subscription_days_count *= 365;
+                    break;
+                  }
+        
+                  $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+                  $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString(); 
+                  $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString(); 
+
+                }else{
+
+                  $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+                  $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+                  $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+                
+                }
+        
+                Subscription::create([
                     'user_id'        =>  Auth::user()->id,
                     'name'           =>  $subscription->plan['product'],
                     'price'          =>  $subscription->plan['amount_decimal'] / 100,   // Amount Paise to Rupees

@@ -329,7 +329,7 @@ border-radius: 0px 4px 4px 0px;
                            <h2 class="fs-title p-0">Video Player</h2>
                         </div>
                         @if($video->access != 'ppv')
-                           @if($video->active == 1 && $video->enable == 1 && $video->status == 1 && !empty($video->publish_type) || $video->active == 0  && empty($video->publish_type) || $video->enable == 0 && empty($video->publish_type) || $video->status == 0 && empty($video->publish_type) )
+                           @if($video->active == 1  && $video->status == 1 && !empty($video->publish_type) || $video->active == 0  && empty($video->publish_type) || $video->enable == 0 && empty($video->publish_type) || $video->status == 0 && empty($video->publish_type) )
                         <div class="col-3">
                             <label for=""><h3 class="fs-title m-0">Embed Link:</h3></label>
                             <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>

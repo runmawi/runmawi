@@ -396,8 +396,11 @@ public function createStep2(Request $request)
         $profile_checkout = SiteTheme::pluck('profile_checkout')->first();  // Note - for Nemisha
 
         $free_registration = Setting::pluck('free_registration')->first();  // Note - Free Registration 
+        
+        $website_name = Setting::pluck('website_name')->first();  // Note - Free Registration 
         if(@$free_registration == 1) {
-            session()->put('message',"You have successfully registered your account. Please login below.");
+            // session()->put('message',"You have successfully registered your account. Please login below.");
+            session()->put('message',"You have successfully registered for $website_name. Welcome to a world of endless entertainment. 🎉");
             return Theme::view('auth.login');
         }
 
@@ -436,7 +439,7 @@ public function createStep2(Request $request)
                     $intent_stripe = User::where("email","=",$user_mail)->first();
                     $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
                     session()->put('intent_stripe_key',$intent_key);
-                    session()->put('message',"Thanks, Your Account has been Submitted for Approval.");
+                    session()->put('message',"You have successfully registered for $website_name. Welcome to a world of endless entertainment. 🎉");
 
 
                     return Theme::view('register.step2_payment', compact(['register', 'plans_data', 'plans_data_signup_checkout','user_mail','intent_stripe']));
@@ -668,14 +671,15 @@ public function PostcreateStep3(Request $request)
             $stripe_plan = SubscriptionPlan();
             $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
             
-            if ( NewSubscriptionCoupon() == 1 ) {                      
+            if ( NewSubscriptionCoupon() == 1 ) {     
+
                 try {
 
                     if( subscription_trails_status() == 1 ){
-                        $user->newSubscription( $stripe_plan, $plan )->trialUntil( subscription_trails_day() )->withCoupon( $apply_coupon )->create( $paymentMethod );
+                        $subscription_details =  $user->newSubscription( $stripe_plan, $plan )->trialUntil( subscription_trails_day() )->withCoupon( $apply_coupon )->create( $paymentMethod );
                     }
                     else{
-                        $user->newSubscription( $stripe_plan, $plan )->withCoupon( $apply_coupon )->create( $paymentMethod );
+                        $subscription_details = $user->newSubscription( $stripe_plan, $plan )->withCoupon( $apply_coupon )->create( $paymentMethod );
                     }
 
                     $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
@@ -683,7 +687,37 @@ public function PostcreateStep3(Request $request)
                                     'customer' => $user->stripe_id ,
                     ]);
 
-                    $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($customer_data->period_end)->toDateTimeString()  ;
+                    $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
+
+                    if(subscription_trails_status() == 1 ){
+
+                        $subscription_days_count = $subscription['plan']['interval_count'];
+                
+                        switch ($subscription['plan']['interval']) {
+              
+                          case 'day':
+                            break;
+      
+                          case 'week':
+                            $subscription_days_count *= 7;
+                          break;
+      
+                          case 'month':
+                            $subscription_days_count *= 30;
+                          break;
+      
+                          case 'year':
+                            $subscription_days_count *= 365;
+                          break;
+                        }
+              
+                        $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString()  ;
+
+                    }else{
+
+                        $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($subscription['current_period_end'])->toDateTimeString()  ;
+                      
+                    }
                     
                     $user->role = 'subscriber';
                     $user->payment_type = 'recurring';
@@ -692,10 +726,12 @@ public function PostcreateStep3(Request $request)
                     $user->subscription_start = Carbon::now(); 
                     $user->subscription_ends_at = $nextPaymentAttemptDate; 
                     $user->payment_status = 'active'; 
+
                     if( subscription_trails_status()  == 1 ){
                         $user->Subscription_trail_status =  1 ; 
                         $user->Subscription_trail_tilldate   = subscription_trails_day(); 
                     }
+
                     $user->save();
 
                 } catch (IncompletePayment $exception) {
@@ -756,7 +792,37 @@ public function PostcreateStep3(Request $request)
                                        'customer' => $user->stripe_id ,
                         ]);
 
-                        $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($customer_data->period_end)->toDateTimeString()  ;
+                        $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
+
+                        if( subscription_trails_status() == 1 ){
+    
+                            $subscription_days_count = $subscription['plan']['interval_count'];
+                    
+                            switch ($subscription['plan']['interval']) {
+                  
+                              case 'day':
+                                break;
+          
+                              case 'week':
+                                $subscription_days_count *= 7;
+                              break;
+          
+                              case 'month':
+                                $subscription_days_count *= 30;
+                              break;
+          
+                              case 'year':
+                                $subscription_days_count *= 365;
+                              break;
+                            }
+                  
+                            $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString()  ;
+    
+                        }else{
+    
+                            $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($subscription['current_period_end'])->toDateTimeString()  ;
+                          
+                        }
 
                     } catch (IncompletePayment $exception) {
                         return redirect()->route(
@@ -808,14 +874,17 @@ public function PostcreateStep3(Request $request)
                     $user->subscription_start = Carbon::now(); 
                     $user->subscription_ends_at = $nextPaymentAttemptDate; 
                     $user->payment_status = 'active'; 
+
                     if( subscription_trails_status()  == 1 ){
                         $user->Subscription_trail_status =  1 ; 
                         $user->Subscription_trail_tilldate   = subscription_trails_day(); 
                     }
+
                     $user->save();
 
                     $next_date = $plandetail->days;
                     $date = Carbon::parse($current_date)->addDays($next_date);
+
                     $subscription = Subscription::where('user_id',$user->id)->first();
                     $subscription->price = $plandetail->price;
                     $subscription->name = $user->username;
@@ -824,8 +893,9 @@ public function PostcreateStep3(Request $request)
                     $subscription->countryname = Country_name();
                     $subscription->cityname = city_name();
                     $subscription->PaymentGateway =  'Stripe';
-                    $subscription->ends_at = $date;
+                    $subscription->ends_at = $nextPaymentAttemptDate;
                     $subscription->save();
+
                     $data = Session::all();
             }
         } 

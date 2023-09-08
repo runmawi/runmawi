@@ -3856,4 +3856,9 @@ class ChannelController extends Controller
         echo Region_name();
         exit;
     }
+
+    public function video_js_player()
+    {
+        return Theme::view('video_js_player');
+    }
 }
