@@ -301,6 +301,41 @@ class ApiAuthController extends Controller
               $userdata = User::where('email', '=', $request->get('email'))->first();
               $userid = $userdata->id;
 
+               // welcome Email
+                                  
+               try {
+
+                $data = array(
+                    'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
+                );
+
+                Mail::send('emails.welcome', array(
+                    'username' => $name,
+                    'website_name' => GetWebsiteName(),
+                    'useremail' => $email,
+                    'password' => $get_password,
+                ), 
+                function($message) use ($data,$request) {
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($request->email, $request->name)->subject($data['email_subject']);
+                });
+
+                $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
+                $email_template = "1";
+                $user_id = $userid;
+
+                Email_sent_log($user_id,$email_log,$email_template);
+
+              }catch (\Exception $e) {
+
+                $email_log      = $e->getMessage();
+                $email_template = "1";
+                $user_id = $userid;
+
+                Email_notsent_log($user_id,$email_log,$email_template);
+
+            }
+            
               send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
 
         }
@@ -2239,6 +2274,10 @@ public function verifyandupdatepassword(Request $request)
             $input+= [ 'password' => Hash::make($request->user_password) ] ;
           }
 
+          if(!empty($request->ios_avatar)){
+            $input+= [ 'ios_avatar' => $request->ios_avatar ] ;
+          }
+          
           $user->update($input);
           
           $response = array(
