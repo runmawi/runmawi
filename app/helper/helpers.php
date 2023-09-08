@@ -1109,3 +1109,9 @@ function PPV_CurrencyConvert($amount){
 
     return  $Currency_Converter; 
 }
+
+function choosen_player()
+{
+    $choose_player = App\SiteTheme::pluck('choose_player')->first();
+    return $choose_player ;
+}
