@@ -1054,71 +1054,96 @@ border-radius: 0px 4px 4px 0px;
               
                <fieldset id="ads_data">
                   <div class="form-card">
-
-                     {{-- Ads Management - Ply.io --}}
                      
-                     <div class="row">
+                                 {{-- ADS Management --}}
+                   
+                     @if( choosen_player() == 1 )    {{-- Video.Js Player--}}
 
-                        <div class="col-7">
-                           <h2 class="fs-title">ADS Management:</h2>
+                        <div class="row">
+                           
+                           <div class="col-7"> <h2 class="fs-title">ADS Management:</h2> </div>
+
+                           <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                              <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                              <select class="form-control" name="video_js_pre_position_ads" >
+
+                                 <option value=" " > Select the Pre-Position Advertisement </option>
+
+                                 <option value="random_ads" {{  ( $video->video_js_pre_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                                 @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->video_js_pre_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                 @endforeach
+                              
+                              </select>
+                           </div>
+
+                           <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
+                              <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                              <select class="form-control" name="video_js_post_position_ads" >
+
+                                 <option value=" " > Select the Post-Position Advertisement </option>
+
+                                 <option value="random_ads" {{  ( $video->video_js_post_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                                 @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->video_js_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                 @endforeach
+                              
+                              </select>
+                           </div>
+
+                           <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                              <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                              <select class="form-control" name="video_js_mid_position_ads_category" >
+
+                                 <option value=" " > Select the Mid-Position Advertisement Category </option>
+
+                                 <option value="random_category"  {{  ( $video->video_js_mid_position_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+
+                                 @foreach( $ads_category as $ads_category )
+                                    <option value="{{ $ads_category->id }}"  {{  ( $video->video_js_mid_position_ads_category == $ads_category->id ) ? 'selected' : '' }} > {{ $ads_category->name }}</option>
+                                 @endforeach
+
+                              </select>
+                           </div>
+
+                           <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
+                              <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                              <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="{{ $video->video_js_mid_advertisement_sequence_time }}" >
+                           </div>
+                        </div>
+ 
+                     @else                           {{-- Plyr.io Player --}}
+
+                        <div class="row">
+
+                           <div class="col-7"> <h2 class="fs-title">ADS Management:</h2> </div>
+
+                           <div class="col-sm-6 form-group mt-3">                        {{-- Ads Category--}}
+                              <label class="">Choose the Ads Position</label>
+                              <select class="form-control" name="tag_url_ads_position" id="tag_url_ads_position">
+                                 <option value=" ">Select the Ads Position </option>
+                                 <option value="pre"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
+                                 <option value="mid"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
+                                 <option value="post" @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
+                                 <option value="all"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'all'){{ 'selected' }}@endif >   All Ads Position</option>
+                              </select>
+                           </div>
+
+                           <div class="col-sm-6 form-group mt-3" id="ads_tag_url_id_div" >   {{-- Ads --}}
+                              <label class="">Choose Advertisement</label>
+                              <select class="form-control" name="ads_tag_url_id" id="ads_tag_url_id">
+                                 @if( $ads_tag_urls != null)
+                                    <option id="" value="{{ $ads_tag_urls->id   }} " {{ 'selected' }} > {{ $ads_tag_urls->ads_name  }} </option>
+                                 @else
+                                    <option value=" ">Select the Advertisement</option>
+                                 @endif
+                              </select>
+                           </div>
                         </div>
 
-                        {{-- Ads Category--}}
-
-                        <div class="col-sm-6 form-group mt-3">
-                           <label class="">Choose the Ads Position</label>
-                           <select class="form-control" name="tag_url_ads_position" id="tag_url_ads_position">
-                              <option value=" ">Select the Ads Position </option>
-                              <option value="pre"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
-                              <option value="mid"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
-                              <option value="post" @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
-                              <option value="all"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'all'){{ 'selected' }}@endif >   All Ads Position</option>
-                           </select>
-                        </div>
-                        
-                           {{-- Ads --}}
-
-                        <div class="col-sm-6 form-group mt-3" id="ads_tag_url_id_div" >
-                           <label class="">Choose Advertisement</label>
-                           <select class="form-control" name="ads_tag_url_id" id="ads_tag_url_id">
-                              @if( $ads_tag_urls != null)
-                                 <option id="" value="{{ $ads_tag_urls->id   }} " {{ 'selected' }} > {{ $ads_tag_urls->ads_name  }} </option>
-                              @else
-                                 <option value=" ">Select the Advertisement</option>
-                              @endif
-                           </select>
-                        </div>
-                     </div>
-
-                     <div class="row">
-
-                        {{-- Ads Category--}}
-
-                        <div class="col-sm-6 form-group mt-3">
-                           <label class="">Choose the Ads Position</label>
-                           <select class="form-control" name="tag_url_ads_position" id="tag_url_ads_position">
-                              <option value=" ">Select the Ads Position </option>
-                              <option value="pre"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
-                              <option value="mid"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
-                              <option value="post" @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
-                              <option value="all"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'all'){{ 'selected' }}@endif >   All Ads Position</option>
-                           </select>
-                        </div>
-                        
-                           {{-- Ads --}}
-
-                        <div class="col-sm-6 form-group mt-3" id="ads_tag_url_id_div" >
-                           <label class="">Choose Advertisement</label>
-                           <select class="form-control" name="ads_tag_url_id" id="ads_tag_url_id">
-                              @if( $ads_tag_urls != null)
-                                 <option id="" value="{{ $ads_tag_urls->id   }} " {{ 'selected' }} > {{ $ads_tag_urls->ads_name  }} </option>
-                              @else
-                                 <option value=" ">Select the Advertisement</option>
-                              @endif
-                           </select>
-                        </div>
-                     </div>
-
+                     @endif
 
                      <div class="row">
                         @if($page == 'Edit' && $video->status == 0)
@@ -1725,6 +1750,7 @@ $('#error_video_Category').hide();
       $('#skip_recap').mask("00:00:00");
       $('#url_linktym').mask("00:00:00");
       $("#free_duration").mask("00:00:00");
+      $("#video_js_mid_advertisement_sequence_time").mask("00:00:00");
    });
 </script>
 
