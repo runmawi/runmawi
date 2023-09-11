@@ -301,6 +301,41 @@ class ApiAuthController extends Controller
               $userdata = User::where('email', '=', $request->get('email'))->first();
               $userid = $userdata->id;
 
+               // welcome Email
+                                  
+               try {
+
+                $data = array(
+                    'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
+                );
+
+                Mail::send('emails.welcome', array(
+                    'username' => $name,
+                    'website_name' => GetWebsiteName(),
+                    'useremail' => $email,
+                    'password' => $get_password,
+                ), 
+                function($message) use ($data,$request) {
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($request->email, $request->name)->subject($data['email_subject']);
+                });
+
+                $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
+                $email_template = "1";
+                $user_id = $userid;
+
+                Email_sent_log($user_id,$email_log,$email_template);
+
+              }catch (\Exception $e) {
+
+                $email_log      = $e->getMessage();
+                $email_template = "1";
+                $user_id = $userid;
+
+                Email_notsent_log($user_id,$email_log,$email_template);
+
+            }
+            
               send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
 
         }
@@ -645,7 +680,8 @@ class ApiAuthController extends Controller
     );
 
 
-    if(!empty($users)){
+    if(!empty($users)){ 
+      LoggedDevice::where('user_id', '=', $users->id)->delete();
       $user_id = $users->id;
       $adddevice = new LoggedDevice;
       $adddevice->user_id = $user_id;
@@ -2238,6 +2274,9 @@ public function verifyandupdatepassword(Request $request)
             $input+= [ 'password' => Hash::make($request->user_password) ] ;
           }
 
+          if(!empty($request->ios_avatar)){
+            $input+= [ 'ios_avatar' => $request->ios_avatar ] ;
+          }
           $user->update($input);
           
           $response = array(
@@ -2943,37 +2982,39 @@ public function verifyandupdatepassword(Request $request)
     $payment_settings = PaymentSetting::first();
     
     $pay_amount = PvvPrice();
-    $pay_amount = $pay_amount*100;
-    $charge = $user->charge($amount_ppv, $paymentMethod);
-    if($charge->id != '' && $video_id != ''){
+    $pay_amount = $request->amount*100;
+    $charge = $user->charge($pay_amount, $paymentMethod);
+    if($charge != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
-      if ( $ppv_count == 0 ) {
-        DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
-        );
-        send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
+      $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      // print_r($live_ppv_count);exit;
+      if ( $ppv_count == 0 || $live_ppv_count == 0 ) {
+        if(!empty($video_id) && $video_id != ''){
+          DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $request->amount, ]
+          );
+          send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
+  
+        }else if(!empty($live_id) && $live_id != ''){
+          DB::table('live_purchases')->insert(
+            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
+          );
+          send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
+  
+        }
       } else {
-        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
-      }
+        if(!empty($video_id) && $video_id != ''){
+          DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+
+        }else if(!empty($live_id) && $live_id != ''){
+          DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+
+        }
+    }
 
       $response = array(
         'status' => 'true',
         'message' => "video has been added"
-      );
-    }else if($charge->id != '' && $live_id != ''){
-      $ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
-      if ( $ppv_count == 0 ) {
-        DB::table('live_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
-        );
-        send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
-      } else {
-        DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
-      }
-
-      $response = array(
-        'status' => 'true',
-        'message' => "Live has been added"
       );
     }else{
       $response = array(
@@ -9596,7 +9637,8 @@ $cpanel->end();
 
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
                 $details = html_entity_decode($item->description);
-                $item['description'] = strip_tags($details);
+                $description = strip_tags($details);
+                $item['description'] = str_replace("\r", '', $description);
                 return $item;
             });
 
@@ -9615,7 +9657,8 @@ $cpanel->end();
 
               $item['video_url'] = URL::to('/').'/storage/app/public/';
               $details = html_entity_decode($item->description);
-              $item['description'] = strip_tags($details);
+              $description = strip_tags($details);
+              $item['description'] = str_replace("\r", '', $description);
               return $item;
             });
 
@@ -9692,7 +9735,8 @@ $cpanel->end();
               $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
               $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
               $details = html_entity_decode($item->description);
-              $item['description'] = strip_tags($details);
+              $description = strip_tags($details);
+              $item['description'] = str_replace("\r", '', $description);
               $item['type'] = $item->url_type;
               return $item;
             });
@@ -9711,9 +9755,10 @@ $cpanel->end();
                                       ->join('series_artists', 'series_artists.series_id', '=', 'series.id')
                                       ->join('artists', 'artists.id', '=', 'series_artists.artist_id')
                                       ->pluck('artist_name');
-              $details = html_entity_decode($item->description);
-              $item['description'] = strip_tags($details);
-              return $item;
+                                      $details = html_entity_decode($item->description);
+                                      $description = strip_tags($details);
+                                      $item['description'] = str_replace("\r", '', $description);
+                                      return $item;
             });
         }else{
 
@@ -9726,7 +9771,9 @@ $cpanel->end();
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $details = html_entity_decode($item->description);
-            $item['description'] = strip_tags($details);
+            $description = strip_tags($details);
+            
+            $item['description'] = str_replace("\r", '', $description);
             return $item;
           });
 
@@ -20833,5 +20880,82 @@ public function TV_login(Request $request)
     return response()->json($response, 200);
   }
 
+  public function StationCreate(Request $request){
+    try {
+       $response = array(
+        'status'  => 'true',
+        'Message' => 'Music Station Create successfully',
+        'station_artist' => Artist::get(),
+        'station_key_word' => AudioCategory::get(),
+      );
+    } catch (\Throwable $th) {
+        throw $th;
+        $response = array(
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+        );
+    }
+    return response()->json($response, 200);
+  }
 
+  public function CheckUserLoggedIn(Request $request){
+    try {
+      $device_name = $request->device_name;
+      $user_id = $request->user_id;
+
+      if($device_name == 'android'){
+
+        $android_user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
+            ->where('device_name', '=', $device_name)
+        ->count();
+        if($android_user_check == 0){
+            $status = 'false' ;
+            $message = 'Not Logged IN' ;
+            $user_check = 0 ;
+        }elseif($android_user_check > 0){
+            $status = 'true' ;
+            $message = 'Logged IN' ;
+            $user_check = 1 ;
+        }else{
+            $status = 'false' ;
+            $message = 'Not Logged IN' ;
+            $user_check = 0 ;
+        }
+      }else if($device_name == 'ios'){
+        $ios_user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
+            ->where('device_name', '=', $device_name)
+        ->count();
+        if($ios_user_check == 0){
+            $status = 'false' ;
+            $message = 'Not Logged IN' ;
+            $user_check = 0 ;
+        }elseif($ios_user_check > 0){
+            $status = 'true' ;
+            $message = 'Logged IN' ;
+            $user_check = 1 ;
+        }else{
+            $status = 'false' ;
+            $message = 'Not Logged IN' ;
+            $user_check = 0 ;
+        }
+      }else{
+            $status = 'false' ;
+            $message = 'Not Logged IN' ;
+            $user_check = 0 ;
+      }
+       $response = array(
+        'status'  => $status,
+        'Message' => $message,
+        'user_check' => $user_check,
+      );
+    } catch (\Throwable $th) {
+        throw $th;
+        $response = array(
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+        );
+    }
+    return response()->json($response, 200);
+  }
 }
+

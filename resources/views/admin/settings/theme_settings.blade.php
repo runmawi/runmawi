@@ -202,18 +202,26 @@ border-radius: 0px 4px 4px 0px;
                         <h4><i class="entypo-monitor"></i> Checkout Theme Setting</h4> <br>
                     </div> 
 
-                    <div class="row"> 
-                        <div class="col-sm-6">
-                                <label>{{ ucfirst(trans('Enable signup page theme')) }}</label>
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input name="signup_theme" class="signup_theme" id="signup_theme" type="checkbox" @if( $settings->signup_theme == "1") checked  @endif >
-                                    <span class="slider round"></span>
-                                </label>
+                    <div class="row d-flex"> 
+
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(trans('Enable signup page theme')) }}</label>
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:#006AFF;"> Default Page </div>
+
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="signup_theme" class="signup_theme" id="signup_theme" type="checkbox" @if( $settings->signup_theme == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;"> Single Page</div>
+
                             </div>
                         </div>
-                    <div class="col-sm-6">
-                                <label>{{ ucfirst(trans('Enable Audio page theme')) }}</label>
+
+                        <div class="col-sm-6">
+                            <label>{{ ucfirst(trans('Enable Audio page theme')) }}</label>
                             <div class="mt-1">
                                 <label class="switch">
                                     <input name="audio_page_checkout" class="audio_page_checkout" id="audio_page_checkout" type="checkbox" @if( $settings->audio_page_checkout == "1") checked  @endif >
@@ -221,7 +229,10 @@ border-radius: 0px 4px 4px 0px;
                                 </label>
                             </div>
                         </div>
-                    </div><br>
+                    </div>
+
+                    <br>
+
                     <div class="row"> 
                         <div class="col-sm-6">
                             <label>{{ ucfirst(trans('signup Agree Message')) }}</label>
@@ -273,56 +284,106 @@ border-radius: 0px 4px 4px 0px;
                                  {{-- Prevent Viewing Page Source --}}
 
                 <div class="panel-heading mt-3"> 
-                    <div class="row"> 
-                        <div class="col-sm-4">
+
+                    <div class="row d-flex" >
+
+                        <div class="col-md-6">
                             <label>{{ ucfirst(trans(' Enable Developer Tools')) }}</label>
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input name="prevent_inspect" class="prevent_inspect" id="prevent_inspect" type="checkbox" @if( $settings->prevent_inspect == "1") checked  @endif >
-                                    <span class="slider round"></span>
-                                </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Disable</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="prevent_inspect" class="prevent_inspect" id="prevent_inspect" type="checkbox" @if( $settings->prevent_inspect == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Enable</div>
                             </div>
                         </div>
-            
-                        <div class="col-sm-4">
+
+                        <div class="col-md-6">
                             <label>{{ ucfirst(trans('Enable Loader')) }}</label>
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input name="loader_setting" class="loader_setting" id="loader_setting" type="checkbox" @if( $settings->loader_setting == "1") checked  @endif >
-                                    <span class="slider round"></span>
-                                </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Disable</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="loader_setting" class="loader_setting" id="loader_setting" type="checkbox" @if( $settings->loader_setting == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Enable</div>
                             </div>
                         </div>
+                    </div> 
+                    <br>
 
-                        <div class="col-sm-4">
+                    <div class="row d-flex"> 
+                        <div class="col-md-6">
                             <label>{{ ucfirst(trans('enable search dropdown')) }}</label>
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input name="search_dropdown_setting" class="search_dropdown_setting" id="search_dropdown_setting" type="checkbox" @if( $settings->search_dropdown_setting == "1") checked  @endif >
-                                    <span class="slider round"></span>
-                                </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Disable</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="search_dropdown_setting" class="search_dropdown_setting" id="search_dropdown_setting" type="checkbox" @if( $settings->search_dropdown_setting == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Enable</div>
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <label>{{ ucfirst(trans('Enable Profile Page')) }}</label>
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input name="my_profile_theme" class="my_profile_theme" id="my_profile_theme" type="checkbox" @if( $settings->my_profile_theme == "1") checked  @endif >
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>  
 
-                        <div class="col-sm-4">
-                            <label>{{ ucfirst(('Enable SignIn / SignUp Link')) }} <span> ( Header )</span></label>
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input name="signin_header"  type="checkbox" @if( $settings->signin_header == "1") checked  @endif >
-                                    <span class="slider round"></span>
-                                </label>
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:#006AFF;"> Profile Page 1  </div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="my_profile_theme" class="my_profile_theme" id="my_profile_theme" type="checkbox" @if( $settings->my_profile_theme == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Profile Page 2</div>
                             </div>
                         </div>  
+                    </div>  
+                    <br>
+
+                    <div class="row d-flex"> 
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Enable SignIn / SignUp Link')) }} <span> ( Header )</span></label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Disable</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="signin_header"  type="checkbox" @if( $settings->signin_header == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Enable</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Toggle Player')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:60%;">
+                                <div style="color:#006AFF;"> Player 1 <span> (Default)</span>  </div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="choose_player"  type="checkbox" @if( $settings->choose_player == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;"> Player 2 (Only for Videos) </div>
+                            </div>
+                        </div>
+                    </div>  
+
                     </div>
                 </div>
                 
