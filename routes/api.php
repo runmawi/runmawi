@@ -627,4 +627,7 @@ Route::group(
 
             Route::get('tv_settings', 'ApiAuthController@TVSetting');
 
+            Route::post('tv_continue_watchings', 'ApiAuthController@TV_continue_watchings');
+            Route::post('tv_list_continue_watchings', 'ApiAuthController@TV_ContinueWatching');
+    
         });
