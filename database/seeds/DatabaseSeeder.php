@@ -64,6 +64,7 @@ class DatabaseSeeder extends Seeder
             AdminAdsTimeSlotSeeding::class,
             DeviceSeeder::class,
             SiteMetaSeeder::class,
+            TVSettingTableSeeder::class,
         ]);
     
     }

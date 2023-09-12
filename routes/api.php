@@ -625,4 +625,6 @@ Route::group(
             Route::post('play_music_station ', 'ApiAuthController@PlayerMusicStation');
             Route::post('delete_music_station ', 'ApiAuthController@DeleteStation');
 
+            Route::get('tv_settings', 'ApiAuthController@TVSetting');
+
         });
