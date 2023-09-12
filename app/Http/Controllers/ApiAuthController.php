@@ -10620,20 +10620,26 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
           $plans_name = '';
           $plan_ends_at = '';
         }
+        $response = array(
+          'status'=> 'true',
+          'message' => 'Logged In Successfully',
+          'user_details'=> $user,
+          'plans_name'=>$plans_name,
+          'plan_ends_at'=>$plan_ends_at,
+          'tv_code'=>$tv_code,
+          'uniqueId'=>$request['uniqueId'],
+          'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar,
+          'Count_User' => $TVLoginCodecount,
 
-      }
+      );
+      }else{
           $response = array(
-              'status'=> 'true',
-              'message' => 'Logged In Successfully',
-              'user_details'=> $user,
-              'plans_name'=>$plans_name,
-              'plan_ends_at'=>$plan_ends_at,
-              'tv_code'=>$tv_code,
-              'uniqueId'=>$request['uniqueId'],
-              'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar,
-              'Count_User' => $TVLoginCodecount,
+            'status'=> 'false',
+            'message' => 'User Count 0',
+            'Count_User' => 0,
+        );
+      }
 
-          );
          } else{
 
             $response = array(
