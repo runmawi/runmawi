@@ -15,7 +15,8 @@
 	                <form id="update-cat-form" accept-charset="UTF-8" action="{{ route('inapp_purchase_update') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group ">
-                            <label> Plan Price :</label>
+                            <!-- <label> Plan Price :</label> -->
+                            <label>Plan Price  ( {{ @$CurrencySetting->symbol }} ) :</label>
                             <input type="text" id="plan_price" name="plan_price" value="{{ $Inapp_Purchase->plan_price }}" class="form-control" placeholder="Enter Plan Price">
                         </div>
 
