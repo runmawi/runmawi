@@ -131,6 +131,7 @@ use App\AdminVideoPlaylist;
 use App\MusicStation as MusicStation;
 use App\UserMusicStation as UserMusicStation;
 use Stripe\Stripe;
+use App\TVSetting as TVSetting;
 
 class ApiAuthController extends Controller
 {
@@ -20957,5 +20958,30 @@ public function TV_login(Request $request)
     }
     return response()->json($response, 200);
   }
+
+  public function TVSetting(Request $request){
+    try {
+      $TVSetting = TVSetting::where('enable_id',1)->count();
+      $TVSetting = TVSetting::Select('tv_settings.*','pages.body')
+      ->leftJoin('pages','pages.id','=','tv_settings.page_id')
+      ->where('tv_settings.enable_id',1)
+      ->get();
+ 
+      $response = array(
+        'status'  => 'true',
+        'TVSetting' => $TVSetting,
+      );
+      // print_r($TVSetting);exit;
+    } catch (\Throwable $th) {
+      throw $th;
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+    }
+  return response()->json($response, 200);
+
+  }
+
 }
 

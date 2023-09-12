@@ -164,6 +164,9 @@ class SignupController extends Controller
             $SiteTheme = SiteTheme::first();
             $City = \App\City::get();
             $State = \App\State::get();
+            $AllCountry = \App\AllCountry::get();
+            $AllCity = \App\AllCities::get();
+            $AllState = \App\AllStates::get();
             // dd($SiteTheme->signup_theme);
             $signup_status = FreeRegistration();
 //            if ( $signup_status == 1 ) {
@@ -176,9 +179,9 @@ class SignupController extends Controller
             $settings = \App\Setting::first();
             if($SiteTheme->signup_theme == 0){
                 if($settings->free_registration == 1) {
-                    return Theme::view('register.step1',compact('register','Artists','State','City'));
+                    return Theme::view('register.step1',compact('register','Artists','State','City','AllCountry','AllCity','AllState'));
                 } else {
-                    return Theme::view('register.step1',compact('register','Artists','State','City'));
+                    return Theme::view('register.step1',compact('register','Artists','State','City','AllCountry','AllCity','AllState'));
                 }
         }elseif($SiteTheme->signup_theme == 1){
 
@@ -190,6 +193,10 @@ class SignupController extends Controller
                 'Artists' => $Artists,
                 'City' => \App\City::get(),
                 'State' => \App\State::get(),
+                'AllCountry' => \App\AllCountry::get(),
+                'AllCity' => \App\AllCities::get(),
+                'AllState' => \App\AllStates::get(),
+
             );
             if($settings->free_registration == 1) {
                 return Theme::view('register.signup_step1',$data);
@@ -1459,9 +1466,9 @@ public function PostcreateStep3(Request $request)
 public function GetState(Request $request)
 {
     
-    $country_id = \App\Region::where('name',$request->country_id)->pluck('id')->first();
+    $country_id = \App\AllCountry::where('name',$request->country_id)->pluck('id')->first();
 
-    $data['states'] = \App\State::where("country_id", $country_id)
+    $data['states'] = \App\AllStates::where("country_id", $country_id)
         ->get(["name", "id"]);
     return response()
         ->json($data);
@@ -1470,9 +1477,9 @@ public function GetState(Request $request)
 public function GetCity(Request $request)
 {
 
-    $state_id = \App\State::where('name',$request->state_id)->pluck('id')->first();
+    $state_id = \App\AllStates::where('name',$request->state_id)->pluck('id')->first();
 
-    $data['cities'] = \App\City::where("state_id", $state_id)
+    $data['cities'] = \App\AllCities::where("state_id", $state_id)
         ->get(["name", "id"]);
     return response()
         ->json($data);
