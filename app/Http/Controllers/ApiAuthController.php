@@ -1349,7 +1349,7 @@ public function verifyandupdatepassword(Request $request)
 
       $current_date = date('Y-m-d h:i:s a', time());
   
-      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item,$request) {
+      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($request){
           $item['details']        = strip_tags($item->details);
           $item['description']    = strip_tags($item->description);
           $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
