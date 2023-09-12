@@ -185,7 +185,7 @@ Index Of Script
 			{
 				breakpoint: 768,
 				settings: {
-				slidesToShow: 2,
+				slidesToShow: 3,
 				slidesToScroll: 1
 				}
 			},
@@ -193,7 +193,7 @@ Index Of Script
 				breakpoint: 480,
 				settings: {
 				// arrows: false,
-				slidesToShow: 1,
+				slidesToShow: 3,
 				slidesToScroll: 1
 				}
 			}
@@ -275,7 +275,7 @@ Index Of Script
 			{
 				breakpoint: 480,
 				settings: {
-				slidesToShow: 1,
+				slidesToShow: 2,
 				slidesToScroll: 1,
 				}
 			}
@@ -310,7 +310,7 @@ Index Of Script
 			{
 				breakpoint: 480,
 				settings: {
-				slidesToShow: 1,
+				slidesToShow: 2,
 				slidesToScroll: 1,
 				}
 			}
@@ -348,7 +348,7 @@ Index Of Script
 			{
 				breakpoint: 600,
 				settings: {
-				slidesToShow: 1,
+				slidesToShow: 2,
 				slidesToScroll: 1
 				}
 			}
@@ -396,10 +396,10 @@ Index Of Script
 			dots:false,
 			responsive:{
 				0:{
-					items:1
+					items:2
 				},
 				600:{
-					items:1
+					items:2
 				},
 				1000:{
 					items:4
