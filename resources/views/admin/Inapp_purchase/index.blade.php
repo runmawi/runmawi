@@ -80,7 +80,7 @@
                                 <form id="new-cat-form" accept-charset="UTF-8" action="{{  route('inapp_purchase_store')  }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
-                                        <label>Plan Price  ( ₹ ) :</label>
+                                        <label>Plan Price  ( {{ @$CurrencySetting->symbol }} ) :</label>
                                         <input type="text" id="plan_price" name="plan_price" value="" class="form-control" placeholder="Enter Plan Price">
                                     </div>  
 
