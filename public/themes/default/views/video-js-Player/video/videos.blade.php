@@ -1,4 +1,6 @@
-@php include public_path('themes/default/views/header.php'); @endphp
+@php 
+// include public_path('themes/default/views/header.php'); 
+@endphp
 
 {{-- video-js Style --}}
 
@@ -23,6 +25,12 @@
         </video>
     </div>
 
-@php include public_path('themes/default/views/video-js-Player/video/player_script.blade.php'); @endphp
+@php 
 
-@php include public_path('themes/default/views/footer.blade.php'); @endphp
+    include public_path('themes/default/views/video-js-Player/video/player_script.blade.php');
+
+    // include public_path('themes/default/views/video-js-Player/video/videos_ads.blade.php');
+
+    include public_path('themes/default/views/footer.blade.php'); 
+
+@endphp
