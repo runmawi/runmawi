@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth'], function(){
 //   Route::get('/MusicAudioPlayer', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
 
   Route::get('MusicAudioPlayer/{slug}', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
+  Route::get('/convertExcelToJson', 'HomeController@convertExcelToJson');
 
 // Endpoints to call or receive calls.
 Route::post('/video/call-user', 'VideoChatController@callUser');
