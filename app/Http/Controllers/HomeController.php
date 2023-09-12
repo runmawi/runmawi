@@ -4639,19 +4639,58 @@ class HomeController extends Controller
     public function convertExcelToJson(){
 
         try {
+            $filePath = 'https://localhost/flicknexs/public/uploads/Pages/testaudio.xlsx';
+            $path = public_path() . "/uploads/Pages/testaudio.xlsx";
+
         
-                    // Specify the path to your Excel file
-            $excelFile = 'https://localhost/flicknexs/public/Pages/testaudio.xlsx';
+            if (file_exists($path)) {
 
-            // Read data from the Excel file and store it in an array
-            $data = Excel::toCollection(null, $excelFile)->first();
 
-            // Convert the data to JSON
-            $json = $data->toJson();
+                                // Read data from the Excel file and store it in an array
+                    $data = Excel::toArray(null, $path)[0]; // Get the first sheet
 
-            // You can return the JSON or do any other processing as needed
-            return response()->json($json);
-            
+                    // Extract the header row (A1 and B1) as keys
+                    $keys = [
+                        $data[0][0] => $data[0][0],
+                        $data[0][1] => $data[0][1]
+                    ];
+
+                    // Initialize an empty array for the data rows
+                    $jsonData = [];
+
+                    // Loop through the data rows starting from the second row
+                    for ($i = 1; $i < count($data); $i++) {
+                        $rowData = $data[$i];
+                        // print_r($rowData);exit;
+
+                        $jsonData[] = [
+                            $keys[$data[0][0]] => $rowData[0],
+                            $keys[$data[0][1]] => $rowData[1],
+                        ];
+                    }
+                    
+                    $result = [
+                        'lyrics' => $jsonData
+                    ];
+                    // Convert the data to JSON
+                    $json = json_encode($result);
+                    dd($json);
+
+
+
+                // $data = Excel::toCollection(null, $path)->first();
+        
+                // $json = $data->toJson();
+        
+                return response()->json($json);
+
+
+            } else {
+                // Handle the case where the file does not exist
+                return response()->json(['error' => 'File not found.']);
+            }
+            dd(file_exists($path));
+
         } catch (\Throwable $th) {
             throw $th;
         }
