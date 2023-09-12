@@ -636,11 +636,4 @@ Route::group(
             Route::post('TV_ShowAudio_wishlist', 'ApiAuthController@TV_ShowAudio_wishlist');
             Route::post('TV_ShowLiveStream_wishlist', 'ApiAuthController@TV_ShowLiveStream_wishlist');
             
-            
-            Route::post('Android_Video_watchlater', 'ApiAuthController@Android_Video_watchlater');
-            Route::post('Android_Episode_watchlater', 'ApiAuthController@Android_Episode_watchlater');
-            Route::post('Android_Audio_watchlater', 'ApiAuthController@Android_Audio_watchlater');
-            Route::post('Android_LiveStream_watchlater', 'ApiAuthController@Android_LiveStream_watchlater');
-
-
         });

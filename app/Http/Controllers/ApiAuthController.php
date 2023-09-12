@@ -1558,6 +1558,32 @@ public function verifyandupdatepassword(Request $request)
             $IOS_dislike = "false";
           }
          
+          
+
+            // TVID Continue Watchings , Wishlist 
+
+
+            if(!empty($request->tv_id)){
+              
+              $tv_cnt4 = ContinueWatching::select('currentTime')->where('tv_id','=',$request->tv_id)->where('videoid','=',$videoid)->count();
+              
+                 //Wishlilst
+            $Wishlist_cnt = Wishlist::select('video_id')->where('tv_id','=',$request->tv_id)->where('video_id','=',$videoid)->count();
+            $tv_wishliststatus =  ($Wishlist_cnt == 1) ? "true" : "false";
+
+            if($tv_cnt4 == 1){
+                $tv_get_time = ContinueWatching::select('currentTime')->where('tv_id','=',$request->tv_id)->where('videoid','=',$videoid)->get();
+                $tv_curr_time = $tv_get_time[0]->currentTime;
+            }else{
+                  $tv_curr_time = '00';
+            }
+
+          }else{
+            $tv_curr_time = '00';
+            $tv_wishliststatus = 'false';
+          }
+
+
           $videodetailaccess = Video::where('id',$videoid)->pluck('access')->first();
       if ($ppv_exist > 0) {
   
@@ -1698,6 +1724,8 @@ public function verifyandupdatepassword(Request $request)
         'andriod_dislike' => $andriod_dislike ,
         'andriod_watchlaterstatus' => $andriod_watchlaterstatus ,
         'andriod_favorite' => $andriod_favorite ,
+        'tv_curr_time' => $tv_curr_time ,
+        'tv_wishliststatus' => $tv_wishliststatus ,
         'curr_time' => $curr_time,
         'andriod_curr_time' => $andriod_curr_time,
         'ppv_video_status' => $ppv_video_status,
