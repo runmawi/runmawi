@@ -41,15 +41,24 @@ return [
         | Configure e.g. delimiter, enclosure and line ending for CSV exports.
         |
         */
-        'csv'                    => [
-            'delimiter'              => ',',
-            'enclosure'              => '"',
-            'line_ending'            => PHP_EOL,
-            'use_bom'                => false,
-            'include_separator_line' => false,
-            'excel_compatibility'    => false,
-            'output_encoding'        => '',
-            'test_auto_detect'       => true,
+        // 'csv'                    => [
+        //     'delimiter'              => ',',
+        //     'enclosure'              => '"',
+        //     'line_ending'            => PHP_EOL,
+        //     'use_bom'                => false,
+        //     'include_separator_line' => false,
+        //     'excel_compatibility'    => false,
+        //     'output_encoding'        => '',
+        //     'test_auto_detect'       => true,
+        // ],
+
+        'csv' => [
+            'ext' => 'csv',
+            'writer' => Csv::class,
+        ],
+        'xlsx' => [
+            'ext' => 'xlsx',
+            'writer' => Xlsx::class,
         ],
 
         /*
@@ -70,6 +79,14 @@ return [
             'category'       => '',
             'manager'        => '',
             'company'        => '',
+        ],
+    ],
+
+    
+    'sheets' => [
+        'my_sheet' => [
+            'export' => 'xlsx', // Change to match your file type if necessary
+            'import' => 'xlsx', // Change to match your file type if necessary
         ],
     ],
 

@@ -68,6 +68,7 @@ use App\Language as Language;
 use GuzzleHttp\Client;
 use App\MusicStation as MusicStation;
 use App\GuestLoggedDevice as GuestLoggedDevice;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
@@ -4635,5 +4636,25 @@ class HomeController extends Controller
         return response()->json($response, 200);
     }
 
+    public function convertExcelToJson(){
+
+        try {
+        
+                    // Specify the path to your Excel file
+            $excelFile = 'https://localhost/flicknexs/public/Pages/testaudio.xlsx';
+
+            // Read data from the Excel file and store it in an array
+            $data = Excel::toCollection(null, $excelFile)->first();
+
+            // Convert the data to JSON
+            $json = $data->toJson();
+
+            // You can return the JSON or do any other processing as needed
+            return response()->json($json);
+            
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 
 }
