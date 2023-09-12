@@ -630,4 +630,17 @@ Route::group(
             Route::post('tv_continue_watchings', 'ApiAuthController@TV_continue_watchings');
             Route::post('tv_list_continue_watchings', 'ApiAuthController@TV_ContinueWatching');
     
+            Route::post('TV_Addwishlist', 'ApiAuthController@TV_Addwishlist');
+            Route::post('TV_ShowVideo_wishlist', 'ApiAuthController@TV_ShowVideo_wishlist');
+            Route::post('TV_ShowEpisode_wishlist', 'ApiAuthController@TV_ShowEpisode_wishlist');
+            Route::post('TV_ShowAudio_wishlist', 'ApiAuthController@TV_ShowAudio_wishlist');
+            Route::post('TV_ShowLiveStream_wishlist', 'ApiAuthController@TV_ShowLiveStream_wishlist');
+            
+            
+            Route::post('Android_Video_watchlater', 'ApiAuthController@Android_Video_watchlater');
+            Route::post('Android_Episode_watchlater', 'ApiAuthController@Android_Episode_watchlater');
+            Route::post('Android_Audio_watchlater', 'ApiAuthController@Android_Audio_watchlater');
+            Route::post('Android_LiveStream_watchlater', 'ApiAuthController@Android_LiveStream_watchlater');
+
+
         });
