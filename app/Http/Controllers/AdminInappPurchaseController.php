@@ -12,14 +12,16 @@ use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use View;
 use App\InappPurchase;
+use App\CurrencySetting;
 
 class AdminInappPurchaseController extends Controller
 {
     public function index(Request $request)
     {
         $Inapp_Purchase = InappPurchase::all();
+        $CurrencySetting = CurrencySetting::first();
 
-        return view('admin.Inapp_purchase.index',compact('Inapp_Purchase'));
+        return view('admin.Inapp_purchase.index',compact('Inapp_Purchase','CurrencySetting'));
     }
 
     public function store(Request $request){
@@ -37,7 +39,8 @@ class AdminInappPurchaseController extends Controller
     public function edit(Request $request,$id)
     {
         $Inapp_Purchase = InappPurchase::where('id', '=', $id)->first();
-        return view('admin.Inapp_purchase.edit',compact('Inapp_Purchase','Inapp_Purchase'));
+        $CurrencySetting = CurrencySetting::first();
+        return view('admin.Inapp_purchase.edit',compact('Inapp_Purchase','CurrencySetting'));
     }
 
     public function update(Request $request)
