@@ -1213,6 +1213,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/test/videoupload', 'AdminVideosController@TestServerUpload');
     Route::post('/test/server/videoupload/', 'AdminVideosController@TestServerFileUpload');
+
+    // TV SETTINGS
+
+    Route::get('/tv-settings/index', 'AdminTvSettingsController@index')->name('TV_Settings_Index');
+    Route::get('/tv-settings/edit/{id}', 'AdminTvSettingsController@edit')->name('TV_Settings_Edit');
+    Route::post('/tv-settings/update','AdminTvSettingsController@update')->name('TV_Settings_Update');
 });
 
 Route::get('admin/channel/pendingusers', 'ChannelLoginController@PendingUsers')->name('ChannelPendingUsers');
