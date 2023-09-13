@@ -132,6 +132,8 @@ use App\MusicStation as MusicStation;
 use App\UserMusicStation as UserMusicStation;
 use Stripe\Stripe;
 use App\TVSetting as TVSetting;
+use App\TvSearchData ;
+
 
 class ApiAuthController extends Controller
 {
@@ -21498,8 +21500,6 @@ public function TV_login(Request $request)
     return response()->json($response, 200);
 
   }
-
-
   
   public function TV_ShowLiveStream_wishlist(Request $request) {
 
@@ -21579,6 +21579,52 @@ public function TV_login(Request $request)
 
   }
 
+  public function tv_retrieve_search_data(Request $request)
+  {
+    try {
+
+        $TvSearchData = TvSearchData::pluck('search_data')->first();
+
+        $response = array(
+          'status' => "true",
+          "TvSearchData" => $TvSearchData ,
+        );
+
+    } catch (\Throwable $th) {
+      
+      $response = array(
+        'status' => "false",
+        'message'=> $th->getMessage(),
+      );
+      
+    }
+
+    return response()->json($response, 200);
+  }
+
+  public function tv_search_data_update(Request $request)
+  {
+    try {
+
+      $TvSearchData = TvSearchData::first();
+
+      $TvSearchData  == null ? TvSearchData::create($request->all()) : TvSearchData::first()->update($request->all()) ;
+      
+      $response = array(
+        'status'  => "true",
+        'message' => "Tv Search Data Stored Successfully",
+        'data'    => TvSearchData::first(),
+      );
+
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => "false",
+          'message'=> $th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+  }
 
 }
-
