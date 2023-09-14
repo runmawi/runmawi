@@ -23,7 +23,7 @@ Route::group(['middleware' => 'auth'], function(){
 //   Route::get('/MusicAudioPlayer', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
 
   Route::get('MusicAudioPlayer/{slug}', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
-  Route::get('/convertExcelToJson', 'HomeController@convertExcelToJson');
+  Route::get('/convertExcelToJson', 'HomeController@uploadExcel');
 
 // Endpoints to call or receive calls.
 Route::post('/video/call-user', 'VideoChatController@callUser');
@@ -836,6 +836,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/audios/delete/{id}', ['before' => 'demo', 'uses' => 'AdminAudioController@destroy']);
     Route::get('/audios/create', 'AdminAudioController@create');
     Route::post('/audios/store', ['before' => 'demo', 'uses' => 'AdminAudioController@store']);
+    Route::post('/audios/lyricsFileValidation', 'AdminAudioController@lyricsFileValidation');
 
     //Admin Audio Categories
     Route::get('/audios/categories', 'AdminAudioCategoriesController@index');
