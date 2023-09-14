@@ -1858,7 +1858,7 @@ public function verifyandupdatepassword(Request $request)
 
         if ($ppv_exist > 0) {
 
-              $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->pluck('to_time')->first();
+              $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->orderBy('created_at', 'desc')->pluck('to_time')->first();
 
               $ppv_video_status = $ppv_time_expire > $current_date ? "can_view" :  "expired" ;
 

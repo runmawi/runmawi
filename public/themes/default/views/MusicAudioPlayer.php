@@ -12,8 +12,8 @@
         </div>
         <div id="lyrics">
           <h2 class="song-name"></h2><h4 class="artist-name"></h4>
-          <!-- <div id="lyrics-content">
-          </div> -->
+          <div id="lyrics-content">
+          </div>
           <div class="">
               <img height="250" width="250"  id="audio_img" src="">
               <!-- height="150" width="150"  -->
@@ -396,13 +396,27 @@
                     var html = "";
                     timeList=[];
                     // html = html + indexing.image_url;
-                    // for(var i=0;i<data.lyrics.length;i++){
-                    //     timeList.push(data.lyrics[i].time);
-                    //     html = html + "<h2>"+data.lyrics[i].line+"</h2>";
-                    // }
-                    // $('#lyrics-content').html(html);
-                    var image = document.querySelector('#audio_img')
-                    image.src =  indexing.image_url 
+                    var jsonString = indexing.lyrics_json;
+
+                    // Decode the JSON string into a JavaScript object
+                    var decodedData = JSON.parse(jsonString);
+                    console.log(decodedData)
+                    if(jsonString != ''){
+
+                        $('#audio_img').hide();
+                        $('#lyrics-content').show();
+                        for(var i=0;i<decodedData.lyrics.length;i++){
+                        timeList.push(decodedData.lyrics[i].time);
+                        html = html + "<h2>"+decodedData.lyrics[i].line+"</h2>";
+                        }
+                        $('#lyrics-content').html(html);
+
+                    }else{
+                        $('#audio_img').show();
+                        $('#lyrics-content').hide();
+                        var image = document.querySelector('#audio_img')
+                        image.src =  indexing.image_url 
+                    }
 
                     $('#totalTime').html(processTime(totalTime));
                     $('#currentTime').html(processTime(time));
