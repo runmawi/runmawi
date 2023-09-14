@@ -8,6 +8,29 @@
             aspectRatio: '16:9',
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true, 
+
+            controlBar: {
+                children: {
+                    'playToggle':{},
+                    'muteToggle':{},
+                    'volumeControl':{},
+                    'currentTimeDisplay':{},
+                    'timeDivider':{},
+                    'durationDisplay':{},
+                    'liveDisplay':{},
+
+                    'flexibleWidthSpacer':{},
+                    'progressControl':{},
+
+                    'settingsMenuButton': {
+                        entries : [
+                            'subtitlesButton',
+                            'playbackRateMenuButton'
+                        ]
+                    },
+                    'fullscreenToggle':{}
+                }
+		    }
         });
 
     
