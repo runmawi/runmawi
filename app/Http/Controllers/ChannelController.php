@@ -3925,7 +3925,7 @@ class ChannelController extends Controller
     {
         try {
             
-            $video_id = Video::pluck('id')->first();
+            $video_id = Video::latest()->pluck('id')->first();
 
             $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
 
@@ -3975,7 +3975,7 @@ class ChannelController extends Controller
 
         } catch (\Throwable $th) {
             
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
