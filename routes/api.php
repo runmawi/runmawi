@@ -636,4 +636,7 @@ Route::group(
             Route::post('TV_ShowAudio_wishlist', 'ApiAuthController@TV_ShowAudio_wishlist');
             Route::post('TV_ShowLiveStream_wishlist', 'ApiAuthController@TV_ShowLiveStream_wishlist');
             
+            Route::get('TV_retrieve_search_data', 'ApiAuthController@tv_retrieve_search_data');
+            Route::post('TV_search_data_update', 'ApiAuthController@tv_search_data_update');
+            
         });

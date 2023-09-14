@@ -4,30 +4,32 @@
 
     document.addEventListener("DOMContentLoaded", function () {
 
-        var player = videojs('my-video', {
+        var player = videojs('my-video', {              // Video Js Player 
             aspectRatio: '16:9',
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true, 
         });
 
-            // hls Quality Selector - M3U8 
     
-        player.hlsQualitySelector({
+        player.hlsQualitySelector({                     // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,
         });    
+                                                        
+        var vastTagPreroll  =  '<?= $pre_advertisement ?>' ;  // Advertisement
+        var vastTagPostroll =  '<?= $post_advertisement ?>' ;
 
-        var vastTagPreroll = null ;
-        var vastTagMidroll = null ;
-        var vastTagPostroll = null ;
-    
         var prerollTriggered = false;
         var postrollTriggered = false;
+
+        const vastTagMidroll_array = '<?php echo $mid_advertisement ?>' ;
+        const vastTagMidrollArray = vastTagMidroll_array != "" ? JSON.parse(vastTagMidroll_array) : null ;
     
         var midrollRequested = false;
-        var midrollInterval = 5 * 60; 
+        var midrollInterval = '<?= $video_js_mid_advertisement_sequence_time ?>' ; 
         var lastMidrollTime = 0;        
     
         if (!prerollTriggered) {
+
             player.ima({
                 adTagUrl: vastTagPreroll,
                 showControlsForAds: true,
@@ -43,52 +45,68 @@
     
         player.ima.initializeAdDisplayContainer();
     
-        function requestMidrollAd() {
+        function requestMidrollAd  ( vastTagMidroll ) {
+
             midrollRequested = true;
+
             player.ima.changeAdTag(vastTagMidroll);
+
             player.ima.requestAds();
         }
     
         player.on("timeupdate", function () {
+
             var currentTime = player.currentTime();
-            // console.log("Current time:", currentTime);
+
             var timeSinceLastMidroll = currentTime - lastMidrollTime;
     
             if (timeSinceLastMidroll >= midrollInterval && !midrollRequested) {
+
                 lastMidrollTime = currentTime;
                 // console.log("Midroll triggered");
-                requestMidrollAd();
+                
+                const random_array_index = Math.floor(Math.random() * vastTagMidrollArray.length);
+
+                const vastTagMidroll = vastTagMidrollArray[random_array_index];
+
+                requestMidrollAd(vastTagMidroll);
             }
         });
     
         player.on("ended", function () {
-        //   console.log("Video ended");
+
             if (!postrollTriggered) {
+
                 postrollTriggered = true;
-                // console.log("Postroll triggered");
-    
+
                 player.ima.requestAds({
                     adTagUrl: vastTagPostroll,
                 });
+                
                 // console.log("Postroll ads requested");
             }
         });
     
         player.on("adsready", function () {
+
             if (midrollRequested) {
               // console.log("Ads ready - midroll");
             } else {
               // console.log("Ads ready - preroll");
                 player.src(video_url);
             }
+
         });
     
         player.on("aderror", function () {
+
           console.log("Ads aderror");
           player.play();
+
         });
     
         player.on("adend", function () {
+
             if (lastMidrollTime > 0) {
             //   console.log("A midroll ad has finished playing.");
                 midrollRequested = false;
@@ -97,6 +115,7 @@
                 prerollTriggered = true;
             }
             player.play();
+
         });
     });
     </script>
