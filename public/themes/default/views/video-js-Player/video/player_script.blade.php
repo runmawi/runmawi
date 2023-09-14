@@ -10,10 +10,13 @@
             fluid: true, 
 
             controlBar: {
+                
+                volumePanel: {
+                    inline: false
+                },
+
                 children: {
                     'playToggle':{},
-                    'muteToggle':{},
-                    'volumeControl':{},
                     'currentTimeDisplay':{},
                     'timeDivider':{},
                     'durationDisplay':{},
