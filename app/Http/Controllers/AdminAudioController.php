@@ -562,7 +562,7 @@ class AdminAudioController extends Controller
                     // $data['lyrics_json'] = json_encode($result) ;
 
                 } else {
-                    $lyrics_json = null;
+                    $lyrics_json = $audio->lyrics_json;
                     // $data['lyrics_json'] = $audio->lyrics_json ;
 
                 }
