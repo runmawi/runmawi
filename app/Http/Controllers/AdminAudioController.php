@@ -523,7 +523,7 @@ class AdminAudioController extends Controller
                 if ($lyricsFile) {
                     $filePath = $lyricsFile->getRealPath();
 
-                    $data = Excel::toArray(null, $filePath)[0]; // Get the first sheet
+                    $data = Excel::toArray(null, $filePath, null, \Maatwebsite\Excel\Excel::XLSX)[0];
 
                     $keys = [
                         $data[0][0] => $data[0][0],
@@ -1139,7 +1139,7 @@ class AdminAudioController extends Controller
         if ($lyricsFile) {
             $filePath = $lyricsFile->getRealPath();
 
-            $data = Excel::toArray(null, $filePath)[0]; // Get the first sheet
+            $data = Excel::toArray(null, $filePath, null, \Maatwebsite\Excel\Excel::XLSX)[0];
 
             $keys = [
                 $data[0][0] => $data[0][0],
