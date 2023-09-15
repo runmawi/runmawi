@@ -4639,22 +4639,127 @@ class HomeController extends Controller
     public function convertExcelToJson(){
 
         try {
+            $filePath = 'https://localhost/flicknexs/public/uploads/Pages/testaudio.xlsx';
+            $path = public_path() . "/uploads/Pages/testaudio.xlsx";
+
         
-                    // Specify the path to your Excel file
-            $excelFile = 'https://localhost/flicknexs/public/Pages/testaudio.xlsx';
+            if (file_exists($path)) {
 
-            // Read data from the Excel file and store it in an array
-            $data = Excel::toCollection(null, $excelFile)->first();
 
-            // Convert the data to JSON
-            $json = $data->toJson();
+                                // Read data from the Excel file and store it in an array
+                    $data = Excel::toArray(null, $path)[0]; // Get the first sheet
 
-            // You can return the JSON or do any other processing as needed
-            return response()->json($json);
-            
+                    // Extract the header row (A1 and B1) as keys
+                    $keys = [
+                        $data[0][0] => $data[0][0],
+                        $data[0][1] => $data[0][1]
+                    ];
+
+                    // Initialize an empty array for the data rows
+                    $jsonData = [];
+
+                    // Loop through the data rows starting from the second row
+                    for ($i = 1; $i < count($data); $i++) {
+                        $rowData = $data[$i];
+                        // print_r($rowData);exit;
+
+                        $jsonData[] = [
+                            $keys[$data[0][0]] => $rowData[0],
+                            $keys[$data[0][1]] => $rowData[1],
+                        ];
+                    }
+                    
+                    $result = [
+                        'lyrics' => $jsonData
+                    ];
+                    // Convert the data to JSON
+                    $json = json_encode($result);
+                    dd($json);
+
+
+
+                // $data = Excel::toCollection(null, $path)->first();
+        
+                // $json = $data->toJson();
+        
+                return response()->json($json);
+
+
+            } else {
+                // Handle the case where the file does not exist
+                return response()->json(['error' => 'File not found.']);
+            }
+            dd(file_exists($path));
+
         } catch (\Throwable $th) {
             throw $th;
         }
     }
+
+public function uploadExcel(Request $request)
+{
+    // Validate the uploaded Excel file
+    // $request->validate([
+    //     'excel_file' => 'required|file|mimes:xlsx',
+    // ]);
+
+    // // Get the uploaded Excel file from the request
+    // $uploadedFile = $request->file('excel_file');
+    $path = public_path() . "/uploads/Pages/testaudio.xlsx";
+
+    // Ensure the file was uploaded successfully
+    if ($path) {
+        // Get the absolute path to the uploaded file on the server
+        $filePath = $path;
+
+        // Read data from the Excel file and store it in an array
+        $data = Excel::toArray(null, $filePath)[0]; // Get the first sheet
+
+        // Extract the header row (A1 and B1) as keys
+        $keys = [
+            $data[0][0] => $data[0][0],
+            $data[0][1] => $data[0][1]
+        ];
+
+        // Initialize an empty array for the data rows
+        $jsonData = [];
+
+        // Loop through the data rows starting from the second row
+        for ($i = 1; $i < count($data); $i++) {
+            $rowData = $data[$i];
+
+            // Validate that both "line" and "time" keys are not empty
+            if (!empty($rowData[0]) && !empty($rowData[1])) {
+                // Validate that "time" is numeric
+                if (is_numeric($rowData[1]) && strpos($rowData[1], '.') === false) {
+                    $jsonData[] = [
+                        $keys[$data[0][0]] => $rowData[0],
+                        $keys[$data[0][1]] => intval($rowData[1]),
+                    ];
+                } else {
+                    // Handle the case where "time" is not numeric
+                    return response()->json(['error' => 'Invalid data in "time" column.']);
+                }
+            } else {
+                // Handle the case where "line" or "time" keys are empty
+                return response()->json(['error' => 'Empty "line" or "time" key found.']);
+            }
+        }
+
+        // Wrap the data in an object with a "lyrics" key
+        $result = [
+            'lyrics' => $jsonData
+        ];
+
+        // Convert the data to JSON
+        $json = json_encode($result);
+
+        // You can return the JSON or do any other processing as needed
+        return response()->json($json);
+    } else {
+        // Handle the case where the file was not uploaded
+        return response()->json(['error' => 'File not uploaded.']);
+    }
+}
 
 }

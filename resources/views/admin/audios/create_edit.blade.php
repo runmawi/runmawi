@@ -370,7 +370,25 @@ data: {
 
 						</div>
 							
+						<div class="row container-fluid">
 
+							<div class="col-md-6">
+									<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
+								<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics <span>(Ex:xlsx)</span></label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<div class="panel-body" style="display: block;"> 
+									@if(!empty($audio->lyrics))
+								<div class=" p-0 mb-1">
+								<!-- <img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " /></div> -->
+								@endif
+									<input type="file" name="lyrics" id="lyrics" >
+									<span class="error-message text-danger"></span>
+								</div> 
+							</div>
+
+
+								</div>
+
+							</div>
 							<div class="row container-fluid">
 								<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
 									<div class="panel-title"><label>Country</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -660,6 +678,58 @@ data: {
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script type="text/javascript" src="{{ URL::to('assets/js/jquery.mask.min.js') }}"></script>
 	<script type="text/javascript">
+
+
+$(document).ready(function() {
+    // Attach a click event listener to the upload button
+    $("#lyrics").on("change", function() {
+        // Create a FormData object to send the file and CSRF token via AJAX
+        const formData = new FormData();
+        formData.append("lyrics", $("#lyrics")[0].files[0]);
+        formData.append("_token", '{{ csrf_token() }}'); // Add the CSRF token
+
+        // Make an AJAX request to the Laravel controller
+        $.ajax({
+            url:  '{{ URL::to('admin/audios/lyricsFileValidation') }}', // Replace with the actual controller endpoint
+            type: "POST",
+            data: formData,
+            contentType: false, // Set to false to let jQuery set it automatically
+            processData: false, // Set to false to prevent jQuery from processing the data
+            success: function(response) {
+                // Handle the success response from the server
+							if(response == 1){
+								// alert(response);
+								$('.error-message').hide();
+								$('#audio_form').off('submit').on('submit', function(e) {
+								});
+								return true;
+				   				$('#audio_form').submit();
+							}else{
+								$('.error-message').show();
+								$(".error-message").text(response);
+								$('#audio_form').off('submit').on('submit', function(e) {
+									e.preventDefault();
+								});
+								// e.preventDefault();
+
+								// allowFormSubmission = false;
+
+								return false; // Validate as required if the condition is met
+							}
+            },
+            error: function(xhr, status, error) {
+                // Handle the error response from the server
+                console.log("Error: " + error);
+            }
+        });
+    });
+	$('#audio_form').on('submit', function(e) {
+        // Prevent form submission if the flag is false
+        if (!allowFormSubmission) {
+            e.preventDefault();
+        }
+    });
+});
 
 		$ = jQuery;
 		$(document).ready(function(){

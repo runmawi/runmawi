@@ -45,7 +45,7 @@
                                     ->where('advertisements.status', 1)
                                     ->groupBy('advertisements.id')
 
-                                    ->when( $videodetail->video_js_mid_position_ads_category == 'Random', function ($query) {
+                                    ->when( $videodetail->video_js_mid_position_ads_category == 'random_category', function ($query) {
 
                                             return $query ;
 

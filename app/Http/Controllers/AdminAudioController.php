@@ -53,6 +53,7 @@ use Carbon\CarbonInterval;
 use App\StorageSetting as StorageSetting;
 use App\ModeratorsUser as ModeratorsUser;
 use File;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class AdminAudioController extends Controller
@@ -486,6 +487,16 @@ class AdminAudioController extends Controller
     {
         $data = Session::all();
 
+
+        // $validator = Validator::make($request->all(), [
+        //     'lyrics' => 'mimes:xlsx',
+        // ]);
+    
+        // if ($validator->fails()) {
+        //     // return response()->json(['error' => 'Invalid file format.']);
+        //     return Redirect::back()->with(array('error' => 'Invalid file format.', 'note_type' => 'success') );
+        // }
+        
         if (!Auth::guest()) {
             $package_id = auth()->user()->id;
             $user_package =    User::where('id', $package_id)->first();
@@ -506,14 +517,74 @@ class AdminAudioController extends Controller
                 }
 
                 $audio = Audio::findOrFail($id);
+                        
+                $lyricsFile = $request->file('lyrics');
 
+                if ($lyricsFile) {
+                    $filePath = $lyricsFile->getRealPath();
+
+                    $data = Excel::toArray(null, $filePath, null, \Maatwebsite\Excel\Excel::XLSX)[0];
+
+                    $keys = [
+                        $data[0][0] => $data[0][0],
+                        $data[0][1] => $data[0][1]
+                    ];
+
+                    $jsonData = [];
+
+                    for ($i = 1; $i < count($data); $i++) {
+                        $rowData = $data[$i];
+
+                        // Validate that both "line" and "time" keys are not empty
+                        if (!empty($rowData[0]) && !empty($rowData[1])) {
+                            // Validate that "time" is numeric
+                            if (is_numeric($rowData[1]) && strpos($rowData[1], '.') === false) {
+                                $jsonData[] = [
+                                    $keys[$data[0][0]] => $rowData[0],
+                                    $keys[$data[0][1]] => intval($rowData[1]),
+                                ];
+                            } else {
+                                return Redirect::back()->with(array('error' => 'Invalid data in "time" column.', 'note_type' => 'success') );
+                                // return response()->json(['error' => 'Invalid data in "time" column.']);
+                            }
+                        } else {
+                            return Redirect::back()->with(array('error' => 'Empty "line" or "time" key found.', 'note_type' => 'success') );
+                            // return response()->json(['error' => 'Empty "line" or "time" key found.']);
+                        }
+                    }
+
+                    $result = [
+                        'lyrics' => $jsonData
+                    ];
+
+                    // Convert the data to JSON
+                    $lyrics_json = json_encode($result);
+                    // $data['lyrics_json'] = json_encode($result) ;
+
+                } else {
+                    $lyrics_json = null;
+                    // $data['lyrics_json'] = $audio->lyrics_json ;
+
+                }
+                if (!empty($lyricsFile)) {
+                    $lyricsFileName = str_replace(" ", "-", $lyricsFile->getClientOriginalName()) ;
+                    $lyricsext = $lyricsFile->extension();
+
+                    $lyrics_store = $lyricsFile->move('public/uploads/audiolyrics/', $lyricsFileName);
+                            
+                    $lyrics = URL::to('/').'/public/uploads/audiolyrics/'.$lyricsFileName; 
+
+                }else{
+                    $lyrics = $audio->lyrics ;
+                }
+
+                // dd($audio->slug);
                 $validator = Validator::make($data = $input, Audio::$rules);
 
                 if ($validator->fails())
                 {
                     return Redirect::back()->withErrors($validator)->withInput();
                 }
-
                     /*Slug*/
 
                 if(  $data['slug']  == '' || $audio->slug == ''){
@@ -641,6 +712,8 @@ class AdminAudioController extends Controller
                 $audio->active =  $active;
                 $audio->ppv_status =  $ppv_status;
                 $audio->rating =  $data['rating'];
+                $audio->lyrics =  $lyrics;
+                $audio->lyrics_json =  $lyrics_json;
                 $audio->save();
 
                 if(!empty($data['artists'])){
@@ -1060,6 +1133,67 @@ class AdminAudioController extends Controller
 
         $audio = Audio::findOrFail($id);
 
+                   
+        $lyricsFile = $request->file('lyrics');
+
+        if ($lyricsFile) {
+            $filePath = $lyricsFile->getRealPath();
+
+            $data = Excel::toArray(null, $filePath, null, \Maatwebsite\Excel\Excel::XLSX)[0];
+
+            $keys = [
+                $data[0][0] => $data[0][0],
+                $data[0][1] => $data[0][1]
+            ];
+
+            $jsonData = [];
+
+            for ($i = 1; $i < count($data); $i++) {
+                $rowData = $data[$i];
+
+                // Validate that both "line" and "time" keys are not empty
+                if (!empty($rowData[0]) && !empty($rowData[1])) {
+                    // Validate that "time" is numeric
+                    if (is_numeric($rowData[1]) && strpos($rowData[1], '.') === false) {
+                        $jsonData[] = [
+                            $keys[$data[0][0]] => $rowData[0],
+                            $keys[$data[0][1]] => intval($rowData[1]),
+                        ];
+                    } else {
+                        return Redirect::back()->with(array('error' => 'Invalid data in "time" column.', 'note_type' => 'success') );
+                        // return response()->json(['error' => 'Invalid data in "time" column.']);
+                    }
+                } else {
+                    return Redirect::back()->with(array('error' => 'Empty "line" or "time" key found.', 'note_type' => 'success') );
+                    // return response()->json(['error' => 'Empty "line" or "time" key found.']);
+                }
+            }
+
+            $result = [
+                'lyrics' => $jsonData
+            ];
+
+            // Convert the data to JSON
+            $lyrics_json = json_encode($result);
+            // $data['lyrics_json'] = json_encode($result) ;
+
+        } else {
+            $lyrics_json = null;
+            // $data['lyrics_json'] = $audio->lyrics_json ;
+
+        }
+        if (!empty($lyricsFile)) {
+            $lyricsFileName = str_replace(" ", "-", $lyricsFile->getClientOriginalName()) ;
+            $lyricsext = $lyricsFile->extension();
+
+            $lyrics_store = $lyricsFile->move('public/uploads/audiolyrics/', $lyricsFileName);
+                    
+            $lyrics = URL::to('/').'/public/uploads/audiolyrics/'.$lyricsFileName; 
+
+        }else{
+            $lyrics = $audio->lyrics ;
+        }
+
         $validator = Validator::make($data = $input, Audio::$rules);
 
             if ($validator->fails())
@@ -1162,6 +1296,8 @@ class AdminAudioController extends Controller
         $audio->ppv_status =  $data['ppv_status'];
         $audio->ios_ppv_price =  $data['ios_ppv_price'];
         $audio->rating =  $data['rating'];
+        $audio->lyrics =  $lyrics;
+        $audio->lyrics_json =  $lyrics_json;
         $audio->save();
 
         $audio = Audio::findOrFail($id);
@@ -1622,5 +1758,68 @@ class AdminAudioController extends Controller
        }
             return Redirect::back()->with('message','Your audio will be available shortly after we process it');
 
+        }
+
+        public function lyricsFileValidation(Request $request)
+        {
+            $data = Session::all();
+            $validator = Validator::make($request->all(), [
+                'lyrics' => 'mimes:xlsx',
+            ]);
+        
+            if ($validator->fails()) {
+                return 'Invalid file format.';
+            }
+                            
+                    $lyricsFile = $request->file('lyrics');
+                    // print_r($lyricsFile);exit;
+    
+                    if ($lyricsFile) {
+                        $filePath = $lyricsFile->getRealPath();
+
+                        $data = Excel::toArray(null, $filePath, null, \Maatwebsite\Excel\Excel::XLSX)[0];
+
+                        // $data = Excel::toArray(null, $filePath)[0]; // Get the first sheet
+    
+                        $keys = [
+                            $data[0][0] => $data[0][0],
+                            $data[0][1] => $data[0][1]
+                        ];
+    
+                        $jsonData = [];
+    
+                        for ($i = 1; $i < count($data); $i++) {
+                            $rowData = $data[$i];
+    
+                            // Validate that both "line" and "time" keys are not empty
+                            if (!empty($rowData[0]) && !empty($rowData[1])) {
+                                // Validate that "time" is numeric
+                                if (is_numeric($rowData[1]) && strpos($rowData[1], '.') === false) {
+                                    $jsonData[] = [
+                                        $keys[$data[0][0]] => $rowData[0],
+                                        $keys[$data[0][1]] => intval($rowData[1]),
+                                    ];
+                                } else {
+                                return 'Invalid data in "time" column in Lyrics File.';
+                            }
+                            } else {
+                                return 'Empty "line" or "time" key found in Lyrics File.';
+                            }
+                        }
+    
+                        $result = [
+                            'lyrics' => $jsonData
+                        ];
+    
+                        // Convert the data to JSON
+                        $lyrics_json = json_encode($result);
+                        // $data['lyrics_json'] = json_encode($result) ;
+                        return 1;
+    
+                    } else {
+                        $lyrics_json = null;
+                        // $data['lyrics_json'] = $audio->lyrics_json ;
+                        return 1;
+                    }
         }
 }
