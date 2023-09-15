@@ -425,7 +425,19 @@ data: {
 											<div class="panel-title"><label>Audio Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
                                                 <p class="p1"> IMDB Ratings 10 out of 10</p>
-												<input class="form-control" name="rating" id="rating" value="@if(!empty($audio->rating)){{ $audio->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+												<!-- <input class="form-control" name="rating" id="rating" value="@if(!empty($audio->rating)){{ $audio->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+												<select  class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);">
+													<option value="1" >1</option>
+													<option value="2">2</option>
+													<option value="3">3</option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="8">8</option>
+													<option value="9">9</option>
+													<option value="10">10</option>
+												</select>
 											</div> 
 										</div>
 									</div>
@@ -629,6 +641,7 @@ $(document).ready(function() {
 
 		$(document).ready(function(){
 			$('.js-example-basic-multiple').select2();
+			$('.js-example-basic-single').select2();
 			$('#ppv_price').hide();
 			$('#global_ppv_status').hide();
 			
