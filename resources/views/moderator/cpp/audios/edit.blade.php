@@ -174,9 +174,9 @@
 
 								</div> 
 							</div>
-								</div>
-								<div class="col-md-6">
-								<div class="col-sm-6 form-group">
+								</div><br><br>
+								<!-- <div class="col-md-6"> -->
+								<div class="col-sm-6">
 									
 							<label class="mb-1">Player Audio Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
 							<input type="file" name="player_image" id="player_image" >
@@ -187,15 +187,33 @@
 							</div>
 							
 								</div>
+								</div>
 
-							</div>
+								<div class="row container-fluid">
+
+									<div class="col-md-6">
+											<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
+										<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics <span>(Ex:xlsx)</span></label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+										<div class="panel-body" style="display: block;"> 
+											@if(!empty($audio->lyrics))
+										<div class=" p-0 mb-1">
+										<!-- <img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " /></div> -->
+										@endif
+											<input type="file" name="lyrics" id="lyrics" >
+											<span class="error-message text-danger"></span>
+										</div> 
+									</div>
+
+
+										</div>
+										</div>
 
 									{{-- for validate --}} 
 							<input type="hidden" id="check_image" name="check_image" value="@if(!empty($audio->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 							<input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($audio->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 
 							<div class="panel panel-primary  mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title"><label>Audio Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<!-- <div class="panel-title"><label>Audio Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div>  -->
 								<div class="panel-body" style="display: block;"> 
 									<label for="type" class="mt-2" style="float:left; margin-right:10px; padding-top:1px;">Audio Format</label>
 									<select id="type" name="type" class="form-control">
@@ -455,6 +473,56 @@
 
 	<script>
 
+	$(document).ready(function() {
+    // Attach a click event listener to the upload button
+    $("#lyrics").on("change", function() {
+        // Create a FormData object to send the file and CSRF token via AJAX
+        const formData = new FormData();
+        formData.append("lyrics", $("#lyrics")[0].files[0]);
+        formData.append("_token", '{{ csrf_token() }}'); // Add the CSRF token
+
+        // Make an AJAX request to the Laravel controller
+        $.ajax({
+            url:  '{{ URL::to('admin/audios/lyricsFileValidation') }}', // Replace with the actual controller endpoint
+            type: "POST",
+            data: formData,
+            contentType: false, // Set to false to let jQuery set it automatically
+            processData: false, // Set to false to prevent jQuery from processing the data
+            success: function(response) {
+                // Handle the success response from the server
+							if(response == 1){
+								// alert(response);
+								$('.error-message').hide();
+								$('#audio_edit').off('submit').on('submit', function(e) {
+								});
+								return true;
+				   				$('#audio_edit').submit();
+							}else{
+								$('.error-message').show();
+								$(".error-message").text(response);
+								$('#audio_edit').off('submit').on('submit', function(e) {
+									e.preventDefault();
+								});
+								// e.preventDefault();
+
+								// allowFormSubmission = false;
+
+								return false; // Validate as required if the condition is met
+							}
+            },
+            error: function(xhr, status, error) {
+                // Handle the error response from the server
+                console.log("Error: " + error);
+            }
+        });
+    });
+	$('#audio_edit').on('submit', function(e) {
+        // Prevent form submission if the flag is false
+        if (!allowFormSubmission) {
+            e.preventDefault();
+        }
+    });
+});
 		                    // Image upload dimention validation
 		$.validator.addMethod('dimention', function(value, element, param) {
             if(element.files.length == 0){

@@ -53,6 +53,7 @@ use Carbon\Carbon;
 use App\ModeratorsUser;
 use App\EmailTemplate;
 use Mail;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CPPAdminAudioController extends Controller
 {
@@ -314,6 +315,66 @@ class CPPAdminAudioController extends Controller
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
+        $lyricsFile = $request->file('lyrics');
+
+        if ($lyricsFile) {
+            $filePath = $lyricsFile->getRealPath();
+
+            $data = Excel::toArray(null, $filePath, null, \Maatwebsite\Excel\Excel::XLSX)[0];
+
+            $keys = [
+                $data[0][0] => $data[0][0],
+                $data[0][1] => $data[0][1]
+            ];
+
+            $jsonData = [];
+
+            for ($i = 1; $i < count($data); $i++) {
+                $rowData = $data[$i];
+
+                // Validate that both "line" and "time" keys are not empty
+                if (!empty($rowData[0]) && !empty($rowData[1])) {
+                    // Validate that "time" is numeric
+                    if (is_numeric($rowData[1]) && strpos($rowData[1], '.') === false) {
+                        $jsonData[] = [
+                            $keys[$data[0][0]] => $rowData[0],
+                            $keys[$data[0][1]] => intval($rowData[1]),
+                        ];
+                    } else {
+                        return Redirect::back()->with(array('error' => 'Invalid data in "time" column.', 'note_type' => 'success') );
+                        // return response()->json(['error' => 'Invalid data in "time" column.']);
+                    }
+                } else {
+                    return Redirect::back()->with(array('error' => 'Empty "line" or "time" key found.', 'note_type' => 'success') );
+                    // return response()->json(['error' => 'Empty "line" or "time" key found.']);
+                }
+            }
+
+            $result = [
+                'lyrics' => $jsonData
+            ];
+
+            // Convert the data to JSON
+            $lyrics_json = json_encode($result);
+            // $data['lyrics_json'] = json_encode($result) ;
+
+        } else {
+            $lyrics_json = $audio->lyrics_json;
+            // $data['lyrics_json'] = $audio->lyrics_json ;
+
+        }
+        if (!empty($lyricsFile)) {
+            $lyricsFileName = str_replace(" ", "-", $lyricsFile->getClientOriginalName()) ;
+            $lyricsext = $lyricsFile->extension();
+
+            $lyrics_store = $lyricsFile->move('public/uploads/audiolyrics/', $lyricsFileName);
+                    
+            $lyrics = URL::to('/').'/public/uploads/audiolyrics/'.$lyricsFileName; 
+
+        }else{
+            $lyrics = $audio->lyrics ;
+        }
+
         $data['ppv_price'] = $request->ppv_price;
         $data['ios_ppv_price'] = $request->ios_ppv_price;
         
@@ -396,6 +457,8 @@ class CPPAdminAudioController extends Controller
         $audio->uploaded_by =  'CPP';
 
         $audio->search_tags = !empty($request->searchtags) ? $request->searchtags : null ;
+        $audio->lyrics =  $lyrics;
+        $audio->lyrics_json =  $lyrics_json;
         $audio->update($data);
 
 
@@ -684,6 +747,67 @@ class CPPAdminAudioController extends Controller
         // exit();
         $audio = Audio::findOrFail($id);
 
+                     
+        $lyricsFile = $request->file('lyrics');
+
+        if ($lyricsFile) {
+            $filePath = $lyricsFile->getRealPath();
+
+            $data = Excel::toArray(null, $filePath, null, \Maatwebsite\Excel\Excel::XLSX)[0];
+
+            $keys = [
+                $data[0][0] => $data[0][0],
+                $data[0][1] => $data[0][1]
+            ];
+
+            $jsonData = [];
+
+            for ($i = 1; $i < count($data); $i++) {
+                $rowData = $data[$i];
+
+                // Validate that both "line" and "time" keys are not empty
+                if (!empty($rowData[0]) && !empty($rowData[1])) {
+                    // Validate that "time" is numeric
+                    if (is_numeric($rowData[1]) && strpos($rowData[1], '.') === false) {
+                        $jsonData[] = [
+                            $keys[$data[0][0]] => $rowData[0],
+                            $keys[$data[0][1]] => intval($rowData[1]),
+                        ];
+                    } else {
+                        return Redirect::back()->with(array('error' => 'Invalid data in "time" column.', 'note_type' => 'success') );
+                        // return response()->json(['error' => 'Invalid data in "time" column.']);
+                    }
+                } else {
+                    return Redirect::back()->with(array('error' => 'Empty "line" or "time" key found.', 'note_type' => 'success') );
+                    // return response()->json(['error' => 'Empty "line" or "time" key found.']);
+                }
+            }
+
+            $result = [
+                'lyrics' => $jsonData
+            ];
+
+            // Convert the data to JSON
+            $lyrics_json = json_encode($result);
+            // $data['lyrics_json'] = json_encode($result) ;
+
+        } else {
+            $lyrics_json = null;
+            // $data['lyrics_json'] = $audio->lyrics_json ;
+
+        }
+        if (!empty($lyricsFile)) {
+            $lyricsFileName = str_replace(" ", "-", $lyricsFile->getClientOriginalName()) ;
+            $lyricsext = $lyricsFile->extension();
+
+            $lyrics_store = $lyricsFile->move('public/uploads/audiolyrics/', $lyricsFileName);
+                    
+            $lyrics = URL::to('/').'/public/uploads/audiolyrics/'.$lyricsFileName; 
+
+        }else{
+            $lyrics = $audio->lyrics ;
+        }
+
         $validator = Validator::make($data = $input, Audio::$rules);
 
         if ($validator->fails())
@@ -775,7 +899,8 @@ class CPPAdminAudioController extends Controller
         $audio->player_image =  $player_image;
         $audio->uploaded_by =  'CPP';
         $audio->search_tags = !empty( $input['searchtags'] ) ? $input['searchtags'] : null ;
-
+        $audio->lyrics =  $lyrics;
+        $audio->lyrics_json =  $lyrics_json;
         $audio->update($data);
         $audio = Audio::findOrFail($id);
 
