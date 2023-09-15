@@ -1800,10 +1800,10 @@ class AdminAudioController extends Controller
                                         $keys[$data[0][1]] => intval($rowData[1]),
                                     ];
                                 } else {
-                                return 'Invalid data in "time" column.';
+                                return 'Invalid data in "time" column in Lyrics File.';
                             }
                             } else {
-                                return 'Empty "line" or "time" key found.';
+                                return 'Empty "line" or "time" key found in Lyrics File.';
                             }
                         }
     
