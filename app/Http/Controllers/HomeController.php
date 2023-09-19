@@ -2379,6 +2379,12 @@ class HomeController extends Controller
                     'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
                 ]);
             }
+            if($SignupMenu->dob == 1){
+                $validatedData = $request->validate([
+                    'dob' =>  ['required', 'date'],
+                ]);
+            }
+            
             if($SignupMenu->password_confirm == 1){
                 $validatedData = $request->validate([
                     // 'password_confirmation' => 'required',
@@ -2408,7 +2414,6 @@ class HomeController extends Controller
             // dd(1);
 
         }else{
-        // dd('testone');
 
             $validatedData = $request->validate(
                 [   'username' => ['required', 'string'], 
@@ -2421,6 +2426,7 @@ class HomeController extends Controller
                  ]);
         }
         
+        // dd( $request->get('dob'));
 
         $free_registration = FreeRegistration();
         $length = 10;
@@ -2431,6 +2437,7 @@ class HomeController extends Controller
         $name = $request->get('username');
         $ccode = $request->get('ccode');
         $mobile = $request->get('mobile');
+        $DOB = $request->get('dob');
         $get_password = $request->get('password');
         $path = public_path() . '/uploads/avatars/';
         $logo = $request->file('avatar');
@@ -2489,6 +2496,7 @@ class HomeController extends Controller
                 $new_user->referrer_id = $referred_user_id;
                 $new_user->coupon_expired = $coupon_expired;
                 $new_user->email = $email;
+                $new_user->DOB = $DOB;
                 //   $new_user->password = $get_password;
                 $new_user->password = Hash::make($get_password);
                 $new_user->activation_code = $string;
@@ -2596,6 +2604,7 @@ class HomeController extends Controller
                 $new_user->state = $request->get('state');
                 $new_user->city = $request->get('city');
                 $new_user->support_username = $request->get('support_username');
+                $new_user->DOB = $DOB;
                 $new_user->save();
 
                  // welcome Email

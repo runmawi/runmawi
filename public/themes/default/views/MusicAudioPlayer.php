@@ -317,6 +317,12 @@ var data = listAudio; // Assuming listAudio contains the URL
             }
         });
 
+        var html = "";
+        html = html + "<h2>"+'Lyrics not Available'+"</h2>";
+
+        // var html = "Lyrics not Available ";
+        $('#lyrics-content').html(html);
+
 
             setSongName(indexing.title);
             setArtistName(indexing.slug);

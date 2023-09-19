@@ -105,7 +105,8 @@ class AdminSignupMenuController extends Controller
         $SignupMenu->country                =  $request->has('country') ? 1 : 0 ?? 0;   
         $SignupMenu->state                  =  $request->has('state') ? 1 : 0 ?? 0;   
         $SignupMenu->city                   =  $request->has('city') ? 1 : 0 ?? 0;   
-        $SignupMenu->support_username       =  $request->has('support_username') ? 1 : 0 ?? 0;   
+        $SignupMenu->support_username       =  $request->has('support_username') ? 1 : 0 ?? 0; 
+        $SignupMenu->dob                    =  $request->has('dob') ? 1 : 0 ?? 0;   
         $SignupMenu->save();  
     
             return redirect()->route('signupindex');

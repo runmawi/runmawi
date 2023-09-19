@@ -82,9 +82,21 @@
                                 </td>
                             </tbody>
 
-
                             <tbody>
                                 <td> {{ '5'}} </td>
+                                <td> {{ 'Profile DOB'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="dob" class="dob" id="dob" type="checkbox" @if( @$SignupMenu->dob == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>      
+
+                            <tbody>
+                                <td> {{ '6'}} </td>
                                 <td> {{ 'Profile Password'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -98,7 +110,7 @@
 
 
                             <tbody>
-                                <td> {{ '6'}} </td>
+                                <td> {{ '7'}} </td>
                                 <td> {{ 'Profile Password Confirm'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -111,7 +123,7 @@
                             </tbody>      
 
                             <tbody>
-                                <td> {{ '7'}} </td>
+                                <td> {{ '8'}} </td>
                                 <td> {{ 'Profile Country'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -125,7 +137,7 @@
 
 
                             <tbody>
-                                <td> {{ '8'}} </td>
+                                <td> {{ '9'}} </td>
                                 <td> {{ 'Profile State'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -139,7 +151,7 @@
 
 
                             <tbody>
-                                <td> {{ '9'}} </td>
+                                <td> {{ '10'}} </td>
                                 <td> {{ 'Profile City'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -153,7 +165,7 @@
 
 
                             <tbody>
-                                <td> {{ '10'}} </td>
+                                <td> {{ '11'}} </td>
                                 <td> {{ 'Profile Support UserName'}} </td>
                                 <td> 
                                     <div class="mt-1">
