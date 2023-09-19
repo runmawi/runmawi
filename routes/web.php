@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth'], function(){
 //   Route::get('/MusicAudioPlayer', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
 
   Route::get('MusicAudioPlayer/{slug}', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
+  Route::get('/convertExcelToJson', 'HomeController@uploadExcel');
 
 // Endpoints to call or receive calls.
 Route::post('/video/call-user', 'VideoChatController@callUser');
@@ -834,6 +835,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/audios/delete/{id}', ['before' => 'demo', 'uses' => 'AdminAudioController@destroy']);
     Route::get('/audios/create', 'AdminAudioController@create');
     Route::post('/audios/store', ['before' => 'demo', 'uses' => 'AdminAudioController@store']);
+    Route::post('/audios/lyricsFileValidation', 'AdminAudioController@lyricsFileValidation');
 
     //Admin Audio Categories
     Route::get('/audios/categories', 'AdminAudioCategoriesController@index');
@@ -1212,6 +1214,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/test/videoupload', 'AdminVideosController@TestServerUpload');
     Route::post('/test/server/videoupload/', 'AdminVideosController@TestServerFileUpload');
+
+    // TV SETTINGS
+
+    Route::get('/tv-settings/index', 'AdminTvSettingsController@index')->name('TV_Settings_Index');
+    Route::get('/tv-settings/edit/{id}', 'AdminTvSettingsController@edit')->name('TV_Settings_Edit');
+    Route::post('/tv-settings/update','AdminTvSettingsController@update')->name('TV_Settings_Update');
 });
 
 Route::get('admin/channel/pendingusers', 'ChannelLoginController@PendingUsers')->name('ChannelPendingUsers');
@@ -2669,3 +2677,5 @@ Route::get('exchangeCurrency','AdminCurrencyConvert@Index');
 Route::get('PPV-Free-Duration-Logs', 'AdminLiveStreamController@PPV_Free_Duration_Logs')->name('PPV_Free_Duration_Logs');
 
 Route::get('video-js-player', 'ChannelController@video_js_player')->name('video_js_player');
+
+Route::get('video-js-fullplayer', 'ChannelController@video_js_fullplayer');

@@ -29,7 +29,8 @@
         "laravel-echo": "^1.15.1",
         "video.js": "^5.8.0",
         "videojs-flash": "^2.2.1",
-        "videojs-resolution-switcher": "^0.4.2"
+        "videojs-resolution-switcher": "^0.4.2",
+        "videojs-settings-menu": "^0.0.2"
     },
     "videojs-resolution-switcher": {
         "version": "0.4.2",

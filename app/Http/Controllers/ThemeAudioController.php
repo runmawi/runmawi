@@ -249,19 +249,39 @@ class ThemeAudioController extends Controller{
 
                 $merged_audios = $current_audio->merge($all_album_audios)->all();
 
-                $current_audio_lyrics   = Audio::where('album_id',$albumID)->get()->map(function ($item) {
+                $current_audio_lyrics   = Audio::where('album_id',$albumID)->where('id',$audio)->get()->map(function ($item) {
+                    $item['author']      = $item->slug ;
+                    $item['song']      = $item->title ;
+                    $item['audio']      = $item->mp3_url ;
+                    $item['json']      =   $item->lyrics_json ;
+                    $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    if($item->lyrics_json == null){
+                        $item['countjson']      =  0 ;
+                    }else{
+                        $item['countjson']      =   1 ;
+                    }
                 return $item;
                 });
-                $all_album_audio_lyrics = Audio::where('album_id',$albumID)->get()->map(function ($item) {
+                $all_album_audio_lyrics = Audio::where('album_id',$albumID)->where('id','!=',$audio)->get()->map(function ($item) {
+                    $item['author']      = $item->slug ;
+                    $item['song']      = $item->title ;
+                    $item['audio']      = $item->mp3_url ;
+                    $item['json']      =   $item->lyrics_json ;
+                    $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    if($item->lyrics_json == null){
+                        $item['countjson']      =  0 ;
+                    }else{
+                        $item['countjson']      =   1 ;
+                    }
                     return $item;
                   });
                   $merged_audios_lyrics = $current_audio_lyrics->merge($all_album_audio_lyrics)->all();
-
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
+            
             $data = array(
                 'audios' => Audio::findOrFail($audio),
                 'json_list' => json_encode($json),

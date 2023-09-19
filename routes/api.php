@@ -625,4 +625,18 @@ Route::group(
             Route::post('play_music_station ', 'ApiAuthController@PlayerMusicStation');
             Route::post('delete_music_station ', 'ApiAuthController@DeleteStation');
 
+            Route::get('tv_settings', 'ApiAuthController@TVSetting');
+
+            Route::post('tv_continue_watchings', 'ApiAuthController@TV_continue_watchings');
+            Route::post('tv_list_continue_watchings', 'ApiAuthController@TV_ContinueWatching');
+    
+            Route::post('TV_Addwishlist', 'ApiAuthController@TV_Addwishlist');
+            Route::post('TV_ShowVideo_wishlist', 'ApiAuthController@TV_ShowVideo_wishlist');
+            Route::post('TV_ShowEpisode_wishlist', 'ApiAuthController@TV_ShowEpisode_wishlist');
+            Route::post('TV_ShowAudio_wishlist', 'ApiAuthController@TV_ShowAudio_wishlist');
+            Route::post('TV_ShowLiveStream_wishlist', 'ApiAuthController@TV_ShowLiveStream_wishlist');
+            
+            Route::get('TV_retrieve_search_data', 'ApiAuthController@tv_retrieve_search_data');
+            Route::post('TV_search_data_update', 'ApiAuthController@tv_search_data_update');
+            
         });

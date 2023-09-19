@@ -444,12 +444,20 @@ $jsondata = json_decode($jsonString, true); ?>
                             
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
-                            <div class="col-md-12" style="postion:relative;">
+                                <div class="col-md-12" style="postion:relative;">
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                 <label id="fileLabel">Choose Profile Image</label>
                                  </div>
                                  @endif
-                           
+
+                                 @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
+                                <div class="col-md-12" style="postion:relative;">
+
+                                <input type="date" name="dob"  id ='dob' class="form-control">
+                                <label id="fileLabel">Choose Profile DOB</label>
+                                 </div>
+                                 @endif
+
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
                                 

@@ -699,6 +699,8 @@ class AdminVideosController extends Controller
                     $dropzone_url =  URL::to('admin/uploadFile');
                 }
 
+                $video_js_Advertisements = Advertisement::where('status',1)->get() ;
+
             $data = [
                 "headline" => '<i class="fa fa-plus-circle"></i> New Video',
                 "post_route" => URL::to("admin/videos/fileupdate"),
@@ -721,6 +723,7 @@ class AdminVideosController extends Controller
                 "post_dropzone_url" => $dropzone_url,
                 "ads_tag_urls" => Advertisement::where('status',1)->get(),
                 "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
+                'video_js_Advertisements' => $video_js_Advertisements ,
             ];
 
             return View::make("admin.videos.fileupload", $data);
@@ -897,6 +900,11 @@ class AdminVideosController extends Controller
             $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
             $data["duration"] = $time_seconds;
         }
+
+        $data['video_js_pre_position_ads'] = $request->video_js_pre_position_ads ;
+        $data['video_js_post_position_ads'] = $request->video_js_post_position_ads ;
+        $data['video_js_mid_position_ads_category'] = $request->video_js_mid_position_ads_category ;
+        $data['video_js_mid_advertisement_sequence_time'] = $request->video_js_mid_advertisement_sequence_time ;
 
         if (!empty($data["embed_code"])) {
             $video = new Video();
@@ -1242,6 +1250,7 @@ class AdminVideosController extends Controller
                 ->first();
             
             $MoviesSubtitles = MoviesSubtitles::where('movie_id', $id)->get();
+            
             $ads_category = Adscategory::get();
             
             $Reels_videos = Video::Join("reelsvideo", "reelsvideo.video_id", "=", "videos.id")
@@ -1261,6 +1270,11 @@ class AdminVideosController extends Controller
             } else {
                 $subtitles = Subtitle::all();
             }
+
+            // Video Js Ads-data
+
+            $video_js_Advertisements = Advertisement::where('status',1)->get() ;
+
             
             $data = [
                 "headline" => '<i class="fa fa-edit"></i> Edit Video',
@@ -1308,6 +1322,7 @@ class AdminVideosController extends Controller
                 "subtitlescount" => $subtitlescount,
                 "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
                 "Playlist_id"  => VideoPlaylist::where("video_id", $id)->pluck("playlist_id")->toArray(),
+                'video_js_Advertisements' => $video_js_Advertisements ,
 
             ];
 
@@ -2068,12 +2083,12 @@ class AdminVideosController extends Controller
             $video->video_title_image = $video_title_image_filename;
         }
                 // Ads videos
-        if($data["ads_tag_url_id"] == null ){
+        if(!empty($data["ads_tag_url_id"]) == null ){
             $video->ads_tag_url_id = null;
             $video->tag_url_ads_position = null;
         }
         
-        if($data["ads_tag_url_id"] != null){
+        if(!empty($data["ads_tag_url_id"]) != null){
             $video->ads_tag_url_id = $data["ads_tag_url_id"];
             $video->tag_url_ads_position = $data["tag_url_ads_position"];
         }
@@ -2125,6 +2140,10 @@ class AdminVideosController extends Controller
         $video->rating = $request->rating;
         $video->search_tags = $searchtags;
         $video->ios_ppv_price = $request->ios_ppv_price;
+        $video->video_js_pre_position_ads = $request->video_js_pre_position_ads;
+        $video->video_js_post_position_ads = $request->video_js_post_position_ads;
+        $video->video_js_mid_position_ads_category = $request->video_js_mid_position_ads_category;
+        $video->video_js_mid_advertisement_sequence_time = $request->video_js_mid_advertisement_sequence_time;
         $video->save();
 
         if (
@@ -3020,12 +3039,12 @@ class AdminVideosController extends Controller
         $video->video_tv_image = $data["video_tv_image"] ;
 
         // Ads videos
-        if ($data['ads_tag_url_id'] == null) {
+        if (!empty($data['ads_tag_url_id']) == null) {
             $video->ads_tag_url_id = null;
             $video->tag_url_ads_position = null;
         }
 
-        if ($data['ads_tag_url_id'] != null) {
+        if (!empty($data['ads_tag_url_id']) != null) {
             $video->ads_tag_url_id = $data['ads_tag_url_id'];
             $video->tag_url_ads_position = $data['tag_url_ads_position'];
         }

@@ -142,6 +142,9 @@ border-radius: 0px 4px 4px 0px;
 						@if (Session::has('message'))
 								<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
 						@endif
+						@if (Session::has('error'))
+								<div id="errorMessage" class="alert alert-danger">{{ Session::get('error') }}</div>
+						@endif
 					{{-- End Push Message --}}
 
 					<div class="iq-card-header d-flex justify-content-between">
@@ -217,7 +220,28 @@ border-radius: 0px 4px 4px 0px;
 								</div>
 
 							</div>
+                            <div class="row container-fluid">
 
+							<div class="col-md-6">
+                                    <div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
+										<span>(Ex:xlsx <a href='{{ URL::to('public/uploads/audiolyrics/SampleLyrics.xlsx') }}' target="_blank">Sample Lyrics File</a>)</span>
+								<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<div class="panel-body" style="display: block;"> 
+									@if(!empty($audio->lyrics))
+								<div class=" p-0 mb-1">
+								<a href='{{ $audio->lyrics }}' target="_blank">Download Uplaoded Lyrics File</a>
+								<!-- <img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " /></div> -->
+								@endif
+                                    <input type="file" name="lyrics" id="lyrics" >
+									<span class="error-message text-danger"></span>
+								</div> 
+							</div>
+							
+							
+								</div>
+								</div>
+
+							</div>
 									{{-- for validate --}} 
 							<input type="hidden" id="check_image" name="check_image" value="@if(!empty($audio->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 							<input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($audio->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
@@ -355,7 +379,19 @@ border-radius: 0px 4px 4px 0px;
 											<div class="panel-title"><label class="mb-1">Audio Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
                                                 <p class="p1"> IMDB Ratings 10 out of 10</p>
-												<input class="form-control" name="rating" id="rating" value="@if(!empty($audio->rating)){{ $audio->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+												<!-- <input class="form-control" name="rating" id="rating" value="@if(!empty($audio->rating)){{ $audio->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+												<select  class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" >
+													<option value="1" {{ $audio->rating == '1' ? 'selected':'' }} >1</option>
+													<option value="2" {{ $audio->rating == '2' ? 'selected':'' }} >2</option>
+													<option value="3" {{ $audio->rating == '3' ? 'selected':'' }} >3</option>
+													<option value="4" {{ $audio->rating == '4' ? 'selected':'' }} >4</option>
+													<option value="5" {{ $audio->rating == '5' ? 'selected':'' }} >5</option>
+													<option value="6" {{ $audio->rating == '6' ? 'selected':'' }} >6</option>
+													<option value="7" {{ $audio->rating == '7' ? 'selected':'' }} >7</option>
+													<option value="8" {{ $audio->rating == '8' ? 'selected':'' }} >8</option>
+													<option value="9" {{ $audio->rating == '9' ? 'selected':'' }} >9</option>
+													<option value="10"{{ $audio->rating == '10' ? 'selected':'' }} >10</option>
+												</select>
 											</div> 
 										</div>
 									</div>
@@ -521,6 +557,106 @@ border-radius: 0px 4px 4px 0px;
 
 	<script type="text/javascript">
 
+$(document).ready(function() {
+    // Attach a click event listener to the upload button
+    $("#lyrics").on("change", function() {
+        // Create a FormData object to send the file and CSRF token via AJAX
+        const formData = new FormData();
+        formData.append("lyrics", $("#lyrics")[0].files[0]);
+        formData.append("_token", '{{ csrf_token() }}'); // Add the CSRF token
+
+        // Make an AJAX request to the Laravel controller
+        $.ajax({
+            url:  '{{ URL::to('admin/audios/lyricsFileValidation') }}', // Replace with the actual controller endpoint
+            type: "POST",
+            data: formData,
+            contentType: false, // Set to false to let jQuery set it automatically
+            processData: false, // Set to false to prevent jQuery from processing the data
+            success: function(response) {
+                // Handle the success response from the server
+							if(response == 1){
+								// alert(response);
+								$('.error-message').hide();
+								$('#audio_edit').off('submit').on('submit', function(e) {
+								});
+								return true;
+				   				$('#audio_edit').submit();
+							}else{
+								$('.error-message').show();
+								$(".error-message").text(response);
+								$('#audio_edit').off('submit').on('submit', function(e) {
+									e.preventDefault();
+								});
+								// e.preventDefault();
+
+								// allowFormSubmission = false;
+
+								return false; // Validate as required if the condition is met
+							}
+            },
+            error: function(xhr, status, error) {
+                // Handle the error response from the server
+                console.log("Error: " + error);
+            }
+        });
+    });
+	$('#audio_edit').on('submit', function(e) {
+        // Prevent form submission if the flag is false
+        if (!allowFormSubmission) {
+            e.preventDefault();
+        }
+    });
+});
+
+
+// $(document).ready(function(){
+// 			$('.error-message').hide();
+// 			$('#lyrics').change(function(){
+// 				// alert('lyrics');
+// 				var  path = $(this).val();
+// 				// alert('lyrics');
+// 				// var lyrics = $("#lyrics")[0].files[0];
+// 				var lyrics = this.files[0];
+
+// 				var form_data = new FormData();
+//   				form_data.append("lyrics", lyrics);
+// 				// var lyrics = ('#lyrics').val();
+// 				alert(form_data);
+// 			if (path != '') {
+// 				console.log(lyrics);
+               
+// 				$.ajaxSetup({
+// 					headers: {
+// 							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+// 						}
+// 				});
+// 				$.ajax({
+// 				url: '{{ URL::to('admin/audios/lyricsFileValidation') }}',
+// 				type: "post",
+// 				data: {
+// 							_token: '{{ csrf_token() }}',
+// 							formData: formData
+
+// 						},success: function(value){
+// 							console.log(value);
+// 							if(value == 1){
+// 								return true;
+// 				   				$('#audio_edit').submit();
+// 							}else{
+// 								$('.error-message').show();
+// 								$(".error-message").text(value);
+// 								return false; // Validate as required if the condition is met
+// 							}
+// 						}
+// 				});
+// 		   } else {
+// 			   // Return true to bypass validation if the condition is not met
+// 			   return true;
+// 		   }
+// 		});
+		
+// 	});
+
 		$ = jQuery;
 		$(document).ready(function(){
 
@@ -554,7 +690,7 @@ border-radius: 0px 4px 4px 0px;
 });
 		$(document).ready(function(){
 			$('.js-example-basic-multiple').select2();
-			
+			$('.js-example-basic-single').select2();
 
 			$('#type').change(function(){
 				if($(this).val() == 'file'){

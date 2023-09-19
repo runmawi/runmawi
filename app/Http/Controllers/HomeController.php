@@ -68,6 +68,7 @@ use App\Language as Language;
 use GuzzleHttp\Client;
 use App\MusicStation as MusicStation;
 use App\GuestLoggedDevice as GuestLoggedDevice;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
@@ -2378,6 +2379,12 @@ class HomeController extends Controller
                     'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
                 ]);
             }
+            if($SignupMenu->dob == 1){
+                $validatedData = $request->validate([
+                    'dob' =>  ['required', 'date'],
+                ]);
+            }
+            
             if($SignupMenu->password_confirm == 1){
                 $validatedData = $request->validate([
                     // 'password_confirmation' => 'required',
@@ -2407,7 +2414,6 @@ class HomeController extends Controller
             // dd(1);
 
         }else{
-        // dd('testone');
 
             $validatedData = $request->validate(
                 [   'username' => ['required', 'string'], 
@@ -2420,6 +2426,7 @@ class HomeController extends Controller
                  ]);
         }
         
+        // dd( $request->get('dob'));
 
         $free_registration = FreeRegistration();
         $length = 10;
@@ -2430,6 +2437,7 @@ class HomeController extends Controller
         $name = $request->get('username');
         $ccode = $request->get('ccode');
         $mobile = $request->get('mobile');
+        $DOB = $request->get('dob');
         $get_password = $request->get('password');
         $path = public_path() . '/uploads/avatars/';
         $logo = $request->file('avatar');
@@ -2488,6 +2496,7 @@ class HomeController extends Controller
                 $new_user->referrer_id = $referred_user_id;
                 $new_user->coupon_expired = $coupon_expired;
                 $new_user->email = $email;
+                $new_user->DOB = $DOB;
                 //   $new_user->password = $get_password;
                 $new_user->password = Hash::make($get_password);
                 $new_user->activation_code = $string;
@@ -2595,6 +2604,7 @@ class HomeController extends Controller
                 $new_user->state = $request->get('state');
                 $new_user->city = $request->get('city');
                 $new_user->support_username = $request->get('support_username');
+                $new_user->DOB = $DOB;
                 $new_user->save();
 
                  // welcome Email
@@ -4635,5 +4645,130 @@ class HomeController extends Controller
         return response()->json($response, 200);
     }
 
+    public function convertExcelToJson(){
+
+        try {
+            $filePath = 'https://localhost/flicknexs/public/uploads/Pages/testaudio.xlsx';
+            $path = public_path() . "/uploads/Pages/testaudio.xlsx";
+
+        
+            if (file_exists($path)) {
+
+
+                                // Read data from the Excel file and store it in an array
+                    $data = Excel::toArray(null, $path)[0]; // Get the first sheet
+
+                    // Extract the header row (A1 and B1) as keys
+                    $keys = [
+                        $data[0][0] => $data[0][0],
+                        $data[0][1] => $data[0][1]
+                    ];
+
+                    // Initialize an empty array for the data rows
+                    $jsonData = [];
+
+                    // Loop through the data rows starting from the second row
+                    for ($i = 1; $i < count($data); $i++) {
+                        $rowData = $data[$i];
+                        // print_r($rowData);exit;
+
+                        $jsonData[] = [
+                            $keys[$data[0][0]] => $rowData[0],
+                            $keys[$data[0][1]] => $rowData[1],
+                        ];
+                    }
+                    
+                    $result = [
+                        'lyrics' => $jsonData
+                    ];
+                    // Convert the data to JSON
+                    $json = json_encode($result);
+                    dd($json);
+
+
+
+                // $data = Excel::toCollection(null, $path)->first();
+        
+                // $json = $data->toJson();
+        
+                return response()->json($json);
+
+
+            } else {
+                // Handle the case where the file does not exist
+                return response()->json(['error' => 'File not found.']);
+            }
+            dd(file_exists($path));
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+public function uploadExcel(Request $request)
+{
+    // Validate the uploaded Excel file
+    // $request->validate([
+    //     'excel_file' => 'required|file|mimes:xlsx',
+    // ]);
+
+    // // Get the uploaded Excel file from the request
+    // $uploadedFile = $request->file('excel_file');
+    $path = public_path() . "/uploads/Pages/testaudio.xlsx";
+
+    // Ensure the file was uploaded successfully
+    if ($path) {
+        // Get the absolute path to the uploaded file on the server
+        $filePath = $path;
+
+        // Read data from the Excel file and store it in an array
+        $data = Excel::toArray(null, $filePath)[0]; // Get the first sheet
+
+        // Extract the header row (A1 and B1) as keys
+        $keys = [
+            $data[0][0] => $data[0][0],
+            $data[0][1] => $data[0][1]
+        ];
+
+        // Initialize an empty array for the data rows
+        $jsonData = [];
+
+        // Loop through the data rows starting from the second row
+        for ($i = 1; $i < count($data); $i++) {
+            $rowData = $data[$i];
+
+            // Validate that both "line" and "time" keys are not empty
+            if (!empty($rowData[0]) && !empty($rowData[1])) {
+                // Validate that "time" is numeric
+                if (is_numeric($rowData[1]) && strpos($rowData[1], '.') === false) {
+                    $jsonData[] = [
+                        $keys[$data[0][0]] => $rowData[0],
+                        $keys[$data[0][1]] => intval($rowData[1]),
+                    ];
+                } else {
+                    // Handle the case where "time" is not numeric
+                    return response()->json(['error' => 'Invalid data in "time" column.']);
+                }
+            } else {
+                // Handle the case where "line" or "time" keys are empty
+                return response()->json(['error' => 'Empty "line" or "time" key found.']);
+            }
+        }
+
+        // Wrap the data in an object with a "lyrics" key
+        $result = [
+            'lyrics' => $jsonData
+        ];
+
+        // Convert the data to JSON
+        $json = json_encode($result);
+
+        // You can return the JSON or do any other processing as needed
+        return response()->json($json);
+    } else {
+        // Handle the case where the file was not uploaded
+        return response()->json(['error' => 'File not uploaded.']);
+    }
+}
 
 }
