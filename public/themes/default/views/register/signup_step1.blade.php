@@ -299,9 +299,10 @@ i.fa.fa-google-plus {
                            
                                  @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
                                 <div class="col-md-12" style="postion:relative;">
+                                <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="Choose DOB"  >
 
-                                <input type="date" name="dob"  id ='dob' class="form-control">
-                                <label id="fileLabel">Choose Profile DOB</label>
+                                <!-- <input type="date" name="dob"  id ='dob' class="form-control">
+                                <label id="fileLabel">Choose Profile DOB</label> -->
                                  </div>
                                  @endif
 
@@ -532,6 +533,21 @@ i.fa.fa-google-plus {
     </section>
   
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include jQuery UI library -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    jQuery.noConflict();
+    (function($) {
+        $(document).ready(function() {
+            $("#datepicker").datepicker();
+        });
+    })(jQuery);
+</script>  
 <script>
 
 $(document).ready(function() {
