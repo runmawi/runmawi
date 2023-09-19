@@ -180,6 +180,11 @@ i.fa.fa-google-plus {
         background:rgba(11, 11, 11,1);
         font-size: 12px;
     }
+    #dob{
+        /* color: #fff; */
+        background:rgba(11, 11, 11,1);
+        color-scheme: dark;
+    }
 </style>
 
 <section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
@@ -292,7 +297,14 @@ i.fa.fa-google-plus {
                                  </div>
                                  @endif
                            
-                            
+                                 @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
+                                <div class="col-md-12" style="postion:relative;">
+
+                                <input type="date" name="dob"  id ='dob' class="form-control">
+                                <label id="fileLabel">Choose Profile DOB</label>
+                                 </div>
+                                 @endif
+
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
                                  <div class="col-md-12">
                                      <div class="row">
@@ -643,7 +655,7 @@ $.ajaxSetup({
                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
     });
-
+=
 
 	$(document).ready(function(){
         $('#email_error').hide();
@@ -841,9 +853,9 @@ function format(item, state) {
     var span = document.getElementsByClassName("close")[0];
 
     // When the user clicks the button, open the modal 
-    btn.onclick = function() {
-      modal.style.display = "block";
-    }
+    // btn.onclick = function() {
+    //   modal.style.display = "block";
+    // }
 
     // When the user clicks on <span> (x), close the modal
 
@@ -863,7 +875,7 @@ function format(item, state) {
         
     });
     
-        $('#loginModalLong').modal({backdrop: 'static', keyboard: false}) 
+        // $('#loginModalLong').modal({backdrop: 'static', keyboard: false}) 
         
     </script>
 
