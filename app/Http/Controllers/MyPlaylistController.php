@@ -15,6 +15,8 @@ use App\Artist as Artist;
 use App\HomeSetting as HomeSetting;
 use App\AudioCategory as AudioCategory;
 use App\PpvPurchase as PpvPurchase;
+use App\Audioartist as Audioartist;
+use App\SiteTheme as SiteTheme;
 use Auth;
 use View;
 use Theme;
@@ -158,13 +160,16 @@ class MyPlaylistController extends Controller
                 $AudioUserPlaylist->playlist_id = $request->playlistid;
                 $AudioUserPlaylist->user_id = Auth::user()->id;
                 $AudioUserPlaylist->save();
+            $data = 1;
+
             }else{
                 AudioUserPlaylist::where('audio_id',$request->audioid)->where('playlist_id',$request->playlistid)
                 ->where('user_id',Auth::user()->id)->delete();
                 // print_r('test');exit;
 
-            }
-            $data = 1;
+            $data = 0;
+        }
+            // $data = 1;
     
         } catch (\Throwable $th) {
             //throw $th;
@@ -201,7 +206,36 @@ class MyPlaylistController extends Controller
           ->where('audio_user_playlist.user_id',Auth::user()->id)
           ->where('audio_user_playlist.playlist_id',$MyPlaylist_id)
           ->orderBy('audio_user_playlist.created_at', 'desc')->get() ;
-        //   dd($playlist_audio);
+
+          $merged_audios_lyrics = Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
+          ->where('audio_user_playlist.user_id',Auth::user()->id)
+          ->where('audio_user_playlist.playlist_id',$MyPlaylist_id)
+          ->orderBy('audio_user_playlist.created_at', 'desc')->get()->map(function ($item) {
+            $item['author']      = $item->slug ;
+            $item['song']      = $item->title ;
+            $item['audio']      = $item->mp3_url ;
+            $item['json']      =   $item->lyrics_json ;
+            $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
+            $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
+            $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+            $castcrew = Audioartist::where('audio_id',@$item->id)
+            ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+                if(count($castcrew) > 0){
+                    foreach($castcrew as $cast_crew){
+                        $item['cast_crew']   =   $cast_crew. ' ' ;
+                    }
+                }else{
+                    $item['cast_crew']   = '';
+                }
+            if($item->lyrics_json == null){
+                $item['countjson']      =  0 ;
+            }else{
+                $item['countjson']      =   1 ;
+            }
+            return $item;
+          }) ;
+
+        //   dd($merged_audios_lyrics);
 
         $audioppv = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')
         ->groupby("audio_id")
@@ -216,13 +250,21 @@ class MyPlaylistController extends Controller
             'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
             'first_album_mp3_url' => $MyPlaylist->first() ? $MyPlaylist->first()->mp3_url : null ,
             'first_album_title' => $MyPlaylist->first() ? $MyPlaylist->first()->title : null ,
+            'songs' => (array("songs" => $merged_audios_lyrics)),
         ];
 
         } catch (\Throwable $th) {
             throw $th;
             $data = [];
         }
-        return Theme::view('PlayPlayList', $data);
+        // return Theme::view('PlayPlayList', $data);
+        $theme_settings = SiteTheme::pluck('audio_page_checkout')->first();
+            
+        if($theme_settings == 1){
+            return Theme::view('MusicAudioPlayer',$data);
+        }else{
+            return Theme::view('PlayPlayList', $data);
+        }
     }
     public function Delete_Playlist($id){
         try {

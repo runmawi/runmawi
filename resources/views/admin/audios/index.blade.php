@@ -117,7 +117,6 @@ border-radius: 0px 4px 4px 0px;
                            </table>
                            <div class="clear"></div>
 
-		<div class="pagination-outter"><?= $audios->appends(Request::only('s'))->render(); ?></div>
 		
 		</div>
                         </div>
