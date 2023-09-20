@@ -257,6 +257,15 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    $castcrew = Audioartist::where('audio_id',@$item->id)
+                    ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+                        if(count($castcrew) > 0){
+                            foreach($castcrew as $cast_crew){
+                                $item['cast_crew']   =   $cast_crew. ' ' ;
+                            }
+                        }else{
+                            $item['cast_crew']   = '';
+                        }
                     if($item->lyrics_json == null){
                         $item['countjson']      =  0 ;
                     }else{
@@ -272,6 +281,15 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    $castcrew = Audioartist::where('audio_id',@$item->id)
+                    ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+                        if(count($castcrew) > 0){
+                            foreach($castcrew as $cast_crew){
+                                $item['cast_crew']   =   $cast_crew. ' ' ;
+                            }
+                        }else{
+                            $item['cast_crew']   = '';
+                        }
                     if($item->lyrics_json == null){
                         $item['countjson']      =  0 ;
                     }else{
@@ -281,7 +299,7 @@ class ThemeAudioController extends Controller{
                   });
                   $merged_audios_lyrics = $current_audio_lyrics->merge($all_album_audio_lyrics)->all();
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
-            
+                //   dd($merged_audios_lyrics);
             $data = array(
                 'audios' => Audio::findOrFail($audio),
                 'json_list' => json_encode($json),
@@ -553,6 +571,71 @@ class ThemeAudioController extends Controller{
                }
                 $album_audios = $album_audios ->get();
 
+                
+                $current_audio_lyrics   = Audio::where('album_id',$album_id);
+                
+                if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                     $current_audio_lyrics = $current_audio_lyrics->whereNotIn('id',$blocked_Audio);
+              }
+
+              $current_audio_lyrics = $current_audio_lyrics->get()->map(function ($item) {
+                    $item['author']      = $item->slug ;
+                    $item['song']      = $item->title ;
+                    $item['audio']      = $item->mp3_url ;
+                    $item['json']      =   $item->lyrics_json ;
+                    $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
+                    $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
+                    $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    $castcrew = Audioartist::where('audio_id',@$item->id)
+                    ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+                        if(count($castcrew) > 0){
+                            foreach($castcrew as $cast_crew){
+                                $item['cast_crew']   =   $cast_crew. ' ' ;
+                            }
+                        }else{
+                            $item['cast_crew']   = '';
+                        }
+                    if($item->lyrics_json == null){
+                        $item['countjson']      =  0 ;
+                    }else{
+                        $item['countjson']      =   1 ;
+                    }
+                return $item;
+                });
+
+
+                $all_album_audio_lyrics = Audio::where('album_id',$album_id);
+                
+                if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                    $all_album_audio_lyrics = $all_album_audio_lyrics->whereNotIn('id',$blocked_Audio);
+                }
+
+                $all_album_audio_lyrics = $all_album_audio_lyrics->get()->map(function ($item) {
+                    $item['author']      = $item->slug ;
+                    $item['song']      = $item->title ;
+                    $item['audio']      = $item->mp3_url ;
+                    $item['json']      =   $item->lyrics_json ;
+                    $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
+                    $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
+                    $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    $castcrew = Audioartist::where('audio_id',@$item->id)
+                    ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+                        if(count($castcrew) > 0){
+                            foreach($castcrew as $cast_crew){
+                                $item['cast_crew']   =   $cast_crew. ' ' ;
+                            }
+                        }else{
+                            $item['cast_crew']   = '';
+                        }
+                    if($item->lyrics_json == null){
+                        $item['countjson']      =  0 ;
+                    }else{
+                        $item['countjson']      =   1 ;
+                    }
+                    return $item;
+                  });
+                  $merged_audios_lyrics = $all_album_audio_lyrics->merge($current_audio_lyrics)->all();
+
             $other_albums = AudioAlbums::where('id','!=', $album_id)->get();
 
             if( count($album_audios) > 0 ){
@@ -593,10 +676,18 @@ class ThemeAudioController extends Controller{
                 'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
+                'songs' => (array("songs" => $merged_audios_lyrics)),
             );
             
             // dd( $data);
-            return Theme::view('albums', $data);
+            $theme_settings = SiteTheme::pluck('audio_page_checkout')->first();
+            
+            if($theme_settings == 1){
+                return Theme::view('MusicAudioPlayer',$data);
+            }else{
+                return Theme::view('albums', $data);
+            }
+            // return Theme::view('albums', $data);
 
         } catch (\Throwable $th) {
             return $th->getMessage();

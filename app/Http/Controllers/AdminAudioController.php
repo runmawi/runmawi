@@ -117,7 +117,7 @@ class AdminAudioController extends Controller
         if(!empty($search_value)):
             $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
         else:
-            $audios = Audio::orderBy('created_at', 'DESC')->paginate(9);
+            $audios = Audio::orderBy('created_at', 'DESC')->get();
         endif;
         
         $user = Auth::user();

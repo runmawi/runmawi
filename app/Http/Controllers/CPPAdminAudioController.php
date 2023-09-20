@@ -74,7 +74,7 @@ class CPPAdminAudioController extends Controller
         if(!empty($search_value)):
             $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('user_id','=',$id)->orderBy('created_at', 'desc')->paginate(9);
         else:
-            $audios = Audio::orderBy('created_at', 'DESC')->where('user_id','=',$id)->paginate(9);
+            $audios = Audio::orderBy('created_at', 'DESC')->where('user_id','=',$id)->get();
         endif;
         
         // $user = Auth::user();
