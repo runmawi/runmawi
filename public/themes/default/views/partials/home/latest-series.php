@@ -3,6 +3,8 @@
      if(isset($latest_series)) :
       $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
       $order_settings_list = App\OrderHomeSetting::get(); 
+      $ThumbnailSetting = App\ThumbnailSetting::first();
+
       ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h4 class="main-title">
@@ -30,7 +32,7 @@
             <div class="block-images position-relative">
               <div class="img-box">
                 <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid lazyload w-100" alt="series">
-               
+                <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                     <?php if($latest_serie->access == 'subscriber' ){ ?>
                         <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                         <?php }elseif($latest_serie->access == 'registered'){?>
@@ -41,6 +43,7 @@
                       <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_status; ?></p>
                       <?php }elseif($latest_serie->ppv_status == null && $latest_serie->ppv_price == null ){ ?>
                       <p class="p-tag"><?php echo "Free"; ?></p>
+                      <?php } ?>
                       <?php } ?>
                  
               </div>
