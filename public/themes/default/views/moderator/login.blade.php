@@ -41,7 +41,10 @@ $system_settings = App\SystemSetting::find(1);
     a.f-link{margin-bottom:1rem}
     .d-inline-block{display:block!important}
     i.fa.fa-google-plus{padding:10px!important}
-    .sign-in-from{margin:0 auto;display:block}.reveal{margin-left:-57px;height:45px!important;background:#ed553b!important;color:#fff!important;position:absolute;right:0;border-radius:0!important;top:-61px}
+    .sign-in-from{margin:0 auto;display:block; text-align: center;}
+    .reveal{margin-left:-57px;height:45px!important;background:#ed553b!important;
+    color:#fff!important;position:absolute;right:0;border-radius:0!important;top:-61px;}
+    .sign-in-page .btn {border: 0 !important;}
 </style>
 </head>
 <body>
@@ -113,14 +116,11 @@ $system_settings = App\SystemSetting::find(1);
                   </div>
                         
                            <div class="sign-info">
-                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">SIGN IN</button>
+                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;">SIGN IN</button>
                                                             
                            </div> 
                            <div class="clear"></div>
-                         <div class="custom-control custom-checkbox mt-3" style="" >
-                                 <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
-                                 
-                                 <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
+                         <div class="custom-control custom-checkbox mt-3 text-left" style="" >
                                   <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 								<label class="form-check-label nv" for="remember">
 									{{ __('Keep me signed in') }}
@@ -129,7 +129,7 @@ $system_settings = App\SystemSetting::find(1);
                           <hr style="color:#1e1e1e;">
                            <div class="mt-3">
                               <div class=" justify-content-center links">
-                                 To Content Partner Portal <a href="<?= URL::to('/cpp/signup')?>" class="text-primary ml-2">Sign Up </a> Here!
+                                 Become a Content Partner! <a href="<?= URL::to('/cpp/signup')?>" class="text-primary ml-2">Sign Up </a> Here!
                               </div>                        
                            </div>
                      </form>
