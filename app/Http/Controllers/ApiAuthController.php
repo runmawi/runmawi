@@ -13890,8 +13890,8 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
         $data = AudioCategory::query()->latest()->limit(30)->get()->map(function ($item) {
-              $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
-              $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image) ;
+              $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
+              $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
               $item['description'] = null ;
               $item['source']    = "Audios";
             return $item;
