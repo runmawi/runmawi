@@ -212,32 +212,25 @@ i.fa.fa-google-plus {
 						</div>-->
                         <div class="soc mb-3">
                             <div class="d-flex align-items-center">
+                                <?php if($system_settings != null){ ?>
+                                    <div>
+                                        <p class="links">Login with using:</p>
+                                    </div>
+                                <?php } ?>
                                <?php if($system_settings != null && $system_settings->facebook == 1){ ?>
                                 <div>
-                                    <p class="links">Login with using:</p>
+                                    <a href="{{ url('/auth/redirect/facebook') }}" class="" >
+                                    <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                 </div>
-                                <div>
-                                     <a href="{{ url('/auth/redirect/facebook') }}" class="" >
-                                     <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
-                                    </div>
                                <?php } ?>
-
-                               <!-- <div>
-                                      <a href="{{ url('/auth/redirect/twiter') }}" class="" >
-                                          <img src="<?php echo URL::to('/').'/assets/img/twiter.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
-                                </div>-->
                                 <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
-                                        <div>
-                                            <p class="links">Login with using:</p>
-                                        </div>
                                     <div>
-                                    <a href="{{ url('/auth/redirect/google') }}" class="" >
-                                        <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
-
+                                        <a href="{{ url('/auth/redirect/google') }}" class="" >
+                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                        </a>
                                     </div>
                                 <?php  } ?>
-                                
-                                </div>
+                            </div>
                          </div>
                      </form>
                        <div class="">
