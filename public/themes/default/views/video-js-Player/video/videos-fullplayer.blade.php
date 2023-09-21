@@ -3,409 +3,349 @@
 @endphp
 
 <style>
-    .detailsBanner {
-        width: 100%;
-        background-color: var(--black);
-        padding-top: 100px;
-        margin-bottom: 50px;
-    }
+    .vpageBanner {
+    width: 100%;
+    background-color: var(--black);
+    padding-top: 100px;
+    margin-bottom: 50px;
+}
+.vpageBanner .backdrop-img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: .1;
+    overflow: hidden;
+}
+.vpageBanner .backdrop-img .lazy-load-image-background {
+    width: 100%;
+    height: 100%;
+}
 
-    .detailsBanner .backdrop-img {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: .1;
-        overflow: hidden;
-    }
+.lazy-load-image-background.blur.lazy-load-image-loaded {
+    filter: blur(0);
+    transition: filter .3s;
+}
+.lazy-load-image-background.blur {
+    filter: blur(15px);
+}
+.vpageBanner .backdrop-img .lazy-load-image-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.lazy-load-image-background.blur.lazy-load-image-loaded>img {
+    opacity: 1;
+    transition: opacity .3s;
+}
+.lazy-load-image-background.blur>img {
+    opacity: 0;
+}
+.vpageBanner .opacity-layer {
+    width: 100%;
+    height: 250px;
+    background: linear-gradient(180deg,rgba(4,21,45,0) 0%,#050505 79.17%);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.pageWrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.vpageBanner .content {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    gap: 25px;
+}
+.vpageBanner .content .left {
+    flex-shrink: 0;
+}
 
-    .detailsBanner .backdrop-img .lazy-load-image-background {
-        width: 100%;
-        height: 100%;
-    }
+.vpageBanner .content .left .posterImg {
+    width: 100%;
+    display: block;
+    border-radius: 12px;
+}
+.vpageBanner .content .right {
+    color: #fff;
+}
+.vpageBanner .content .right .title {
+    font-size: 28px;
+    line-height: 40px;
+}
+.vpageBanner .content .right .subtitle {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 15px;
+    font-style: italic;
+    opacity: .5;
+}
+.genres {
+    display: flex;
+    gap: 5px;
+}
+.vpageBanner .content .right .genres {
+    margin-bottom: 25px;
+    flex-flow: row wrap;
+}
+.genres .genre {
+    padding: 3px 5px;
+    font-size: 12px;
+    border-radius: 4px;
+    color: #fff;
+    white-space: nowrap;
+    border: 2px solid var(--red);
+}
+.vpageBanner .content .right .row {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+.circleRating {
+    background-color: var(--black);
+    border-radius: 50%;
+    padding: 2px;
+}
+.vpageBanner .content .right .circleRating {
+    max-width: 70px;
+    background-color: var(--black2);
+}
+.vpageBanner .content .right .circleRating {
+    max-width: 90px;
+}
+.CircularProgressbar {
+    width: 100%;
+    vertical-align: middle;
+}
+.circleRating .CircularProgressbar-trail {
+    stroke: transparent;
+}
 
-    .lazy-load-image-background.blur.lazy-load-image-loaded {
-        filter: blur(0);
-        transition: filter .3s;
-    }
+.CircularProgressbar .CircularProgressbar-trail {
+    stroke: #d6d6d6;
+    stroke-linecap: round;
+}
+.CircularProgressbar .CircularProgressbar-path {
+    stroke: #3e98c7;
+    stroke-linecap: round;
+    -webkit-transition: stroke-dashoffset .5s ease 0s;
+    transition: stroke-dashoffset .5s ease 0s;
+}
+.vpageBanner .content .right .circleRating .CircularProgressbar-text {
+    fill: #fff;
+}
 
-    .lazy-load-image-background.blur {
-        filter: blur(15px);
-    }
+.circleRating .CircularProgressbar-text {
+    font-size: 34px;
+    font-weight: 700;
+    fill: var(--black);
+}
+.CircularProgressbar .CircularProgressbar-text {
+    fill: #3e98c7;
+    font-size: 20px;
+    dominant-baseline: middle;
+    text-anchor: middle;
+}
+.vpageBanner .content .right .playbtn {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+}
+.vpageBanner .content .right svg {
+    height: auto;
+}
+.vpageBanner .content .right .playbtn svg {
+    width: 60px;
+    height:auto;
+}
+.vpageBanner .content .right .playbtn .triangle {
+    stroke-dasharray: 240;
+    stroke-dashoffset: 480;
+    stroke: #fff;
+    transform: translateY(0);
+    transition: all .7s ease-in-out;
+}
+.vpageBanner .content .right .playbtn .text {
+    font-size: 20px;
+    transition: all .7s ease-in-out;
+}
+.vpageBanner .content .right .overview {
+    margin-bottom: 25px;
+}
+.vpageBanner .content .right .overview .description {
+    line-height: 24px;
+    padding-right: 100px;
+}
 
-    .detailsBanner .backdrop-img .lazy-load-image-background img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-    }
 
-    .lazy-load-image-background.blur.lazy-load-image-loaded>img {
-        opacity: 1;
-        transition: opacity .3s;
+.vpageBanner .content .right .overview .heading {
+    font-size: 28px;
+    margin-bottom: 10px;
+    padding-right: 82%;
+}
+.vpageBanner .content .right .info {
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    padding: 15px 0;
+    display: flex;
+}
+.vpageBanner .content .right .info .text {
+    margin-right: 10px;
+    opacity: .5;
+    line-height: 24px;
+}
+.videoPopup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 9;
+}
+.videoPopup .opacityLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.25);
+    backdrop-filter: blur(3.5px);
+    -webkit-backdrop-filter: blur(3.5px);
+    opacity: 0;
+    transition: opacity .4s;
+}
+.videoPopup .videoPlayer {
+    position: relative;
+    width: 800px;
+    aspect-ratio: 16/9;
+    background-color: #fff;
+    transform: scale(.2);
+    transition: transform .25s;
+}
+.videoPopup .videoPlayer .closeBtn {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    color: #fff;
+    cursor: pointer;
+}
+.sectionArtists {
+    position: relative;
+    margin-bottom: 50px;
+}
+.pageWrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.sectionArtists .artistHeading {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 25px;
+    margin-top: 45px;
+}
+.sectionArtists .listItems {
+    display: flex;
+    gap: 20px;
+    overflow-y: hidden;
+    margin-right: -20px;
+    margin-left: -20px;
+    padding: 0 20px;
+}
+.sectionArtists .listItems .listItem {
+    text-align: center;
+    color: #fff;
+}
+.sectionArtists .listItems .listItem .profileImg {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.sectionArtists .listItems .listItem .profileImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+}
+.sectionArtists .listItems .listItem .name {
+    font-size: 18px;
+    line-height: 24px;
+}
+.sectionArtists .listItems .listItem .name {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+}
+.sectionArtists .listItems .listItem .character {
+    font-size: 14px;
+    line-height: 20px;
+    opacity: .5;
+}
+@media only screen and (min-width: 768px) {
+    .vpageBanner {
+        margin-bottom: 0;
+        padding-top: 120px;
+        /* min-height: 700px; */
     }
-
-    .lazy-load-image-background.blur>img {
-        opacity: 0;
+    .vpageBanner .content {
+        gap: 50px;
+        flex-direction: row;
     }
-
-    .detailsBanner .opacity-layer {
-        width: 100%;
-        height: 250px;
-        background: linear-gradient(180deg, rgba(4, 21, 45, 0) 0%, #050505 79.17%);
-        position: absolute;
-        bottom: 0;
-        left: 0;
+    .vpageBanner .content .left .posterImg {
+        max-width: 350px;
     }
-
-    .contentWrapper {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
+    .vpageBanner .content .right .title {
+        padding-right: 52%;
+        font-size: 34px;
+        line-height: 44px;
     }
-
-    .detailsBanner .content {
-        display: flex;
-        position: relative;
-        flex-direction: column;
-        gap: 25px;
+    .vpageBanner .content .right .subtitle {
+        font-size: 20px;
+        line-height: 28px;
     }
-
-    .detailsBanner .content .left {
-        flex-shrink: 0;
+    .vpageBanner .content .right .playbtn svg {
+        width: 80px;
     }
-
-    .detailsBanner .content .left .posterImg {
-        width: 100%;
-        display: block;
-        border-radius: 12px;
+    .vpageBanner .content .right .overview .heading {
+        font-size: 38px;
     }
-
-    .detailsBanner .content .right {
-        color: #fff;
+    .vpageBanner .content .right .overview .description {
+        padding-right: 10px;
     }
-
-    .detailsBanner .content .right .title {
-        font-size: 28px;
-        line-height: 40px;
+    .sectionArtists .listItems {
+        margin: 0;
+        padding: 0;
     }
-
-    .detailsBanner .content .right .subtitle {
+    .sectionArtists .listItems .listItem .profileImg {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 25px;
+    }
+    .sectionArtists .listItems .listItem .name {
         font-size: 16px;
         line-height: 24px;
-        margin-bottom: 15px;
-        font-style: italic;
-        opacity: .5;
     }
-
-    .genres {
-        display: flex;
-        gap: 5px;
-    }
-
-    .detailsBanner .content .right .genres {
-        margin-bottom: 25px;
-        flex-flow: row wrap;
-    }
-
-    .genres .genre {
-        padding: 3px 5px;
-        font-size: 12px;
-        border-radius: 4px;
-        color: #fff;
-        white-space: nowrap;
-        border: 2px solid var(--red);
-    }
-
-    .detailsBanner .content .right .row {
-        display: flex;
-        align-items: center;
-        gap: 25px;
-        margin-bottom: 25px;
-    }
-
-    .circleRating {
-        background-color: var(--black);
-        border-radius: 50%;
-        padding: 2px;
-    }
-
-    .detailsBanner .content .right .circleRating {
-        max-width: 70px;
-        background-color: var(--black2);
-    }
-
-    .detailsBanner .content .right .circleRating {
-        max-width: 90px;
-    }
-
-    .CircularProgressbar {
-        width: 100%;
-        vertical-align: middle;
-    }
-
-    .circleRating .CircularProgressbar-trail {
-        stroke: transparent;
-    }
-
-    .CircularProgressbar .CircularProgressbar-trail {
-        stroke: #d6d6d6;
-        stroke-linecap: round;
-    }
-
-    .CircularProgressbar .CircularProgressbar-path {
-        stroke: #3e98c7;
-        stroke-linecap: round;
-        -webkit-transition: stroke-dashoffset .5s ease 0s;
-        transition: stroke-dashoffset .5s ease 0s;
-    }
-
-    .detailsBanner .content .right .circleRating .CircularProgressbar-text {
-        fill: #fff;
-    }
-
-    .circleRating .CircularProgressbar-text {
-        font-size: 34px;
-        font-weight: 700;
-        fill: var(--black);
-    }
-
-    .CircularProgressbar .CircularProgressbar-text {
-        fill: #3e98c7;
-        font-size: 20px;
-        dominant-baseline: middle;
-        text-anchor: middle;
-    }
-
-    .detailsBanner .content .right .playbtn {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        cursor: pointer;
-    }
-
-    .detailsBanner .content .right svg {
-        height: auto;
-    }
-
-    .detailsBanner .content .right .playbtn svg {
-        width: 60px;
-        height: auto;
-    }
-
-    .detailsBanner .content .right .playbtn .triangle {
-        stroke-dasharray: 240;
-        stroke-dashoffset: 480;
-        stroke: #fff;
-        transform: translateY(0);
-        transition: all .7s ease-in-out;
-    }
-
-    .detailsBanner .content .right .playbtn .text {
-        font-size: 20px;
-        transition: all .7s ease-in-out;
-    }
-
-    .detailsBanner .content .right .overview {
-        margin-bottom: 25px;
-    }
-
-    .detailsBanner .content .right .overview .description {
-        line-height: 24px;
-        padding-right: 100px;
-    }
-
-
-    .detailsBanner .content .right .overview .heading {
-        font-size: 28px;
-        margin-bottom: 10px;
-        padding-right: 82%;
-    }
-
-    .detailsBanner .content .right .info {
-        border-bottom: 1px solid rgba(255, 255, 255, .1);
-        padding: 15px 0;
-        display: flex;
-    }
-
-    .detailsBanner .content .right .info .text {
-        margin-right: 10px;
-        opacity: .5;
-        line-height: 24px;
-    }
-
-    .videoPopup {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        visibility: hidden;
-        z-index: 9;
-    }
-
-    .videoPopup .opacityLayer {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, .25);
-        backdrop-filter: blur(3.5px);
-        -webkit-backdrop-filter: blur(3.5px);
-        opacity: 0;
-        transition: opacity .4s;
-    }
-
-    .videoPopup .videoPlayer {
-        position: relative;
-        width: 800px;
-        aspect-ratio: 16/9;
-        background-color: #fff;
-        transform: scale(.2);
-        transition: transform .25s;
-    }
-
-    .videoPopup .videoPlayer .closeBtn {
-        position: absolute;
-        top: -20px;
-        right: 0;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    .castSection {
-        position: relative;
-        margin-bottom: 50px;
-    }
-
-    .contentWrapper {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    .castSection .sectionHeading {
-        font-size: 24px;
-        color: #fff;
-        margin-bottom: 25px;
-        margin-top: 45px;
-    }
-
-    .castSection .listItems {
-        display: flex;
-        gap: 20px;
-        overflow-y: hidden;
-        margin-right: -20px;
-        margin-left: -20px;
-        padding: 0 20px;
-    }
-
-    .castSection .listItems .listItem {
-        text-align: center;
-        color: #fff;
-    }
-
-    .castSection .listItems .listItem .profileImg {
-        width: 125px;
-        height: 125px;
-        border-radius: 50%;
-        overflow: hidden;
-        margin-bottom: 15px;
-    }
-
-    .castSection .listItems .listItem .profileImg img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center top;
-        display: block;
-    }
-
-    .castSection .listItems .listItem .name {
-        font-size: 18px;
-        line-height: 24px;
-    }
-
-    .castSection .listItems .listItem .name {
+    .sectionArtists .listItems .listItem .character {
         font-size: 14px;
-        line-height: 20px;
-        font-weight: 600;
+        line-height: 24px;
     }
-
-    .castSection .listItems .listItem .character {
-        font-size: 14px;
-        line-height: 20px;
-        opacity: .5;
-    }
-
-    @media only screen and (min-width: 768px) {
-        .detailsBanner {
-            margin-bottom: 0;
-            padding-top: 120px;
-            /* min-height: 700px; */
-        }
-
-        .detailsBanner .content {
-            gap: 50px;
-            flex-direction: row;
-        }
-
-        .detailsBanner .content .left .posterImg {
-            max-width: 350px;
-        }
-
-        .detailsBanner .content .right .title {
-            padding-right: 52%;
-            font-size: 34px;
-            line-height: 44px;
-        }
-
-        .detailsBanner .content .right .subtitle {
-            font-size: 20px;
-            line-height: 28px;
-        }
-
-        .detailsBanner .content .right .playbtn svg {
-            width: 80px;
-        }
-
-        .detailsBanner .content .right .overview .heading {
-            font-size: 38px;
-        }
-
-        .detailsBanner .content .right .overview .description {
-            padding-right: 10px;
-        }
-
-        .castSection .listItems {
-            margin: 0;
-            padding: 0;
-        }
-
-        .castSection .listItems .listItem .profileImg {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 25px;
-        }
-
-        .castSection .listItems .listItem .name {
-            font-size: 16px;
-            line-height: 24px;
-        }
-
-        .castSection .listItems .listItem .character {
-            font-size: 14px;
-            line-height: 24px;
-        }
-    }
+}
 </style>
 
 <div class="vpageBanner">
