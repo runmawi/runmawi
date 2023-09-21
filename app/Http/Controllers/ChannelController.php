@@ -62,6 +62,7 @@ use App\Channel;
 use App\ModeratorsUser;
 use App\StorageSetting;
 use App\AdminLandingPage;
+use App\CommentSection;
 
 class ChannelController extends Controller
 {
@@ -142,7 +143,7 @@ class ChannelController extends Controller
     {
         if ( choosen_player() == 1 ){
 
-            return $this->video_js_player($slug);
+            return $this->videos_details_jsplayer($slug);
         }
 
         $settings = Setting::first();
@@ -3862,19 +3863,32 @@ class ChannelController extends Controller
         exit;
     }
 
-    private static function video_js_player( $slug ){
 
+    private function videos_details_jsplayer( $slug )
+    {
         try {
             
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
-            $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) use ( $video_id ) {
 
-                $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
-                $item['player_image_url']   = URL::to('public/uploads/images/'.$item->player_image );
+                $item['image_url']          = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();
+                $item['player_image_url']   = $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                $item['Title_Thumbnail'] =   $item->video_title_image != null ? URL::to('public/uploads/images/'.$item->video_title_image) : default_vertical_image_url();     
                 $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+                
+                $item['categories'] =  CategoryVideo::select('categoryvideos.id','category_id','video_id','video_categories.name as name','video_categories.slug')
+                                                        ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                        ->where('video_id', $video_id)->get() ;
 
+                $item['Language']   =  LanguageVideo::select('languagevideos.id','language_id','video_id','name','slug')
+                                                    ->join('languages','languages.id','=','languagevideos.language_id')
+                                                    ->where('languagevideos.video_id', $video_id)->get() ;
+
+                $item['artists']    =  Videoartist::select('video_id','artist_id','artists.*')
+                                                    ->join('artists','artists.id','=','video_artists.artist_id')
+                                                    ->where('video_id', $video_id)->get();
                 // Videos URL 
 
                 switch (true) {
@@ -3908,20 +3922,40 @@ class ChannelController extends Controller
                 return $item;
             })->first();
 
+
+            $latest_video = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
+            ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+            ->where('videos.id', '!=', $videodetail->id)
+            ->where('videos.active',  1)
+            ->where('videos.status',  1)
+            ->where('videos.draft',  1)
+            ->groupBy('videos.id')
+            ->limit(10)
+            ->get();
+
+            $ThumbnailSetting = ThumbnailSetting::first();
+
             $data = array(
-                'videodetail' => $videodetail ,
+                'videodetail'    => $videodetail ,
+                'setting'        => Setting::first(),
+                'CommentSection' => CommentSection::first(),
+                'source_id'      => $videodetail->id ,
+                'commentable_type' => 'play_videos',
+                'latest_video'       => $latest_video ,
+                'ThumbnailSetting' => $ThumbnailSetting ,
             );
 
-            return Theme::view('video-js-Player.video.videos', $data);
+            return Theme::view('video-js-Player.video.videos-details', $data);
 
         } catch (\Throwable $th) {
             
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
-    } 
+    }
 
-    public function video_js_fullplayer( )
+    public function videos_fullplayer_jsplayer( $slug )
     {
         try {
             
@@ -3971,7 +4005,7 @@ class ChannelController extends Controller
                 'videodetail' => $videodetail ,
             );
 
-            return Theme::view('video-js-Player.video.videos-fullplayer', $data);
+            return Theme::view('video-js-Player.video.videos', $data);
 
         } catch (\Throwable $th) {
             
