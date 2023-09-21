@@ -216,19 +216,20 @@ border-radius: 0px 4px 4px 0px;
 								</div> 
 							</div>
 							
+							</div>
 							
 								</div>
 
-							</div>
                             <div class="row container-fluid">
 
 							<div class="col-md-6">
                                     <div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics <span>(Ex:xlsx)</span></label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-								<div class="panel-body" style="display: block;"> 
+								<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<span>(Ex:xlsx <a href='{{ URL::to('public/uploads/audiolyrics/SampleLyrics.xlsx') }}' target="_blank">Sample Lyrics File</a>)</span>
+								<div class="panel-body" style="display: block;padding-top: 13px;"> 
 									@if(!empty($audio->lyrics))
 								<div class=" p-0 mb-1">
-								<!-- <img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " /></div> -->
+								<a href='{{ $audio->lyrics }}' target="_blank">Download Uploaded Lyrics File</a>
 								@endif
                                     <input type="file" name="lyrics" id="lyrics" >
 									<span class="error-message text-danger"></span>
@@ -236,6 +237,7 @@ border-radius: 0px 4px 4px 0px;
 							</div>
 							
 							
+								</div>
 								</div>
 
 							</div>
@@ -376,7 +378,19 @@ border-radius: 0px 4px 4px 0px;
 											<div class="panel-title"><label class="mb-1">Audio Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
                                                 <p class="p1"> IMDB Ratings 10 out of 10</p>
-												<input class="form-control" name="rating" id="rating" value="@if(!empty($audio->rating)){{ $audio->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+												<!-- <input class="form-control" name="rating" id="rating" value="@if(!empty($audio->rating)){{ $audio->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+												<select  class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" >
+													<option value="1" {{ $audio->rating == '1' ? 'selected':'' }} >1</option>
+													<option value="2" {{ $audio->rating == '2' ? 'selected':'' }} >2</option>
+													<option value="3" {{ $audio->rating == '3' ? 'selected':'' }} >3</option>
+													<option value="4" {{ $audio->rating == '4' ? 'selected':'' }} >4</option>
+													<option value="5" {{ $audio->rating == '5' ? 'selected':'' }} >5</option>
+													<option value="6" {{ $audio->rating == '6' ? 'selected':'' }} >6</option>
+													<option value="7" {{ $audio->rating == '7' ? 'selected':'' }} >7</option>
+													<option value="8" {{ $audio->rating == '8' ? 'selected':'' }} >8</option>
+													<option value="9" {{ $audio->rating == '9' ? 'selected':'' }} >9</option>
+													<option value="10"{{ $audio->rating == '10' ? 'selected':'' }} >10</option>
+												</select>
 											</div> 
 										</div>
 									</div>
@@ -675,7 +689,7 @@ $(document).ready(function() {
 });
 		$(document).ready(function(){
 			$('.js-example-basic-multiple').select2();
-			
+			$('.js-example-basic-single').select2();
 
 			$('#type').change(function(){
 				if($(this).val() == 'file'){

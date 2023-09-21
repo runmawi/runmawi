@@ -102,14 +102,14 @@ border-radius: 0px 4px 4px 0px;
                                         {{ $audio->views }}
                                     </td>
                                     <td>
-                                       <div class=" align-items-center list-user-action">
+                                       <!-- <div class=" align-items-center list-user-action"> -->
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="View" href="{{ URL::to('/audio') . '/' . $audio->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit" href="{{ URL::to('admin/audios/edit') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" onclick="return confirm('Are you sure?')"
                                              data-original-title="Delete" href="{{ URL::to('admin/audios/delete') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
-                                       </div>
+                                       <!-- </div> -->
                                     </td>
                                  </tr>
                                  @endforeach
@@ -117,7 +117,6 @@ border-radius: 0px 4px 4px 0px;
                            </table>
                            <div class="clear"></div>
 
-		<div class="pagination-outter"><?= $audios->appends(Request::only('s'))->render(); ?></div>
 		
 		</div>
                         </div>

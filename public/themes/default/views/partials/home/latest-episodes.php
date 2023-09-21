@@ -2,6 +2,7 @@
   <h4 class="main-title">Recently Added Episodes</h4>                      
 </div>
 <?php
+      $ThumbnailSetting = App\ThumbnailSetting::first();
 ?>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -15,7 +16,7 @@
             <div class="block-images position-relative">
               <div class="img-box">
                 <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid lazyload w-100" alt="episode">
-               
+                <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                     <?php  if(!empty($latest_episode->ppv_price == 1)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$latest_episode->ppv_price; ?></p>
                     <?php }elseif( !empty($latest_episode->ppv_status || !empty($latest_episode->ppv_status) && $latest_episode->ppv_price == 1)){ ?>
@@ -23,7 +24,7 @@
                       <?php }elseif($latest_episode->ppv_status == null && $latest_episode->ppv_price == null ){ ?>
                       <p class="p-tag"><?php echo "Free"; ?></p>
                       <?php } ?>
-                 
+                    <?php } ?>
               </div>
               <div class="block-description">
               <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">

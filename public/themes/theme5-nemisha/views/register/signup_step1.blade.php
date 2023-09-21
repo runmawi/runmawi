@@ -444,12 +444,21 @@ $jsondata = json_decode($jsonString, true); ?>
                             
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
-                            <div class="col-md-12" style="postion:relative;">
+                                <div class="col-md-12" style="postion:relative;">
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                 <label id="fileLabel">Choose Profile Image</label>
                                  </div>
                                  @endif
-                           
+
+                                 @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
+                                <div class="col-md-12" style="postion:relative;">
+                                <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="Choose DOB"  >
+
+                                <!-- <input type="date" name="dob"  id ='dob' class="form-control">
+                                <label id="fileLabel">Choose Profile DOB</label> -->
+                                 </div>
+                                 @endif
+
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
                                 
@@ -697,6 +706,23 @@ $jsondata = json_decode($jsonString, true); ?>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include jQuery UI library -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    jQuery.noConflict();
+    (function($) {
+        $(document).ready(function() {
+            $("#datepicker").datepicker();
+        });
+    })(jQuery);
+</script>  
+
 <script>
     $(document).ready(function(){
          $('#error_password').hide();

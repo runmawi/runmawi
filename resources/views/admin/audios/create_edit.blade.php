@@ -374,8 +374,9 @@ data: {
 
 							<div class="col-md-6">
 									<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics <span>(Ex:xlsx)</span></label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-								<div class="panel-body" style="display: block;"> 
+								<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<span>(Ex:xlsx <a href='{{ URL::to('public/uploads/audiolyrics/SampleLyrics.xlsx') }}' target="_blank">Sample Lyrics File</a>)</span>
+								<div class="panel-body" style="display: block;padding-top: 13px;"> 
 									@if(!empty($audio->lyrics))
 								<div class=" p-0 mb-1">
 								<!-- <img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " /></div> -->
@@ -518,7 +519,19 @@ data: {
 											<div class="panel-title"><label>Audio Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
                                                 <p class="p1"> IMDB Ratings 10 out of 10</p>
-												<input class="form-control" name="rating" id="rating" value="@if(!empty($audio->rating)){{ $audio->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);">
+												<!-- <input class="form-control" name="rating" id="rating" value="@if(!empty($audio->rating)){{ $audio->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+												<select  class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);">
+													<option value="1" >1</option>
+													<option value="2">2</option>
+													<option value="3">3</option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="8">8</option>
+													<option value="9">9</option>
+													<option value="10">10</option>
+												</select>
 											</div> 
 										</div>
 									</div>
@@ -750,6 +763,7 @@ $(document).ready(function() {
 });
 		$(document).ready(function(){
 			$('.js-example-basic-multiple').select2();
+			$('.js-example-basic-single').select2();
 			
 
 			$('#type').change(function(){

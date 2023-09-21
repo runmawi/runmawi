@@ -119,7 +119,21 @@
     include(public_path('themes/default/views/footer.blade.php'));
 @endphp
 
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
+   $('form[id="station_form"]').validate({
+       ignore: [],
+   	rules: {
+   	  station_name : 'required',
+   	},
+   	messages: {
+   	  station_name: 'This field is required',
+   	},
+   	submitHandler: function(form) {
+   	  form.submit();
+   	}
+     });
+
     $(document).ready(function(){
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');

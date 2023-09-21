@@ -74,7 +74,6 @@
                            </table>
                            <div class="clear"></div>
 
-		<div class="pagination-outter"><?= $audios->appends(Request::only('s'))->render(); ?></div>
 		
 		</div>
                         </div>

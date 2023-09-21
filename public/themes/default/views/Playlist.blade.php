@@ -438,7 +438,8 @@ $settings = App\Setting::first();
                     },
                     dataType: "html",
                     success: function(data) {
-                        if (data == "Added To Wishlist") {
+                        if (data == 1) {
+                          // alert(data);
 
                             // $('#' + audioid).text('');
                             // $('#' + audioid).text('Remove From Wishlist');
@@ -450,6 +451,11 @@ $settings = App\Setting::first();
                             }, 3000);
                         } else {
 
+                          $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from PlayList</div>');
+                        setTimeout(function() {
+                            $('.remove_watch').slideUp('fast');
+                        }, 3000);
+                          // alert('data');
                       
                         }
                     }
