@@ -219,7 +219,6 @@ border-radius: 0px 4px 4px 0px;
 							
 								</div>
 
-							</div>
                             <div class="row container-fluid">
 
 							<div class="col-md-8">
@@ -229,8 +228,7 @@ border-radius: 0px 4px 4px 0px;
 								<div class="panel-body" style="display: block;padding-top: 13px;"> 
 									@if(!empty($audio->lyrics))
 								<div class=" p-0 mb-1">
-								<a href='{{ $audio->lyrics }}' target="_blank">Download Uplaoded Lyrics File</a>
-								<!-- <img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " /></div> -->
+								<a href='{{ $audio->lyrics }}' target="_blank">Download Uploaded Lyrics File</a>
 								@endif
                                     <input type="file" name="lyrics" id="lyrics" >
 									<span class="error-message text-danger"></span>
