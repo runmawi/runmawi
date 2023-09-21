@@ -3922,18 +3922,6 @@ class ChannelController extends Controller
                 return $item;
             })->first();
 
-
-            $latest_video = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
-            ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-            ->where('videos.id', '!=', $videodetail->id)
-            ->where('videos.active',  1)
-            ->where('videos.status',  1)
-            ->where('videos.draft',  1)
-            ->groupBy('videos.id')
-            ->limit(10)
-            ->get();
-
             $ThumbnailSetting = ThumbnailSetting::first();
 
             $data = array(
@@ -3942,7 +3930,6 @@ class ChannelController extends Controller
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,
                 'commentable_type' => 'play_videos',
-                'latest_video'       => $latest_video ,
                 'ThumbnailSetting' => $ThumbnailSetting ,
             );
 
