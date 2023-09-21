@@ -216,12 +216,13 @@ border-radius: 0px 4px 4px 0px;
 								</div> 
 							</div>
 							
+							</div>
 							
 								</div>
 
                             <div class="row container-fluid">
 
-							<div class="col-md-8">
+							<div class="col-md-6">
                                     <div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
 								<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<span>(Ex:xlsx <a href='{{ URL::to('public/uploads/audiolyrics/SampleLyrics.xlsx') }}' target="_blank">Sample Lyrics File</a>)</span>
