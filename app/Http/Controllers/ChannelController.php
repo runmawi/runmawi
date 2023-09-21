@@ -3878,11 +3878,11 @@ class ChannelController extends Controller
                 $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
                 
-                $item['categories'] =  CategoryVideo::select('categoryvideos.id','category_id','video_id','video_categories.name as name','video_categories.slug')
+                $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
                                                         ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
                                                         ->where('video_id', $video_id)->get() ;
 
-                $item['Language']   =  LanguageVideo::select('languagevideos.id','language_id','video_id','name','slug')
+                $item['Language']   =  LanguageVideo::select('languagevideos.*','language_id','video_id','name','languages.name')
                                                     ->join('languages','languages.id','=','languagevideos.language_id')
                                                     ->where('languagevideos.video_id', $video_id)->get() ;
 
