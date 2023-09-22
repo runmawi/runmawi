@@ -7,6 +7,39 @@ $system_settings = App\SystemSetting::find(1);
 <link rel="stylesheet" href="<?= typography_link()?>" />
 <!-- Style -->
 <link rel="stylesheet" href="<?= style_sheet_link() ;?>" />
+<style>
+    main.py-4{padding-bottom: 0 !important;}
+    #ck-button input:checked+span,#ck-button label span{background-color:#3daae0;color:#fff}
+    .form-control,.phselect{background:0 0!important;color:var(--iq-white)!important}
+    .form-control,.form-control:focus,.phselect{color:var(--iq-white)!important}
+    #ck-button{margin:4px;border-radius:4px;overflow:auto;float:left}
+    #ck-button label{float:left;width:4em}
+    #ck-button label span{text-align:center;display:block;border:1px solid #3daae0;padding:0}
+    #ck-button label input{position:absolute}
+    .mobile-div{margin-left:-2%;margin-top:1%}
+    input::file-selector-button{width:120px;padding:0}
+    input[type=checkbox]{appearance:transparent}
+    .modal-header{padding:0 15px;border-bottom:1px solid #e5e5e5!important;min-height:16.42857143px}
+    #otp{padding-left:15px;letter-spacing:42px;border:0;background-position:bottom;background-size:50px 1px;background-repeat:repeat-x;background-position-x:80px}
+    #otp:focus{border:none}
+    .verify-buttons{margin-left:36%}
+    .panel-heading{margin-bottom:1rem}.select:after{padding-right:15px}
+    .phselect{width:100%;height:45px!important}
+    .sign-user_card{padding:0!important}
+    .form-control{height:45px;line-height:45px;border:1px solid var(--iq-body-text);font-size:14px;border-radius:0;margin-bottom:1rem!important}
+    .form-control:focus{background-color:#fff;border-color:#80bdff;outline:0;box-shadow:0 0 0 .2rem rgb(0 123 255 / 25%)}
+    select.form-control {line-height:35px}
+    .custom-file-upload{border:1px solid #ccc;display:inline-block;padding:6px 12px;cursor:pointer}
+    .btn,.btn-hover,.signup{border-radius:5px!important}
+    .main-header{display:none}
+    .catag{padding-right:150px!important}
+    i.fa.fa-google-plus{padding:10px!important}
+    option{background:#474644!important}
+    .signup{background-color:#ff0040!important;font-weight:700}
+    .btn-hover{height:50px;font-weight:700}
+    .reveal{margin-left:-70px !important;height:45px !important;background:0 0 !important;color:#fff !important}
+    .modal-content{background-color:#000}
+</style>
 <section class="mb-0" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
 
 @section('content')
@@ -155,39 +188,7 @@ $system_settings = App\SystemSetting::find(1);
    
 @endsection
 
-<style>
-    main.py-4{padding-bottom: 0 !important;}
-    #ck-button input:checked+span,#ck-button label span{background-color:#3daae0;color:#fff}
-    .form-control,.phselect{background:0 0!important;color:var(--iq-white)!important}
-    .form-control,.form-control:focus,.phselect{color:var(--iq-white)!important}
-    #ck-button{margin:4px;border-radius:4px;overflow:auto;float:left}
-    #ck-button label{float:left;width:4em}
-    #ck-button label span{text-align:center;display:block;border:1px solid #3daae0;padding:0}
-    #ck-button label input{position:absolute}
-    .mobile-div{margin-left:-2%;margin-top:1%}
-    input::file-selector-button{width:120px;padding:0}
-    input[type=checkbox]{appearance:transparent}
-    .modal-header{padding:0 15px;border-bottom:1px solid #e5e5e5!important;min-height:16.42857143px}
-    #otp{padding-left:15px;letter-spacing:42px;border:0;background-position:bottom;background-size:50px 1px;background-repeat:repeat-x;background-position-x:80px}
-    #otp:focus{border:none}
-    .verify-buttons{margin-left:36%}
-    .panel-heading{margin-bottom:1rem}.select:after{padding-right:15px}
-    .phselect{width:100%;height:45px!important}
-    .sign-user_card{padding:0!important}
-    .form-control{height:45px;line-height:45px;border:1px solid var(--iq-body-text);font-size:14px;border-radius:0;margin-bottom:1rem!important}
-    .form-control:focus{background-color:#fff;border-color:#80bdff;outline:0;box-shadow:0 0 0 .2rem rgb(0 123 255 / 25%)}
-    select.form-control {line-height:35px}
-    .custom-file-upload{border:1px solid #ccc;display:inline-block;padding:6px 12px;cursor:pointer}
-    .btn,.btn-hover,.signup{border-radius:5px!important}
-    .main-header{display:none}
-    .catag{padding-right:150px!important}
-    i.fa.fa-google-plus{padding:10px!important}
-    option{background:#474644!important}
-    .signup{background-color:#ff0040!important;font-weight:700}
-    .btn-hover{height:50px;font-weight:700}
-    .reveal{margin-left:-70px !important;height:45px !important;background:0 0 !important;color:#fff !important}
-    .modal-content{background-color:#000}
-</style>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                     <script src="jquery-3.5.1.min.js"></script>
 <script>
