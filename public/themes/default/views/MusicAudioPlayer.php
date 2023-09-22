@@ -704,8 +704,12 @@ html,body{
   transform: translateX(-50%) scale(1.2,1.2);
   opacity:1;
 }
-.float-song-card > h2,
-.float-song-card > h4{position:relative;z-index:49;margin:2px 0;}
+.float-song-card > h2, .float-song-card > h4 {
+    position: relative;
+    z-index: 49;
+    margin: 2px 0;
+    visibility: hidden;
+}
 #playlist > #label{
   width:100%;
   text-align: center;

@@ -457,7 +457,7 @@
                <a href="<?= URL::to('/becomesubscriber') ?>" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
                   Become a 
                   <?php if($video->access == 'subscriber'): ?>
-                     Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users
+                     Subscriber<?php elseif($video->access == 'registered' ): ?>Registered Users
                   <?php endif; ?> 
                    to view this Video!
                </a>
