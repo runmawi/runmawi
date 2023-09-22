@@ -346,7 +346,7 @@
 
                
                <div>
-                  <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this video</a> 
+                  <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscriber to watch this video</a> 
                </div>
                <div class="text-white col-lg-5 p-0">
                <a href="<?= URL::to('/become a') ?>" class="btn btn-primary" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
