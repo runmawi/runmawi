@@ -52,8 +52,7 @@ $system_settings = App\SystemSetting::find(1);
         
        
     }
-    .signcont {
- }
+    .sign-info .btn { padding: 10px 15px;font-size: 20px; }
     a.f-link {
     margin-bottom: 1rem;
         margin-left: 15vw;
@@ -91,7 +90,7 @@ i.fa.fa-google-plus {
          <div class="col-lg-5 col-md-12 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
-                  <div class="sign-in-from  m-auto" align="center">
+                  <div class="sign-in-from  m-auto  text-center">
                   <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
                   <div>
 
@@ -131,7 +130,7 @@ i.fa.fa-google-plus {
                             </span>
                         </div>                        
                            <div class="sign-info">
-                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">{{ __('Password Reset') }}</button>
+                              <button type="submit" class="btn ab" style="width:100%;color:#fff!important;">{{ __('Password Reset') }}</button>
                                                             
                            </div> 
                            <div class="clear"></div>                       
