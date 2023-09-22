@@ -76,7 +76,8 @@
 <?php 
 $series = $series_data ;
 $media_url = URL::to('/play_series/') . '/' . $series->slug ;
-// dd($series);
+ $ThumbnailSetting = App\ThumbnailSetting::first();
+ // dd($series);
  ?>
      <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain;padding:0px 0px 20px; ">
 <div class="container-fluid pt-5" >
@@ -247,6 +248,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                            <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
+                                  <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                    
                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
@@ -257,6 +259,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
+                                    <?php } ?>
 
                                </div></div>
                                  
@@ -293,6 +296,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
                                    
+                                  <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                    
                                            <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
@@ -301,6 +305,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
+                                      <?php } ?>
                                      </div></div>
                                  
                                   <div class="block-description" ></div>
