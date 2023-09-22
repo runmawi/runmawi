@@ -117,7 +117,7 @@ class AdminAudioController extends Controller
         if(!empty($search_value)):
             $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
         else:
-            $audios = Audio::orderBy('created_at', 'DESC')->paginate(9);
+            $audios = Audio::orderBy('created_at', 'DESC')->get();
         endif;
         
         $user = Auth::user();
@@ -1055,10 +1055,11 @@ class AdminAudioController extends Controller
         $file = $request->file->getClientOriginalName();
         $newfile = explode(".mp4", $file);
         $mp3titile = $newfile[0];
+        $settings =Setting::first();
 
         $audio = new Audio();
         $audio->title = $mp3titile;
-        $audio->image = 'default_image.jpg';
+        $audio->image = $settings->default_video_image;
         $audio->save(); 
         $audio_id = $audio->id;
 
@@ -1093,6 +1094,8 @@ class AdminAudioController extends Controller
             $title = $update_url->title; 
             $update_url->mp3_url = $data['mp3_url'];
             $update_url->duration = $audio_duration_time;
+            $update_url->image = $settings->default_video_image;
+            $update_url->player_image = $settings->default_horizontal_image;
             $update_url->save();  
 
             $value['success'] = 1;
@@ -1220,6 +1223,7 @@ class AdminAudioController extends Controller
 
         if(empty($data['image'])){
             unset($data['image']);
+            $image = $settings->default_video_image;
         } 
         else {
             $image = $data['image'];
@@ -1238,7 +1242,8 @@ class AdminAudioController extends Controller
 
 
         if(empty($data['player_image'])){
-            $player_image = "default_horizontal_image.jpg";
+            $player_image = $settings->default_horizontal_image;
+            // $player_image = "default_horizontal_image.jpg";
         } 
         else {
             $image = $data['player_image'];

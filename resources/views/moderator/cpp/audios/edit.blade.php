@@ -187,18 +187,18 @@
 							</div>
 							
 								</div>
-								</div>
+
 
 								<div class="row container-fluid">
 
-									<div class="col-md-6">
+									<div class="col-md-8">
 											<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-											<span>(Ex:xlsx <a href='{{ URL::to('public/uploads/audiolyrics/SampleLyrics.xlsx') }}' target="_blank">Sample Lyrics File</a>)</span>
 										<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-										<div class="panel-body" style="display: block;"> 
+										<span>(Ex:xlsx <a href='{{ URL::to('public/uploads/audiolyrics/SampleLyrics.xlsx') }}' target="_blank">Sample Lyrics File</a>)</span>
+										<div class="panel-body" style="display: block;padding-top: 13px;"> 
 											@if(!empty($audio->lyrics))
 										<div class=" p-0 mb-1">
-										<a href='{{ $audio->lyrics }}' target="_blank">Download Uplaoded Lyrics File</a>
+										<a href='{{ $audio->lyrics }}' target="_blank">Download Uploaded Lyrics File</a>
 										<!-- <img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " /></div> -->
 										@endif
 											<input type="file" name="lyrics" id="lyrics" >
@@ -206,8 +206,10 @@
 										</div> 
 									</div>
 
+									</div>
 
 										</div>
+								</div>
 										</div>
 
 									{{-- for validate --}} 

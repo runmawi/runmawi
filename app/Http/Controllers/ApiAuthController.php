@@ -12997,7 +12997,7 @@ public function QRCodeMobileLogout(Request $request)
 
         if( $OrderHomeSetting['video_name'] == "video_play_list" ){          // Video PlayList
          
-          $data = All_Homepage_video_playlist();
+          $data = $this->All_Homepage_video_playlist();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
           $header_name_IOS = $OrderHomeSetting['header_name'] ;
@@ -13141,7 +13141,7 @@ public function QRCodeMobileLogout(Request $request)
    }
 
    if($Homesetting->video_playlist == 1 && $this->All_Homepage_video_playlist()->isNotEmpty() ){
-    array_push($input,'video_playlist');
+    array_push($input,'video_play_list');
  }
     // if($Homesetting->artist == 1){
     //   array_push($input,'artist');
@@ -13890,8 +13890,8 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
         $data = AudioCategory::query()->latest()->limit(30)->get()->map(function ($item) {
-              $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
-              $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image) ;
+              $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
+              $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
               $item['description'] = null ;
               $item['source']    = "Audios";
             return $item;

@@ -4,11 +4,11 @@
 <div id="music-player">
         <img id="album-art"/>
         <div id="top-bar">
-          <button id="back"><i class="fa fa-arrow-left"></i></button>
+          <!-- <button id="back"><i class="fa fa-arrow-left"></i></button>  -->
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
         </div>
         <div id="lyrics">
-          <h2 class="song-name"></h2><h4 class="artist-name"></h4>
+          <!-- <h2 class="song-name"></h2><h4 class="artist-name"></h4> -->
           <div id="lyrics-content">
           </div>
           <div class="">
@@ -27,6 +27,7 @@
             <div id="totalTime"></div>
           </div>
           <div id="menu">
+          <button id="back"><i class="fa fa-arrow-left"></i></button> 
             <button id="repeat" style="color:grey"><i class="fa fa-repeat"></i></button>
             <button id="prev"><i class="fa fa-step-backward"></i></button>
             <button id="play"><i class="fa fa-play"></i></button>
@@ -151,7 +152,7 @@ var data = listAudio; // Assuming listAudio contains the URL
         // if(indexing.author == ""){ indexing.author = "Unknown"; }
         // console.log(data);
         setSongName(indexing.song);
-        setArtistName(indexing.author);
+        setArtistName(indexing.cast_crew);
         setAlbumArt(indexing.albumart);
 
         var image = document.querySelector('#audio_img')
@@ -417,12 +418,12 @@ html,body{
 }
 #album-art{ position:fixed; z-index:-1; left: 50%; transform: translateX(-50%);opacity: 0.15;width: auto; height: 100%;}
 #top-bar{
-  position: relative;
-  height: 8vh;
-  color: white;
-  width: 90%;
-  padding: 0 0 0 5%;
-  z-index: 50;
+    position: relative;
+    height: 8vh;
+    color: white;
+    width: 90%;
+    padding: 0 0 0 5%;
+    z-index: 999;
 }
 #top-bar > *{ display:inline-block; }
 #top-bar button{ margin:0;background: inherit; border: none; color: white; font-size: 100%;vertical-align:middle;transform:translateY(-40%);padding: 5px 10px;}
@@ -531,27 +532,27 @@ html,body{
   outline: none;
 }
 #playlist{
-  position:fixed;
-  top:8vh;
-  left:0;
-  height:67vh;
-  width:100%;
-  z-index: 4;
-  color: var(--lyrics-color);
-  background-color: #7f5a8399;
-  background-image: linear-gradient(315deg, #7f5a8399 0%, #0d324d99 74%);
-  transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s all;
-  transform:translateX(100%);
+  position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: 99;
+    color: var(--lyrics-color);
+    background-color: #857f8599;
+    background-image: linear-gradient(315deg, #837f5a99 0%, #0f0d4d99 74%);
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s all;
+    transform: translateX(100%);
 }
 #show-box{
   position: absolute;
-  top: 70%;
-  left:50%;
-  height: 30vh;
-  width:70%;
-  padding: 4vh;
-  transform: translate(-50%,-70%);
-  overflow: auto;
+    top: 65%;
+    left: 50%;
+    height: 50vh;
+    width: 70%;
+    padding: 4vh 0vh;
+    transform: translate(-50%,-70%);
+    overflow: auto;
 }
 #show-list{
   position: relative;
@@ -559,18 +560,18 @@ html,body{
   height: 100%;
 }
 #show-list .float-song-card{
-  position: relative;
-  display:inline-block;
-  height: 130px;
-  width: 110px;
-  padding: 20px 10px;
-  background: #00000089;
-  text-align: center;
-  font-size: 70%;
-  border-radius:8px;
-  margin: 4px 10px;
-  overflow:hidden;
-  cursor: pointer;
+    position: relative;
+    display: inline-block;
+    height: 142px;
+    width: 80px;
+    padding: 0px 0px;
+    background: #00000089;
+    text-align: center;
+    font-size: 70%;
+    border-radius: 8px;
+    margin: 4px 10px;
+    overflow: hidden;
+    cursor: pointer;
 }
 .float-song-card > .album-art{
   position: absolute;
@@ -596,17 +597,24 @@ html,body{
 #playlist > #label > h1{ line-height:0;margin: 6vh 0 2.5vh;}
 #search{
   background: transparent;
-  color: white;
-  border:1px solid #ffffff99;
-  padding: 8px;
-  margin: 2.5vh 0;
-  border-radius: 50%;
-  font-family: FontAwesome,"Montserrat",sans-serif;
-  transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s all;
-  width: 12px;
-  background: white;
+    color: white;
+    border: 1px solid #5c5c5c99;
+    padding: 1vh 1.5vw;
+    margin: 2.5vh 0;
+    border-radius: 3px;
+    font-family: FontAwesome,"Montserrat",sans-serif;
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s all;
+    width: 25vw;
+    background: #4444448a;
 }
-#search:focus{outline:none;border-radius:8px;border:1px solid #ffffff;width:25vw;padding: 1vh 1.5vw;background: inherit;}
+#search:focus{
+  outline: none;
+    border-radius: 3px;
+    border: 1px solid #818181;
+    width: 25vw;
+    padding: 1vh 1.5vw;
+    background: inherit;
+  }
 @media only screen and (max-height: 500px){
   #show-list .float-song-card{font-size:40% !important;height:60px;width:50px;}
   #playlist > #label{font-size:70%;}

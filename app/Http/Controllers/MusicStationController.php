@@ -44,6 +44,7 @@ use App\Geofencing;
 use App\ThumbnailSetting;
 use App\AdminLandingPage;
 use App\PaymentSetting;
+use App\SiteTheme;
 use Auth;
 use View;
 use Theme;
@@ -246,6 +247,39 @@ class MusicStationController extends Controller
                 $album_audios = $album_audios ->get();
                 // dd($album_audios);
 
+                $current_audio_lyrics   = Audio::whereIn('id', $UserMusicStation);
+                
+                if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                     $current_audio_lyrics = $current_audio_lyrics->whereNotIn('id',$blocked_Audio);
+              }
+
+              $current_audio_lyrics = $current_audio_lyrics->get()->map(function ($item) {
+                    $item['author']      = $item->slug ;
+                    $item['song']      = $item->title ;
+                    $item['audio']      = $item->mp3_url ;
+                    $item['json']      =   $item->lyrics_json ;
+                    $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
+                    $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
+                    $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    $castcrew = Audioartist::where('audio_id',@$item->id)
+                    ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+                        if(count($castcrew) > 0){
+                            foreach($castcrew as $cast_crew){
+                                $item['cast_crew']   =   $cast_crew. ' ' ;
+                            }
+                        }else{
+                            $item['cast_crew']   = '';
+                        }
+                    if($item->lyrics_json == null){
+                        $item['countjson']      =  0 ;
+                    }else{
+                        $item['countjson']      =   1 ;
+                    }
+                return $item;
+                });
+
+                $merged_audios_lyrics = $current_audio_lyrics;
+
             $other_albums = [];
 
             if( count($album_audios) > 0 ){
@@ -286,10 +320,20 @@ class MusicStationController extends Controller
                 'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
-            );
+                'songs' => (array("songs" => $merged_audios_lyrics)),
+        );
             
             // dd( $data);
-            return Theme::view('MusicStation', $data);
+
+            $theme_settings = SiteTheme::pluck('audio_page_checkout')->first();
+            
+            if($theme_settings == 1){
+                return Theme::view('MusicAudioPlayer',$data);
+            }else{
+                return Theme::view('MusicStation', $data);
+            }
+
+            // return Theme::view('MusicStation', $data);
 
         } catch (\Throwable $th) {
                 return $th->getMessage();
