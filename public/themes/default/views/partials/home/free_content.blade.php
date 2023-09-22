@@ -4,7 +4,8 @@
 </div>
 <?php
 endif;
-?>
+ $ThumbnailSetting = App\ThumbnailSetting::first();
+ ?>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php  if(isset($free_Contents)) :
@@ -17,7 +18,8 @@ endif;
             <div class="block-images position-relative">
               <div class="img-box">
                 <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->image;  ?>" class="img-fluid lazyload w-100" alt="">
-               
+                <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+
                     <?php  if(!empty($free_Content->ppv_price == 1)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$free_Content->ppv_price; ?></p>
                     <?php }elseif( !empty($free_Content->ppv_status || !empty($free_Content->ppv_status) && $free_Content->ppv_price == 1)){ ?>
@@ -25,6 +27,7 @@ endif;
                       <?php }elseif($free_Content->ppv_status == null ){ ?>
                       <p class="p-tag"><?php echo "Free"; ?></p>
                       <?php } ?>
+                  <?php } ?>
                  
               </div>
               <div class="block-description">
