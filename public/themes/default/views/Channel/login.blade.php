@@ -181,7 +181,10 @@ function visibility1() {
     });
 });
 </script>
-     @include('footer')
+{{-- Footer --}}
+@php
+    include(public_path('themes/default/views/footer.blade.php'));
+@endphp
       <!-- jQuery, Popper JS -->
       <script src="assets/js/jquery-3.4.1.min.js"></script>
       <script src="assets/js/popper.min.js"></script>
