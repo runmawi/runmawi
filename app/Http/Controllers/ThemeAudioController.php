@@ -305,7 +305,7 @@ class ThemeAudioController extends Controller{
                         $item['liked'] = 0;
                         $item['disliked'] = 0;
                     }
-                    
+
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
                         if(count($castcrew) > 0){
@@ -352,6 +352,7 @@ class ThemeAudioController extends Controller{
                 'category_name'    => $category_name ,
                 'ThumbnailSetting' => ThumbnailSetting::first(),
                 'songs' => (array("songs" => $merged_audios_lyrics)),
+                'playlist_name' => 'Related Songs',
             );
             } else {
                 $data = array(
@@ -702,6 +703,7 @@ class ThemeAudioController extends Controller{
                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
                 'songs' => (array("songs" => $merged_audios_lyrics)),
+                'playlist_name' => 'Related Album Songs',
             );
             
             // dd( $data);

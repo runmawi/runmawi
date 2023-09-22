@@ -2,9 +2,10 @@
 <?php include(public_path('themes/default/views/header.php')); ?>
 
 <div id="music-player">
+  
         <img id="album-art"/>
         <div id="top-bar">
-          <!-- <button id="back"><i class="fa fa-arrow-left"></i></button>  -->
+          <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
         </div>
         <div id="lyrics">
@@ -27,7 +28,7 @@
             <div id="totalTime"></div>
           </div>
           <div id="menu">
-          <button id="back"><i class="fa fa-arrow-left"></i></button> 
+          <button id="back"><i class="fas fa-list"></i></button> 
             <button id="repeat" style="color:grey"><i class="fa fa-repeat"></i></button>
             <button id="prev"><i class="fa fa-step-backward"></i></button>
             <button id="play"><i class="fa fa-play"></i></button>
@@ -40,7 +41,7 @@
         </div>
         <div id="playlist">
           <div id="label">
-            <h1>Playlist</h1>
+            <h1><?php echo @$playlist_name ; ?></h1>
             <input id="search" type="text" placeholder="&#xF002; Search from all songs"></input>
           </div>
           <div id="show-box">
@@ -69,6 +70,9 @@ $(document).ready(function(){
     if (lyrics.is(':visible')) {
         lyrics.hide(); // Hide lyrics
     }
+    var backbutton = $('#backbutton');
+    backbutton.hide();
+    
     $('#audio_img').show();
     var listAudio = <?php echo json_encode($songs); ?>;
     var listAudio = <?php echo json_encode($songs); ?>;
@@ -405,6 +409,10 @@ $('#search').keyup(function(){
 });
 var togglePlaylist = 0;
 $('#back').on('click',function(){
+
+  var backbutton = $('#backbutton');
+  backbutton.show();
+
   if(togglePlaylist == 0){
     $('#playlist').css("transform","translateX(0)");
     togglePlaylist = 1;
@@ -414,6 +422,22 @@ $('#back').on('click',function(){
     togglePlaylist = 0;
   }
 });
+
+$('#backbutton').on('click',function(){
+
+var backbutton = $('#backbutton');
+backbutton.hide();
+
+if(togglePlaylist == 0){
+  $('#playlist').css("transform","translateX(0)");
+  togglePlaylist = 1;
+}
+else{
+  $('#playlist').css("transform","translateX(100%)");
+  togglePlaylist = 0;
+}
+});
+
 });
 
 $('.like').click(function(){
@@ -637,12 +661,12 @@ html,body{
     transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s all;
     transform: translateX(100%);
 }
-#show-box{
-  position: absolute;
+#show-box {
+    position: absolute;
     top: 65%;
     left: 50%;
-    height: 50vh;
-    width: 70%;
+    height: 55vh;
+    width: 83%;
     padding: 4vh 0vh;
     transform: translate(-50%,-70%);
     overflow: auto;

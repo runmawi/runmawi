@@ -321,7 +321,8 @@ class MusicStationController extends Controller
                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
                 'songs' => (array("songs" => $merged_audios_lyrics)),
-        );
+                'playlist_name' => 'Related Station Songs',
+            );
             
             // dd( $data);
 
