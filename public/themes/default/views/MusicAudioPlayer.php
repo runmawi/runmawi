@@ -34,6 +34,8 @@
             <button id="next"><i class="fa fa-step-forward"></i></button>
             <button id="shuffle" style="color:grey"><i class="fa fa-random"></i></button>
             <button id="lyrics-toggle"><i class="fa fa-file-text"></i></button> <!-- Add this line -->
+            <button id="like-button" style="color:grey" class="like"><i class="fa fa-thumbs-up"></i></button>
+            <button id="dislike-button" style="color:grey" class="dislike"><i class="fa fa-thumbs-down"></i></button>
           </div>
         </div>
         <div id="playlist">
@@ -303,6 +305,25 @@ var data = listAudio; // Assuming listAudio contains the URL
             // }else{
             //     var data = '';
             // }
+            document.querySelector(".like").setAttribute("data-audio-id", indexing.id);
+            document.querySelector(".dislike").setAttribute("data-audio-id", indexing.id);
+
+            var likeButton = document.querySelector(".like");
+            var dislikeButton = document.querySelector(".dislike");
+
+            // Check and set the color for the like button
+            if (indexing.liked === 1) {
+                likeButton.style.color = "white";
+            } else {
+                likeButton.style.color = "grey";
+            }
+
+            // Check and set the color for the dislike button
+            if (indexing.disliked === 1) {
+                dislikeButton.style.color = "white";
+            } else {
+                dislikeButton.style.color = "grey";
+            }
 
         // Toggle lyrics visibility when the button is clicked
         $('#lyrics-toggle').on('click', function() {
@@ -395,6 +416,78 @@ $('#back').on('click',function(){
 });
 });
 
+$('.like').click(function(){
+        var  audio_id = document.querySelector(".like").getAttribute("data-audio-id");
+        // alert(audio_id);
+
+                var likeButton = $(this);
+                var audio_id = likeButton.data("audio-id");
+
+                // Toggle the color of the like button while clicking
+                if (likeButton.css("color") === "rgb(128, 128, 128)") {
+                    likeButton.css("color", "white");
+                } else {
+                    likeButton.css("color", "grey");
+                }
+
+                var dislikeButton = document.querySelector(".dislike");
+
+                // Check and set the color for the dislike button
+                    dislikeButton.style.color = "grey";
+
+                
+                var like = 1;
+                $.ajax({
+                url: "<?php echo URL::to('/').'/like-audio';?>",
+                type: "POST",
+                data: {like: like,audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function(data) {
+                    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have liked this media</div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+                    
+                }
+            });           
+  });
+
+  
+	$('.dislike').click(function(){
+        var  audio_id = document.querySelector(".dislike").getAttribute("data-audio-id");
+        // alert(audio_id);
+
+                var DislikeButton = $(this);
+                var audio_id = DislikeButton.data("audio-id");
+                
+                // Toggle the color of the like button while clicking
+                if (DislikeButton.css("color") === "rgb(128, 128, 128)") {
+                    DislikeButton.css("color", "white");
+                } else {
+                    DislikeButton.css("color", "grey");
+                }
+
+                var likeButton = document.querySelector(".like");
+
+                // Check and set the color for the like button
+                    likeButton.style.color = "grey";
+
+                var like = 1;
+                $.ajax({
+                url: "<?php echo URL::to('/').'/dislike-audio';?>",
+                type: "POST",
+                data: {like: like,audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function(data) {
+                  $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from liked this media </div>');
+                setTimeout(function() {
+                  $('.remove_watch').slideUp('fast');
+                }, 3000);
+                    
+                }
+            });           
+  });
+  
 </script>
 
 <style>

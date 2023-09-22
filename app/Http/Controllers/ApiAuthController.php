@@ -298,6 +298,7 @@ class ApiAuthController extends Controller
               $user->country = $request->country;
               $user->state = $request->state;
               $user->city = $request->city;
+              $user->DOB = $request->dob;
               $user->support_username = $request->support_username;
               $user->active = 1;
               $user->save();

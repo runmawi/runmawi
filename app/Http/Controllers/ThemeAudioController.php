@@ -257,6 +257,19 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    $LikeDislike   = LikeDislike::where('audio_id',$item->id)->first();
+
+                    if(!empty($LikeDislike) && $LikeDislike->liked == 1){
+                        $item['liked'] = 1;
+                        $item['disliked'] = 0;
+                    }else if(!empty($LikeDislike) && $LikeDislike->disliked == 1){
+                        $item['liked'] = 0;
+                        $item['disliked'] = 1;
+                    }else{
+                        $item['liked'] = 0;
+                        $item['disliked'] = 0;
+                    }
+
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
                         if(count($castcrew) > 0){
@@ -281,6 +294,18 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+
+                    if(!empty($LikeDislike) && $LikeDislike->liked == 1){
+                        $item['liked'] = 1;
+                        $item['disliked'] = 0;
+                    }else if(!empty($LikeDislike) && $LikeDislike->disliked == 1){
+                        $item['liked'] = 0;
+                        $item['disliked'] = 1;
+                    }else{
+                        $item['liked'] = 0;
+                        $item['disliked'] = 0;
+                    }
+                    
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
                         if(count($castcrew) > 0){
