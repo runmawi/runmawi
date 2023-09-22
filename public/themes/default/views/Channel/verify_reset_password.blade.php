@@ -33,54 +33,18 @@ $system_settings = App\SystemSetting::find(1);
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
   </script>
 <style>
+    <style>
     h3 {font-size: 30px!important;}
-    .from-control::placeholder{
-        color: #7b7b7b!important;
-    }
-    .links{
-         color: #fff;
-    }
-    .nv{
-        font-size: 14px;
-       color: #fff;
-       
-    }
-    .km{
-       text-align:center;
-         font-size: 75px;
-        font-weight: 900;
-        
-       
-    }
-    .signcont {
- }
-    a.f-link {
-    margin-bottom: 1rem;
-        margin-left: 15vw;
-        font-size: 14px;
-    
-}
-   .d-inline-block {
-    display: block !important;
-}
-i.fa.fa-google-plus {
-    padding: 10px !important;
-}
-
-.sign-in-from{
-  
-    margin: 0 auto;
-    display: block;
-}
-
-
-.reveal{
-        margin-left: 80% !important;
-        margin-top: -26% !important;
-    height: 45px !important;
-    background: transparent !important;
-    color: #fff !important;
-    }
+    .from-control::placeholder{color: #7b7b7b!important;}
+    .links{color: #fff;}
+    .nv{font-size: 14px;color: #fff;}    
+    .sign-info .btn {padding: 10px 15px;font-size: 20px; }
+    .km{text-align:center;font-size: 75px;font-weight: 900;}
+    a.f-link {margin-bottom: 1rem;margin-left: 15vw;font-size: 14px;  }
+   .d-inline-block {display: block !important;}
+    i.fa.fa-google-plus {padding: 10px !important;}
+    .sign-in-from{margin: 0 auto;display: block;}
+    .reveal{margin-left: 80% !important;margin-top: -26% !important;height: 45px !important;background: transparent !important;color: #fff !important;}
 </style>
 
  
@@ -91,7 +55,7 @@ i.fa.fa-google-plus {
          <div class="col-lg-5 col-md-12 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
-                  <div class="sign-in-from  m-auto" align="center">
+                  <div class="sign-in-from  m-auto">
                   <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
                   <div>
 
@@ -131,7 +95,7 @@ i.fa.fa-google-plus {
                         </div>          
                                   
                            <div class="sign-info">
-                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">{{ __('Password Reset') }}</button>
+                              <button type="submit" class="btn ab" style="width:100%;color:#fff!important;">{{ __('Password Reset') }}</button>
                                                             
                            </div> 
                            <div class="clear"></div>                       
