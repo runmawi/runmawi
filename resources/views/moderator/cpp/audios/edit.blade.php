@@ -189,6 +189,7 @@
 								</div>
 
 
+								</div>
 								<div class="row container-fluid">
 
 									<div class="col-md-8">
@@ -205,11 +206,10 @@
 											<span class="error-message text-danger"></span>
 										</div> 
 									</div>
+									</div>
 
 									</div>
 
-										</div>
-								</div>
 										</div>
 
 									{{-- for validate --}} 
