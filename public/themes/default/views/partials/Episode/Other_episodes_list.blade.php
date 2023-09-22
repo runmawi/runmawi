@@ -6,6 +6,7 @@
     <div class="favorites-contens ml-2">
         <ul class="favorites-slider list-inline row mb-0">
             <?php  
+            $ThumbnailSetting = App\ThumbnailSetting::first();
       foreach($season as $key => $seasons):
          foreach($seasons->episodes as $key => $episodes):
              if($episodes->id != $episode->id): ?>
