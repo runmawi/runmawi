@@ -374,10 +374,9 @@ class CPPAdminAudioController extends Controller
         }else{
             $lyrics = $audio->lyrics ;
         }
-
+        $data = $input;
         $data['ppv_price'] = $request->ppv_price;
         $data['ios_ppv_price'] = $request->ios_ppv_price;
-        
         /*Slug*/
         if(  $data['slug']  == '' || $audio->slug == ''){
 
@@ -421,7 +420,9 @@ class CPPAdminAudioController extends Controller
         $path = public_path().'/uploads/audios/';
         $image_path = public_path().'/uploads/images/';
         if(empty($data['player_image'])){
-            $player_image = "default_horizontal_image.jpg";
+            // unset($data['player_image']);
+
+            // $player_image = $data['player_image'];
         } else {
             $image = $data['player_image'];
             if($image != ''  && $image != null){
@@ -453,7 +454,7 @@ class CPPAdminAudioController extends Controller
        
 
         $audio->update($data);
-        $audio->player_image =  $player_image;
+        // $audio->player_image =  $player_image;
         $audio->uploaded_by =  'CPP';
 
         $audio->search_tags = !empty($request->searchtags) ? $request->searchtags : null ;

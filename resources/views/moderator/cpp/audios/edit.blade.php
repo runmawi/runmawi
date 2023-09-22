@@ -79,11 +79,22 @@
 	}
 
 	.tags-input-wrapper input{
-		border: none;
-		background: transparent;
-		outline: none;
-		width: 140px;
-		margin-left: 8px;
+		border: 1px solid transparent;
+		height: 45px;
+		position: relative;
+		font-size: 14px;
+		width: 100%;
+		-webkit-border-radius: 6px;
+		height: 45px;
+		border-radius: 4px;
+		/* margin-bottom: 20px; */
+		padding-left: 10px;
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		line-height: 19px;
+		color: #646464!important;
+		background:rgba(250, 250, 250, 1)
 	}
 
 	.tags-input-wrapper .tag{
@@ -161,58 +172,65 @@
 
 							<div class="row">
 								<div class="col-md-6">
-								<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title"><label class="mb-1">Audio Image Cover</label> 
-									<p class="p1">Select the audio image( 9:16 Ratio or 1080X1920px):</p> 
-								
-								</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-								<div class="panel-body" style="display: block;"> 
-									@if(!empty($audio->image))
-									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
-									@endif
-									<input type="file" multiple="true" class="form-control" name="image" id="image" />
-
-								</div> 
-							</div>
-								</div><br><br>
-								<!-- <div class="col-md-6"> -->
-								<div class="col-sm-6">
-									
-							<label class="mb-1">Player Audio Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-							<input type="file" name="player_image" id="player_image" >
-							@if(!empty($audio->player_image))
-								<div class="col-sm-8 p-0">
-							<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 mt-1" /></div>
-							@endif
-							</div>
-							
-								</div>
-
-
-								</div>
-								<div class="row container-fluid">
-
-									<div class="col-md-8">
-											<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-										<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-										<span>(Ex:xlsx <a href='{{ URL::to('public/uploads/audiolyrics/SampleLyrics.xlsx') }}' target="_blank">Sample Lyrics File</a>)</span>
-										<div class="panel-body" style="display: block;padding-top: 13px;"> 
-											@if(!empty($audio->lyrics))
-										<div class=" p-0 mb-1">
-										<a href='{{ $audio->lyrics }}' target="_blank">Download Uploaded Lyrics File</a>
-										<!-- <img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " /></div> -->
-										@endif
-											<input type="file" name="lyrics" id="lyrics" >
-											<span class="error-message text-danger"></span>
+									<div class="panel panel-primary mt-3" data-collapsed="0"> 
+										<div class="panel-heading"> 
+											<div class="panel-title">
+												<label class="mb-1">Audio Image Cover</label> 
+												<p class="p1">( 9:16 Ratio or 720pxX1280px):</p> 
+											</div> 
+											<div class="panel-options"> 
+												<a href="#" data-rel="collapse">
+													<i class="entypo-down-open"></i>
+												</a> 
+											</div>
+										</div> 
+										<div class="panel-body" style="display: block;"> 
+											@if(!empty($audio->image))
+											<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
+											@endif
+											<input type="file" multiple="true" class="form-control" name="image" id="image" />
 										</div> 
 									</div>
+								</div><br><br>
+								<div class="col-sm-6 mt-3">
+									<label class="mb-1">Player Audio Thumbnail </label>
+									<p class="p1">(16:9 Ratio or 1280X720px)</p><br>
+
+									<input type="file" name="player_image" id="player_image" >
+									@if(!empty($audio->player_image))
+									<div class="col-sm-8 p-0">
+										<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 mt-1" />
 									</div>
+									@endif
+								</div>
+							</div>
 
+							<div class="row container-fluid">
+								<div class="col-md-8">
+									<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> 
+										<div class="panel-heading"> 
+											<div class="panel-title">	
+												<label class="mb-1">Upload Audio Lyrics</label>
+											</div> 
+											<div class="panel-options"> 
+												<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+											</div>
+										</div> 
+										<span>(Ex:xlsx <a href="{{ URL::to('public/uploads/audiolyrics/SampleLyrics.xlsx') }}" target="_blank">Sample Lyrics File</a>)</span>
+										<div class="panel-body" style="display: block;padding-top: 13px;"> 
+											@if(!empty($audio->lyrics))
+											<div class=" p-0 mb-1">
+												<a href='{{ $audio->lyrics }}' target="_blank">Download Uploaded Lyrics File</a>
+											</div> 
+											@endif
+											<input type="file" name="lyrics" id="lyrics" >
+											<span class="error-message text-danger"></span>
+										</div>	
 									</div>
+								</div>
+							</div>
 
-										</div>
-
-									{{-- for validate --}} 
+							{{-- for validate --}} 
 							<input type="hidden" id="check_image" name="check_image" value="@if(!empty($audio->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 							<input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($audio->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 
@@ -260,13 +278,14 @@
 									</div> 
 								</div>
 
-								
-								<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-									<div class="panel-title"><label> Search Tag </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-									<div class="panel-body" style="display: block;"> 
-										<input type="text" id="tag-input1" name="searchtags">
-									</div> 
-								</div>
+								<div class="row mt-3">
+									<div class="panel panel-primary mt-3 col-sm-6 p-0" data-collapsed="0"> <div class="panel-heading"> 
+										<div class="panel-title"><label> Search Tag </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+										<div class="panel-body" style="display: block;"> 
+											<input type="text" id="tag-input1" name="searchtags">
+										</div> 
+									</div>
+								</div>	
 
 								<div class="row mt-3"> 
 									<div class="col-sm-6">
@@ -475,6 +494,7 @@
 
 							<div class="clear"></div>
 							<!-- This is where now -->
+							</div>
 						</div>
 					</div>
 				</div>
