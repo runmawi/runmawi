@@ -198,10 +198,10 @@ class AdminVideosController extends Controller
                 if ($total_row > 0) {
                     foreach ($data as $row) {
 
-                        if(isset($video->type) && $video->type == "") { $type = 'M3u8 Converted Video' ; }
-                        elseif(isset($video->type) && $video->type == "mp4_url"){ $type = 'MP4 Video' ; }
-                        elseif(isset($video->type) && $video->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
-                        elseif(isset($video->type) && $video->type == "embed"){ $type = 'Embed Video'; }
+                        if(isset($row->type) && $row->type == "") { $type = 'M3u8 Converted Video' ; }
+                        elseif(isset($row->type) && $row->type == "mp4_url"){ $type = 'MP4 Video' ; }
+                        elseif(isset($row->type) && $row->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
+                        elseif(isset($row->type) && $row->type == "embed"){ $type = 'Embed Video'; }
                         else{ $type = ''; }
                         if ($row->active == 0) {
                             $active = "Pending";
@@ -213,7 +213,7 @@ class AdminVideosController extends Controller
                             $active = "Rejected";
                             $class = "bg-danger";
                         }
-                        if($video->draft != null && $video->draft == 1 && $video->status != null && $video->status == 1 && $video->active != null && $video->active == 1){ 
+                        if($row->draft != null && $row->draft == 1 && $row->status != null && $row->status == 1 && $row->active != null && $row->active == 1){ 
                             $style = "";
                         } else{
                                 $style = "opacity: 0.6; cursor: not-allowed;";
@@ -2296,10 +2296,15 @@ class AdminVideosController extends Controller
         }
 
         // playlist
-        if (!empty($data["playlist"])) {
+        if (empty($data["playlist"])) {
+
+            VideoPlaylist::where("video_id", $video->id)->delete();
+
+        }else if (!empty($data["playlist"])) {
             $playlist_id = $data["playlist"];
             unset($data["playlist"]);
-// dd($playlist_id);
+            dd($playlist_id);
+
             if (!empty($playlist_id)) {
                 VideoPlaylist::where("video_id", $video->id)->delete();
 

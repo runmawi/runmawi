@@ -1,6 +1,6 @@
-<?php if(count($audios) > 0) : ?>
+<?php if(count($latest_audios) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <!-- <h4 class="main-title"><a href="<?php //echo URL::to('/audios') ?>"> -->
+                    <!-- <h4 class="main-title"><a href="<?php //echo URL::to('/latest_audios') ?>"> -->
                      <h4 class="main-title"><a href="<?php if ($order_settings_list[5]->header_name) { echo URL::to('/').'/'.$order_settings_list[5]->url ;} else { echo "" ; } ?>">
 
                     <!-- Audios -->
@@ -9,8 +9,8 @@
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
-                         <?php  if(isset($audios)) :
-                         foreach($audios as $audio): ?>
+                         <?php  if(isset($latest_audios)) :
+                         foreach($latest_audios as $audio): ?>
                        <li class="slide-item">
                           <a href="<?php echo URL::to('audio') ?><?= '/' . $audio->slug ?>">
                              <!-- block-images -->
