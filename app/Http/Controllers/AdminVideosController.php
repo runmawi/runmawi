@@ -2303,7 +2303,7 @@ class AdminVideosController extends Controller
         }else if (!empty($data["playlist"])) {
             $playlist_id = $data["playlist"];
             unset($data["playlist"]);
-            dd($playlist_id);
+            // dd($playlist_id);
 
             if (!empty($playlist_id)) {
                 VideoPlaylist::where("video_id", $video->id)->delete();
