@@ -66,7 +66,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
     <script>
         console.clear();
 $.expr[":"].contains = $.expr.createPseudo(function(arg) {
@@ -314,7 +315,7 @@ var data = listAudio; // Assuming listAudio contains the URL
     }
     function loadSong(){
         // console.log(indexing.audio);
-      if(indexing.access == 'ppv' && indexing.PpvPurchase_Status == 0 && indexing.role != 'admin'){
+      if(indexing.access == 'ppv' && indexing.PpvPurchase_Status == 0 && indexing.role != 'admin' || indexing.role != 'subscriber'){
         // alert(indexing.access);
 
         $('.ppv_stripe_button').show();
@@ -659,6 +660,7 @@ if ($mode == 0) {
 } ?>
 
 <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key; ?>">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
 
@@ -696,14 +698,19 @@ function stripe_checkout() {
                   audio_id: audio_id
               },
               success: (response) => {
-                  alert("You have done  Payment !");
+                  // alert("You have done  Payment !");
+                  swal("You have done  Payment !");
+
                   setTimeout(function() {
                       location.reload();
                   }, 2000);
 
               },
-              error: (error) => {
-                  swal('error');
+              error: function (xhr) {
+                console.log('Event handler executed');
+                console.log(xhr.responseJSON.message);
+                // alert(xhr.responseJSON.message);
+                swal(xhr.responseJSON.message);
                   //swal("Oops! Something went wrong");
                   /* setTimeout(function() {
                   location.reload();
@@ -717,7 +724,7 @@ function stripe_checkout() {
   handler.open({
       name: '<?php $settings = App\Setting::first();
       echo $settings->website_name; ?>',
-      description: 'Rent a Video',
+      description: 'Purchase a Audio',
       amount: ppv_price * 100
   });
 }
@@ -725,6 +732,16 @@ function stripe_checkout() {
 </script>
 
 <style>
+
+.swal2-container.swal2-center>.swal2-popup {
+        background: linear-gradient(180deg, #C4C4C4 50%, rgba(196, 196, 196, 0) 100%);
+
+    }
+
+    .swal2-html-container {
+        color: #fff !important;
+    }
+    
     :root{
   --bg-color: background-color: #7f5a83;
 background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
