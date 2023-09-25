@@ -84,11 +84,11 @@ border-radius: 0px 4px 4px 0px;
                                     <td>{{ $audio->username }}</td>
                                     <td>{{ $audio->year }}</td>
                                     <td>{{ $audio->access }}</td>
-                                    <?php if($audio->active == 0){ ?>
+                                    <?php if($audio->status == 0){ ?>
                                        <td class="bg-warning"> <?php echo "Pending"; ?></td>
-                                    <?php }elseif($audio->active == 1){ ?>
+                                    <?php }elseif($audio->status == 1){ ?>
                                        <td class="bg-success"> <?php  echo "Approved"; ?></td>
-                                    <?php }elseif($audio->active == 2){ ?>
+                                    <?php }elseif($audio->status == 2){ ?>
                                        <td class="bg-danger"> <?php  echo "Rejected"; ?></td>
                                     <?php }?>                              
                                     <td colspan="2">

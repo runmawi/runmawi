@@ -181,8 +181,8 @@
 //  alert(image);
    $('form[id="user_update"]').validate({
    	rules: {
-        upi_mobile_number : 'required',
-        upi_id : 'required',
+        // upi_mobile_number : 'required',
+        // upi_id : 'required',
         // account_number : 'required',
         // upi_mobile_number : 'required',
         // cancelled_cheque: {
@@ -209,8 +209,8 @@
         // picture : 'required',
    	},
    	messages: {
-        upi_mobile_number: 'This field is required',
-        upi_id: 'This field is required',
+        // upi_mobile_number: 'This field is required',
+        // upi_id: 'This field is required',
         // account_number : 'This field is required',
         // IFSC_Code : 'This field is required',
         // cancelled_cheque : 'This field is required',

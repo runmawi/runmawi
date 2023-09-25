@@ -1390,6 +1390,35 @@ class HomeController extends Controller
         $multiuser = Session::get('subuser_id');
         $getfeching = Geofencing::first();
         $Recomended = HomeSetting::first();
+
+        if($settings->activation_email == 1 && Auth::user()->activation_code != null){
+
+        
+            unset($data['password_hash']);
+            
+            if(!empty($data['user'])){
+                unset($data['expiresIn']);
+                unset($data['providertoken']);
+                unset($data['user']);
+                Cache::flush();
+            }
+
+            $request->session()->flush();
+            $request->session()->regenerate();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            \Session::flush();
+
+            Auth::logout();
+
+            return Redirect::to('/login')->with(
+                "message",
+                "Please Verify through your email account and Login"
+            );
+            
+        }
+        
+
         if($settings->enable_landing_page == 1 && Auth::guest()){
 
             $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
@@ -3661,13 +3690,46 @@ class HomeController extends Controller
         return response()->json($response, 200);
     }
 
-    public function Multipleprofile()
+    public function Multipleprofile(Request $request)
     {
+
+        $data = \Session::all();
+
+        $settings = Setting::first();
+
+       
 
         if(Auth::user() == null){
             return redirect::to('/login');
         }
         
+        if($settings->activation_email == 1 && Auth::user()->activation_code != null){
+
+        
+            unset($data['password_hash']);
+            
+            if(!empty($data['user'])){
+                unset($data['expiresIn']);
+                unset($data['providertoken']);
+                unset($data['user']);
+                Cache::flush();
+            }
+
+            $request->session()->flush();
+            $request->session()->regenerate();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            \Session::flush();
+
+            Auth::logout();
+
+            return Redirect::to('/login')->with(
+                "message",
+                "Please Verify through your email account and Login"
+            );
+            
+        }
+
         $enable_choose_profile =  Setting::pluck('enable_choose_profile')->first() ;
 
         if( $enable_choose_profile == 0 ){
