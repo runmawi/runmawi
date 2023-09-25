@@ -3878,7 +3878,7 @@ class ChannelController extends Controller
                 $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
 
-                $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Released": ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
+                $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Released": ($item->publish_type == "publish_later" ? 'Coming Soon On '. Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
 
                 $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
                                                         ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
@@ -3898,7 +3898,10 @@ class ChannelController extends Controller
                                                 ->join('videos','videos.id','=','categoryvideos.video_id')
                                                 ->whereIn('categoryvideos.category_id', $item['category_id'])
                                                 ->where('videos.id', '!=' ,$video_id)
-                                                ->groupBy('videos.id')->limit(30)->get();
+                                                ->groupBy('videos.id')->limit(30)->get()->map(function( $item ){
+                                                    $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Published": ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
+                                                    return $item;
+                                                });
 
                     //  Video URL
 
@@ -3933,6 +3936,8 @@ class ChannelController extends Controller
                 return $item;
             })->first();
 
+            // dd( $videodetail['recommended_videos'] );
+
             $data = array(
                 'videodetail'    => $videodetail ,
                 'setting'        => Setting::first(),
@@ -3942,6 +3947,7 @@ class ChannelController extends Controller
                 'ThumbnailSetting' => ThumbnailSetting::first() ,
                 'currency'         => CurrencySetting::first(),
             );
+
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
