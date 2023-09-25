@@ -3945,15 +3945,15 @@ class ChannelController extends Controller
         }
     }
 
-    public function videos_fullplayer_jsplayer( $slug )
+    public function video_js_fullplayer( Request $request, $slug )
     {
         try {
             
-            $video_id = Video::latest()->pluck('id')->first();
+            $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
 
             $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
 
-                $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
+                $item['image_url']          = URL::to('public/uploads/images/'.$item->image );
                 $item['player_image_url']   = URL::to('public/uploads/images/'.$item->player_image );
                 $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
@@ -3995,12 +3995,11 @@ class ChannelController extends Controller
                 'videodetail' => $videodetail ,
             );
 
-
             return Theme::view('video-js-Player.video.videos', $data);
 
         } catch (\Throwable $th) {
             
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
