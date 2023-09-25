@@ -1926,7 +1926,7 @@ public function UpgadeSubscription(Request $request){
       $title =  $audio->title;
       // $commssion = VideoCommission::first();
       $commission = VideoCommission::where('type', 'CPP')->first();
-      $percentage = $commssion->percentage; 
+      $percentage = @$commssion->percentage; 
       $ppv_price = $audio->ppv_price;
       // $admin_commssion = ($percentage/100) * $ppv_price ;
       $moderator_commssion = $ppv_price - $percentage;
@@ -1940,7 +1940,7 @@ public function UpgadeSubscription(Request $request){
        $total_amount = $audio->ppv_price;
        $title =  $audio->title;
        $commssion = VideoCommission::where('type','Channel')->first();;
-       $percentage = $commssion->percentage; 
+       $percentage = @$commssion->percentage; 
        $ppv_price = $audio->ppv_price;
        // $admin_commssion = ($percentage/100) * $ppv_price ;
        $moderator_commssion = $ppv_price - $percentage;

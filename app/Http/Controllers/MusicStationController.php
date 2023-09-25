@@ -261,6 +261,13 @@ class MusicStationController extends Controller
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    if(!Auth::guest()){
+                        $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        $item['role'] = Auth::user()->role;
+                    }else{
+                        $item['PpvPurchase_Status'] = 0;
+                        $item['role'] = '';
+                    }
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
                         if(count($castcrew) > 0){
