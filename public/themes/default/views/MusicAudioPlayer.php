@@ -16,6 +16,19 @@
               <img height="250" width="250"  id="audio_img" src="">
               <!-- height="150" width="150"  -->
            </div>
+           <div class="Subscribe_stripe_button">
+                <!-- Subscriber Button -->
+  
+              <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="margin-left: -9%;position: absolute;margin-top: 20px;"
+                      class="btn bd btn-action">Subscribe to continue listening</button> 
+                  </a>
+              </div>
+              <div class="ppv_stripe_button">
+                  <!-- stripe Button -->
+                  <button  onclick="stripe_checkout()" id="enable_button" style="margin-left: -9%;position: absolute;margin-top: 20px;"
+                      class="btn bd btn-action">Purchase to Play Audio</button> 
+                  </a>
+              </div>
         </div>
         <audio id="audioFile" preload="true">
         </audio>
@@ -65,7 +78,8 @@ var buttonColorOnPress = "white";
 var $j = jQuery.noConflict();
 
 $(document).ready(function(){
-    
+  $('.Subscribe_stripe_button').hide();
+  $('.ppv_stripe_button').hide();
     var lyrics = $('#lyrics-content');
     if (lyrics.is(':visible')) {
         lyrics.hide(); // Hide lyrics
@@ -300,7 +314,118 @@ var data = listAudio; // Assuming listAudio contains the URL
     }
     function loadSong(){
         // console.log(indexing.audio);
+      if(indexing.access == 'ppv' && indexing.PpvPurchase_Status == 0 && indexing.role != 'admin'){
+        // alert(indexing.access);
 
+        $('.ppv_stripe_button').show();
+
+        $('#audioFile').attr('src','');
+            document.querySelector(".like").setAttribute("data-audio-id", indexing.id);
+            document.querySelector(".dislike").setAttribute("data-audio-id", indexing.id);
+
+            document.getElementById("enable_button").setAttribute("data-price",indexing.ppv_price );
+            document.getElementById("enable_button").setAttribute("audio-id", indexing.id);
+
+            var likeButton = document.querySelector(".like");
+            var dislikeButton = document.querySelector(".dislike");
+
+            // Check and set the color for the like button
+            if (indexing.liked === 1) {
+                likeButton.style.color = "white";
+            } else {
+                likeButton.style.color = "grey";
+            }
+
+            // Check and set the color for the dislike button
+            if (indexing.disliked === 1) {
+                dislikeButton.style.color = "white";
+            } else {
+                dislikeButton.style.color = "grey";
+            }
+
+        // Toggle lyrics visibility when the button is clicked
+        $('#lyrics-toggle').on('click', function() {
+            var lyrics = $('#lyrics-content');
+            $('#audio_img').show();
+
+            if (lyrics.is(':visible')) {
+                lyrics.hide(); // Hide lyrics
+            } else {
+                $('#audio_img').hide();
+                lyrics.show(); // Show lyrics
+                centerize(); // Centerize lyrics (assuming you have this function)
+            }
+        });
+
+        var html = "";
+        html = html + "<h2>"+'Lyrics not Available'+"</h2>";
+
+        // var html = "Lyrics not Available ";
+        $('#lyrics-content').html(html);
+
+
+            setSongName(indexing.title);
+            setArtistName(indexing.slug);
+            setAlbumArt(indexing.image_url);
+            processing(indexing);
+            totalTime = 'NaN';
+            // stopTimer = setInterval(function(){updateTimer(indexing);},1000);
+      }else if(indexing.access == 'subscriber' && indexing.role == 'registered'){
+        // alert(indexing.access);
+        $('.Subscribe_stripe_button').show();
+
+        $('#audioFile').attr('src','');
+            document.querySelector(".like").setAttribute("data-audio-id", indexing.id);
+            document.querySelector(".dislike").setAttribute("data-audio-id", indexing.id);
+
+            var likeButton = document.querySelector(".like");
+            var dislikeButton = document.querySelector(".dislike");
+
+            // Check and set the color for the like button
+            if (indexing.liked === 1) {
+                likeButton.style.color = "white";
+            } else {
+                likeButton.style.color = "grey";
+            }
+
+            // Check and set the color for the dislike button
+            if (indexing.disliked === 1) {
+                dislikeButton.style.color = "white";
+            } else {
+                dislikeButton.style.color = "grey";
+            }
+
+        // Toggle lyrics visibility when the button is clicked
+        $('#lyrics-toggle').on('click', function() {
+            var lyrics = $('#lyrics-content');
+            $('#audio_img').show();
+
+            if (lyrics.is(':visible')) {
+                lyrics.hide(); // Hide lyrics
+            } else {
+                $('#audio_img').hide();
+                lyrics.show(); // Show lyrics
+                centerize(); // Centerize lyrics (assuming you have this function)
+            }
+        });
+
+        var html = "";
+        html = html + "<h2>"+'Lyrics not Available'+"</h2>";
+
+        // var html = "Lyrics not Available ";
+        $('#lyrics-content').html(html);
+
+
+            setSongName(indexing.title);
+            setArtistName(indexing.slug);
+            setAlbumArt(indexing.image_url);
+            processing(indexing);
+            totalTime = 'NaN';
+            // stopTimer = setInterval(function(){updateTimer(indexing);},1000);
+
+      }else{ 
+        // alert(indexing.access);
+        
         $('#audioFile').attr('src',indexing.audio);
         // abort_other_json = $.getJSON(indexing.json,function(data){
             // alert(data);
@@ -357,6 +482,7 @@ var data = listAudio; // Assuming listAudio contains the URL
             totalTime = NaN;
             stopTimer = setInterval(function(){updateTimer(indexing);},1000);
         // });
+      }
     }
     loadSong();
     $('#prev').on('click',prevSong);
@@ -512,6 +638,90 @@ $('.like').click(function(){
             });           
   });
   
+</script>
+
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+
+<?php                 
+$payment_settings = App\PaymentSetting::first();
+
+$mode = $payment_settings->live_mode;
+if ($mode == 0) {
+    $secret_key = $payment_settings->test_secret_key;
+    $publishable_key = $payment_settings->test_publishable_key;
+} elseif ($mode == 1) {
+    $secret_key = $payment_settings->live_secret_key;
+    $publishable_key = $payment_settings->live_publishable_key;
+} else {
+    $secret_key = null;
+    $publishable_key = null;
+} ?>
+
+<input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key; ?>">
+
+<script>
+
+function stripe_checkout() {
+  
+  var publishable_key = $('#publishable_key').val();
+
+  var  audio_id = document.querySelector(".like").getAttribute("data-audio-id");
+
+  var audio_id = $('#audio_id').val();
+
+  var ppv_price = document.getElementById("enable_button").getAttribute("data-price");
+  var audio_id = document.getElementById("enable_button").getAttribute("audio-id");
+
+  alert(ppv_price);
+  alert(audio_id);
+  var handler = StripeCheckout.configure({
+
+      key: publishable_key,
+      locale: 'auto',
+      token: function(token) {
+          // You can access the token ID with `token.id`.
+          // Get the token ID to your server-side code for use.
+          console.log('Token Created!!');
+          console.log(token);
+          $('#token_response').html(JSON.stringify(token));
+
+          $.ajax({
+              url: '<?php echo URL::to('purchase-audio'); ?>',
+              method: 'post',
+              data: {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  tokenId: token.id,
+                  amount: ppv_price,
+                  audio_id: audio_id
+              },
+              success: (response) => {
+                  alert("You have done  Payment !");
+                  setTimeout(function() {
+                      location.reload();
+                  }, 2000);
+
+              },
+              error: (error) => {
+                  swal('error');
+                  //swal("Oops! Something went wrong");
+                  /* setTimeout(function() {
+                  location.reload();
+                  }, 2000);*/
+              }
+          })
+      }
+  });
+
+
+  handler.open({
+      name: '<?php $settings = App\Setting::first();
+      echo $settings->website_name; ?>',
+      description: 'Rent a Video',
+      amount: ppv_price * 100
+  });
+}
+
 </script>
 
 <style>
