@@ -200,7 +200,7 @@
                                                     @endif
     
                                                     @if ($ThumbnailSetting->published_on == 1)
-                                                        <p class="published_on1">{{ 'publish_time ' }} ?></p>
+                                                        {{-- <p class="published_on1">{{ $recommended_video->video_publish_status }} </p> --}}
                                                     @endif
                                                 </a>
                                             </div>

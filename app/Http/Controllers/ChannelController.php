@@ -3933,16 +3933,14 @@ class ChannelController extends Controller
                 return $item;
             })->first();
 
-            $ThumbnailSetting = ThumbnailSetting::first();
-
             $data = array(
                 'videodetail'    => $videodetail ,
                 'setting'        => Setting::first(),
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,
                 'commentable_type' => 'play_videos',
-                'ThumbnailSetting' => $ThumbnailSetting ,
-                'related_videos'     => Video::all(),
+                'ThumbnailSetting' => ThumbnailSetting::first() ,
+                'currency'         => CurrencySetting::first(),
             );
 
             return Theme::view('video-js-Player.video.videos-details', $data);
