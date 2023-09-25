@@ -130,7 +130,6 @@
         @endif
 
                     {{-- Breadcrumbs  --}}
-
         <div class="scp-breadcrumb">
             <ul class="breadcrumb">
                
@@ -160,15 +159,130 @@
             </div>
         @endif
 
-                    {{-- Recomended videos Section --}}
+                    {{-- Recommended videos Section --}}
 
-         {{-- <div class=" container-fluid video-list  overflow-hidden">
-            <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords('recomended videos') }}</h4> 
-            <div class="slider"
-                data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
-                @php include public_path('themes/default/views/video-js-Player/video/videos_related.blade.php'); @endphp
-            </div> 
-         </div> --}}
+        <div class=" container-fluid video-list  overflow-hidden">
+            <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords('recommended videos') }}</h4> 
+            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
+        
+                @if (count($related_videos) > 0) 
+        
+                    <div class="favorites-contens">
+                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            @foreach ($related_videos as $related_video)
+                                <li class="slide-item">
+                                    <a href="{{ URL::to('category/videos/' . $related_video->slug) }}">
+    
+                                        <div class="block-images position-relative">
+                                            <div class="img-box">
+                                                <a href="{{ URL::to('category/videos/' . $related_video->slug) }}">
+                                                    <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $related_video->image) }}">
+    
+                                                    @if ($ThumbnailSetting->free_or_cost_label == 1)
+                                                        @if ($related_video->access == 'subscriber')
+                                                            <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
+                                                        @elseif($related_video->access == 'registered')
+                                                            <p class="p-tag"> {{ 'Register Now' }} </p>
+                                                        @elseif(!empty($related_video->ppv_price))
+                                                            <p class="p-tag1"> {{ $currency->symbol . ' ' . $related_video->ppv_price }}  </p>
+                                                        @elseif(!empty($related_video->global_ppv || (!empty($related_video->global_ppv) && $related_video->ppv_price == null)))
+                                                            <p class="p-tag1"> {{ $related_video->global_ppv . ' ' . $currency->symbol }} </p>
+                                                        @elseif($related_video->global_ppv == null && $related_video->ppv_price == null)
+                                                            <p class="p-tag">{{ 'Free' }} </p>
+                                                        @endif
+                                                    @endif
+    
+                                                    @if ($ThumbnailSetting->published_on == 1)
+                                                        <p class="published_on1">{{ 'publish_time ' }} ?></p>
+                                                    @endif
+                                                </a>
+                                            </div>
+    
+                                            <div class="block-description">
+                                                <a href="{{ URL::to('category/videos/' . $related_video->slug) }}">
+                                                                            
+                                                    @if ($ThumbnailSetting->title == 1)         <!-- Title -->
+                                                        <h6> {{ strlen($related_video->title) > 17 ? substr($related_video->title, 0, 18) . '...' : $related_video->title }} </h6>
+                                                    @endif
+    
+                                                    <div class="movie-time d-flex align-items-center pt-1">
+                                                        @if ($ThumbnailSetting->age == 1)        <!-- Age -->
+                                                            <div class="badge badge-secondary p-1 mr-2"> {{ $related_video->age_restrict . ' ' . '+' }}</div>
+                                                        @endif
+    
+                                                        @if ($ThumbnailSetting->duration == 1)  <!-- Duration -->
+                                                            <span class="text-white"> <i class="fa fa-clock-o"></i>
+                                                                {{ gmdate('H:i:s', $related_video->duration) }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
+    
+                                                    @if ($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
+                                                        <div class="movie-time d-flex align-items-center pt-1">
+                                                            @if ($ThumbnailSetting->rating == 1)         <!--Rating  -->
+                                                                <div class="badge badge-secondary p-1 mr-2">
+                                                                    <span class="text-white"> <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                                        {{ $related_video->rating }}
+                                                                    </span>
+                                                                </div>
+                                                            @endif
+    
+                                                            @if ($ThumbnailSetting->published_year == 1)   <!-- published_year -->
+                                                                <div class="badge badge-secondary p-1 mr-2">
+                                                                    <span class="text-white"> <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                        {{ $related_video->year }}
+                                                                    </span>
+                                                                </div>
+                                                            @endif
+    
+                                                            @if ($ThumbnailSetting->featured == 1 && $related_video->featured == 1)  <!-- Featured -->
+                                                                <div class="badge badge-secondary p-1 mr-2">
+                                                                    <span class="text-white"> <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                                                    </span>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    @endif
+    
+                                                    <div class="movie-time d-flex align-items-center pt-1">
+                                                        <!-- Category Thumbnail  setting -->
+                                                        <?php
+                                                        $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
+                                                            ->where('categoryvideos.video_id', $related_video->id)
+                                                            ->pluck('video_categories.name');
+                                                        ?>
+                                                        <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                                        <span class="text-white">
+                                                            <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                                            <?php
+                                                            $Category_Thumbnail = [];
+                                                            foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
+                                                                $Category_Thumbnail[] = $CategoryThumbnail;
+                                                            }
+                                                            echo implode(',' . ' ', $Category_Thumbnail);
+                                                            ?>
+                                                        </span>
+                                                        <?php } ?>
+                                                    </div>
+    
+                                                    <div class="hover-buttons">
+                                                        <a class="text-white d-flex align-items-center" href="{{ URL::to('category/videos/' . $related_video->slug) }}">
+                                                            <img class="ply mr-1" alt="ply" width="10%" height="10%" src="{{ URL::to('/assets/img/default_play_buttons.svg') }} " /> Watch Now
+                                                        </a>
+                                                        <div class="hover-buttons d-flex">
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+        </div>
 
     </div>
 

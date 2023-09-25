@@ -3933,6 +3933,7 @@ class ChannelController extends Controller
                 'source_id'      => $videodetail->id ,
                 'commentable_type' => 'play_videos',
                 'ThumbnailSetting' => $ThumbnailSetting ,
+                'related_videos'     => Video::all(),
             );
 
             return Theme::view('video-js-Player.video.videos-details', $data);
