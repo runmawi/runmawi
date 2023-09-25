@@ -86,7 +86,6 @@
                 </div>
 
 
-
                 @if ( $setting->show_languages == 1 &&  !$videodetail->Language->isEmpty())   {{-- Languages --}}
                     <div class="info">      
                         <span classname="text bold"> Languages : </span>
@@ -129,6 +128,26 @@
                 </div>
             </div>
         @endif
+
+                    {{-- Breadcrumbs  --}}
+
+        <div class="scp-breadcrumb">
+            <ul class="breadcrumb">
+               
+                <li><a href="{{ route('latest-videos') }}">{{ ucwords('videos') }}</a> <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i> </li>
+               
+                @foreach( $videodetail->categories as $key => $category )
+
+                    <li class="breadcrumb-item"> <a href="{{ route('video_categories',[ $category->name ]) }}">{{ $category->name }}</a> </li>
+
+                @endforeach
+                
+                <li> <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i> </li>
+               
+                <li class="active">{{ (strlen($videodetail->title) > 50) ? ucwords(substr($videodetail->title,0,120).'...') : ucwords($videodetail->title) }}</li>
+            
+            </ul>
+        </div>
 
                     {{-- comment Section --}}
 

@@ -3867,9 +3867,7 @@ class ChannelController extends Controller
     private function videos_details_jsplayer( $slug )
     {
         try {
-            
            
-
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
             $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) use ( $video_id ) {
