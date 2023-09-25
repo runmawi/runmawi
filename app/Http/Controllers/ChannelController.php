@@ -3891,7 +3891,16 @@ class ChannelController extends Controller
                 $item['artists']    =  Videoartist::select('video_id','artist_id','artists.*')
                                                     ->join('artists','artists.id','=','video_artists.artist_id')
                                                     ->where('video_id', $video_id)->get();
-                // Videos URL 
+
+                $item['category_id'] = CategoryVideo::where('video_id',$video_id)->pluck('category_id');
+
+                $item['recommended_videos'] = CategoryVideo::select('categoryvideos.video_id','categoryvideos.category_id','videos.*')
+                                                ->join('videos','videos.id','=','categoryvideos.video_id')
+                                                ->whereIn('categoryvideos.category_id', $item['category_id'])
+                                                ->where('videos.id', '!=' ,$video_id)
+                                                ->groupBy('videos.id')->limit(30)->get();
+
+                    //  Video URL
 
                 switch (true) {
 
@@ -3924,16 +3933,14 @@ class ChannelController extends Controller
                 return $item;
             })->first();
 
-            $ThumbnailSetting = ThumbnailSetting::first();
-
             $data = array(
                 'videodetail'    => $videodetail ,
                 'setting'        => Setting::first(),
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,
                 'commentable_type' => 'play_videos',
-                'ThumbnailSetting' => $ThumbnailSetting ,
-                'related_videos'     => Video::all(),
+                'ThumbnailSetting' => ThumbnailSetting::first() ,
+                'currency'         => CurrencySetting::first(),
             );
 
             return Theme::view('video-js-Player.video.videos-details', $data);
