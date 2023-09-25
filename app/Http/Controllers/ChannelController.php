@@ -3868,6 +3868,8 @@ class ChannelController extends Controller
     {
         try {
             
+           
+
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
             $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) use ( $video_id ) {
@@ -3877,7 +3879,9 @@ class ChannelController extends Controller
                 $item['Title_Thumbnail'] =   $item->video_title_image != null ? URL::to('public/uploads/images/'.$item->video_title_image) : default_vertical_image_url();     
                 $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
-                
+
+                $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Released": ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
+
                 $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
                                                         ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
                                                         ->where('video_id', $video_id)->get() ;
@@ -3991,6 +3995,7 @@ class ChannelController extends Controller
             $data = array(
                 'videodetail' => $videodetail ,
             );
+
 
             return Theme::view('video-js-Player.video.videos', $data);
 

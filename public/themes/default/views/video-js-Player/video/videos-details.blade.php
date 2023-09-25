@@ -81,9 +81,11 @@
                 <div class="info">       {{-- publish_status --}}
                     <div classname="infoItem">
                         <span classname="text bold">Status: </span>
-                        <span class="text">Released</span>
+                        <span class="text">{{ $videodetail->video_publish_status }}</span>
                     </div>
                 </div>
+
+
 
                 @if ( $setting->show_languages == 1 &&  !$videodetail->Language->isEmpty())   {{-- Languages --}}
                     <div class="info">      
@@ -96,12 +98,14 @@
                     </div>
                 @endif
 
-                <div class="info">      {{-- E-Paper --}}
-                    <span classname="text bold"> E-Paper : </span>
-                    <span class="text">
-                        <a href="{{ $videodetail->pdf_files_url }}" style="font-size:45px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
-                    </span>
-                </div>
+                @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
+                    <div class="info">      
+                        <span classname="text bold"> E-Paper : </span>
+                        <span class="text">
+                            <a href="{{ $videodetail->pdf_files_url }}" style="font-size:45px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
+                        </span>
+                    </div>
+                @endif
             </div>
         </div>
  
