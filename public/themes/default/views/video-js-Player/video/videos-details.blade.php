@@ -138,7 +138,7 @@
                
                 @foreach( $videodetail->categories as $key => $category )
 
-                    <li class="breadcrumb-item"> <a href="{{ route('video_categories',[ $category->name ]) }}">{{ $category->name }}</a> </li>
+                    <li class="breadcrumb-item"> <a href="{{ route('video_categories',[ $category->slug ]) }}">{{ $category->name }}</a> </li>
 
                 @endforeach
                 
