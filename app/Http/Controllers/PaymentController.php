@@ -1975,11 +1975,21 @@ public function UpgadeSubscription(Request $request){
           $publishable_key= null;
       } 
     $stripe = Stripe::make($secret_key, '2020-03-02');
-    $charge = $stripe->charges()->create([
-      'source' => $request->get('tokenId'),
-      'currency' => 'USD',
-      'amount' => $request->get('amount')
-    ]);
+
+    try {
+      $charge = $stripe->charges()->create([
+        'source' => $request->get('tokenId'),
+        'currency' => 'USD',
+        'amount' => $request->get('amount')
+      ]);
+  
+      // Handle a successful charge here if needed.
+  } catch (CardErrorException $e) {
+      // Handle the card error and return a response
+      return response()->json(['error' => $e], 422);
+  }
+
+
     $purchase = new PpvPurchase;
     $purchase->user_id = $user_id;
     $purchase->audio_id = $audio_id;
