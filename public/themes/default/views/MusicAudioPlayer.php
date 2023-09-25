@@ -315,8 +315,8 @@ var data = listAudio; // Assuming listAudio contains the URL
     }
     function loadSong(){
         // console.log(indexing.audio);
-      if(indexing.access == 'ppv' && indexing.PpvPurchase_Status == 0 && indexing.role != 'admin' || indexing.role != 'subscriber'){
-        // alert(indexing.access);
+      if(indexing.access == 'ppv' && indexing.PpvPurchase_Status == 0 && indexing.role == 'registered' ){
+        // alert(indexing.role);
 
         $('.ppv_stripe_button').show();
 
