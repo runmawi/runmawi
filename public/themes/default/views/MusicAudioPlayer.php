@@ -673,8 +673,8 @@ function stripe_checkout() {
   var ppv_price = document.getElementById("enable_button").getAttribute("data-price");
   var audio_id = document.getElementById("enable_button").getAttribute("audio-id");
 
-  alert(ppv_price);
-  alert(audio_id);
+  // alert(ppv_price);
+  // alert(audio_id);
   var handler = StripeCheckout.configure({
 
       key: publishable_key,
