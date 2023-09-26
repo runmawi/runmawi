@@ -22,8 +22,8 @@
     <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
 
-    <div class="container">
-        <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd" controls preload="auto" width="100%" height="auto" poster="{{ $videodetail->player_image_url }}" >
+    <div class="container-fluid p-0">
+        <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" >
             <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
         </video>
     </div>

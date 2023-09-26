@@ -34,7 +34,7 @@
 
                     <?php if($videodetail->trailer_type == "embed_url" ) : ?>
 
-                        <iframe width="100%" height="auto" src="<?= $videodetail->videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
+                        <iframe width="100%" id="video-js-trailer-player_embed" height="auto" src="<?= $videodetail->videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
                             frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen>
                         </iframe>
@@ -57,7 +57,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
 
-        var player = videojs('video-js-trailer-player', {  // Video Js Player  - Trai
+        var player = videojs('video-js-trailer-player', {  // Video Js Player  - Trailer
             aspectRatio: '16:9',
             fluid: true,
 
@@ -92,8 +92,16 @@
 
         
         $(".video-js-trailer-modal-close").click(function(){
-                player.pause();  
-                $('#video-js-trailer-modal').modal('hide');
+            player.pause();  
+            $('#video-js-trailer-modal').modal('hide');
         });
     });
+
+        // iframe video close
+
+    $(".video-js-trailer-modal-close").click(function(){
+        $('#video-js-trailer-player_embed').attr('src'," ");
+        $('#video-js-trailer-modal').modal('hide');
+    });
+
 </script>
