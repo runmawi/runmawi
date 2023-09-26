@@ -3933,6 +3933,31 @@ class ChannelController extends Controller
                     break;
                 }
 
+                    //  Video Trailer URL
+
+                switch (true) {
+
+                    case $item['trailer_type'] == "mp4_url":
+                        $item['trailer_videos_url']  =  $item->trailer ;
+                        $item['trailer_video_player_type'] =  'video/mp4' ;
+                    break;
+
+                    case $item['trailer_type'] == "m3u8_url" || "m3u8" :
+                        $item['trailer_videos_url']  =  $item->trailer ;
+                        $item['trailer_video_player_type'] =  'application/x-mpegURL' ;
+                    break;
+
+                    case $item['trailer_type'] == "embed_url":
+                        $item['trailer_videos_url']  =  $item->trailer ;
+                        $item['trailer_video_player_type'] =  'video/mp4' ;
+                    break;
+
+                    default:
+                        $item['videos_url']    = null ;
+                        $item['video_player_type']   =  null ;
+                    break;
+                }
+
                 return $item;
             })->first();
 
