@@ -32,12 +32,12 @@
 
                 <div class="embed-responsive embed-responsive-16by9">
 
-                    <?php if($videodetail->trailer_type != "embed_url" ) : ?>
+                    <?php if($videodetail->trailer_type == "embed_url" ) : ?>
 
-                        <video id="video-js-trailer-player" class="video-js vjs-theme-fantasy vjs-icon-hd embed-responsive-item video-btn" controls
-                                preload="auto" width="100%" height="auto" poster="<?= $videodetail->player_image_url ?>" >
-                                <source src="<?= $videodetail->videos_url ?>" type="<?= $videodetail->video_player_type ?>">
-                        </video>
+                        <iframe width="100%" height="auto" src="<?= $videodetail->videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
+                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
 
                     <?php else: ?>
 
