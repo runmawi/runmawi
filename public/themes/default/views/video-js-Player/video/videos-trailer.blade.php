@@ -34,7 +34,7 @@
 
                     <?php if($videodetail->trailer_type == "embed_url" ) : ?>
 
-                        <iframe width="100%" id="video-js-trailer-player_embed" height="auto" src="<?= $videodetail->videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
+                        <iframe width="100%" id="video-js-trailer-player_embed" height="auto" src="<?= $videodetail->trailer_videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
                             frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen>
                         </iframe>
@@ -43,7 +43,7 @@
 
                         <video id="video-js-trailer-player" class="video-js vjs-theme-fantasy vjs-icon-hd embed-responsive-item video-btn" controls
                                 preload="auto" width="100%" height="auto" poster="<?= $videodetail->player_image_url ?>" >
-                                <source src="<?= $videodetail->videos_url ?>" type="<?= $videodetail->video_player_type ?>">
+                                <source src="<?= $videodetail->trailer_videos_url ?>" type="<?= $videodetail->trailer_video_player_type ?>">
                         </video>       
 
                     <?php endif; ?>
