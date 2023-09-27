@@ -700,6 +700,9 @@ $('.like').click(function(){
                     setTimeout(function() {
                       $('.add_watch').slideUp('fast');
                     }, 3000);
+
+                    location.reload();
+
                   }else{
                     $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Unable to Create Music Station </div>');
                     setTimeout(function() {
