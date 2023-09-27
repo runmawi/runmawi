@@ -7,12 +7,14 @@
         <div id="top-bar">
           <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
+          <div id="station-music">
+              <button class='btn bd btn-action station_auto_create' style='position: absolute;margin-left: 15%;'>Create Station</button></div>
         </div>
         <div id="lyrics">
           <!-- <h2 class="song-name"></h2><h4 class="artist-name"></h4> -->
           <div id="lyrics-content">
           </div>
-          <div class="">
+          <div class="<?php echo URL::to('/becomesubscriber'); ?>">
               <img height="250" width="250"  id="audio_img" src="">
               <!-- height="150" width="150"  -->
            </div>
@@ -315,6 +317,8 @@ var data = listAudio; // Assuming listAudio contains the URL
     }
     function loadSong(){
         // console.log(indexing.audio);
+        document.querySelector(".station_auto_create").setAttribute("data-audio-id", indexing.id);
+
       if(indexing.access == 'ppv' && indexing.PpvPurchase_Status == 0 && indexing.role == 'registered' ){
         // alert(indexing.role);
 
@@ -639,6 +643,36 @@ $('.like').click(function(){
             });           
   });
   
+
+  // Auto Create Station 
+
+
+  $('.station_auto_create').click(function(){
+        var  audio_id = document.querySelector(".station_auto_create").getAttribute("data-audio-id");                
+                $.ajax({
+                url: "<?php echo URL::to('/').'/auto-station/store';?>",
+                type: "POST",
+                data: {audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function(data) {
+                  if(data == 1){
+
+                      $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Created Music Station</div>');
+                    setTimeout(function() {
+                      $('.add_watch').slideUp('fast');
+                    }, 3000);
+                  }else{
+                    $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Unable to Create Music Station </div>');
+                    setTimeout(function() {
+                      $('.remove_watch').slideUp('fast');
+                    }, 3000);
+                  }
+                    
+                }
+            });           
+  });
+
+
 </script>
 
 

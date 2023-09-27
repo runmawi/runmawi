@@ -1391,7 +1391,7 @@ class HomeController extends Controller
         $getfeching = Geofencing::first();
         $Recomended = HomeSetting::first();
 
-        if($settings->activation_email == 1 && Auth::user()->activation_code != null){
+        if($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null){
 
         
             unset($data['password_hash']);
@@ -3703,7 +3703,7 @@ class HomeController extends Controller
             return redirect::to('/login');
         }
         
-        if($settings->activation_email == 1 && Auth::user()->activation_code != null){
+        if($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null){
 
         
             unset($data['password_hash']);
