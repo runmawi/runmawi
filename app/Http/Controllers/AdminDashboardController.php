@@ -30,6 +30,8 @@ use Laravel\Cashier\Invoice;
 use App\StorageSetting;
 use App\PpvPurchase;
 use App\Language;
+use App\LoggedDevice;
+use App\GuestLoggedDevice;
 
 class AdminDashboardController extends Controller
 {
@@ -198,8 +200,10 @@ class AdminDashboardController extends Controller
         $VideoCategory = VideoCategory::get();
         $Language = Language::get();
 
-        // dd($VideoCategory);
-
+        $LoggedDevice = LoggedDevice::count(); 
+        $GuestLoggedDevice = GuestLoggedDevice::count();
+        $total_visitors = $LoggedDevice + $GuestLoggedDevice ;
+        // dd($total_visitors);
         $data = array(
                 'settings' => $settings,
                 'total_subscription' => $total_subscription,
@@ -219,6 +223,7 @@ class AdminDashboardController extends Controller
                 'Total_Monthly_Revenue' => $Total_Monthly_Revenue,
                 'VideoCategory' => $VideoCategory,
                 'Language' => $Language,
+                'total_visitors' => $total_visitors,
 
         );
         
