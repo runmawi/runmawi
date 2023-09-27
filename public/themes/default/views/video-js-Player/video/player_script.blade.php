@@ -6,6 +6,7 @@
 
         var player = videojs('my-video', {              // Video Js Player 
             aspectRatio: '16:9',
+            fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true, 
 
@@ -158,4 +159,4 @@
 
         });
     });
-    </script>
+</script>
