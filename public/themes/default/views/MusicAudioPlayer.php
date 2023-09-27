@@ -6,6 +6,7 @@
         <img id="album-art"/>
         <div id="top-bar">
           <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
+          <button id="backStationbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
           <div id="station-music">
               <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'>Create Station</button></div>
@@ -43,15 +44,18 @@
             <div id="totalTime"></div>
           </div>
           <div id="menu">
-          <button id="back"><i class="fas fa-list"></i></button> 
-            <button id="repeat" style="color:grey"><i class="fa fa-repeat"></i></button>
-            <button id="prev"><i class="fa fa-step-backward"></i></button>
-            <button id="play"><i class="fa fa-play"></i></button>
-            <button id="next"><i class="fa fa-step-forward"></i></button>
-            <button id="shuffle" style="color:grey"><i class="fa fa-random"></i></button>
-            <button id="lyrics-toggle"><i class="fa fa-file-text"></i></button> <!-- Add this line -->
-            <button id="like-button" style="color:grey" class="like"><i class="fa fa-thumbs-up"></i></button>
-            <button id="dislike-button" style="color:grey" class="dislike"><i class="fa fa-thumbs-down"></i></button>
+          <button id="back" title="Songs List"><i class="fas fa-list"></i></button> 
+            <button id="repeat" style="color:grey" title="Repeat"><i class="fa fa-repeat"></i></button>
+            <button id="prev" title="Previous"><i class="fa fa-step-backward"></i></button>
+            <button id="play" ><i class="fa fa-play"></i></button>
+            <button id="next" title="Next"><i class="fa fa-step-forward"></i></button>
+            <button id="shuffle" style="color:grey" title="Shuffle"><i class="fa fa-random"></i></button>
+            <button id="lyrics-toggle"><i class="fa fa-file-text" title="Lyrics"></i></button> <!-- Add this line -->
+            <button id="like-button" style="color:grey" class="like" title="Like"><i class="fa fa-thumbs-up"></i></button>
+            <button id="dislike-button" style="color:grey" class="dislike" title="DisLike"><i class="fa fa-thumbs-down"></i></button>
+            <?php if(@$playlist_station == 1){ ?>
+            <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
+            <?php } ?>
           </div>
         </div>
         <div id="playlist">
@@ -61,6 +65,16 @@
           </div>
           <div id="show-box">
             <div id="show-list">
+            </div>
+          </div>
+        </div>
+        <div id="playlistStation">
+          <div id="label">
+            <h1><?php echo 'Other Music Station' ; ?></h1>
+            <input id="Stationsearch" type="text" placeholder="&#xF002; Search from all Station"></input>
+          </div>
+          <div id="show-box">
+            <div id="show-list-Station">
             </div>
           </div>
         </div>
@@ -123,10 +137,14 @@ $(document).ready(function(){
     }
     var backbutton = $('#backbutton');
     backbutton.hide();
+
+    var backStationbutton = $('#backStationbutton');
+    backStationbutton.hide();
     
     $('#audio_img').show();
     var listAudio = <?php echo json_encode($songs); ?>;
     var listAudio = <?php echo json_encode($songs); ?>;
+    var OtherMusicStation = <?php echo json_encode(@$OtherMusicStation); ?>;
     // console.log(listAudio);
 var data = listAudio; // Assuming listAudio contains the URL
 
@@ -566,17 +584,54 @@ var data = listAudio; // Assuming listAudio contains the URL
         }
     
     setPlaylist();
+
+    function addToplaylistStationt(data,index,OtherMusicStation){
+        var html = "";
+        var redirect_url = '<?php echo URL::to('music-station').'/' ?>';
+        html = $('#show-list-Station').html();
+        html += "<a href='" + redirect_url + OtherMusicStation.station_slug + "' class='float-song-card' data-index='" + index + "'>";
+        html += "<img class='album-art' src='" + OtherMusicStation.image + "'>";
+        html += "<h2 class='song'>" + OtherMusicStation.station_name + "</h2>";
+        html += "<h4 class='artist'>" + OtherMusicStation.station_slug + "</h4>";
+        html += "</a>";
+
+        $('#show-list-Station').html(html);
+
+        $('.float-song-card').on('click', function () {
+            playSongAtIndex($(this).attr("data-index"));
+        });
+    }
+
+    function setplaylistStation(){
+        // console.log(playlist)
+
+            for(var i=0;i<OtherMusicStation.length;i++){
+                data = [];
+            addToplaylistStationt(data,i,OtherMusicStation[i])}; 
+        }
+    
+        setplaylistStation();
 // });
 $('#search').keyup(function(){
     var toSearch = $(this).val();
     $('.float-song-card').css("display","none");
     $('.float-song-card:contains('+toSearch+')').css("display","inline-block");
 });
+
+$('#Stationsearch').keyup(function(){
+    var toSearch = $(this).val();
+    $('.float-song-card').css("display","none");
+    $('.float-song-card:contains('+toSearch+')').css("display","inline-block");
+});
+
 var togglePlaylist = 0;
 $('#back').on('click',function(){
 
   var backbutton = $('#backbutton');
   backbutton.show();
+
+  var backStationbutton = $('#backStationbutton');
+  backStationbutton.hide();
 
   if(togglePlaylist == 0){
     $('#playlist').css("transform","translateX(0)");
@@ -599,6 +654,43 @@ if(togglePlaylist == 0){
 }
 else{
   $('#playlist').css("transform","translateX(100%)");
+  togglePlaylist = 0;
+}
+});
+
+
+// Station
+
+var togglePlaylist = 0;
+$('#backstation').on('click',function(){
+
+  var backStationbutton = $('#backStationbutton');
+  backStationbutton.show();
+
+  var backbutton = $('#backbutton');
+  backbutton.hide();
+
+  if(togglePlaylist == 0){
+    $('#playlistStation').css("transform","translateX(0)");
+    togglePlaylist = 1;
+  }
+  else{
+    $('#playlistStation').css("transform","translateX(100%)");
+    togglePlaylist = 0;
+  }
+});
+
+$('#backStationbutton').on('click',function(){
+
+var backStationbutton = $('#backStationbutton');
+  backStationbutton.hide();
+
+if(togglePlaylist == 0){
+  $('#playlistStation').css("transform","translateX(0)");
+  togglePlaylist = 1;
+}
+else{
+  $('#playlistStation').css("transform","translateX(100%)");
   togglePlaylist = 0;
 }
 });
@@ -1003,6 +1095,27 @@ html,body{
     overflow: hidden;
     cursor: pointer;
 }
+
+#show-list-Station{
+  position: relative;
+  transition: ease-in-out 0.5s all;
+  height: 100%;
+}
+#show-list-Station .float-song-card{
+    position: relative;
+    display: inline-block;
+    height: 142px;
+    width: 80px;
+    padding: 0px 0px;
+    background: #00000089;
+    text-align: center;
+    font-size: 70%;
+    border-radius: 8px;
+    margin: 4px 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
 .float-song-card > .album-art{
   position: absolute;
   top:0;
@@ -1057,6 +1170,14 @@ html,body{
   #playlist > #label > h1{margin:8vh 0 4vh !important;}
 }
 
+@media only screen and (max-height: 500px){
+  #show-Station .float-song-card{font-size:40% !important;height:60px;width:50px;}
+  #playlistStation > #label{font-size:70%;}
+  #search{font-size:10px;padding:4px;width:10px;}
+  #search:focus{width:40vw;}
+  #playlistStation > #label > h1{margin:8vh 0 4vh !important;}
+}
+
 #lyrics::-webkit-scrollbar,#show-box::-webkit-scrollbar{
   width:5px;
 }
@@ -1084,5 +1205,50 @@ html,body{
 .floating-icon:nth-child(2){
   right: 12vh;
 }
+
+#playlistStation{
+  position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: 99;
+    color: var(--lyrics-color);
+    background-color: #857f8599;
+    background-image: linear-gradient(315deg, #837f5a99 0%, #0f0d4d99 74%);
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s all;
+    transform: translateX(100%);
+}
+
+#playlistStation > #label{
+  width:100%;
+  text-align: center;
+  font-size:100%;
+}
+#playlistStation > #label > h1{ line-height:0;margin: 6vh 0 2.5vh;}
+
+
+#Stationsearch{
+  background: transparent;
+    color: white;
+    border: 1px solid #5c5c5c99;
+    padding: 1vh 1.5vw;
+    margin: 2.5vh 0;
+    border-radius: 3px;
+    font-family: FontAwesome,"Montserrat",sans-serif;
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s all;
+    width: 25vw;
+    background: #4444448a;
+}
+#Stationsearch:focus{
+  outline: none;
+    border-radius: 3px;
+    border: 1px solid #818181;
+    width: 25vw;
+    padding: 1vh 1.5vw;
+    background: inherit;
+  }
+
+
 </style>
 <?php include(public_path('themes/default/views/footer.blade.php')); ?>

@@ -308,7 +308,9 @@ class MusicStationController extends Controller
             }else{
                 $ppv_status = 0 ;
             }
-            // dd($ppv_status);
+            $OtherMusicStation = MusicStation::where('id','!=', $MusicStation_id)->get();
+
+            // dd($OtherMusicStation);
             $data = array(
                 'audioppv' => $audioppv,
                 'album' => $MusicStation,
@@ -329,6 +331,8 @@ class MusicStationController extends Controller
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Station Songs',
+                'playlist_station' => 1,
+                'OtherMusicStation' => $OtherMusicStation,
             );
             
             // dd( $data);
