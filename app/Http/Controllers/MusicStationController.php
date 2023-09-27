@@ -425,8 +425,8 @@ class MusicStationController extends Controller
         $station_name = Audio::where('id',$audio_id)->pluck('title')->first();
 
             $MusicStation = new MusicStation();
-            $MusicStation->station_name = 'Station_'.$station_name;
-            $MusicStation->station_slug = str_replace(" ", "-", $station_name);
+            $MusicStation->station_name = 'Station'.' '.$station_name;
+            $MusicStation->station_slug = str_replace(" ", "-", 'Station'.' '.$station_name);
             $MusicStation->station_type = 'both';
             $MusicStation->station_based_artists = json_encode($station_based_artists);
             $MusicStation->station_based_keywords = json_encode($station_based_keywords);
