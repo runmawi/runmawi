@@ -74,6 +74,7 @@ Route::get('/music-station/{slug}', 'MusicStationController@PlayerMusicStation')
 Route::get('/list-music-station', 'MusicStationController@MusicStation');
 Route::get('/delete-station/{id}', 'MusicStationController@DeleteStation');
 Route::get('/my-music-station', 'MusicStationController@MY_MusicStation');
+Route::post('/auto-station/store', 'MusicStationController@AutoStoreStation');
 
 // Endpoints Playlist Audios.
 
