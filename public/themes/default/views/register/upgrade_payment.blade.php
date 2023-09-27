@@ -971,7 +971,7 @@ background-color: #000;padding: 10px!important;}
                                 });
                                     $("#card-button").html('Pay Now');
                                 setTimeout(function() {
-                                    window.location.replace(base_url+'/becomesubscriber');
+                                    location.reload();
                             }, 5000);
                         }
                     } });
@@ -1155,7 +1155,7 @@ background-color: #000;padding: 10px!important;}
                         text: data.message,
                         icon: "warning",
                         }).then(function() {
-                            window.location = base_url+'/login';
+                            location.reload();
                         })
                     }
                 } 
