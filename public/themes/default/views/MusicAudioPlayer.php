@@ -8,7 +8,7 @@
           <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
           <div id="station-music">
-              <button class='btn bd btn-action station_auto_create' style='position: absolute;margin-left: 15%;'>Create Station</button></div>
+              <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'>Create Station</button></div>
         </div>
         <div id="lyrics">
           <!-- <h2 class="song-name"></h2><h4 class="artist-name"></h4> -->
@@ -65,7 +65,40 @@
           </div>
         </div>
     </div>
+<!-- Station Modal -->
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-black" id="myModalLabel">Create Station</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">      
+      <div class="col-sm-10 p-0">
+          <label for="name">Station Title</label>
+            <input name="station_name" id="station_name" placeholder="Station Title" class="form-control form-control1 text-black"  />
+            <span id='station_error' class="" style='color:red;'>Station Name Required</span>
+        </div>
+          </div>
+     
+<br>
+      <div class="modal-footer">
+        <button type="button" id="station_save" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<style>
+    .form-control1 {
+      color:black !important;
+    }
+</style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
@@ -79,6 +112,7 @@ $.expr[":"].contains = $.expr.createPseudo(function(arg) {
 });
 var buttonColorOnPress = "white";
 var $j = jQuery.noConflict();
+$('#station_error').hide();
 
 $(document).ready(function(){
   $('.Subscribe_stripe_button').hide();
@@ -645,14 +679,19 @@ $('.like').click(function(){
   
 
   // Auto Create Station 
+  $('#station_error').hide();
 
+  $('#station_save').click(function(){
+        var  audio_id = document.querySelector(".station_auto_create").getAttribute("data-audio-id");  
+        var station_name = $('#station_name').val();      
+        $('#station_error').hide();
+        if(station_name != ''){
 
-  $('.station_auto_create').click(function(){
-        var  audio_id = document.querySelector(".station_auto_create").getAttribute("data-audio-id");                
+       
                 $.ajax({
                 url: "<?php echo URL::to('/').'/auto-station/store';?>",
                 type: "POST",
-                data: {audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                data: {station_name:station_name,audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
                 dataType: "html",
                 success: function(data) {
                   if(data == 1){
@@ -669,7 +708,17 @@ $('.like').click(function(){
                   }
                     
                 }
-            });           
+            });   
+        }else{
+        $('#station_error').show();
+
+          $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Need Music Station Name </div>');
+                    setTimeout(function() {
+                      $('.remove_watch').slideUp('fast');
+                    }, 3000);
+                  }
+                        
+       
   });
 
 
