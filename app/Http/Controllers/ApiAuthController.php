@@ -1383,7 +1383,7 @@ public function verifyandupdatepassword(Request $request)
           $item['ads_seen_status']    = $item->ads_status;
           $item['ios_publish_time']   = Carbon::parse($item->publish_time)->format('Y-m-d H:i:s');
 
-          if($item->access == 'ppv' && $request->user_id != ''){
+          if($item->access == 'ppv' && $request->user_id != '' || $item->access == 'subscriber' && $request->user_id != ''){
             $item['rent_url']   = URL::to('category/videos').'/'.$item->slug;
           }
           // Videos URL 
