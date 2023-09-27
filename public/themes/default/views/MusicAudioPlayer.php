@@ -2,19 +2,36 @@
 <?php include(public_path('themes/default/views/header.php')); ?>
 
 <div id="music-player">
+  
         <img id="album-art"/>
         <div id="top-bar">
-          <!-- <button id="back"><i class="fa fa-arrow-left"></i></button>  -->
+          <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
+          <button id="backStationbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
+          <div id="station-music">
+              <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'>Create Station</button></div>
         </div>
         <div id="lyrics">
           <!-- <h2 class="song-name"></h2><h4 class="artist-name"></h4> -->
           <div id="lyrics-content">
           </div>
-          <div class="">
+          <div class="<?php echo URL::to('/becomesubscriber'); ?>">
               <img height="250" width="250"  id="audio_img" src="">
               <!-- height="150" width="150"  -->
            </div>
+           <div class="Subscribe_stripe_button">
+                <!-- Subscriber Button -->
+  
+              <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="margin-left: -9%;position: absolute;margin-top: 20px;"
+                      class="btn bd btn-action">Subscribe to continue listening</button> 
+                  </a>
+              </div>
+              <div class="ppv_stripe_button">
+                  <!-- stripe Button -->
+                  <button  onclick="stripe_checkout()" id="enable_button" style="margin-left: -9%;position: absolute;margin-top: 20px;"
+                      class="btn bd btn-action">Purchase to Play Audio</button> 
+                  </a>
+              </div>
         </div>
         <audio id="audioFile" preload="true">
         </audio>
@@ -27,18 +44,23 @@
             <div id="totalTime"></div>
           </div>
           <div id="menu">
-          <button id="back"><i class="fa fa-arrow-left"></i></button> 
-            <button id="repeat" style="color:grey"><i class="fa fa-repeat"></i></button>
-            <button id="prev"><i class="fa fa-step-backward"></i></button>
-            <button id="play"><i class="fa fa-play"></i></button>
-            <button id="next"><i class="fa fa-step-forward"></i></button>
-            <button id="shuffle" style="color:grey"><i class="fa fa-random"></i></button>
-            <button id="lyrics-toggle"><i class="fa fa-file-text"></i></button> <!-- Add this line -->
+          <button id="back" title="Songs List"><i class="fas fa-list"></i></button> 
+            <button id="repeat" style="color:grey" title="Repeat"><i class="fa fa-repeat"></i></button>
+            <button id="prev" title="Previous"><i class="fa fa-step-backward"></i></button>
+            <button id="play" ><i class="fa fa-play"></i></button>
+            <button id="next" title="Next"><i class="fa fa-step-forward"></i></button>
+            <button id="shuffle" style="color:grey" title="Shuffle"><i class="fa fa-random"></i></button>
+            <button id="lyrics-toggle"><i class="fa fa-file-text" title="Lyrics"></i></button> <!-- Add this line -->
+            <button id="like-button" style="color:grey" class="like" title="Like"><i class="fa fa-thumbs-up"></i></button>
+            <button id="dislike-button" style="color:grey" class="dislike" title="DisLike"><i class="fa fa-thumbs-down"></i></button>
+            <?php if(@$playlist_station == 1){ ?>
+            <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
+            <?php } ?>
           </div>
         </div>
         <div id="playlist">
           <div id="label">
-            <h1>Playlist</h1>
+            <h1><?php echo @$playlist_name ; ?></h1>
             <input id="search" type="text" placeholder="&#xF002; Search from all songs"></input>
           </div>
           <div id="show-box">
@@ -46,11 +68,55 @@
             </div>
           </div>
         </div>
+        <div id="playlistStation">
+          <div id="label">
+            <h1><?php echo 'Other Music Station' ; ?></h1>
+            <input id="Stationsearch" type="text" placeholder="&#xF002; Search from all Station"></input>
+          </div>
+          <div id="show-box">
+            <div id="show-list-Station">
+            </div>
+          </div>
+        </div>
     </div>
+<!-- Station Modal -->
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-black" id="myModalLabel">Create Station</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">      
+      <div class="col-sm-10 p-0">
+          <label for="name">Station Title</label>
+            <input name="station_name" id="station_name" placeholder="Station Title" class="form-control form-control1 text-black"  />
+            <span id='station_error' class="" style='color:red;'>Station Name Required</span>
+        </div>
+          </div>
+     
+<br>
+      <div class="modal-footer">
+        <button type="button" id="station_save" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<style>
+    .form-control1 {
+      color:black !important;
+    }
+</style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
     <script>
         console.clear();
 $.expr[":"].contains = $.expr.createPseudo(function(arg) {
@@ -60,16 +126,25 @@ $.expr[":"].contains = $.expr.createPseudo(function(arg) {
 });
 var buttonColorOnPress = "white";
 var $j = jQuery.noConflict();
+$('#station_error').hide();
 
 $(document).ready(function(){
-    
+  $('.Subscribe_stripe_button').hide();
+  $('.ppv_stripe_button').hide();
     var lyrics = $('#lyrics-content');
     if (lyrics.is(':visible')) {
         lyrics.hide(); // Hide lyrics
     }
+    var backbutton = $('#backbutton');
+    backbutton.hide();
+
+    var backStationbutton = $('#backStationbutton');
+    backStationbutton.hide();
+    
     $('#audio_img').show();
     var listAudio = <?php echo json_encode($songs); ?>;
     var listAudio = <?php echo json_encode($songs); ?>;
+    var OtherMusicStation = <?php echo json_encode(@$OtherMusicStation); ?>;
     // console.log(listAudio);
 var data = listAudio; // Assuming listAudio contains the URL
 
@@ -294,7 +369,120 @@ var data = listAudio; // Assuming listAudio contains the URL
     }
     function loadSong(){
         // console.log(indexing.audio);
+        document.querySelector(".station_auto_create").setAttribute("data-audio-id", indexing.id);
 
+      if(indexing.access == 'ppv' && indexing.PpvPurchase_Status == 0 && indexing.role == 'registered' ){
+        // alert(indexing.role);
+
+        $('.ppv_stripe_button').show();
+
+        $('#audioFile').attr('src','');
+            document.querySelector(".like").setAttribute("data-audio-id", indexing.id);
+            document.querySelector(".dislike").setAttribute("data-audio-id", indexing.id);
+
+            document.getElementById("enable_button").setAttribute("data-price",indexing.ppv_price );
+            document.getElementById("enable_button").setAttribute("audio-id", indexing.id);
+
+            var likeButton = document.querySelector(".like");
+            var dislikeButton = document.querySelector(".dislike");
+
+            // Check and set the color for the like button
+            if (indexing.liked === 1) {
+                likeButton.style.color = "white";
+            } else {
+                likeButton.style.color = "grey";
+            }
+
+            // Check and set the color for the dislike button
+            if (indexing.disliked === 1) {
+                dislikeButton.style.color = "white";
+            } else {
+                dislikeButton.style.color = "grey";
+            }
+
+        // Toggle lyrics visibility when the button is clicked
+        $('#lyrics-toggle').on('click', function() {
+            var lyrics = $('#lyrics-content');
+            $('#audio_img').show();
+
+            if (lyrics.is(':visible')) {
+                lyrics.hide(); // Hide lyrics
+            } else {
+                $('#audio_img').hide();
+                lyrics.show(); // Show lyrics
+                centerize(); // Centerize lyrics (assuming you have this function)
+            }
+        });
+
+        var html = "";
+        html = html + "<h2>"+'Lyrics not Available'+"</h2>";
+
+        // var html = "Lyrics not Available ";
+        $('#lyrics-content').html(html);
+
+
+            setSongName(indexing.title);
+            setArtistName(indexing.slug);
+            setAlbumArt(indexing.image_url);
+            processing(indexing);
+            totalTime = 'NaN';
+            // stopTimer = setInterval(function(){updateTimer(indexing);},1000);
+      }else if(indexing.access == 'subscriber' && indexing.role == 'registered'){
+        // alert(indexing.access);
+        $('.Subscribe_stripe_button').show();
+
+        $('#audioFile').attr('src','');
+            document.querySelector(".like").setAttribute("data-audio-id", indexing.id);
+            document.querySelector(".dislike").setAttribute("data-audio-id", indexing.id);
+
+            var likeButton = document.querySelector(".like");
+            var dislikeButton = document.querySelector(".dislike");
+
+            // Check and set the color for the like button
+            if (indexing.liked === 1) {
+                likeButton.style.color = "white";
+            } else {
+                likeButton.style.color = "grey";
+            }
+
+            // Check and set the color for the dislike button
+            if (indexing.disliked === 1) {
+                dislikeButton.style.color = "white";
+            } else {
+                dislikeButton.style.color = "grey";
+            }
+
+        // Toggle lyrics visibility when the button is clicked
+        $('#lyrics-toggle').on('click', function() {
+            var lyrics = $('#lyrics-content');
+            $('#audio_img').show();
+
+            if (lyrics.is(':visible')) {
+                lyrics.hide(); // Hide lyrics
+            } else {
+                $('#audio_img').hide();
+                lyrics.show(); // Show lyrics
+                centerize(); // Centerize lyrics (assuming you have this function)
+            }
+        });
+
+        var html = "";
+        html = html + "<h2>"+'Lyrics not Available'+"</h2>";
+
+        // var html = "Lyrics not Available ";
+        $('#lyrics-content').html(html);
+
+
+            setSongName(indexing.title);
+            setArtistName(indexing.slug);
+            setAlbumArt(indexing.image_url);
+            processing(indexing);
+            totalTime = 'NaN';
+            // stopTimer = setInterval(function(){updateTimer(indexing);},1000);
+
+      }else{ 
+        // alert(indexing.access);
+        
         $('#audioFile').attr('src',indexing.audio);
         // abort_other_json = $.getJSON(indexing.json,function(data){
             // alert(data);
@@ -303,6 +491,25 @@ var data = listAudio; // Assuming listAudio contains the URL
             // }else{
             //     var data = '';
             // }
+            document.querySelector(".like").setAttribute("data-audio-id", indexing.id);
+            document.querySelector(".dislike").setAttribute("data-audio-id", indexing.id);
+
+            var likeButton = document.querySelector(".like");
+            var dislikeButton = document.querySelector(".dislike");
+
+            // Check and set the color for the like button
+            if (indexing.liked === 1) {
+                likeButton.style.color = "white";
+            } else {
+                likeButton.style.color = "grey";
+            }
+
+            // Check and set the color for the dislike button
+            if (indexing.disliked === 1) {
+                dislikeButton.style.color = "white";
+            } else {
+                dislikeButton.style.color = "grey";
+            }
 
         // Toggle lyrics visibility when the button is clicked
         $('#lyrics-toggle').on('click', function() {
@@ -332,6 +539,7 @@ var data = listAudio; // Assuming listAudio contains the URL
             totalTime = NaN;
             stopTimer = setInterval(function(){updateTimer(indexing);},1000);
         // });
+      }
     }
     loadSong();
     $('#prev').on('click',prevSong);
@@ -376,14 +584,55 @@ var data = listAudio; // Assuming listAudio contains the URL
         }
     
     setPlaylist();
+
+    function addToplaylistStationt(data,index,OtherMusicStation){
+        var html = "";
+        var redirect_url = '<?php echo URL::to('music-station').'/' ?>';
+        html = $('#show-list-Station').html();
+        html += "<a href='" + redirect_url + OtherMusicStation.station_slug + "' class='float-song-card' data-index='" + index + "'>";
+        html += "<img class='album-art' src='" + OtherMusicStation.image + "'>";
+        html += "<h2 class='song'>" + OtherMusicStation.station_name + "</h2>";
+        html += "<h4 class='artist'>" + OtherMusicStation.station_slug + "</h4>";
+        html += "</a>";
+
+        $('#show-list-Station').html(html);
+
+        $('.float-song-card').on('click', function () {
+            playSongAtIndex($(this).attr("data-index"));
+        });
+    }
+
+    function setplaylistStation(){
+        // console.log(playlist)
+
+            for(var i=0;i<OtherMusicStation.length;i++){
+                data = [];
+            addToplaylistStationt(data,i,OtherMusicStation[i])}; 
+        }
+    
+        setplaylistStation();
 // });
 $('#search').keyup(function(){
     var toSearch = $(this).val();
     $('.float-song-card').css("display","none");
     $('.float-song-card:contains('+toSearch+')').css("display","inline-block");
 });
+
+$('#Stationsearch').keyup(function(){
+    var toSearch = $(this).val();
+    $('.float-song-card').css("display","none");
+    $('.float-song-card:contains('+toSearch+')').css("display","inline-block");
+});
+
 var togglePlaylist = 0;
 $('#back').on('click',function(){
+
+  var backbutton = $('#backbutton');
+  backbutton.show();
+
+  var backStationbutton = $('#backStationbutton');
+  backStationbutton.hide();
+
   if(togglePlaylist == 0){
     $('#playlist').css("transform","translateX(0)");
     togglePlaylist = 1;
@@ -393,11 +642,284 @@ $('#back').on('click',function(){
     togglePlaylist = 0;
   }
 });
+
+$('#backbutton').on('click',function(){
+
+var backbutton = $('#backbutton');
+backbutton.hide();
+
+if(togglePlaylist == 0){
+  $('#playlist').css("transform","translateX(0)");
+  togglePlaylist = 1;
+}
+else{
+  $('#playlist').css("transform","translateX(100%)");
+  togglePlaylist = 0;
+}
 });
+
+
+// Station
+
+var togglePlaylist = 0;
+$('#backstation').on('click',function(){
+
+  var backStationbutton = $('#backStationbutton');
+  backStationbutton.show();
+
+  var backbutton = $('#backbutton');
+  backbutton.hide();
+
+  if(togglePlaylist == 0){
+    $('#playlistStation').css("transform","translateX(0)");
+    togglePlaylist = 1;
+  }
+  else{
+    $('#playlistStation').css("transform","translateX(100%)");
+    togglePlaylist = 0;
+  }
+});
+
+$('#backStationbutton').on('click',function(){
+
+var backStationbutton = $('#backStationbutton');
+  backStationbutton.hide();
+
+if(togglePlaylist == 0){
+  $('#playlistStation').css("transform","translateX(0)");
+  togglePlaylist = 1;
+}
+else{
+  $('#playlistStation').css("transform","translateX(100%)");
+  togglePlaylist = 0;
+}
+});
+
+});
+
+$('.like').click(function(){
+        var  audio_id = document.querySelector(".like").getAttribute("data-audio-id");
+        // alert(audio_id);
+
+                var likeButton = $(this);
+                var audio_id = likeButton.data("audio-id");
+
+                // Toggle the color of the like button while clicking
+                if (likeButton.css("color") === "rgb(128, 128, 128)") {
+                    likeButton.css("color", "white");
+                } else {
+                    likeButton.css("color", "grey");
+                }
+
+                var dislikeButton = document.querySelector(".dislike");
+
+                // Check and set the color for the dislike button
+                    dislikeButton.style.color = "grey";
+
+                
+                var like = 1;
+                $.ajax({
+                url: "<?php echo URL::to('/').'/like-audio';?>",
+                type: "POST",
+                data: {like: like,audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function(data) {
+                    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have liked this media</div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+                    
+                }
+            });           
+  });
+
+  
+	$('.dislike').click(function(){
+        var  audio_id = document.querySelector(".dislike").getAttribute("data-audio-id");
+        // alert(audio_id);
+
+                var DislikeButton = $(this);
+                var audio_id = DislikeButton.data("audio-id");
+                
+                // Toggle the color of the like button while clicking
+                if (DislikeButton.css("color") === "rgb(128, 128, 128)") {
+                    DislikeButton.css("color", "white");
+                } else {
+                    DislikeButton.css("color", "grey");
+                }
+
+                var likeButton = document.querySelector(".like");
+
+                // Check and set the color for the like button
+                    likeButton.style.color = "grey";
+
+                var like = 1;
+                $.ajax({
+                url: "<?php echo URL::to('/').'/dislike-audio';?>",
+                type: "POST",
+                data: {like: like,audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function(data) {
+                  $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from liked this media </div>');
+                setTimeout(function() {
+                  $('.remove_watch').slideUp('fast');
+                }, 3000);
+                    
+                }
+            });           
+  });
+  
+
+  // Auto Create Station 
+  $('#station_error').hide();
+
+  $('#station_save').click(function(){
+        var  audio_id = document.querySelector(".station_auto_create").getAttribute("data-audio-id");  
+        var station_name = $('#station_name').val();      
+        $('#station_error').hide();
+        if(station_name != ''){
+
+       
+                $.ajax({
+                url: "<?php echo URL::to('/').'/auto-station/store';?>",
+                type: "POST",
+                data: {station_name:station_name,audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function(data) {
+                  if(data == 1){
+
+                      $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Created Music Station</div>');
+                    setTimeout(function() {
+                      $('.add_watch').slideUp('fast');
+                    }, 3000);
+
+                    location.reload();
+
+                  }else{
+                    $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Unable to Create Music Station </div>');
+                    setTimeout(function() {
+                      $('.remove_watch').slideUp('fast');
+                    }, 3000);
+                  }
+                    
+                }
+            });   
+        }else{
+        $('#station_error').show();
+
+          $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Need Music Station Name </div>');
+                    setTimeout(function() {
+                      $('.remove_watch').slideUp('fast');
+                    }, 3000);
+                  }
+                        
+       
+  });
+
+
+</script>
+
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+
+<?php                 
+$payment_settings = App\PaymentSetting::first();
+
+$mode = $payment_settings->live_mode;
+if ($mode == 0) {
+    $secret_key = $payment_settings->test_secret_key;
+    $publishable_key = $payment_settings->test_publishable_key;
+} elseif ($mode == 1) {
+    $secret_key = $payment_settings->live_secret_key;
+    $publishable_key = $payment_settings->live_publishable_key;
+} else {
+    $secret_key = null;
+    $publishable_key = null;
+} ?>
+
+<input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key; ?>">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+function stripe_checkout() {
+  
+  var publishable_key = $('#publishable_key').val();
+
+  var  audio_id = document.querySelector(".like").getAttribute("data-audio-id");
+
+  var audio_id = $('#audio_id').val();
+
+  var ppv_price = document.getElementById("enable_button").getAttribute("data-price");
+  var audio_id = document.getElementById("enable_button").getAttribute("audio-id");
+
+  // alert(ppv_price);
+  // alert(audio_id);
+  var handler = StripeCheckout.configure({
+
+      key: publishable_key,
+      locale: 'auto',
+      token: function(token) {
+          // You can access the token ID with `token.id`.
+          // Get the token ID to your server-side code for use.
+          console.log('Token Created!!');
+          console.log(token);
+          $('#token_response').html(JSON.stringify(token));
+
+          $.ajax({
+              url: '<?php echo URL::to('purchase-audio'); ?>',
+              method: 'post',
+              data: {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  tokenId: token.id,
+                  amount: ppv_price,
+                  audio_id: audio_id
+              },
+              success: (response) => {
+                  // alert("You have done  Payment !");
+                  swal("You have done  Payment !");
+
+                  setTimeout(function() {
+                      location.reload();
+                  }, 2000);
+
+              },
+              error: function (xhr) {
+                console.log('Event handler executed');
+                console.log(xhr.responseJSON.message);
+                // alert(xhr.responseJSON.message);
+                swal(xhr.responseJSON.message);
+                  //swal("Oops! Something went wrong");
+                  /* setTimeout(function() {
+                  location.reload();
+                  }, 2000);*/
+              }
+          })
+      }
+  });
+
+
+  handler.open({
+      name: '<?php $settings = App\Setting::first();
+      echo $settings->website_name; ?>',
+      description: 'Purchase a Audio',
+      amount: ppv_price * 100
+  });
+}
 
 </script>
 
 <style>
+
+.swal2-container.swal2-center>.swal2-popup {
+        background: linear-gradient(180deg, #C4C4C4 50%, rgba(196, 196, 196, 0) 100%);
+
+    }
+
+    .swal2-html-container {
+        color: #fff !important;
+    }
+    
     :root{
   --bg-color: background-color: #7f5a83;
 background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
@@ -544,12 +1066,12 @@ html,body{
     transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s all;
     transform: translateX(100%);
 }
-#show-box{
-  position: absolute;
+#show-box {
+    position: absolute;
     top: 65%;
     left: 50%;
-    height: 50vh;
-    width: 70%;
+    height: 55vh;
+    width: 83%;
     padding: 4vh 0vh;
     transform: translate(-50%,-70%);
     overflow: auto;
@@ -573,6 +1095,27 @@ html,body{
     overflow: hidden;
     cursor: pointer;
 }
+
+#show-list-Station{
+  position: relative;
+  transition: ease-in-out 0.5s all;
+  height: 100%;
+}
+#show-list-Station .float-song-card{
+    position: relative;
+    display: inline-block;
+    height: 142px;
+    width: 80px;
+    padding: 0px 0px;
+    background: #00000089;
+    text-align: center;
+    font-size: 70%;
+    border-radius: 8px;
+    margin: 4px 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
 .float-song-card > .album-art{
   position: absolute;
   top:0;
@@ -587,8 +1130,12 @@ html,body{
   transform: translateX(-50%) scale(1.2,1.2);
   opacity:1;
 }
-.float-song-card > h2,
-.float-song-card > h4{position:relative;z-index:49;margin:2px 0;}
+.float-song-card > h2, .float-song-card > h4 {
+    position: relative;
+    z-index: 49;
+    margin: 2px 0;
+    visibility: hidden;
+}
 #playlist > #label{
   width:100%;
   text-align: center;
@@ -623,6 +1170,14 @@ html,body{
   #playlist > #label > h1{margin:8vh 0 4vh !important;}
 }
 
+@media only screen and (max-height: 500px){
+  #show-Station .float-song-card{font-size:40% !important;height:60px;width:50px;}
+  #playlistStation > #label{font-size:70%;}
+  #search{font-size:10px;padding:4px;width:10px;}
+  #search:focus{width:40vw;}
+  #playlistStation > #label > h1{margin:8vh 0 4vh !important;}
+}
+
 #lyrics::-webkit-scrollbar,#show-box::-webkit-scrollbar{
   width:5px;
 }
@@ -650,5 +1205,50 @@ html,body{
 .floating-icon:nth-child(2){
   right: 12vh;
 }
+
+#playlistStation{
+  position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: 99;
+    color: var(--lyrics-color);
+    background-color: #857f8599;
+    background-image: linear-gradient(315deg, #837f5a99 0%, #0f0d4d99 74%);
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s all;
+    transform: translateX(100%);
+}
+
+#playlistStation > #label{
+  width:100%;
+  text-align: center;
+  font-size:100%;
+}
+#playlistStation > #label > h1{ line-height:0;margin: 6vh 0 2.5vh;}
+
+
+#Stationsearch{
+  background: transparent;
+    color: white;
+    border: 1px solid #5c5c5c99;
+    padding: 1vh 1.5vw;
+    margin: 2.5vh 0;
+    border-radius: 3px;
+    font-family: FontAwesome,"Montserrat",sans-serif;
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s all;
+    width: 25vw;
+    background: #4444448a;
+}
+#Stationsearch:focus{
+  outline: none;
+    border-radius: 3px;
+    border: 1px solid #818181;
+    width: 25vw;
+    padding: 1vh 1.5vw;
+    background: inherit;
+  }
+
+
 </style>
 <?php include(public_path('themes/default/views/footer.blade.php')); ?>

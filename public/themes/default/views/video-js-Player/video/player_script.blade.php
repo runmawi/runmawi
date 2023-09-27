@@ -6,6 +6,7 @@
 
         var player = videojs('my-video', {              // Video Js Player 
             aspectRatio: '16:9',
+            fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true, 
 
@@ -34,6 +35,20 @@
                     'fullscreenToggle':{}
                 }
 		    }
+        });
+
+
+                    // Back Button 
+        const Back_button = videojs.dom.createEl('button', {
+            className: '', 
+            innerHTML: '<i class="fa fa-arrow-left" aria-hidden="true"></i>', 
+            title: 'Back Button', 
+        });
+      
+        player.controlBar.el().appendChild(Back_button);
+        
+        Back_button.addEventListener('click', function () {
+            history.back();
         });
 
     
@@ -144,4 +159,4 @@
 
         });
     });
-    </script>
+</script>

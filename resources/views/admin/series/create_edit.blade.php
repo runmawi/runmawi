@@ -470,7 +470,7 @@ $settings  = App\Setting::first();?>
 								<label> Season Trailer :</label>
 								<div class="new-video-file form_video-upload" style="position: relative;" >
 								<input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer">
-								<p style="font-size: 14px!important;">Drop and drag the video file</p>
+								<p style="font-size: 14px!important;height: 30%!important;">Drop and drag the video file</p>
 								</div>
 							</div>
 							<!-- <div class="form-group">

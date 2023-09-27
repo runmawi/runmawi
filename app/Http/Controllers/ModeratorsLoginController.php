@@ -255,8 +255,8 @@ class ModeratorsLoginController extends Controller
             $moderatorsuser->description = $request->description;
             $moderatorsuser->activation_code = $string;
             $moderatorsuser->status = 0;
-            $logopath = URL::to('/public/uploads/picture/');
-            $path = public_path() . '/uploads/picture/';
+            $logopath = URL::to('/public/uploads/moderator_albums/');
+            $path = public_path() . '/uploads/moderator_albums/';
             $picture = $request['picture'];
             $intro_video = (isset($request['intro_video'])) ? $request['intro_video'] : '';
 

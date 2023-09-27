@@ -116,3 +116,13 @@
 .video-js .vjs-mute-control .vjs-icon-placeholder:before, .vjs-icon-volume-high:before {
     content: "\f028";
 }
+
+.responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}

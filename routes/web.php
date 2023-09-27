@@ -74,6 +74,7 @@ Route::get('/music-station/{slug}', 'MusicStationController@PlayerMusicStation')
 Route::get('/list-music-station', 'MusicStationController@MusicStation');
 Route::get('/delete-station/{id}', 'MusicStationController@DeleteStation');
 Route::get('/my-music-station', 'MusicStationController@MY_MusicStation');
+Route::post('/auto-station/store', 'MusicStationController@AutoStoreStation');
 
 // Endpoints Playlist Audios.
 
@@ -2332,4 +2333,4 @@ Route::get('exchangeCurrency','AdminCurrencyConvert@Index');
 
 Route::get('PPV-Free-Duration-Logs', 'AdminLiveStreamController@PPV_Free_Duration_Logs')->name('PPV_Free_Duration_Logs');
 
-Route::get('video-js-fullplayer', 'ChannelController@video_js_fullplayer');
+Route::get('video-fullplayer/{slug}', 'ChannelController@video_js_fullplayer')->name('video-js-fullplayer');

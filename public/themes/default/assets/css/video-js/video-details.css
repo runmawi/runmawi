@@ -400,4 +400,8 @@
         font-size: 14px;
         line-height: 24px;
     }
+
+    .scp-breadcrumb {
+    	margin: 2px;
+    }
 }

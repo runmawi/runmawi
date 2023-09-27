@@ -134,7 +134,7 @@
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box"><p class="">{{  $visitor }}</p></div>
+                                       <div class="iq-user-box"><p class="">{{  $total_visitors }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height">  Total
                                           Visitor's
@@ -286,7 +286,7 @@
                                  
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
-                                 <h4 class=" mb-0">{{  $visitor }} </h4>
+                                 <h4 class=" mb-0">{{  $total_visitors }} </h4>
                                  <h6 class="mb-0 text-primary"><span><i class="fa fa-caret-up mr-2"></i></span>100%</h6>
                               </div>
                            </div>

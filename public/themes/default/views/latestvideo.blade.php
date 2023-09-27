@@ -24,12 +24,14 @@
                               <div class="block-images position-relative">
                                  <div class="img-box">
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid w-100" alt="">
-                                    @if(!empty($latest_video->ppv_price))
-                                       <p class="p-tag1" ><?php echo $latestvideo['currency']->symbol.' '.$latest_video->ppv_price; ?></p>
-                                    @elseif( !empty($latest_video->global_ppv || !empty($latest_video->global_ppv) && $latest_video->ppv_price == null)) 
-                                       <p class="p-tag1"><?php echo $latest_video->global_ppv.' '. $latestvideo['currency']->symbol; ?></p>
-                                    @elseif($latest_video->global_ppv == null && $latest_video->ppv_price == null )
-                                       <p class="p-tag" ><?php echo "Free"; ?></p>
+                                    @if( $latestvideo['ThumbnailSetting']->free_or_cost_label == 1)
+                                       @if(!empty($latest_video->ppv_price))
+                                          <p class="p-tag1" ><?php echo $latestvideo['currency']->symbol.' '.$latest_video->ppv_price; ?></p>
+                                       @elseif( !empty($latest_video->global_ppv || !empty($latest_video->global_ppv) && $latest_video->ppv_price == null)) 
+                                          <p class="p-tag1"><?php echo $latest_video->global_ppv.' '. $latestvideo['currency']->symbol; ?></p>
+                                       @elseif($latest_video->global_ppv == null && $latest_video->ppv_price == null )
+                                          <p class="p-tag" ><?php echo "Free"; ?></p>
+                                       @endif
                                     @endif
                                  </div>
 

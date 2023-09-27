@@ -144,66 +144,9 @@ body {font-family: Arial;}
                         </div>
                     </div>
                 </div>
-                <div id="PayPerView_content">
-                    
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="PayPer-chart" style="width: 700px; height: 500px"></div>
-                    </div>
-                </div>
-
-                <div class="clear"></div>
-                <br>
-                <br>
-                <!-- Graph Currency   (SET BY Sanjai Kumar) -->
-                <div class="row">
-                <div class="tab">
-                <button class="tablinks"  id="openSubscription">Subscription</button>
-                <button class="tablinks" id="openPayPerView" >PayPer View</button>
-                </div>
-                </div>
-            
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table" id="cpp_revenue_table" style="width:100%">
-                                    <thead>
-                                        <tr class="r1">
-                                            <th>#</th>
-                                            <th>User </th>
-                                            <th>Transaction REF</th>
-                                            <th>User Type</th>
-                                            <th>Plan</th>
-                                            <th>Content</th>
-                                            <th>Price</th>
-                                            <th>Country</th>
-                                            <th>Date Time</th>
-                                            <th>Source</th>
-                                        </tr>
-                                    </thead>
-                                <tbody>
-                                @foreach($user_Revenue as $key => $user)
-                                        <tr>
-                                        <td>{{ $key+1  }}</td>   
-                                        <td>{{ $user->username  }}</td>   
-                                        <td>@if(!empty($user->stripe_id))  {{ @$user->stripe_id }} @else No REF @endif</td>
-                                        <td>{{ $user->role  }}</td>                                      
-                                        <td>@if(!empty($user->plans_name))  {{ @$user->plans_name }} @else Registered @endif</td>
-                                        <td> @if(!empty($user->audio_id) ){{ 'Audio' }}@elseif(!empty($user->video_id) ){{ 'Video' }}@elseif(!empty($user->live_id) ){{ 'Live' }}@else @endif
-                                        <td>{{ $user->total_amount  }}</td>   
-                                        <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
-                                        <td>{{ $user->created_at  }}</td> 
-                                        <td>@if(!empty($user->card_type))  {{ @$user->card_type }} @else No Transaction @endif</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                           </table>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-        </div>
-    </div>
+
 
     
 @stop
