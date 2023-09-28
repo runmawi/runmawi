@@ -32,6 +32,24 @@
         <div class="opacity-layer"></div>
 
         <div class="pageWrapper">
+        {{-- Breadcrumbs  --}}
+        <div class="scp-breadcrumb">
+            <ul class="breadcrumb">
+            
+                <li><a href="{{ route('latest-videos') }}">{{ ucwords('videos') }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
+            
+                @foreach( $videodetail->categories as $key => $category )
+
+                    <li class="breadcrumb-item"> <a href="{{ route('video_categories',[ $category->slug ]) }}">{{ $category->name }}</a> </li>
+
+                @endforeach
+                
+                <li> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
+            
+                <li class="active">{{ (strlen($videodetail->title) > 50) ? ucwords(substr($videodetail->title,0,120).'...') : ucwords($videodetail->title) }}</li>
+            
+            </ul>
+        </div>
             <div class="content">
                 <div class="left">
                     <span class=" lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
@@ -41,9 +59,24 @@
 
                 <div class="right">
                     <div class="title">    {{--  Title & Year--}}
-                        {{ optional($videodetail)->title }} {{ $videodetail->year ? '('. $videodetail->year .')' : " "}}
+                        {{ optional($videodetail)->title }} 
                     </div>
 
+                    <div class="utilities">  
+                        {{ $videodetail->year ? ''. $videodetail->year .'' : " "}} 
+                        <i class="fas fa-circle"></i> 
+                        {{ $videodetail->duration ? ''. $videodetail->duration .'' : " "}} 
+                        <i class="fas fa-circle"></i> 
+                        {{ $videodetail->age_restrict ? ''. $videodetail->age_restrict .'' : " "}}
+                        <i class="fas fa-circle"></i> 
+                        <?php if(isset($view_increment) && $view_increment == true ): ?>
+                            <?= $movie->views + 1 ?>
+                        <?php else: ?>
+                            <?= $videodetail->views ?>
+                        <?php endif; ?>
+                        <?php echo __('Views'); ?>
+                    </div>
+                   
                     @if ( $setting->show_Links_and_details == 1 &&  optional($videodetail)->details )  {{-- Details --}}
                         <div class="subtitle">  
                             {!! html_entity_decode(optional($videodetail)->details) !!}
@@ -59,6 +92,109 @@
                             @endforeach
                         </div>
                     @endif
+
+                    <?php if(!Auth::guest()) { ?>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-xs-12">
+                                <ul class="list-inline p-0 share-icons music-play-lists">
+                                    <!-- Watchlater -->
+                                    <li>
+                                        <span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" 
+                                              data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $videodetail->id ?>">
+                                            <i <?php if(isset($watchlatered->id)): ?> 
+                                                    class="fas fa-plus-square" 
+                                                <?php else: ?>
+                                                    class="fal fa-plus"
+                                                <?php endif; ?>>
+                                            </i>
+                                        </span>
+                                    </li>
+                                    <!-- Wishlist -->
+                                    <li>
+                                        <span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>"
+                                              data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $videodetail->id ?>">
+                                            <i <?php if(isset($mywishlisted->id)): ?>
+                                                    class="fal fa-heart" 
+                                                <?php else: ?>
+                                                    class="fas fa-heart" 
+                                                <?php endif; ?>>
+                                            </i>
+                                        </span>
+                                    </li>
+                                    <!-- Social Share, Like Dislike -->
+                                    
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-6 col-md-6 col-xs-12 p-0">
+                                <ul class="list-inline p-0 rental-lists ">
+                                <!-- Subscribe -->
+                                    <li>
+                                        <?php   $user = Auth::user(); 
+                                                if (  ($user->role!="subscriber" && $videodetail->access != 'guest' && $user->role!="admin") ) { ?>
+                                                <a href="<?php echo URL::to('/becomesubscriber'); ?>">
+                                                    <span class="view-count btn btn-primary subsc-video">
+                                                        <?php echo __('Subscribe'); ?>
+                                                    </span>
+                                                </a>
+                                        <?php } ?>
+                                    </li>
+                                    <!-- PPV button -->
+                                    <li>
+                                        <?php if ( $ppv_exist == 0 && $videodetail->global_ppv != null && $user->role!="admin" || $ppv_exist == 0 && $videodetail->ppv_price != null  && $user->role!="admin") { ?>
+                                            <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
+                                                <?php echo __('Purchase Now'); ?> 
+                                            </button>
+                                        <?php } ?>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    <?php } ?>
+
+
+                    <?php if(Auth::guest()) { ?>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-xs-12">
+                                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                                    <!-- Watchlater -->
+                                    <li>
+                                        <span   class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>"
+                                                data-authenticated="<?= !Auth::guest() ?>"
+                                                data-videoid="<?= $videodetail->id ?>">
+                                            <i <?php if(isset($watchlatered->id)): ?>
+                                                    class="fal fa-plus" 
+                                                <?php else: ?>
+                                                    class="fal fa-plus"
+                                                <?php endif; ?>>
+                                            </i>
+                                        </span>
+                                    </li>
+                                    <!-- Wishlist -->
+                                    <li>
+                                        <span   class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>"
+                                                data-authenticated="<?= !Auth::guest() ?>"
+                                                data-videoid="<?= $videodetail->id ?>">
+                                            <i <?php if(isset($mywishlisted->id)): ?>
+                                                    class="fal fa-heart" 
+                                                <?php else: ?>
+                                                    class="fas fa-heart" 
+                                                <?php endif; ?>>
+                                            </i>
+                                        </span>
+                                    </li>
+                                    <!-- Social Share, Like Dislike -->
+                                </ul>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-xs-12">
+                                <!-- <div class="d-flex align-items-center series mb-4">
+                                    <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid" alt=""></a>
+                                    <span class="text-gold ml-3">#2 in Series Today</span>
+                                </div> -->
+                            </div>
+                        </div>
+                    <?php   } ?>
 
                     <div class="row">  
                         <div class="circleRating">  {{-- Rating --}}
@@ -91,10 +227,20 @@
                             </div>
                         </a>
 
+                        <a href="<?php echo URL::to('/login'); ?>">
+                            <div class="view-count btn btn-primary subsc-video">
+                                <span class="text"> <?php echo __('Subscribe'); ?> </span>
+                            </div>
+                        </a>
+
+                        <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login'); ?>">
+                            <?php echo __('Rent'); ?>
+                        </a>
+
                     </div>
 
                     @if( $setting->show_description == 1 && optional($videodetail)->description )   {{-- Description --}}
-                        <div class="overviewd">
+                        <div class="overview">
                             <div class="heading">Description</div>
                             <div class="description">
                                 {!!  html_entity_decode( optional($videodetail)->description ) !!}
@@ -112,10 +258,10 @@
 
                     @if ( $setting->show_languages == 1 &&  !$videodetail->Language->isEmpty())   {{-- Languages --}}
                         <div class="info">      
-                            <span classname="text bold"> Languages : </span>
+                            <span classname="text bold"> Languages:&nbsp;</span> 
                             @foreach( $videodetail->Language as $item )
                                 <span class="text">
-                                    <span> <a href="{{ URL::to('language/'. $item->language_id . '/' . $item->name ) }} "> {{ $item->name }} </a>   </span>
+                                    <span><a href="{{ URL::to('language/'. $item->language_id . '/' . $item->name ) }} "> {{ $item->name }} </a>   </span>
                                 </span>
                             @endforeach
                         </div>
@@ -153,26 +299,9 @@
                 </div>
             @endif
 
-                        {{-- Breadcrumbs  --}}
-            <div class="scp-breadcrumb">
-                <ul class="breadcrumb">
-                
-                    <li><a href="{{ route('latest-videos') }}">{{ ucwords('videos') }}</a> <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i> </li>
-                
-                    @foreach( $videodetail->categories as $key => $category )
+            
 
-                        <li class="breadcrumb-item"> <a href="{{ route('video_categories',[ $category->slug ]) }}">{{ $category->name }}</a> </li>
-
-                    @endforeach
-                    
-                    <li> <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i> </li>
-                
-                    <li class="active">{{ (strlen($videodetail->title) > 50) ? ucwords(substr($videodetail->title,0,120).'...') : ucwords($videodetail->title) }}</li>
-                
-                </ul>
-            </div>
-
-                        {{-- comment Section --}}
+            {{-- comment Section --}}
 
             @if( $CommentSection != null && $CommentSection->videos == 1 )
                 <div class="sectionArtists">   
@@ -187,7 +316,7 @@
 
             @if ( ( $videodetail->recommended_videos)->isNotEmpty() ) 
 
-                <div class=" container-fluid video-list  overflow-hidden">
+                <div class=" container-fluid video-list  overflow-hidden p-0">
 
                     <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords('recommended videos') }}</h4> 
 
@@ -203,8 +332,8 @@
 
                                         <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
                                             <div class="block-images position-relative">
-                                                <div class="img-box">
-                                                    <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
+                                                <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
+                                                     <div class="img-box">
                                                         <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->image) }}">
         
                                                         @if ($ThumbnailSetting->free_or_cost_label == 1)
@@ -224,29 +353,16 @@
                                                         @if ($ThumbnailSetting->published_on == 1)
                                                             <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
                                                         @endif
-                                                    </a>
-                                                </div>
-        
+                                                    </div>
+                                                </a>
                                                 <div class="block-description">
-                                                    <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-                                                                                
-                                                        @if ($ThumbnailSetting->title == 1)         <!-- Title -->
-                                                            <h6> {{ strlen($recommended_video->title) > 17 ? substr($recommended_video->title, 0, 18) . '...' : $recommended_video->title }} </h6>
-                                                        @endif
-        
-                                                        <div class="movie-time d-flex align-items-center pt-1">
-                                                            @if ($ThumbnailSetting->age == 1)        <!-- Age -->
-                                                                <div class="badge badge-secondary p-1 mr-2"> {{ $recommended_video->age_restrict . ' ' . '+' }}</div>
+                                                    <div class="hover-buttons">
+                                                        <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
+                                                                                    
+                                                            @if ($ThumbnailSetting->title == 1)         <!-- Title -->
+                                                                <p class="epi-name text-left m-0"> {{ strlen($recommended_video->title) > 20 ? substr($recommended_video->title, 0, 21) . '...' : $recommended_video->title }} </p>
                                                             @endif
-        
-                                                            @if ($ThumbnailSetting->duration == 1)  <!-- Duration -->
-                                                                <span class="text-white"> <i class="fa fa-clock-o"></i>
-                                                                    {{ gmdate('H:i:s', $recommended_video->duration) }}
-                                                                </span>
-                                                            @endif
-                                                        </div>
-        
-                                                        @if ($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
+            
                                                             <div class="movie-time d-flex align-items-center pt-1">
                                                                 @if ($ThumbnailSetting->rating == 1)         <!--Rating  -->
                                                                     <div class="badge badge-secondary p-1 mr-2">
@@ -255,53 +371,60 @@
                                                                         </span>
                                                                     </div>
                                                                 @endif
-        
-                                                                @if ($ThumbnailSetting->published_year == 1)   <!-- published_year -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white"> <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                            {{ $recommended_video->year }}
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-        
-                                                                @if ($ThumbnailSetting->featured == 1 && $recommended_video->featured == 1)  <!-- Featured -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white"> <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        @endif
-        
-                                                        <div class="movie-time d-flex align-items-center pt-1">
-                                                            <!-- Category Thumbnail  setting -->
-                                                            <?php
-                                                            $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                                ->where('categoryvideos.video_id', $recommended_video->id)
-                                                                ->pluck('video_categories.name');
-                                                            ?>
-                                                            <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                                            <span class="text-white">
-                                                                <i class="fa fa-list-alt" aria-hidden="true"></i>
+
+                                                                <!-- Category Thumbnail  setting -->
                                                                 <?php
-                                                                $Category_Thumbnail = [];
-                                                                foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
-                                                                    $Category_Thumbnail[] = $CategoryThumbnail;
-                                                                }
-                                                                echo implode(',' . ' ', $Category_Thumbnail);
-                                                                ?>
-                                                            </span>
-                                                            <?php } ?>
-                                                        </div>
-        
-                                                        <div class="hover-buttons">
-                                                            <a class="text-white d-flex align-items-center" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-                                                                <img class="ply mr-1" alt="ply" width="10%" height="10%" src="{{ URL::to('/assets/img/default_play_buttons.svg') }} " /> Watch Now
-                                                            </a>
-                                                            <div class="hover-buttons d-flex">
+                                                                    $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
+                                                                        ->where('categoryvideos.video_id', $recommended_video->id)
+                                                                        ->pluck('video_categories.name');
+                                                                    ?>
+                                                                    <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                                                    <span class="text-white">
+                                                                        <?php
+                                                                        $Category_Thumbnail = [];
+                                                                        foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
+                                                                            $Category_Thumbnail[] = $CategoryThumbnail;
+                                                                        }
+                                                                        echo implode(',' . ' ', $Category_Thumbnail);
+                                                                        ?>
+                                                                    </span>
+                                                                    <?php } ?>
                                                             </div>
-                                                        </div>
-                                                    </a>
+            
+                                                            @if ($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->duration == 1)
+                                                                <div class="movie-time d-flex align-items-center pt-1 mb-3">
+
+                                                                    @if ($ThumbnailSetting->duration == 1)  <!-- Duration -->
+                                                                        <span class="text-white">
+                                                                            {{ gmdate('H:i:s', $recommended_video->duration) }}
+                                                                        </span>
+                                                                    @endif 
+
+                                                                    @if ($ThumbnailSetting->age == 1)     <!-- Age -->
+                                                                        <div class="badge badge-secondary p-1 mr-2"> {{ $recommended_video->age_restrict . ' ' . '+' }}</div>
+                                                                    @endif
+
+                                                                    @if ($ThumbnailSetting->published_year == 1)   <!-- published_year -->
+                                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                                            <span class="text-white"> <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                                {{ $recommended_video->year }}
+                                                                            </span>
+                                                                        </div>
+                                                                    @endif
+                                                                    
+                                                                    @if ($ThumbnailSetting->featured == 1 && $recommended_video->featured == 1)  <!-- Featured -->
+                                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                                            <span class="text-white"> <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            @endif
+
+                                                            <a class="epi-name text-white mb-0 btn btn-primary">Watch Now</a>
+
+                                                            </div>
+                                                        </a>
                                                 </div>
                                             </div>
                                         </a>
