@@ -189,7 +189,8 @@
 
                $audios = App\Audio::join('category_audios', 'category_audios.audio_id', '=', 'audio.id')
                                  ->where('category_id','=',$category->id)->where('active', '=', '1')
-                                 ->where('active', '=', '1');
+                                 ->where('active', '=', '1')
+                                 ->where('status', '=', '1');
                 $audios = $audios->latest('audio.created_at')->get();
                //  dd($audios);
             ?>

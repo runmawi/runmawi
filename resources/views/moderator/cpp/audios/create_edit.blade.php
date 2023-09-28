@@ -50,7 +50,7 @@
 } 
 
 </style>
-<div id="content-page" class="content-page">
+<div id="content-page" class="content-page firstaudio">
     <div class="container-fluid">
         <div class="admin-section-title">
             <div class="iq-card">
@@ -387,7 +387,7 @@ data: {
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 											<div class="panel-title"><label>Album</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
-												<p class="p1">Select a Audio Album Below:</p>
+												<p >Select a Audio Album Below:</p>
 												<select id="album_id" name="album_id" class="form-control">
 													@foreach($audio_albums as $albums)
 													<option value="{{ $albums->id }}" @if(!empty($audio->album_id) && $audio->album_id == $albums->id)selected="selected"@endif>{{ $albums->albumname }}</option>
@@ -397,34 +397,31 @@ data: {
 										</div>
 									</div>
 									</div>
-								<div class="row p-0 mt-3 align-items-center"> 
-									<div class="col-sm-6">
-										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-											<div class="panel-title"><label>Category</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-											<div class="panel-body" style="display: block;"> 
-												<p class="p1">Select a Audio Category Below:</p>
-												<!-- <select id="audio_category_id" name="audio_category_id" class="form-control">
-													@foreach($audio_categories as $category)
-													<option value="{{ $category->id }}" @if(!empty($audio->audio_category_id) && $audio->audio_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
-													@endforeach
-												</select> -->
-											<select class="form-control js-example-basic-multiple"  name="audio_category_id[]"  id="audio_category_id"  multiple="multiple" >
-						                        @foreach($audio_categories as $category)
-                                                @if(in_array($category->id, $category_id))
-												<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
-												@else
-												<option value="{{ $category->id }}">{{ $category->name }}</option>
-												@endif      
-												@endforeach
+								<div class="row mt-3"> 
+								<div class="col-sm-6">
+									<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+										<div class="panel-title"><label>Category</label> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+										<div class="panel-body" style="display: block;"> 
+											<p>Select a Audio Category Below:</p> 
+											<select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+											@foreach($audio_categories as $category)
+											@if(in_array($category->id, $category_id))
+											<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
+											@else
+											<option value="{{ $category->id }}">{{ $category->name }}</option>
+											@endif      
+											@endforeach
 											</select>
-											</div> 
-										</div>
+
+										</div> 
 									</div>
+									</div>
+								
 									<div class="col-sm-6">
 										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 											<div class="panel-title"><label>Audio Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body" style="display: block;"> 
-                                                <p class="p1"> IMDB Ratings 10 out of 10</p>
+                                                <p > IMDB Ratings 10 out of 10</p>
 												<!-- <input class="form-control" name="rating" id="rating" value="@if(!empty($audio->rating)){{ $audio->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
 												<select  class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);">
 													<option value="1" >1</option>
@@ -847,6 +844,7 @@ var Token = "<?= csrf_token() ?>";
   $('#audio_file').hide();
   $('#Next').hide();
   $('#video_details').show();
+  $('.firstaudio').hide();
 
   });
     </script>

@@ -261,6 +261,13 @@ class MusicStationController extends Controller
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    if(!Auth::guest()){
+                        $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        $item['role'] = Auth::user()->role;
+                    }else{
+                        $item['PpvPurchase_Status'] = 0;
+                        $item['role'] = '';
+                    }
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
                         if(count($castcrew) > 0){
@@ -301,7 +308,9 @@ class MusicStationController extends Controller
             }else{
                 $ppv_status = 0 ;
             }
-            // dd($ppv_status);
+            $OtherMusicStation = MusicStation::where('id','!=', $MusicStation_id)->get();
+
+            // dd($OtherMusicStation);
             $data = array(
                 'audioppv' => $audioppv,
                 'album' => $MusicStation,
@@ -321,7 +330,10 @@ class MusicStationController extends Controller
                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
                 'songs' => (array("songs" => $merged_audios_lyrics)),
-        );
+                'playlist_name' => 'Related Station Songs',
+                'playlist_station' => 1,
+                'OtherMusicStation' => $OtherMusicStation,
+            );
             
             // dd( $data);
 
@@ -373,5 +385,98 @@ class MusicStationController extends Controller
         }
         return Theme::view('ListMusicStation', $data);
     }
+
+    
+    public function AutoStoreStation(Request $request){
+
+        try {
+
+            $audio_id = $request->audio_id ;
+
+            $station_based_artists = Audioartist::where('audio_id',$audio_id)->pluck('artist_id')->toArray();
+            $station_based_keywords = CategoryAudio::where('audio_id',$audio_id)->pluck('category_id')->toArray();
+
+            $Setting = Setting::first();
+            
+            $image  = URL::to('/').'/public/uploads/images/'.$Setting->default_video_image;
+
+
+            $artist_audios = [];
+
+        if(count($station_based_artists) > 0){
+
+            foreach($station_based_artists as $value){
+
+                $artist_audios = Audioartist::select('audio.id')->join('audio', 'audio.id', '=', 'audio_artists.audio_id')
+                ->where('artist_id',$value)->groupBy('audio_artists.audio_id')->get();
+
+            }
+            
+        }
+
+        $category_audios = [];
+
+        if(count($station_based_keywords) > 0){
+
+            foreach($station_based_keywords as $value){
+
+                $category_audios = CategoryAudio::select('audio.id')->join('audio', 'audio.id', '=', 'category_audios.audio_id')
+                ->where('category_id',$value)->groupBy('category_audios.audio_id')->get();
+
+            }
+
+        }
+        $station_name = Audio::where('id',$audio_id)->pluck('title')->first();
+
+            $MusicStation = new MusicStation();
+            $MusicStation->station_name = $request->station_name;
+            $MusicStation->station_slug = str_replace(" ", "-", $request->station_name);
+            $MusicStation->station_type = 'both';
+            $MusicStation->station_based_artists = json_encode($station_based_artists);
+            $MusicStation->station_based_keywords = json_encode($station_based_keywords);
+            $MusicStation->image = $image;
+            $MusicStation->user_id = Auth::User()->id;
+            $MusicStation->save();
+
+            $station_id = $MusicStation->id;
+
+             if(count($artist_audios) > 0){
+
+                foreach($artist_audios as $value){
+    
+                    $UserMusicStation = new UserMusicStation();
+                    $UserMusicStation->user_id = Auth::User()->id;
+                    $UserMusicStation->station_id = $station_id;
+                    $UserMusicStation->audio_id = $value->id;
+                    $UserMusicStation->save();
+
+                }
+
+            }
+
+            if(count($category_audios) > 0){
+
+                foreach($category_audios as $value){
+    
+                    $UserMusicStation = new UserMusicStation();
+                    $UserMusicStation->user_id = Auth::User()->id;
+                    $UserMusicStation->station_id = $station_id;
+                    $UserMusicStation->audio_id = $value->id;
+                    $UserMusicStation->save();
+
+                }
+
+            }
+
+            return 1;
+
+        } catch (\Throwable $th) {
+            // throw $th;
+            return 0 ;
+        }
+        
+    }
+
+   
 
 }

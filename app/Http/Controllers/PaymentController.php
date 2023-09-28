@@ -1926,7 +1926,7 @@ public function UpgadeSubscription(Request $request){
       $title =  $audio->title;
       // $commssion = VideoCommission::first();
       $commission = VideoCommission::where('type', 'CPP')->first();
-      $percentage = $commssion->percentage; 
+      $percentage = @$commssion->percentage; 
       $ppv_price = $audio->ppv_price;
       // $admin_commssion = ($percentage/100) * $ppv_price ;
       $moderator_commssion = $ppv_price - $percentage;
@@ -1940,7 +1940,7 @@ public function UpgadeSubscription(Request $request){
        $total_amount = $audio->ppv_price;
        $title =  $audio->title;
        $commssion = VideoCommission::where('type','Channel')->first();;
-       $percentage = $commssion->percentage; 
+       $percentage = @$commssion->percentage; 
        $ppv_price = $audio->ppv_price;
        // $admin_commssion = ($percentage/100) * $ppv_price ;
        $moderator_commssion = $ppv_price - $percentage;
@@ -1975,11 +1975,21 @@ public function UpgadeSubscription(Request $request){
           $publishable_key= null;
       } 
     $stripe = Stripe::make($secret_key, '2020-03-02');
-    $charge = $stripe->charges()->create([
-      'source' => $request->get('tokenId'),
-      'currency' => 'USD',
-      'amount' => $request->get('amount')
-    ]);
+
+    try {
+      $charge = $stripe->charges()->create([
+        'source' => $request->get('tokenId'),
+        'currency' => 'USD',
+        'amount' => $request->get('amount')
+      ]);
+  
+      // Handle a successful charge here if needed.
+  } catch (CardErrorException $e) {
+      // Handle the card error and return a response
+      return response()->json(['error' => $e], 422);
+  }
+
+
     $purchase = new PpvPurchase;
     $purchase->user_id = $user_id;
     $purchase->audio_id = $audio_id;

@@ -33,61 +33,54 @@
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
   </script>
 <style>
-     .reveal{
-        margin-left: -57px;
-   
-          height: 45px !important;
-    background: #ED553B !important;
-    color: #fff !important;
-    position: absolute;
-    right: 0px;
-   border-radius: 0!important;
-    top: -61px;
-    }
-    .sign-in-page .btn{
-         border-radius: 0!important;
-    }
-    h3 {font-size: 30px!important;}
-    .from-control::placeholder{
-        color: #7b7b7b!important;
-    }
-    .links{
-         color: #fff;
-    }
-    .nv{
-        font-size: 14px;
-       color: #fff;
-        margin-top: 25px;
-    }
-    .km{
-       text-align:center;
-         font-size: 75px;
-        font-weight: 900;
-        
-       
-    }
-    
-       
-    .signcont {
- }
-    a.f-link {
-    margin-bottom: 1rem;
-       
-        font-size: 14px;
-    
+.reveal{
+margin-left: -57px;
+height: 45px !important;
+background: #ED553B !important;
+color: #fff !important;
+position: absolute;
+right: 0px;
+border-radius: 0!important;
+top: -61px;
 }
-   .d-inline-block {
-    display: block !important;
+.sign-in-page .btn{
+border-radius: 0!important;
+}
+h3 {font-size: 30px!important;}
+.from-control::placeholder{
+color: #7b7b7b!important;
+}
+.links{
+color: #fff;
+}
+.nv{
+font-size: 14px;
+color: #fff;
+margin-top: 25px;
+}
+.km{
+text-align:center;
+font-size: 75px;
+font-weight: 900;
+}
+.signcont {
+}
+a.f-link {
+margin-bottom: 1rem;
+font-size: 14px;
+}
+.d-inline-block {
+display: block !important;
 }
 i.fa.fa-google-plus {
-    padding: 10px !important;
+padding: 10px !important;
 }
-    .demo_cred {
-    background: #5c5c5c69;
-    padding: 15px;
-    border-radius: 15px;
-    border: 2px dashed #51bce8;
-    text-align: left;
+.demo_cred {
+background: #5c5c5c69;
+padding: 15px;
+border-radius: 15px;
+border: 2px dashed #51bce8;
+text-align: left;
 }    
 </style>
     </head>
@@ -212,32 +205,25 @@ i.fa.fa-google-plus {
 						</div>-->
                         <div class="soc mb-3">
                             <div class="d-flex align-items-center">
+                                <?php if($system_settings != null){ ?>
+                                    <div>
+                                        <p class="links">Login with using:</p>
+                                    </div>
+                                <?php } ?>
                                <?php if($system_settings != null && $system_settings->facebook == 1){ ?>
                                 <div>
-                                    <p class="links">Login with using:</p>
+                                    <a href="{{ url('/auth/redirect/facebook') }}" class="" >
+                                    <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                 </div>
-                                <div>
-                                     <a href="{{ url('/auth/redirect/facebook') }}" class="" >
-                                     <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
-                                    </div>
                                <?php } ?>
-
-                               <!-- <div>
-                                      <a href="{{ url('/auth/redirect/twiter') }}" class="" >
-                                          <img src="<?php echo URL::to('/').'/assets/img/twiter.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
-                                </div>-->
                                 <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
-                                        <div>
-                                            <p class="links">Login with using:</p>
-                                        </div>
                                     <div>
-                                    <a href="{{ url('/auth/redirect/google') }}" class="" >
-                                        <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
-
+                                        <a href="{{ url('/auth/redirect/google') }}" class="" >
+                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                        </a>
                                     </div>
                                 <?php  } ?>
-                                
-                                </div>
+                            </div>
                          </div>
                      </form>
                        <div class="">

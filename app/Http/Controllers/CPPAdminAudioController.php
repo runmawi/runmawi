@@ -374,10 +374,9 @@ class CPPAdminAudioController extends Controller
         }else{
             $lyrics = $audio->lyrics ;
         }
-
+        $data = $input;
         $data['ppv_price'] = $request->ppv_price;
         $data['ios_ppv_price'] = $request->ios_ppv_price;
-        
         /*Slug*/
         if(  $data['slug']  == '' || $audio->slug == ''){
 
@@ -421,7 +420,9 @@ class CPPAdminAudioController extends Controller
         $path = public_path().'/uploads/audios/';
         $image_path = public_path().'/uploads/images/';
         if(empty($data['player_image'])){
-            $player_image = "default_horizontal_image.jpg";
+            // unset($data['player_image']);
+
+            // $player_image = $data['player_image'];
         } else {
             $image = $data['player_image'];
             if($image != ''  && $image != null){
@@ -453,7 +454,7 @@ class CPPAdminAudioController extends Controller
        
 
         $audio->update($data);
-        $audio->player_image =  $player_image;
+        // $audio->player_image =  $player_image;
         $audio->uploaded_by =  'CPP';
 
         $audio->search_tags = !empty($request->searchtags) ? $request->searchtags : null ;
@@ -664,7 +665,7 @@ class CPPAdminAudioController extends Controller
                
           
                 $file = $request->file->getClientOriginalName();
-                // print_r($file);exit();
+                // print_r($user_id);exit();
         
                 $newfile = explode(".mp4",$file);
                 $mp3titile = $newfile[0];
@@ -672,6 +673,8 @@ class CPPAdminAudioController extends Controller
                 $audio = new Audio();
                 // $audio->disk = 'public';
                 $audio->title = $mp3titile;
+                $audio_id = $audio->id;
+                $audio_id = $audio->id;
                 $audio->save(); 
                 $audio_id = $audio->id;
 
@@ -684,9 +687,9 @@ class CPPAdminAudioController extends Controller
                         $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
                     }else{
                         $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
-                        echo "<pre>";
-                        print_r($audio_upload);
-                        exit();  
+                        // echo "<pre>";
+                        // print_r($audio_upload);
+                        // exit();  
                         FFMpeg::open($audio_upload->getClientOriginalName())
                         ->export()
                         ->inFormat(new \FFMpeg\Format\Audio\Mp3)
@@ -703,13 +706,17 @@ class CPPAdminAudioController extends Controller
                   //   $update_url = Audio::find($audio_id);
 
                     $update_url->mp3_url = $data['mp3_url'];
+                    $update_url->user_id = $user_id;
+                    $update_url->uploaded_by = 'CPP';
         
                     $update_url->save();  
-             
+                    $user = Session::get('user'); 
+                    $user_id = $user->id;
                      $value['success'] = 1;
                      $value['message'] = 'Uploaded Successfully!';
                      $value['audio_id'] = $audio_id;
                      $value['user_id'] = $user_id;
+                     $value['uploaded_by'] =  'CPP';
                      $value['title'] = $title;
              
                      

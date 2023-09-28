@@ -1728,7 +1728,7 @@ class AdminAudioController extends Controller
         {
             $audio = Audio::findOrFail($id);
             $audio->active = 2;
-            $audio->status = 1;
+            $audio->status = 2;
             $audio->save();         
             
              

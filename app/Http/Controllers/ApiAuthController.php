@@ -298,6 +298,7 @@ class ApiAuthController extends Controller
               $user->country = $request->country;
               $user->state = $request->state;
               $user->city = $request->city;
+              $user->DOB = $request->dob;
               $user->support_username = $request->support_username;
               $user->active = 1;
               $user->save();
@@ -1382,7 +1383,7 @@ public function verifyandupdatepassword(Request $request)
           $item['ads_seen_status']    = $item->ads_status;
           $item['ios_publish_time']   = Carbon::parse($item->publish_time)->format('Y-m-d H:i:s');
 
-          if($item->access == 'ppv' && $request->user_id != ''){
+          if($item->access == 'ppv' && $request->user_id != '' || $item->access == 'subscriber' && $request->user_id != ''){
             $item['rent_url']   = URL::to('category/videos').'/'.$item->slug;
           }
           // Videos URL 
@@ -5815,6 +5816,11 @@ return response()->json($response, 200);
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['audio_duration'] = $item->duration >= "3600" ?  gmdate('H:i:s', $item->duration  ) :  gmdate('i:s', $item->duration  ) ;
+            if($item->lyrics_json != null){
+              $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+            }else{
+              $item['lyrics_json'] = null  ;
+            }
 
             return $item;
         });
@@ -13890,8 +13896,8 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
         $data = AudioCategory::query()->latest()->limit(30)->get()->map(function ($item) {
-              $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
-              $item['Player_image_url'] = URL::to('public/uploads/images/'.$item->player_image) ;
+              $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
+              $item['Player_image_url'] = URL::to('public/uploads/audios/'.$item->player_image) ;
               $item['description'] = null ;
               $item['source']    = "Audios";
             return $item;

@@ -682,7 +682,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                 <h4 class="mb-3">Sorry, this video is only available to  Subscribers / PPV Rent </h4>
                                 
                                 <div>
-                                <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this vide</a> 
+                                <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscriber to watch this vide</a> 
                                 </div>
                             </div>
                         </div>
@@ -896,7 +896,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                         <h4 class="mb-3"> / PPV Rent </h4>
                                         
                                         <div>
-                                        <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscribers to watch this vide</a> 
+                                        <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscriber to watch this vide</a> 
                                         </div>
                                     </div>
                                 </div>

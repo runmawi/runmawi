@@ -831,6 +831,26 @@ function default_horizontal_image()
     return  $default_horizontal_image ;
 }
 
+ function default_vertical_image_url()
+{
+    $Vertical_Default_Image =  App\Setting::latest()->get()->map(function ($item) {
+        $item['default_image'] = $item->default_video_image != null ? URL::to('public/uploads/images/'.$item->default_video_image) : URL::to('public/uploads/images/default_vertical_image.png');
+        return $item['default_image'];
+    })->first();
+
+    return $Vertical_Default_Image ;
+
+}
+
+ function default_horizontal_image_url()
+{
+     $Horizontal_Default_Image =  App\Setting::latest()->get()->map(function ($item) {
+        $item['default_image'] = $item->default_horizontal_image != null ? URL::to('public/uploads/images/'.$item->default_horizontal_image) : URL::to('public/uploads/images/default_horizontal_image.png');
+        return $item['default_image'];
+    })->first();
+
+    return $Horizontal_Default_Image ;
+}
 
 function check_storage_exist(){
 
