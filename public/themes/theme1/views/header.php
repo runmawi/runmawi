@@ -593,7 +593,7 @@
                                             </a>
 
                                             <ul class="dropdown-menu categ-head">
-                                                <?php foreach ( $cat->take(4) as $category) { ?>
+                                                <?php foreach ( $cat as $key => $category) { ?>
                                                 <li>
                                                     <a class="dropdown-item cont-item"
                                                         style="text-decoration: none!important;"
@@ -602,12 +602,6 @@
                                                     </a>
                                                 </li>
                                                 <?php } ?>
-
-                                                <li>
-                                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/categoryList'); ?>">
-                                                        <?php echo 'More...'; ?>
-                                                    </a>
-                                                </li>
                                             </ul>
 
                                         </li>

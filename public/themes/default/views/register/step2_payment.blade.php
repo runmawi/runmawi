@@ -1117,7 +1117,7 @@ for (var i = 0; i < btns.length; i++) {
 	
     if( swal({
         title: "Payment Failed!",
-        text: "Your Payment is failed",
+        text: "Kindly, fill out every field with a value.",
         type: "warning"
         }).then(function() {
             window.location = base_url+'/register2';
@@ -1429,7 +1429,7 @@ function paypalplan_details(ele){
                         text: data.message,
                         icon: "warning",
                         }).then(function() {
-                            window.location = base_url+'/login';
+                            location.reload();
                         })
                     }
                 } 
@@ -1467,7 +1467,7 @@ function paypalplan_details(ele){
                         text: data.message,
                         icon: "warning",
                         }).then(function() {
-                            window.location = base_url+'/login';
+                            location.reload();
                         })
                     }
                 } 
