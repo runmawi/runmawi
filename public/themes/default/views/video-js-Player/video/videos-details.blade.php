@@ -32,24 +32,26 @@
         <div class="opacity-layer"></div>
 
         <div class="pageWrapper">
-        {{-- Breadcrumbs  --}}
-        <div class="scp-breadcrumb">
-            <ul class="breadcrumb">
-            
-                <li><a href="{{ route('latest-videos') }}">{{ ucwords('videos') }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
-            
-                @foreach( $videodetail->categories as $key => $category )
-
-                    <li class="breadcrumb-item"> <a href="{{ route('video_categories',[ $category->slug ]) }}">{{ $category->name }}</a> </li>
-
-                @endforeach
                 
-                <li> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
-            
-                <li class="active">{{ (strlen($videodetail->title) > 50) ? ucwords(substr($videodetail->title,0,120).'...') : ucwords($videodetail->title) }}</li>
-            
-            </ul>
-        </div>
+                            {{-- Breadcrumbs  --}}
+            <div class="scp-breadcrumb">
+                <ul class="breadcrumb">
+                
+                    <li><a href="{{ route('latest-videos') }}">{{ ucwords('videos') }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
+                
+                    @foreach( $videodetail->categories as $key => $category )
+
+                        <li class="breadcrumb-item"> <a href="{{ route('video_categories',[ $category->slug ]) }}">{{ $category->name }}</a> </li>
+
+                    @endforeach
+                    
+                    <li> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
+                
+                    <li class="active">{{ (strlen($videodetail->title) > 50) ? ucwords(substr($videodetail->title,0,120).'...') : ucwords($videodetail->title) }}</li>
+                
+                </ul>
+            </div>
+
             <div class="content">
                 <div class="left">
                     <span class=" lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
@@ -63,12 +65,15 @@
                     </div>
 
                     <div class="utilities">  
-                        {{ $videodetail->year ? ''. $videodetail->year .'' : " "}} 
+                        {{ optional($videodetail)->year }} 
+                        <i class="fas fa-circle"></i>
+
+                        {{ $videodetail->duration != null ? gmdate('H:i:s', $videodetail->duration)  : null  }} 
                         <i class="fas fa-circle"></i> 
-                        {{ $videodetail->duration ? ''. $videodetail->duration .'' : " "}} 
+
+                        {{ optional($videodetail)->age_restrict }}
                         <i class="fas fa-circle"></i> 
-                        {{ $videodetail->age_restrict ? ''. $videodetail->age_restrict .'' : " "}}
-                        <i class="fas fa-circle"></i> 
+                        
                         <?php if(isset($view_increment) && $view_increment == true ): ?>
                             <?= $movie->views + 1 ?>
                         <?php else: ?>
@@ -141,7 +146,7 @@
                                     </li>
                                     <!-- PPV button -->
                                     <li>
-                                        <?php if ( $ppv_exist == 0 && $videodetail->global_ppv != null && $user->role!="admin" || $ppv_exist == 0 && $videodetail->ppv_price != null  && $user->role!="admin") { ?>
+                                        <?php if (  $videodetail->global_ppv != null && $user->role!="admin" && $videodetail->ppv_price != null  && $user->role!="admin") { ?>
                                             <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
                                                 <?php echo __('Purchase Now'); ?> 
                                             </button>
@@ -401,7 +406,7 @@
                                                                     @endif 
 
                                                                     @if ($ThumbnailSetting->age == 1)     <!-- Age -->
-                                                                        <div class="badge badge-secondary p-1 mr-2"> {{ $recommended_video->age_restrict . ' ' . '+' }}</div>
+                                                                        <div class="badge badge-secondary p-1 mr-2"> {{ optional($recommended_video)->age_restrict . ' ' . '+' }}</div>
                                                                     @endif
 
                                                                     @if ($ThumbnailSetting->published_year == 1)   <!-- published_year -->
