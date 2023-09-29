@@ -45,11 +45,19 @@ class ConvertEpisodeVideo implements ShouldQueue
             $storepath = $this->storepath;
 
 
+            // $BitrateFormat250 = (new X264('aac', 'libx264'))->setKiloBitrate(250);
+            // $BitrateFormat360 = (new X264('aac', 'libx264'))->setKiloBitrate(300);
+            // $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(500);
+            // $midBitrateFormat  =(new X264('aac', 'libx264'))->setKiloBitrate(600);
+            // $highBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(1000);
+
+                    // New  Bitrate
             $BitrateFormat250 = (new X264('aac', 'libx264'))->setKiloBitrate(250);
-            $BitrateFormat360 = (new X264('aac', 'libx264'))->setKiloBitrate(300);
-            $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(500);
-            $midBitrateFormat  =(new X264('aac', 'libx264'))->setKiloBitrate(600);
-            $highBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(1000);
+            $BitrateFormat360 = (new X264('aac', 'libx264'))->setKiloBitrate(600);
+            $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(1000);
+            $midBitrateFormat  =(new X264('aac', 'libx264'))->setKiloBitrate(2500);
+            $highBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(5000);
+
             $converted_name = ConvertEpisodeVideo ::getCleanFileName($video);
         
             $disk = 'public';
@@ -64,21 +72,38 @@ class ConvertEpisodeVideo implements ShouldQueue
         })
         
             
+            // ->addFormat($BitrateFormat250, function($media) {
+            //     $media->addFilter('scale=352:240');
+            // })
+            // ->addFormat($BitrateFormat360, function($media) {
+            //     $media->addFilter('scale=480:360');
+            // })
+            // ->addFormat($lowBitrateFormat, function($media) {
+            //     $media->addFilter('scale=640:480');
+            // })
+            // ->addFormat($midBitrateFormat, function($media) {
+            //     $media->addFilter('scale=960:720');
+            // })
+            // ->addFormat($highBitrateFormat, function($media) {
+            //     $media->addFilter('scale=1280:1080');
+            // })
+
             ->addFormat($BitrateFormat250, function($media) {
-                $media->addFilter('scale=352:240');
+                $media->addFilter('scale=420:240');
             })
             ->addFormat($BitrateFormat360, function($media) {
-                $media->addFilter('scale=480:360');
+                $media->addFilter('scale=640:360');
             })
             ->addFormat($lowBitrateFormat, function($media) {
-                $media->addFilter('scale=640:480');
+                $media->addFilter('scale=896:480');
             })
-            ->addFormat($midBitrateFormat, function($media) {
-                $media->addFilter('scale=960:720');
+             ->addFormat($midBitrateFormat, function($media) {
+               $media->addFilter('scale=1280:720');
             })
-            ->addFormat($highBitrateFormat, function($media) {
-                $media->addFilter('scale=1280:1080');
+             ->addFormat($highBitrateFormat, function($media) {
+               $media->addFilter('scale=1920:1080');
             })
+            
             ->save($converted_name);
 
 
