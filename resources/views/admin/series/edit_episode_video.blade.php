@@ -83,7 +83,7 @@ border-radius: 0px 4px 4px 0px;
        formData.append("_token", CSRF_TOKEN);
        this.on("success", function(file, value) {
           
-         if(value.video_id == videoid){
+         if(value.episode_id == Episodeid){
                      swal("Episode Update Successfull !");
                   }
          
