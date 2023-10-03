@@ -6320,6 +6320,11 @@ return response()->json($response, 200);
 
               $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                if($item->lyrics_json != null){
+                  $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+                }else{
+                  $item['lyrics_json'] = null  ;
+                }
                 return $item;
               });
 
@@ -6329,6 +6334,11 @@ return response()->json($response, 200);
 
             $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
               $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              if($item->lyrics_json != null){
+                $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+              }else{
+                $item['lyrics_json'] = null  ;
+              }
               return $item;
             });
         }
@@ -6354,6 +6364,11 @@ return response()->json($response, 200);
 
                 $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
                     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                    if($item->lyrics_json != null){
+                      $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+                    }else{
+                      $item['lyrics_json'] = null  ;
+                    }
                     return $item;
                 });
 
@@ -6363,6 +6378,11 @@ return response()->json($response, 200);
 
               $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                if($item->lyrics_json != null){
+                  $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+                }else{
+                  $item['lyrics_json'] = null  ;
+                }
                 return $item;
             });
           }
@@ -8509,11 +8529,32 @@ public function Adstatus_upate(Request $request)
 
         if(count($audios_count) > 0 ){
 
-          $audios = Audio::where('album_id',$album_id)->inRandomOrder()->get();
-
+          // $audios = Audio::where('album_id',$album_id)->inRandomOrder()->get();
+          
+          $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                        if($item->lyrics_json != null){
+          $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+          }else{
+            $item['lyrics_json'] = null  ;
+          }
+              return $item;
+          });
+          
         }
         else{
-          $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->get();
+          // $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->get();
+
+          $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                        if($item->lyrics_json != null){
+          $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+          }else{
+            $item['lyrics_json'] = null  ;
+          }
+              return $item;
+          });
+
         }
 
       $status = true;
