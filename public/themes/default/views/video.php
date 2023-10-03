@@ -469,7 +469,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 
-                                    <video <?= $autoplay ?> id="video" crossorigin  playsinline allow="autoplay" class="adstime_url"
+                                    <video <?= $autoplay ?> muted id="video" crossorigin  playsinline allow="autoplay" class="adstime_url"
                                         poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
                                         data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
                                         <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>" type='application/x-mpegURL' label='auto'>
@@ -520,7 +520,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                             <?php  elseif($video->type == 'mp4_url'):  ?>
 
                                 <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                                    <video id="videoPlayer" <?= $autoplay ?> class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
+                                    <video id="videoPlayer" muted <?= $autoplay ?> class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
                                     
                                         <source src="<?php if (!empty($video->mp4_url)) { echo $video->mp4_url; } else { echo $video->trailer; } ?>" type='video/mp4' label='auto'>
                                     
