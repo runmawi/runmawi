@@ -3096,6 +3096,7 @@ class AdminSeriesController extends Controller
             $video->mp4_url = $path;
             $video->type = 'm3u8';
             $video->status = 0;
+            $video->active = 0;
             $video->disk = 'public';
             $video->path = $path;
             $video->mp4_url = $storepath;

@@ -36,7 +36,7 @@
                         @endforeach
                         @endif	
 
-                    <form method="POST" action="{{ URL::to('admin/  ') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
+                    <form method="POST" action="{{ URL::to('admin/channel/user/store') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit">
                         @csrf
                         <div class="col-md-6" style="width: 50%; float: left;">
 
