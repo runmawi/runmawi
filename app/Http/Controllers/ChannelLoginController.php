@@ -1076,7 +1076,6 @@ public function ChannelCreate(Request $request)
 public function ChannelStore(Request $request)
 {
     $settings = Setting::first();
-
     try {
 
         $input = $request->all();
@@ -1154,7 +1153,7 @@ public function ChannelStore(Request $request)
             $channel->status = 1;
             $channel->save();
 
-            $user_data = User::where('email', $request->email_id)->first();
+            $user_data = User::where('email', $request->email)->first();
 
             if(empty($user_data)){
 
@@ -1163,7 +1162,7 @@ public function ChannelStore(Request $request)
                 $user->name = $request->channel_name;
                 $user->role = 'admin';
                 $user->username = $request->channel_name;
-                $user->email = $request->email_id;
+                $user->email = $request->email;
                 $user->active = 1;
                 $user->save();
 

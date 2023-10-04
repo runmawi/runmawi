@@ -111,7 +111,8 @@ class ConvertEpisodeVideo implements ShouldQueue
         $vid_name = $video_name[0];
         $this->video->update([
             'path' =>  $vid_name,
-            'status' => 1
+            'status' => 1,
+            'active' => 1
         ]);
     }
 
