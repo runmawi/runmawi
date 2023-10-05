@@ -38,7 +38,7 @@
                                                     <h4><?php  echo (strlen($Music_Station->station_name) > 12) ? substr($Music_Station->station_name,0,10).'...' : $Music_Station->station_name; ?></h4>
                                                 </a>
                                                 <a href="{{ URL::to('delete-station').'/'.$Music_Station->id   }}">
-                                                   <h6><i class="fa fa-trash"></i></h6>
+                                                   <h6 class='trash'><i class="fa fa-trash"></i></h6>
                                                 </a>
                                     <div>
                                         
