@@ -6404,6 +6404,11 @@ return response()->json($response, 200);
         ->where('id','!=',$audio_id)->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                 $item['mp4_url'] = URL::to('/').'/public/uploads/videos/'.$item->mp4_url;
+                if($item->lyrics_json != null){
+                  $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+                }else{
+                  $item['lyrics_json'] = null  ;
+                }
                 return $item;
             });
         $response = array(
