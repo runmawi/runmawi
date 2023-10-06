@@ -45,6 +45,9 @@ i#dislike {
 i#like {
     padding: 10px;
 }
+.share-box{
+    width: 100px;
+}
 </style>
 <input type="hidden" value="<?= $media_url ?>" id="media_url">
 <?php
@@ -57,7 +60,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
        <div class="d-flex align-items-center"> 
           <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
           <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
-          <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+          <!-- <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a> -->
        </div>
     </div>
 </li>
@@ -205,7 +208,7 @@ function EmbedCopy() {
     var media_path = '<?= $url_path ?>';
   var url =  navigator.clipboard.writeText(window.location.href);
   var path =  navigator.clipboard.writeText(media_path);
-  $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>');
+  $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embedded URL</div>');
                setTimeout(function() {
                 $('.add_watch').slideUp('fast');
                }, 3000);

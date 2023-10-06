@@ -32,7 +32,9 @@ textarea.form-control {
             background-color: transparent !important  ;
             font-size: revert;
       }
-      
+      .share-box{
+    width: 100px;
+}
 </style>
 
 <?php if (Session::has('message')): ?>
@@ -400,8 +402,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                                             class="share-ico"><i class="ri-facebook-fill"></i></a>
                                         <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
                                             class="share-ico"><i class="ri-twitter-fill"></i></a>
-                                        <a href="#"onclick="Copy();" class="share-ico"><i
-                                                class="ri-links-fill"></i></a>
+                                        <!-- <a href="#"onclick="Copy();" class="share-ico"><i
+                                                class="ri-links-fill"></i></a> -->
                                     </div>
                                 </div>
                             </li>
