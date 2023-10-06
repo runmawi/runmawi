@@ -233,7 +233,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                     <div class="col-md-3 p-0">
                     <select class="form-control" id="season_id" name="season_id">
 							<?php foreach($season as $key => $seasons): ?>
-								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
+								<option data-key="<?= $key+1 ;?>" value="season_<?= $seasons->id;?>" >Season <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select></div>
           <ul class="category-page list-inline row p-3 mb-0">
@@ -510,6 +510,7 @@ if('season_'+$val.id == season_id){
 $('#season_id').change(function(){
 	var season_id = $('#season_id').val();
 // alert($('#season_id').val())	
+
 $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
@@ -531,7 +532,7 @@ if('season_'+$val.id == season_id){
   $(".sea").empty();
   // alert($val.id);
   var id = $val.id;
-	$(".sea").html(id);
+	$(".sea").html(i+1);
 }
 });
 
@@ -861,7 +862,7 @@ if (!Hls.isSupported()) {
   $(".sea").empty();
   // alert($val.id);
   var id = $val.id;
-	$(".sea").html(id);
+	$(".sea").html(i+1);
 }
 });
 
