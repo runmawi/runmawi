@@ -914,7 +914,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                         $(id).find($(".fa")).toggleClass('fa fa-plus-circle').toggleClass('fa fa-minus-circle');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to Watch Later</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -926,7 +926,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                         $(id).find($(".fa")).toggleClass('fa fa-minus-circle').toggleClass('fa fa-plus-circle');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from Watch Later</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -966,7 +966,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                         $(id).find($(".fa")).toggleClass('fa fa-heart-o').toggleClass('fa fa-heart');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to Wish List</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -978,7 +978,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                         $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa fa-heart-o');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from Wish List</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1120,7 +1120,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             var url = navigator.clipboard.writeText(window.location.href);
             var path = navigator.clipboard.writeText(media_path);
             $("body").append(
-                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>'
+                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embedded URL</div>'
             );
             setTimeout(function() {
                 $('.add_watch').slideUp('fast');

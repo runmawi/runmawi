@@ -84,7 +84,7 @@ class WebCommentController extends Controller
             Email_notsent_log($user_id,$email_log,$email_template);
         }
 
-        return Redirect::back()->with(['message' => 'Comment Submitted Successfully and Waiting for Admin Approval !', 'note_type' => 'success']);
+        return Redirect::back()->with(['message' => 'Comment Submitted Successfully and Waiting for Admin Approval!', 'note_type' => 'success']);
     }
 
 
