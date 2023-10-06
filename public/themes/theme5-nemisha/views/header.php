@@ -1679,7 +1679,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">My Wishlist</h6>
+                                                                    <h6 class="mb-0 ">Wish List</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -1850,7 +1850,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">My Wishlist</h6>
+                                                                    <h6 class="mb-0 ">Wish List</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
