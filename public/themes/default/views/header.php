@@ -457,7 +457,9 @@
    }body.light-theme .trending-dec{
    color: <?php echo GetLightText(); ?>!important;
    }
-
+   body.light-theme h6.trash{
+   color: black;
+   }
    .Search_error_class {
       color: red;
    }

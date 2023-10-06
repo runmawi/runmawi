@@ -788,7 +788,7 @@ window.location = '<?= URL::to('login') ?>';
         <?php 
         $PpvPurchasestatus = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',@$audio_id)->count();
         ?>
-        alert(id);
+        // alert(id);
         $.ajax({
             url: '<?php echo URL::to('purchased-audio-check'); ?>',
             type: "post",

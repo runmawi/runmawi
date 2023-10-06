@@ -83,7 +83,7 @@ $system_settings = App\SystemSetting::find(1);
                                 
                                 
                             <div class="col-md-12 p-0 text-left">
-                                <label for="" style="color: white;">Upload Logo  :</label>
+                                <label for="" style="color: white;">Upload Picture  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
                             </div>
 

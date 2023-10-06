@@ -101,7 +101,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p>
 						<b><p class="desc" style="color:#fff;"><?php echo $series->description;?></p></b>
                             <div class="row p-0 mt-3 align-items-center">
-                                <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                <div class="col-md-2 trailerbutton">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                           <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
                               <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
                                 <div class="col-md-1 pls  d-flex text-center mt-2">
@@ -127,11 +127,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
 
                             </div>
-                            <div class="modal fade modal-xl" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal fade modal-xl videoModal" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
             <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <div class="modal-body">
+        <div class="modal-body videoModalbody">
         
             
          <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" >
@@ -444,16 +444,17 @@ var publishable_key = $('#publishable_key').val();
 
 
 // alert(livepayment);
+// alert(livepayment);
 
 $(document).ready(function () {  
 
- $('.videoModalClose').click(function (){
-  $('#videoPlayer1')[0].pause();
-  $('#videos')[0].pause();
+$('.videoModalClose').click(function (){
+ $('#videoPlayer1')[0].pause();
+ $('#videos')[0].pause();
 
 });
 
-	var imageseason = '<?= $season_trailer ?>' ;
+ var imageseason = '<?= $season_trailer ?>' ;
 // console.log(imageseason)
 $("#videoPlayer1").hide();
 $("#videos").hide();
@@ -464,29 +465,42 @@ var season_id = $('#season_id').val();
 $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
-// alert($val.trailer_type)	
-	console.log('season_'+$val.id)
-  if( $val.trailer_type == 'mp4_url' || $val.trailer_type == null){
-    $("#videoPlayer1").show();
-    $("#videos").hide();
-    $("#videoPlayer1").attr("src", $val.trailer);
+
+  if( $val.trailer_type == 'mp4_url'){
+  $(".trailerbutton").show();
+   $("#videoPlayer1").show();
+   $("#videos").hide();
+   $("#videoPlayer1").attr("src", $val.trailer);
 
 
-    $('.videoModalClose').click(function (){
-      $('#videoPlayer1')[0].pause();
-    });
-
-  }else{
-    $("#videoPlayer1").hide();
-    $("#videos").show();
-   $("#m3u8urlsource").attr("src", $val.trailer);
-  
-  
    $('.videoModalClose').click(function (){
-      $('#videos')[0].pause();
-    });
+     $('#videoPlayer1')[0].pause();
+   });
 
-  }
+ }else if($val.trailer == '' ){
+ console.log('season_'+$val.id)
+  //  alert('No Season Trailer Added')	
+   $("#videoPlayer1").hide();
+   $("#videos").hide();
+   $(".trailerbutton").hide()
+  //  $(".videoModalbody").empty()
+  //  var img = $val.image;  
+  //  $(".videoModalbody").css({"background-image": "url(" + img + ")"});  
+    // $('#videoModal .videoModalClose').click();
+
+ }else{
+// alert($val.trailer)	
+  $(".trailerbutton").show();
+   $("#videoPlayer1").hide();
+   $("#videos").show();
+  $("#m3u8urlsource").attr("src", $val.trailer);
+ 
+ 
+  $('.videoModalClose').click(function (){
+     $('#videos')[0].pause();
+   });
+
+ }
 }
 });
 
@@ -499,30 +513,40 @@ if('season_'+$val.id == season_id){
 
 
 $('#season_id').change(function(){
-	var season_id = $('#season_id').val();
+ var season_id = $('#season_id').val();
 // alert($('#season_id').val())	
 $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
-	console.log('season_'+$val.id)
-	// $("#theDiv").append("<img id='theImg' src=$val.image/>");
-	$("#myImage").attr("src", $val.image);
-	// $("#videoPlayer1").attr("src", $val.trailer);
-  if( $val.trailer_type == 'mp4_url' || $val.trailer_type == null){
-    $("#videoPlayer1").show();
-    $("#videos").hide();
+ console.log('season_'+$val.id)
+ // $("#theDiv").append("<img id='theImg' src=$val.image/>");
+ $("#myImage").attr("src", $val.image);
+ // $("#videoPlayer1").attr("src", $val.trailer);
+ if( $val.trailer_type == 'mp4_url'){
+   $("#videoPlayer1").show();
+  //  $("#videos").hide();
+  //  alert('$val.trailer')	
+  $(".trailerbutton").show();
 
-    $("#videoPlayer1").attr("src", $val.trailer);
-  }else{
-    $("#videoPlayer1").hide();
-    $("#videos").show();
-    $("#m3u8urlsource").attr("src", $val.trailer);
-  }
+   $("#videoPlayer1").attr("src", $val.trailer);
+ }else if($val.trailer == '' ){
+ console.log('season_'+$val.id)
+  //  alert('No Season Trailer Added')	
+   $("#videoPlayer1").hide();
+  $("#videos").hide();
+   $(".trailerbutton").hide();
+ }else{
+  $(".trailerbutton").show();
+   $("#videoPlayer1").hide();
+   $("#videos").show();
+   $("#m3u8urlsource").attr("src", $val.trailer);
+  //  alert($val.trailer)	
+ }
 
-  $(".sea").empty();
-  // alert($val.id);
-  var id = $val.id;
-	$(".sea").html(id);
+ $(".sea").empty();
+ // alert($val.id);
+ var id = $val.id;
+ $(".sea").html(id);
 }
 });
 
@@ -551,18 +575,18 @@ console.log('Token Created!!');
 console.log(token);
 $('#token_response').html(JSON.stringify(token));
 $.ajax({
- url: '<?php echo URL::to("purchase-series") ;?>',
- method: 'post',
- data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , series_id: series_id },
- success: (response) => {
-   alert("You have done  Payment !");
-   setTimeout(function() {
-     location.reload();
-   }, 2000);
+url: '<?php echo URL::to("purchase-series") ;?>',
+method: 'post',
+data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , series_id: series_id },
+success: (response) => {
+  alert("You have done  Payment !");
+  setTimeout(function() {
+    location.reload();
+  }, 2000);
 
- },
- error: (error) => {
-   swal('error');
+},
+error: (error) => {
+  swal('error');
 }
 })
 
@@ -578,16 +602,16 @@ amount: amount * 100
 }
 </script>
 
-	<!-- <script type="text/javascript"> 
+ <!-- <script type="text/javascript"> 
 
-	// videojs('Player').videoJsResolutionSwitcher(); 
-	$(document).ready(function () {  
-		 $.ajaxSetup({
-		   headers: {
-			 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		   }
-		 });
-	   });
+ // videojs('Player').videoJsResolutionSwitcher(); 
+ $(document).ready(function () {  
+    $.ajaxSetup({
+      headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    });
 
 function pay(amount) {
 var publishable_key = $('#publishable_key').val();
@@ -614,7 +638,7 @@ data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , serie
 success: (response) => {
 alert("You have done  Payment !");
 setTimeout(function() {
- location.reload();
+location.reload();
 }, 2000);
 
 },
@@ -636,14 +660,14 @@ amount: amount * 100
 </script> -->
 
 <script type="text/javascript">
-	var first = $('select').val();
-	$(".episodes_div").hide();
-	$("."+first).show();
+ var first = $('select').val();
+ $(".episodes_div").hide();
+ $("."+first).show();
 
-	$('select').on('change', function() {
-		$(".episodes_div").hide();
-		$("."+this.value).show();
-	});
+ $('select').on('change', function() {
+   $(".episodes_div").hide();
+   $("."+this.value).show();
+ });
 </script>
 
 <script>
@@ -660,86 +684,86 @@ var season_id = $('#season_id').val();
 $.each(obj, function(i, $val)
 {
 
-  if( $val.trailer_type == 'm3u8_url'){
+ if( $val.trailer_type == 'm3u8_url'){
 
-    // alert($('#videos').attr("src"));
-    // alert(sourcevaltrailer);
-  
-  document.addEventListener("DOMContentLoaded", () => {
+   // alert($('#videos').attr("src"));
+   // alert(sourcevaltrailer);
+ 
+ document.addEventListener("DOMContentLoaded", () => {
 
-    // alert(sourcevaltrailer);
-    var video = document.querySelector('#videos');
-    // var sourcess = video.getElementsByTagName("source")[0].src;
-    // alert(sourcess);
-    var source = $val.trailer;
-    // alert(source);
+   // alert(sourcevaltrailer);
+   var video = document.querySelector('#videos');
+   // var sourcess = video.getElementsByTagName("source")[0].src;
+   // alert(sourcess);
+   var source = $val.trailer;
+   // alert(source);
 
-    const defaultOptions = {};
-  
-    if (!Hls.isSupported()) {
-      video.src = source;
-      var player = new Plyr(video, defaultOptions);
-    } else {
-      // For more Hls.js options, see https://github.com/dailymotion/hls.js
-      const hls = new Hls();
-      hls.loadSource(source);
+   const defaultOptions = {};
+ 
+   if (!Hls.isSupported()) {
+     video.src = source;
+     var player = new Plyr(video, defaultOptions);
+   } else {
+     // For more Hls.js options, see https://github.com/dailymotion/hls.js
+     const hls = new Hls();
+     hls.loadSource(source);
 
-      // From the m3u8 playlist, hls parses the manifest and returns
-                  // all available video qualities. This is important, in this approach,
-                // we will have one source on the Plyr player.
-              hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+     // From the m3u8 playlist, hls parses the manifest and returns
+                 // all available video qualities. This is important, in this approach,
+               // we will have one source on the Plyr player.
+             hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-                // Transform available levels into an array of integers (height values).
-                const availableQualities = hls.levels.map((l) => l.height)
-            availableQualities.unshift(0) //prepend 0 to quality array
+               // Transform available levels into an array of integers (height values).
+               const availableQualities = hls.levels.map((l) => l.height)
+           availableQualities.unshift(0) //prepend 0 to quality array
 
-                // Add new qualities to option
-          defaultOptions.quality = {
-            default: 0, //Default - AUTO
-              options: availableQualities,
-              forced: true,        
-              onChange: (e) => updateQuality(e),
-          }
-          // Add Auto Label 
-          defaultOptions.i18n = {
-            qualityLabel: {
-              0: 'Auto',
-            },
-          }
+               // Add new qualities to option
+         defaultOptions.quality = {
+           default: 0, //Default - AUTO
+             options: availableQualities,
+             forced: true,        
+             onChange: (e) => updateQuality(e),
+         }
+         // Add Auto Label 
+         defaultOptions.i18n = {
+           qualityLabel: {
+             0: 'Auto',
+           },
+         }
 
-          hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
-              var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
-              if (hls.autoLevelEnabled) {
-                span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
-              } else {
-                span.innerHTML = `AUTO`
-              }
-            })
-      
-              // Initialize new Plyr player with quality options
-          var player = new Plyr(video, defaultOptions);
-          });	
+         hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+             var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+             if (hls.autoLevelEnabled) {
+               span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+             } else {
+               span.innerHTML = `AUTO`
+             }
+           })
+     
+             // Initialize new Plyr player with quality options
+         var player = new Plyr(video, defaultOptions);
+         });	
 
-    hls.attachMedia(video);
-        window.hls = hls;		 
-      }
+   hls.attachMedia(video);
+       window.hls = hls;		 
+     }
 
-      function updateQuality(newQuality) {
-        if (newQuality === 0) {
-          window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
-        } else {
-          window.hls.levels.forEach((level, levelIndex) => {
-            if (level.height === newQuality) {
-              console.log("Found quality match with " + newQuality);
-              window.hls.currentLevel = levelIndex;
-            }
-          });
-        }
-      }
+     function updateQuality(newQuality) {
+       if (newQuality === 0) {
+         window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+       } else {
+         window.hls.levels.forEach((level, levelIndex) => {
+           if (level.height === newQuality) {
+             console.log("Found quality match with " + newQuality);
+             window.hls.currentLevel = levelIndex;
+           }
+         });
+       }
+     }
 });
 
 
-  }
+ }
 });
 
 
@@ -752,22 +776,22 @@ $.each(obj, function(i, $val)
 
 
 $('#season_id').change(function(){
-	var season_id = $('#season_id').val();
+ var season_id = $('#season_id').val();
 $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
-	console.log('season_'+$val.id)
-	$("#myImage").attr("src", $val.image);
-  if( $val.trailer_type == 'mp4_url' || $val.trailer_type == null){
-    $("#videoPlayer1").show();
-    $("#videos").hide();
-    $("#videoPlayer1").attr("src", $val.trailer);
-  }else{
-    $("#videoPlayer1").hide();
-    $("#videos").show();
-    $("#m3u8urlsource").attr("src", $val.trailer);
-    
-  if( $val.trailer_type == 'm3u8_url'){
+ console.log('season_'+$val.id)
+ $("#myImage").attr("src", $val.image);
+ if( $val.trailer_type == 'mp4_url' || $val.trailer_type == null){
+   $("#videoPlayer1").show();
+   $("#videos").hide();
+   $("#videoPlayer1").attr("src", $val.trailer);
+ }else{
+   $("#videoPlayer1").hide();
+   $("#videos").show();
+   $("#m3u8urlsource").attr("src", $val.trailer);
+   
+ if( $val.trailer_type == 'm3u8_url'){
 
 // alert($('#videos').attr("src"));
 // alert(sourcevaltrailer);
@@ -784,90 +808,90 @@ var source = $val.trailer;
 const defaultOptions = {};
 
 if (!Hls.isSupported()) {
-      video.src = source;
-      var player = new Plyr(video, defaultOptions);
-    } else {
-      // For more Hls.js options, see https://github.com/dailymotion/hls.js
-      const hls = new Hls();
-      hls.loadSource(source);
+     video.src = source;
+     var player = new Plyr(video, defaultOptions);
+   } else {
+     // For more Hls.js options, see https://github.com/dailymotion/hls.js
+     const hls = new Hls();
+     hls.loadSource(source);
 
-      // From the m3u8 playlist, hls parses the manifest and returns
-                  // all available video qualities. This is important, in this approach,
-                // we will have one source on the Plyr player.
-              hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+     // From the m3u8 playlist, hls parses the manifest and returns
+                 // all available video qualities. This is important, in this approach,
+               // we will have one source on the Plyr player.
+             hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-                // Transform available levels into an array of integers (height values).
-                const availableQualities = hls.levels.map((l) => l.height)
-            availableQualities.unshift(0) //prepend 0 to quality array
+               // Transform available levels into an array of integers (height values).
+               const availableQualities = hls.levels.map((l) => l.height)
+           availableQualities.unshift(0) //prepend 0 to quality array
 
-                // Add new qualities to option
-          defaultOptions.quality = {
-            default: 0, //Default - AUTO
-              options: availableQualities,
-              forced: true,        
-              onChange: (e) => updateQuality(e),
-          }
-          // Add Auto Label 
-          defaultOptions.i18n = {
-            qualityLabel: {
-              0: 'Auto',
-            },
-          }
+               // Add new qualities to option
+         defaultOptions.quality = {
+           default: 0, //Default - AUTO
+             options: availableQualities,
+             forced: true,        
+             onChange: (e) => updateQuality(e),
+         }
+         // Add Auto Label 
+         defaultOptions.i18n = {
+           qualityLabel: {
+             0: 'Auto',
+           },
+         }
 
-          hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
-              var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
-              if (hls.autoLevelEnabled) {
-                span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
-              } else {
-                span.innerHTML = `AUTO`
-              }
-            })
-      
-              // Initialize new Plyr player with quality options
-          var player = new Plyr(video, defaultOptions);
-          });	
+         hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+             var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+             if (hls.autoLevelEnabled) {
+               span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+             } else {
+               span.innerHTML = `AUTO`
+             }
+           })
+     
+             // Initialize new Plyr player with quality options
+         var player = new Plyr(video, defaultOptions);
+         });	
 
-    hls.attachMedia(video);
-        window.hls = hls;		 
-      }
+   hls.attachMedia(video);
+       window.hls = hls;		 
+     }
 
-      function updateQuality(newQuality) {
-        if (newQuality === 0) {
-          window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
-        } else {
-          window.hls.levels.forEach((level, levelIndex) => {
-            if (level.height === newQuality) {
-              console.log("Found quality match with " + newQuality);
-              window.hls.currentLevel = levelIndex;
-            }
-          });
-        }
-      }
+     function updateQuality(newQuality) {
+       if (newQuality === 0) {
+         window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+       } else {
+         window.hls.levels.forEach((level, levelIndex) => {
+           if (level.height === newQuality) {
+             console.log("Found quality match with " + newQuality);
+             window.hls.currentLevel = levelIndex;
+           }
+         });
+       }
+     }
 });
 
 
 }
-  }
+ }
 
-  $(".sea").empty();
-  // alert($val.id);
-  var id = $val.id;
-	$(".sea").html(id);
+ $(".sea").empty();
+ // alert($val.id);
+ var id = $val.id;
+ $(".sea").html(id);
 }
 });
 
 })
 
 function Copy() {
-            var media_path = '<?= $media_url ?>';;
-            var url = navigator.clipboard.writeText(window.location.href);
-            var path = navigator.clipboard.writeText(media_path);
-            $("body").append(
-                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>'
-                );
-            setTimeout(function() {
-                $('.add_watch').slideUp('fast');
-            }, 3000);
-        }
-        
+           var media_path = '<?= $media_url ?>';;
+           var url = navigator.clipboard.writeText(window.location.href);
+           var path = navigator.clipboard.writeText(media_path);
+           $("body").append(
+               '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>'
+               );
+           setTimeout(function() {
+               $('.add_watch').slideUp('fast');
+           }, 3000);
+       }
+       
 </script>

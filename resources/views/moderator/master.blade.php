@@ -56,6 +56,7 @@ $theme = App\SiteTheme::first();
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
+   <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
 
    <!--datatable CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/dataTables.bootstrap4.min.css';?>" />
@@ -1043,6 +1044,7 @@ checkbox.addEventListener("change", () => {
   document.body.classList.toggle("dark")
 })
           </script>                      
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
     
 </body>
 </html>

@@ -1383,7 +1383,7 @@ public function verifyandupdatepassword(Request $request)
           $item['ads_seen_status']    = $item->ads_status;
           $item['ios_publish_time']   = Carbon::parse($item->publish_time)->format('Y-m-d H:i:s');
 
-          if($item->access == 'ppv' && $request->user_id != ''){
+          if($item->access == 'ppv' && $request->user_id != '' || $item->access == 'subscriber' && $request->user_id != ''){
             $item['rent_url']   = URL::to('category/videos').'/'.$item->slug;
           }
           // Videos URL 
@@ -5816,6 +5816,11 @@ return response()->json($response, 200);
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['audio_duration'] = $item->duration >= "3600" ?  gmdate('H:i:s', $item->duration  ) :  gmdate('i:s', $item->duration  ) ;
+            if($item->lyrics_json != null){
+              $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+            }else{
+              $item['lyrics_json'] = null  ;
+            }
 
             return $item;
         });
@@ -6315,6 +6320,11 @@ return response()->json($response, 200);
 
               $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                if($item->lyrics_json != null){
+                  $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+                }else{
+                  $item['lyrics_json'] = null  ;
+                }
                 return $item;
               });
 
@@ -6324,6 +6334,11 @@ return response()->json($response, 200);
 
             $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
               $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              if($item->lyrics_json != null){
+                $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+              }else{
+                $item['lyrics_json'] = null  ;
+              }
               return $item;
             });
         }
@@ -6349,6 +6364,11 @@ return response()->json($response, 200);
 
                 $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
                     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                    if($item->lyrics_json != null){
+                      $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+                    }else{
+                      $item['lyrics_json'] = null  ;
+                    }
                     return $item;
                 });
 
@@ -6358,6 +6378,11 @@ return response()->json($response, 200);
 
               $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                if($item->lyrics_json != null){
+                  $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+                }else{
+                  $item['lyrics_json'] = null  ;
+                }
                 return $item;
             });
           }
@@ -6379,6 +6404,11 @@ return response()->json($response, 200);
         ->where('id','!=',$audio_id)->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                 $item['mp4_url'] = URL::to('/').'/public/uploads/videos/'.$item->mp4_url;
+                if($item->lyrics_json != null){
+                  $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+                }else{
+                  $item['lyrics_json'] = null  ;
+                }
                 return $item;
             });
         $response = array(
@@ -8504,11 +8534,32 @@ public function Adstatus_upate(Request $request)
 
         if(count($audios_count) > 0 ){
 
-          $audios = Audio::where('album_id',$album_id)->inRandomOrder()->get();
-
+          // $audios = Audio::where('album_id',$album_id)->inRandomOrder()->get();
+          
+          $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                        if($item->lyrics_json != null){
+          $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+          }else{
+            $item['lyrics_json'] = null  ;
+          }
+              return $item;
+          });
+          
         }
         else{
-          $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->get();
+          // $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->get();
+
+          $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                        if($item->lyrics_json != null){
+          $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+          }else{
+            $item['lyrics_json'] = null  ;
+          }
+              return $item;
+          });
+
         }
 
       $status = true;
@@ -21633,5 +21684,103 @@ public function TV_login(Request $request)
 
     return response()->json($response, 200);
   }
+
+  
+  public function AutoStoreStation(Request $request){
+
+    try {
+
+        $audio_id = $request->audio_id ;
+
+        $station_based_artists = Audioartist::where('audio_id',$audio_id)->pluck('artist_id')->toArray();
+        $station_based_keywords = CategoryAudio::where('audio_id',$audio_id)->pluck('category_id')->toArray();
+
+        $Setting = Setting::first();
+        
+        $image  = URL::to('/').'/public/uploads/images/'.$Setting->default_video_image;
+
+
+        $artist_audios = [];
+
+    if(count($station_based_artists) > 0){
+
+        foreach($station_based_artists as $value){
+
+            $artist_audios = Audioartist::select('audio.id')->join('audio', 'audio.id', '=', 'audio_artists.audio_id')
+            ->where('artist_id',$value)->groupBy('audio_artists.audio_id')->get();
+
+        }
+        
+    }
+
+    $category_audios = [];
+
+    if(count($station_based_keywords) > 0){
+
+        foreach($station_based_keywords as $value){
+
+            $category_audios = CategoryAudio::select('audio.id')->join('audio', 'audio.id', '=', 'category_audios.audio_id')
+            ->where('category_id',$value)->groupBy('category_audios.audio_id')->get();
+
+        }
+
+    }
+    $station_name = Audio::where('id',$audio_id)->pluck('title')->first();
+
+        $MusicStation = new MusicStation();
+        $MusicStation->station_name = $request->station_name;
+        $MusicStation->station_slug = str_replace(" ", "-", $request->station_name);
+        $MusicStation->station_type = 'both';
+        $MusicStation->station_based_artists = json_encode($station_based_artists);
+        $MusicStation->station_based_keywords = json_encode($station_based_keywords);
+        $MusicStation->image = $image;
+        $MusicStation->user_id = $request->user_id;
+        $MusicStation->save();
+
+        $station_id = $MusicStation->id;
+
+         if(count($artist_audios) > 0){
+
+            foreach($artist_audios as $value){
+
+                $UserMusicStation = new UserMusicStation();
+                $UserMusicStation->user_id = $request->user_id;
+                $UserMusicStation->station_id = $station_id;
+                $UserMusicStation->audio_id = $value->id;
+                $UserMusicStation->save();
+
+            }
+
+        }
+
+        if(count($category_audios) > 0){
+
+            foreach($category_audios as $value){
+
+                $UserMusicStation = new UserMusicStation();
+                $UserMusicStation->user_id = $request->user_id;
+                $UserMusicStation->station_id = $station_id;
+                $UserMusicStation->audio_id = $value->id;
+                $UserMusicStation->save();
+
+            }
+
+        }
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'Music Station successfully Created',
+          'music_station' => MusicStation::where('id',$station_id)->get(),
+        );
+
+    } catch (\Throwable $th) {
+      $response = array(
+        'status' => "false",
+        'message'=> $th->getMessage(),
+      );
+    }
+    return response()->json($response, 200);
+    
+}
+
 
 }

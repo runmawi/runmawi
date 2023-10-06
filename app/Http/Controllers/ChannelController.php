@@ -3867,7 +3867,7 @@ class ChannelController extends Controller
     private function videos_details_jsplayer( $slug )
     {
         try {
-            
+           
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
             $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) use ( $video_id ) {
@@ -3877,7 +3877,9 @@ class ChannelController extends Controller
                 $item['Title_Thumbnail'] =   $item->video_title_image != null ? URL::to('public/uploads/images/'.$item->video_title_image) : default_vertical_image_url();     
                 $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
-                
+
+                $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Released": ($item->publish_type == "publish_later" ? 'Coming Soon On '. Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
+
                 $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
                                                         ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
                                                         ->where('video_id', $video_id)->get() ;
@@ -3889,7 +3891,19 @@ class ChannelController extends Controller
                 $item['artists']    =  Videoartist::select('video_id','artist_id','artists.*')
                                                     ->join('artists','artists.id','=','video_artists.artist_id')
                                                     ->where('video_id', $video_id)->get();
-                // Videos URL 
+
+                $item['category_id'] = CategoryVideo::where('video_id',$video_id)->pluck('category_id');
+
+                $item['recommended_videos'] = CategoryVideo::select('categoryvideos.video_id','categoryvideos.category_id','videos.*')
+                                                ->join('videos','videos.id','=','categoryvideos.video_id')
+                                                ->whereIn('categoryvideos.category_id', $item['category_id'])
+                                                ->where('videos.id', '!=' ,$video_id)
+                                                ->groupBy('videos.id')->limit(30)->get()->map(function( $item ){
+                                                    $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Published": ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
+                                                    return $item;
+                                                });
+
+                    //  Video URL
 
                 switch (true) {
 
@@ -3919,10 +3933,35 @@ class ChannelController extends Controller
                     break;
                 }
 
+                    //  Video Trailer URL
+
+                switch (true) {
+
+                    case $item['trailer_type'] == "mp4_url":
+                        $item['trailer_videos_url']  =  $item->trailer ;
+                        $item['trailer_video_player_type'] =  'video/mp4' ;
+                    break;
+
+                    case $item['trailer_type'] == "m3u8_url" || "m3u8" :
+                        $item['trailer_videos_url']  =  $item->trailer ;
+                        $item['trailer_video_player_type'] =  'application/x-mpegURL' ;
+                    break;
+
+                    case $item['trailer_type'] == "embed_url":
+                        $item['trailer_videos_url']  =  $item->trailer ;
+                        $item['trailer_video_player_type'] =  'video/mp4' ;
+                    break;
+
+                    default:
+                        $item['videos_url']    = null ;
+                        $item['video_player_type']   =  null ;
+                    break;
+                }
+
                 return $item;
             })->first();
 
-            $ThumbnailSetting = ThumbnailSetting::first();
+            // dd( $videodetail['recommended_videos'] );
 
             $data = array(
                 'videodetail'    => $videodetail ,
@@ -3930,8 +3969,10 @@ class ChannelController extends Controller
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,
                 'commentable_type' => 'play_videos',
-                'ThumbnailSetting' => $ThumbnailSetting ,
+                'ThumbnailSetting' => ThumbnailSetting::first() ,
+                'currency'         => CurrencySetting::first(),
             );
+
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
@@ -3942,15 +3983,15 @@ class ChannelController extends Controller
         }
     }
 
-    public function videos_fullplayer_jsplayer( $slug )
+    public function video_js_fullplayer( Request $request, $slug )
     {
         try {
             
-            $video_id = Video::latest()->pluck('id')->first();
+            $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
 
             $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
 
-                $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
+                $item['image_url']          = URL::to('public/uploads/images/'.$item->image );
                 $item['player_image_url']   = URL::to('public/uploads/images/'.$item->player_image );
                 $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
@@ -3996,7 +4037,7 @@ class ChannelController extends Controller
 
         } catch (\Throwable $th) {
             
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }

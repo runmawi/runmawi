@@ -33,11 +33,13 @@
                                              <!-- src="<?php //echo $Music_Station->image;  ?>" -->
                                         </div>
                             
-                                        <div class="Music_Station" >
+                                        <div class="Music_Station row justify-content-between" >
                                                 <a href="{{ URL::to('music-station').'/'.$Music_Station->station_slug   }}">
-                                                    <h4><?php  echo (strlen($Music_Station->station_name) > 17) ? substr($Music_Station->station_name,0,18).'...' : $Music_Station->station_name; ?></h4>
+                                                    <h4><?php  echo (strlen($Music_Station->station_name) > 12) ? substr($Music_Station->station_name,0,10).'...' : $Music_Station->station_name; ?></h4>
                                                 </a>
-                                            
+                                                <a href="{{ URL::to('delete-station').'/'.$Music_Station->id   }}">
+                                                   <h6 class='trash'><i class="fa fa-trash"></i></h6>
+                                                </a>
                                     <div>
                                         
                                     </div> </div> </div>

@@ -257,8 +257,14 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
-                    $LikeDislike   = LikeDislike::where('audio_id',$item->id)->first();
-
+                    $LikeDislike            = LikeDislike::where('audio_id',$item->id)->first();
+                    if(!Auth::guest()){
+                        $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        $item['role'] = Auth::user()->role;
+                    }else{
+                        $item['PpvPurchase_Status'] = 0;
+                        $item['role'] = '';
+                    }
                     if(!empty($LikeDislike) && $LikeDislike->liked == 1){
                         $item['liked'] = 1;
                         $item['disliked'] = 0;
@@ -286,6 +292,8 @@ class ThemeAudioController extends Controller{
                     }
                 return $item;
                 });
+                // dd($current_audio_lyrics);
+
                 $all_album_audio_lyrics = Audio::where('album_id',$albumID)->where('id','!=',$audio)->get()->map(function ($item) {
                     $item['author']      = $item->slug ;
                     $item['song']      = $item->title ;
@@ -294,6 +302,14 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+
+                    if(!Auth::guest()){
+                        $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        $item['role'] = Auth::user()->role;
+                    }else{
+                        $item['PpvPurchase_Status'] = 0;
+                        $item['role'] = '';
+                    }
 
                     if(!empty($LikeDislike) && $LikeDislike->liked == 1){
                         $item['liked'] = 1;
@@ -612,6 +628,13 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    if(!Auth::guest()){
+                        $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        $item['role'] = Auth::user()->role;
+                    }else{
+                        $item['PpvPurchase_Status'] = 0;
+                        $item['role'] = '';
+                    }
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
                         if(count($castcrew) > 0){
@@ -644,6 +667,13 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    if(!Auth::guest()){
+                        $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        $item['role'] = Auth::user()->role;
+                    }else{
+                        $item['PpvPurchase_Status'] = 0;
+                        $item['role'] = '';
+                    }
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
                         if(count($castcrew) > 0){

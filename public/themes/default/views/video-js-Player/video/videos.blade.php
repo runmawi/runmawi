@@ -1,6 +1,4 @@
-@php 
-    include public_path('themes/default/views/header.php'); 
-@endphp
+@php include public_path('themes/default/views/header.php');  @endphp
 
 {{-- video-js Style --}}
 
@@ -10,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
     <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
+    <link href="{{ asset('public/themes/default/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
 
 {{-- video-js Script --}}
 
@@ -21,19 +20,31 @@
     <script src="{{ asset('public/themes/default/assets/js/video-js/videojs.ima.min.js') }}"></script>
     <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
+    <script src="{{ asset('public/themes/default/assets/js/video-js/end-card.js') }}"></script>
 
-    <div class="container">
-        <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd" controls preload="auto" width="100%" height="auto" poster="{{ $videodetail->player_image_url }}" >
-            <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
-        </video>
+    <div class="container-fluid p-0">
+
+        @if ( $videodetail->type == "embed" )
+
+            <iframe class="responsive-iframe" src="<?= $videodetail->videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+            
+        @else
+        
+            <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" >
+                <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
+            </video>
+        @endif
+        
     </div>
 
 @php 
 
+    include public_path('themes/default/views/video-js-Player/video/videos_script_file.blade.php');
     include public_path('themes/default/views/video-js-Player/video/videos_ads.blade.php');
-
     include public_path('themes/default/views/video-js-Player/video/player_script.blade.php');
-
     include public_path('themes/default/views/footer.blade.php'); 
 
 @endphp

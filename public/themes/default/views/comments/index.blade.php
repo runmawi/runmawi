@@ -14,21 +14,30 @@
     <?php foreach( $comment_loop as $key => $comment ): ?>
 
     <div class="media-body">
-        <div class="d-flex align-items-center"><img class="mr-3"
+        <div class="d-flex align-items-center">
+            <img class="mr-3"
                 src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=<?= $comment->first_letter ?>" width="50px"
-                alt="<?= $comment->user_name ?>" style="border-radius: 30px;">
+                alt="<?= $comment->user_name ?>" style="border-radius: 30px;" />
 
-            <h5 class="mt-0 mb-1"><?= ucfirst(App\User::where('id',$comment->user_id)->pluck('username')->first()); ?><br>
-                 <small class="text-muted"><?= $comment->created_at->diffForHumans() ?></small>
-            </h5>
+            <div class="mt-0 mb-1 p-comments">
+                <p class="mb-0">
+                    <?= ucfirst(App\User::where('id',$comment->user_id)->pluck('username')->first()); ?>
+                    <small class="text-muted">
+                        <?= $comment->created_at->diffForHumans() ?>
+                    </small>
+                </p>
+                <p class="mt-1 mb-2">
+                    <?= $comment->comment ?>
+                </p>
+            </div>
         </div>
 
-        <div style="white-space: pre-wrap;" class="mt-2 mb-2 text-white"><?= $comment->comment ?></div>
+        
 
         <div>
             <?php if( Auth::user() != null && Auth::user()->id != $comment->user_id  && Auth::user()->role != 'register' ):?>
                 <a data-toggle="modal" data-target="#reply-modal-<?= $comment->id ?>"
-                class=" text-uppercase text-secondary"> <i class="fa fa-share" aria-hidden="true"></i>Reply</a>
+                class=" text-uppercase text-secondary"> <i class="fa fa-share" aria-hidden="true"></i>&nbsp;Reply</a>
             <?php endif; ?>
 
             <?php if( Auth::user() != null && Auth::user()->id == $comment->user_id && Auth::user()->role != 'register' ):?>
@@ -55,14 +64,19 @@
             foreach ($reply_comment as $key => $reply_comments) : ?>
             <div style="margin-left:10% !important">
 
-                <div class="d-flex align-items-center"><img class="mr-3"
-                        src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=<?= $reply_comments->first_letter ?>"
-                        width="40px" alt="<?= ucfirst(App\User::where('id',$reply_comments->user_name)->pluck('username')->first())  ?>" style="border-radius: 30px;">
-                    <h5 class="mt-0 mb-1"><?= ucfirst(App\User::where('id',$reply_comments->user_name)->pluck('username')->first())  ?><br> <small class="text-muted">
-                            <?= $reply_comments->created_at->diffForHumans() ?></small></h5>
+                <div class="d-flex align-items-center">
+                    <img    class="mr-3"
+                            src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=<?= $reply_comments->first_letter ?>"
+                            width="40px" alt="<?= ucfirst(App\User::where('id',$reply_comments->user_name)->pluck('username')->first())  ?>" style="border-radius: 30px;">
+                    <p class="mt-0 mb-1">
+                        <?= ucfirst(App\User::where('id',$reply_comments->user_name)->pluck('username')->first())  ?> 
+                        <small class="text-muted">
+                            <?= $reply_comments->created_at->diffForHumans() ?>
+                        </small>
+                    </p>
                 </div>
 
-            <div style="white-space: pre-wrap;" class="rep text-white"><?= $reply_comments->comment ?></div>
+            <div class="rep text-white"><?= $reply_comments->comment ?></div>
 
             <div>
 

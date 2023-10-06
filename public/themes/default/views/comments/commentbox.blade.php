@@ -1,8 +1,8 @@
 <style>
    textarea.form-control{
-         border: none!important;
-    border-bottom: 1px solid #fff!important;
-       line-height: 25px;
+        border: none!important;
+        border-radius: 5px;
+        line-height: 25px;
     }
    
     .form-control:focus{
@@ -62,7 +62,7 @@
                 <input type="hidden" name="source" value="<?= Route::currentRouteName() ?>">
                 <input type="hidden" name="source_id" value="<?= $source_id ?>">
 
-                <button type="submit" class=" btn btn-primary text-uppercase">Submit</button>
+                <button type="submit" class=" btn btn-sm bd">Submit</button>
                     </div>
                 </div>
                
