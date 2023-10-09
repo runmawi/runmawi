@@ -11,7 +11,7 @@
                 <a href="<?php echo URL::to('home') ?>">
                     <div class="block-images position-relative">
                             <div class="img-box">
-                                <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
+                                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
                                      <img alt="Top-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>" class="img-fluid loading w-100" alt=""> 
                                    <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>"  data-play="hover" >
                                         <source src="<?php echo $most_watched_video->trailer;  ?>" type="video/mp4">
@@ -37,6 +37,32 @@
                             </div>
 
                             <div class="block-description">
+                                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
+                                     <img alt="Top-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->player_image;  ?>" class="img-fluid loading w-100" alt=""> 
+                                   <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->player_image;  ?>"  data-play="hover" >
+                                        <source src="<?php echo $most_watched_video->trailer;  ?>" type="video/mp4">
+                                    </video>-->
+
+                                    <!-- PPV price -->
+                               
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                                        <?php  if($most_watched_video->access == 'subscriber' ){ ?>
+                                            <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif($most_watched_video->access == 'registered'){?>
+                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                            <?php } elseif(!empty($most_watched_video->ppv_price)){?>
+                                            <p class="p-tag1"><?php echo $currency->symbol.' '.$most_watched_video->ppv_price; ?></p>
+                                        <?php }elseif( !empty($most_watched_video->global_ppv || !empty($most_watched_video->global_ppv) && $most_watched_video->ppv_price == null)){ ?>
+                                            <p class="p-tag1"><?php echo $most_watched_video->global_ppv.' '.$currency->symbol; ?></p>
+                                        <?php }elseif($most_watched_video->global_ppv == null && $most_watched_video->ppv_price == null ){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                        <?php } ?>
+                                    <?php } ?>
+                                </a>
+
+                                
+
+                                <div class="hover-buttons">
 
                                 <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
@@ -113,11 +139,9 @@
                                    </span>
                                    <?php } ?>
                                </div>
-
-                               <div class="hover-buttons">
-                                   <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
-                                      <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
-                                  </a>
+                                <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
+                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                </a>
                             </div>
                         </div>
                     </div>
