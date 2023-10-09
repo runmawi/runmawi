@@ -31,6 +31,9 @@
 
         <div class="opacity-layer"></div>
 
+                {{-- Message Note --}}
+        <div id="message-note" ></div>
+
         <div class="pageWrapper">
                 
                             {{-- Breadcrumbs  --}}
@@ -98,97 +101,25 @@
                         </div>
                     @endif
 
-                    <?php if(!Auth::guest()) { ?>
-                        <div class="row">
-                            <div class="col-sm-6 col-md-6 col-xs-12">
-                                <ul class="list-inline p-0 share-icons music-play-lists">
-                                    <!-- Watchlater -->
-                                    <li>
-                                        <span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" 
-                                              data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $videodetail->id ?>">
-                                            <i <?php if(isset($watchlatered->id)): ?> 
-                                                    class="fas fa-plus-square" 
-                                                <?php else: ?>
-                                                    class="fal fa-plus"
-                                                <?php endif; ?>>
-                                            </i>
-                                        </span>
-                                    </li>
-                                    <!-- Wishlist -->
-                                    <li>
-                                        <span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>"
-                                              data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $videodetail->id ?>">
-                                            <i <?php if(isset($mywishlisted->id)): ?>
-                                                    class="fal fa-heart" 
-                                                <?php else: ?>
-                                                    class="fas fa-heart" 
-                                                <?php endif; ?>>
-                                            </i>
-                                        </span>
-                                    </li>
-                                    <!-- Social Share, Like Dislike -->
-                                    
-                                </ul>
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-xs-12">
+                            <ul class="list-inline p-0 share-icons music-play-lists">
+                                        <!-- Watchlater -->
+                                <li>
+                                    <span data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
+                                        <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
+                                    </span>
+                                </li>
 
-                            <div class="col-sm-6 col-md-6 col-xs-12 p-0">
-                                <ul class="list-inline p-0 rental-lists ">
-                                <!-- Subscribe -->
-                                    <li>
-                                        
-                                    </li>
-                                    <!-- PPV button -->
-                                    <li>
-                                        
-                                    </li>
-                                </ul>
-                            </div>
+                                        <!-- Wishlist -->
+                                <li>
+                                    <span data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
+                                        <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'fa fa-heart' : 'fa fa-heart-o'  }}"></i>
+                                    </span>
+                                </li>
+                            </ul>
                         </div>
-
-                    <?php } ?>
-
-
-                    <?php if(Auth::guest()) { ?>
-                        <div class="row">
-                            <div class="col-sm-6 col-md-6 col-xs-12">
-                                <ul class="list-inline p-0 share-icons music-play-lists">
-                                    <!-- Watchlater -->
-                                    <li>
-                                        <span   class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>"
-                                                data-authenticated="<?= !Auth::guest() ?>"
-                                                data-videoid="<?= $videodetail->id ?>">
-                                            <i <?php if(isset($watchlatered->id)): ?>
-                                                    class="fal fa-plus" 
-                                                <?php else: ?>
-                                                    class="fal fa-plus"
-                                                <?php endif; ?>>
-                                            </i>
-                                        </span>
-                                    </li>
-                                    <!-- Wishlist -->
-                                    <li>
-                                        <span   class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>"
-                                                data-authenticated="<?= !Auth::guest() ?>"
-                                                data-videoid="<?= $videodetail->id ?>">
-                                            <i <?php if(isset($mywishlisted->id)): ?>
-                                                    class="fal fa-heart" 
-                                                <?php else: ?>
-                                                    class="fas fa-heart" 
-                                                <?php endif; ?>>
-                                            </i>
-                                        </span>
-                                    </li>
-                                    <!-- Social Share, Like Dislike -->
-                                </ul>
-                            </div>
-                            <!-- <div class="col-sm-6 col-md-6 col-xs-12">
-                                <div class="d-flex align-items-center series mb-4">
-                                    <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid" alt=""></a>
-                                    <span class="text-gold ml-3">#2 in Series Today</span>
-                                </div>
-                            </div> -->
-                        </div>
-                    <?php   } ?>
+                    </div>
 
                     <div class="row">  
                         <div class="circleRating">  {{-- Rating --}}
@@ -221,7 +152,7 @@
                             </div>
                         </a>
 
-                        <?php   $user = Auth::user(); 
+                        {{-- <?php   $user = Auth::user(); 
                                 if (  ($user->role!="subscriber" && $videodetail->access != 'guest' && $user->role!="admin") ) { ?>
                                 <a href="<?php echo URL::to('/becomesubscriber'); ?>">
                                     <span class="view-count btn btn-primary subsc-video">
@@ -238,7 +169,7 @@
                             <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login'); ?>">
                                 <?php echo __('Rent'); ?>
                             </a>
-                        <?php } ?>
+                        <?php } ?> --}}
                     </div>
 
                     @if( $setting->show_description == 1 && optional($videodetail)->description )   {{-- Description --}}
@@ -448,4 +379,7 @@
         </div>
     </div>
 
-@php include public_path('themes/default/views/footer.blade.php'); @endphp
+@php 
+    include public_path('themes/default/views/video-js-Player/video/videos-details-script-file.blade.php');
+    include public_path('themes/default/views/footer.blade.php'); 
+@endphp

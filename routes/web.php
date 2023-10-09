@@ -2334,3 +2334,7 @@ Route::get('exchangeCurrency','AdminCurrencyConvert@Index');
 Route::get('PPV-Free-Duration-Logs', 'AdminLiveStreamController@PPV_Free_Duration_Logs')->name('PPV_Free_Duration_Logs');
 
 Route::get('video-fullplayer/{slug}', 'ChannelController@video_js_fullplayer')->name('video-js-fullplayer');
+
+Route::post('video_js_watchlater', 'ChannelController@video_js_watchlater')->name('video-js.watchlater');
+
+Route::post('video_js_wishlist', 'ChannelController@video_js_wishlist')->name('video-js.wishlist');
