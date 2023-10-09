@@ -64,13 +64,10 @@ ol.breadcrumb {
 
                                     <div class="block-description">
                                         <a href="<?php echo URL::to('live').'/'.$LiveCategory->slug  ?>">
-                                            <h6><?php  echo (strlen(@$LiveCategory->title) > 17) ? substr(@$LiveCategory->title,0,18).'...' : @$LiveCategory->title; ?>
-                                            </h6>
+                                            <p class="epi-name text-left m-0">
+                                                <?php  echo (strlen(@$LiveCategory->title) > 17) ? substr(@$LiveCategory->title,0,18).'...' : @$LiveCategory->title; ?>
+                                            </p>
                                         </a>
-                                        <div class="hover-buttons">
-                                            <div>
-                                            </div>
-                                        </div>
                                         <div>
                                             <button type="button" class="show-details-button" data-toggle="modal"
                                                 data-target="#myModal<?= @$LiveCategory->id;?>">

@@ -11,7 +11,7 @@
                 <a href="<?php echo URL::to('home') ?>">
                     <div class="block-images position-relative">
                             <div class="img-box">
-                                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
+                                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
                                      <img alt="Top-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>" class="img-fluid loading w-100" alt=""> 
                                    <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$most_watched_video->image;  ?>"  data-play="hover" >
                                         <source src="<?php echo $most_watched_video->trailer;  ?>" type="video/mp4">
@@ -66,8 +66,8 @@
 
                                 <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                                        <h6><?php  echo (strlen($most_watched_video->title) > 17) ? substr($most_watched_video->title,0,18).'...' : $most_watched_video->title; ?></h6>
-                                   </a>
+                                        <p class="epi-name text-left m-0"><?php  echo (strlen($most_watched_video->title) > 17) ? substr($most_watched_video->title,0,18).'...' : $most_watched_video->title; ?></p>
+                                    </a>
                                  <?php } ?>  
 
                                  <div class="movie-time d-flex align-items-center pt-1">
@@ -140,7 +140,7 @@
                                    <?php } ?>
                                </div>
                                 <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>" >
-                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                    <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                 </a>
                             </div>
                         </div>
