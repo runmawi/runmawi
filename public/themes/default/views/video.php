@@ -647,7 +647,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                     if(!empty($video->path)){ ?>
 
                         <div id="video_container" class="fitvid" style="z-index: 9999;">
-                            <video id="video" muted class="adstime_url" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
+                            <video id="video" autoplay muted class="adstime_url" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
                                 data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
 
                                 <source type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">
