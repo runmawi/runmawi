@@ -10645,7 +10645,7 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
       $uniqueId =  $request['uniqueId'];
 
       try{
-        $TVLoginCodecount = TVLoginCode::where('email',$request->tv_code)->count();
+        $TVLoginCodecount = TVLoginCode::where('tv_code',$request->tv_code)->count();
         if($TVLoginCodecount < 5){
 
         
