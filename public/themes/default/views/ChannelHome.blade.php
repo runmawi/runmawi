@@ -102,7 +102,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
   </li>
          <li class="nav-item audionav">
-    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
+    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audio</a>
   </li>
 </ul>
 <div class="tab-content" id="myTabContent">

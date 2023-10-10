@@ -109,6 +109,7 @@ class ChannelHomeController extends Controller
                 'currency' => $currency,
                 'latest_video' => $latest_videos,
                 'latest_series' => $latest_series,
+                'latest_audios' => $audios,
                 'audios' => $audios,
                 'livetream' => $livetreams,
                 'ThumbnailSetting' => $ThumbnailSetting,
