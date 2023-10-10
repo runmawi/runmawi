@@ -22,7 +22,6 @@ Route::group(
         'prefix' => 'auth',
     ],
     function () {
-     
 
         Route::post('All_Homepage', 'ApiAuthController@All_Homepage');
         Route::post('All_Pagelist', 'ApiAuthController@All_Pagelist');
@@ -30,7 +29,7 @@ Route::group(
         Route::post('Users-Interest-Genres', 'ApiAuthController@users_interest_genres');
         Route::post('Users-Password-Pin-Update', 'ApiAuthController@Users_Password_Pin_Update');
         Route::get('website-baseurl', 'ApiAuthController@website_baseurl');
-
+        Route::post('sss', 'ApiAuthController@Series_details');
 
         Route::post('Channel-Audios-list', 'ApiAuthController@Channel_Audios_list');
         Route::post('Channel-livevideos-list', 'ApiAuthController@Channel_livevideos_list');
