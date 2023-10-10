@@ -2383,6 +2383,11 @@ if(this.textContent === 'destroy') {
 </script>
 
 <script>
+
+$(document).ready(function(){
+   
+   $('#image_error_msg,#player_image_error_msg,#tv_image_image_error_msg').hide();
+
    $('#image').on('change', function(event) {
 
          $('#image').removeData('imageWidth');
@@ -2412,8 +2417,7 @@ if(this.textContent === 'destroy') {
                $('#image_error_msg').show();
              }
          }
-     });
-
+   });
      
    $('#player_image').on('change', function(event) {
       
@@ -2478,6 +2482,7 @@ if(this.textContent === 'destroy') {
          }
    });
 
+});
 
 </script>
 
