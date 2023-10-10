@@ -21798,6 +21798,10 @@ public function TV_login(Request $request)
             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
             $item['episode_count'] = Episode::where('series_id',$item->id)->count();
             $item['tv_episodes_url'] = Episode::where('series_id',$item->id)->pluck('mp4_url')->first();
+            if($item->access == 'ppv' || $item->access == 'subscriber'){
+              $item['rent_url']   = URL::to('play_series').'/'.$item->slug;
+              $item['become_subscriber_url']   = URL::to('becomesubscriber');
+            }
             return $item;
         })->first();
 
