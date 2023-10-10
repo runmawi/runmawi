@@ -21782,5 +21782,39 @@ public function TV_login(Request $request)
     
 }
 
+  public function Series_details(Request $request)
+  {
+    try {
+      
+        $this->validate($request, [
+          'series_id'  => 'required|integer' ,
+        ]);
 
+        $series = Series::findorfail( $request->series_id );
+            
+        $series_details = collect([$series])->map(function ($item) use ( $request ) {
+            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+            $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
+            $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+            $item['episode_count'] = Episode::where('series_id',$item->id)->count();
+            $item['tv_episodes_url'] = Episode::where('series_id',$item->id)->pluck('mp4_url')->first();
+            return $item;
+        })->first();
+
+        $response = array(
+          'status'  => 'true',
+          'Message' => 'Retrieve the Series data details',
+          'series_details' => $series_details ,
+        );
+
+    } catch (\Throwable $th) {
+      
+        $response = array(
+          'status' => "false",
+          'message'=> $th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+  }
 }
