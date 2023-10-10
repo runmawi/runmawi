@@ -102,7 +102,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
   </li>
          <li class="nav-item audionav">
-    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
+    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audio</a>
   </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -120,11 +120,11 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                                     @endforeach 
                         </div></div>
   <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><hr><div class="Series_Categorynav ">
-                            <?php foreach ($VideoCategory as $key => $videos_category) { ?>
+                            <?php foreach ($SeriesGenre as $key => $series_category) { ?>
 
                             <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $videos_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $videos_category->name; ?></a>
+                                data-category-id=<?php echo $series_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
+                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $series_category->name; ?></a>
                             <?php }  ?>
       
                         </div></div>
