@@ -3868,9 +3868,11 @@ class ChannelController extends Controller
     {
         try {
            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
-            $videodetail = Video::where('id',$video_id)->orderBy('created_at', 'desc')->get()->map(function ($item) use ( $video_id ) {
+            $videodetail = Video::where('id',$video_id)->latest()->get()->map(function ($item) use ( $video_id , $geoip)  {
 
                 $item['image_url']          = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();
                 $item['player_image_url']   = $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
@@ -3902,6 +3904,25 @@ class ChannelController extends Controller
                                                     $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Published": ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
                                                     return $item;
                                                 });
+
+                $item['watchlater_exist'] = Watchlater::where('video_id', $video_id)->where('type', 'channel')
+                                                ->where(function ($query) use ($geoip) {
+                                                    if (!Auth::guest()) {
+                                                        $query->where('user_id', Auth::user()->id);
+                                                    } else {
+                                                        $query->where('users_ip_address', $geoip->getIP());
+                                                    }
+                                                })->first();
+
+                                                
+                $item['watchlater_exist'] = Watchlater::where('video_id', $video_id)->where('type', 'channel')
+                                                ->where(function ($query) use ($geoip) {
+                                                    if (!Auth::guest()) {
+                                                        $query->where('user_id', Auth::user()->id);
+                                                    } else {
+                                                        $query->where('users_ip_address', $geoip->getIP());
+                                                    }
+                                                })->first();
 
                     //  Video URL
 
@@ -3960,8 +3981,6 @@ class ChannelController extends Controller
 
                 return $item;
             })->first();
-
-            // dd( $videodetail['recommended_videos'] );
 
             $data = array(
                 'videodetail'    => $videodetail ,
@@ -4040,5 +4059,89 @@ class ChannelController extends Controller
             // return $th->getMessage();
             return abort(404);
         }
+    }
+
+    public function video_js_watchlater(Request $request)
+    {
+        try {
+            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'video_id' => $request->video_id,
+                'type' => 'channel',
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+            ];
+
+            $watchlater_exist = Watchlater::where('video_id', $request->video_id)->where('type', 'channel')
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+        
+            !is_null($watchlater_exist) ? $watchlater_exist->delete() : Watchlater::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'watchlater_status' => is_null($watchlater_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($watchlater_exist) ? "This video was successfully added to Watchlater's list" : "This video was successfully remove from Watchlater's list"  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]); 
+    }
+
+    public function video_js_wishlist(Request $request)
+    {
+        try {
+            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'video_id' => $request->video_id,
+                'type' => 'channel',
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+            ];
+
+            $wishlist_exist = Wishlist::where('video_id', $request->video_id)->where('type', 'channel')
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+        
+            !is_null($wishlist_exist) ? $wishlist_exist->delete() : Wishlist::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'watchlater_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list"  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]); 
     }
 }

@@ -76,7 +76,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
         <?php  elseif( $episode->type == 'file' || $episode->type == 'upload' ): ?>
 
         <div id="series_container">
-            <video id="videoPlayer" <?= $autoplay ?> class="video-js vjs-default-skin"
+            <video id="videoPlayer" muted <?= $autoplay ?> class="video-js vjs-default-skin"
                 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls
                 data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;"
                 type="video/mp4" data-authenticated="<?= !Auth::guest() ?>">
@@ -99,7 +99,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
         <?php  elseif( $episode->type == 'm3u8' ): ?>
         <div id="series_container">
-            <video id="video" <?= $autoplay ?> controls crossorigin playsinline
+            <video id="video" muted <?= $autoplay ?> controls crossorigin playsinline
                 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls
                 data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
 
@@ -116,7 +116,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
         <?php  elseif( $episode->type == 'aws_m3u8' ): ?>
         <div id="series_container">
-            <video id="video" <?= $autoplay ?> controls crossorigin playsinline
+            <video id="video" muted <?= $autoplay ?> controls crossorigin playsinline
                 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls
                 data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
 
@@ -134,7 +134,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
         <?php  else: ?>
 
         <div id="series_container">
-            <video id="videoPlayer" autoplay class="video-js vjs-default-skin" controls preload="auto"
+            <video id="videoPlayer" muted autoplay class="video-js vjs-default-skin" controls preload="auto"
                 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}"
                 width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
                 <source src="<?php echo URL::to('/storage/app/public/') . '/' . 'TfLwBgA62jiyfpce_2_1000_00018'; ?>" type='application/x-mpegURL' label='360p' res='360' />
@@ -195,7 +195,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 			}else if($checkseasonppv_exits == 0){  ?>
 
         <div id="series_container">
-            <video id="videoPlayer" autoplay class="video-js vjs-default-skin" controls preload="auto"
+            <video id="videoPlayer" muted autoplay class="video-js vjs-default-skin" controls preload="auto"
                 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}"
                 width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
                 <source src="<?= $season[0]->trailer ?>" type='video/mp4' label='auto'>

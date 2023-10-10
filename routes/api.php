@@ -638,5 +638,6 @@ Route::group(
             
             Route::get('TV_retrieve_search_data', 'ApiAuthController@tv_retrieve_search_data');
             Route::post('TV_search_data_update', 'ApiAuthController@tv_search_data_update');
+            Route::post('auto-store-station', 'ApiAuthController@AutoStoreStation');
             
         });

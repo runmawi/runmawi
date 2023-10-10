@@ -19,7 +19,7 @@ class CreateWatchlatersTable extends Migration
             $table->integer('video_id')->nullable();
             $table->integer('episode_id')->nullable();
             $table->integer('audio_id')->nullable();
-            $table->integer('type')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

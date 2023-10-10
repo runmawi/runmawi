@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
     <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
+    <link href="{{ asset('public/themes/default/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
 
 {{-- video-js Script --}}
 
@@ -19,6 +20,7 @@
     <script src="{{ asset('public/themes/default/assets/js/video-js/videojs.ima.min.js') }}"></script>
     <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
+    <script src="{{ asset('public/themes/default/assets/js/video-js/end-card.js') }}"></script>
 
     <div class="container-fluid p-0">
 

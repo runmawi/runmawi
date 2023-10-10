@@ -465,9 +465,9 @@
             <div class="clear"></div>
 
             <?php if(Auth::guest() && $video->access == 'registered'): ?>
-               <form method="get" action="<?= URL::to('/signup') ?>">
+               <!-- <form method="get" action="<?= URL::to('/signup') ?>">
                   <button  class="btn btn-primary" id="button">Become a Registered to watch this video</button>
-               </form>
+               </form> -->
             <?php else: ?>
                <form method="get" action="<?= URL::to('signup') ?>"></form>
             <?php endif; ?>
