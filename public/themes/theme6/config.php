@@ -32,8 +32,8 @@ return array(
 
 		'before' => function($theme)
 		{
-			$theme->setTitle('Title example');
-			$theme->setAuthor('Jonh Doe');
+			$theme->setTitle('Flicknexs');
+			$theme->setAuthor('Flicknexs');
 		},
 
 		'asset' => function($asset)
