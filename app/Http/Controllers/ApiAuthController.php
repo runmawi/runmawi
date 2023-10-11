@@ -1403,7 +1403,11 @@ public function verifyandupdatepassword(Request $request)
               break;
             
             case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-              $item['videos_url']    = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+              $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+              break;
+              
+            case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
+              $item['videos_url']   = $item->mp4_url ;
               break;
 
             default:
