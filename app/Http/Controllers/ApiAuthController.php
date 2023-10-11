@@ -21825,4 +21825,48 @@ public function TV_login(Request $request)
 
     return response()->json($response, 200);
   }
+
+
+  function Currency_Convert(Request $request){
+
+    try {
+
+      $amount = $request->amount;
+
+      $Country_name = $request->Country_name;
+
+      $To_Currency_symbol = App\Currency::where('country',$Country_name)->pluck('code')->first();
+
+      $Currency_symbol = App\Currency::where('country',$Country_name)->pluck('symbol')->first();
+
+      $allCurrency = App\CurrencySetting::first();
+
+      $From_Currency_symbol = App\Currency::where('country',@$allCurrency->country)->pluck('code')->first();
+
+      $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
+      ->from($From_Currency_symbol)
+      ->to($To_Currency_symbol)
+      ->amount($amount)
+      ->get();  
+
+      $response = array(
+
+        'status'  => true,
+        'Message' => 'Retrieve the Currency Converter',
+        'Currency_Converted' => $Currency_symbol.' '.$Currency_Converter ,
+
+      );
+
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => false,
+          'message'=> $th->getMessage(),
+        );
+
+    }
+
+      return  $Currency_symbol.' '.$Currency_Converter; 
+      
+  }
 }
