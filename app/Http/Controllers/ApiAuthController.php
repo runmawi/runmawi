@@ -133,6 +133,8 @@ use App\UserMusicStation as UserMusicStation;
 use Stripe\Stripe;
 use App\TVSetting as TVSetting;
 use App\TvSearchData ;
+use App\Currency ;
+use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
 
 
 class ApiAuthController extends Controller
@@ -9157,6 +9159,8 @@ public function Adstatus_upate(Request $request)
 
           $series = Series::where('id','!=', $series_id)->where('active','=',1)->inRandomOrder()->get()->map(function ($item) {
             $item['image'] = URL::to('public/uploads/images/'.$item->image);
+            $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+            $item['episode_count'] = Episode::where('series_id',$item->id)->count();
             return $item;
           });
 
@@ -21823,7 +21827,6 @@ public function TV_login(Request $request)
         );
     }
 
-    return response()->json($response, 200);
   }
 
 
@@ -21835,15 +21838,14 @@ public function TV_login(Request $request)
 
       $Country_name = $request->Country_name;
 
-      $To_Currency_symbol = App\Currency::where('country',$Country_name)->pluck('code')->first();
+      $To_Currency_symbol = Currency::where('country',$Country_name)->pluck('code')->first();
 
-      $Currency_symbol = App\Currency::where('country',$Country_name)->pluck('symbol')->first();
+      $Currency_symbol = Currency::where('country',$Country_name)->pluck('symbol')->first();
+      $allCurrency = CurrencySetting::first();
 
-      $allCurrency = App\CurrencySetting::first();
+      $From_Currency_symbol = Currency::where('country',@$allCurrency->country)->pluck('code')->first();
 
-      $From_Currency_symbol = App\Currency::where('country',@$allCurrency->country)->pluck('code')->first();
-
-      $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
+      $Currency_Converter = \AmrShawky\LaravelCurrency\Facade\Currency::convert()
       ->from($From_Currency_symbol)
       ->to($To_Currency_symbol)
       ->amount($amount)
@@ -21866,7 +21868,7 @@ public function TV_login(Request $request)
 
     }
 
-      return  $Currency_symbol.' '.$Currency_Converter; 
-      
+    return response()->json($response, 200);
+
   }
 }
