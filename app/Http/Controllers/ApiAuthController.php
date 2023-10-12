@@ -21846,17 +21846,58 @@ public function TV_login(Request $request)
 
       $From_Currency_symbol = Currency::where('country',@$allCurrency->country)->pluck('code')->first();
 
-      $Currency_Converter = \AmrShawky\LaravelCurrency\Facade\Currency::convert()
-      ->from($From_Currency_symbol)
-      ->to($To_Currency_symbol)
-      ->amount($amount)
-      ->get();  
+      // $Currency_Converter = \AmrShawky\LaravelCurrency\Facade\Currency::convert()
+      // ->from($From_Currency_symbol)
+      // ->to($To_Currency_symbol)
+      // ->amount($amount)
+      // ->get();  
+
+      $api_url = "https://open.er-api.com/v6/latest/$From_Currency_symbol";
+
+      // Make a GET request to the API
+      $ch = curl_init($api_url);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+  
+      $response = curl_exec($ch);
+  
+      if (curl_errno($ch)) {
+          // Handle cURL error here
+          echo "cURL error: " . curl_error($ch);
+      } else {
+          // Decode the API response into a JSON object
+          $exchangeRates = json_decode($response, true);
+  
+          // Check if the conversion rates are available
+          if (isset($exchangeRates['rates'])) {
+              // Replace 'USD' with the currency code you want to convert to
+              $targetCurrency = $To_Currency_symbol;
+  
+              // Replace 'amount' with the amount you want to convert
+              // $amount = 100; // For example, 100 INR
+  
+              if (isset($exchangeRates['rates'][$targetCurrency])) {
+                  $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                  $convertedAmount = $amount * $conversionRate;
+  
+                  // echo "Converted amount: " . $convertedAmount . ' ' . $targetCurrency;
+              } else {
+                  // echo "Conversion rate for {$targetCurrency} not available.";
+                  $convertedAmount = '';
+              }
+          } else {
+              // echo "Exchange rates data not found in the API response.";
+              $convertedAmount = '';
+          }
+      }
+      curl_close($ch);
 
       $response = array(
 
         'status'  => true,
         'Message' => 'Retrieve the Currency Converter',
-        'Currency_Converted' => $Currency_symbol.' '.$Currency_Converter ,
+        'Currency_Converted' => $Currency_symbol.' '.$convertedAmount ,
 
       );
 
