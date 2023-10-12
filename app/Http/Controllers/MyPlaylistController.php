@@ -137,6 +137,7 @@ class MyPlaylistController extends Controller
             'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
             'first_album_mp3_url' => $MyPlaylist->first() ? $MyPlaylist->first()->mp3_url : null ,
             'first_album_title' => $MyPlaylist->first() ? $MyPlaylist->first()->title : null ,
+            'OtherMusicStation' => [],
         ];
     
         // dd($data);

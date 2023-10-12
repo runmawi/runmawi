@@ -333,6 +333,7 @@ class MusicStationController extends Controller
                 'playlist_name' => 'Related Station Songs',
                 'playlist_station' => 1,
                 'OtherMusicStation' => $OtherMusicStation,
+                'show_station_button' => $OtherMusicStation,
             );
             
             // dd( $data);

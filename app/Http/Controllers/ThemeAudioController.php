@@ -369,6 +369,7 @@ class ThemeAudioController extends Controller{
                 'ThumbnailSetting' => ThumbnailSetting::first(),
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Songs',
+                'OtherMusicStation' => [],
             );
             } else {
                 $data = array(
@@ -734,6 +735,7 @@ class ThemeAudioController extends Controller{
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Album Songs',
+                'OtherMusicStation' => [],
             );
             
             // dd( $data);
@@ -1468,6 +1470,7 @@ class ThemeAudioController extends Controller{
             'category_name'    => $category_name ,
             'ThumbnailSetting' => ThumbnailSetting::first(),
             'songs' => (array("songs" => $merged_audios)),
+            'OtherMusicStation' => [],
             );
         } else {
             $data = array(
