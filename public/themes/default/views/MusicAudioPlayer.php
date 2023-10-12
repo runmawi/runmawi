@@ -213,12 +213,22 @@ var data = listAudio; // Assuming listAudio contains the URL
             context[i].innerHTML = songName;
         }
     }
-    function setArtistName(artistName){
-        var context = $('.artist-name');
-        for(var i=0;i<context.length;i++){
-            context[i].innerHTML = artistName;
-        }
+    // function setArtistName(artistName){
+    //     var context = $('.artist-name');
+    //     for(var i=0;i<context.length;i++){
+    //         context[i].innerHTML = artistName;
+    //     }
+    // }
+
+    function setArtistName(artistslug,artistName) {
+      var context = document.querySelectorAll('.artist-name');
+      var baseUrl = '<?= URL::to('/artist'); ?>';
+      
+      context.forEach(function(element) {
+        element.innerHTML += `<a href="${baseUrl}/${artistslug}"> ${artistName}</a>`;
+      });
     }
+    
     function setAlbumArt(albumart){
         var context = $('#album-art');
         context.attr("src",albumart);
@@ -241,7 +251,17 @@ var data = listAudio; // Assuming listAudio contains the URL
         // if(indexing.author == ""){ indexing.author = "Unknown"; }
         // console.log(data);
         setSongName(indexing.song);
-        setArtistName(indexing.cast_crew);
+          // for (var i = 0; i < indexing.artistscrew.length; i++) {
+          //     // Access the inner array
+          //     var innerArray = indexing.artistscrew[i];
+          //     // Loop through the inner array
+          //     for (var j = 0; j < innerArray.length; j++) {
+          //       // Access the object
+          //       var obj = innerArray[j];
+          //       setArtistName(obj.artist_slug,obj.artist_name)
+          //       console.log(obj.artist_slug,obj.artist_name);
+          //     }
+          //   }
         setAlbumArt(indexing.albumart);
 
         var image = document.querySelector('#audio_img')
@@ -436,7 +456,17 @@ var data = listAudio; // Assuming listAudio contains the URL
 
 
             setSongName(indexing.title);
-            setArtistName(indexing.slug);
+            
+            for (var i = 0; i < indexing.artistscrew.length; i++) {
+              // Access the inner array
+              var innerArray = indexing.artistscrew[i];
+              // Loop through the inner array
+              for (var j = 0; j < innerArray.length; j++) {
+                // Access the object
+                var obj = innerArray[j];
+                setArtistName(obj.artist_slug,obj.artist_name)
+              }
+            }
             setAlbumArt(indexing.image_url);
             processing(indexing);
             totalTime = 'NaN';
@@ -488,7 +518,16 @@ var data = listAudio; // Assuming listAudio contains the URL
 
 
             setSongName(indexing.title);
-            setArtistName(indexing.slug);
+            for (var i = 0; i < indexing.artistscrew.length; i++) {
+              // Access the inner array
+              var innerArray = indexing.artistscrew[i];
+              // Loop through the inner array
+              for (var j = 0; j < innerArray.length; j++) {
+                // Access the object
+                var obj = innerArray[j];
+                setArtistName(obj.artist_slug,obj.artist_name)
+              }
+            }
             setAlbumArt(indexing.image_url);
             processing(indexing);
             totalTime = 'NaN';
@@ -545,9 +584,18 @@ var data = listAudio; // Assuming listAudio contains the URL
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
 
-
+          for (var i = 0; i < indexing.artistscrew.length; i++) {
+              // Access the inner array
+              var innerArray = indexing.artistscrew[i];
+              // Loop through the inner array
+              for (var j = 0; j < innerArray.length; j++) {
+                // Access the object
+                var obj = innerArray[j];
+                setArtistName(obj.artist_slug,obj.artist_name)
+              }
+            }
             setSongName(indexing.title);
-            setArtistName(indexing.slug);
+
             setAlbumArt(indexing.image_url);
             processing(indexing);
             totalTime = NaN;

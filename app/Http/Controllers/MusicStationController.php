@@ -270,6 +270,13 @@ class MusicStationController extends Controller
                     }
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+
+                    $artistscrew[] = Audioartist::where('audio_id',@$item->id)
+                    ->Join('artists','artists.id','=','audio_artists.artist_id')->get();
+
+                    $item['artistscrew']   =   $artistscrew;
+
+                        $item['castcrew']   =   $castcrew;
                         if(count($castcrew) > 0){
                             foreach($castcrew as $cast_crew){
                                 $item['cast_crew']   =   $cast_crew. ' ' ;
@@ -310,7 +317,7 @@ class MusicStationController extends Controller
             }
             $OtherMusicStation = MusicStation::where('id','!=', $MusicStation_id)->get();
 
-            // dd($OtherMusicStation);
+            // dd($merged_audios_lyrics);
             $data = array(
                 'audioppv' => $audioppv,
                 'album' => $MusicStation,
@@ -333,7 +340,7 @@ class MusicStationController extends Controller
                 'playlist_name' => 'Related Station Songs',
                 'playlist_station' => 1,
                 'OtherMusicStation' => $OtherMusicStation,
-                'show_station_button' => $OtherMusicStation,
+                'show_station_button' => 1,
             );
             
             // dd( $data);

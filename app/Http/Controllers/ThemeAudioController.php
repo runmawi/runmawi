@@ -278,6 +278,7 @@ class ThemeAudioController extends Controller{
 
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+                        $item['castcrew']   =   $castcrew;
                         if(count($castcrew) > 0){
                             foreach($castcrew as $cast_crew){
                                 $item['cast_crew']   =   $cast_crew. ' ' ;
@@ -324,6 +325,7 @@ class ThemeAudioController extends Controller{
 
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+                        $item['castcrew']   =   $castcrew;
                         if(count($castcrew) > 0){
                             foreach($castcrew as $cast_crew){
                                 $item['cast_crew']   =   $cast_crew. ' ' ;
@@ -638,6 +640,7 @@ class ThemeAudioController extends Controller{
                     }
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+                        $item['castcrew']   =   $castcrew;
                         if(count($castcrew) > 0){
                             foreach($castcrew as $cast_crew){
                                 $item['cast_crew']   =   $cast_crew. ' ' ;
@@ -677,6 +680,7 @@ class ThemeAudioController extends Controller{
                     }
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+                        $item['castcrew']   =   $castcrew;
                         if(count($castcrew) > 0){
                             foreach($castcrew as $cast_crew){
                                 $item['cast_crew']   =   $cast_crew. ' ' ;
