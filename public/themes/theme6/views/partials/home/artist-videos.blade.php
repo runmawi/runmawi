@@ -24,13 +24,9 @@
 
                                                 <div class="movie-time d-flex align-items-center my-2">
 
-                                                    {{-- <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($artist_details)->age_restrict.'+' }}
-                                                    </div>
-
                                                     <span class="text-white">
-                                                        {{ $artist_details->duration != null ? gmdate('H:i:s', $artist_details->duration) : null }}
-                                                    </span> --}}
+                                                        {{ str_replace('_', ' ', ucwords($artist_details->artist_type))  }}
+                                                    </span>
                                                 </div>
 
                                                 <div class="hover-buttons">
