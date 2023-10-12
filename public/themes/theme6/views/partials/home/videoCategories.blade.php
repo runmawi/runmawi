@@ -12,21 +12,35 @@
 
                     <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ($data as $key => $videoCategories)
+                            @foreach ( $data as $key => $videoCategories)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('category/'.$videoCategories->slug ) }}">
+                                    <a href="{{ URL::to('artist-list') }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  URL::to('public/uploads/videocategory/'.$videoCategories->image) }}" class="img-fluid" alt="">
+                                                <img src="{{  URL::to('public/uploads/videocategory/'.$videoCategories->image ) }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($videoCategories->name) > 17 ? substr($videoCategories->name, 0, 18) . '...' : $videoCategories->name }}</h6>
+                                                <h6> {{ strlen($videoCategories->name ) > 17 ? substr($videoCategories->name , 0, 18) . '...' : $videoCategories->name  }}</h6>
+
+                                                <div class="movie-time d-flex align-items-center my-2">
+
+                                                    {{-- <span class="text-white">
+                                                        {{ str_replace('_', ' ', ucwords($videoCategories->artist_type))  }}
+                                                    </span> --}}
+                                                    
+                                                </div>
+
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                         Play Now
                                                     </span>
                                                 </div>
+                                            </div>
+                                            <div class="block-social-info">
+                                                {{-- <ul class="list-inline p-0 m-0 music-play-lists">
+                                                    <li><span><i class="ri-volume-mute-fill"></i></span></li>
+                                                </ul> --}}
                                             </div>
                                         </div>
                                     </a>
