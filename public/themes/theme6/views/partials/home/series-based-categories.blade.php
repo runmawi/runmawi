@@ -1,4 +1,5 @@
-@if (!empty($data))
+
+@if ($data)
     <section id="iq-tvthrillers" class="s-margin">
         <div class="container-fluid">
             <div class="row">

@@ -4,6 +4,9 @@
       $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
       $order_settings_list = App\OrderHomeSetting::get();  
       $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();  
+
+      // dd( $order_settings ) ;
+
 ?>
 
    <!-- loader Start -->
@@ -164,23 +167,44 @@
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/latest-series', ['data' => $latest_series, 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
+            @if( $item == 'ContentPartner' && $home_settings->content_partner == 1 )        {{-- content partner  --}}
+                <?php $ModeratorsUser = App\ModeratorsUser::where('status',1)->get(); ?>
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/ContentPartners', ['data' => $ModeratorsUser , 'order_settings_list' => $order_settings_list ])->content() !!}
+            @endif
+
+            @if( $item == 'ChannelPartner' && $home_settings->channel_partner == 1 )        {{-- channel partner  --}}
+               <?php $channels = App\Channel::where('status',1)->get(); ?>
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/ChannelPartners', ['data' => $channels, 'order_settings_list' => $order_settings_list ])->content() !!}
+            @endif
+
+            @if( $item == 'Series_Genre' && $home_settings->SeriesGenre == 1 )        {{-- Series Genre  --}}
+               <?php $parentCategories = App\SeriesGenre::orderBy('order','ASC')->get(); ?>
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/SeriesGenre', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ])->content() !!}
+            @endif
+
+            @if( $item == 'Audio_Genre' && $home_settings->AudioGenre == 1 )        {{-- Audios Genre  --}}
+               <?php $parentCategories = App\AudioCategory::orderBy('order','ASC')->get(); ?>
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/AudioGenre', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ])->content() !!}
+            @endif
+            
+
             @if( $item == 'category_videos' && $home_settings->category_videos == 1 ) {{-- Videos Based on Category  --}}
-               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/videos-based-categories', ['data' => $data, 'order_settings_list' => $order_settings_list ])->content() !!}
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/videos-based-categories', ['order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
             
             @if( $item == 'live_category' && $home_settings->live_category == 1 ) {{-- LiveStream Based on Category  --}}
-               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/livestreams-based-categories', ['data' => $latest_series, 'order_settings_list' => $order_settings_list ])->content() !!}
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/livestreams-based-categories', [ 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
             
-            @if( $item == 'SeriesGenre_videos' && $home_settings->SeriesGenre_videos == 1 ) {{-- series Based on Category  --}}
-               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/series-based-categories', ['data' => $latest_series, 'order_settings_list' => $order_settings_list ])->content() !!}
+            @if( $item == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1 ) {{-- series Based on Category  --}}
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/series-based-categories', [ 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
                   
-            @if( $item == 'AudioGenre_audios' && $home_settings->AudioGenre_audios == 1 ) {{-- Audios Based on Category  --}}
-               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Audios-based-categories', ['data' => $latest_series, 'order_settings_list' => $order_settings_list ])->content() !!}
+            @if( $item == 'Audio_Genre_audios' && $home_settings->AudioGenre_audios == 1 ) {{-- Audios Based on Category  --}}
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Audios-based-categories', [ 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
             
 

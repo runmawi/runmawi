@@ -7,25 +7,27 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="{{ $order_settings_list[12]->url ? URL::to($order_settings_list[12]->url) : null }} ">{{ optional($order_settings_list[12])->header_name }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[19]->url ? URL::to($order_settings_list[19]->url) : null }} ">{{ optional($order_settings_list[19])->header_name }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ( $data as $key => $livecategories)
+                            @foreach ( $data as $key => $videoCategories)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('LiveCategory/'.$livecategories->slug) }}">
+                                    <a href="{{ URL::to('series/category/'. $videoCategories->slug ) }}">
+
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  URL::to('public/uploads/livecategory/'.$livecategories->image ) }}" class="img-fluid" alt="">
+                                                <img src="{{  URL::to('public/uploads/videocategory/'.$videoCategories->image ) }}" class="img-fluid" alt="">
                                             </div>
+
                                             <div class="block-description">
-                                                <h6> {{ strlen($livecategories->name ) > 17 ? substr($livecategories->name , 0, 18) . '...' : $livecategories->name  }}</h6>
+                                                <h6> {{ strlen($videoCategories->name ) > 17 ? substr($videoCategories->name , 0, 18) . '...' : $videoCategories->name  }}</h6>
 
                                                 <div class="movie-time d-flex align-items-center my-2">
 
                                                     {{-- <span class="text-white">
-                                                        {{ str_replace('_', ' ', ucwords($livecategories->artist_type))  }}
+                                                        {{ str_replace('_', ' ', ucwords($videoCategories->artist_type))  }}
                                                     </span> --}}
                                                     
                                                 </div>
@@ -33,7 +35,7 @@
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                       Visit
+                                                        Visit
                                                     </span>
                                                 </div>
                                             </div>

@@ -32,7 +32,7 @@
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
+                                                       Visit
                                                     </span>
                                                 </div>
                                             </div>
