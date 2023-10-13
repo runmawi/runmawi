@@ -7,45 +7,39 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"> {{ "Suggested for you"}} </h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[8]->url ? URL::to($order_settings_list[8]->url) : null }} ">{{ optional($order_settings_list[8])->header_name }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ($data as $key => $videos)
+                            @foreach ( $data as $key => $artist_details)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('category/videos/'.$videos->slug ) }}">
+                                    <a href="{{ URL::to('artist-list') }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  URL::to('public/uploads/images/'.$videos->image) }}" class="img-fluid" alt="">
+                                                <img src="{{  URL::to('public/uploads/artists/'.$artist_details->image ) }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($videos->title) > 17 ? substr($videos->title, 0, 18) . '...' : $videos->title }}
-                                                </h6>
+                                                <h6> {{ strlen($artist_details->artist_name ) > 17 ? substr($artist_details->artist_name , 0, 18) . '...' : $artist_details->artist_name  }}</h6>
+
                                                 <div class="movie-time d-flex align-items-center my-2">
 
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($videos)->age_restrict.'+' }}
-                                                    </div>
-
                                                     <span class="text-white">
-                                                        {{ $videos->duration != null ? gmdate('H:i:s', $videos->duration) : null }}
+                                                        {{ str_replace('_', ' ', ucwords($artist_details->artist_type))  }}
                                                     </span>
                                                 </div>
 
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
+                                                       Visit
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
+                                                {{-- <ul class="list-inline p-0 m-0 music-play-lists">
+                                                    <li><span><i class="ri-volume-mute-fill"></i></span></li>
+                                                </ul> --}}
                                             </div>
                                         </div>
                                     </a>

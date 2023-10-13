@@ -1,127 +1,60 @@
-<div class="iq-main-header d-flex align-items-center justify-content-between">
-        <h4 class="main-title"><a href="">Most Watched Videos - User</a></h4>                      
-</div>
-    <div class="favorites-contens">
-        <ul class="favorites-slider list-inline  row p-0 mb-0">
-                <?php  if(isset($most_watch_user)) :
-                    foreach($most_watch_user as $watchlater_video): 
-                ?>
+@if (!empty($data))
 
-                <li class="slide-item">
-                    <a href="<?php echo URL::to('home') ?>">
-                        <div class="block-images position-relative">
-                                <div class="img-box">
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid loading w-100" alt="m-img">
-                                        <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  data-play="hover" >
-                                            <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
-                                        </video> -->
+    <section id="iq-favorites">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 overflow-hidden">
+
+                    {{-- Header --}}
+                    <div class="iq-main-header d-flex align-items-center justify-content-between">
+                        <h4 class="main-title"><a href=""> {{ "Recommend For You" }}</a></h4>
+                    </div>
+
+                    <div class="favorites-contens">
+                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            @foreach ($data as $key => $video)
+                                <li class="slide-item">
+                                    <a href="{{ URL::to('category/videos/'.$video->slug ) }}">
+                                        <div class="block-images position-relative">
+                                            <div class="img-box">
+                                                <img src="{{  URL::to('public/uploads/images/'.$video->image) }}" class="img-fluid" alt="">
+                                            </div>
+                                            <div class="block-description">
+                                                <h6> {{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}
+                                                </h6>
+                                                <div class="movie-time d-flex align-items-center my-2">
+
+                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                        {{ optional($video)->age_restrict.'+' }}
+                                                    </div>
+
+                                                    <span class="text-white">
+                                                        {{ $video->duration != null ? gmdate('H:i:s', $video->duration) : null }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="hover-buttons">
+                                                    <span class="btn btn-hover">
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                        Play Now
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="block-social-info">
+                                                <ul class="list-inline p-0 m-0 music-play-lists">
+                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
+                                                    <li><span><i class="ri-heart-fill"></i></span></li>
+                                                    <li><span><i class="ri-add-line"></i></span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </a>
-
-                                     <!-- PPV price -->
-                                  
-                                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
-                                            <?php   if($watchlater_video->access == 'subscriber' ){ ?>
-                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                            <?php }elseif($watchlater_video->access == 'registered'){?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
-                                                <?php } elseif(!empty($watchlater_video->ppv_price)){?>
-                                                <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
-                                            <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
-                                                <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
-                                            <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
-                                                <p class="p-tag"><?php echo "Free"; ?></p>
-                                            <?php } ?>
-                                        <?php } ?>
-                                      
-                                </div>
-
-                                <div class="block-description">
-
-                                      
-                                <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                        <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
-                                   </a>
-                                <?php } ?>   
-
-                                 <div class="movie-time d-flex align-items-center pt-1">
-                                    <?php if($ThumbnailSetting->age == 1) { ?>
-                                    <!-- Age -->
-                                    <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
-                                    <?php } ?>
-
-                                    <?php if($ThumbnailSetting->duration == 1) { ?>
-                                    <!-- Duration -->
-                                     <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-                                    <?php } ?>
-                                </div>
-                                
-                                <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
-                                    <div class="movie-time d-flex align-items-center pt-1">
-                                        <?php if($ThumbnailSetting->rating == 1) { ?>
-                                        <!--Rating  -->
-                                        <div class="badge badge-secondary p-1 mr-2">
-                                            <span class="text-white">
-                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                <?php echo __($watchlater_video->rating); ?>
-                                            </span>
-                                        </div>
-                                        <?php } ?>
-
-                                        <?php if($ThumbnailSetting->published_year == 1) { ?>
-                                        <!-- published_year -->
-                                        <div class="badge badge-secondary p-1 mr-2">
-                                          <span class="text-white">
-                                              <i class="fa fa-calendar" aria-hidden="true"></i>
-                                              <?php echo __($watchlater_video->year); ?>
-                                          </span>
-                                        </div>
-                                        <?php } ?>
-
-                                        <?php if($ThumbnailSetting->featured == 1 &&  $watchlater_video->featured == 1) { ?>
-                                        <!-- Featured -->
-                                        <div class="badge badge-secondary p-1 mr-2">
-                                          <span class="text-white">
-                                          <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                          </span>
-                                        </div>
-                                        <?php } ?>
-                                    </div>
-                                <?php } ?>
-
-                                <div class="movie-time d-flex align-items-center pt-1">
-                                    <!-- Category Thumbnail  setting -->
-                                   <?php
-                                   $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                               ->where('categoryvideos.video_id',$watchlater_video->id)
-                                               ->pluck('video_categories.name');        
-                                   ?>
-                                   <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                   <span class="text-white">
-                                       <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                       <?php
-                                           $Category_Thumbnail = array();
-                                               foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                               $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                               }
-                                           echo implode(','.' ', $Category_Thumbnail);
-                                       ?>
-                                   </span>
-                                   <?php } ?>
-                               </div>
-
-                                    
-                                   <div class="hover-buttons">
-                                       <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
-                                             <img alt="ply" class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
-                                      </a>
-                                   
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                         <?php endforeach; endif; ?>
-        </ul>
-    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endif

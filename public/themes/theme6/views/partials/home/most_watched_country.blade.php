@@ -7,7 +7,7 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"> {{ "Suggested for you"}} </h4>
+                        <h4 class="main-title"><a>{{ ucwords("Top Movies in " . Country_name() . " Today") }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
