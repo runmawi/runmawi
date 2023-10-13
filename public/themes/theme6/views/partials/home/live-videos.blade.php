@@ -14,7 +14,7 @@
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
                             @foreach ($data as $key => $livestream_videos)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('category/videos/'.$livestream_videos->slug ) }}">
+                                    <a href="{{ URL::to('live/'.$livestream_videos->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
                                                 <img src="{{  URL::to('public/uploads/images/'.$livestream_videos->image) }}" class="img-fluid" alt="">
