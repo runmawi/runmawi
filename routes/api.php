@@ -639,5 +639,10 @@ Route::group(
             Route::post('TV_search_data_update', 'ApiAuthController@tv_search_data_update');
             Route::post('auto-store-station', 'ApiAuthController@AutoStoreStation');
             Route::post('multi-currency-converter', 'ApiAuthController@Currency_Convert');
+
+
+            Route::post('scanner_code', 'ApiAuthController@QRScannerCode');
+            Route::post('mobile_pair_code', 'ApiAuthController@QRMobilePair');
+            Route::post('tv_signup', 'ApiAuthController@TvSignUp');
             
         });

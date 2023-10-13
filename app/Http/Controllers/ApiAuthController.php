@@ -21913,4 +21913,178 @@ public function TV_login(Request $request)
     return response()->json($response, 200);
 
   }
+
+    public function QRScannerCode(Request $request){
+
+      try {
+
+        $qr_code = $request->qr_code ;
+
+        TVLoginCode::create([
+          'tv_code'  => $request->qr_code,
+          'tv_name'  => $request->tv_type,
+          'tv_type'  => $request->tv_type,
+          'status'   => 0,
+       ]);
+    
+        $response = array(
+            'status'=> 'true',
+            'message' => 'Added verfication code',
+            'qr_code' => $request->qr_code,
+        );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => false,
+          'message'=> $th->getMessage(),
+        );
+
+      }
+      return response()->json($response, 200);
+
+    }
+
+
+    public function QRMobilePair(Request $request){
+
+      try {
+
+        $qr_code = $request->qr_code;
+        $email = $request->email ;
+
+        $MobilePairCodecount = TVLoginCode::where('tv_code',$request->qr_code)->where('tv_type',$request->tv_type)->count();
+
+          if($MobilePairCodecount > 0){
+            
+            TVLoginCode::where('tv_code',$request->qr_code)->where('tv_type',$request->tv_type)->update([
+                'email'                   =>  $request->email,
+                'status'                  =>  1,
+            ]);
+
+            $user_details = User::where('email',$request->email)->first();
+
+              $response = array(
+                  'status'=> true,
+                  'message' => 'Verfication Successfully Done',
+                  'MobilePairCode_details' => TVLoginCode::where('tv_code',$request->qr_code)->where('tv_type',$request->tv_type)->first(),
+                  'user_details' => $user_details,
+              );
+
+          }else{
+                $response = array(
+                  'status'=> false,
+                  'message' => 'Invaild Pair QrCode',
+              );
+          }
+
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => false,
+          'message'=> $th->getMessage(),
+        );
+
+      }
+      return response()->json($response, 200);
+
+    }
+
+
+    public function TvSignUp(Request $request){
+
+      try {
+
+        $this->validate($request, [
+          'email' => 'required|email|unique:users,email'
+        ]);
+
+        User::create([
+            'name'          => $request->name,
+            'username'      => $request->name,
+            'gender'        => $request->gender,
+            'email '        => $request->email ,
+            'password'      => Hash::make($request->password),
+            'DOB'           => $request->DOB,
+        ]);
+
+        $settings = Setting::first();
+
+        if($settings->free_registration == 0 && $settings->activation_email == 1){
+
+          try {
+
+            $activation_code   = Str::random(60);
+
+            User::create([
+              'name'              => $request->name,
+              'username'          => $request->name,
+              'gender'            => $request->gender,
+              'email'             => $request->email ,
+              'password'          => Hash::make($request->password),
+              'activation_code'   => $activation_code,
+          ]);
+            
+              $email = $request->email;
+
+              $uname = $request->name;
+
+              Mail::send('emails.verify', array('activation_code' => $activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+
+                  $message->to($email,$uname)->subject('Verify your email address');
+
+              });
+
+              
+            $response = array(
+
+              'status'  => true,
+              'Message' => 'User Registered Successfully',
+              'User_Details' => User::where('email',$request->email)->first(),
+            );
+    
+          } catch (\Throwable $th) {
+
+            $response = array(
+              'status' => false,
+              'message'=> $th->getMessage(),
+            );
+
+          }
+  
+
+        }else{
+
+          User::create([
+            'name'          => $request->name,
+            'username'      => $request->name,
+            'gender'        => $request->gender,
+            'email'         => $request->email ,
+            'password'      => Hash::make($request->password),
+            'active'        => 1 ,
+          ]);
+
+          $response = array(
+
+            'status'  => true,
+            'Message' => 'User Registered Successfully',
+            'User_Details' => User::where('email',$request->email)->first(),
+          );
+
+        }
+        
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => false,
+          'message'=> $th->getMessage(),
+        );
+
+      }
+
+      return response()->json($response, 200);
+
+    }
+
 }
