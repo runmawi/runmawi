@@ -1,27 +1,33 @@
-<?php 
+<?php
 
-  $data = App\Series::where('active', '=', '1')->get()->map(function ($item) {
-                $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
-                $item['season_count'] = App\SeriesSeason::where('series_id',$item->id)->count();
-                $item['episode_count'] = App\Episode::where('series_id',$item->id)->count();
-                
-                $item['Series_Category'] =  App\SeriesCategory::select('category_id','series_id','name','slug')
-                                                    ->join('series_genre','series_genre.id','=','series_categories.category_id')
-                                                    ->where('series_id', $item->id)->get() ;
+$data = App\Series::where('active', '=', '1')
+    ->get()
+    ->map(function ($item) {
+        $item['image_url'] = URL::to('/public/uploads/images/' . $item->image);
+        $item['Player_image_url'] = URL::to('/public/uploads/images/' . $item->player_image);
+        $item['season_count'] = App\SeriesSeason::where('series_id', $item->id)->count();
+        $item['episode_count'] = App\Episode::where('series_id', $item->id)->count();
 
-                $item['Series_Language'] =  App\SeriesLanguage::select('language_id','series_id','name','slug')
-                                                ->join('languages','languages.id','=','series_languages.language_id')
-                                                ->where('series_id', $item->id)->get() ;
+        $item['Series_Category'] = App\SeriesCategory::select('category_id', 'series_id', 'name', 'slug')
+            ->join('series_genre', 'series_genre.id', '=', 'series_categories.category_id')
+            ->where('series_id', $item->id)
+            ->get();
 
-                $item['Series_artist']   =  App\Seriesartist::select('artist_id','artist_name as name','artist_slug')
-                                                ->join('artists','artists.id','=','series_artists.artist_id')
-                                                ->where('series_id', $item->id)->get() ;
+        $item['Series_Language'] = App\SeriesLanguage::select('language_id', 'series_id', 'name', 'slug')
+            ->join('languages', 'languages.id', '=', 'series_languages.language_id')
+            ->where('series_id', $item->id)
+            ->get();
 
-                $item['Episode_details'] = $item->Series_depends_episodes;
-                                                
-                return $item;
-        });
+        $item['Series_artist'] = App\Seriesartist::select('artist_id', 'artist_name as name', 'artist_slug')
+            ->join('artists', 'artists.id', '=', 'series_artists.artist_id')
+            ->where('series_id', $item->id)
+            ->get();
+
+        $item['Episode_details'] = $item->Series_depends_episodes;
+
+        return $item;
+    });
+
 ?>
 
 <section id="iq-trending" class="s-margin">
@@ -33,12 +39,11 @@
                 </div>
                 <div class="trending-contens">
                     <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
-                        @foreach ( $data as $series_details )
+                        @foreach ($data as $series_details)
                             <li>
-                                <a href="#">
+                                <a href="javascript:void(0);">
                                     <div class="movie-slick position-relative">
-                                        <img src="{{ $series_details->image_url }}"
-                                            class="img-fluid" alt="">
+                                        <img src="{{ $series_details->image_url }}" class="img-fluid">
                                     </div>
                                 </a>
                             </li>
@@ -46,37 +51,39 @@
                     </ul>
 
                     <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center">
-                        @foreach ( $data as $key => $series_details )
+                        @foreach ($data as $key => $series_details )
                             <li>
-                                <div class="tranding-block position-relative" style="background-image: url({{ $series_details->Player_image_url }});">
+                                <div class="tranding-block position-relative"
+                                    style="background-image: url( {{ $series_details->Player_image_url }} );">
                                     <div class="trending-custom-tab">
                                         <div class="tab-title-info position-relative">
                                             <ul class="trending-pills d-flex nav nav-pills justify-content-center align-items-center text-center"
                                                 role="tablist">
                                                 <li class="nav-item">
-                                                    <a class="nav-link active show" data-toggle="pill"
-                                                        href="#trending-data1" role="tab"
+                                                    <a class="nav-link active show" data-toggle="pill"  href="{{'#trending-data-overview-'.$key }}" role="tab"
                                                         aria-selected="true">Overview</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="pill" href="#trending-data2"
+                                                    <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Episodes-'.$key }}"
                                                         role="tab" aria-selected="false">Episodes</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="pill" href="#trending-data3"
+                                                    <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Trailers-'.$key }}"
                                                         role="tab" aria-selected="false">Trailers</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="pill" href="#trending-data4"
+                                                    <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Similar-'.$key }}"
                                                         role="tab" aria-selected="false">Similar Like This</a>
                                                 </li>
                                             </ul>
                                         </div>
-
+                                                        
                                         <div class="trending-content">
-                                            <div id="trending-data1" class="overview-tab tab-pane fade active show">
+
+                                                            {{-- overview --}}
+                                            <div id="{{'trending-data-overview-'.$key }}" class="overview-tab tab-pane fade active show">
                                                 <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                    <a href="#" tabindex="0">
+                                                    <a href="javascript:void(0);" tabindex="0">
                                                         <div class="res-logo">
                                                             <div class="channel-logo">
                                                                 <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/logo.png"
@@ -86,64 +93,66 @@
                                                     </a>
 
                                                     <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
-                                                    
+
                                                     <div class="d-flex align-items-center text-white text-detail">
                                                         <span class="badge badge-secondary p-3">18+</span>
                                                         <span class="ml-3">{{ $series_details->season_count . " Seasons" }} </span>
                                                         <span class="trending-year">{{ optional($series_details)->year }}</span>
                                                     </div>
-                                                    
+
                                                     <div class="d-flex align-items-center series mb-4">
-                                                        <a href="#"><img
+                                                        <a href="javascript:void(0);"><img
                                                                 src="https://localhost/flicknexs/public/themes/theme6/assets/images/trending/trending-label.png"
                                                                 class="img-fluid" alt=""></a>
                                                         <span class="text-gold ml-3"> {{ "#". ($key+1) ." in Series Today" }} </span>
                                                     </div>
 
                                                     <p class="trending-dec">{!! html_entity_decode( optional($series_details)->details) !!}</p>
-                                                    
+
                                                     <div class="p-btns">
                                                         <div class="d-flex align-items-center p-0">
                                                             <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
                                                             <a href="#" class="btn btn-link" tabindex="0"><i class="ri-add-line"></i>My List</a>
                                                         </div>
                                                     </div>
-
                                                     <div class="trending-list mt-4">
 
                                                         @if ( $series_details->Series_artist->isNotEmpty() )
                                                             <div class="text-primary title">Starring:
                                                                 <span class="text-body"> 
-                                                                    @foreach($series_details->Series_artist as $key => $item)
+                                                                    @foreach($series_details->Series_artist as $item )
                                                                         <a href="{{ route('artist',[ $item->artist_slug ])}}">{{ $item->name }}</a> {{ !$loop->last ? ',' : '' }}
                                                                     @endforeach
                                                                 </span>
                                                             </div>
                                                         @endif
-                                                     
+
                                                         @if ( ($series_details->Series_Category)->isNotEmpty() )
                                                             <div class="text-primary title">Genres: 
                                                                 <span class="text-body"> 
-                                                                    @foreach($series_details->Series_Category as $key => $item)
+                                                                    @foreach($series_details->Series_Category as  $item)
                                                                         <a href=" {{  URL::to('/series/category'.'/'.$item->slug ) }}">{{ $item->name }}</a> {{ !$loop->last ? ',' : '' }} 
                                                                     @endforeach
                                                                 </span>
                                                             </div>
                                                        @endif
                                                         
-                                                       @if ( $series_details->Series_Language->isNotEmpty() )
+                                                        @if ( $series_details->Series_Language->isNotEmpty() )
                                                             <div class="text-primary title">This Is:
                                                                 <span class="text-body">
-                                                                    @foreach($series_details->Series_Language as $key => $item)
+                                                                    @foreach($series_details->Series_Language as $item)
                                                                         <a href="{{ URL::to('language/'. $item->language_id . '/' . $item->name ) }}">{{ $item->name }}</a> {{ !$loop->last ? ',' : '' }}
                                                                     @endforeach
                                                                 </span>
                                                             </div>
                                                         @endif
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="trending-data2" class="overlay-tab tab-pane fade">
+
+                                                            {{--  Episode --}}
+                                            <div id="{{ 'trending-data-Episodes-'.$key }}" class="overlay-tab tab-pane fade">
                                                 <div class="trending-info align-items-center w-100 animated fadeInUp">
                                                     <a href="show-details.html" tabindex="0">
                                                         <div class="channel-logo">
@@ -152,6 +161,7 @@
                                                         </div>
                                                     </a>
                                                     <h1 class="trending-text big-title text-uppercase"> {{ optional($series_details)->title }}</h1>
+                                                    </h1>
                                                     <div class="iq-custom-select d-inline-block sea-epi">
                                                         <select name="cars" class="form-control season-select">
                                                             <option value="season1">Season 1</option>
@@ -171,7 +181,8 @@
                                                                     <div class="episode-number">1</div>
                                                                     <div class="episode-play-info">
                                                                         <div class="episode-play">
-                                                                            <a href="show-details.html" tabindex="0"><i
+                                                                            <a href="show-details.html"
+                                                                                tabindex="0"><i
                                                                                     class="ri-play-fill"></i></a>
                                                                         </div>
                                                                     </div>
@@ -182,8 +193,10 @@
                                                                         <a href="show-details.html">Episode 1</a>
                                                                         <span class="text-primary">2.25 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -197,7 +210,8 @@
                                                                     <div class="episode-number">2</div>
                                                                     <div class="episode-play-info">
                                                                         <div class="episode-play">
-                                                                            <a href="show-details.html" tabindex="0"><i
+                                                                            <a href="show-details.html"
+                                                                                tabindex="0"><i
                                                                                     class="ri-play-fill"></i></a>
                                                                         </div>
                                                                     </div>
@@ -209,7 +223,8 @@
                                                                         <span class="text-primary">3.23 m</span>
                                                                     </div>
                                                                     <p class="mb-0">
-                                                                        Lorem Ipsum is simply dummy text of the printing and
+                                                                        Lorem Ipsum is simply dummy text of the printing
+                                                                        and
                                                                         typesetting industry. Lorem Ipsum has been the
                                                                         industry's standard.
                                                                     </p>
@@ -224,7 +239,8 @@
                                                                     <div class="episode-number">3</div>
                                                                     <div class="episode-play-info">
                                                                         <div class="episode-play">
-                                                                            <a href="show-details.html" tabindex="0"><i
+                                                                            <a href="show-details.html"
+                                                                                tabindex="0"><i
                                                                                     class="ri-play-fill"></i></a>
                                                                         </div>
                                                                     </div>
@@ -235,8 +251,10 @@
                                                                         <a href="show-details.html">Episode 3</a>
                                                                         <span class="text-primary">2 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -250,7 +268,8 @@
                                                                     <div class="episode-number">4</div>
                                                                     <div class="episode-play-info">
                                                                         <div class="episode-play">
-                                                                            <a href="show-details.html" tabindex="0"><i
+                                                                            <a href="show-details.html"
+                                                                                tabindex="0"><i
                                                                                     class="ri-play-fill"></i></a>
                                                                         </div>
                                                                     </div>
@@ -261,8 +280,10 @@
                                                                         <a href="show-details.html">Episode 4</a>
                                                                         <span class="text-primary">1.12 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -276,7 +297,8 @@
                                                                     <div class="episode-number">5</div>
                                                                     <div class="episode-play-info">
                                                                         <div class="episode-play">
-                                                                            <a href="show-details.html" tabindex="0"><i
+                                                                            <a href="show-details.html"
+                                                                                tabindex="0"><i
                                                                                     class="ri-play-fill"></i></a>
                                                                         </div>
                                                                     </div>
@@ -287,8 +309,10 @@
                                                                         <a href="show-details.html">Episode 5</a>
                                                                         <span class="text-primary">2.54 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -297,15 +321,19 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="trending-data3" class="overlay-tab tab-pane fade">
+
+
+                                                            {{-- Trailers --}}
+                                            <div id="{{ 'trending-data-Trailers-'.$key }}" class="overlay-tab tab-pane fade">
                                                 <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                    <a href="#" tabindex="0">
+                                                    <a href="javascript:void(0);" tabindex="0">
                                                         <div class="channel-logo">
                                                             <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/logo.png"
                                                                 class="c-logo" alt="stramit">
                                                         </div>
                                                     </a>
-                                                    <h1 class="trending-text big-title text-uppercase">the hero camp</h1>
+                                                    <h1 class="trending-text big-title text-uppercase">the hero camp
+                                                    </h1>
                                                     <div class="episodes-contens mt-4">
                                                         <div
                                                             class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
@@ -327,12 +355,15 @@
                                                                 <div class="episodes-description text-body mt-2">
                                                                     <div
                                                                         class="d-flex align-items-center justify-content-between">
-                                                                        <a href="watch-video.html" target="_blank">Trailer
+                                                                        <a href="watch-video.html"
+                                                                            target="_blank">Trailer
                                                                             1</a>
                                                                         <span class="text-primary">2.25 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -355,12 +386,15 @@
                                                                 <div class="episodes-description text-body mt-2">
                                                                     <div
                                                                         class="d-flex align-items-center justify-content-between">
-                                                                        <a href="watch-video.html" target="_blank">Trailer
+                                                                        <a href="watch-video.html"
+                                                                            target="_blank">Trailer
                                                                             2</a>
                                                                         <span class="text-primary">3.23 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -383,12 +417,15 @@
                                                                 <div class="episodes-description text-body mt-2">
                                                                     <div
                                                                         class="d-flex align-items-center justify-content-between">
-                                                                        <a href="watch-video.html" target="_blank">Trailer
+                                                                        <a href="watch-video.html"
+                                                                            target="_blank">Trailer
                                                                             3</a>
                                                                         <span class="text-primary">2 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -411,12 +448,15 @@
                                                                 <div class="episodes-description text-body mt-2">
                                                                     <div
                                                                         class="d-flex align-items-center justify-content-between">
-                                                                        <a href="watch-video.html" target="_blank">Trailer
+                                                                        <a href="watch-video.html"
+                                                                            target="_blank">Trailer
                                                                             4</a>
                                                                         <span class="text-primary">1.12 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -439,12 +479,15 @@
                                                                 <div class="episodes-description text-body mt-2">
                                                                     <div
                                                                         class="d-flex align-items-center justify-content-between">
-                                                                        <a href="watch-video.html" target="_blank">Trailer
+                                                                        <a href="watch-video.html"
+                                                                            target="_blank">Trailer
                                                                             5</a>
                                                                         <span class="text-primary">2.54 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -453,15 +496,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="trending-data4" class="overlay-tab tab-pane fade">
+                                                                 
+                                                                {{-- Similar --}}
+                                            <div id="{{ 'trending-data-Similar-'.$key }}" class="overlay-tab tab-pane fade">
                                                 <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                    <a href="#" tabindex="0">
+                                                    <a href="javascript:void(0);" tabindex="0">
                                                         <div class="channel-logo">
                                                             <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/logo.png"
                                                                 class="c-logo" alt="stramit">
                                                         </div>
                                                     </a>
-                                                    <h1 class="trending-text big-title text-uppercase">the hero camp</h1>
+                                                    <h1 class="trending-text big-title text-uppercase">the hero camp
+                                                    </h1>
                                                     <div class="episodes-contens mt-4">
                                                         <div
                                                             class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
@@ -474,7 +520,8 @@
                                                                     <div class="episode-number">1</div>
                                                                     <div class="episode-play-info">
                                                                         <div class="episode-play">
-                                                                            <a href="show-details.html" tabindex="0"><i
+                                                                            <a href="show-details.html"
+                                                                                tabindex="0"><i
                                                                                     class="ri-play-fill"></i></a>
                                                                         </div>
                                                                     </div>
@@ -485,8 +532,10 @@
                                                                         <a href="show-details.html">Episode 1</a>
                                                                         <span class="text-primary">2.25 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -500,7 +549,8 @@
                                                                     <div class="episode-number">2</div>
                                                                     <div class="episode-play-info">
                                                                         <div class="episode-play">
-                                                                            <a href="show-details.html" tabindex="0"><i
+                                                                            <a href="show-details.html"
+                                                                                tabindex="0"><i
                                                                                     class="ri-play-fill"></i></a>
                                                                         </div>
                                                                     </div>
@@ -511,8 +561,10 @@
                                                                         <a href="show-details.html">Episode 2</a>
                                                                         <span class="text-primary">3.23 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -526,7 +578,8 @@
                                                                     <div class="episode-number">3</div>
                                                                     <div class="episode-play-info">
                                                                         <div class="episode-play">
-                                                                            <a href="show-details.html" tabindex="0"><i
+                                                                            <a href="show-details.html"
+                                                                                tabindex="0"><i
                                                                                     class="ri-play-fill"></i></a>
                                                                         </div>
                                                                     </div>
@@ -537,8 +590,10 @@
                                                                         <a href="show-details.html">Episode 3</a>
                                                                         <span class="text-primary">2 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -552,7 +607,8 @@
                                                                     <div class="episode-number">4</div>
                                                                     <div class="episode-play-info">
                                                                         <div class="episode-play">
-                                                                            <a href="show-details.html" tabindex="0"><i
+                                                                            <a href="show-details.html"
+                                                                                tabindex="0"><i
                                                                                     class="ri-play-fill"></i></a>
                                                                         </div>
                                                                     </div>
@@ -563,8 +619,10 @@
                                                                         <a href="show-details.html">Episode 4</a>
                                                                         <span class="text-primary">1.12 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -578,7 +636,8 @@
                                                                     <div class="episode-number">5</div>
                                                                     <div class="episode-play-info">
                                                                         <div class="episode-play">
-                                                                            <a href="show-details.html" tabindex="0"><i
+                                                                            <a href="show-details.html"
+                                                                                tabindex="0"><i
                                                                                     class="ri-play-fill"></i></a>
                                                                         </div>
                                                                     </div>
@@ -589,8 +648,10 @@
                                                                         <a href="show-details.html">Episode 5</a>
                                                                         <span class="text-primary">2.54 m</span>
                                                                     </div>
-                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text of
-                                                                        the printing and typesetting industry. Lorem Ipsum
+                                                                    <p class="mb-0">Lorem Ipsum is simply dummy text
+                                                                        of
+                                                                        the printing and typesetting industry. Lorem
+                                                                        Ipsum
                                                                         has been the industry's standard.
                                                                     </p>
                                                                 </div>
@@ -603,6 +664,7 @@
                                     </div>
                                 </div>
                             </li>
+
                         @endforeach
                     </ul>
                 </div>

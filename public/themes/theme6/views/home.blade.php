@@ -199,7 +199,7 @@
 
             
             @if( $item == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1 ) {{-- series Based on Category  --}}
-               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/series-based-categories', [ 'order_settings_list' => $order_settings_list ])->content() !!}
+               {{-- {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/series-based-categories', [ 'order_settings_list' => $order_settings_list ])->content() !!} --}}
             @endif
 
                   
@@ -329,28 +329,28 @@
       </div>
       
       <!-- jQuery, Popper JS -->
-         <script src="https://localhost/flicknexs/public/themes/theme6/assets/js/jquery-3.4.1.min.js"></script>
-         <script src="https://localhost/flicknexs/public/themes/theme6/assets/js/popper.min.js"></script>
+         <script src="{{ asset('public/themes/theme6/assets/js/jquery-3.4.1.min.js') }}"></script>
+         <script src="{{ asset('public/themes/theme6/assets/js/popper.min.js') }}"></script>
 
       <!-- Bootstrap JS -->
-         <script src="https://localhost/flicknexs/public/themes/theme6/assets/js/bootstrap.min.js"></script>
+         <script src="{{ asset('public/themes/theme6/assets/js/bootstrap.min.js') }}"></script>
       
       <!-- Slick JS -->
-         <script src="https://localhost/flicknexs/public/themes/theme6/assets/js/slick.min.js"></script>
+         <script src="{{ asset('public/themes/theme6/assets/js/slick.min.js') }}"></script>
       
       <!-- owl carousel Js -->
-         <script src="https://localhost/flicknexs/public/themes/theme6/assets/js/owl.carousel.min.js"></script>
+         <script src="{{ asset('public/themes/theme6/assets/js/owl.carousel.min.js') }}"></script>
       
       <!-- select2 Js -->
-         <script src="https://localhost/flicknexs/public/themes/theme6/assets/js/select2.min.js"></script>
+         <script src="{{ asset('public/themes/theme6/assets/js/select2.min.js') }}"></script>
       
       <!-- Magnific Popup-->
-         <script src="https://localhost/flicknexs/public/themes/theme6/assets/js/jquery.magnific-popup.min.js"></script>
-      
+         <script src="{{ asset('public/themes/theme6/assets/js/jquery.magnific-popup.min.js') }}"></script>
+
       <!-- Slick Animation-->
-         <script src="https://localhost/flicknexs/public/themes/theme6/assets/js/slick-animation.min.js"></script>
-      
+         <script src="{{ asset('public/themes/theme6/assets/js/slick-animation.min.js') }}"></script>
+
       <!-- Custom JS-->
-         <script src="https://localhost/flicknexs/public/themes/theme6/assets/js/custom.js"></script>
+         <script src="{{ asset('public/themes/theme6/assets/js/custom.js') }}"></script>
    </body>
 </html>
