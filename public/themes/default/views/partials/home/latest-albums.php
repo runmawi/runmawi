@@ -26,12 +26,12 @@
                </a> 
 
                 <div class="hover-buttons text-white">
-            <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
+            <a class="epi-name mt-3 mb-0" href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
                         <i class="ri-play-fill"></i>
                      </a>                         
                <div class="hover-buttons">
                <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
-                  <h6 class="epi-name text-white mb-0"><?php echo $album->albumname; ?></h6>
+               <p class="epi-name text-left m-0"><?php echo $album->albumname; ?></p>
                </a>
                 <div class="d-flex align-items-center justify-content-between">
                   <span class="text-white"><small><?php echo get_audio_artist($album->id); ?></small></span>

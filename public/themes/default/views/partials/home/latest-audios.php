@@ -18,13 +18,13 @@
                                 <div class="img-box">
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid w-100" alt="audio">
                                 </div>
-                                <div class="block-description" >
-                                <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                                <div class="block-description mt-3" >
+                                <a class="epi-name mt-3 mb-0 text-center" href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
                         <i class="ri-play-fill"></i>
                      </a>                     
                                    <div class="hover-buttons">
                                    <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
-                  <h6 class="epi-name text-white mb-0"><?php echo $audio->title; ?></h6>
+                                   <p class="epi-name text-left mt-3"><?php echo $audio->title; ?></p>
                </a>
                 <div class="d-flex align-items-center justify-content-between">
                     <span class="text-white"><small><?php echo get_audio_artist($audio->id); ?></small></span>

@@ -38,7 +38,7 @@
 
               <div class="block-description">
               <a class="playTrailer" href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?>">
-                    <img src="<?php echo @$My_Playlist->player_image;  ?>" class="img-fluid w-100" alt="">
+                    <img src="<?php echo @$My_Playlist->image;  ?>" class="img-fluid w-100" alt="">
                     </a>
                     <div class="hover-buttons text-white">
                 <a href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?> ">

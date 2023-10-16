@@ -39,7 +39,7 @@
 
               <div class="block-description">
               <a class="playTrailer" href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?>">
-                <img src="<?php echo URL::to('/').'/public/uploads/audios/'.@$Audio_Category->player_image;  ?>" class="img-fluid w-100" alt="">
+                <img src="<?php echo URL::to('/').'/public/uploads/audios/'.@$Audio_Category->image;  ?>" class="img-fluid w-100" alt="">
           </a>
 
           <div class="hover-buttons text-white">
