@@ -371,6 +371,16 @@ function GetLightLogo()
      return $settings->light_mode_logo;  
 }
 
+function front_end_logo()
+{
+    $theme = App\SiteTheme::first();
+    $settings = App\Setting::first();
+
+    $logo = ($theme->theme_mode == "light" && !empty($theme->light_mode_logo)) ? $theme->light_mode_logo : (($theme != "light" && !empty($theme->dark_mode_logo)) ? $theme->dark_mode_logo : $settings->logo);
+    
+    return URL::to('public/uploads/settings/'. $logo )  ;
+}
+
 function GetCategoryVideoStatus()
 {
      $settings = App\HomeSetting::first();
