@@ -7,30 +7,30 @@
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title"><a
-                                href="{{ $order_settings_list[13]->url ? URL::to($order_settings_list[13]->url) : null }} ">{{ optional($order_settings_list[13])->header_name }}</a>
+                                href="{{ $order_settings_list[26]->url ? URL::to($order_settings_list[26]->url) : null }} ">{{ optional($order_settings_list[26])->header_name }}</a>
                         </h4>
                     </div>
 
                     <div class="tvthrillers-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
-                            @foreach ($data as $channel)
+                            @foreach ($data as $My_Playlist)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('channel/' . $channel->channel_slug) }}">
+                                    <a href="{{ URL::to('playlist/' . $My_Playlist->slug) }}">
                                         <div class="block-images position-relative">
                                           
                                             <div class="img-box">
-                                                <img src="{{ $channel->channel_image ? $channel->channel_image : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                <img src="{{ $My_Playlist->image != null ? URL::to('public/uploads/images/'. $My_Playlist->image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
 
                                             <div class="block-description">
 
-                                                <h6>{{ ucwords(optional($channel)->channel_name) }}</h6>
+                                                <h6> {{ strlen($My_Playlist->title) > 17 ? substr($My_Playlist->title, 0, 18) . '...' : $My_Playlist->title }}
 
                                                 <div class="movie-time d-flex align-items-center my-2"></div>
 
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Visit
+                                                        Visit My PlayList
                                                     </span>
                                                 </div>
                                             </div>
@@ -52,3 +52,4 @@
         </div>
     </section>
 @endif
+
