@@ -8,14 +8,13 @@
                 ?>
 
                 <li class="slide-item">
-                    <a href="<?php echo URL::to('home') ?>">
-                        <div class="block-images position-relative">
-                                <div class="img-box">
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                    <div class="block-images position-relative">
+                          <!-- block-images -->
+                        <div class="border-bg">
+                            <div class="img-box">
+                                    <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                         <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid loading w-100" alt="m-img">
-                                        <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  data-play="hover" >
-                                            <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
-                                        </video> -->
+                                        
                                     </a>
 
                                      <!-- PPV price -->
@@ -35,13 +34,52 @@
                                         <?php } ?>
                                       
                                 </div>
+                                </div>
 
                                 <div class="block-description">
+                                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>" class="img-fluid loading w-100" alt="m-img">
+                                        
+                                   
 
-                                      
-                                <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                        <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
+                                     <!-- PPV price -->
+                                  
+                                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                                            <?php   if($watchlater_video->access == 'subscriber' ){ ?>
+                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif($watchlater_video->access == 'registered'){?>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <?php } elseif(!empty($watchlater_video->ppv_price)){?>
+                                                <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
+                                            <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
+                                                <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
+                                            <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
+                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                        <?php } ?>
+                                        </a>
+                                         <!-- PPV price -->
+                                  
+                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                                            <?php   if($watchlater_video->access == 'subscriber' ){ ?>
+                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif($watchlater_video->access == 'registered'){?>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <?php } elseif(!empty($watchlater_video->ppv_price)){?>
+                                                <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
+                                            <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
+                                                <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
+                                            <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
+                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                        <?php } ?>
+
+                                    <div class="hover-buttons text-white"> 
+                                        <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                                <?php if($ThumbnailSetting->title == 1) { ?>
+                                                <!-- Title -->
+                                            <p class="epi-name text-left m-0">
+                                            <?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></p>
                                    </a>
                                 <?php } ?>   
 
@@ -110,17 +148,15 @@
                                    </span>
                                    <?php } ?>
                                </div>
-
+                               </a>
                                     
-                                   <div class="hover-buttons">
-                                       <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
-                                             <img alt="ply" class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                  
+                                       <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
+                                             <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                       </a>
-                                   
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+                                      </div>
+                                      </div>
+                                      </div>
                 </li>
                          <?php endforeach; endif; ?>
         </ul>

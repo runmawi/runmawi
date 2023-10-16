@@ -8,14 +8,13 @@
                 ?>
 
                 <li class="slide-item">
-                    <a href="<?php echo URL::to('home') ?>">
-                        <div class="block-images position-relative">
-                                <div class="img-box">
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
+                    <div class="block-images position-relative">
+                        <!-- block-images -->
+                        <div class="border-bg">
+                            <div class="img-box">
+                                    <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>" class="img-fluid loading w-100" alt="m-img"> 
-                                        <!--  <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->image;  ?>"  data-play="hover" >
-                                            <source src="<?php echo $Most_watched_countries->trailer;  ?>" type="video/mp4">
-                                        </video>-->
+                                      
                                     </a>
 
                                 <!-- PPV price -->
@@ -37,12 +36,56 @@
                                     <?php } ?>
                                    
                                 </div>
+                                </div>
 
                                 <div class="block-description">
+                                     <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
+                                       <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Most_watched_countries->player_image;  ?>" class="img-fluid loading w-100" alt="m-img"> 
+                                      
+                                  
 
-                                    <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                        <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
-                                             <h6><?php  echo (strlen($Most_watched_countries->title) > 17) ? substr($Most_watched_countries->title,0,18).'...' : $Most_watched_countries->title; ?></h6>
+                                <!-- PPV price -->
+                                    
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                                       
+                                            <?php  if($Most_watched_countries->access == 'subscriber' ){ ?>
+                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif($Most_watched_countries->access == 'registered'){?>
+                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                            <?php } elseif(!empty($Most_watched_countries->ppv_price)){?>
+                                                <p class="p-tag1"><?php echo $currency->symbol.' '.$Most_watched_countries->ppv_price; ?></p>
+                                            <?php }elseif( !empty($Most_watched_countries->global_ppv || !empty($Most_watched_countries->global_ppv) && $Most_watched_countries->ppv_price == null)){ ?>
+                                                <p class="p-tag1"><?php echo $Most_watched_countries->global_ppv.' '.$currency->symbol; ?></p>
+                                            <?php }elseif($Most_watched_countries->global_ppv == null && $Most_watched_countries->ppv_price == null ){ ?>
+                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                       
+                                    <?php } ?>
+                                    </a>
+                                                                    <!-- PPV price -->
+                                    
+                                                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                                       
+                                       <?php  if($Most_watched_countries->access == 'subscriber' ){ ?>
+                                           <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                       <?php }elseif($Most_watched_countries->access == 'registered'){?>
+                                       <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                       <?php } elseif(!empty($Most_watched_countries->ppv_price)){?>
+                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$Most_watched_countries->ppv_price; ?></p>
+                                       <?php }elseif( !empty($Most_watched_countries->global_ppv || !empty($Most_watched_countries->global_ppv) && $Most_watched_countries->ppv_price == null)){ ?>
+                                           <p class="p-tag1"><?php echo $Most_watched_countries->global_ppv.' '.$currency->symbol; ?></p>
+                                       <?php }elseif($Most_watched_countries->global_ppv == null && $Most_watched_countries->ppv_price == null ){ ?>
+                                           <p class="p-tag"><?php echo "Free"; ?></p>
+                                       <?php } ?>
+                                  
+                               <?php } ?>
+
+                               <div class="hover-buttons text-white">
+                                   <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
+                                    <?php if($ThumbnailSetting->title == 1) { ?>  
+                                                  <!-- Title -->
+                                                  <p class="epi-name text-left m-0">
+                                                    <?php  echo (strlen($Most_watched_countries->title) > 17) ? substr($Most_watched_countries->title,0,18).'...' : $Most_watched_countries->title; ?></p>
                                         </a>
                                     <?php } ?>  
 
@@ -113,18 +156,15 @@
                                       </span>
                                       <?php } ?>
                                   </div>
+                                  </a>
                                     
-                                   <div class="hover-buttons">
-                                       <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" >
-                                             <img alt="ply" class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                 
+                                       <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>" >
+                                             <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                       </a>
                                     <div>
-                                       <!-- <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $Most_watched_countries->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+                                    <div>
+                                    <div>
                 </li>
                          <?php endforeach; endif; ?>
         </ul>

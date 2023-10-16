@@ -26,29 +26,35 @@
     <?php  if(isset($AdminVideoPlaylist)) :
       foreach($AdminVideoPlaylist as $VideoPlaylist): ?>
         <li class="slide-item">
-          <a href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?>">
-                             <!-- block-images -->
-            <div class="block-images position-relative">
+          <div class="block-images position-relative">
+            <!-- block-images -->
+            <div class="border-bg">
               <div class="img-box">
+                <a href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?>">
               <img src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>" class="img-fluid w-100" alt="">
-
+                  </a>
+              </div>
               </div>
 
               <div class="block-description">
+              <a class="playTrailer" href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?>">
+              <img src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->player_image;  ?>" class="img-fluid w-100" alt="">
+                  </a>
+
+              <div class="hover-buttons text-white">
                 <a href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?> ">
 
-              <h6><?php echo __($VideoPlaylist->name); ?></h6>
-                               <!-- </div> -->
-                <div class="hover-buttons d-flex">
-                  <a class="text-white" href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?> " >
+                <p class="epi-name text-left m-0"><?php echo $VideoPlaylist->title; ?></p>
+                </a>
+                               
+                
+                  <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Visit Video PlayList
                   </a>
                 </div>
-                     </a>
               </div>
             </div>
-          </a>
         </li>
       <?php endforeach; 
     endif; ?>

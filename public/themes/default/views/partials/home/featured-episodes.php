@@ -13,11 +13,14 @@
         // foreach($latest_series as $latest_serie) { 
 ?>
         <li class="slide-item">
-          <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
+          <div class="block-images position-relative">
                              <!-- block-images -->
-            <div class="block-images position-relative">
+              <div class="border-bg">
               <div class="img-box">
-                <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid lazyload w-100" alt="">
+              <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+              <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid lazyload w-100" alt="">
+               </a>
+               
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                
                     <?php  if(!empty($latest_episode->ppv_price)){?>

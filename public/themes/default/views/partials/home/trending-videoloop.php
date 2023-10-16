@@ -52,15 +52,19 @@
                           
                           ?>
                        <li class="slide-item">
-                          <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
+                         <div class="block-images position-relative">
+                         
                              <!-- block-images -->
-                             <div class="block-images position-relative">
+                             <div class="border-bg">
                                 <div class="img-box">
+                                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
+                                <img alt="f-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"
+                                        class="img-fluid loading w-100" alt=""> 
+                        </a>
                                   <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  data-play="hover" >
                                     <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
                                       </video>-->
-                                        <img alt="f-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"
-                                        class="img-fluid loading w-100" alt=""> 
+                                       
                                      <!-- PPV price -->
                                         
                                                 <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ; ?></p> -->

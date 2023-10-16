@@ -77,11 +77,11 @@
                             ?>
         <!-- .@$video->categories->name. -->
         <li class="slide-item">
-            <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+          <div class="block-images position-relative">
                 <!-- block-images -->
-                <div class="block-images position-relative">
+                <div class="border-bg">
                     <div class="img-box">
-                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                        <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="live" />
                         </a>
 
@@ -98,25 +98,59 @@
                                 <?php }elseif($video->ppv_price == null ){ ?>
                                 <p class="p-tag"><?php echo "Free"; ?></p>
                                 <?php } ?>
-                         
                          <?php } ?>   
+
                          <?php if($ThumbnailSetting->published_on == 1) { ?>      
                           <p class="published_on1"><?php echo $publish_day; ?> <span><?php echo $publish_time; ?></span></p>
                         <?php  } ?>
                     </div>
+                    </div>
+
                     <div class="block-description" >
-                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <i class="ri-play-fill"></i>
-                        </a>
-                        <div class="hover-buttons">
-                            <div class="d-flex align-items-center justify-content-between">
+                        <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="live" />
+                        
+
+                      <!-- PPV price -->
+                     
+                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                        
+                                <?php if($video->access == 'subscriber' ){ ?>
+                                  <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                <?php }elseif($video->access == 'registered'){?>
+                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                <?php } elseif(!empty($video->ppv_price)){?>
+                                <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
+                                <?php }elseif($video->ppv_price == null ){ ?>
+                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                <?php } ?>
+                         <?php } ?> 
+                         </a>  
+                         
+                      <!-- PPV price -->
+                     
+                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                        
+                        <?php if($video->access == 'subscriber' ){ ?>
+                          <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                        <?php }elseif($video->access == 'registered'){?>
+                        <p class="p-tag"><?php echo "Register Now"; ?></p>
+                        <?php } elseif(!empty($video->ppv_price)){?>
+                        <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
+                        <?php }elseif($video->ppv_price == null ){ ?>
+                        <p class="p-tag"><?php echo "Free"; ?></p>
+                        <?php } ?>
+                 <?php } ?> 
+
+                        <div class="hover-buttons text-white">
                                  <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                              <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
+                              <?php if($ThumbnailSetting->title == 1) { ?>
+                                            <!-- Title -->
                                
-                                      <span class="text-white"><?php  echo (strlen($video->title) > 17) ? substr($video->title,0,18).'...' : $video->title; ?></span>
+                             <p class="epi-name text-left m-0">
+                              <?php  echo (strlen($video->title) > 17) ? substr($video->title,0,18).'...' : $video->title; ?></p>
                              
-                              <?php } ?>   
-                              </div>
+                              <?php } ?> 
 
                                 <div class="movie-time d-flex align-items-center my-2">
                                         <?php if($ThumbnailSetting->duration == 1) { ?>
@@ -181,19 +215,16 @@
                                       </span>
                                       <?php } ?>
                                   </div>
+                                  </a>
 
-                                  <div class="hover-buttons">
-                                    <a class="text-white d-flex align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                                
+                                    <a class="epi-name mt-3 mb-0 btn" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                                         <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" />
                                         Live Now
                                     </a>
                                 </div>
-                        </div>
-                    </div>
-                        
+                    </div>   
                 </div>
-                    
-            </a>
         </li>
 
         <?php endforeach; 
