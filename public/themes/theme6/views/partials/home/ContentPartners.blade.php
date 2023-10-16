@@ -15,7 +15,7 @@
                                     <a href="{{ URL::to('contentpartner/' . $CPP_details->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{ URL::to('public/uploads/moderator_albums/'.$CPP_details->picture ) }}"
+                                                <img src=" {{ $CPP_details->picture ? URL::to('public/uploads/moderator_albums/'.$CPP_details->picture ) : default_vertical_image() }}"
                                                     class="img-fluid" alt="">
                                             </div>
 
