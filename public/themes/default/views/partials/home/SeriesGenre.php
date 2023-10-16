@@ -15,14 +15,17 @@
     					 foreach($SeriesGenre as $key => $Series_Genre) {
             ?>
         <li class="slide-item">
-          <a href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
-                             <!-- block-images -->
-            <div class="block-images position-relative">
-              <div class="img-box">
+          <div class="block-images position-relative">
+            <!-- block-images -->
+            <div class="border-bg">
+            <div class="img-box">
+                <a class="playTrailer" href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
                 <img data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Series_Genre->image;  ?>" class="img-fluid lazyload w-100" alt="">
-               
+               </a>
                   
               </div>
+              </div>
+              
               <div class="block-description">
               <a href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
                   <h6><?php echo __($Series_Genre->name); ?></h6>
