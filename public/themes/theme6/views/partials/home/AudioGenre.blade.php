@@ -18,7 +18,7 @@
 
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  URL::to('public/uploads/audios/'.$videoCategories->image ) }}" class="img-fluid" alt="">
+                                                <img src="{{ $videoCategories->image ? URL::to('public/uploads/audios/'.$videoCategories->image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
 
                                             <div class="block-description">

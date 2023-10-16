@@ -71,7 +71,7 @@
                             <ul class="favorites-slider list-inline  row p-0 mb-0">
                                 @foreach ($video_category->category_videos as $key => $latest_video)
                                     <li class="slide-item">
-                                        <a href="{{ URL::to('category/videos/'.$latest_video->slug ) }}">
+                                        <a href="{{ $latest_video->image ? URL::to('category/videos/'.$latest_video->slug ) : default_vertical_image_url() }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
                                                     <img src="{{  URL::to('public/uploads/images/'.$latest_video->image) }}" class="img-fluid" alt="">
