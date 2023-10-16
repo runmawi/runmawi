@@ -109,11 +109,13 @@ class ChannelHomeController extends Controller
                 'currency' => $currency,
                 'latest_video' => $latest_videos,
                 'latest_series' => $latest_series,
+                'latest_audios' => $audios,
                 'audios' => $audios,
                 'livetream' => $livetreams,
                 'ThumbnailSetting' => $ThumbnailSetting,
                 'LiveCategory' => LiveCategory::get(),
                 'VideoCategory' => VideoCategory::get(),
+                'SeriesGenre' => SeriesGenre::get(),
                 'AudioCategory' => AudioCategory::get(),
                 'channel_partner' => $channel,
             );
@@ -164,7 +166,7 @@ class ChannelHomeController extends Controller
     {
 
         $SeriesCategory = SeriesGenre::find($request->category_id) != null ? SeriesGenre::find($request->category_id)->specific_category_series : array();
-        
+
         $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
 
         $data = array( 'SeriesCategory' => $Series_Category );

@@ -137,6 +137,7 @@ class MyPlaylistController extends Controller
             'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
             'first_album_mp3_url' => $MyPlaylist->first() ? $MyPlaylist->first()->mp3_url : null ,
             'first_album_title' => $MyPlaylist->first() ? $MyPlaylist->first()->title : null ,
+            'OtherMusicStation' => [],
         ];
     
         // dd($data);
@@ -227,6 +228,10 @@ class MyPlaylistController extends Controller
             }
             $castcrew = Audioartist::where('audio_id',@$item->id)
             ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+            
+            $artistscrew[] = Audioartist::where('audio_id',@$item->id)
+            ->Join('artists','artists.id','=','audio_artists.artist_id')->get();
+                $item['castcrew']   =   $castcrew;
                 if(count($castcrew) > 0){
                     foreach($castcrew as $cast_crew){
                         $item['cast_crew']   =   $cast_crew. ' ' ;

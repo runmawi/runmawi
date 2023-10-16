@@ -1,5 +1,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<?php include(public_path('themes/default/views/header.php')); ?>
+<?php include(public_path('themes/default/views/header.php')); 
+  $music_station_url = array_slice(explode('/', request()->url()), -2, 1); 
+  if(count($music_station_url) > 0){
+    $music_station_button = $music_station_url[0];
+  }
+
+ ?>
 
 <div id="music-player">
   
@@ -9,7 +15,7 @@
           <button id="backStationbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
           <div id="station-music">
-              <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'>Create Station</button></div>
+              <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'>Add to Queue</button></div>
         </div>
         <div id="lyrics">
           <!-- <h2 class="song-name"></h2><h4 class="artist-name"></h4> -->
@@ -128,6 +134,13 @@ var buttonColorOnPress = "white";
 var $j = jQuery.noConflict();
 $('#station_error').hide();
 
+var music_station_button = <?php echo json_encode(@$music_station_button); ?>;
+
+if(music_station_button == 'music-station'){
+  $('.station_auto_create').css('display','none');
+
+}
+
 $(document).ready(function(){
   $('.Subscribe_stripe_button').hide();
   $('.ppv_stripe_button').hide();
@@ -146,6 +159,7 @@ $(document).ready(function(){
     var listAudio = <?php echo json_encode($songs); ?>;
     var OtherMusicStation = <?php echo json_encode(@$OtherMusicStation); ?>;
     // console.log(listAudio);
+
 var data = listAudio; // Assuming listAudio contains the URL
 
 // $.getJSON(listAudioURL, function(data) {
@@ -199,12 +213,22 @@ var data = listAudio; // Assuming listAudio contains the URL
             context[i].innerHTML = songName;
         }
     }
-    function setArtistName(artistName){
-        var context = $('.artist-name');
-        for(var i=0;i<context.length;i++){
-            context[i].innerHTML = artistName;
-        }
+    // function setArtistName(artistName){
+    //     var context = $('.artist-name');
+    //     for(var i=0;i<context.length;i++){
+    //         context[i].innerHTML = artistName;
+    //     }
+    // }
+
+    function setArtistName(artistslug,artistName) {
+      var context = document.querySelectorAll('.artist-name');
+      var baseUrl = '<?= URL::to('/artist'); ?>';
+      
+      context.forEach(function(element) {
+        element.innerHTML += `<a href="${baseUrl}/${artistslug}"> ${artistName}</a>`;
+      });
     }
+    
     function setAlbumArt(albumart){
         var context = $('#album-art');
         context.attr("src",albumart);
@@ -227,7 +251,17 @@ var data = listAudio; // Assuming listAudio contains the URL
         // if(indexing.author == ""){ indexing.author = "Unknown"; }
         // console.log(data);
         setSongName(indexing.song);
-        setArtistName(indexing.cast_crew);
+          // for (var i = 0; i < indexing.artistscrew.length; i++) {
+          //     // Access the inner array
+          //     var innerArray = indexing.artistscrew[i];
+          //     // Loop through the inner array
+          //     for (var j = 0; j < innerArray.length; j++) {
+          //       // Access the object
+          //       var obj = innerArray[j];
+          //       setArtistName(obj.artist_slug,obj.artist_name)
+          //       console.log(obj.artist_slug,obj.artist_name);
+          //     }
+          //   }
         setAlbumArt(indexing.albumart);
 
         var image = document.querySelector('#audio_img')
@@ -422,7 +456,17 @@ var data = listAudio; // Assuming listAudio contains the URL
 
 
             setSongName(indexing.title);
-            setArtistName(indexing.slug);
+            
+            for (var i = 0; i < indexing.artistscrew.length; i++) {
+              // Access the inner array
+              var innerArray = indexing.artistscrew[i];
+              // Loop through the inner array
+              for (var j = 0; j < innerArray.length; j++) {
+                // Access the object
+                var obj = innerArray[j];
+                setArtistName(obj.artist_slug,obj.artist_name)
+              }
+            }
             setAlbumArt(indexing.image_url);
             processing(indexing);
             totalTime = 'NaN';
@@ -474,7 +518,16 @@ var data = listAudio; // Assuming listAudio contains the URL
 
 
             setSongName(indexing.title);
-            setArtistName(indexing.slug);
+            for (var i = 0; i < indexing.artistscrew.length; i++) {
+              // Access the inner array
+              var innerArray = indexing.artistscrew[i];
+              // Loop through the inner array
+              for (var j = 0; j < innerArray.length; j++) {
+                // Access the object
+                var obj = innerArray[j];
+                setArtistName(obj.artist_slug,obj.artist_name)
+              }
+            }
             setAlbumArt(indexing.image_url);
             processing(indexing);
             totalTime = 'NaN';
@@ -531,9 +584,18 @@ var data = listAudio; // Assuming listAudio contains the URL
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
 
-
+          for (var i = 0; i < indexing.artistscrew.length; i++) {
+              // Access the inner array
+              var innerArray = indexing.artistscrew[i];
+              // Loop through the inner array
+              for (var j = 0; j < innerArray.length; j++) {
+                // Access the object
+                var obj = innerArray[j];
+                setArtistName(obj.artist_slug,obj.artist_name)
+              }
+            }
             setSongName(indexing.title);
-            setArtistName(indexing.slug);
+
             setAlbumArt(indexing.image_url);
             processing(indexing);
             totalTime = NaN;

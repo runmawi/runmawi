@@ -384,6 +384,25 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>  
 
+
+                    <div class="row d-flex"> 
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Enable Content Partner Page')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Vod</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="content_partner_checkout"  type="checkbox" @if( $settings->content_partner_checkout == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Aod</div>
+                            </div>
+                        </div>
+
+                    </div>
+
                     </div>
                 </div>
                 
