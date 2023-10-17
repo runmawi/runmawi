@@ -129,8 +129,8 @@ if(count($latest_video) > 0) : ?>
                                             <?php } ?> 
                                           <?php } ?> 
                                           <div class="hover-buttons text-white">
-                  <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" aria-label="movie">
-                  <?php if($ThumbnailSetting->title == 1) { ?> 
+                                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="movie">
+                                          <?php if($ThumbnailSetting->title == 1) { ?> 
                                           
                                           <!-- Title -->
                                  
