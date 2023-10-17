@@ -69,6 +69,7 @@ use GuzzleHttp\Client;
 use App\MusicStation as MusicStation;
 use App\GuestLoggedDevice as GuestLoggedDevice;
 use Maatwebsite\Excel\Facades\Excel;
+use App\AppSetting as AppSetting;
 
 class HomeController extends Controller
 {
