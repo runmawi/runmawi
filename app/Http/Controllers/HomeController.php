@@ -4842,17 +4842,30 @@ public function uploadExcel(Request $request)
         $AppSetting = AppSetting::where('id','=',1)->first();
             if ($agent->is('iOS'))
             {
-                $playStoreLink = @$AppSetting->ios_url;
-
-                return redirect()->away($playStoreLink);
+                try {
+                    $ios_url = AppSetting::where('id','=',1)->pluck('ios_url')->first();
+                    if(!empty($ios_url)){
+                        return redirect()->away($ios_url);
+                    }else{
+                        return redirect('/login');            
+                    }
+                } catch (\Throwable $th) {
+                    throw $th;
+                }
             }
-            elseif ($agent->is('Android'))
+            else
             {
-                $playStoreLink = @$AppSetting->android_url;
-
-                return redirect()->away($playStoreLink);
+                try {
+                    $android_url = AppSetting::where('id','=',1)->pluck('android_url')->first();
+                    if(!empty($android_url)){
+                        return redirect()->away($android_url);
+                    }else{
+                        return redirect('/login');            
+                    }
+                } catch (\Throwable $th) {
+                    throw $th;
+                }
             }
-          
 
     }
 
