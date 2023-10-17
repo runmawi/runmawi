@@ -180,7 +180,6 @@
       </div>
 
 <?php
-   include(public_path('themes/theme6/views/partials/home/Trailer-script.php'));
    include(public_path('themes/theme6/views/partials/home/home_pop_up.php'));
    include(public_path('themes/theme6/views/footer.blade.php')) ;
 ?>

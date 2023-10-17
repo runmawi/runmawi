@@ -74,7 +74,7 @@
                 </div>
 
                     {{-- Trailer --}}
-                @if ( optional($item)->trailer)
+                {{-- @if ( optional($item)->trailer)
                     <div class="trailor-video">
                         <a href="{{ $item->trailer_link }}" class="playbtn">
                             {!! html_entity_decode( $play_button_svg ) !!}
@@ -82,9 +82,7 @@
                         </a>
                     </div>
 
-                    <?php   include(public_path('themes/theme6/views/partials/home/Trailer-slider.php')); ?>       
-
-                @endif
+                @endif --}}
             </div>
         </div>
     </div>
@@ -121,14 +119,14 @@
                 </div>
 
                     {{-- Trailer --}}
-                @if ( optional($item)->trailer)
+                {{-- @if ( optional($item)->trailer)
                     <div class="trailor-video">
                         <a href="{{ $item->trailer_link }}" class="playbtn">
                             {!! html_entity_decode( $play_button_svg ) !!}
                             <span class="w-trailor">Watch Trailer</span>
                         </a>
                     </div>
-                @endif
+                @endif --}}
             </div>
         </div>
     </div>
