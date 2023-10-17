@@ -30,7 +30,7 @@
             <!-- block-images -->
             <div class="border-bg">
               <div class="img-box">
-                <a href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?>">
+                <a class="playTrailer" href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?>">
               <img src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>" class="img-fluid w-100" alt="">
                   </a>
               </div>

@@ -86,7 +86,7 @@
                                                   <!-- Title -->
                                                   <p class="epi-name text-left m-0">
                                                     <?php  echo (strlen($Most_watched_countries->title) > 17) ? substr($Most_watched_countries->title,0,18).'...' : $Most_watched_countries->title; ?></p>
-                                        </a>
+                                       
                                     <?php } ?>  
 
                                     <div class="movie-time d-flex align-items-center pt-1">

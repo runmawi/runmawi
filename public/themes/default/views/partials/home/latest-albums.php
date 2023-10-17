@@ -21,17 +21,17 @@
             </div>
 
             <div class="block-description" >
-            <a class="playTrailer" href="<?php echo URL::to('album') ?><?= '/' . $album->slug ?>">
+            <!-- <a class="playTrailer" href="<?php echo URL::to('album') ?><?= '/' . $album->slug ?>">
                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid w-100" alt="album">
-               </a> 
+               </a>  -->
 
                 <div class="hover-buttons text-white">
-            <a class="epi-name mt-3 mb-0" href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
+            <a class="epi-name mt-5 mb-0" href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
                         <i class="ri-play-fill"></i>
                      </a>                         
-               <div class="hover-buttons">
+            
                <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
-               <p class="epi-name text-left m-0"><?php echo $album->albumname; ?></p>
+               <p class="epi-name text-left m-0 mt-3"><?php echo $album->albumname; ?></p>
                </a>
                 <div class="d-flex align-items-center justify-content-between">
                   <span class="text-white"><small><?php echo get_audio_artist($album->id); ?></small></span>
@@ -39,9 +39,6 @@
                </div>
 
                 </div>
-
-         </div>
-      </a>
    </li>
 
     <?php endforeach; 

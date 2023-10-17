@@ -150,7 +150,7 @@ $currency = App\CurrencySetting::first();
                                         <p class="epi-name text-left m-0">
                                             <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>
                                             </p>
-                                        </a>
+                                        
                                     <?php } ?>  
 
                                     <div class="movie-time d-flex align-items-center pt-1">
@@ -226,7 +226,7 @@ $currency = App\CurrencySetting::first();
                                     
                                         <a class="epi-name mt-3 mb-0 btn" type="button" class="text-white d-flex align-items-center"
                                             href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%" alt="ply"/> Watch Now
+                                            <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%" alt="ply"/> Watch Now
                                         </a>
                                         </div>
             </div>

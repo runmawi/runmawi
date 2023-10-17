@@ -113,7 +113,7 @@ if (Auth::guest() != true) {
                                   
                                         <a class="epi-name mt-3 mb-0 btn"
                                             href="<?= URL::to('/episode' . '/' . $latest_view_episode->series_slug . '/' . $latest_view_episode->episode_slug); ?>">
-                                            <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
+                                            <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
                                                 height="10%" /> Watch Now
                                         </a>
                                         </div>

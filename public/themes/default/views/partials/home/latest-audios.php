@@ -12,17 +12,26 @@
                          <?php  if(isset($latest_audios)) :
                          foreach($latest_audios as $audio): ?>
                        <li class="slide-item">
-                          <a href="<?php echo URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                          <div class="block-images position-relative">
                              <!-- block-images -->
-                             <div class="block-images position-relative">
-                                <div class="img-box">
+                             <div class="border-bg">
+                             <div class="img-box">
+                                   <a href="<?php echo URL::to('audio') ?><?= '/' . $audio->slug ?>">
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid w-100" alt="audio">
-                                </div>
+                                    </a>  
+                              </div>
+                              </div>
+
+
                                 <div class="block-description mt-3" >
+                                <!-- <a href="<?php echo URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid w-100" alt="audio">
+                                    </a> -->
+
+                                <div class="hover-buttons text-white">
                                 <a class="epi-name mt-3 mb-0 text-center" href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
-                        <i class="ri-play-fill"></i>
-                     </a>                     
-                                   <div class="hover-buttons">
+                        <i class="ri-play-fill"></i>                    
+                                  
                                    <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
                                    <p class="epi-name text-left mt-3"><?php echo $audio->title; ?></p>
                </a>
@@ -30,12 +39,12 @@
                     <span class="text-white"><small><?php echo get_audio_artist($audio->id); ?></small></span>
                     <span class="text-primary"><small><?php echo gmdate('H:i:s', $audio->duration); ?>m</small></span>
                </div>
-                                   </div>
+                                   
                                 
                                     </div>
                               
                              </div>
-                          </a>
+                             </div>
                        </li>
 
                         <?php endforeach; 
