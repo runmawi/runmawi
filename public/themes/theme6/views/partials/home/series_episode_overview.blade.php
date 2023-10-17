@@ -27,7 +27,9 @@ $data = App\Series::where('active', '=', '1')
 
         $item['Episode_details'] = $item->Series_depends_episodes;
 
-        $item['Episode_Similar_content'] = $item->Series_depends_episodes;
+        $item['Episode_Traler_details'] = $item->Series_depends_episodes;
+
+        $item['Episode_Similar_content'] = App\Episode::where('series_id','!=',$item->id)->where('status','1')->where('active',1)->get();
 
         return $item;
     });
@@ -91,7 +93,7 @@ $data = App\Series::where('active', '=', '1')
                                                         <a href="javascript:void(0);" tabindex="0">
                                                             <div class="res-logo">
                                                                 <div class="channel-logo">
-                                                                    <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/logo.png"
+                                                                    <img src="{{ front_end_logo() }}"
                                                                         class="c-logo" alt="streamit">
                                                                 </div>
                                                             </div>
@@ -106,9 +108,7 @@ $data = App\Series::where('active', '=', '1')
                                                         </div>
 
                                                         <div class="d-flex align-items-center series mb-4">
-                                                            <a href="javascript:void(0);"><img
-                                                                    src="https://localhost/flicknexs/public/themes/theme6/assets/images/trending/trending-label.png"
-                                                                    class="img-fluid" alt=""></a>
+                                                            <img src="{{ front_end_logo() }}" class="img-fluid" alt="">
                                                             <span class="text-gold ml-3"> {{ "#". ($key+1) ." in Series Today" }} </span>
                                                         </div>
 
@@ -140,7 +140,7 @@ $data = App\Series::where('active', '=', '1')
                                                                         @endforeach
                                                                     </span>
                                                                 </div>
-                                                        @endif
+                                                            @endif
                                                             
                                                             @if ( $series_details->Series_Language->isNotEmpty() )
                                                                 <div class="text-primary title">This Is:
@@ -159,345 +159,93 @@ $data = App\Series::where('active', '=', '1')
                                                                 {{--  Episode --}}
                                                 <div id="{{ 'trending-data-Episodes-'.$key }}" class="overlay-tab tab-pane fade">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="show-details.html" tabindex="0">
+                                                        <a href="#" tabindex="0">
                                                             <div class="channel-logo">
-                                                                <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/logo.png"
-                                                                    class="c-logo" alt="stramit">
+                                                                <img src="{{ front_end_logo() }}" class="c-logo" alt="">
                                                             </div>
                                                         </a>
-                                                        <h1 class="trending-text big-title text-uppercase"> {{ optional($series_details)->title }}</h1>
-                                                        </h1>
-                                                        <div class="iq-custom-select d-inline-block sea-epi">
+
+                                                        <h1 class="trending-text big-title text-uppercase"> {{ optional($series_details)->title }}</h1></h1>
+
+                                                        {{-- <div class="iq-custom-select d-inline-block sea-epi">
                                                             <select name="cars" class="form-control season-select">
                                                                 @foreach ( $series_details->season as $key =>  $item )
-                                                                <option value="{{ 'season-'.$item }}">{{ 'Season '.($key+1 )}}</option>
+                                                                    <option value="{{ 'season-'.$item }}">{{ 'Season '.($key+1 )}}</option>
                                                                 @endforeach
-                                                                
                                                             </select>
-                                                        </div>
+                                                        </div> --}}
+
                                                         <div class="episodes-contens mt-4">
                                                             <div
                                                                 class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="show-details.html">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/01.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">1</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="show-details.html"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
+                                                                
+                                                                @foreach ($series_details->Episode_details as $key => $item)
+                                                                    <div class="e-item">
+                                                                        <div class="block-image position-relative">
+                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
+                                                                                <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                                            </a>
+                                                                            <div class="episode-number">{{ ($key+1) }}</div>
+                                                                            <div class="episode-play-info">
+                                                                                <div class="episode-play">
+                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="show-details.html">Episode 1</a>
-                                                                            <span class="text-primary">2.25 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="show-details.html">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/02.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">2</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="show-details.html"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
+                                                                        <div class="episodes-description text-body mt-2">
+                                                                            <div
+                                                                                class="d-flex align-items-center justify-content-between">
+                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
+                                                                                <span class="text-primary">                           
+                                                                                    {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
+                                                                                </span>
                                                                             </div>
+                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="show-details.html">Episode 2</a>
-                                                                            <span class="text-primary">3.23 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">
-                                                                            Lorem Ipsum is simply dummy text of the printing
-                                                                            and
-                                                                            typesetting industry. Lorem Ipsum has been the
-                                                                            industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="show-details.html">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/03.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">3</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="show-details.html"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="show-details.html">Episode 3</a>
-                                                                            <span class="text-primary">2 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="show-details.html">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/04.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">4</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="show-details.html"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="show-details.html">Episode 4</a>
-                                                                            <span class="text-primary">1.12 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="show-details.html">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/05.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">5</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="show-details.html"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="show-details.html">Episode 5</a>
-                                                                            <span class="text-primary">2.54 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
+                                                                @endforeach
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-
                                                                 {{-- Trailers --}}
                                                 <div id="{{ 'trending-data-Trailers-'.$key }}" class="overlay-tab tab-pane fade">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="javascript:void(0);" tabindex="0">
+                                                        <a href="#" tabindex="0">
                                                             <div class="channel-logo">
-                                                                <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/logo.png"
-                                                                    class="c-logo" alt="stramit">
+                                                                <img src="{{ front_end_logo() }}" class="c-logo" alt="">
                                                             </div>
                                                         </a>
-                                                        <h1 class="trending-text big-title text-uppercase">the hero camp
-                                                        </h1>
+                                                        <h1 class="trending-text big-title text-uppercase"> {{ optional($series_details)->title }}</h1>
+
                                                         <div class="episodes-contens mt-4">
-                                                            <div
-                                                                class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="watch-video.html" target="_blank">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/01.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">1</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="watch-video.html" target="_blank"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
+                                                            <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
+                                                                @foreach ($series_details->Episode_Traler_details as $key => $item)
+                                                                    <div class="e-item">
+                                                                        <div class="block-image position-relative">
+                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
+                                                                                <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                                            </a>
+                                                                            <div class="episode-number">{{ ($key+1) }}</div>
+                                                                            <div class="episode-play-info">
+                                                                                <div class="episode-play">
+                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="watch-video.html"
-                                                                                target="_blank">Trailer
-                                                                                1</a>
-                                                                            <span class="text-primary">2.25 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="watch-video.html" target="_blank">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/02.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">2</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="watch-video.html" target="_blank"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
+                                                                        <div class="episodes-description text-body mt-2">
+                                                                            <div
+                                                                                class="d-flex align-items-center justify-content-between">
+                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
+                                                                                <span class="text-primary">                           
+                                                                                    {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
+                                                                                </span>
                                                                             </div>
+                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="watch-video.html"
-                                                                                target="_blank">Trailer
-                                                                                2</a>
-                                                                            <span class="text-primary">3.23 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="watch-video.html" target="_blank">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/03.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">3</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="watch-video.html" target="_blank"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="watch-video.html"
-                                                                                target="_blank">Trailer
-                                                                                3</a>
-                                                                            <span class="text-primary">2 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="watch-video.html" target="_blank">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/04.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">4</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="watch-video.html" target="_blank"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="watch-video.html"
-                                                                                target="_blank">Trailer
-                                                                                4</a>
-                                                                            <span class="text-primary">1.12 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="watch-video.html" target="_blank">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/05.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">5</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="watch-video.html" target="_blank"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="watch-video.html"
-                                                                                target="_blank">Trailer
-                                                                                5</a>
-                                                                            <span class="text-primary">2.54 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
+                                                                @endforeach
                                                             </div>
                                                         </div>
                                                     </div>
@@ -506,163 +254,41 @@ $data = App\Series::where('active', '=', '1')
                                                                     {{-- Similar --}}
                                                 <div id="{{ 'trending-data-Similar-'.$key }}" class="overlay-tab tab-pane fade">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="javascript:void(0);" tabindex="0">
+                                                        <a href="#" tabindex="0">
                                                             <div class="channel-logo">
-                                                                <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/logo.png"
-                                                                    class="c-logo" alt="stramit">
+                                                                <img src="{{ front_end_logo() }}" class="c-logo" alt="">
                                                             </div>
                                                         </a>
 
                                                         <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
 
                                                         <div class="episodes-contens mt-4">
-                                                            <div
-                                                                class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="show-details.html">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/01.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">1</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="show-details.html"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
+                                                            <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
+                                                                @foreach ( $series_details->Episode_Similar_content as $key =>  $item )
+                                                                    <div class="e-item">
+                                                                        <div class="block-image position-relative">
+                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
+                                                                                <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                                            </a>
+                                                                            <div class="episode-number">{{ ($key+1) }}</div>
+                                                                            <div class="episode-play-info">
+                                                                                <div class="episode-play">
+                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="show-details.html">Episode 1</a>
-                                                                            <span class="text-primary">2.25 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="show-details.html">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/02.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">2</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="show-details.html"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
+                                                                        <div class="episodes-description text-body mt-2">
+                                                                            <div
+                                                                                class="d-flex align-items-center justify-content-between">
+                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
+                                                                                <span class="text-primary">                           
+                                                                                    {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
+                                                                                </span>
                                                                             </div>
+                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="show-details.html">Episode 2</a>
-                                                                            <span class="text-primary">3.23 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="show-details.html">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/03.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">3</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="show-details.html"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="show-details.html">Episode 3</a>
-                                                                            <span class="text-primary">2 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="show-details.html">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/04.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">4</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="show-details.html"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="show-details.html">Episode 4</a>
-                                                                            <span class="text-primary">1.12 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-item">
-                                                                    <div class="block-image position-relative">
-                                                                        <a href="show-details.html">
-                                                                            <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/episodes/05.jpg"
-                                                                                class="img-fluid" alt="">
-                                                                        </a>
-                                                                        <div class="episode-number">5</div>
-                                                                        <div class="episode-play-info">
-                                                                            <div class="episode-play">
-                                                                                <a href="show-details.html"
-                                                                                    tabindex="0"><i
-                                                                                        class="ri-play-fill"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="episodes-description text-body mt-2">
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <a href="show-details.html">Episode 5</a>
-                                                                            <span class="text-primary">2.54 m</span>
-                                                                        </div>
-                                                                        <p class="mb-0">Lorem Ipsum is simply dummy text
-                                                                            of
-                                                                            the printing and typesetting industry. Lorem
-                                                                            Ipsum
-                                                                            has been the industry's standard.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
+                                                                @endforeach
                                                             </div>
                                                         </div>
                                                     </div>

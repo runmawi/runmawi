@@ -15,21 +15,13 @@
 
                <!-- Slider  -->
       <?php 
-         // $Slider_array_data = array(
-         //    'sliders'         => $sliders, 
-         //    'live_banner'     => $live_banner, 
-         //    'video_banners'   => $video_banners ,
-         //    'series_sliders'  => $series_sliders ,
-         //    'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('banner', 1)->get(),
-         // );
-
          $Slider_array_data = array(
-            'sliders'         => [], 
-            'live_banner'     => [], 
+            'sliders'         => $sliders, 
+            'live_banner'     => $live_banner, 
             'video_banners'   => $video_banners ,
-            'series_sliders'  => [] ,
+            'series_sliders'  => $series_sliders ,
             'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('banner', 1)->get(),
-         );
+         );    
       ?>
 
       <section id="home" class="iq-main-slider p-0">
