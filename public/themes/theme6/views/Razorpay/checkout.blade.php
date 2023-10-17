@@ -1,4 +1,4 @@
-@php  include(public_path('themes/default/views/header.php')); @endphp
+@php  include(public_path('themes/theme6/views/header.php')); @endphp
 
 <button id="rzp-button1" hidden>Pay</button>
 
@@ -68,5 +68,5 @@ document.getElementById('rzp-button1').onclick = function(e){
 </form>
 
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp

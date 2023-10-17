@@ -183,7 +183,7 @@ function visibility1() {
 </body>
 {{-- Footer --}}
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp
 <!-- jQuery, Popper JS -->
 <script src="assets/js/jquery-3.4.1.min.js"></script>

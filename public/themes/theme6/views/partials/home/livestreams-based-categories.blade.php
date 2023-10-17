@@ -32,7 +32,8 @@ $data->each(function ($category) {
 
 ?>
 
-@if (!empty($data))
+@if (!empty($data) && $data->isNotEmpty())
+
     @foreach ($data as $key => $live_Category)
         <section id="iq-upcoming-movie">
             <div class="container-fluid">

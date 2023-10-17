@@ -320,6 +320,37 @@
                           </div>
                       </div>
 
+                      <!-- Channel and CPP Login -->
+                     <div class="d-flex p-2">
+                        <?php if (!Auth::guest()) {
+                           $userEmail = Auth::user()->email;
+                           $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
+                           $channel = App\Channel::where('email', $userEmail)->first();
+
+                           if (!empty($moderatorsUser)) { ?>
+                                 <div class="p-2" >
+                                    <form method="POST" action="<?= URL::to('cpp/home') ?>" >
+                                       <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                       <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                                       <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
+                                       <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
+                                    </form>
+                                 </div>
+                           <?php }
+                           
+                           if (!empty($channel)) { ?>
+                                 <div class="p-2" >
+                                    <form method="POST" action="<?= URL::to('channel/home') ?>" >
+                                       <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                       <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                                       <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
+                                       <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                    </form>
+                                 </div>
+                           <?php }
+                        } ?>
+                     </div>
+
                       <div class="navbar-right menu-right">
                           <ul class="d-flex align-items-center list-inline m-0">
 
@@ -335,7 +366,7 @@
                                           <input type="text" class="text search-input font-size-12 searches"
                                              placeholder="type here to search...">
                                           <i class="search-link ri-search-line"></i>
-                                          <?php  include 'public/themes/default/partials/Search_content.php'; ?>
+                                          <?php  include 'public/themes/theme6/partials/Search_content.php'; ?>
                                        </div>
                                     </form>
                                  </div>

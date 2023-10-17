@@ -379,7 +379,7 @@ Index Of Script
 			Owl Carousel
 		----------------------------------------------------------------------- */
 		jQuery('.episodes-slider1').owlCarousel({
-			loop:true,
+			loop:false,
 			margin:20,
 			nav:true,
 			navText: ["<i class='ri-arrow-left-s-line'></i>", "<i class='ri-arrow-right-s-line'></i>"],

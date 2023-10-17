@@ -28,7 +28,7 @@
                   include('partials/home/slider-2.php'); 
                }
                else{
-                  include('partials/home/slider-1.php'); 
+                  include('partials/home/slider-1.blade.php'); 
                }
          ?>
       </div>
@@ -49,7 +49,7 @@
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php include 'partials/home/latest-series.php'; ?>
+                    <?php include 'partials/home/latest-series.blade.php'; ?>
                 </div>
             </div>
         </div>

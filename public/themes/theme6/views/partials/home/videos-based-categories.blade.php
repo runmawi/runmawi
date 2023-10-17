@@ -55,7 +55,7 @@
     });
 ?>
 
-@if(!empty($data))
+@if (!empty($data) && $data->isNotEmpty())
     @foreach( $data as $key => $video_category )
         <section id="iq-favorites">
             <div class="container-fluid">
