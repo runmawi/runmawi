@@ -160,11 +160,11 @@
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/most_watched_user', ['data' => $most_watch_user, 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
-            @if( $item == 'Today-Top-videos' && $home_settings->Today_Top_videos == 1 )      {{-- Today Top video --}} 
+            @if( $item == 'series_episode_overview' && $home_settings->series_episode_overview == 1 )    {{--  series_episode_overview  --}}
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/series_episode_overview', ['data' => $latest_video, 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
-            @if( $item == 'series_episode_overview' && $home_settings->series_episode_overview == 1 )    {{--  series_episode_overview  --}}
+            @if( $item == 'Today-Top-videos' && $home_settings->Today_Top_videos == 1 )      {{-- Today Top video --}} 
                <?php $video_details = App\Video::first(); ?>
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Today-Top-videos', ['data' => $video_details, 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif

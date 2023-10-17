@@ -1,14 +1,13 @@
-@if(!empty($data))
+@if (!is_null($data))
     <section id="parallax" class="parallax-window" style="background: url('{{ URL::to('public/uploads/images/' . $data->player_image) }}') center center;">
         <div class="container-fluid h-100">
             <div class="row align-items-center justify-content-center h-100 parallaxt-details">
                 <div class="col-lg-4 r-mb-23">
                     <div class="text-left">
 
-                        {{-- <h5 class="trending-text big-title text-uppercase">{{ optional($data)->title }}</h5> --}}
 
                         <a href="{{ URL::to('category/videos/'.$data->slug ) }}">
-                            <img src="{{ asset('assets/images/parallax/parallax-logo.png') }}" class="img-fluid" alt="bailey">
+                            <h3 class="trending-text big-title text-uppercase">{{ optional($data)->title }}</h3>
                         </a>
 
                         <div class="parallax-ratting d-flex align-items-center mt-3 mb-3">
