@@ -4844,23 +4844,28 @@ public function uploadExcel(Request $request)
             {
                 try {
                     $ios_url = AppSetting::where('id','=',1)->pluck('ios_url')->first();
-                    return redirect()->away($ios_url);
+                    if(!empty($ios_url)){
+                        return redirect()->away($ios_url);
+                    }else{
+                        return redirect('/login');            
+                    }
                 } catch (\Throwable $th) {
                     throw $th;
                 }
             }
-            elseif ($agent->is('Android'))
+            else
             {
                 try {
                     $android_url = AppSetting::where('id','=',1)->pluck('android_url')->first();
-                    return redirect()->away($android_url);
+                    if(!empty($android_url)){
+                        return redirect()->away($android_url);
+                    }else{
+                        return redirect('/login');            
+                    }
                 } catch (\Throwable $th) {
                     throw $th;
                 }
-            }else{
-                return redirect('/login');            
             }
-          
 
     }
 
