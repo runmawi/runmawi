@@ -26,6 +26,7 @@
         font-size: 27px;
         font-weight: 400;
     }
+    .page-wrapper .page-body ul li {color: #000;}
 </style>
 
     <div class="container">
