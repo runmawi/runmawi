@@ -69,6 +69,7 @@ use GuzzleHttp\Client;
 use App\MusicStation as MusicStation;
 use App\GuestLoggedDevice as GuestLoggedDevice;
 use Maatwebsite\Excel\Facades\Excel;
+use App\AppSetting as AppSetting;
 
 class HomeController extends Controller
 {
@@ -4832,5 +4833,27 @@ public function uploadExcel(Request $request)
         return response()->json(['error' => 'File not uploaded.']);
     }
 }
+
+
+    public function TvCodeQuickResponse(){
+            
+        $agent = new Agent();
+
+        $AppSetting = AppSetting::where('id','=',1)->first();
+            if ($agent->is('iOS'))
+            {
+                $playStoreLink = @$AppSetting->ios_url;
+
+                return redirect()->away($playStoreLink);
+            }
+            elseif ($agent->is('Android'))
+            {
+                $playStoreLink = @$AppSetting->android_url;
+
+                return redirect()->away($playStoreLink);
+            }
+          
+
+    }
 
 }

@@ -224,6 +224,8 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->choose_player       = !empty($data['choose_player']) ? '1' : '0';
 
+        $theme_settings->content_partner_checkout       = !empty($data['content_partner_checkout']) ? '1' : '0';
+
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);

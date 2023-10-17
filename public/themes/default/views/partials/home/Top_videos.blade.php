@@ -82,7 +82,7 @@
                                 <?php if($ThumbnailSetting->title == 1) { ?>  
                                               <!-- Title -->
                                         <p class="epi-name text-left m-0"><?php  echo (strlen($most_watched_video->title) > 17) ? substr($most_watched_video->title,0,18).'...' : $most_watched_video->title; ?></p>
-                                    </a>
+                                    
                                  <?php } ?>  
 
                                  <div class="movie-time d-flex align-items-center pt-1">
