@@ -52,15 +52,17 @@
                           
                           ?>
                        <li class="slide-item">
-                          <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
+                         <div class="block-images position-relative">
+                         
                              <!-- block-images -->
-                             <div class="block-images position-relative">
+                             <div class="border-bg">
                                 <div class="img-box">
-                                  <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  data-play="hover" >
-                                    <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
-                                      </video>-->
-                                        <img alt="f-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"
+                                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
+                                <img alt="f-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"
                                         class="img-fluid loading w-100" alt=""> 
+                        </a>
+                                
+                                       
                                      <!-- PPV price -->
                                         
                                                 <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ; ?></p> -->
@@ -80,11 +82,52 @@
                                         <p class="published_on1"><?php echo $publish_time; ?></p>
                                     <?php  } ?>
                                             </div>
-                                        <!-- </div> -->
-                                        <div class="block-description">
+                                        </div>
 
-                                        <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                          <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
+                                        <div class="block-description">
+                                        <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
+                                <img alt="f-img" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>"
+                                        class="img-fluid loading w-100" alt=""> 
+                        
+                                
+                                       
+                                     <!-- PPV price -->
+                                        
+                                                <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ; ?></p> -->
+                                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>          
+                                                <?php  if($watchlater_video->access == 'subscriber' ){ ?>
+                                                  <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif(!empty($watchlater_video->ppv_price)){?>
+                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
+                                          <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
+                                            <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
+                                            <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                        <?php } ?>
+                                        </a>
+                                        <!-- PPV price -->
+                                        
+                                                <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ; ?></p> -->
+                                                <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>          
+                                                <?php  if($watchlater_video->access == 'subscriber' ){ ?>
+                                                  <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif(!empty($watchlater_video->ppv_price)){?>
+                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
+                                          <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
+                                            <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
+                                            <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
+                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                        <?php } ?>
+                                        
+                                        
+                                        <div class="hover-buttons text-white">
+                                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
+                                        <?php if($ThumbnailSetting->title == 1) { ?> 
+                                                     <!-- Title -->
+                                                     <p class="epi-name text-left m-0">
+                                                      <?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></p>
                                         <?php } ?>
 
                                         <div class="movie-time d-flex align-items-center pt-1">
@@ -155,37 +198,16 @@
                                       </span>
                                       <?php } ?>
                                   </div>
+                                </a>
 
 
-                                            <div class="hover-buttons">
-                                            <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
-                                                <img alt="ply" class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                            
+                                            <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
+                                                <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                             </a>
-                                            <div class="d-flex">
-                                            <!-- <a   href="<?php //echo URL::to('category') ?><? // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
-                                            <!-- </a> -->
-                                            <!-- <span style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $watchlater_video->id ?>">
-                                            <i style="" <?php //if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php // else: ?> class="ri-heart-line " <?php //endif; ?> style="" ></i>
-                                            </span>
-                                            <div style="color:white;" id="<?= $watchlater_video->id ?>"><?php  //if(@$watchlater_video->mywishlisted->user_id == $id && @$watchlater_video->mywishlisted->video_id == $watchlater_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
-                                            </div> -->
                                             </div>
-
-                                        </div>
-                               
-<!--
-                                    <div>
-                                        <button class="show-details-button" data-id="<?= $watchlater_video->id;?>">
-                                            <span class="text-center thumbarrow-sec">
-                                                <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-                                            </span>
-                                                </button>
-                                    </div>
--->
-                                    </div>
-                              
-                             </div>
-                          </a>
+                                            </div>
+                                            </div>
                        </li>
                        <?php      
                         endforeach; 

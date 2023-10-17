@@ -54,25 +54,33 @@ ol.breadcrumb {
                     <ul class="category-page list-inline row p-0 mb-0">
                         <?php if(isset($SeriesGenre)) {
                         foreach($SeriesGenre as $Series_Genre){ ?>
+
                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                            <a href="<?php echo URL::to('/play_series/'.$Series_Genre->slug ) ?>">
-                                <div class="block-images position-relative">
-                                    <div class="img-box">
+                            <div class="block-images position-relative">
+                                <!-- block-images -->
+                            <div class="border-bg">
+                                <div class="img-box">
+                                        <a class="playTrailer" href="<?php echo URL::to('/play_series/'.$Series_Genre->slug ) ?>">
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Genre->image;  ?>"
                                             class="img-fluid w-100" alt="">
+                                        </a>
+                                    </div>
                                     </div>
 
                                     <div class="block-description">
-                                        <a href="<?php echo URL::to('/play_series/').'/'.$Series_Genre->slug  ?>">
-                                            <h6><?php  echo (strlen(@$Series_Genre->title) > 17) ? substr(@$Series_Genre->title,0,18).'...' : @$Series_Genre->title; ?>
-                                            </h6>
+                                    <a class="playTrailer" href="<?php echo URL::to('/play_series/'.$Series_Genre->slug ) ?>">
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Genre->player_image;  ?>"
+                                            class="img-fluid w-100" alt="">
                                         </a>
-                                        <div class="hover-buttons">
-                                            <div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <a class="text-white"
+
+                                        <div class="hover-buttons text-white">
+                                        <a href="<?php echo URL::to('/play_series/').'/'.$Series_Genre->slug  ?>">
+                                        <p class="epi-name text-left m-0"><?php  echo (strlen(@$Series_Genre->title) > 17) ? substr(@$Series_Genre->title,0,18).'...' : @$Series_Genre->title; ?>
+                                        </p>
+                                        </a>
+
+
+                                            <a class="epi-name mt-3 mb-0 btn"
                                                 href="<?php echo URL::to('/play_series'.'/'.$Series_Genre->slug  ) ?> ">
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                 Visit Series
@@ -80,7 +88,6 @@ ol.breadcrumb {
                                         </div>
                                     </div>
                                 </div>
-                            </a>
                         </li>
 
                         <?php } } ?>

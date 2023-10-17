@@ -46,13 +46,14 @@
             foreach($latest_view_audios as $key => $latest_view_audio): ?>
                 
                 <li class="slide-item">
-                    <a href="<?= URL::to('live/'. $latest_view_audio->slug ); ?>">
+                    <div class="block-images position-relative">
                         <!-- block-images -->
-                        <div class="block-images position-relative">
+                        <div class="border-bg">
                             <div class="img-box">
-                                <a href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
+                                <a class="playTrailer" href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
                                     <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->image; ?>" class="img-fluid loading w-100"
                                         alt="l-img">
+                                </a>
 
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                        
@@ -61,14 +62,29 @@
                                     <?php if($ThumbnailSetting->published_on == 1) { ?>
                                         <p class="published_on1"><?= "Published"; ?></p>
                                     <?php  } ?>
-                                </a>
+                               
+                            </div>
                             </div>
                             
                             <div class="block-description">
-                                <a href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
+                            <a class="playTrailer" href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
+                                    <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->player_image; ?>" class="img-fluid loading w-100"
+                                        alt="l-img">
+                                
 
-                                    <?php if($ThumbnailSetting->title == 1) { ?>       <!-- Title -->
-                                        <h6><?php echo strlen($latest_view_audio->title) > 17 ? substr($latest_view_audio->title, 0, 18) . '...' : $latest_view_audio->title; ?></h6>
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                       
+                                    <?php } ?>
+                            </a>
+                            <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                       
+                                       <?php } ?>
+                        <div class="hover-buttons text-white">
+                                <a href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
+                                    <?php if($ThumbnailSetting->title == 1) { ?>
+                                               <!-- Title -->
+                                    <p class="epi-name text-left m-0">
+                                                <?php echo strlen($latest_view_audio->title) > 17 ? substr($latest_view_audio->title, 0, 18) . '...' : $latest_view_audio->title; ?></p>
                                     <?php } ?>
 
                                     <div class="movie-time d-flex align-items-center pt-1">
@@ -113,19 +129,17 @@
                                             <?php }?>
                                         </div>
                                     <?php } ?>
+                                </a>
 
-                                    <div class="hover-buttons">
-                                        <a class="text-white d-flex align-items-center"
+                                 
+                                        <a class="epi-name mt-3 mb-0 btn"
                                             href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
-                                            <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
+                                            <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
                                                 height="10%" /> Play Now
                                         </a>
-                                        <div class="hover-buttons d-flex"></div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </a>
+                                        </div>  
+                                        </div>
+                                        </div>
                 </li>
             <?php endforeach; 
         endif; ?>

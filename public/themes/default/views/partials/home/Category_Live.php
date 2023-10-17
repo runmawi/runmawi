@@ -55,11 +55,15 @@ ol.breadcrumb {
                         <?php if(isset($Live_Category)) {
                         foreach($Live_Category as $LiveCategory){ ?>
                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                            <a href="<?php echo URL::to('live/'.$LiveCategory->slug ) ?>">
-                                <div class="block-images position-relative">
-                                    <div class="img-box">
+                            <div class="block-images position-relative">
+                                <!-- block-images -->
+                            <div class="border-bg">
+                                <div class="img-box">
+                            <a class="playTrailer" href="<?php echo URL::to('live/'.$LiveCategory->slug ) ?>">
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$LiveCategory->image;  ?>"
                                             class="img-fluid w-100" alt="">
+                            </a>
+                                    </div>
                                     </div>
 
                                     <div class="block-description">
