@@ -4851,6 +4851,8 @@ public function uploadExcel(Request $request)
                 $playStoreLink = @$AppSetting->android_url;
 
                 return redirect()->away($playStoreLink);
+            }else{
+                return redirect('/login');            
             }
           
 
