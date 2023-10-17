@@ -4857,7 +4857,6 @@ public function uploadExcel(Request $request)
                 } catch (\Throwable $th) {
                     throw $th;
                 }
-                return redirect()->away($playStoreLink);
             }else{
                 return redirect('/login');            
             }
