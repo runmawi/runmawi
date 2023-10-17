@@ -4840,7 +4840,6 @@ public function uploadExcel(Request $request)
         $agent = new Agent();
 
         $AppSetting = AppSetting::where('id','=',1)->first();
-
             if ($agent->is('iOS'))
             {
                 $playStoreLink = @$AppSetting->ios_url;
