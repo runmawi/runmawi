@@ -4844,10 +4844,17 @@ public function uploadExcel(Request $request)
             if ($agent->is('iOS'))
             {
                 $playStoreLink = @$AppSetting->ios_url;
+
+                if(empty(@$AppSetting->ios_url)){
+                    return redirect('/login');
+                }
                 return redirect()->away($playStoreLink);
             }
             elseif ($agent->is('Android'))
             {
+                if(empty(@$AppSetting->android_url)){
+                    return redirect('/login');
+                }
                 $playStoreLink = @$AppSetting->android_url;
 
                 return redirect()->away($playStoreLink);
