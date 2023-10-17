@@ -163,7 +163,7 @@
 
 
                                     <div class="hover-buttons text-white">
-                  <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" aria-label="movie">
+                  <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_view_livestreams->slug ?>" aria-label="movie">
                   <?php if($ThumbnailSetting->title == 1) { ?> 
                           <!-- Title -->
                           <p class="epi-name text-left m-0">

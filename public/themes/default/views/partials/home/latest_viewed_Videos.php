@@ -168,7 +168,7 @@
                                     <?php } ?>
 
                                     <div class="hover-buttons text-white">
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" aria-label="movie">
+                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_view_video->slug ?>" aria-label="movie">
                   <?php if($ThumbnailSetting->title == 1) { ?> 
                           <!-- Title -->
                           <p class="epi-name text-left m-0"><?php echo strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title; ?></p>
