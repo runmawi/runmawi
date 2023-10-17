@@ -1,4 +1,4 @@
-@if (!empty($data))
+@if (!empty($data) && $data->isNotEmpty())
     <section id="iq-topten">
         <div class="container-fluid">
             <div class="row">

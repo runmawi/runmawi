@@ -20,7 +20,7 @@
 
 ?>
 
-@if (!empty($data))
+@if (!empty($data) && $data->isNotEmpty())
 
     <section id="iq-favorites">
         <div class="container-fluid">

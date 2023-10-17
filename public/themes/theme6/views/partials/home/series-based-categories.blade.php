@@ -1,5 +1,5 @@
 
-@if ($data)
+@if (!empty($data) && $data->isNotEmpty())
     <section id="iq-tvthrillers" class="s-margin">
         <div class="container-fluid">
             <div class="row">
