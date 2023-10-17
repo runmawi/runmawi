@@ -1,4 +1,4 @@
-<?php include(public_path('themes/default/views/header.php'));  
+<?php include(public_path('themes/theme6/views/header.php'));  
 
 $audio = $audios ;
 
@@ -1399,4 +1399,4 @@ if(role == 'admin'){
             });           
   });
     </script>
-<?php include(public_path('themes/default/views/footer.blade.php')); ?>
+<?php include(public_path('themes/theme6/views/footer.blade.php')); ?>

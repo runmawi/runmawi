@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 <?php
-include(public_path('themes/default/views/header.php'));
+include(public_path('themes/theme6/views/header.php'));
 ?>
 
 @section('content')
@@ -69,7 +69,7 @@ $uppercase =  ucfirst($request_url);
 
 
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp
 
 @endsection 

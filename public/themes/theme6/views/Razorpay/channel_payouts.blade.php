@@ -1,4 +1,4 @@
-@php  include(public_path('themes/default/views/header.php')); @endphp
+@php  include(public_path('themes/theme6/views/header.php')); @endphp
 
 <button id="rzp-button1" hidden>Pay</button>  
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
