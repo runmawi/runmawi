@@ -129,8 +129,8 @@ if(count($latest_video) > 0) : ?>
                                             <?php } ?> 
                                           <?php } ?> 
                                           <div class="hover-buttons text-white">
-                  <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" aria-label="movie">
-                  <?php if($ThumbnailSetting->title == 1) { ?> 
+                                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="movie">
+                                          <?php if($ThumbnailSetting->title == 1) { ?> 
                                           
                                           <!-- Title -->
                                  
@@ -210,7 +210,7 @@ if(count($latest_video) > 0) : ?>
                                 </a>
                                     
                                     
-                                <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" >
+                                <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
                      <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/>  Watch Now
                   </a>
                </div>
