@@ -21931,6 +21931,7 @@ public function TV_login(Request $request)
             'status'=> 'true',
             'message' => 'Added verfication code',
             'qr_code' => $request->qr_code,
+            'quick_response_url' => URL::to('mytv/quick-response'),
         );
 
       } catch (\Throwable $th) {
