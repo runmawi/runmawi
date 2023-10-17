@@ -38,9 +38,7 @@
               </div>
 
               <div class="block-description">
-              <a class="playTrailer" href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug  ) ?>">
-                <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="channel">  
-                </a> 
+             
 
                 <div class="hover-buttons text-white">
                 <a href="<?php echo URL::to('/channel'.'/'.$channel->slug) ?> ">
