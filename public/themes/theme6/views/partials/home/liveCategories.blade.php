@@ -17,7 +17,7 @@
                                     <a href="{{ URL::to('LiveCategory/'.$livecategories->slug) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  URL::to('public/uploads/livecategory/'.$livecategories->image ) }}" class="img-fluid" alt="">
+                                                <img src="{{  $livecategories->image ? URL::to('public/uploads/livecategory/'.$livecategories->image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
                                                 <h6> {{ strlen($livecategories->name ) > 17 ? substr($livecategories->name , 0, 18) . '...' : $livecategories->name  }}</h6>

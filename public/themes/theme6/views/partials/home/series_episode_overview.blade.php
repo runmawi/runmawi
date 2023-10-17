@@ -23,7 +23,11 @@ $data = App\Series::where('active', '=', '1')
             ->where('series_id', $item->id)
             ->get();
 
+        $item['season'] = App\SeriesSeason::where('series_id', $item->id)->get();
+
         $item['Episode_details'] = $item->Series_depends_episodes;
+
+        $item['Episode_Similar_content'] = $item->Series_depends_episodes;
 
         return $item;
     });
@@ -164,9 +168,10 @@ $data = App\Series::where('active', '=', '1')
                                                     </h1>
                                                     <div class="iq-custom-select d-inline-block sea-epi">
                                                         <select name="cars" class="form-control season-select">
-                                                            <option value="season1">Season 1</option>
-                                                            <option value="season2">Season 2</option>
-                                                            <option value="season3">Season 3</option>
+                                                            @foreach ( $series_details->season as $key =>  $item )
+                                                            <option value="{{ 'season-'.$item }}">{{ 'Season '.($key+1 )}}</option>
+                                                            @endforeach
+                                                            
                                                         </select>
                                                     </div>
                                                     <div class="episodes-contens mt-4">
@@ -506,8 +511,9 @@ $data = App\Series::where('active', '=', '1')
                                                                 class="c-logo" alt="stramit">
                                                         </div>
                                                     </a>
-                                                    <h1 class="trending-text big-title text-uppercase">the hero camp
-                                                    </h1>
+
+                                                    <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
+
                                                     <div class="episodes-contens mt-4">
                                                         <div
                                                             class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">

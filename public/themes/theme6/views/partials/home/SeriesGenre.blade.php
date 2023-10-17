@@ -12,22 +12,22 @@
 
                     <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ( $data as $key => $videoCategories)
+                            @foreach ( $data as $key => $seriesGenre)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('series/category/'. $videoCategories->slug ) }}">
+                                    <a href="{{ URL::to('series/category/'. $seriesGenre->slug ) }}">
 
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  URL::to('public/uploads/videocategory/'.$videoCategories->image ) }}" class="img-fluid" alt="">
+                                                <img src="{{ $seriesGenre->image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
 
                                             <div class="block-description">
-                                                <h6> {{ strlen($videoCategories->name ) > 17 ? substr($videoCategories->name , 0, 18) . '...' : $videoCategories->name  }}</h6>
+                                                <h6> {{ strlen($seriesGenre->name ) > 17 ? substr($seriesGenre->name , 0, 18) . '...' : $seriesGenre->name  }}</h6>
 
                                                 <div class="movie-time d-flex align-items-center my-2">
 
                                                     {{-- <span class="text-white">
-                                                        {{ str_replace('_', ' ', ucwords($videoCategories->artist_type))  }}
+                                                        {{ str_replace('_', ' ', ucwords($seriesGenre->artist_type))  }}
                                                     </span> --}}
                                                     
                                                 </div>

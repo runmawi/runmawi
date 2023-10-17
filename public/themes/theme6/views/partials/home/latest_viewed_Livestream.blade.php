@@ -1,35 +1,53 @@
+<?php
+
+   // latest viewed Livestream
+
+   if(Auth::guest() != true ){
+
+    $data =  App\RecentView::join('live_streams', 'live_streams.id', '=', 'recent_views.live_id')
+        ->where('recent_views.user_id',Auth::user()->id)
+        ->groupBy('recent_views.live_id')
+        ->get();
+   }
+   else
+   {
+        $data = array() ;
+   }
+
+?>
+
 @if (!empty($data))
 
-    <section id="iq-favorites">
+    <section id="iq-upcoming-movie">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="{{ $order_settings_list[5]->url ? URL::to($order_settings_list[5]->url) : null }} ">{{ optional($order_settings_list[5])->header_name }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[16]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[16])->header_name }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ($data as $key => $audios_details)
+                            @foreach ($data as $key => $livestream_videos)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('audio/'.$audios_details->slug ) }}">
+                                    <a href="{{ URL::to('live/'.$livestream_videos->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  $audios_details->image ? URL::to('public/uploads/images/'.$audios_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($audios_details->title) > 17 ? substr($audios_details->title, 0, 18) . '...' : $audios_details->title }}
+                                                <h6> {{ strlen($livestream_videos->title) > 17 ? substr($livestream_videos->title, 0, 18) . '...' : $livestream_videos->title }}
                                                 </h6>
                                                 <div class="movie-time d-flex align-items-center my-2">
 
                                                     <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($audios_details)->age_restrict.'+' }}
+                                                        {{ optional($livestream_videos)->age_restrict.'+' }}
                                                     </div>
 
                                                     <span class="text-white">
-                                                        {{ $audios_details->duration != null ? gmdate('H:i:s', $audios_details->duration) : null }}
+                                                        {{ $livestream_videos->duration != null ? gmdate('H:i:s', $livestream_videos->duration) : null }}
                                                     </span>
                                                 </div>
 
