@@ -38,9 +38,7 @@
               </div>
 
               <div class="block-description">
-              <a class="playTrailer" href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?>">
-                <img src="<?php echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  ?>" class="img-fluid w-100" alt="content_user">                 
-                </a>
+              
 
                 <div class="hover-buttons text-white">
                 <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> ">
