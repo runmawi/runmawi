@@ -53,7 +53,7 @@ $data->each(function ($category) {
                                         <a href="{{ URL::to('live/' . $livestream_videos->slug) }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                    <img src="{{ URL::to('public/uploads/images/' . $livestream_videos->image) }}"
+                                                    <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/' . $livestream_videos->image) : default_vertical_image_url() }}"
                                                         class="img-fluid" alt="">
                                                 </div>
                                                 <div class="block-description">

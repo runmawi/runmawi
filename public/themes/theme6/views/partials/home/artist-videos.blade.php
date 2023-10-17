@@ -17,7 +17,7 @@
                                     <a href="{{ URL::to('artist-list') }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  URL::to('public/uploads/artists/'.$artist_details->image ) }}" class="img-fluid" alt="">
+                                                <img src="{{  $artist_details->image ? URL::to('public/uploads/artists/'.$artist_details->image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
                                                 <h6> {{ strlen($artist_details->artist_name ) > 17 ? substr($artist_details->artist_name , 0, 18) . '...' : $artist_details->artist_name  }}</h6>

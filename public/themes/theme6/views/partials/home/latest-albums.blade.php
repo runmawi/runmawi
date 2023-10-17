@@ -17,7 +17,7 @@
                                     <a href="{{ URL::to('album/'.$albums->slug) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  URL::to('public/uploads/albums/'.$albums->album ) }}" class="img-fluid" alt="">
+                                                <img src="{{ $albums->album ?  URL::to('public/uploads/albums/'.$albums->album ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
                                                 <h6> {{ strlen($albums->albumname ) > 17 ? substr($albums->albumname , 0, 18) . '...' : $albums->albumname  }}</h6>

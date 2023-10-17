@@ -108,7 +108,7 @@
                             <option value="1" > Column 1</option>
                             <option value="2" > Column 2</option>
                             <option value="3" > Column 3</option>
-                            <option value="4" > Column 4</option>
+                            {{-- <option value="4" > Column 4</option> --}}
                           </select>
                     
                     </div>

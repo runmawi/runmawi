@@ -17,7 +17,7 @@
                                     <a href="{{ URL::to('category/videos/'.$video->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{  URL::to('public/uploads/images/'.$video->image) }}" class="img-fluid" alt="">
+                                                <img src="{{ $video->image ? URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
                                                 <h6> {{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}
