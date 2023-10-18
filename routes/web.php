@@ -15,7 +15,7 @@ Route::get('/video-chat', function () {
     return view('video-chat', ['users' => $users]);
 });
 // Route::get('video_chat', 'VideoChatController@index');
-Route::get('mytv/quick-response', 'HomeController@TvCodeQuickResponse');
+Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 
 $router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
