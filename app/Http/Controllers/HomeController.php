@@ -70,6 +70,7 @@ use App\MusicStation as MusicStation;
 use App\GuestLoggedDevice as GuestLoggedDevice;
 use Maatwebsite\Excel\Facades\Excel;
 use App\AppSetting as AppSetting;
+use App\TVLoginCode as TVLoginCode;
 
 class HomeController extends Controller
 {
