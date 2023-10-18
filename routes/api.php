@@ -644,5 +644,6 @@ Route::group(
             Route::post('scanner_code', 'ApiAuthController@QRScannerCode');
             Route::post('mobile_pair_code', 'ApiAuthController@QRMobilePair');
             Route::post('tv_signup', 'ApiAuthController@TvSignUp');
+            Route::post('tv_code_verifyToken', 'ApiAuthController@verifytokenCode');
             
         });
