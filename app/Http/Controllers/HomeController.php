@@ -4835,9 +4835,15 @@ public function uploadExcel(Request $request)
 }
 
 
-    public function TvCodeQuickResponse(){
+    public function TvCodeQuickResponse($tvcode,$verifytoken){
             
         $agent = new Agent();
+
+        // add verifytoken
+
+        TVLoginCode::where('tv_code',$tvcode)->update([
+            'verifytoken'  =>  $verifytoken,
+        ]);
 
         $AppSetting = AppSetting::where('id','=',1)->first();
             if ($agent->is('iOS'))
