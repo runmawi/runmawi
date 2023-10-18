@@ -16,7 +16,7 @@
 
 ?>
 
-@if (!empty($data))
+@if (!empty($data) && $data->isNotEmpty())
 
     <section id="iq-upcoming-movie">
         <div class="container-fluid">

@@ -6,7 +6,7 @@
 
 <?php 
     if( !Auth::guest() ){
-        include public_path('themes/default/views/comments/commentbox.blade.php'); 
+        include public_path('themes/theme6/views/comments/commentbox.blade.php'); 
     }
 ?>
 
@@ -100,9 +100,9 @@
         endif; ?>
 
 
-        <?php include public_path('themes/default/views/comments/comment_edit_modal.blade.php'); ?>
-        <?php include public_path('themes/default/views/comments/comment_edit_reply_modal.blade.php'); ?>
-        <?php include public_path('themes/default/views/comments/comment_reply_modal.blade.php'); ?>
+        <?php include public_path('themes/theme6/views/comments/comment_edit_modal.blade.php'); ?>
+        <?php include public_path('themes/theme6/views/comments/comment_edit_reply_modal.blade.php'); ?>
+        <?php include public_path('themes/theme6/views/comments/comment_reply_modal.blade.php'); ?>
 
         <br />
     </div>

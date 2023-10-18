@@ -30,7 +30,7 @@
 
 ?>
 
-@if (!empty($data))
+@if (!empty($data) && $data->isNotEmpty())
 
     @foreach ($data as $key => $audios_genre)
         <section id="iq-favorites">

@@ -1,4 +1,4 @@
-@php include public_path('themes/default/views/header.php');  @endphp
+@php include public_path('themes/theme6/views/header.php');  @endphp
 
 {{-- video-js Style --}}
 
@@ -42,9 +42,9 @@
 
 @php 
 
-    include public_path('themes/default/views/video-js-Player/video/videos_script_file.blade.php');
-    include public_path('themes/default/views/video-js-Player/video/videos_ads.blade.php');
-    include public_path('themes/default/views/video-js-Player/video/player_script.blade.php');
-    include public_path('themes/default/views/footer.blade.php'); 
+    include public_path('themes/theme6/views/video-js-Player/video/videos_script_file.blade.php');
+    include public_path('themes/theme6/views/video-js-Player/video/videos_ads.blade.php');
+    include public_path('themes/theme6/views/video-js-Player/video/player_script.blade.php');
+    include public_path('themes/theme6/views/footer.blade.php'); 
 
 @endphp

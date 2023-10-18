@@ -1,6 +1,6 @@
 
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme6/views/header.php'));
 @endphp
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h4 class="main-title">Reels</h4>                                          
@@ -56,5 +56,5 @@
 
 
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp
