@@ -69,6 +69,8 @@ use GuzzleHttp\Client;
 use App\MusicStation as MusicStation;
 use App\GuestLoggedDevice as GuestLoggedDevice;
 use Maatwebsite\Excel\Facades\Excel;
+use App\LanguageVideo;
+use App\CategoryVideo;
 
 class HomeController extends Controller
 {
@@ -1066,7 +1068,8 @@ class HomeController extends Controller
 
                     if ($Recomended->Recommendation == 1)
                     {
-                        $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                            ->join('videos', 'videos.id', '=', 'recent_views.video_id')
                             ->where('videos.status', '=', '1')
                             ->where('videos.draft', '=', '1')
                             ->where('videos.active', '=', '1')
@@ -1320,7 +1323,7 @@ class HomeController extends Controller
 
                         'live_banner' => LiveStream::where('banner', '=', '1')
                                         ->orderBy('created_at', 'DESC')
-                                        ->simplePaginate(111111) ,
+                                        ->get() ,
 
                         'series_sliders' => Series::where('active', '=', '1')
                                         ->where('banner','=','1')
@@ -2279,7 +2282,7 @@ class HomeController extends Controller
                     
                     'live_banner' => LiveStream::where('banner', '=', '1')
                                         ->orderBy('created_at', 'DESC')
-                                        ->simplePaginate(111111) ,
+                                        ->get() ,
 
                     'sliders' => Slider::where('active', '=', '1')
                                         ->orderBy('order_position', 'ASC')
@@ -3127,49 +3130,75 @@ class HomeController extends Controller
 
     public function LanguageVideo($lanid, $lan)
     {
+        try {
+            
+            $LanguageVideo = LanguageVideo::where('language_id',$lanid)->groupBy('video_id')->pluck('video_id');
 
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();
-        $countryName = $geoip->getCountry();
-        $regionName = $geoip->getregion();
-        $cityName = $geoip->getcity();
-        $ThumbnailSetting = ThumbnailSetting::first();
+            $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
+                ->where('language_id', '=', $lanid)->where('active', '=', '1')->where('status', '=', '1')
+                ->where('draft', '=', '1');
+
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
+                    $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
+                }
+
+            $language_videos = $language_videos->latest('videos.created_at')->get();
 
 
-        $getfeching = Geofencing::first();
+            $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                        ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')->groupBy('video_id')
+                        ->orderByRaw('count DESC');
 
-        $block_videos = BlockVideo::where('country_id', $countryName)->get();
-        if (!$block_videos->isEmpty())
-        {
-            foreach ($block_videos as $block_video)
-            {
-                $blockvideos[] = $block_video->video_id;
-            }
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
+                    $Most_watched_country = $Most_watched_country->whereNotIn('videos.id', Block_videos());
+                }
+            
+            $Most_watched_country = $Most_watched_country->where('recent_views.country_name', Country_name())
+                            ->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$LanguageVideo)
+                            ->limit(10)->get()->map(function ($item) {
+
+                            $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
+                                                        ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                        ->where('video_id', $item->video_id )
+                                                        ->pluck('name') 
+                                                        ->implode(',');
+
+                                return $item;
+            });
+
+            $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                            ->join('videos', 'videos.id', '=', 'recent_views.video_id')->where('videos.status', '=', '1')
+                            ->where('videos.draft', '=', '1')->where('videos.active', '=', '1')
+                            ->whereIn('videos.id',$LanguageVideo)
+                            ->groupBy('video_id');
+
+                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
+                                $top_most_watched = $Most_watched_country->whereNotIn('videos.id', Block_videos());
+                            }
+
+            $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(30)->get();
+
+            $video_banners = Video::where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
+                                        ->where('draft', '1')->where('status', '1')
+                                        ->where('banner', '1')->latest()
+                                        ->get() ;
+
+            $data = array(
+                'lang_videos' => $language_videos,
+                'Most_watched_country' => $Most_watched_country ,
+                'top_most_watched'     => $top_most_watched ,
+                'video_banners'        => $video_banners ,
+                'currency'         => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first() 
+            );
+
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
         }
-        else
-        {
-            $blockvideos[] = '';
-        }
-
-        $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
-        ->where('language_id', '=', $lanid)->where('active', '=', '1')->where('status', '=', '1')
-        ->where('draft', '=', '1');
-
-        if ($getfeching != null && $getfeching->geofencing == 'ON')
-        {
-            $language_videos = $language_videos->whereNotIn('videos.id', $blockvideos);
-        }
-        $language_videos = $language_videos->orderBy('videos.created_at','desc')->get();
-
-        $currency = CurrencySetting::first();
-
-        $data = array(
-            'lang_videos' => $language_videos,
-            'currency' => $currency,
-            'ThumbnailSetting' => $ThumbnailSetting
-
-        );
-
 
         return Theme::View('languagevideo', $data);
     }
@@ -4332,7 +4361,7 @@ class HomeController extends Controller
 
         } catch (\Throwable $th) {
 
-            return $th->getMessage();
+            // return $th->getMessage();
             
             return abort (404);
 
@@ -4366,7 +4395,7 @@ class HomeController extends Controller
 
         } catch (\Throwable $th) {
             
-            return $th->getMessage();
+            // return $th->getMessage();
 
             return abort (404);
 
@@ -4399,7 +4428,7 @@ class HomeController extends Controller
 
         } catch (\Throwable $th) {
             
-            return $th->getMessage();
+            // return $th->getMessage();
 
             return abort (404);
 
@@ -4434,7 +4463,7 @@ class HomeController extends Controller
 
         } catch (\Throwable $th) {
 
-            return $th->getMessage();
+            // return $th->getMessage();
             
             return abort (404);
 
@@ -4463,7 +4492,7 @@ class HomeController extends Controller
 
         } catch (\Throwable $th) {
 
-            return $th->getMessage();
+            // return $th->getMessage();
 
             return abort (404);
         }
