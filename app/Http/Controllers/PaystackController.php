@@ -182,7 +182,7 @@ class PaystackController extends Controller
             if( $verify_reference['status'] == false ){
 
                 $response = array(
-                    'status'=>'false',
+                    'status'=> false ,
                     'message'=> $verify_reference['message'] ,
                 );  
 
@@ -268,7 +268,7 @@ class PaystackController extends Controller
         } catch (\Throwable $th) {
             
             $response = array(
-                'status'=>'false',
+                'status'=> false ,
                 'message'=> $th->getMessage() ,
             );  
 
@@ -329,14 +329,14 @@ class PaystackController extends Controller
                 ]);
 
                 $response = array(
-                    'status'=>'true',
+                    'status'=> true ,
                     'message'=>'Paystack Payment ! Verify & Subscription data stored Sucessfully '
                 );  
 
         } catch (\Throwable $th) {
 
                 $response = array(
-                    'status'=>'false',
+                    'status'=> false ,
                     'message'=> $th
                 );  
         }
