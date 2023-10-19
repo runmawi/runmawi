@@ -4367,6 +4367,9 @@ class AdminUsersController extends Controller
                 "Contact Number",
                 "Current Package",
                 "User Type",
+                "User Country",
+                "User State",
+                "User City",
                 "Active",
 
             ]);
@@ -4392,6 +4395,9 @@ class AdminUsersController extends Controller
                         $each_user->mobile,
                         $current_plan,
                         $each_user->role,
+                        $each_user->country,
+                        $each_user->state,
+                        $each_user->city,
                         $Active,
                     ]);
                 }
