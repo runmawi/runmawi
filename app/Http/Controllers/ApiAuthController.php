@@ -21931,6 +21931,7 @@ public function TV_login(Request $request)
             'status'=> 'true',
             'message' => 'Added verfication code',
             'qr_code' => $request->qr_code,
+            'quick_response_url' => URL::to('mytv/quick-response'),
         );
 
       } catch (\Throwable $th) {
@@ -22083,6 +22084,51 @@ public function TV_login(Request $request)
 
       }
 
+      return response()->json($response, 200);
+
+    }
+
+    
+    public function verifytokenCode(Request $request){
+
+      try {
+
+        $tvcode = $request->qr_code ;
+        $verifytoken = $request->verifytoken ;
+
+        $verifytoken = TVLoginCode::where('tv_code',$tvcode)->where('verifytoken',$verifytoken)->count();
+       
+        if($verifytoken == 1){
+            
+          $TVLoginCode = TVLoginCode::where('tv_code',$request->qr_code)->where('verifytoken',$request->verifytoken)->update([
+              'email'                   =>  $request->email,
+              'status'                  =>  1,
+          ]);
+
+          $user_details = User::where('email',$request->email)->first();
+
+            $response = array(
+                'status'=> true,
+                'message' => 'Verfication Successfully Done',
+                'user_details' => $user_details,
+                'TVLoginCode' => $TVLoginCode,
+            );
+
+        }else{
+              $response = array(
+                'status'=> false,
+                'message' => 'Invaild Pair QrCode',
+            );
+        }
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => false,
+          'message'=> $th->getMessage(),
+        );
+
+      }
       return response()->json($response, 200);
 
     }

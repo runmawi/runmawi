@@ -66,16 +66,15 @@ $currency = App\CurrencySetting::first();
                         
                         ?>
                     <li class="slide-item">
-                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                            <div class="block-images position-relative">
+                        <div class="block-images position-relative">
+                        
                             <!-- block-images -->
+                        <div class="border-bg">
                            <div class="img-box">
+                           <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid w-100" alt="live-c">
-                                        <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
-                                            <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
-                                            </video> -->
-                                  
+                        </a>     
 
                             <!-- PPV price -->
                                 
@@ -97,14 +96,61 @@ $currency = App\CurrencySetting::first();
                                         <?php } ?>
                                     
                                 </div>
-                                <div class="block-description">
+                                </div>
+                          <div class="block-description">
+                                <a class="playTrailer" href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
+                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>"
+                                        class="img-fluid w-100" alt="live-c">
+                        
 
-                                    <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                            <h6>
+                            <!-- PPV price -->
+                                
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                                        <p class="p-tag1">
+                                            <?php if($category_video->access == 'subscriber' ){ ?>
+                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif($category_video->access == 'registered'){?>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <?php } elseif(!empty($category_video->ppv_price)) {
+                                                   echo $category_video->ppv_price.' '.$currency->symbol ; 
+                                                } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                                    echo $category_video->global_ppv .' '.$currency->symbol;
+                                                } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                                    echo "Free"; 
+                                                }
+                                            ?>
+                                        </p>
+                                        <?php } ?>
+                                        </a>   
+                                         <!-- PPV price -->
+                                
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
+                                        <p class="p-tag1">
+                                            <?php if($category_video->access == 'subscriber' ){ ?>
+                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif($category_video->access == 'registered'){?>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <?php } elseif(!empty($category_video->ppv_price)) {
+                                                   echo $category_video->ppv_price.' '.$currency->symbol ; 
+                                                } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                                    echo $category_video->global_ppv .' '.$currency->symbol;
+                                                } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                                    echo "Free"; 
+                                                }
+                                            ?>
+                                        </p>
+                                        <?php } ?>
+
+                                
+                                <div class="hover-buttons text-white">
+                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
+                                    <?php if($ThumbnailSetting->title == 1) { ?>
+                                        <!-- Title -->
+                                        
+                                        <p class="epi-name text-left m-0">
                                             <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>
-                                            </h6>
-                                        </a>
+                                            </p>
+                                        
                                     <?php } ?>  
 
                                     <div class="movie-time d-flex align-items-center pt-1">
@@ -175,20 +221,16 @@ $currency = App\CurrencySetting::first();
                                       </span>
                                       <?php } ?>
                                   </div>
+                                  </a>
 
-                                    <div class="hover-buttons">
-                                        <a type="button" class="text-white d-flex align-items-center"
+                                    
+                                        <a class="epi-name mt-3 mb-0 btn" type="button" class="text-white d-flex align-items-center"
                                             href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%" alt="ply"/> Watch Now
+                                            <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%" alt="ply"/> Watch Now
                                         </a>
-                                        <div class="d-flex">
-                    </div>
-
-            
-                                </div>
-                              
-                            </div>
-                        </a>
+                                        </div>
+            </div>
+         </div>
                     </li>
                     <?php           
                           endforeach; 

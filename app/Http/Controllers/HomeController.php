@@ -71,6 +71,8 @@ use App\GuestLoggedDevice as GuestLoggedDevice;
 use Maatwebsite\Excel\Facades\Excel;
 use App\LanguageVideo;
 use App\CategoryVideo;
+use App\AppSetting as AppSetting;
+use App\TVLoginCode as TVLoginCode;
 
 class HomeController extends Controller
 {
@@ -4861,5 +4863,46 @@ public function uploadExcel(Request $request)
         return response()->json(['error' => 'File not uploaded.']);
     }
 }
+
+
+    public function TvCodeQuickResponse($tvcode,$verifytoken){
+            
+        $agent = new Agent();
+
+        // add verifytoken
+
+        TVLoginCode::where('tv_code',$tvcode)->update([
+            'verifytoken'  =>  $verifytoken,
+        ]);
+
+        $AppSetting = AppSetting::where('id','=',1)->first();
+            if ($agent->is('iOS'))
+            {
+                try {
+                    $ios_url = AppSetting::where('id','=',1)->pluck('ios_url')->first();
+                    if(!empty($ios_url)){
+                        return redirect()->away($ios_url);
+                    }else{
+                        return redirect('/login');            
+                    }
+                } catch (\Throwable $th) {
+                    throw $th;
+                }
+            }
+            else
+            {
+                try {
+                    $android_url = AppSetting::where('id','=',1)->pluck('android_url')->first();
+                    if(!empty($android_url)){
+                        return redirect()->away($android_url);
+                    }else{
+                        return redirect('/login');            
+                    }
+                } catch (\Throwable $th) {
+                    throw $th;
+                }
+            }
+
+    }
 
 }
