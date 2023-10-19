@@ -158,7 +158,10 @@ class PaystackController extends Controller
     public function paystack_verify_request ( Request $request )
     {
         try {
-
+            
+            $Login_agent = new \Jenssegers\Agent\Agent;
+            $Check_desktop_login = $Login_agent->isDesktop();
+            
             $reference_code = $request->reference ;
 
                     // Verify Payments API
@@ -182,7 +185,7 @@ class PaystackController extends Controller
             if( $verify_reference['status'] == false ){
 
                 $response = array(
-                    'status'=> false ,
+                    'status'=>'false',
                     'message'=> $verify_reference['message'] ,
                 );  
 
@@ -205,7 +208,7 @@ class PaystackController extends Controller
 
                 // User Id 
 
-            if( session('paystack_payment_source') == "web" ){
+            if( $Check_desktop_login == true ){
 
                 $users_details = Auth::User() ;
 
@@ -256,7 +259,8 @@ class PaystackController extends Controller
                 'message'=> $verify_reference['message']  ,
             );  
 
-            if( session('paystack_payment_source') == "web" ){
+            
+            if( $Check_desktop_login == true ){
 
                 return redirect()->route('home');
             }
@@ -268,11 +272,11 @@ class PaystackController extends Controller
         } catch (\Throwable $th) {
             
             $response = array(
-                'status'=> false ,
+                'status'=>'false',
                 'message'=> $th->getMessage() ,
             );  
 
-            if( session('paystack_payment_source') == "web" ){
+            if( $Check_desktop_login == true ){
 
                 return redirect()->route('home');
             }else{
@@ -329,14 +333,14 @@ class PaystackController extends Controller
                 ]);
 
                 $response = array(
-                    'status'=> true ,
+                    'status'=>'true',
                     'message'=>'Paystack Payment ! Verify & Subscription data stored Sucessfully '
                 );  
 
         } catch (\Throwable $th) {
 
                 $response = array(
-                    'status'=> false ,
+                    'status'=>'false',
                     'message'=> $th
                 );  
         }
