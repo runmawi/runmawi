@@ -259,29 +259,12 @@
 
 <body>
     <!-- loader Start -->
-    <?php if( get_image_loader() == 1) { ?>
-    <!-- <div class="fullpage-loader">
-        <div class="fullpage-loader__logo">
-
-            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-
-            <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo; ?>" class="c-logo"
-                alt="<?php echo $settings->website_name ; ?>">
-
-            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?>
-
-            <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo"
-                alt="<?php echo $settings->website_name ; ?>">
-
-            <?php }else { ?>
-
-            <img src="<?php echo URL::to('public/uploads/settings/'. $settings->logo ); ?>" class="c-logo"
-                alt="<?php echo $settings->website_name ; ?>">
-
-            <?php } ?>
-
-        </div>
-    </div> -->
+    <?php if( get_image_loader() == 1 ) { ?>
+      <div class="fullpage-loader">
+         <div class="fullpage-loader__logo">
+               <img src="<?= front_end_logo() ?>" class="c-logo" alt="<?=  $settings->website_name ; ?>">
+         </div>
+      </div>
     <?php } ?>
 
     <header id="main-header">
