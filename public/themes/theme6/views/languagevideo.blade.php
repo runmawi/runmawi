@@ -2,12 +2,11 @@
     include public_path('themes/theme6/views/header.php');
 @endphp
 
-
 <!-- Slider  -->
-@if (!empty($categoryVideos['video_banners']) && $categoryVideos['video_banners']->isNotEmpty())
+@if (!empty($video_banners) && $video_banners->isNotEmpty())
     <section id="home" class="iq-main-slider p-0">
         <div id="home-slider" class="slider m-0 p-0">
-            @foreach ($categoryVideos['video_banners'] as $item)
+            @foreach ($video_banners as $item)
                 <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}')" >
                     <div class="container-fluid position-relative h-100">
                         <div class="slider-inner h-100">
@@ -74,7 +73,7 @@
 @endif
 
 <div class="main-content">
-    @if (!empty($categoryVideos['categoryVideos']) && $categoryVideos['categoryVideos']->isNotEmpty())
+    @if (!empty($lang_videos) && $lang_videos->isNotEmpty())
         <section id="iq-favorites">
             <div class="container-fluid">
                 <div class="row">
@@ -89,7 +88,7 @@
 
                         <div class="favorites-contens">
                             <ul class="favorites-slider list-inline  row p-0 mb-0">
-                               @foreach ($categoryVideos['categoryVideos'] as $item)
+                               @foreach ($lang_videos as $item)
                                     <li class="slide-item">
                                         <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
                                             <div class="block-images position-relative">
@@ -127,7 +126,7 @@
 
     {{-- Top 10 Movies Today --}}
 
-    @if (!empty($categoryVideos['Most_watched_country']) && $categoryVideos['Most_watched_country']->isNotEmpty())
+    @if (!empty($Most_watched_country) && $Most_watched_country->isNotEmpty())
 
         <section id="iq-upcoming-movie">
             <div class="container-fluid">
@@ -143,7 +142,7 @@
 
                         <div class="upcoming-contens">
                             <ul class="favorites-slider list-inline row p-0 mb-0">
-                               @foreach ( $categoryVideos['Most_watched_country'] as $item)
+                               @foreach ($Most_watched_country as $item)
                                     <li class="slide-item">
                                         <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
                                             <div class="block-images position-relative">
@@ -177,7 +176,7 @@
 
                                                     <div class="movie-time d-flex align-items-center mt-2">
 
-                                                        <div class=" p-1 mr-2" style="color: #E3FF74;"> {{ rand(95, 100). '% Match'}}</div>
+                                                        <div class=" p-1 mr-2" style="color: #E3FF74;">95% Match</div>
                                                             
                                                         @if (optional($item)->age_restrict )
                                                             <span class="text-white  mr-2" style="border: solid 1px; padding: 1px 10px 1px 10px;">
@@ -211,7 +210,7 @@
 
     {{-- Movies Recommended For You --}}
 
-    @if (!empty($categoryVideos['top_most_watched']) && $categoryVideos['top_most_watched']->isNotEmpty())
+    @if (!empty($top_most_watched) && $top_most_watched->isNotEmpty())
 
         <section id="iq-favorites">
             <div class="container-fluid">
@@ -227,7 +226,7 @@
 
                         <div class="favorites-contens">
                             <ul class="favorites-slider list-inline  row p-0 mb-0">
-                                @foreach ($categoryVideos['top_most_watched'] as $item)
+                                @foreach ($top_most_watched as $item)
                                     <li class="slide-item">
                                         <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
                                             <div class="block-images position-relative">
