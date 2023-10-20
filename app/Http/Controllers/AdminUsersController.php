@@ -131,7 +131,7 @@ class AdminUsersController extends Controller
                 ->take(9000)
                 ->get();
         else:
-            $allUsers = User::latest()->get();
+            $allUsers = User::latest()->take(9999)->get();
             // $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
             // $allUsers = User::orderBy('created_at', 'desc')->get();
 
