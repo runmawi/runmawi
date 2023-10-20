@@ -33,6 +33,7 @@ class UsersImport implements ToModel, WithHeadingRow
             $inputs = array(
                 'role'      => $row['role'],
                 'email'     => $row['e_mail'],
+                'username'  => strtok($row['e_mail'], "@"),
                 'password'  => Hash::make($row['e_mail']),
                 'active'    => $row['active_status'] ,
                 'mobile'    => $row['phone_number'] ,
