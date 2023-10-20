@@ -744,6 +744,56 @@
 
                                         </div>
                                     </div>
+
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[28]->header_name)
+                                                        {{ @$order_settings_list[28]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Today_Top_videos"
+                                                        @if ($settings->Today_Top_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[29]->header_name)
+                                                        {{ @$order_settings_list[29]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="series_episode_overview"
+                                                        @if ($settings->series_episode_overview == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                     <!-- <div class="col-sm-6">
                                                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                                                 <div><label class="mt-1"> @if (@$order_settings_list[23]->header_name)
@@ -1520,6 +1570,58 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[28]->header_name)
+                                                        {{ @$order_settings_list[28]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Today_Top_videos"
+                                                        @if ($mobilesettings->Today_Top_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[29]->header_name)
+                                                        {{ @$order_settings_list[29]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="series_episode_overview"
+                                                        @if ($mobilesettings->series_episode_overview == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
                             {{-- <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between"
                                     style="width: ;">

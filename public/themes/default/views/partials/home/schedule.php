@@ -12,33 +12,38 @@ $id = Auth::user()->id ; } else { $id = 0 ; } ?>
                          foreach($VideoSchedules as $Schedule): 
                           ?>
                        <li class="slide-item">
-                          <a href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>">
+                          <div class="block-images position-relative">
                              <!-- block-images -->
-                             <div class="block-images position-relative">
+                             <div class="border-bg">
                                 <div class="img-box">
-                                <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>">
+                                <a class="playTrailer" href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>">
                                    <img loading="lazy" data-src="<?php echo $Schedule->image;  ?>" class="img-fluid loading w-100" alt=""></a>  
-                                </div>
+                                 </a>
+                                 </div>
+                                 </div>
+
+
                                 <div class="block-description">
-                                     <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>">
+                                <a class="playTrailer" href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>">
+                                   <img loading="lazy" data-src="<?php echo $Schedule->player_image;  ?>" class="img-fluid loading w-100" alt=""></a>  
+                                 </a>
+
+                                 <div class="hover-buttons text-white">   
+                                 <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>">
                                 <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                     <h6><?php  echo (strlen($Schedule->name) > 17) ? substr($Schedule->name,0,18).'...' : $Schedule->name; ?></h6>
+                                 <p class="epi-name text-left m-0">
+                                    <?php  echo (strlen($Schedule->name) > 17) ? substr($Schedule->name,0,18).'...' : $Schedule->name; ?></p>
                                  
-                                <?php } ?>                                                         
+                                <?php } ?> 
+                                </a>                                                        
                                     
-                                   <div class="hover-buttons">
-                                       <a class="text-white d-flex align-items-center" href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>" >
-                                         <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                   
+                                       <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->slug ?>" >
+                                         <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                        </a>
-                                       <div class="hover-buttons d-flex">
                                     </div>
-                              
-                             </div>
-                                          </a>
                                  </div>
                               </div>
-                              
-                          </a>
                        </li>
                        <?php                     
                         endforeach; 

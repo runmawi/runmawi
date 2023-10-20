@@ -27,11 +27,15 @@
     <?php  if(isset($latest_series)) :
       foreach($latest_series as $latest_serie): ?>
         <li class="slide-item">
-          <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
+          <div class="block-images position-relative">
+         
                              <!-- block-images -->
-            <div class="block-images position-relative">
+            <div class="border-bg">
               <div class="img-box">
+              <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
                 <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid lazyload w-100" alt="series">
+              </a>
+
                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                     <?php if($latest_serie->access == 'subscriber' ){ ?>
                         <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
@@ -47,11 +51,45 @@
                       <?php } ?>
                  
               </div>
+              </div>
 
               <div class="block-description">
-                <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> ">
+              <a class="playTrailer" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug ) ?>">
+                <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->player_image;  ?>" class="img-fluid lazyload w-100" alt="series">
+              
 
-              <h6><?php echo __($latest_serie->title); ?></h6>
+                <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                    <?php if($latest_serie->access == 'subscriber' ){ ?>
+                        <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                        <?php }elseif($latest_serie->access == 'registered'){?>
+                        <p class="p-tag"><?php echo "Register Now"; ?></p>
+                        <?php } elseif(!empty($latest_serie->ppv_status)){?>
+                    <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                    <?php }elseif(!empty($latest_serie->ppv_status || !empty($latest_serie->ppv_status) && $latest_serie->ppv_status == null)){ ?>
+                      <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_status; ?></p>
+                      <?php }elseif($latest_serie->ppv_status == null && $latest_serie->ppv_price == null ){ ?>
+                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <?php } ?>
+                      <?php } ?>
+                      </a>
+                      <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                    <?php if($latest_serie->access == 'subscriber' ){ ?>
+                        <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                        <?php }elseif($latest_serie->access == 'registered'){?>
+                        <p class="p-tag"><?php echo "Register Now"; ?></p>
+                        <?php } elseif(!empty($latest_serie->ppv_status)){?>
+                    <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                    <?php }elseif(!empty($latest_serie->ppv_status || !empty($latest_serie->ppv_status) && $latest_serie->ppv_status == null)){ ?>
+                      <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_status; ?></p>
+                      <?php }elseif($latest_serie->ppv_status == null && $latest_serie->ppv_price == null ){ ?>
+                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <?php } ?>
+                      <?php } ?>
+
+                <div class="hover-buttons text-white"> 
+                <a class="text-white" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
+                <p class="epi-name text-left m-0">
+                  <?php echo __($latest_serie->title); ?></p>
                
                 <div class="movie-time d-flex align-items-center my-2">
                   <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_serie->age_restrict.' '.'+' ?></div>
@@ -66,16 +104,16 @@
 
                   <!--<span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_serie->duration); ?></span>-->
                 </div>
-                <div class="hover-buttons d-flex">
-                  <a class="text-white" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
+                </a>
+
+               
+                  <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Watch Series
                   </a>
                 </div>
-                     </a>
               </div>
             </div>
-          </a>
         </li>
       <?php endforeach; 
     endif; ?>

@@ -27,29 +27,35 @@
     <?php  if(isset($AudioCategory)) :
       foreach($AudioCategory as $Audio_Category): ?>
         <li class="slide-item">
-          <a href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?>">
-                             <!-- block-images -->
-            <div class="block-images position-relative">
-              <div class="img-box">
+          <div class="block-images position-relative">
+            <!-- block-images -->
+            <div class="border-bg">
+            <div class="img-box">
+          <a class="playTrailer" href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?>">
                 <img src="<?php echo URL::to('/').'/public/uploads/audios/'.@$Audio_Category->image;  ?>" class="img-fluid w-100" alt="">
-
+          </a>
+              </div>
               </div>
 
               <div class="block-description">
+              <a class="playTrailer" href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?>">
+                <img src="<?php echo URL::to('/').'/public/uploads/audios/'.@$Audio_Category->image;  ?>" class="img-fluid w-100" alt="">
+          </a>
+
+          <div class="hover-buttons text-white">
                 <a href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?> ">
 
-              <h6><?php echo __($Audio_Category->name); ?></h6>
-                               <!-- </div> -->
-                <div class="hover-buttons d-flex">
-                  <a class="text-white" href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?> " >
+                <p class="epi-name text-left m-0"><?php echo __($Audio_Category->name); ?></p>
+                </a>
+                              
+                
+                  <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Visit Audio Category
                   </a>
                 </div>
-                     </a>
               </div>
             </div>
-          </a>
         </li>
       <?php endforeach; 
     endif; ?>

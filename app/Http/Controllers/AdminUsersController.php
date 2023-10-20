@@ -4367,6 +4367,9 @@ class AdminUsersController extends Controller
                 "Contact Number",
                 "Current Package",
                 "User Type",
+                "User Country",
+                "User State",
+                "User City",
                 "Active",
 
             ]);
@@ -4392,6 +4395,9 @@ class AdminUsersController extends Controller
                         $each_user->mobile,
                         $current_plan,
                         $each_user->role,
+                        $each_user->country,
+                        $each_user->state,
+                        $each_user->city,
                         $Active,
                     ]);
                 }
@@ -4420,4 +4426,93 @@ class AdminUsersController extends Controller
         return Redirect::back()->with(array('message' => 'Successfully Update DOB','note_type' => 'success'));
 
     }
+
+    public function ManageDevices()
+
+    {
+
+        if (Auth::guest())
+        {
+            return redirect('/login');            
+        }
+
+        $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get();
+
+        $devices = $UserTVLoginCode;
+
+        $data = array(
+            'devices' => $devices,
+            'username' => Auth::User()->username,
+        );
+        
+            return Theme::view('ManageDevice', $data);    
+    }
+
+    public function RegisterNewDevice()
+
+    {
+
+        if (Auth::guest())
+        {
+            return redirect('/login');            
+        }
+
+        $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get();
+
+        $devices = $UserTVLoginCode;
+
+        $data = array(
+            'devices' => $devices,
+            'username' => Auth::User()->username,
+        );
+        
+            return Theme::view('RegisterNewDevice', $data);    
+    }
+
+    
+    public function DeregisterDevice($id)
+
+    {
+
+        if (Auth::guest())
+        {
+            return redirect('/login');            
+        }
+
+        TVLoginCode::where('id',$id)->delete();
+
+        return Redirect::back()->with(array('message' => 'Successfully Deleted Device','note_type' => 'success'));
+
+    }
+
+    public function StoreNewDevice(Request $request)
+
+    {
+        $request->all();
+
+        if (Auth::guest())
+        {
+            return redirect('/login');            
+        }
+
+        TVLoginCode::create([
+          'email'    => Auth::User()->email,
+          'tv_code'  => $request->device_code,
+          'type'  => $request->device_type,
+          'tv_name'  => $request->device_type,
+          'status'   => 0,
+       ]);
+
+       $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get();
+
+       $devices = $UserTVLoginCode;
+
+       $data = array(
+           'devices' => $devices,
+           'username' => Auth::User()->username,
+       );
+       
+       return redirect('/manage-devices');            
+    }
+
 }

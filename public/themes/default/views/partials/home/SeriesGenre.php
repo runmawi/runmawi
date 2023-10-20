@@ -15,31 +15,40 @@
     					 foreach($SeriesGenre as $key => $Series_Genre) {
             ?>
         <li class="slide-item">
-          <a href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
-                             <!-- block-images -->
-            <div class="block-images position-relative">
-              <div class="img-box">
+          <div class="block-images position-relative">
+            <!-- block-images -->
+            <div class="border-bg">
+            <div class="img-box">
+                <a class="playTrailer" href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
                 <img data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Series_Genre->image;  ?>" class="img-fluid lazyload w-100" alt="">
-               
+               </a>
                   
               </div>
+              </div>
+              
               <div class="block-description">
+              <a class="playTrailer" href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
+                <img data-src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$Series_Genre->image;  ?>" class="img-fluid lazyload w-100" alt="">
+               </a>
+
+               <div class="hover-buttons text-white">
               <a href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
-                  <h6><?php echo __($Series_Genre->name); ?></h6>
-                </a>
+              <p class="epi-name text-left m-0"><?php echo __($Series_Genre->name); ?></p>
+                
                 <div class="movie-time d-flex align-items-center my-2">
                   
                   
                 </div>
-                <div class="hover-buttons d-flex">
-                <a class="text-white" href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
+                </a>
+
+                
+                <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Visit Series Category Video
                   </a>
                 </div>
               </div>
             </div>
-          </a>
         </li>
       <?php  } 
       // }

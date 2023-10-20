@@ -89,11 +89,14 @@
                    }
                   ?>
                     <li class="slide-item">
-                        <a href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                            <div class="block-images position-relative">
-                                <div class="img-box">
-                                    <!-- block-images -->
+                        <div class="block-images position-relative">
+                            <!-- block-images -->
+                            <div class="border-bg">
+                            <div class="img-box">
+                                <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
                                     <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->image; ?>" class="img-fluid w-100" alt="cate">
+                                </a>
+                                    
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
                                         <?php  if($category_video->access == 'subscriber' ){ ?>
@@ -115,13 +118,63 @@
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
                                     <?php  } ?>
                                 </div>
+                                </div>
+
                                 <div class="block-description">
+                                <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" class="img-fluid w-100" alt="cate">
+                                
+                                    
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                    <p class="p-tag1">
+                                        <?php  if($category_video->access == 'subscriber' ){ ?>
+                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                    <?php }elseif($category_video->access == 'registered'){?>
+                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                            <?php } 
+                                       elseif(!empty($category_video->ppv_price)) {
+                                          echo $currency->symbol.' '.$category_video->ppv_price ; 
+                                          } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                             echo $currency->symbol .' '.$category_video->global_ppv;
+                                          } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                             echo "Free"; 
+                                          }
+                                       ?>
+                                    </p>
+                                    <?php } ?>
+                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <p class="published_on1"><?php echo $publish_time; ?></p>
+                                    <?php  } ?>
+                                    </a>
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                    <p class="p-tag1">
+                                        <?php  if($category_video->access == 'subscriber' ){ ?>
+                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                    <?php }elseif($category_video->access == 'registered'){?>
+                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                            <?php } 
+                                       elseif(!empty($category_video->ppv_price)) {
+                                          echo $currency->symbol.' '.$category_video->ppv_price ; 
+                                          } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                             echo $currency->symbol .' '.$category_video->global_ppv;
+                                          } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
+                                             echo "Free"; 
+                                          }
+                                       ?>
+                                    </p>
+                                    <?php } ?>
+                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <p class="published_on1"><?php echo $publish_time; ?></p>
+                                    <?php  } ?>
+
+
+                                    <div class="hover-buttons text-white">
                                     <a href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
                                         <?php if($ThumbnailSetting->title == 1) { ?>
                                         <!-- Title -->
-                                        <h6>
+                                        <p class="epi-name text-left m-0">
                                             <?php echo strlen($category_video->title) > 17 ? substr($category_video->title, 0, 18) . '...' : $category_video->title; ?>
-                                        </h6>
+                                        </p>
                                         <?php } ?>
                                         <div class="movie-time d-flex align-items-center pt-1">
                                             <?php if($ThumbnailSetting->age == 1) { ?>
@@ -186,17 +239,18 @@
                                             </span>
                                             <?php } ?>
                                         </div>
-                                        <div class="hover-buttons">
-                                            <a type="button" class="text-white d-flex align-items-center"
+                                            </a>
+
+
+                                       
+                                            <a type="button" class="epi-name mt-3 mb-0 btn"
                                                 href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                                <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
+                                                <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
                                                     width="10%" height="10%" /> Watch Now
                                             </a>
                                         </div>
-                                    </a>
                                 </div>
                             </div>
-                        </a>
                     </li>
                     <?php   endforeach;  endif; ?>
 

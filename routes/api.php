@@ -22,7 +22,6 @@ Route::group(
         'prefix' => 'auth',
     ],
     function () {
-     
 
         Route::post('All_Homepage', 'ApiAuthController@All_Homepage');
         Route::post('All_Pagelist', 'ApiAuthController@All_Pagelist');
@@ -30,7 +29,7 @@ Route::group(
         Route::post('Users-Interest-Genres', 'ApiAuthController@users_interest_genres');
         Route::post('Users-Password-Pin-Update', 'ApiAuthController@Users_Password_Pin_Update');
         Route::get('website-baseurl', 'ApiAuthController@website_baseurl');
-
+        Route::post('Series-details', 'ApiAuthController@Series_details');
 
         Route::post('Channel-Audios-list', 'ApiAuthController@Channel_Audios_list');
         Route::post('Channel-livevideos-list', 'ApiAuthController@Channel_livevideos_list');
@@ -639,5 +638,12 @@ Route::group(
             Route::get('TV_retrieve_search_data', 'ApiAuthController@tv_retrieve_search_data');
             Route::post('TV_search_data_update', 'ApiAuthController@tv_search_data_update');
             Route::post('auto-store-station', 'ApiAuthController@AutoStoreStation');
+            Route::post('multi-currency-converter', 'ApiAuthController@Currency_Convert');
+
+
+            Route::post('scanner_code', 'ApiAuthController@QRScannerCode');
+            Route::post('mobile_pair_code', 'ApiAuthController@QRMobilePair');
+            Route::post('tv_signup', 'ApiAuthController@TvSignUp');
+            Route::post('tv_code_verifyToken', 'ApiAuthController@verifytokenCode');
             
         });

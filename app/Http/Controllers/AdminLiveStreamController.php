@@ -41,6 +41,7 @@ use Session;
 use Auth;
 use Hash;
 use App\PPVFreeDurationLogs;
+use App\Channel;
 
 class AdminLiveStreamController extends Controller
 {

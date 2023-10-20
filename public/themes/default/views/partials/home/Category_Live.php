@@ -55,22 +55,23 @@ ol.breadcrumb {
                         <?php if(isset($Live_Category)) {
                         foreach($Live_Category as $LiveCategory){ ?>
                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                            <a href="<?php echo URL::to('live/'.$LiveCategory->slug ) ?>">
-                                <div class="block-images position-relative">
-                                    <div class="img-box">
+                            <div class="block-images position-relative">
+                                <!-- block-images -->
+                            <div class="border-bg">
+                                <div class="img-box">
+                            <a class="playTrailer" href="<?php echo URL::to('live/'.$LiveCategory->slug ) ?>">
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$LiveCategory->image;  ?>"
                                             class="img-fluid w-100" alt="">
+                            </a>
+                                    </div>
                                     </div>
 
                                     <div class="block-description">
                                         <a href="<?php echo URL::to('live').'/'.$LiveCategory->slug  ?>">
-                                            <h6><?php  echo (strlen(@$LiveCategory->title) > 17) ? substr(@$LiveCategory->title,0,18).'...' : @$LiveCategory->title; ?>
-                                            </h6>
+                                            <p class="epi-name text-left m-0">
+                                                <?php  echo (strlen(@$LiveCategory->title) > 17) ? substr(@$LiveCategory->title,0,18).'...' : @$LiveCategory->title; ?>
+                                            </p>
                                         </a>
-                                        <div class="hover-buttons">
-                                            <div>
-                                            </div>
-                                        </div>
                                         <div>
                                             <button type="button" class="show-details-button" data-toggle="modal"
                                                 data-target="#myModal<?= @$LiveCategory->id;?>">

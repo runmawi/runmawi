@@ -8,26 +8,38 @@
             ?>
             <li class="slide-item">
                     <div class="block-images position-relative" data-toggle="modal" data-target="#Reels" data-name=<?php echo $reel->reels_videos ?>  onclick="addvidoes(this)"  >
-                            <div class="img-box">
-                                <a>
+                    <!-- block-images -->
+                    <div class="border-bg">        
+                        <div class="img-box">
+                                <a class="playTrailer">
                                     <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$reel->reels_thumbnail;  ?>"  data-play="hover" >
                                         <source src="<?php echo $reel->trailer;  ?>" type="video/mp4">
                                     </video>
                                 </a>
                             </div>
+                            </div>
                                 
                             <div class="block-description" >
+                            <a class="playTrailer">
+                                    <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$reel->reels_thumbnail;  ?>"  data-play="hover" >
+                                        <source src="<?php echo $reel->trailer;  ?>" type="video/mp4">
+                                    </video>
+                                </a>
+
+                                <div class="hover-buttons text-white">
                                 <a  class="text-white"  data-toggle="modal" data-target="#Reels">
-                                <h6><?php  echo (strlen($reel->reels_videos_slug) > 18) ? substr($reel->reels_videos_slug,0,19).'...' : $reel->reels_videos_slug; ?></h6>
-                                
-                               <div class="hover-buttons">
-                                   <a class="text-white"  data-toggle="modal" data-target="#Reels"  >
+                                <p class="epi-name text-left m-0">
+                                    <?php  echo (strlen($reel->reels_videos_slug) > 18) ? substr($reel->reels_videos_slug,0,19).'...' : $reel->reels_videos_slug; ?></p>
+                                    </a>
+                              
+                                   <a class="epi-name mt-3 mb-0 btn"  data-toggle="modal" data-target="#Reels"  >
                                          <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now </a>
                                          <input type="hidden" name="reals_videos_id" class="reals_videos_id" value=<?php echo $reel->reels_videos ?> >
-                               </div>
+                                    </a>
+                                        </div>
                         </div>
                     </div>
-                </a>
+                
             </li>
                      <?php endforeach; endif; ?>
     </ul>

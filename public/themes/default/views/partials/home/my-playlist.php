@@ -26,29 +26,34 @@
     <?php  if(isset($MyPlaylist)) :
       foreach($MyPlaylist as $My_Playlist): ?>
         <li class="slide-item">
-          <a href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?>">
-                             <!-- block-images -->
-            <div class="block-images position-relative">
-              <div class="img-box">
-                <img src="<?php echo @$My_Playlist->image;  ?>" class="img-fluid w-100" alt="">
-
+          <div class="block-images position-relative">
+             <!-- block-images -->
+             <div class="border-bg">
+                <div class="img-box">
+                    <a class="playTrailer" href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?>">
+                    <img src="<?php echo @$My_Playlist->image;  ?>" class="img-fluid w-100" alt="">
+                    </a>
+              </div>
               </div>
 
               <div class="block-description">
+              <a class="playTrailer" href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?>">
+                    <img src="<?php echo @$My_Playlist->image;  ?>" class="img-fluid w-100" alt="">
+                    </a>
+                    <div class="hover-buttons text-white">
                 <a href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?> ">
 
-              <h6><?php echo __($My_Playlist->name); ?></h6>
+                <p class="epi-name text-left m-0"><?php echo $My_Playlist->title; ?></p>
                                <!-- </div> -->
-                <div class="hover-buttons d-flex">
-                  <a class="text-white" href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?> " >
-                    <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                  </a>
+
+                  <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('/playlist'.'/'.$My_Playlist->slug  ) ?> " >
+                    <i class="fa fa-play mr-1" alt="ply" aria-hidden="true"></i>
                    Visit Audio PlayList
                   </a>
                 </div>
-                     </a>
               </div>
             </div>
-          </a>
         </li>
       <?php endforeach; 
     endif; ?>
