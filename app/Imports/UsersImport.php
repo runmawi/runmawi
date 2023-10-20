@@ -69,18 +69,18 @@ class UsersImport implements ToModel, WithHeadingRow
                     'link'          =>  URL::to('password/reset'),
                 );
 
-                // \Mail::send('emails.Import_users', $Email_data , function($message) use ($row,$heading) {
+                \Mail::send('emails.Import_users', $Email_data , function($message) use ($row,$heading) {
 
-                //     $message->from( AdminMail(),GetWebsiteName() );
-                //     $message->to( $row['e_mail'] , $row['e_mail'] )->subject( $heading );
+                    $message->from( AdminMail(),GetWebsiteName() );
+                    $message->to( $row['e_mail'] , $row['e_mail'] )->subject( $heading );
                     
-                // });
+                });
 
-                // $email_log      = 'Mail Sent Successfully from Welcome E-Mail - Import users';
-                // $email_template = "41";
-                // $user_id        = Auth::user()->id;
+                $email_log      = 'Mail Sent Successfully from Welcome E-Mail - Import users';
+                $email_template = "41";
+                $user_id        = Auth::user()->id;
     
-                // Email_sent_log( $user_id,$email_log,$email_template );
+                Email_sent_log( $user_id,$email_log,$email_template );
     
             } 
             catch (\Throwable $th) {
