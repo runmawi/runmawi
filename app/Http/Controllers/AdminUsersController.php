@@ -526,7 +526,7 @@ class AdminUsersController extends Controller
 
             $file = $request->avatar;
 
-            if (File::exists(base_path('public/uploads/avatars/'.$user->avatar))) {
+            if ( $user->avatar != "default_profile_image.png" && File::exists(base_path('public/uploads/avatars/'.$user->avatar))) {
                 File::delete(base_path('public/uploads/avatars/'.$user->avatar));
             }
 
