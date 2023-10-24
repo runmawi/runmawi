@@ -54,6 +54,30 @@ use Intervention\Image\Facades\Image;
 use Intervention\Image\Filters\DemoFilter;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use App\Videoartist;
+use App\RelatedVideo;
+use App\LanguageVideo;
+use App\Blockvideo;
+use App\ReelsVideo;
+use App\PlayerAnalytic;
+use App\CategoryVideo;
+use App\PlayerSeekTimeAnalytic;
+use App\VideoPlaylist;
+use App\Audio;
+use App\Audioartist;
+use App\AudioLanguage;
+use App\CategoryAudio;
+use App\BlockAudio;
+use App\LiveLanguage;
+use App\CategoryLive;
+use App\LiveStream;
+use App\Series;
+use App\Seriesartist;
+use App\SeriesSubtitle;
+use App\SeriesLanguage;
+use App\SeriesCategory;
+use App\SeriesSeason;
+use App\Episode;
 
 class ChannelLoginController extends Controller
 {
@@ -1057,6 +1081,44 @@ Please recheck the credentials before you try again!');
 public function destroy($id)
 {
     $Channel = Channel::find($id);
+
+    $Video_id = Video::where('user_id', $id)->where('uploaded_by', 'Channel')->pluck('id')->first();
+
+    Videoartist::where('video_id', $Video_id)->delete();
+    RelatedVideo::where('video_id', $Video_id)->delete();
+    LanguageVideo::where('video_id', $Video_id)->delete();
+    Blockvideo::where('video_id', $Video_id)->delete();
+    ReelsVideo::where("video_id", $Video_id)->delete();
+    PlayerAnalytic::where("videoid", $Video_id)->delete();
+    CategoryVideo::where("video_id", $Video_id)->delete();
+    PlayerSeekTimeAnalytic::where("video_id", $Video_id)->delete();
+    VideoPlaylist::where("video_id", $Video_id)->delete();
+    Video::where('user_id', $id)->where('uploaded_by', 'Channel')->delete();
+
+
+    $Audio_id = Audio::where('user_id', $id)->where('uploaded_by', 'Channel')->pluck('id')->first();
+
+    Audioartist::where('audio_id', $Audio_id)->delete();
+    AudioLanguage::where('audio_id', $Audio_id)->delete();
+    CategoryAudio::where('audio_id', $Audio_id)->delete();
+    BlockAudio::where('audio_id', $Audio_id)->delete();
+    Audio::where('user_id', $id)->where('uploaded_by', 'Channel')->delete();
+
+    $LiveStream_id = LiveStream::where('user_id', $id)->where('uploaded_by', 'Channel')->pluck('id')->first();
+    
+    LiveLanguage::where("live_id", $LiveStream_id)->delete();
+    CategoryLive::where("live_id", $LiveStream_id )->delete();
+    LiveStream::where('user_id', $id)->where('uploaded_by', 'Channel')->delete();
+
+    $Series_id = Series::where('user_id', $id)->where('uploaded_by', 'Channel')->pluck('id')->first();
+
+    Seriesartist::where('series_id',$Series_id)->delete();
+    SeriesSubtitle::where('series_id', $Series_id)->delete();
+    SeriesLanguage::where('series_id',$Series_id)->delete();
+    SeriesCategory::where('series_id',$Series_id)->delete();
+    SeriesSeason::where('series_id',$Series_id)->delete();
+    Episode::where('series_id',$Series_id)->delete();
+    Series::where('user_id', $id)->where('uploaded_by', 'Channel')->delete();
 
     Channel::destroy($id);
     return Redirect::back()->with('message', 'Deleted Channel Partner');

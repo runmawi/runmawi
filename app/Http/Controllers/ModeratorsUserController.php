@@ -76,6 +76,22 @@ use App\ModeratorPayout;
 use App\SeriesGenre;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Filters\DemoFilter;
+use App\RelatedVideo;
+use App\LanguageVideo;
+use App\Blockvideo;
+use App\ReelsVideo;
+use App\CategoryVideo;
+use App\PlayerSeekTimeAnalytic;
+use App\VideoPlaylist;
+use App\Audioartist;
+use App\AudioLanguage;
+use App\CategoryAudio;
+use App\BlockAudio;
+use App\LiveLanguage;
+use App\CategoryLive;
+use App\SeriesSubtitle;
+use App\SeriesLanguage;
+use App\SeriesCategory;
 
 class ModeratorsUserController extends Controller
 {
@@ -943,7 +959,49 @@ class ModeratorsUserController extends Controller
                     Email_notsent_log($user_id,$email_log,$email_template);
                 }
 
-                ModeratorsUser::destroy($id);
+                        // dd($id);
+            $Video_id = Video::where('user_id', $id)->where('uploaded_by', 'CPP')->pluck('id')->first();
+
+            Videoartist::where('video_id', $Video_id)->delete();
+            RelatedVideo::where('video_id', $Video_id)->delete();
+            LanguageVideo::where('video_id', $Video_id)->delete();
+            Blockvideo::where('video_id', $Video_id)->delete();
+            ReelsVideo::where("video_id", $Video_id)->delete();
+            PlayerAnalytic::where("videoid", $Video_id)->delete();
+            CategoryVideo::where("video_id", $Video_id)->delete();
+            PlayerSeekTimeAnalytic::where("video_id", $Video_id)->delete();
+            VideoPlaylist::where("video_id", $Video_id)->delete();
+            Video::where('user_id', $id)->where('uploaded_by', 'CPP')->delete();
+
+            $Audio_id = Audio::where('user_id', $id)->where('uploaded_by', 'CPP')->pluck('id')->first();
+
+            Audioartist::where('audio_id', $Audio_id)->delete();
+            AudioLanguage::where('audio_id', $Audio_id)->delete();
+            CategoryAudio::where('audio_id', $Audio_id)->delete();
+            BlockAudio::where('audio_id', $Audio_id)->delete();
+            Audio::where('user_id', $id)->where('uploaded_by', 'CPP')->delete();
+
+            // dd($Audio_id);
+            
+            $LiveStream_id = LiveStream::where('user_id', $id)->where('uploaded_by', 'CPP')->pluck('id')->first();
+            
+            LiveLanguage::where("live_id", $LiveStream_id)->delete();
+            CategoryLive::where("live_id", $LiveStream_id )->delete();
+            LiveStream::where('user_id', $id)->where('uploaded_by', 'CPP')->delete();
+
+            $Series_id = Series::where('user_id', $id)->where('uploaded_by', 'CPP')->pluck('id')->first();
+
+            Seriesartist::where('series_id',$Series_id)->delete();
+            SeriesSubtitle::where('series_id', $Series_id)->delete();
+            SeriesLanguage::where('series_id',$Series_id)->delete();
+            SeriesCategory::where('series_id',$Series_id)->delete();
+            SeriesSeason::where('series_id',$Series_id)->delete();
+            Episode::where('series_id',$Series_id)->delete();
+            Series::where("id", $Series_id)->delete();
+            Series::where('user_id', $id)->where('uploaded_by', 'CPP')->delete();
+
+
+            ModeratorsUser::destroy($id);
 
                 return \Redirect::back();
             } 
