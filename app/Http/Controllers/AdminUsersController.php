@@ -131,7 +131,7 @@ class AdminUsersController extends Controller
                 ->take(9000)
                 ->get();
         else:
-            $allUsers = User::orderBy('created_at', 'desc')->take(9000)->get();
+            $allUsers = User::latest()->take(99999)->get();
             // $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
             // $allUsers = User::orderBy('created_at', 'desc')->get();
 
@@ -526,7 +526,7 @@ class AdminUsersController extends Controller
 
             $file = $request->avatar;
 
-            if (File::exists(base_path('public/uploads/avatars/'.$user->avatar))) {
+            if ( $user->avatar != "default_profile_image.png" && File::exists(base_path('public/uploads/avatars/'.$user->avatar))) {
                 File::delete(base_path('public/uploads/avatars/'.$user->avatar));
             }
 
