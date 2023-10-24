@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
                 $table->string('subscription_ends_at')->nullable();
                 $table->longText('paypal_end_at')->nullable();
                 $table->string('password')->nullable();
-                $table->string('avatar')->nullable();
+                $table->string('avatar')->default('default_profile_image.png');
                 $table->string('mobile')->nullable();
                 $table->integer('session_id')->nullable();
                 $table->integer('terms')->nullable();

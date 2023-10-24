@@ -1352,11 +1352,13 @@ function paypalplan_details(ele){
 <script>
 
     window.onload = function(){
-        
-        $("#stripe_radio_button").attr('checked', true);
+
+        $("#stripe_radio_button").prop('checked', true);
         $('.paystack_payment').hide();
         $('.Razorpay_payment').hide();
         $('.cinetpay_button').hide();
+        $(".payment_gateway").trigger("click");
+
 
         if( $('input[name="payment_gateway"]:checked').val() == "paystack" ){
             $('.stripe_payment').hide();
@@ -1395,7 +1397,7 @@ function paypalplan_details(ele){
 
                     $('.cinetpay_button').show();
 
-                    }
+                }
         });
     });
 

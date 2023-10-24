@@ -73,8 +73,6 @@ class UserRolesController extends Controller
     {
         $roles = Role::find($id);
         
-        
-        
         $data = array(
             'roles' => $roles
         );
@@ -90,8 +88,6 @@ class UserRolesController extends Controller
      */
     public function update(Request $request)
     {
-        
-         
         $request->validate([
             'name'=>'required'
         ]);

@@ -4,6 +4,7 @@
       $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
       $order_settings_list = App\OrderHomeSetting::get();  
       $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(); 
+
 ?>
 
    <!-- loader Start -->
@@ -17,10 +18,10 @@
       <?php 
          $Slider_array_data = array(
             'sliders'         => $sliders, 
-            'live_banner'     => $live_banner, 
+            'live_banner'  => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->get() , 
             'video_banners'   => $video_banners ,
             'series_sliders'  => $series_sliders ,
-            'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('banner', 1)->get(),
+            'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->get(),
          );    
       ?>
 

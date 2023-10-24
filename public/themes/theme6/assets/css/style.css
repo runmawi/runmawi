@@ -79,10 +79,10 @@ header .navbar ul li:last-child { margin-right: 0; }
 #home-slider .slick-dots li.slick-active button { background: var(--iq-primary); }
 #home-slider li { position: relative; }
 .slider-description { position: absolute; top: 15%; left: 80px; }
-#home-slider h1.slider-text { font-size: 80px; margin: 15px 0; }
+#home-slider h1.slider-text { font-size: 70px; margin: 15px 0; }
 #home-slider p { margin: 20px 0; width: 75%; }
 #home-slider .slick-bg { padding: 100px 0 50px;width:100%; background-size: cover;background-position: center center; background-repeat: no-repeat; height: 90vh; position: relative; z-index: 1;}
-.trailor-video { position: absolute; bottom: 0; right: 0; z-index: 999; }
+.trailor-video { position: absolute; bottom: 50%; right: 5%; z-index: 999; }
 .channel-name { color: var(--iq-primary); font-size: 20px; margin-left: 10px; letter-spacing: 2.5px; font-weight: 500; }
 .c-logo { width: 130px; }
 .channel-logo { border-left: 5px solid var(--iq-primary); background: transparent linear-gradient(270deg, rgba(11, 1, 2, 0) 0%, rgba(255, 55, 65, 0.3) 100%); padding: 10px 10px 10px 15px; width: 255px; position: relative; overflow: hidden; }
@@ -95,6 +95,8 @@ header .navbar ul li:last-child { margin-right: 0; }
 .slider-inner{position: relative;overflow: hidden;width: 100%;}
 .big-title { background: url('../images/texure.jpg'); background-repeat: repeat-x; background-position: 100% 100%; color: transparent; -webkit-font-smoothing: antialiased; -webkit-background-clip: text; -moz-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .slick-track{margin:unset!important;}
+
+
 /*---------------------------------------------------------------------
                       Pages Content
 -----------------------------------------------------------------------*/
@@ -120,9 +122,15 @@ li.slide-item:hover .block-images{z-index: 99;transform: scale3d(1.3, 1.3, 1) tr
 .music-play-lists li:hover span { background: var(--iq-primary); color: var(--iq-white); transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; }
 .block-description {position: absolute; left:25px; top: 0; bottom: 0;z-index: 999; display: flex; justify-content: center; flex-direction: column; opacity: 0; }
 .block-description > h6{font-size: 1.5em;}
+#iq-upcoming-movie .block-description {position: absolute; left:20px; top: 72px; bottom: 0;z-index: 999; display: flex; justify-content: center; flex-direction: column;  opacity: 0; }
+#iq-upcoming-movie .block-description > h6{font-size: 0.5em;}
 li.slide-item .block-images::before { position: absolute; content: ""; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.8); width: 100%; height: 100%;opacity: 0;}
 li.slide-item:hover .block-images::before { opacity: 1; z-index: 9; }
+.img-description{width: 100%; height: 78px; display:none; object-fit: cover;}
+li.slide-item:hover .img-description{width: 100%; display:block; opacity: 2; z-index: 999; object-fit: cover; position: absolute; top: 0;}
+li.slide-item:hover .img-description img{height: 70px; width: 100%; object-fit: cover;}
 li.slide-item:hover .block-description { animation: fadeIn 0.6s ease-in-out; opacity: 1; }
+#iq-upcoming-movie li.slide-item:hover .block-description { animation: fadeIn 0.6s ease-in-out; opacity: 1; }
 li.slide-item:hover .block-social-info { animation: fadeIn  0.6s ease-in-out; opacity: 1; }
 .hover-buttons .btn { padding: 5px 15px; font-size: 12px; }
 li.slide-item.slick-current:hover .block-images{ transform: scale3d(1.3, 1.3, 1) translate3d(11%, 0, 0) perspective(500px); }
@@ -130,7 +138,12 @@ li.slide-item.slick-current:hover .block-images{ transform: scale3d(1.3, 1.3, 1)
 .block-social-info .music-play-lists li{width:40px;height:40px;}
 .block-social-info .music-play-lists span{width:30px;height:30px;}
 .block-social-info .music-play-lists span i{font-size: 15px;}
-
+#iq-upcoming-movie .movie-time{font-size: 10px;}
+#iq-upcoming-movie .music-play-lists li {border: solid 1px white; height: 24px; width: 24px; line-height: 35px; background: transparent; text-align: center; border-radius: 50%; margin: 0 10px 0 0; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; }
+#iq-upcoming-movie .music-play-lists span { position: relative; display: block; height: 24px; width: 24px; line-height: 26px; font-size: 12px; text-align: center; background: transparent; color: white; border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -o-border-radius: 50%; margin: 0 auto; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; justify-content: center; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; cursor: pointer; }
+#iq-upcoming-movie .music-play-lists li:hover span { background: white; color: black; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; }
+#iq-upcoming-movie .hdcir{border-radius: 7px; padding: 1px 7px 1px 7px; color: white; border: solid 1px;}
+.right-content a{color: red;}
 
 /*-------------------*/
 .movie-content li { position: relative; padding-right: 20px; }
@@ -357,7 +370,7 @@ video { display: block; width: 100%; height: 100%; }
 
 /*-----------------------*/
 .favorites-slider .slick-arrow,
-#trending-slider-nav .slick-arrow {display: flex; align-items: center; justify-content: center;width: 30px; height: 30px; text-align: center; opacity: 1; z-index: 9;top:-46px; background: var(--iq-primary) 0% 0% no-repeat padding-box; margin: 0 0 0 20px; line-height: 5px; box-shadow: 0px 9px 19px #01041B0D; font-size: 0; transform: none; color: var(--iq-white); -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
+#trending-slider-nav .slick-arrow {display: none !important; align-items: center; justify-content: center;width: 30px; height: 30px; text-align: center; opacity: 1; z-index: 9;top:-46px; background: var(--iq-primary) 0% 0% no-repeat padding-box; margin: 0 0 0 20px; line-height: 5px; box-shadow: 0px 9px 19px #01041B0D; font-size: 0; transform: none; color: var(--iq-white); -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
 .favorites-slider .slick-arrow:hover,
 #trending-slider-nav .slick-arrow:hover { background: var(--iq-white); color: var(--iq-primary) !important; -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
 .favorites-slider .slick-prev,
