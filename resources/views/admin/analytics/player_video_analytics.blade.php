@@ -36,50 +36,37 @@
                     <div class="row mt-3">
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="start_time">  Start Date: </label>
-                            <input type="date"  value="{{ @$start_time }}" id="start_time" name="start_time" >               
+                            <input type="date"  value="{{ @$start_time }}" id="start_time" name="start_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">               
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="start_time">  End Date: </label>
-                            <input type="date" id="end_time" value="{{ @$end_time }}" name="end_time">     
+                            <input type="date" id="end_time" value="{{ @$end_time }}" name="end_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">     
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3 d-flex align-items-end">
                             <input type="submit" value="Show Result" class="btn btn-primary">
                         </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                        <span  id="export" class="btn btn-primary" >Download CSV</span>
+                    </div>
                     </div>
 
                 </form>
                 <br>
                 <div class="row mt-3">
 
-                    <div class="col-md-4">
-                        <span  id="export" class="btn btn-primary" >Download CSV</span>
-                    </div>
-                </div>
-
-                <div class="clear"></div>
-                            <br>
-                <br>
-
-                <h4 class="card-title">Player Video Graph :</h4>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
-                 </div>
-                </div>
-                        <div class="row">
+                   
                             <div class="col-md-12">
                                 <table class="table text-center" id="player_table" style="width:100%">
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
                                             <!-- <th>User Name</th> -->
-                                            <th>Video Name</th>
-                                            <th>Video Slug</th>
-                                            <th>Viewed Count</th>
+                                            <th>Name</th>
+                                            <th>Slug</th>
+                                            <th>Viewes Count</th>
                                             <th>Watch Hours  (H:M:S)</th>
                                             <th>Seek Time (Seconds)</th>
                                             <th>Buffered Time (Seconds)</th>
@@ -104,6 +91,19 @@
                            </table>
                         </div>
                     </div>
+
+                <div class="clear"></div>
+                            <br>
+                <br>
+
+                <h4 class="card-title">Player Video Graph :</h4>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
+                 </div>
+                </div>
+                        
             </div>
         </div>
     </div>

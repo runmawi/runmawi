@@ -32,69 +32,59 @@
                 <div class="clear"></div>
 
                 <form action="{{ URL::to('/admin/analytics/PlayerUserDateAnalytics') }}" method= "post">
+                <div class="col-md-12"> 
                     <div class="row mt-3">
-                        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-
-                        <div class="col-md-4">
+                        <div class="col-md-6">
+                            <div class="row">
+                            <div class="col-md-6">
+                            <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                             <label for="start_time">  Start Date: </label>
-                            <input type="date"  value="{{ @$start_time }}" id="start_time" name="start_time" >               
+                            <input type="date"  value="{{ @$start_time }}" id="start_time" name="start_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">               
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="start_time">  End Date: </label>
-                            <input type="date" id="end_time" value="{{ @$end_time }}" name="end_time">     
+                            <input type="date" id="end_time" value="{{ @$end_time }}" name="end_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">     
                         </div>
-                        <div class="col-md-4">
+
+                        <div class="col-md-6 mt-4">
                             <input type="submit" value="Show Result" class="btn btn-primary">
                         </div>
+                        <div class="col-md-6 mt-4">
+                            <span  id="export" class="btn btn-primary" >Download CSV</span>
+                        </div>
                     </div>
+                        
+                        </div>
 
-                </form>
-                    <br>
-                <div class="row mt-3">
-                    
-                    <div class="col-md-3">
-                        <span  id="export" class="btn btn-primary" >Download CSV</span>
-                    </div>
-                    
-                    <div class="col-md-4">
+                        
+
+                        <div class="col-md-6">
                        <label for="">Concurrent Viewers : </label> <span  class="btn btn-default" >{{ $UserLogs_count }}</span>
                         <!--btn btn-success btn-sm-->
                     </div>
-                </div>
+                </div>    
+                </div>    
+                       
 
-                <div class="clear"></div>
-                            <br>
-                <br>
-
-                <h4 class="card-title">Player Video Graph :</h4>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
-                 </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                    <a href="{{ URL::to('admin/analytics/PlayerSeekUserTimeAnalytics/')  }}">
-                            <button class="tablinks btn btn-primary" id="openPayPerView" >Player Seeked Time</button></a>
+                       
+                        
                     </div>
-                 </div>
-                 <br>
-                 <br>
-                        <div class="row" id="player_user">
+
+                </form>
+
+                <div class="row" id="player_user">
                             <div class="col-md-12">
                                 <table class="table text-center" id="player_table" style="width:100%">
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
                                             <!-- <th>User Name</th> -->
-                                            <th>User Name</th>
-                                            <th>Video Name</th>
-                                            <th>Video Slug</th>
-                                            <th>Viewed Count</th>
-                                            <th>Watch Percentage (Minutes)</th>
+                                            <th>User</th>
+                                            <th> Name</th>
+                                            <th> Slug</th>
+                                            <th>Viewes Count</th>
+                                            <th>Watch % (Minutes)</th>
                                             <!-- <th>Seek Time (Seconds)</th>
                                             <th>Buffered Time (Seconds)</th> -->
 
@@ -117,6 +107,35 @@
                            </table>
                         </div>
                     </div>
+                    <br>
+                <div class="row mt-3">
+                    
+                  
+                    
+                   
+                </div>
+
+                <div class="clear"></div>
+                            <br>
+                <br>
+
+                <h4 class="card-title">Player Video Graph :</h4>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
+                 </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <a href="{{ URL::to('admin/analytics/PlayerSeekUserTimeAnalytics/')  }}">
+                            <button class="tablinks btn btn-primary" id="openPayPerView" >Player Seeked Time</button></a>
+                    </div>
+                 </div>
+                 <br>
+                 <br>
+                       
             </div>
         </div>
     </div>

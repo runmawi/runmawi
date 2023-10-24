@@ -72,55 +72,36 @@ body {font-family: Arial;}
 
                 <!-- Start Date  End Date  Download CSV    (SET BY Sanjai Kumar) -->
                 <div class="row mt-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="start_time">  Start Date: </label>
-                        <input type="date" id="start_time" name="start_time" >               
+                        <input type="date" id="start_time" name="start_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">               
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="start_time">  End Date: </label>
-                        <input type="date" id="end_time" name="end_time">     
+                        <input type="date" id="end_time" name="end_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">     
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6 d-flex align-items-end">
                         <span  id="export" class="btn btn-success btn-sm" >Download CSV</span>
                     </div>
                 </div>
-                <div id="Subscription_content" >
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="google-line-chart" style="width: 700px; height: 500px"></div>
-                    </div>
-                </div>
-
-                <div class="clear"></div>
-                <br>
-                <br>
-                <!-- Graph Currency   (SET BY Sanjai Kumar) -->
-                <div class="row">
-                <div class="tab">
-                <button class="tablinks"  id="openSubscription1">Subscription</button>
-                <a href="{{ URL::to('admin/users/PayPerview_Revenue/')  }}">
-                <button class="tablinks" id="openPayPerView" >PayPer View</button>
-                </a>
-                </div>
-                </div>
-            
-                        <div class="row">
+                
+                <div class="row mt-5">
                             <div class="col-md-12">
                                 <table class="table" id="cpp_revenue_table" style="width:100%">
                                     <thead>
-                                        <tr class="r1">
+                                        <tr class="r1" style="font-size:14px">
                                             <th>#</th>
                                             <th>User </th>
-                                            <th>Transaction REF</th>
-                                            <th>User Type</th>
+                                            <th>Transaction.no</th>
+                                            <th>Type</th>
                                             <th>Plan</th>
                                             <th>Content</th>
                                             <th>Price</th>
                                             <th>Country</th>
-                                            <th>Date Time</th>
+                                            <th>TimeStamp</th>
                                             <th>Source</th>
                                         </tr>
                                     </thead>
@@ -143,6 +124,29 @@ body {font-family: Arial;}
                            </table>
                         </div>
                     </div>
+
+
+                <div id="Subscription_content" >
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="google-line-chart" style="width: 700px; height: 500px"></div>
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+                <br>
+                <br>
+                <!-- Graph Currency   (SET BY Sanjai Kumar) -->
+                <div class="row">
+                <div class="tab">
+                <button class="tablinks"  id="openSubscription1">Subscription</button>
+                <a href="{{ URL::to('admin/users/PayPerview_Revenue/')  }}">
+                <button class="tablinks" id="openPayPerView" >PayPer View</button>
+                </a>
+                </div>
+                </div>
+            
                 </div>
             </div>
         </div>

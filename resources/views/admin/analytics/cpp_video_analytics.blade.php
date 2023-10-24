@@ -32,17 +32,17 @@
                 <div class="clear"></div>
 
                 <div class="row mt-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="start_time">  Start Date: </label>
-                        <input type="date" id="start_time" name="start_time" >               
+                        <input type="date" id="start_time" name="start_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">               
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="start_time">  End Date: </label>
-                        <input type="date" id="end_time" name="end_time">     
+                        <input type="date" id="end_time" name="end_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">     
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6 d-flex align-items-end">
                         <span  id="export" class="btn btn-primary" >Download CSV</span>
                     </div>
                 </div>
@@ -50,17 +50,8 @@
                 <div class="clear"></div>
                 <br>
 
-                <h4 class="card-title">CPP Video View Through Graph :</h4>
-                
-                <div class="row">
-                    <div class="col-md-8">
-                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
-                 </div>
-                 <!-- <div class="col-md-4" >
-                
-                 </div> -->
-                </div>
-            <div class="row">
+
+                <div class="row mt-4">
                 <div class="col-md-6">
                     <label for="">Filter Moderator</label>
                     <select class="form-control"  name="cpp_userid" id="cpp_userid">
@@ -78,12 +69,12 @@
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
-                                            <th>Video Name</th>
-                                            <th>Video Slug</th>
-                                            <th>Uploader Name</th>
-                                            <th>Total Commission</th>
-                                            <th>Admin Commission</th>
-                                            <th>Moderator Commission</th>
+                                            <th>Name</th>
+                                            <th>Slug</th>
+                                            <th>Uploader</th>
+                                            <th>Total %</th>
+                                            <th>Admin %</th>
+                                            <th>Moderator %</th>
                                             <th>Total Views</th>
                                             <th>Purchased Date</th>
                                         </tr>
@@ -107,6 +98,20 @@
                            </table>
                         </div>
                     </div>
+                    <br>
+
+
+                <h4 class="card-title">CPP Video View Through Graph :</h4>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
+                 </div>
+                 <!-- <div class="col-md-4" >
+                
+                 </div> -->
+                </div>
+            
             </div>
         </div>
     </div>

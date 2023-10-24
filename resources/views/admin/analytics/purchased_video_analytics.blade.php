@@ -32,17 +32,17 @@
                 <div class="clear"></div>
 
                 <div class="row mt-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="start_time">  Start Date: </label>
-                        <input type="date" id="start_time" name="start_time" >               
+                        <input type="date" id="start_time" name="start_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">               
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="start_time">  End Date: </label>
-                        <input type="date" id="end_time" name="end_time">     
+                        <input type="date" id="end_time" name="end_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">     
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6 d-flex align-items-end">
                         <span  id="export" class="btn btn-primary" >Download CSV</span>
                     </div>
 
@@ -52,27 +52,16 @@
                     </div>
                 </div>
 
-                <div class="clear"></div>
-                            <br>
-                <br>
-
-                <h4 class="card-title">Purchased Video Graph :</h4>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
-                 </div>
-                </div>
-                        <div class="row">
+                <div class="row mt-4">
                             <div class="col-md-12">
                                 <table class="table text-center" id="player_table" style="width:100%">
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
-                                            <th>User Name</th>
-                                            <th>User Email</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
                                             <th>Video Name</th>
-                                            <th>Video Slug</th>
+                                            <th>Slug</th>
                                             <th>Amount</th>
                                             <th>Purchased Date</th>
                                             <!-- <th>Seek Time (Seconds)</th>
@@ -104,6 +93,18 @@
                            </table>
                         </div>
                     </div>
+
+                <div class="clear"></div>
+                <br>
+
+                <h4 class="card-title">Purchased Video Graph :</h4>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
+                 </div>
+                </div>
+                       
             </div>
         </div>
     </div>
