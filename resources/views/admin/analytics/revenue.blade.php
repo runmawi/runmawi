@@ -114,7 +114,7 @@ $jsondata = json_decode($jsonString, true);
                          </div>
                  </div>
                  <div class="col-md-6 mt-4 pl-0">
-                 <span  id="export" class="btn btn-success btn-sm" >Export</span>
+                 <span  id="export" class="btn btn-primary btn-sm" >Export</span>
                     </div>
                  </div>
                

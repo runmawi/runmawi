@@ -83,7 +83,7 @@ body {font-family: Arial;}
                     </div>
 
                     <div class="col-md-6 d-flex align-items-end">
-                        <span  id="export" class="btn btn-success btn-sm" >Download CSV</span>
+                        <span  id="export" class="btn btn-primary btn-sm" >Download CSV</span>
                     </div>
                 </div>
 
@@ -92,7 +92,7 @@ body {font-family: Arial;}
                             <div class="col-md-12">
                                 <table class="table" id="cpp_revenue_table" style="width:100%">
                                     <thead>
-                                        <tr class="r1" style="font-size:14px">
+                                        <tr class="r1" style="font-size:13px">
                                             <th>#</th>
                                             <th>User </th>
                                             <th>Transaction.no</th>

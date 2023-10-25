@@ -33,6 +33,7 @@
 
 
                 <form action="{{ URL::to('/admin/analytics/PlayerVideoDateAnalytics') }}" method= "post">
+                    <div class="col-md-12">
                     <div class="row mt-3">
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
@@ -50,6 +51,7 @@
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
                         <span  id="export" class="btn btn-primary" >Download CSV</span>
+                    </div>
                     </div>
                     </div>
 

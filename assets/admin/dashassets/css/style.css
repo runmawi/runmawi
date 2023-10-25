@@ -1401,6 +1401,7 @@ color: #8C8C8C;
 table.dataTable thead .sorting:before, table.dataTable thead .sorting:after{
     display: none;
 }
+
 div.dataTables_wrapper div.dataTables_filter input{
     border:none;
 }
@@ -1410,4 +1411,8 @@ div.dataTables_wrapper div.dataTables_filter input{
 }
 #sidebar-wrapper .list-group{
     max-width: 15rem;
+}
+
+.r1 th{
+font-size: 14px !important;
 }

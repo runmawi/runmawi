@@ -31,6 +31,7 @@
 
                 <div class="clear"></div>
 
+                <div class="col-md-12">
                 <div class="row mt-3">
                     <div class="col-md-3">
                         <label for="start_time">  Start Date: </label>
@@ -50,6 +51,7 @@
                         <!-- <span  id="export" class="btn btn-primary" >Download CSV</span> -->
                         <!--btn btn-success btn-sm-->
                     </div>
+                </div>
                 </div>
 
                 <div class="row mt-4">
