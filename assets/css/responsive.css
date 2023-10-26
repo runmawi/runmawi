@@ -294,7 +294,17 @@
   .channel_contentpr .row{
     flex-wrap: unset;
   }
-  .channel_contentpr button{
+  /* .channel_contentpr button{
     padding: 0;
-  }
+  } */
+}
+
+.clwert .btn-close{
+  border-top: none;
+    line-height: 10px;
+    float: left;
+    width: 100%;
+    text-align: left;
+    padding: 16px 32px;
+    color: var(--iq-white);
 }

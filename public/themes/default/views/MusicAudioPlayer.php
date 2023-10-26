@@ -15,14 +15,15 @@
           <button id="backStationbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
           <div id="station-music">
-              <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'>Add to Queue</button></div>
+          <button id="addtoqueuebtn" class="addqubt"><i class="fa fa-plus" aria-hidden="true"></i></button>    
+          <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'>Add to Queue</button></div>
         </div>
         <div id="lyrics">
           <!-- <h2 class="song-name"></h2><h4 class="artist-name"></h4> -->
           <div id="lyrics-content">
           </div>
           <div class="<?php echo URL::to('/becomesubscriber'); ?>">
-              <img height="250" width="250"  id="audio_img" src="">
+              <img height="250" width="250"  id="audio_img" src="" style="object-fit: contain;">
               <!-- height="150" width="150"  -->
            </div>
            <div class="Subscribe_stripe_button">
@@ -51,11 +52,11 @@
           </div>
           <div id="menu">
           <button id="back" title="Songs List"><i class="fas fa-list"></i></button> 
-            <button id="repeat" style="color:grey" title="Repeat"><i class="fa fa-repeat"></i></button>
-            <button id="prev" title="Previous"><i class="fa fa-step-backward"></i></button>
-            <button id="play" ><i class="fa fa-play"></i></button>
-            <button id="next" title="Next"><i class="fa fa-step-forward"></i></button>
-            <button id="shuffle" style="color:grey" title="Shuffle"><i class="fa fa-random"></i></button>
+          <button id="prev" title="Previous"><i class="fa fa-step-backward"></i></button>
+          <button id="play" ><i class="fa fa-play"></i></button>
+          <button id="next" title="Next"><i class="fa fa-step-forward"></i></button>
+          <button id="shuffle" style="color:grey" title="Shuffle"><i class="fa fa-random"></i></button>
+          <button id="repeat" style="color:grey" title="Repeat"><i class="fa fa-repeat"></i></button>
             <button id="lyrics-toggle"><i class="fa fa-file-text" title="Lyrics"></i></button> <!-- Add this line -->
             <button id="like-button" style="color:grey" class="like" title="Like"><i class="fa fa-thumbs-up"></i></button>
             <button id="dislike-button" style="color:grey" class="dislike" title="DisLike"><i class="fa fa-thumbs-down"></i></button>
@@ -1008,7 +1009,7 @@ html,body{
     color: white;
     width: 90%;
     padding: 0 0 0 5%;
-    z-index: 999;
+    /* z-index: 999; */
 }
 #top-bar > *{ display:inline-block; }
 #top-bar button{ margin:0;background: inherit; border: none; color: white; font-size: 100%;vertical-align:middle;transform:translateY(-40%);padding: 5px 10px;}
@@ -1016,11 +1017,14 @@ html,body{
 .artist-name{ color: #ffffff79;}
 @media only screen and (max-width: 340px){
   #top-bar > button{ font-size: 15px; }
-  #top-bar > #about-song *{ font-size:120%;line-height:0; }
+  #top-bar > #about-song *{ font-size:120%;line-height:1.2; }
   #menu > button{ font-size: 5vw !important; padding: 4px 6px !important;  }
   #progress-bar{
     width: 50% !important;
   }
+}
+@media (max-width:460px){
+  #top-bar > #about-song *{ font-size:140%;line-height:1.2; }
 }
 #lyrics{
   width: 100%;
@@ -1061,7 +1065,7 @@ html,body{
   width:100%;
   padding-top: 25px;
 }
-#currentTime,#totalTime{transform:translateY(-50%);padding: 0 2%;font-size: 3vh}
+#currentTime,#totalTime{transform:translateY(-28%);padding: 0 2%;font-size: 3vh}
 @media only screen and (min-height: 500px){#currentTime,#totalTime{font-size: 2.25vh !important;}}
 #currentTime,#progress-bar,#totalTime{color: white;display: inline-block;}
 #progress-bar{
@@ -1224,6 +1228,17 @@ html,body{
     width: 25vw;
     padding: 1vh 1.5vw;
     background: inherit;
+  }
+
+  @media (max-width:655px){
+    .station_auto_create{
+        display: none;
+    }
+  }
+  @media (min-width:654px){
+    .addqubt{
+      display: none;
+    }
   }
 @media only screen and (max-height: 500px){
   #show-list .float-song-card{font-size:40% !important;height:60px;width:50px;}
