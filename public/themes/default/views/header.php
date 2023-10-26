@@ -607,16 +607,19 @@
                            <li class="col-sm-6 ">
                            <a class="navbar-brand mb-0" style="float:right;" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a> </li>      
                            <li class="dropdown menu-item col-sm-6">
-                              <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
+                              <!-- <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
-    border-top: none; float:right">
+    border-top: none; float:right"> -->
                         <div class="btn-close" data-toggle="collapse">
-                        <button type="button" class="btn-close" aria-label="Close"><i class="fa fa-times" style="
+                        <a type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
+    border-top: none; float:right"><i class="fa fa-times" style="
     font-size: 20px;
-    color: white;"></i></button>
+    color: white;"></i></a>
                         </div>
-                     </a>
+                     <!-- </a> -->
                               </li>      
                            </div> 
 
@@ -767,11 +770,17 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <div class="row ">
-                           <div class="col-sm-12 d-flex justify-content-between proflogbtn mt-2">
-                              <li class="col-sm-3"></li>
-                              <button type="submit" class="btn bd" >Visit Channel Portal </button> 
-                              <li class="col-sm-3"></li>
+                           <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
+                              <div class="row ">
+                              <div class="col-sm-6 logout_mobile_view menu-item pt-3">
+                                 <button type="submit" class="btn bd" >Visit Channel Portal</button>
+                              </div>
+                              <div class="col-sm-6 logout_mobile_view menu-item pt-3">
+                              <li class="logout_mobile_view menu-item col-sm-6 "><a class="btn btn-primary" style="float:right;" href="<?php echo URL::to('/logout'); ?>">
+                                          <?php echo __('Logout');?>
+                                       </a> </li> 
+                              </div>
+                              
                            </div>
                            </div>
                               </form>
@@ -781,9 +790,8 @@
                               <?php if(!Auth::guest()){ ?>
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
-                           <li class="logout_mobile_view menu-item col-sm-6 "><a class="btn btn-primary" style="float:right;" href="<?php echo URL::to('/logout'); ?>">
-                                          <?php echo __('Logout');?>
-                                       </a> </li>      
+                           <li class="logout_mobile_view menu-item col-sm-6 ">
+                           <button type="submit" class="btn bd" >Visit Channel Portal</button> </li>      
                            <li class="logout_mobile_view menu-item col-sm-6"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
                                           <?php echo __('My Profile');?>
                                        </a> </li>      
