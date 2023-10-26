@@ -5030,6 +5030,7 @@ return response()->json($response, 200);
     $seriesid = $request->seriesid;
     $myData = array();
     $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
+    $seriestitle = Series::where('id',$seriesid)->pluck('title')->first();
     // print_r($seasonlist);exit();
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
     if(!empty($seriesimage)){
@@ -5041,6 +5042,7 @@ return response()->json($response, 200);
 
     foreach ($seasonlist as $key => $season) {
       $seasonid = $season['id'];
+      $season_access = $season['access'];
       $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->orderBy('episode_order')->get()->map(function ($item)  {
         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['episode_id'] =$item->id;
@@ -5061,7 +5063,9 @@ return response()->json($response, 200);
       $settings = Setting::first();
 
       $myData[] = array(
+        "seriestitle"   => $seriestitle,
         "season_name"   => $season_name,
+        "season_access"   => $season_access,
         // "settings"   => $settings,
         "series_image" => $image,
         "season_id"   => $seasonid,
