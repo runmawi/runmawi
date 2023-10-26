@@ -294,6 +294,8 @@ class ThemeAudioController extends Controller{
                     }else{
                         $item['countjson']      =   1 ;
                     }
+                    $item['artistscrew']   =   $artistscrew;
+
                 return $item;
                 });
                 // dd($current_audio_lyrics);
@@ -345,6 +347,7 @@ class ThemeAudioController extends Controller{
                     }else{
                         $item['countjson']      =   1 ;
                     }
+                    $item['artistscrew']   =   $artistscrew;
                     return $item;
                   });
                   $merged_audios_lyrics = $current_audio_lyrics->merge($all_album_audio_lyrics)->all();
@@ -664,7 +667,8 @@ class ThemeAudioController extends Controller{
                     }else{
                         $item['countjson']      =   1 ;
                     }
-                return $item;
+                    $item['artistscrew']   =   $artistscrew;
+                    return $item;
                 });
 
 
@@ -707,6 +711,7 @@ class ThemeAudioController extends Controller{
                     }else{
                         $item['countjson']      =   1 ;
                     }
+                    $item['artistscrew']   =   $artistscrew;
                     return $item;
                   });
                   $merged_audios_lyrics = $all_album_audio_lyrics->merge($current_audio_lyrics)->all();
