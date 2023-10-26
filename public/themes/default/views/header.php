@@ -761,6 +761,7 @@
 
                               <?php  } } ?>
 
+                              <?php if(!Auth::guest()){ ?>
                               <li class=" menu-item" >
                               <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
@@ -779,6 +780,7 @@
                            </div>
                               </form>
                               </li>
+                              <?php } ?>
                               
                               <?php if(!Auth::guest()){ ?>
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">

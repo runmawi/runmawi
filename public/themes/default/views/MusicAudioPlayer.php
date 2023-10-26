@@ -535,6 +535,7 @@ var data = listAudio; // Assuming listAudio contains the URL
 
       }else{ 
         // alert(indexing.access);
+        // alert(indexing.artistscrew);
         
         $('#audioFile').attr('src',indexing.audio);
         // abort_other_json = $.getJSON(indexing.json,function(data){
