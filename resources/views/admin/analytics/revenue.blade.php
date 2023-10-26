@@ -97,25 +97,33 @@ $jsondata = json_decode($jsonString, true);
             <div class="row p-3">
                     
                 <hr>
-                        <div class="col-md-12">
-                          <div class="row mt-3"> 
-                          <div class="col-md-4">
-                          <label for="start_time">  Start Date: </label>
-                          <input type="date" id="start_time" name="start_time" >
-                          </div>
-                          <div class="col-md-4">
-                          <label for="start_time">  End Date: </label>
-                          <input type="date" id="end_time" name="end_time">
-                          </div>
-                          <div class="col-md-4 ">
-                             <span  id="export" class="btn btn-success btn-sm" >Export</span>
-                          </div>
-                          </div>
-                          <div class="clear"></div>
-                            <div class="row align-items-center">
-                                <div class="col-md-4">
-                                    <!-- <input type="text" class="daterange" /> -->
-                                    <label for="">Registered User : <?php if (!empty($data1['registered_count']))
+
+
+                <div class="col-md-12">
+                <div class="row mt-3">
+                <div class="col-md-6">
+                <div class="row ">
+                    <div class="col-md-6">
+                    <label for="start_time">  Start Date: </label>
+                          <input type="date" id="start_time" name="start_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">
+                        </div>
+
+                    <div class="col-md-6">
+                    <label for="start_time">  End Date: </label>
+                          <input type="date" id="end_time" name="end_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">
+                         </div>
+                 </div>
+                 <div class="col-md-6 mt-4 pl-0">
+                 <span  id="export" class="btn btn-primary btn-sm" >Export</span>
+                    </div>
+                 </div>
+               
+
+                  
+
+                    <div class="col-md-6 contantlabel">
+                 <!-- <input type="text" class="daterange" /> -->
+                 <label for="">Registered User : <?php if (!empty($data1['registered_count']))
                                       {
                                           echo $data1['registered_count'];
                                       }
@@ -146,21 +154,16 @@ $jsondata = json_decode($jsonString, true);
                                       else
                                       {
                                           echo $data1['ppvuser_count'];
-                                      } ?></label><br>
+                                      } ?></label>
+                    </div>
+                </div>
+                </div>
 
-                                    <!-- <label for="">PPV Users:</label><br>
-                                    <label for="">Pre-Order:</label> -->
-                                </div>
-                                 <div class="col-md-8">
-                                    <figure class="highcharts-figure">
-                                    <!-- <div id="container"></div> -->
-                                    <div id="google-line-chart" style="width: 700px; height: 500px"></div>
-                                    </figure>
-                                </div> 
-                            </div> 
-                            <br>
-                            <br>
-                            <div class="row">
+
+
+                </div>
+
+                <div class="row mt-3">
                                 <div class="col-md-4">
                                 <select class="form-control"  id="role" name="role">
                                 <option value="" >Choose Users</option>
@@ -176,7 +179,6 @@ $jsondata = json_decode($jsonString, true);
                                  <div class="col-md-6">
                                 </div> 
                             </div> 
-                            <br>
                             <br>
 
                             <div class="row">
@@ -223,6 +225,18 @@ $jsondata = json_decode($jsonString, true);
                                 </div>
                                 <div style="margin-left:80%"><?php echo $total_user->render(); ?></div>
                             </div> 
+                
+                        
+                                 <div class="col-md-8">
+                                    <figure class="highcharts-figure">
+                                    <!-- <div id="container"></div> -->
+                                    <div id="google-line-chart" style="width: 700px; height: 500px"></div>
+                                    </figure>
+                                </div> 
+                            </div> 
+                            <br>
+                            <br>
+                            
                         </div> 
 
             </div>

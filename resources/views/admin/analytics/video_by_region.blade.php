@@ -65,6 +65,9 @@ input[type="number"] {
                            <h4 class="card-title">Video Analytics By Region</h4>
                            </div>
                            <div class="row mt-3"> 
+                           <div class="col-md-4 ">
+                             <span  id="export" class="btn btn-primary btn-sm" >Export CSV</span>
+                          </div>
                           <div class="col-md-4">
                           <!-- <label for="start_time">  Start Date: </label>
                           <input type="date" id="start_time" name="start_time" > -->
@@ -73,9 +76,7 @@ input[type="number"] {
                           <!-- <label for="start_time">  End Date: </label>
                           <input type="date" id="end_time" name="end_time"> -->
                           </div>
-                          <div class="col-md-4 ">
-                             <span  id="export" class="btn btn-success btn-sm" >Export CSV</span>
-                          </div>
+                          
                           </div>
                             </div>
                     <!-- <div class="row"> -->
@@ -115,10 +116,10 @@ input[type="number"] {
                                  <tr class="r1">
                                     <th>#</th>
                                     <!-- <th>User Name</th> -->
-                                    <th>Video Name</th>
-                                    <th>Video Slug</th>
-                                    <th>Viewed Count</th>
-                                    <th>Watch Percentage (Minutes)</th>
+                                    <th>Name</th>
+                                    <th>Slug</th>
+                                    <th>Viewes Count</th>
+                                    <th>Watch % (Minutes)</th>
                                     <th>Seek Time (Seconds)</th>
                                     <th>Buffered Time (Seconds)</th>
                                     <th>Country Name</th>

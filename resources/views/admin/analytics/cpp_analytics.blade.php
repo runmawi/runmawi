@@ -31,30 +31,31 @@
 
                 <div class="clear"></div>
 
+                <div class="col-md-12">
                 <div class="row mt-3">
-                    <div class="col-md-4">
+                <div class="col-md-6">
+                <div class="row ">
+                    <div class="col-md-6">
                         <label for="start_time">  Start Date: </label>
-                        <input type="date" id="start_time" name="start_time" >               
+                        <input type="date" id="start_time" name="start_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;" >               
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label for="start_time">  End Date: </label>
-                        <input type="date" id="end_time" name="end_time">     
+                        <input type="date" id="end_time" name="end_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">     
                     </div>
-
-                    <div class="col-md-4">
+                 </div>
+                 <div class="col-md-6 mt-4 pl-0">
                         <span  id="export" class="btn btn-primary" >Download CSV</span><!--btn btn-success btn-sm-->
                     </div>
-                </div>
+                 </div>
+               
 
-                <div class="clear"></div>
-                <br>
-                <br>
-                <h4 class="card-title">Content Partners Content </h4>
+                  
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="">Total No. Of Video Content : 
+                    <div class="col-md-6 contantlabel">
+                <h4 class="card-title">Content Partners Stats </h4>
+                    <label for="">Total No. Of Video Content : 
                         <?php 
                             if (!empty($total_video_content))
                             {
@@ -89,36 +90,16 @@
                                 echo $total_audio_content;
                             } 
                         ?>
-                    </label> <br>
-                </div>
-                <div class="col-md-6" >
-                <p style="color: black;"><input type="radio" value="total_content_users"  id="total_content_users"  checked name="content_users"> Total Content By Users</p> 
-                 <br>
-                 <p style="color: black;"><input type="radio" value="filter_content"  id="filter_content"  name="content_users" > Filtered Content By Users </p>
+                    </label>    
+                    </div>
                 </div>
                 </div>
-                <br>
-                <br>
 
-                <h4 class="card-title">Content View Through Graph :</h4>
-                
+
+
+                </div>
+                <br>
                 <div class="row">
-                    <div class="col-md-8">
-                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
-                    <!-- <div id="google-line-chart" style="width: 900px; height: 500px"></div>   -->
-                    <!-- <div id="top_x_div" style="width: 900px; height: 500px;"></div> -->
-                    <div id="barchart_material" style="width: 900px; height: 500px;"></div>
-
-                 </div>
-                 <div class="col-md-4" >
-                 <!-- <input type="radio" value="total_content_users" checked name="content_users">Total Content By Users
-                 <br>
-                 <input type="radio" value="filter_content"  name="content_users"> Filtered Content By Users -->
-                 </div>
-                </div>
-            
-
-                        <div class="row">
                             <div class="col-md-12">
                                 <table class="table text-center" id="cpp_analytics_table" style="width:100%">
                                     <thead>
@@ -158,6 +139,52 @@
                            </table>
                         </div>
                     </div>
+
+                <div class="clear"></div>
+                <br>
+               
+
+               
+                
+
+                <h4 class="card-title">Content View Through Graph :</h4>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6"><p style="color: black;"><input type="radio" value="total_content_users"  id="total_content_users"  checked name="content_users"> Total Content By Users</p>  </div>
+                        <div class="col-md-6"><p style="color: black;"><input type="radio" value="filter_content"  id="filter_content"  name="content_users" > Filtered Content By Users </p> </div>
+                        
+                        
+                </div>
+                    
+                 
+                 
+                
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
+                    <!-- <div id="google-line-chart" style="width: 900px; height: 500px"></div>   -->
+                    <!-- <div id="top_x_div" style="width: 900px; height: 500px;"></div> -->
+                    <div id="barchart_material" style="width: 900px; height: 500px;"></div>
+
+                 </div>
+                 <div class="col-md-4" >
+                 <!-- <input type="radio" value="total_content_users" checked name="content_users">Total Content By Users
+                 <br>
+                 <input type="radio" value="filter_content"  name="content_users"> Filtered Content By Users -->
+                 </div>
+                </div>
+                <br>
+                <div class="row">
+                    
+                <div class="col-md-6" >
+               </div>
+                </div>
+                <br>
+            
+
+                       
             </div>
         </div>
     </div>
