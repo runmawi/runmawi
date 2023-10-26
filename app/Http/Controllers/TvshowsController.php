@@ -103,18 +103,22 @@ class TvshowsController extends Controller
         } else {
             $trending_episodes = [];
         }
+
         $featured_episodes_count = Episode::where('active', '=', '1')
             ->where('featured', '=', '1')
             ->orderBy('views', 'DESC')
             ->count();
+
         if ($featured_episodes_count > 0) {
             $featured_episodes = Episode::where('active', '=', '1')
                 ->where('featured', '=', '1')
+                ->where('status', '=', '1')
                 ->orderBy('views', 'DESC')
                 ->get();
         } else {
             $featured_episodes = [];
         }
+
         $latest_series_count = Series::where('active', '=', '1')
             ->orderBy('created_at', 'DESC')
             ->count();
@@ -214,6 +218,7 @@ class TvshowsController extends Controller
                 ->orderBy('id', 'DESC')
                 ->simplePaginate(120000),
         ];
+
 
         return Theme::view('tv-home', $data);
     }
@@ -668,11 +673,13 @@ class TvshowsController extends Controller
                 ->join('users', 'channels.email', '=', 'users.email')
                 ->select('users.id as user_id')
                 ->first();
+
             if (!Auth::guest() && $user_id == Auth::user()->id) {
                 $video_access = 'free';
             } else {
                 $video_access = 'pay';
             }
+            
         } elseif (@$series->uploaded_by == 'CPP') {
             $user_id = $series->user_id;
 
