@@ -273,7 +273,7 @@
 }
 
 @media (min-width:990px){
-  .proflogbtn{
+  .proflogbtn, .channel_contentpr{
     display: none !important;
   }
 }
@@ -287,5 +287,14 @@
   }
   header .navbar ul li.menu-item a:hover{
     color: white;
+  }
+}
+
+@media (max-width:564px){
+  .channel_contentpr .row{
+    flex-wrap: unset;
+  }
+  .channel_contentpr button{
+    padding: 0;
   }
 }

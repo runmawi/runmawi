@@ -766,11 +766,15 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <div class="row ">
-                           <div class="col-sm-12 d-flex justify-content-between proflogbtn mt-2">
-                              <li class="col-sm-3"></li>
-                              <button type="submit" class="btn bd" >Visit Channel Portal </button> 
-                              <li class="col-sm-3"></li>
+                           <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
+                              <div class="row ">
+                              <div class="col-sm-6 logout_mobile_view menu-item pt-3">
+                                 <button type="submit" class="btn bd" >Visit Channel Portal</button>
+                              </div>
+                              <div class="col-sm-6 logout_mobile_view menu-item pt-3">
+                                 <button type="submit" class="btn bd" >Visit Content Portal </button>
+                              </div>
+                              
                            </div>
                            </div>
                               </form>
