@@ -244,6 +244,7 @@ class MyPlaylistController extends Controller
             }else{
                 $item['countjson']      =   1 ;
             }
+            $item['artistscrew']   =   $artistscrew;
             return $item;
           }) ;
 
