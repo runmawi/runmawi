@@ -508,7 +508,7 @@
                   <nav class="navbar navbar-expand-lg navbar-light p-0">
                      <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         <div class="navbar-toggler-icon" data-toggle="collapse">
                            <span class="navbar-menu-icon navbar-menu-icon--top"></span>
                            <span class="navbar-menu-icon navbar-menu-icon--middle"></span>
@@ -532,6 +532,7 @@
                         <label for="toggle"></label>
                         </div>-->
                      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                       
                         <div class="menu-main-menu-container">
                            <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
                               <li class="menu-item">
@@ -544,6 +545,9 @@
                                  <a href="href="<?php echo URL::to('home') ?>"">Movies</a>
                               </li>
                               </ul>-->
+                              
+
+                              
                            <ul id="top-menu" class=" mt-2 nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                
                               <?php if(Auth::guest()){ ?>
@@ -595,6 +599,28 @@
                                  </a>
                               </li>
                               <?php } ?>
+
+
+
+                              <div class="col-sm-12 d-flex justify-content-around pt-2 proflogbtn" style="color:white">
+                                    <!-- <div class="row "> -->
+                           <li class="col-sm-6 ">
+                           <a class="navbar-brand mb-0" style="float:right;" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a> </li>      
+                           <li class="dropdown menu-item col-sm-6">
+                              <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="
+    border-top: none; float:right">
+                        <div class="btn-close" data-toggle="collapse">
+                        <button type="button" class="btn-close" aria-label="Close"><i class="fa fa-times" style="
+    font-size: 20px;
+    color: white;"></i></button>
+                        </div>
+                     </a>
+                              </li>      
+                           </div> 
+
+                             
                                
                               <?php
                                  $stripe_plan = SubscriptionPlan();
@@ -621,9 +647,15 @@
                                     }
                                  // $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                  ?>
+                                 
+                                  <!-- <li class="logout_mobile_view menu-item">
+                                       <a href="<?php echo URL::to('/logout'); ?>">
+                                          <?php echo __('Logout');?>
+                                       </a>
+                                 </li> -->
                               <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                 <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+                                 <a class="dropdown-toggle d-flex justify-content-between" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                  <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $cat as $category) { ?>
@@ -639,7 +671,7 @@
                                  $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle d-flex justify-content-between" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -656,7 +688,7 @@
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle d-flex justify-content-between" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -669,12 +701,14 @@
                                     <?php } ?>
                                  </ul>
                               </li>
+
+                              
                               <!-- Audios dropdown -->
                               <?php }elseif ( $menu->in_menu == "audios") { 
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle d-flex justify-content-between" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -687,6 +721,8 @@
                                     <?php } ?>
                                  </ul>
                               </li>
+                              
+                               
                               <!-- Tv show dropdown -->
 
                               <?php }elseif ( $menu->in_menu == "tv_show") { 
@@ -718,23 +754,49 @@
                               </li>
                               <?php } else { ?>
                                  <li class="menu-item">
-                                       <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to('/').$menu->url; }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
+                                       <a style="border-bottom:2px solid rgba(255, 255, 255, 0.1);" href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to('/').$menu->url; }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
                                           <?php echo __($menu->name);?>
                                        </a>
                                  </li>
 
                               <?php  } } ?>
+
+                              <li class=" menu-item" >
+                              <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
+                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                           <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
+                           <div class="row ">
+                           <div class="col-sm-12 d-flex justify-content-between proflogbtn mt-2">
+                              <li class="col-sm-3"></li>
+                              <button type="submit" class="btn bd" >Visit Channel Portal </button> 
+                              <li class="col-sm-3"></li>
+                           </div>
+                           </div>
+                              </form>
+                              </li>
+                              
                               <?php if(!Auth::guest()){ ?>
-                                 <li class="logout_mobile_view menu-item">
+                                 <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
+                                    <!-- <div class="row "> -->
+                           <li class="logout_mobile_view menu-item col-sm-6 "><a class="btn btn-primary" style="float:right;" href="<?php echo URL::to('/logout'); ?>">
+                                          <?php echo __('Logout');?>
+                                       </a> </li>      
+                           <li class="logout_mobile_view menu-item col-sm-6"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
+                                          <?php echo __('My Profile');?>
+                                       </a> </li>      
+                           </div>      
+                              <!-- </div> -->
+                                 <!-- <li class="logout_mobile_view menu-item btn btn-primary">
                                        <a href="<?php echo URL::to('/logout'); ?>">
                                           <?php echo __('Logout');?>
                                        </a>
                                  </li>
-                                 <li class="logout_mobile_view menu-item">
+                                 <li class="logout_mobile_view menu-item btn btn-primary">
                                        <a href="<?php echo URL::to('myprofile') ?>">
                                           <?php echo __('My Profile');?>
                                        </a>
-                                 </li>
+                                 </li> -->
                               
                               <?php } ?>
                               <!-- <li class="nav-item dropdown menu-item"> -->
@@ -834,7 +896,7 @@
                            </div>
                         </div>
                      </div>
-                      <div id="desk-top" class="d-flex align-items-center">
+                      <div id="desk-top" class="d-flex align-items-center cppporrr">
                      <?php 
                         if(!Auth::guest()){                                                              
                         $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
