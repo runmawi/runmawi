@@ -200,7 +200,6 @@ class AdminPageController extends Controller
         if ((!Auth::guest() && Auth::user()->package == 'Channel') || Auth::user()->package == 'CPP') {
             return redirect('/admin/restrict');
         }
-
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -302,8 +301,12 @@ class AdminPageController extends Controller
                 ->withRequest();
         }
 
-        if (!isset($data['active']) || $data['active'] == '') {
+        if (!isset($data['active']) || $data['active'] == 0) {
             $data['active'] = 0;
+        }
+
+        if (!isset($data['footer_active']) || $data['footer_active'] == 0) {
+            $data['footer_active'] = 0;
         }
 
         $page->update($data);
