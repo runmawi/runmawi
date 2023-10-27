@@ -656,8 +656,8 @@
                                           <?php echo __('Logout');?>
                                        </a>
                                  </li> -->
-                              <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle d-flex justify-content-between" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                              <li class="dropdown menu-item dskdflex">
+                                 <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                   <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -673,8 +673,8 @@
                               <?php } elseif ( $menu->in_menu == "movies") { 
                                  $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                  ?>
-                              <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle d-flex justify-content-between" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                              <li class="dropdown menu-item dskdflex">
+                                 <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -690,8 +690,8 @@
                               <?php }elseif ( $menu->in_menu == "live") { 
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  ?>
-                              <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle d-flex justify-content-between" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                              <li class="dropdown menu-item dskdflex">
+                                 <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -710,8 +710,8 @@
                               <?php }elseif ( $menu->in_menu == "audios") { 
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
-                              <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle d-flex justify-content-between" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                              <li class="dropdown menu-item dskdflex">
+                                 <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                  <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
@@ -731,7 +731,7 @@
                               <?php }elseif ( $menu->in_menu == "tv_show") { 
                                  $tv_shows_series = App\Series::get();
                                  ?>
-                              <li class="dropdown menu-item">
+                              <li class="dropdown menu-item ">
                                  <a class="" id="" href="<?php echo URL::to('/').$menu->url;?>" >  
                                     <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                  </a>
@@ -757,7 +757,7 @@
                               </li>
                               <?php } else { ?>
                                  <li class="menu-item">
-                                       <a style="border-bottom:2px solid rgba(255, 255, 255, 0.1);" href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to('/').$menu->url; }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
+                                       <a  href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to('/').$menu->url; }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
                                           <?php echo __($menu->name);?>
                                        </a>
                                  </li>
@@ -773,7 +773,7 @@
                            <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
                               <div class="row ">
                               <div class="col-sm-6 logout_mobile_view menu-item pt-3">
-                                 <button type="submit" class="btn bd" >Visit Channel Portal</button>
+                                 <a type="submit" class="btn bd" >Visit Channel Portal</a>
                               </div>
                               <div class="col-sm-6 logout_mobile_view menu-item pt-3">
                               <li class="logout_mobile_view menu-item col-sm-6 "><a class="btn btn-primary" style="float:right;" href="<?php echo URL::to('/logout'); ?>">
@@ -790,9 +790,9 @@
                               <?php if(!Auth::guest()){ ?>
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
-                           <li class="logout_mobile_view menu-item col-sm-6 ">
-                           <button type="submit" class="btn bd" >Visit Channel Portal</button> </li>      
-                           <li class="logout_mobile_view menu-item col-sm-6"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
+                           <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                           <a type="submit" class="btn bd" >Visit Content Portal</a> </li>      
+                           <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
                                           <?php echo __('My Profile');?>
                                        </a> </li>      
                            </div>      

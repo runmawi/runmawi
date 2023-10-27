@@ -208,12 +208,12 @@ $jsondata = json_decode($jsonString, true);
                              <td>@if($user->provider == "google") Google User @elseif($user->provider == "facebook") Facebook User @else Web User @endif</td>
                             <?php if ($user->active == 0)
                             { ?>
-                              <td > <p class = "bg-warning user_active"><?php echo "InActive"; ?></p></td>
+                              <td > <button class = "bg-warning user_active"><?php echo "InActive"; ?></button></td>
                             <?php
                             }
                             elseif ($user->active == 1)
                             { ?>
-                              <td > <p class = "bg-success user_active"><?php echo "Active"; ?></p></td>
+                              <td > <button class = "bg-success user_active"><?php echo "Active"; ?></button></td>
                             <?php   } ?> 
 
                              </tr>

@@ -103,7 +103,7 @@ $media_url = URL::to('play_series/' . $series->slug);
 $ThumbnailSetting = App\ThumbnailSetting::first();
 ?>
 
-<div id="myImage"
+<div id="myImage" class="container"
     style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain;padding:0px 0px 20px; ">
     <div class="container-fluid pt-5">
         <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
@@ -113,10 +113,34 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
 		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
 		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) ):  ?>
-            <div class="col-md-7">
+          
+         
+          
+          <div class="col-md-7 p-0">
                 <div id="series_title">
-                    <div class="container">
+                    <div class="">
                         <h3><?= $series->title ?></h3>
+
+                        <div class="d-flex align-items-center mt-3" data-animation-in="fadeInUp" data-delay-in="1">
+                              <span class="badge  p-2"><img src="images/Group 3 (1).png"></span>
+                              <span class="ml-3">4.5(Imdb)</span>
+                           </div>
+                           <div class="d-flex align-items-center mb-3" data-animation-in="fadeInUp" data-delay-in="1">
+                              <span class="">Action</span>
+                              <li class="ml-3">Adventure</li>
+                              <li class="ml-3">Drama</li>
+                           </div>
+                           <div class="d-flex align-items-center mb-3" data-animation-in="fadeInUp" data-delay-in="1">
+                              <span class="">2 Seasons</span>
+                              <li class="ml-3">Feb 2023</li>
+                           </div>
+                           <p data-animation-in="fadeInUp" data-delay-in="1.2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+                              dummy text ever since the 1500s.
+                           </p>
+                           <div class="d-flex align-items-center mt-5" data-animation-in="fadeInUp" data-delay-in="1">
+                              <span class="">2 Seasons</span>
+                              <span class="">Watch Latest Episode</span>
+                           </div>
 
                         <div class="row p-2 text-white">
                             <div class="col-md-7">
