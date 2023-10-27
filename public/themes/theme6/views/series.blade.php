@@ -95,6 +95,24 @@
         background-color: transparent !important;
         font-size: revert;
     }
+
+    .seasonpublisheddate{
+    font-weight: bold !important;
+    font-size: 19px !important;
+}
+.list-inline{
+    list-style: none;
+}
+#season_id{
+    background-color: var(--iq-bg1);
+    border: none;
+    border-radius: 0;
+    color: var(--iq-white);
+}
+#season_id option{
+    line-height: calc(1.5em + 1.2em);
+    padding-left: 0.625em;
+}
 </style>
 
 <?php
@@ -104,7 +122,8 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
 ?>
 
 <div id="myImage" class="container"
-    style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain;padding:0px 0px 20px; ">
+style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%);  padding: 0px 0px 0px;"
+>
     <div class="container-fluid pt-5">
         <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
@@ -117,97 +136,89 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
          
           
           <div class="col-md-7 p-0">
-                <div id="series_title">
-                    <div class="">
-                        <h3><?= $series->title ?></h3>
+                <div id="series_title" class="show-movie">
+                    <div class=" p-2 text-white ">
 
-                        <div class="d-flex align-items-center mt-3" data-animation-in="fadeInUp" data-delay-in="1">
-                              <span class="badge  p-2"><img src="images/Group 3 (1).png"></span>
-                              <span class="ml-3">4.5(Imdb)</span>
-                           </div>
-                           <div class="d-flex align-items-center mb-3" data-animation-in="fadeInUp" data-delay-in="1">
-                              <span class="">Action</span>
-                              <li class="ml-3">Adventure</li>
-                              <li class="ml-3">Drama</li>
-                           </div>
-                           <div class="d-flex align-items-center mb-3" data-animation-in="fadeInUp" data-delay-in="1">
-                              <span class="">2 Seasons</span>
-                              <li class="ml-3">Feb 2023</li>
-                           </div>
-                           <p data-animation-in="fadeInUp" data-delay-in="1.2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-                              dummy text ever since the 1500s.
-                           </p>
-                           <div class="d-flex align-items-center mt-5" data-animation-in="fadeInUp" data-delay-in="1">
-                              <span class="">2 Seasons</span>
-                              <span class="">Watch Latest Episode</span>
-                           </div>
+                        <div class="trending-info p-0">
+                                 <h1 class="trending-text big-title text-uppercase m-0"><?= $series->title ?></h1>
+                                 <div class="slider-ratting d-flex align-items-center" data-animation-in="fadeInLeft">
+                                    <ul
+                                       class="ratting-start p-0 m-0 list-inline text-primary d-flex align-items-center justify-content-left">
+                                       <li>
+                                          <i class="fa fa-star" aria-hidden="true"></i>
+                                       </li>
+                                       <li>
+                                          <i class="fa fa-star" aria-hidden="true"></i>
+                                       </li>
+                                       <li>
+                                          <i class="fa fa-star" aria-hidden="true"></i>
+                                       </li>
+                                       <li>
+                                          <i class="fa fa-star-half" aria-hidden="true"></i>
+                                       </li>
+                                    </ul>
+                                    <span class="text-white ml-3">4.5 (imdb)</span>
+                                 </div>
+                                 <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-content">
+                                    <li class="trending-list"><a class="text-primary title" href="tags/action.html">Action</a></li>
+                                    <li class="trending-list"><a class="text-primary title" href="tags/adventure.html">Adventure</a></li>
+                                    <li class="trending-list"><a class="text-primary title" href="tags/drama.html">Drama</a></li>
+                              </ul>
+                                 <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
+                                    <span class="">
+                                       2 Seasons </span>
+                                    <span class="trending-year">Feb 2019</span>
+                                 </div>
+                                 <div class="trending-">
+                                    <p class="m-0">The travels of a lone bounty hunter in the outer reaches of the galaxy,
+                                       far from the
+                                       authority of the New Republic.</p>
+                                 </div>
+                              </div>
 
-                        <div class="row p-2 text-white">
-                            <div class="col-md-7">
-                                Season <span class="sea"> 1 </span> - U/A English
-                                <p style="color:#fff!important;"><?php echo $series->details; ?></p>
-                                <b>
-                                    <p style="color:#fff;"><?php echo $series->description; ?></p>
-                                </b>
-                                <div class="row p-0 mt-3 align-items-center">
-                                    <div class="col-md-2"> <a data-video="<?php echo $series->trailer; ?>" data-toggle="modal"
-                                            data-target="#videoModal">
-                                            <img class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" /> </a></div>
-                                    <div class="col-md-1 pls  d-flex text-center mt-2">
-                                        <div></div>
-                                        <ul>
-                                            <li class="share">
-                                                <span><i class="ri-share-fill"></i></span>
-                                                <div class="share-box">
-                                                    <div class="d-flex align-items-center">
-                                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
-                                                            class="share-ico"><i class="ri-facebook-fill"></i></a>
-                                                        <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
-                                                            class="share-ico"><i class="ri-twitter-fill"></i></a>
-                                                        <a href="#"onclick="Copy();" class="share-ico"><i
-                                                                class="ri-links-fill"></i></a>
-                                                    </div>
-                                                </div>
-                                            </li>Share
-                                        </ul>
+                           <div class="position-relative mt-5">
+                        <a href="show-detail.html" class="d-flex align-items-center">
+                           <div class="play-button">
+                              <i class="ri-play-fill"></i>
+                           </div>
+                           <h4 class="w-name text-white font-weight-700">Watch latest Episode</h4>
+                        </a>
+                     </div>
+                     <div class="col-12 mt-auto mb-auto mt-3 p-0">
+                           <ul class="list-inline p-0 mt-5 share-icons music-play-lists">
+                              <li class="share mb-0">
+                                 <span><i class="ri-share-fill"></i></span>
+                                 <div class="share-box">
+                                    <div class="d-flex align-items-center">
+                                       <a href="#" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                       <a href="#" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                       <a href="#" class="share-ico"><i class="ri-links-fill"></i></a>
                                     </div>
-                                </div>
-
-                                <div class="modal fade modal-xl" id="videoModal" data-keyboard="false"
-                                    data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <button type="button" class="close videoModalClose" data-dismiss="modal"
-                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <div class="modal-body">
-
-                                                <video id="videoPlayer1" class=""
-                                                    poster="<?= URL::to('public/uploads/images/' . $series->player_image) ?>"
-                                                    controls
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    src="" type="video/mp4">
-                                                </video>
-
-                                                <video id="videos" class=""
-                                                    poster="<?= URL::to('public/uploads/images/' . $series->player_image) ?>"
-                                                    controls
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    type="application/x-mpegURL">
-                                                    <source id="m3u8urlsource" type="application/x-mpegURL"
-                                                        src="">
-                                                </video>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-
-                                <script>
-                                    const player = new Plyr('#videoPlayer1');
-                                </script>
-                            </div>
+                                 </div>
+                              </li>
+                              <li class="mb-0">
+                                 <span><i class="ri-heart-fill"></i></span>
+                              </li>
+                              <li class="mb-0">
+                                 <span><i class="ri-add-line"></i></span>
+                              </li>
+                           </ul>
+                           <ul
+                              class="p-0 list-inline d-flex flex-wrap align-items-center movie-content movie-space-action flex-wrap iq_tag-list">
+                              <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
+                                    aria-hidden="true"></i>TAGS:</li>
+                              <li> <a class="tag-list" href="tags/brother.html">Brother,</a>
+                              </li>
+                              <li><a class="tag-list" href="tags/brother-relationship.html">Brother
+                                    Relationship,</a></li>
+                              <li> <a class="tag-list" href="tags/king.html">King,</a>
+                              </li>
+                              <li> <a class="tag-list" href="tags/kings.html">kings</a>
+                              </li>
+                           </ul>
                         </div>
+
+                        
                     </div>
 
                 </div>
@@ -223,7 +234,7 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
 
         <!-- BREADCRUMBS -->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
                 <div class="bc-icons-2">
                     <ol class="breadcrumb">
@@ -247,9 +258,9 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
                     </ol>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-12 mt-4">
                 <nav class="nav-justified">
                     <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
@@ -257,11 +268,12 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
 
                     </div>
                 </nav>
-            </div>
+            </div> -->
+
             <!-- $series->title -->
-            <div class="container-fluid">
+            <div class="container-fluid mt-5">
                 <div class="favorites-contens">
-                    <div class="col-md-3 p-0">
+                    <div class="col-md-3 p-0" style="width:150px">
                         <select class="form-control" id="season_id" name="season_id">
                             <?php foreach($season as $key => $seasons): ?>
                             <option data-key="<?= $key + 1 ?>" value="season_<?= $seasons->id ?>">Season
@@ -269,6 +281,19 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
                             <?php endforeach; ?>
                         </select>
                     </div>
+
+                    <div class="tab-title-info position-relative mt-5">
+                        <ul class="trending-pills nav nav-pills text-center iq-ltr-direction" role="tablist">
+                           <li class="nav-item">
+                              <a class="nav-link active show m-0" data-toggle="pill" href="#episodes" role="tab" aria-selected="true">Episodes</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link  m-0" data-toggle="pill" href="#feature-clips" role="tab" aria-selected="false">FEATURED CLIPS</a>
+                           </li>
+                        </ul>
+                     </div>
+
+
                     <ul class="category-page list-inline row p-3 mb-0">
                         <?php 
                     foreach($season as $key => $seasons):  
