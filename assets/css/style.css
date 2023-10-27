@@ -1069,7 +1069,7 @@ a.title-dec{
     color: #fff !important;
     text-align: center;
     list-style: none;
-    background-color: transparent;
+    background-color: black;
     overflow: scroll;
     height: auto;
     max-height:280px;

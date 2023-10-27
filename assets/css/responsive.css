@@ -75,6 +75,9 @@
   .iq-main-slider{/*padding-top:60px!important;*/}
   .m-profile {padding-top: 100px;padding-bottom: 60px;}
   .trending-info .trending-dec{width: 52%;}
+  .dropdown-menu.categ-head{
+    background-color: transparent;
+  }
 }
 @media(max-width:768px) {
   li.slide-item .block-images::before { content: none; }
@@ -276,6 +279,9 @@
   .proflogbtn, .channel_contentpr{
     display: none !important;
   }
+  .dktopitag i{
+    display: none;
+  }
 }
 
 @media (max-width:990px){
@@ -287,6 +293,9 @@
   }
   header .navbar ul li.menu-item a:hover{
     color: white;
+  }
+  .dskdflex a{
+    display: flex !important;
   }
 }
 
@@ -307,4 +316,21 @@
     text-align: left;
     padding: 16px 32px;
     color: var(--iq-white);
+}
+
+@media (max-width:375px){
+  .channel_contentpr a{
+    padding: 16px 26px !important;
+  }
+}
+@media (max-width:320px){
+  .channel_contentpr a{
+    padding: 16px 16px !important;
+  }
+  .channel_contentpr{
+    margin-right: 0 !important;
+  }
+  .channel_contentpr .myp{
+    padding-left: 5px !important;
+  }
 }
