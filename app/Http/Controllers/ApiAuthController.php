@@ -5047,6 +5047,7 @@ return response()->json($response, 200);
     $myData = array();
     $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
     $seriestitle = Series::where('id',$seriesid)->pluck('title')->first();
+    $series_description = Series::where('id',$seriesid)->pluck('description')->first();
     // print_r($seasonlist);exit();
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
     if(!empty($seriesimage)){
@@ -5080,6 +5081,7 @@ return response()->json($response, 200);
 
       $myData[] = array(
         "seriestitle"   => $seriestitle,
+        "series_description"   => $series_description,
         "season_name"   => $season_name,
         "season_access"   => $season_access,
         // "settings"   => $settings,
