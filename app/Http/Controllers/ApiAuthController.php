@@ -430,7 +430,7 @@ class ApiAuthController extends Controller
           }
             }elseif( $paymentMode == "Paystack" ){
 
-              $reference_code = $request->paystack_trans_id ;
+              $paystack_trans_id = $request->paystack_trans_id ;
 
                     // Verify Payments API
 
