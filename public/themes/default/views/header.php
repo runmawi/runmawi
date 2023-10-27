@@ -605,7 +605,7 @@
                               <div class="col-sm-12 d-flex justify-content-around pt-2 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
                            <li class="col-sm-6 ">
-                           <a class="navbar-brand mb-0" style="float:right;" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a> </li>      
+                           <a class="navbar-brand mb-0 logout_mobile_view menu-item " style="float:right;" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a> </li>      
                            <li class="dropdown menu-item col-sm-6">
                               <!-- <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
