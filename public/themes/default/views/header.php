@@ -791,7 +791,13 @@
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
                            <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                           <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
+                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                           <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
+                           <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
                            <a type="submit" class="btn bd" >Visit Content Portal</a> </li>      
+                        </form>
                            <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
                                           <?php echo __('My Profile');?>
                                        </a> </li>      
