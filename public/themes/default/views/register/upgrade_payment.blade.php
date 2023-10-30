@@ -1041,7 +1041,6 @@ background-color: #000;padding: 10px!important;}
         $("#stripe_radio_button").prop('checked', true);
         $('.paystack_payment').hide();
         $('.Razorpay_payment').hide();
-        $('.cinetpay_button').hide();
         $('.cinetpay_payment').hide();
         $(".payment_gateway").trigger("click");
 
@@ -1080,7 +1079,9 @@ background-color: #000;padding: 10px!important;}
                     $('.Razorpay_payment').show();
 
                 }else if( payment_gateway == "CinetPay" ){
-                    $('.cinetpay_button').show();    
+                    $('.cinetpay_button').show(); 
+                    $('.cinetpay_payment').show();    
+
                 }
         });
     });
