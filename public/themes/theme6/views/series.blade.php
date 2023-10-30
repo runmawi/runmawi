@@ -306,6 +306,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                     </select>
                 </div>
 
+                <div class="trending-custom-tab">
                 <div class="tab-title-info position-relative mt-5">
                     <ul class="trending-pills nav nav-pills text-center iq-ltr-direction" role="tablist">
                         <li class="nav-item">
@@ -318,6 +319,76 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                         </li>
                     </ul>
                 </div>
+
+                <!-- Episodes -->
+                <div class="tab-content" id="nav-tabContent">
+                        <div id="episodes" class=" tab-pane animated fadeInUp active show">
+                           <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction ">
+                              <div class="e-item col-lg-3 col-sm-12 col-md-6">
+                                 <div class="block-image position-relative">
+                                    <!-- <a href="show-details.html">
+                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid img-zoom" alt="" loading="lazy">
+                                    </a> -->
+                                    <a href="show-details.html">
+                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid img-zoom transfromhover" alt="" >
+                                    </a>
+                                    <div class="episode-number episodeS01E" >S01E01</div>
+                                    <div class="episode-play-info">
+                                       <div class="episode-play">
+                                          <a
+                                             href="show-detail.html">
+                                             <i class="ri-play-fill"></i>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="epi-desc p-3">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                       <span class="text-white rele-date">October 1, 2020</span>
+                                       <span class="text-primary run-time">45min</span>
+                                    </div>
+                                    <a
+                                       href="show-detail.html">
+                                       <h5 class="epi-name text-white mb-0">
+                                          The Reckless 1</h5>
+                                    </a>
+                                 </div>
+                              </div>
+                              </div>
+                              </div>
+                              </div>
+
+                              <!-- Features clips -->
+                              <div id="feature-clips" class="tab-pane animated fadeInUp">
+                           <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction">
+                              <div class="e-item col-lg-3 col-sm-12 col-md-6">
+                                 <div class="block-image position-relative">
+                                    <a href="show-details.html">
+                                       <img src="images/tvthrillers/09.jpg" class="img-fluid img-zoom" alt="" loading="lazy">
+                                    </a>
+                                    <div class="episode-number">S01E01</div>
+                                    <div class="episode-play-info">
+                                       <div class="episode-play">
+                                          <a
+                                             href="show-detail.html">
+                                             <i class="ri-play-fill"></i>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="epi-desc p-3">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                       <span class="text-white rel-date">October 1, 2020</span>
+                                       <span class="text-primary run-time">45min</span>
+                                    </div>
+                                    <a
+                                       href="show-detail.html">
+                                       <h5 class="epi-name text-white mb-0">
+                                          The Reckless 1 </h5>
+                                    </a>
+                                 </div>
+                              </div>
+                              </div>
 
 
                 <ul class="category-page list-inline row p-3 mb-0">
@@ -356,53 +427,110 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                             <h6><?= $episodes->title ?></h6>
                             <p class="text-white desc mb-0"><?= gmdate('H:i:s', $episodes->duration) ?></p>
 
+                            <div class="e-item col-lg-3 col-sm-12 col-md-6">
+                                 <div class="block-image position-relative">
+                                    <a href="show-details.html">
+                                       <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid img-zoom" alt="" loading="lazy">
+                                    </a>
+                                    <div class="episode-number">S01E01</div>
+                                    <div class="episode-play-info">
+                                       <div class="episode-play">
+                                          <a
+                                             href="show-detail.html">
+                                             <i class="ri-play-fill"></i>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="epi-desc p-3">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                       <span class="text-white rel-date">October 1, 2020</span>
+                                       <span class="text-primary run-time">45min</span>
+                                    </div>
+                                    <a
+                                       href="show-detail.html">
+                                       <h5 class="epi-name text-white mb-0">
+                                          The Reckless 1</h5>
+                                    </a>
+                                 </div>
+                              </div>
+
                         </a>
                     </li>
 
                     <?php else : ?>
                     <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
                         <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
-                            <div class="block-images position-relative">
-                                <div class="img-box">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class=" img-fluid w-100">
-
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-
-                                    <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
-                                    <p class="p-tag1"><?php echo $currency->symbol . ' ' . $settings->ppv_price; ?></p>
-                                    <?php }elseif(!empty($seasons->ppv_price)){?>
-                                    <p class="p-tag1"><?php echo $currency->symbol . ' ' . $seasons->ppv_price; ?></p>
-                                    <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
-                                    <p class="p-tag"><?php echo 'Free'; ?></p>
-                                    <?php } ?>
-                                    <?php } ?>
-                                </div>
-                            </div>
-
-                            <div class="block-description"></div>
-
-                            <h6><?= $episodes->title ?></h6>
-                            <!--<p class="desc text-white mt-2 mb-0"><?php if (strlen($series->description) > 90) {
-                                echo substr($series->description, 0, 90) . '...';
-                            } else {
-                                echo $series->description;
-                            } ?></p>-->
-                            <p class="text-white desc mb-0"><?= gmdate('H:i:s', $episodes->duration) ?></p>
-
-
-
-                            <div class="hover-buttons">
-
-                                <div>
-
-                                </div>
-                            </div>
+                        <div class="e-item col-lg-3 col-sm-12 col-md-6">
+                                 <div class="block-image position-relative">
+                                    <a href="show-details.html">
+                                       <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid img-zoom" alt="" loading="lazy">
+                                    </a>
+                                    <div class="episode-number">S01E01</div>
+                                    <div class="episode-play-info">
+                                       <div class="episode-play">
+                                          <a
+                                             href="show-detail.html">
+                                             <i class="ri-play-fill"></i>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="epi-desc p-3">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                       <span class="text-white rel-date">October 1, 2020</span>
+                                       <span class="text-primary run-time">45min</span>
+                                    </div>
+                                    <a
+                                       href="show-detail.html">
+                                       <h5 class="epi-name text-white mb-0">
+                                          The Reckless 1</h5>
+                                    </a>
+                                 </div>
+                              </div>
 
                         </a>
                     </li>
                     <?php endif;	endforeach; 
 						                      endforeach; ?>
                 </ul>
+
+
+<!-- Starring -->
+
+<div id="iq-favorites" class="s-margin detail-cast-list iq-rtl-direction mt-5 starring">
+                  <div class="row m-0">
+                     <div class="col-sm-12 overflow-hidden p-0">
+                        <div class="iq-main-header d-flex align-items-center justify-content-between iq-ltr-direction">
+                           <h4 class="main-title">Starring</h4>
+                        </div>
+                        <div class="favorites-contens iq-smovie-slider">
+                           <ul class="inner-slider list-inline row p-0  iq-ltr-direction">
+                                 <li class=" slide-item iq-ltr-direction col-xl-3 col-lg-4 col-md-4 col-6">
+                                    <div class="cast-images position-relative row mx-0">
+                                       <div class="starrging img-box p-0">
+                                             <img src="https://templates.iqonic.design/streamit/frontend/html/images/genre/43.jpg" class="person__poster--image img-fluid" alt="image" style="border-radius:50%">
+                                       </div>
+                                       <div class="starring-description starring-desc mt-3 " style="text-align:center; width:300px">
+                                             <h6 class="iq-title">
+                                                <a href="cast-james-jones.html" tabindex="0">
+                                                   James Chinlund </a>
+                                             </h6>
+                                             <div class="video-time d-flex align-items-center my-2" style="justify-content: center;">
+                                                <span class="text-white">As James</span>
+                                             </div>
+                                       </div>
+                                    </div>
+                                 </li>
+                                
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+
+
             </div>
         </div>
         <?php elseif( Auth::guest() && $series->access == "subscriber"):
