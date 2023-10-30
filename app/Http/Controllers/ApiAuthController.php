@@ -7677,6 +7677,90 @@ public function LocationCheck(Request $request){
     return response()->json($response, 200);
   }
 
+  
+  public function Paystack_become_subscriber(Request $request)
+  {
+    try {
+                  
+      $paystack_subscription_id = $request->paystack_subscription_id ;
+      $userid = $request->user_id ;
+
+          // Verify Subscription API
+
+      $curl = curl_init();
+
+      curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://api.paystack.co/subscription/".$paystack_subscription_id,
+          CURLOPT_RETURNTRANSFER => true, CURLOPT_ENCODING => "",  CURLOPT_MAXREDIRS => 10, CURLOPT_TIMEOUT => 30, CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET", CURLOPT_HTTPHEADER => $this->SecretKey_array,
+      ));
+
+      $subscription_respond = curl_exec($curl);
+      $subscription_error = curl_error($curl);
+      curl_close($curl);
+
+      $verify_subscription = $subscription_error ?  json_decode($subscription_respond, true) : json_decode($subscription_respond, true) ;
+
+          // Verify Payments Status (false)
+
+      if( $verify_subscription['status'] == false ){
+
+          $response = array(
+              'status'=>'false',
+              'message'=> $verify_subscription['message'] ,
+          );  
+
+          return response()->json($response, 200);
+      }
+
+          // Subscription Details
+
+      $subcription_details = Paystack::fetchSubscription($paystack_subscription_id) ;
+
+      $Sub_Startday  = Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+      $Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+      $trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString(); 
+
+          // Subscription Details - Storing
+
+      Subscription::create([
+          'user_id'        =>  $userid,
+          'name'           =>  $subcription_details['data']['plan']['name'],
+          'price'          =>  $subcription_details['data']['amount'] ,   // Amount Paise to Rupees
+          'stripe_id'      =>  $subcription_details['data']['subscription_code'] ,
+          'stripe_status'  =>  $subcription_details['data']['status'] ,
+          'stripe_plan'    =>  $subcription_details['data']['plan']['plan_code'],
+          'quantity'       =>  null,
+          'countryname'    =>  Country_name(),
+          'regionname'     =>  Region_name(),
+          'cityname'       =>  city_name(),
+          'PaymentGateway' =>  'Paystack',
+          'trial_ends_at'  =>  $trial_ends_at,
+          'ends_at'        =>  $trial_ends_at,
+      ]);
+
+      User::where('id',$user_id)->update([
+          'role'            =>  'subscriber',
+          'stripe_id'       =>  $subcription_details['data']['subscription_code'] ,
+          'subscription_start'    =>  $Sub_Startday,
+          'subscription_ends_at'  =>  $Sub_Endday,
+          'payment_gateway'       =>  'Paystack',
+      ]);
+
+      return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
+      
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'=>'false',
+        'message'=> $th->getMessage() ,
+      );  
+
+      return response()->json($response, 200);
+
+    }
+  }
+
 
   public function RazorpaySubscription(Request $request){
 
@@ -7760,89 +7844,6 @@ public function LocationCheck(Request $request){
             'status'  => 'false',
             'Message' => 'While Storing the value on Serve Error'], 200);
       }
-  }
-
-  public function Paystack_become_subscriber(Request $request)
-  {
-    try {
-                  
-      $paystack_subscription_id = $request->paystack_subscription_id ;
-      $userid = $request->user_id ;
-
-          // Verify Subscription API
-
-      $curl = curl_init();
-
-      curl_setopt_array($curl, array(
-          CURLOPT_URL => "https://api.paystack.co/subscription/".$paystack_subscription_id,
-          CURLOPT_RETURNTRANSFER => true, CURLOPT_ENCODING => "",  CURLOPT_MAXREDIRS => 10, CURLOPT_TIMEOUT => 30, CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => "GET", CURLOPT_HTTPHEADER => $this->SecretKey_array,
-      ));
-
-      $subscription_respond = curl_exec($curl);
-      $subscription_error = curl_error($curl);
-      curl_close($curl);
-
-      $verify_subscription = $subscription_error ?  json_decode($subscription_respond, true) : json_decode($subscription_respond, true) ;
-
-          // Verify Payments Status (false)
-
-      if( $verify_subscription['status'] == false ){
-
-          $response = array(
-              'status'=>'false',
-              'message'=> $verify_subscription['message'] ,
-          );  
-
-          return response()->json($response, 200);
-      }
-
-          // Subscription Details
-
-      $subcription_details = Paystack::fetchSubscription($paystack_subscription_id) ;
-
-      $Sub_Startday  = Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s'); 
-      $Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
-      $trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString(); 
-
-          // Subscription Details - Storing
-
-      Subscription::create([
-          'user_id'        =>  $userid,
-          'name'           =>  $subcription_details['data']['plan']['name'],
-          'price'          =>  $subcription_details['data']['amount'] ,   // Amount Paise to Rupees
-          'stripe_id'      =>  $subcription_details['data']['subscription_code'] ,
-          'stripe_status'  =>  $subcription_details['data']['status'] ,
-          'stripe_plan'    =>  $subcription_details['data']['plan']['plan_code'],
-          'quantity'       =>  null,
-          'countryname'    =>  Country_name(),
-          'regionname'     =>  Region_name(),
-          'cityname'       =>  city_name(),
-          'PaymentGateway' =>  'Paystack',
-          'trial_ends_at'  =>  $trial_ends_at,
-          'ends_at'        =>  $trial_ends_at,
-      ]);
-
-      User::where('id',$user_id)->update([
-          'role'            =>  'subscriber',
-          'stripe_id'       =>  $subcription_details['data']['subscription_code'] ,
-          'subscription_start'    =>  $Sub_Startday,
-          'subscription_ends_at'  =>  $Sub_Endday,
-          'payment_gateway'       =>  'Paystack',
-      ]);
-
-      return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
-      
-    } catch (\Throwable $th) {
-
-      $response = array(
-        'status'=>'false',
-        'message'=> $th->getMessage() ,
-      );  
-
-      return response()->json($response, 200);
-
-    }
   }
 
   public function RazorpaySubscriptionCancel(Request $request)
