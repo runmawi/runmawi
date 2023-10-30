@@ -1,3 +1,5 @@
+import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css';
+
 @php  include public_path('themes/default/views/header.php'); @endphp
 
 {{-- Style Link--}}
@@ -117,13 +119,54 @@
                                         <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'fa fa-heart' : 'fa fa-heart-o'  }}"></i>
                                     </span>
                                 </li>
+
+                                <!-- Like -->
+                                <li>
+                                    <span><i  <?php if((isset($like_dislike[0]) && $like_dislike[0]->liked == 1 )): ?> class="ri-thumb-up-fill" <?php else: ?> class="ri-thumb-up-line" <?php endif; ?> <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'active';}?> aria-hidden="true" style="cursor:pointer;" data-like-val="1" like="1" id="like"  ></i></span>
+                                </li>
+
+                                <!-- Dislike -->
+                                <li>
+                                    <span><i <?php if((isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 )): ?> class="ri-thumb-down-fill" <?php else: ?> class="ri-thumb-down-line" <?php endif; ?>  class="ri-thumb-down-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike"></i></span>
+                                </li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="row">  
+                    <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
+                            <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                </svg>
+                                <span class="text pr-2"> Watch Now </span>
+                            </div>
+                        </a>
+
+                        @php include public_path('themes/default/views/partials/social-share.php'); @endphp  
+                        
+                       
+                        @if( optional($videodetail)->trailer_videos_url )
+                        <ul class="list-inline p-0 m-0 share-icons music-play-lists">
+                                <li class="share">
+                                    <span  data-toggle="modal" data-target="#video-js-trailer-modal">   {{-- Trailer --}}
+                                        <i class="fal fa-play"></i></span>
+                                    <div class="share-box box-watchtrailer">
+                                    <div class="playbtn"  data-toggle="modal" data-target="#video-js-trailer-modal">     {{-- Trailer --}}
+                               
+                                        <span class="text" style="background-color: transparent; font-size: 14px; width:84px">Watch Trailer</span>
+                                    </div>
+                                    </div>
+                                </li>
+
+                        </ul>
+                         @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp    
+                        @endif
+                        
+                        
                         <div class="circleRating">  {{-- Rating --}}
-                            <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar">
+                            <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar" style="width:63px">
                                 <path class="CircularProgressbar-trail" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 0px;"></path>
                                 <path class="CircularProgressbar-path" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke: orange; stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 101.159px;"></path>
                                 <text class="CircularProgressbar-text" x="50" y="50"> {{ optional($videodetail)->rating }}  </text>
@@ -142,15 +185,7 @@
                             @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp    
                         @endif
                         
-                        <a href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
-                            <div class="playbtn">    {{-- Play --}}
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 "></polygon>
-                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3"></circle>
-                                </svg>
-                                <span class="text"> Play </span>
-                            </div>
-                        </a>
+                        
 
                         {{-- <?php   $user = Auth::user(); 
                                 if (  ($user->role!="subscriber" && $videodetail->access != 'guest' && $user->role!="admin") ) { ?>
