@@ -28,13 +28,13 @@
                                             <!-- <div class="corner-text-wrapper">
                                                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                                     <div class="corner-text">
-                                                        <?php  if(!empty($channelwatchlater_videos->ppv_price)){?>
-                                                            <p class="p-tag1"><?php echo $currency->symbol.' '.$channelwatchlater_videos->ppv_price; ?></p>
-                                                        <?php }elseif( !empty($channelwatchlater_videos->global_ppv || !empty($channelwatchlater_videos->global_ppv) && $channelwatchlater_videos->ppv_price == null)){ ?>
-                                                            <p class="p-tag1"><?php echo $channelwatchlater_videos->global_ppv.' '.$currency->symbol; ?></p>
-                                                        <?php }elseif($channelwatchlater_videos->global_ppv == null && $channelwatchlater_videos->ppv_price == null ){ ?>
-                                                            <p class="p-tag"><?php echo "Free"; ?></p>
-                                                        <?php } ?>
+                                                        <?php  // if(!empty($channelwatchlater_videos->ppv_price)){?>
+                                                            <p class="p-tag1"><?php // echo $currency->symbol.' '.$channelwatchlater_videos->ppv_price; ?></p>
+                                                        <?php // }elseif( !empty($channelwatchlater_videos->global_ppv || !empty($channelwatchlater_videos->global_ppv) && $channelwatchlater_videos->ppv_price == null)){ ?>
+                                                            <p class="p-tag1"><?php // echo $channelwatchlater_videos->global_ppv.' '.$currency->symbol; ?></p>
+                                                        <?php // }elseif($channelwatchlater_videos->global_ppv == null && $channelwatchlater_videos->ppv_price == null ){ ?>
+                                                            <p class="p-tag"><?php // echo "Free"; ?></p>
+                                                        <?php // } ?>
                                                     </div>
                                                 <?php } ?>
                                             </div> -->
