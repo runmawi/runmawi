@@ -134,7 +134,7 @@
                     </div> 
                 </div> 
 
-                @if( $paystack_status != null )
+                <!-- @if( $paystack_status != null )
                     <div class="col-md-6">
                         <div class="form-group ">
                             <label> {{ ucwords('andriod paystack url') }}</label>
@@ -143,7 +143,7 @@
                             </div> 
                         </div> 
                     </div> 
-                @endif
+                @endif -->
             </div>
 
                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />

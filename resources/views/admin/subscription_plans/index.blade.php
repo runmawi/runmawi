@@ -129,12 +129,12 @@
                                             <textarea class="form-control" id="plan_content" name="plan_content"> </textarea>
                                         </div>
 
-                                        @if ($paystack_status != null)
+                                        <!-- @if ($paystack_status != null)
                                             <div class="form-group p-1">
                                                 <label> {{ ucwords('andriod paystack url') }}</label>
                                                 <input type="url" class="form-control" id="andriod_paystack_url" name="andriod_paystack_url">
                                             </div>
-                                        @endif
+                                        @endif -->
 
                                         <div class="form-group">
                                             <label>Payment Type:</label><br>
