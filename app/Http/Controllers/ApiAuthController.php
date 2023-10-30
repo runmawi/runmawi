@@ -488,7 +488,7 @@ class ApiAuthController extends Controller
                     'ends_at'        =>  $trial_ends_at,
                 ]);
 
-                User::where('id',$user_id)->update([
+                User::where('id',$userid)->update([
                     'role'            =>  'subscriber',
                     'stripe_id'       =>  $subcription_details['data']['subscription_code'] ,
                     'subscription_start'    =>  $Sub_Startday,
@@ -7739,7 +7739,7 @@ public function LocationCheck(Request $request){
           'ends_at'        =>  $trial_ends_at,
       ]);
 
-      User::where('id',$user_id)->update([
+      User::where('id',$userid)->update([
           'role'            =>  'subscriber',
           'stripe_id'       =>  $subcription_details['data']['subscription_code'] ,
           'subscription_start'    =>  $Sub_Startday,
