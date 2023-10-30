@@ -507,7 +507,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                         <div class="favorites-contens iq-smovie-slider">
                            <ul class="inner-slider list-inline row p-0  iq-ltr-direction">
                                  <li class=" slide-item iq-ltr-direction col-xl-3 col-lg-4 col-md-4 col-6">
-                                    <div class="cast-images position-relative row mx-0">
+                                    <div class="cast-images position-relative row mx-0" style="max-width:137px">
                                        <div class="starrging img-box p-0">
                                              <img src="https://templates.iqonic.design/streamit/frontend/html/images/genre/43.jpg" class="person__poster--image img-fluid" alt="image" style="border-radius:50%">
                                        </div>
