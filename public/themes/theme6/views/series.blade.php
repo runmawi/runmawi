@@ -133,7 +133,8 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 ?>
 
 <div id="myImage" class="container"
-    style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%);  padding: 0px 0px 0px;">
+    style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%); background-size: cover;  padding: 0px 0px 0px;">
+    <div> </div>
     <div class="container-fluid pt-5">
         <div id="series_bg_dim" class="{{ ($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest())) ? '' : 'darker' }}"></div>
 
@@ -425,33 +426,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                             <h6><?= $episodes->title ?></h6>
                             <p class="text-white desc mb-0"><?= gmdate('H:i:s', $episodes->duration) ?></p>
 
-                            <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                 <div class="block-image position-relative">
-                                    <a href="show-details.html">
-                                       <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid img-zoom" alt="" loading="lazy">
-                                    </a>
-                                    <div class="episode-number">S01E01</div>
-                                    <div class="episode-play-info">
-                                       <div class="episode-play">
-                                          <a
-                                             href="show-detail.html">
-                                             <i class="ri-play-fill"></i>
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="epi-desc p-3">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 1, 2020</span>
-                                       <span class="text-primary run-time">45min</span>
-                                    </div>
-                                    <a
-                                       href="show-detail.html">
-                                       <h5 class="epi-name text-white mb-0">
-                                          The Reckless 1</h5>
-                                    </a>
-                                 </div>
-                              </div>
+                           
 
                         </a>
                     </li>
@@ -459,33 +434,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                     <?php else : ?>
                     <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
                         <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
-                        <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                 <div class="block-image position-relative">
-                                    <a href="show-details.html">
-                                       <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid img-zoom" alt="" loading="lazy">
-                                    </a>
-                                    <div class="episode-number">S01E01</div>
-                                    <div class="episode-play-info">
-                                       <div class="episode-play">
-                                          <a
-                                             href="show-detail.html">
-                                             <i class="ri-play-fill"></i>
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="epi-desc p-3">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 1, 2020</span>
-                                       <span class="text-primary run-time">45min</span>
-                                    </div>
-                                    <a
-                                       href="show-detail.html">
-                                       <h5 class="epi-name text-white mb-0">
-                                          The Reckless 1</h5>
-                                    </a>
-                                 </div>
-                              </div>
+                        
 
                         </a>
                     </li>
