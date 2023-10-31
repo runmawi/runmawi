@@ -173,17 +173,7 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
                             </svg>
                         </div>
 
-                        @if( optional($videodetail)->trailer_videos_url )
-                            <div class="playbtn"  data-toggle="modal" data-target="#video-js-trailer-modal">     {{-- Trailer --}}
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 "></polygon>
-                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3"></circle>
-                                </svg>
-                                <span class="text">Watch Trailer</span>
-                            </div>
-
-                            @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp    
-                        @endif
+                        
                         
                         
 
@@ -235,14 +225,14 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
                         </div>
                     @endif
 
-                    @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
+                    <!-- @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
                         <div class="info">      
                             <span classname="text bold"> E-Paper : </span>
                             <span class="text">
                                 <a href="{{ $videodetail->pdf_files_url }}" style="font-size:45px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
                             </span>
                         </div>
-                    @endif
+                    @endif -->
                 </div>
             </div>
     
@@ -267,7 +257,51 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
                 </div>
             @endif
 
-            
+            <!-- Broadcast  -->
+
+            <div class="sectionArtists broadcast">   
+                <div class="artistHeading">
+                    {{ ucwords('Promos & Resources:') }}
+                </div>
+
+                    <div class="listItems">
+                        <a>
+                            <div class="listItem">
+                                <div class="profileImg">
+                                    <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                        <img src="https://dev-flick.webnexs.org/public/uploads/artists/Webp.net-resizeimage.jpg">
+                                    </span>
+                                </div>
+                                <div class="name">Money Heist - Trailer</div>
+                            </div>
+                        </a>
+
+                        <a>
+                            <div class="listItem">
+                                <div class="profileImg">
+                                    <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                        <img src="https://dev-flick.webnexs.org/public/uploads/artists/Webp.net-resizeimage.jpg">
+                                    </span>
+                                </div>
+                                <div class="name">Reels</div>
+                            </div>
+                        </a>
+
+                        @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
+                        <div class="listItem">
+                            <div class="profileImg">
+                                <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                    <a href="{{ $videodetail->pdf_files_url }}" style="font-size:93px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
+                                </span>
+                            </div>
+                            <div class="name">Document</div>
+                        </div>
+                    @endif
+                            
+                    </div>
+            </div>
+
+
 
             {{-- comment Section --}}
 

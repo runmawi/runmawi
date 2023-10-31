@@ -413,3 +413,10 @@
         line-height: 24px;
     }
 }
+
+/* Broadcast */
+
+
+.broadcast .listItems .listItem .profileImg{
+    border-radius: 0px !important;
+}
