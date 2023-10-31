@@ -268,7 +268,7 @@ class ApiAuthController extends Controller
         }
 
         if(!$settings->free_registration && $skip == 0) {
-            $user_data['role'] = 'subscriber';
+            $user_data['role'] = 'registered';
             $user_data['active'] = '1';
         } else {
                 if($settings->activation_email):
@@ -459,8 +459,7 @@ class ApiAuthController extends Controller
                         'message'=> $verify_subscription['message'] ,
                     );  
 
-                    return response()->json($response, 400);
-                    exit();
+                    return response()->json($response, 200);
                 }
 
                     // Subscription Details
