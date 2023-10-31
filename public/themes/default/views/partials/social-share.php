@@ -1,12 +1,12 @@
 <?php
 
-if(isset($video)):
-    $media_title = $video->title;
+if(isset($videodetail)):
+    $media_title = $videodetail->title;
     $url = URL::to('/category/videos');
     $embed_url = URL::to('/category/videos/embed');
-    $media_url = $url . '/' . $video->slug;
-    $embed_media_url = $embed_url . '/' . $video->slug;
-    $hidden = '<input type="hidden" value="'.$video->id.'" id="videoid">';
+    $media_url = $url . '/' . $videodetail->slug;
+    $embed_media_url = $embed_url . '/' . $videodetail->slug;
+    $hidden = '<input type="hidden" value="'.$videodetail->id.'" id="videoid">';
 elseif(isset($audio)):
     $media_title = $audio->title;
     $url = URL::to('/');
@@ -51,7 +51,23 @@ i#like {
 $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" frameborder="0" allowfullscreen></iframe>';
 ?>
 <!-- Buttons start here. Copy this ul to your document. -->
-<li class="share">
+<ul class="list-inline p-0 m-0 share-icons music-play-lists">
+                                        <!-- Share -->
+                                <li class="share">
+                                    <span >
+                                    <i class="fal fa-external-link-alt"></i>
+                                    </span>
+                                    <div class="share-box">
+       <div class="d-flex align-items-center"> 
+          <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
+          <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
+          <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+       </div>
+    </div>
+                                </li>
+                            </ul>
+
+<!-- <li class="share">
 <span><i class="ri-share-fill"></i></span>
     <div class="share-box">
        <div class="d-flex align-items-center"> 
@@ -69,10 +85,10 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
     <span><i <?php if((isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 )): ?> class="ri-thumb-down-fill" <?php else: ?> class="ri-thumb-down-line" <?php endif; ?>  class="ri-thumb-down-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike"></i></span>
 </li>
 
-<?php if($video->access != 'ppv') { ?>
+<?php if($videodetail->access != 'ppv') { ?>
 <li>
     <a href="#"onclick="EmbedCopy();" class="share-ico"><span><i class="ri-links-fill mt-1"></i></span></a>
-</li>
+</li> -->
 <?php } ?>
 <?php echo $hidden; if (Auth::user()) { ?>
     <input type="hidden" value="<?php echo Auth::user()->id;?>" id="user_id">
