@@ -459,7 +459,8 @@ class ApiAuthController extends Controller
                         'message'=> $verify_subscription['message'] ,
                     );  
 
-                    return response()->json($response, 200);
+                    return response()->json($response, 400);
+                    exit();
                 }
 
                     // Subscription Details
