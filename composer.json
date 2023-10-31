@@ -48,6 +48,7 @@
         "sokil/php-vast": "^2.2",
         "spatie/image": "^2.0",
         "stevebauman/location": "^5.2",
+        "stichoza/google-translate-php": "^4.1",
         "sybio/gif-creator": "^1.0",
         "symfony/process": "^5.4",
         "symfony/psr-http-message-bridge": "^2.0",

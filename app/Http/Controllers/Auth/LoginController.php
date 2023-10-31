@@ -83,7 +83,7 @@ class LoginController extends Controller
         $request['password'] = str_replace(' ', '', $request['password']);
         
         $data = $request->all();
-            if(!empty($data)){
+        if(!empty($request['email']) && !empty($request['password'])){
 
                 $user = User::where('email',$data['email'])->first('provider');
                 $system_settings = SystemSetting::first();
