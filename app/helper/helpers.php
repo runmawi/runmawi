@@ -1225,3 +1225,98 @@ function choosen_player()
     $choose_player = App\SiteTheme::pluck('choose_player')->first();
     return $choose_player ;
 }
+
+function GoogleTranslate_array_values($datas) {
+    $translator = new Stichoza\GoogleTranslate\GoogleTranslate();
+    $translator->setSource('en'); // Set the source language
+    $translator->setTarget('ta'); // Set the target language
+
+    $translatedUsers = [];
+    $collection = new \stdClass();
+
+    foreach ($datas as $data) {
+        $object = [];
+
+        // Iterate over each user model in the collection
+        foreach ($data->getAttributes() as $key => $value) {
+    // Check if the value is not null or empty before translation
+            if (!empty($value)) {
+                $object[$key] = $translator->translate($value);
+            } else {
+                // Optionally set the property to null if it's empty
+                $object[$key] = null;
+            }
+        }
+
+        $translatedUsers[] = $object;
+    }
+    $collection = collect($translatedUsers);
+    // dd($translatedUsers);
+
+    return $collection;
+}
+
+
+function GoogleTranslate_array_valueaas($datas)
+{
+    
+    
+    $users = $datas;
+
+    // Create a GoogleTranslate instance
+    $translator = new Stichoza\GoogleTranslate\GoogleTranslate();
+    $translator->setSource('en'); // Set the source language
+    $translator->setTarget('hi'); // Set the target language
+    
+    foreach ($users as $key => $user) {
+    // Iterate over each user model in the collection
+        foreach ($user->getAttributes() as $key => $value) {
+    // Check if the value is not null or empty before translation
+            if (!empty($value)) {
+              $object[$key]   = $translator->translate($value);
+            } else {
+                // Optionally set the property to null if it's empty
+                $object[$key]  = null;
+            }
+        }
+        $translatedUsers[] = $object;
+    }
+
+    $collection = collect($translatedUsers);
+
+    // dd($collection);
+    
+
+    return $collection ;
+}
+
+
+
+function GoogleTranslate_object_values($data)
+{
+    
+    
+    $data = $data;
+
+    // Create a GoogleTranslate instance
+    $translator = new Stichoza\GoogleTranslate\GoogleTranslate();
+    $translator->setSource('en'); // Set the source language
+    $translator->setTarget('hi'); // Set the target language
+    
+   $object = new \stdClass();
+        
+        // Loop through the attributes and translate them
+        foreach ($data->getAttributes() as $key => $value) {
+            // Check if the value is not null or empty before translation
+            if (!empty($value)) {
+                $object->$key = $translator->translate($value);
+            }else{
+                $object->$key = null;
+
+            }
+        }
+    
+
+    return $object ;
+}
+
