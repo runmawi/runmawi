@@ -32,43 +32,42 @@
                 <div class="clear"></div>
 
                 <!-- Start Date  End Date  Download CSV    (SET BY Sanjai Kumar) -->
-                <div class="row mt-3">
-                    <div class="col-md-4">
+                <div class="col-md-12">
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="row">
+                        <div class="col-md-6">
                         <label for="start_time">  Start Date: </label>
-                        <input type="date" id="start_time" name="start_time" >               
+                        <input type="date" id="start_time" name="start_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">               
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label for="start_time">  End Date: </label>
-                        <input type="date" id="end_time" name="end_time">     
+                        <input type="date" id="end_time" name="end_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">     
                     </div>
-
-                    <div class="col-md-4">
-                        <span  id="export" class="btn btn-success btn-sm" >Download CSV</span>
                     </div>
-                </div>
-
-                <div class="clear"></div>
-                <br>
-                <br>
-                <!-- Graph Currency   (SET BY Sanjai Kumar) -->
-                <div class="row">
-                    <div class="col-md-9">
-                        <?php if($total_Revenue_count > 0){ ?> 
-                            <div id="google-line-chart" style="width: 900px; height: 500px"></div>       
-                        <?php }elseif($total_Revenue_count == 0){ ?> 
-                            <div id="" style=""> <label for="">Graph :</label><h5>No Revenue Data Found</h5></div>  
-                            <br>     
-                        <?php } ?>
+                    <div class="col-md-6 mt-4 pl-0">
+                        <span  id="export" class="btn btn-primary btn-sm" >Download CSV</span>
+                    </div>
                  </div>
-                 <div class="col-md-3" >
-                    <p > <h5 style="margin-left: 15%;">Currency Used : {{ $currency->symbol .' '.$currency->country}}</h5> </p>
-                    <h5 style="margin-left: 15%;"> Total Views : <span id="total_views"> </span></h5>
-                </div>
-                </div>
-            
 
-                        <div class="row">
+                 <div class="col-md-6">
+                 <p > <h5 style="margin-left: 15%; font-size: 15px;">Currency Used : {{ $currency->symbol .' '.$currency->country}}</h5> </p>
+                    <h5 style="margin-left: 15%; font-size: 15px;"> Total Views : <span id="total_views"> </span></h5>
+                
+                 
+                     </div>
+
+
+</div>
+                    
+            </div>
+                    
+
+                    
+                </div>
+                <br>
+                <div class="row">
                             <div class="col-md-12">
                                 <table class="table" id="cpp_revenue_table" style="width:100%">
                                     <thead>
@@ -104,6 +103,25 @@
                            </table>
                         </div>
                     </div>
+
+                <div class="clear"></div>
+                <br>
+                <!-- Graph Currency   (SET BY Sanjai Kumar) -->
+                <div class="row">
+                    <div class="col-md-9">
+                        <?php if($total_Revenue_count > 0){ ?> 
+                            <div id="google-line-chart" style="width: 900px; height: 500px"></div>       
+                        <?php }elseif($total_Revenue_count == 0){ ?> 
+                            <div id="" style=""> <label for="">Graph :</label><h5>No Revenue Data Found</h5></div>  
+                            <br>     
+                        <?php } ?>
+                 </div>
+                 <div class="col-md-3" >
+                   </div>
+                </div>
+            
+
+                       
             </div>
         </div>
         </div>

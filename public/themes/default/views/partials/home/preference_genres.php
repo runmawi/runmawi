@@ -18,8 +18,6 @@
                                     </a>
 
                                 <!-- PPV price -->
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                             <?php  if($preference_genre->access == 'subscriber' ){ ?>
                                                 <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
@@ -33,8 +31,6 @@
                                                 <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
                                         <?php } ?>
-                                        </div>
-                                    </div>
                                 </div>
                                 </div>
 
@@ -45,8 +41,6 @@
                                     
 
                                 <!-- PPV price -->
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                             <?php  if($preference_genre->access == 'subscriber' ){ ?>
                                                 <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
@@ -62,8 +56,6 @@
                                         <?php } ?>
                                         </a>
                                          <!-- PPV price -->
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                             <?php  if($preference_genre->access == 'subscriber' ){ ?>
                                                 <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>

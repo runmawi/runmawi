@@ -85,6 +85,8 @@ use App\Playerui;
 use App\PlayerSeekTimeAnalytic;
 use App\AdminVideoPlaylist as AdminVideoPlaylist;
 use App\VideoPlaylist as VideoPlaylist;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminVideosController extends Controller
 {
@@ -146,17 +148,30 @@ class AdminVideosController extends Controller
                 $videos = Video::with("category.categoryname")
                     ->orderBy("created_at", "DESC")
                     ->paginate(9);
+
+                    $videossss = Video::with("category.categoryname")
+                    ->orderBy("created_at", "DESC")
+                    ->get();
             endif;
-            // $video = Video::with('category.categoryname')->orderBy('created_at', 'DESC')->paginate(9);
+            // $videossss = Video::with('category.categoryname')->orderBy('created_at', 'DESC')->paginate(9);
             // echo "<pre>";
-            // foreach($videos as $key => $value){
+            // foreach($videossss as $key => $value){
             //     print_r(@$value->category[$key]->categoryname->name);
 
             // }
             // exit();
             // $video = Video::with('category.categoryname')->where('id',156)->get();
-            $user = Auth::user();
+            // $GoogleTranslate_array_values = GoogleTranslate_array_values($videos);
 
+            // $videoCollection = new Collection();
+
+            //     foreach ($GoogleTranslate_array_values as $item) {
+            //         $video = new Video($item);
+            //         $videoCollection->push($video);
+            //     }
+
+        
+            $user = Auth::user();
             $data = [
                 "videos" => $videos,
                 "user" => $user,

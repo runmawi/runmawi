@@ -115,7 +115,7 @@ $settings = App\Setting::first();
         <p class="mb-0 text-center font-size-14 text-body" >
           <?php
                     // CMS Pages
-            $cmspages = App\Page::where('active', 1)->get();
+            $cmspages = App\Page::where('footer_active', 1)->get();
 
             foreach($cmspages as $key => $page) {?>
               <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= $page->title ?> </a> 

@@ -83,7 +83,7 @@ body {font-family: Arial;}
                     </div>
 
                     <div class="col-md-4">
-                        <span  id="export" class="btn btn-success btn-sm" >Download CSV</span>
+                        <span  id="export" class="btn btn-primary btn-sm" >Download CSV</span>
                     </div>
                 </div>
                 <div id="PayPerView_content">

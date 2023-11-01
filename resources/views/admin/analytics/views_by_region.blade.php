@@ -66,6 +66,9 @@ input[type="number"] {
                            <h4 class="card-title">View By Region</h4>
                      </div>
                      <div class="row mt-3"> 
+                     <div class="col-md-4 ">
+                             <span  id="export" class="btn btn-primary btn-sm" >Export CSV</span>
+                          </div>
                           <div class="col-md-4">
                           <!-- <label for="start_time">  Start Date: </label>
                           <input type="date" id="start_time" name="start_time" > -->
@@ -74,9 +77,7 @@ input[type="number"] {
                           <!-- <label for="start_time">  End Date: </label>
                           <input type="date" id="end_time" name="end_time"> -->
                           </div>
-                          <div class="col-md-4 ">
-                             <span  id="export" class="btn btn-success btn-sm" >Export CSV</span>
-                          </div>
+                          
                           </div>
                             </div>
                             <div class="col-sm-12">
