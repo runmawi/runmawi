@@ -371,6 +371,16 @@ function GetLightLogo()
      return $settings->light_mode_logo;  
 }
 
+function front_end_logo()
+{
+    $theme = App\SiteTheme::first();
+    $settings = App\Setting::first();
+
+    $logo = ($theme->theme_mode == "light" && !empty($theme->light_mode_logo)) ? $theme->light_mode_logo : (($theme != "light" && !empty($theme->dark_mode_logo)) ? $theme->dark_mode_logo : $settings->logo);
+    
+    return URL::to('public/uploads/settings/'. $logo )  ;
+}
+
 function GetCategoryVideoStatus()
 {
      $settings = App\HomeSetting::first();
@@ -1089,13 +1099,54 @@ function Currency_Convert($amount){
 
     $From_Currency_symbol = App\Currency::where('country',@$allCurrency->country)->pluck('code')->first();
 
-    $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
-    ->from($From_Currency_symbol)
-    ->to($To_Currency_symbol)
-    ->amount($amount)
-    ->get();  
+    // $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
+    // ->from($From_Currency_symbol)
+    // ->to($To_Currency_symbol)
+    // ->amount($amount)
+    // ->get();  
+    $api_url = "https://open.er-api.com/v6/latest/$From_Currency_symbol";
 
-    return  $Currency_symbol.' '.$Currency_Converter; 
+    // Make a GET request to the API
+    $ch = curl_init($api_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+    $response = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        // Handle cURL error here
+        echo "cURL error: " . curl_error($ch);
+    } else {
+        // Decode the API response into a JSON object
+        $exchangeRates = json_decode($response, true);
+
+        // Check if the conversion rates are available
+        if (isset($exchangeRates['rates'])) {
+            // Replace 'USD' with the currency code you want to convert to
+            $targetCurrency = $To_Currency_symbol;
+
+            // Replace 'amount' with the amount you want to convert
+            // $amount = 100; // For example, 100 INR
+
+            if (isset($exchangeRates['rates'][$targetCurrency])) {
+                $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                $convertedAmount = $amount * $conversionRate;
+
+                // echo "Converted amount: " . $convertedAmount . ' ' . $targetCurrency;
+            } else {
+                // echo "Conversion rate for {$targetCurrency} not available.";
+                $convertedAmount = '';
+            }
+        } else {
+            // echo "Exchange rates data not found in the API response.";
+            $convertedAmount = '';
+        }
+    }
+    curl_close($ch);
+
+
+    return  $Currency_symbol.' '.$convertedAmount; 
 }
 
 
@@ -1120,14 +1171,53 @@ function PPV_CurrencyConvert($amount){
 
     $From_Currency_symbol = App\Currency::where('country',@$allCurrency->country)->pluck('code')->first();
 
-    $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
-    ->from($From_Currency_symbol)
-    ->to($To_Currency_symbol)
-    ->amount($amount)
-    ->get();  
+    // $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
+    // ->from($From_Currency_symbol)
+    // ->to($To_Currency_symbol)
+    // ->amount($amount)
+    // ->get();  
+    $api_url = "https://open.er-api.com/v6/latest/$From_Currency_symbol";
 
+    // Make a GET request to the API
+    $ch = curl_init($api_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
-    return  $Currency_Converter; 
+    $response = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        // Handle cURL error here
+        echo "cURL error: " . curl_error($ch);
+    } else {
+        // Decode the API response into a JSON object
+        $exchangeRates = json_decode($response, true);
+
+        // Check if the conversion rates are available
+        if (isset($exchangeRates['rates'])) {
+            // Replace 'USD' with the currency code you want to convert to
+            $targetCurrency = $To_Currency_symbol;
+
+            // Replace 'amount' with the amount you want to convert
+            // $amount = 100; // For example, 100 INR
+
+            if (isset($exchangeRates['rates'][$targetCurrency])) {
+                $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                $convertedAmount = $amount * $conversionRate;
+
+                // echo "Converted amount: " . $convertedAmount . ' ' . $targetCurrency;
+            } else {
+                // echo "Conversion rate for {$targetCurrency} not available.";
+                $convertedAmount = '';
+            }
+        } else {
+            // echo "Exchange rates data not found in the API response.";
+            $convertedAmount = '';
+        }
+    }
+    curl_close($ch);
+
+    return  $convertedAmount; 
 }
 
 function choosen_player()
@@ -1135,3 +1225,98 @@ function choosen_player()
     $choose_player = App\SiteTheme::pluck('choose_player')->first();
     return $choose_player ;
 }
+
+function GoogleTranslate_array_values($datas) {
+    $translator = new Stichoza\GoogleTranslate\GoogleTranslate();
+    $translator->setSource('en'); // Set the source language
+    $translator->setTarget('ta'); // Set the target language
+
+    $translatedUsers = [];
+    $collection = new \stdClass();
+
+    foreach ($datas as $data) {
+        $object = [];
+
+        // Iterate over each user model in the collection
+        foreach ($data->getAttributes() as $key => $value) {
+    // Check if the value is not null or empty before translation
+            if (!empty($value)) {
+                $object[$key] = $translator->translate($value);
+            } else {
+                // Optionally set the property to null if it's empty
+                $object[$key] = null;
+            }
+        }
+
+        $translatedUsers[] = $object;
+    }
+    $collection = collect($translatedUsers);
+    // dd($translatedUsers);
+
+    return $collection;
+}
+
+
+function GoogleTranslate_array_valueaas($datas)
+{
+    
+    
+    $users = $datas;
+
+    // Create a GoogleTranslate instance
+    $translator = new Stichoza\GoogleTranslate\GoogleTranslate();
+    $translator->setSource('en'); // Set the source language
+    $translator->setTarget('hi'); // Set the target language
+    
+    foreach ($users as $key => $user) {
+    // Iterate over each user model in the collection
+        foreach ($user->getAttributes() as $key => $value) {
+    // Check if the value is not null or empty before translation
+            if (!empty($value)) {
+              $object[$key]   = $translator->translate($value);
+            } else {
+                // Optionally set the property to null if it's empty
+                $object[$key]  = null;
+            }
+        }
+        $translatedUsers[] = $object;
+    }
+
+    $collection = collect($translatedUsers);
+
+    // dd($collection);
+    
+
+    return $collection ;
+}
+
+
+
+function GoogleTranslate_object_values($data)
+{
+    
+    
+    $data = $data;
+
+    // Create a GoogleTranslate instance
+    $translator = new Stichoza\GoogleTranslate\GoogleTranslate();
+    $translator->setSource('en'); // Set the source language
+    $translator->setTarget('hi'); // Set the target language
+    
+   $object = new \stdClass();
+        
+        // Loop through the attributes and translate them
+        foreach ($data->getAttributes() as $key => $value) {
+            // Check if the value is not null or empty before translation
+            if (!empty($value)) {
+                $object->$key = $translator->translate($value);
+            }else{
+                $object->$key = null;
+
+            }
+        }
+    
+
+    return $object ;
+}
+

@@ -452,7 +452,6 @@ i.fa.fa-google-plus {
         color: #000!important;
         background-color: #fff;
         margin: 5px;
-
        border: 5px solid #ddd;
        
     }
@@ -1039,10 +1038,12 @@ background-color: #000;padding: 10px!important;}
 
     window.onload = function(){
 
-        $("#stripe_radio_button").attr('checked', true);
+        $("#stripe_radio_button").prop('checked', true);
         $('.paystack_payment').hide();
         $('.Razorpay_payment').hide();
-        $('.cinetpay_button').hide();
+        $('.cinetpay_payment').hide();
+        $(".payment_gateway").trigger("click");
+
 
         if( $('input[name="payment_gateway"]:checked').val() == "paystack" ){
             $('.stripe_payment').hide();
@@ -1055,7 +1056,6 @@ background-color: #000;padding: 10px!important;}
         if( $('input[name="payment_gateway"]:checked').val() == "CinetPay" ){
             $('.cinetpay_button').hide();
         }
-
     };
 
     $(document).ready(function(){
@@ -1078,11 +1078,11 @@ background-color: #000;padding: 10px!important;}
 
                     $('.Razorpay_payment').show();
 
-                }else if(  payment_gateway == "CinetPay" ){
+                }else if( payment_gateway == "CinetPay" ){
+                    $('.cinetpay_button').show(); 
+                    $('.cinetpay_payment').show();    
 
-                    $('.cinetpay_button').show();
-
-                    }
+                }
         });
     });
 

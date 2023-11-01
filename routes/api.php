@@ -293,6 +293,7 @@ Route::group(
         Route::post('RazorpaySubscriptionUpdate', 'ApiAuthController@RazorpaySubscriptionUpdate');
 
         // Paystack
+        Route::post('Paystack-become-subscriber', 'ApiAuthController@Paystack_become_subscriber');
         Route::post('Paystack-liveRent-Paymentverify', 'ApiAuthController@Paystack_liveRent_Paymentverify')->name('Paystack_liveRent_Paymentverify');
         Route::post('Paystack-VideoRent-Paymentverify', 'ApiAuthController@Paystack_VideoRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
 
@@ -638,5 +639,13 @@ Route::group(
             Route::get('TV_retrieve_search_data', 'ApiAuthController@tv_retrieve_search_data');
             Route::post('TV_search_data_update', 'ApiAuthController@tv_search_data_update');
             Route::post('auto-store-station', 'ApiAuthController@AutoStoreStation');
-            
+            Route::post('multi-currency-converter', 'ApiAuthController@Currency_Convert');
+
+
+            Route::post('scanner_code', 'ApiAuthController@QRScannerCode');
+            Route::post('mobile_pair_code', 'ApiAuthController@QRMobilePair');
+            Route::post('tv_signup', 'ApiAuthController@TvSignUp');
+            Route::post('tv_code_verifyToken', 'ApiAuthController@verifytokenCode');
+            Route::post('CinetPaySubscription', 'ApiAuthController@CinetPaySubscription');
+
         });

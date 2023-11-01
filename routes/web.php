@@ -15,6 +15,9 @@ Route::get('/video-chat', function () {
     return view('video-chat', ['users' => $users]);
 });
 // Route::get('video_chat', 'VideoChatController@index');
+Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
+
+$router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('video_chat', 'VideoChatController@index');
@@ -63,6 +66,10 @@ Route::get('/user/tv-code/remove/{id}', 'AdminUsersController@RemoveTVCode');
 
 Route::get('admin/combineM3U8toHLS/', 'AdminVideosController@combineM3U8');
 Route::post('/user/DOB', 'AdminUsersController@DOB');
+Route::get('/manage-devices', 'AdminUsersController@ManageDevices');
+Route::get('/register-new-devices', 'AdminUsersController@RegisterNewDevice');
+Route::get('/device/deregister/{id}', 'AdminUsersController@DeregisterDevice');
+Route::post('/device/store-code', 'AdminUsersController@StoreNewDevice');
 
 // Route::get('/admin/filemanager', 'FileManagerController@index');
 

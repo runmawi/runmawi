@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\User as User;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Setting;
 use App\Genre;
 use App\Audio;
@@ -64,6 +65,7 @@ use App\StorageSetting;
 use App\AdminLandingPage;
 use App\CommentSection;
 
+
 class ChannelController extends Controller
 {
     /**
@@ -94,22 +96,66 @@ class ChannelController extends Controller
         try {
 
             $ThumbnailSetting = ThumbnailSetting::first();
+            $PPV_settings = Setting::where('ppv_status', 1)->first();
+            $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null ;
+            $category_id     = VideoCategory::where('slug', $cid)->pluck('id');
+            $category_title  = VideoCategory::where('id', $category_id)->pluck('name')->first();
+            $categoryVideo = CategoryVideo::where('category_id',$category_id->first())->groupBy('video_id')->pluck('video_id');
 
-            $category_id = VideoCategory::where('slug', $cid)->pluck('id');
-           
+            // categoryVideos
+
             $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                    ->where('category_id', '=', $category_id)
-                    ->where('active', '=', '1');
+                    ->whereIn('category_id', $category_id)->where('active', 1)
+                    ->where('videos.status', 1)->where('videos.draft', 1);
 
                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
                     $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
                 }
 
-            $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'desc')->paginate($this->videos_per_page);
+            $categoryVideos = $categoryVideos->latest('videos.created_at')->paginate($this->videos_per_page);
           
-            $category_title = VideoCategory::where('id', $category_id)->pluck('name')->first();
-            $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
-            $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null ;
+            // Most_watched_country
+
+            $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                        ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')->groupBy('video_id')
+                        ->orderByRaw('count DESC');
+
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
+                    $Most_watched_country = $Most_watched_country->whereNotIn('videos.id', Block_videos());
+                }
+            
+            $Most_watched_country = $Most_watched_country->where('recent_views.country_name', Country_name())
+                            ->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$categoryVideo)->get()
+                            ->map(function ($item) {
+
+                                $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
+                                                            ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                            ->where('video_id', $item->video_id )
+                                                            ->pluck('name') 
+                                                            ->implode(' , ');
+    
+                                return $item;
+                });
+
+
+            $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                            ->join('videos', 'videos.id', '=', 'recent_views.video_id')->where('videos.status', '=', '1')
+                            ->where('videos.draft', '=', '1')->where('videos.active', '=', '1')
+                            ->whereIn('videos.id',$categoryVideo)
+                            ->groupBy('video_id');
+
+                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
+                                $top_most_watched = $Most_watched_country->whereNotIn('videos.id', Block_videos());
+                            }
+
+            $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(20)->get();
+
+            $video_banners = Video::where('active', '=', '1')->whereIn('videos.id',$categoryVideo)
+                                        ->where('draft', '1')->where('status', '1')
+                                        ->where('banner', '1')->latest()
+                                        ->get() ;
 
             $Episode_videos = Series::select('episodes.*', 'series.title as series_name','series.slug as series_slug')
                 ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
@@ -129,6 +175,9 @@ class ChannelController extends Controller
                 'ThumbnailSetting' => $ThumbnailSetting,
                 'age_categories' => AgeCategory::get(),
                 'Episode_videos' => $Episode_videos,
+                'Most_watched_country' => $Most_watched_country ,
+                'top_most_watched'  => $top_most_watched ,
+                'video_banners'     => $video_banners ,
             ];
 
             return Theme::view('categoryvids', ['categoryVideos' => $data]);
@@ -3367,13 +3416,8 @@ class ChannelController extends Controller
             $settings = Setting::first();
 
             if ($settings->enable_landing_page == 1 && Auth::guest()) {
-                $landing_page_slug = AdminLandingPage::where('status', 1)
-                    ->pluck('slug')
-                    ->first()
-                    ? AdminLandingPage::where('status', 1)
-                        ->pluck('slug')
-                        ->first()
-                    : 'landing-page';
+                
+                $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first() : 'landing-page';
 
                 return redirect()->route('landing_page', $landing_page_slug);
             }

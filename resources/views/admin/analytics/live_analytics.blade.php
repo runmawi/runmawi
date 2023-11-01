@@ -30,38 +30,26 @@
 
                 <div class="clear"></div>
 
+                <div class="col-md-12">
                 <div class="row mt-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="start_time">  Start Date: </label>
-                        <input type="date" id="start_time" name="start_time" >               
+                        <input type="date" id="start_time" name="start_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">               
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="start_time">  End Date: </label>
-                        <input type="date" id="end_time" name="end_time">     
+                        <input type="date" id="end_time" name="end_time" style="background: rgba(250, 250, 250, 1);border-color: transparent;">     
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <span  id="export" class="btn btn-primary" >Download CSV</span>
                     </div>
                 </div>
-
-                <div class="clear"></div>
-                <br>
-
-                <h4 class="card-title">Video View Through Graph :</h4>
-                
-                <div class="row">
-                    <div class="col-md-8">
-                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
-                 </div>
-                 <!-- <div class="col-md-4" >
-                
-                 </div> -->
                 </div>
-            
 
-                        <div class="row">
+
+                <div class="row mt-4">
                             <div class="col-md-12">
                                 <table class="table text-center" id="cpp_video_analytics_table" style="width:100%">
                                     <thead>
@@ -91,6 +79,23 @@
                            </table>
                         </div>
                     </div>
+
+                <div class="clear"></div>
+                <br>
+
+                <h4 class="card-title">Video View Through Graph :</h4>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                    <div id="google-line-chart" style="width: 900px; height: 500px"></div>
+                 </div>
+                 <!-- <div class="col-md-4" >
+                
+                 </div> -->
+                </div>
+            
+
+                       
             </div>
         </div>
     </div>

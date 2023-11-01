@@ -32,28 +32,20 @@ class FooterMenuSeeder extends Seeder
                 'created_at'      => Carbon::now(),
                 'updated_at'      => null,
             ],
+           
             [  
-                'name'    => 'Audio',
-                'link'    => 'audios',
-                'order'   => '3',
-                'column_position' => '2',
-                'created_at'      => Carbon::now(),
-                'updated_at'      => null,
-            ],
-            [  
-                'name'    => 'Live',
+                'name'    => 'Live Stream',
                 'link'    => 'live',
                 'order'   => '4',
                 'column_position' => '2',
                 'created_at'      => Carbon::now(),
                 'updated_at'      => null,
             ],
-                    // column 3
             [  
                 'name'    => 'Terms and Conditions',
                 'link'    => 'page/terms-and-conditions',
                 'order'   => '5',
-                'column_position' => '3',
+                'column_position' => '1',
                 'created_at'      => Carbon::now(),
                 'updated_at'      => null,
             ],
@@ -61,7 +53,7 @@ class FooterMenuSeeder extends Seeder
                 'name'    => 'About Us',
                 'link'    => 'page/about-us',
                 'order'   => '6',
-                'column_position' => '3',
+                'column_position' => '1',
                 'created_at'      => Carbon::now(),
                 'updated_at'      => null,
             ],
@@ -69,7 +61,7 @@ class FooterMenuSeeder extends Seeder
                 'name'    => 'Terms and Conditions',
                 'link'    => 'pages',
                 'order'   => '7',
-                'column_position' => '3',
+                'column_position' => '1',
                 'created_at'      => Carbon::now(),
                 'updated_at'      => null,
             ],
@@ -81,6 +73,7 @@ class FooterMenuSeeder extends Seeder
                 'created_at'      => Carbon::now(),
                 'updated_at'      => null,
             ],
+            
         ];
 
         FooterLink::insert($FooterLink);

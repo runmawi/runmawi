@@ -737,9 +737,7 @@ cursor: pointer;
                                  <span class="text-light font-size-13">Display Image</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13">
-                                       @if( $user->avatar != null ) 
-                                          <img src="{{ URL::to('public/uploads/avatars/'.$user->avatar)  }}" height="50px" width="50px" />
-                                       @endif
+                                       <img src="{{ !is_null($user->avatar) ? URL::to('public/uploads/avatars/'.$user->avatar) : URL::to('public/uploads/avatars/default_profile_image.png')   }}" height="50px" width="50px" />
                                     </span>
                                  </div>
                               </div>
@@ -838,9 +836,11 @@ cursor: pointer;
                                     </span><br>
 
                                     @if(Auth::user()->role == "subscriber" )
-                                    <span class="text-light font-size-13">
-                                          @if( $user->subscription_ends_at != null && !empty($user->subscription_ends_at) )
-                                             {{   "your subscription renew on ". ($user->subscription_ends_at)->format('d-m-Y') }}
+                                       <span class="text-light font-size-13">
+                                          @php  $subscription_ends_at = \DB::table('users')->where('id',Auth::user()->id)->pluck('subscription_ends_at')->first(); @endphp
+
+                                          @if( !is_null($subscription_ends_at)  && !empty($subscription_ends_at) )
+                                             {{   "your subscription renew on ". $subscription_ends_at  }}
                                           @endif
                                        </span>
                                     @endif

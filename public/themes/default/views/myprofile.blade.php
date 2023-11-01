@@ -207,8 +207,9 @@ $settings = App\Setting::first();
 
          <div class="sign-user_card">
         <div class="row align-items-center">
-           
             <div class="col-lg-4 mb-3 bdr">
+                  <a class="" href="{{ URL::to('/home') }}"><button class='fas fa-arrow-alt-circle-left btn bd btn-action back'  style=''> Home</button></a>
+                  <br><br>
                 <h3>Account Settings</h3>
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">

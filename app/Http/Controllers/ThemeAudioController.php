@@ -278,6 +278,10 @@ class ThemeAudioController extends Controller{
 
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+
+                    $artistscrew[] = Audioartist::where('audio_id',@$item->id)
+                    ->Join('artists','artists.id','=','audio_artists.artist_id')->get();
+                        $item['castcrew']   =   $castcrew;
                         if(count($castcrew) > 0){
                             foreach($castcrew as $cast_crew){
                                 $item['cast_crew']   =   $cast_crew. ' ' ;
@@ -290,6 +294,8 @@ class ThemeAudioController extends Controller{
                     }else{
                         $item['countjson']      =   1 ;
                     }
+                    $item['artistscrew']   =   $artistscrew;
+
                 return $item;
                 });
                 // dd($current_audio_lyrics);
@@ -324,6 +330,11 @@ class ThemeAudioController extends Controller{
 
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+
+                    $artistscrew[] = Audioartist::where('audio_id',@$item->id)
+                    ->Join('artists','artists.id','=','audio_artists.artist_id')->get();
+
+                        $item['castcrew']   =   $castcrew;
                         if(count($castcrew) > 0){
                             foreach($castcrew as $cast_crew){
                                 $item['cast_crew']   =   $cast_crew. ' ' ;
@@ -336,6 +347,7 @@ class ThemeAudioController extends Controller{
                     }else{
                         $item['countjson']      =   1 ;
                     }
+                    $item['artistscrew']   =   $artistscrew;
                     return $item;
                   });
                   $merged_audios_lyrics = $current_audio_lyrics->merge($all_album_audio_lyrics)->all();
@@ -369,6 +381,7 @@ class ThemeAudioController extends Controller{
                 'ThumbnailSetting' => ThumbnailSetting::first(),
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Songs',
+                'OtherMusicStation' => [],
             );
             } else {
                 $data = array(
@@ -637,6 +650,11 @@ class ThemeAudioController extends Controller{
                     }
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+
+                    $artistscrew[] = Audioartist::where('audio_id',@$item->id)
+                    ->Join('artists','artists.id','=','audio_artists.artist_id')->get();
+
+                        $item['castcrew']   =   $castcrew;
                         if(count($castcrew) > 0){
                             foreach($castcrew as $cast_crew){
                                 $item['cast_crew']   =   $cast_crew. ' ' ;
@@ -649,7 +667,8 @@ class ThemeAudioController extends Controller{
                     }else{
                         $item['countjson']      =   1 ;
                     }
-                return $item;
+                    $item['artistscrew']   =   $artistscrew;
+                    return $item;
                 });
 
 
@@ -676,6 +695,10 @@ class ThemeAudioController extends Controller{
                     }
                     $castcrew = Audioartist::where('audio_id',@$item->id)
                     ->Join('artists','artists.id','=','audio_artists.artist_id')->pluck('artists.artist_name');
+
+                    $artistscrew[] = Audioartist::where('audio_id',@$item->id)
+                        ->Join('artists','artists.id','=','audio_artists.artist_id')->get();
+                        $item['castcrew']   =   $castcrew;
                         if(count($castcrew) > 0){
                             foreach($castcrew as $cast_crew){
                                 $item['cast_crew']   =   $cast_crew. ' ' ;
@@ -688,6 +711,7 @@ class ThemeAudioController extends Controller{
                     }else{
                         $item['countjson']      =   1 ;
                     }
+                    $item['artistscrew']   =   $artistscrew;
                     return $item;
                   });
                   $merged_audios_lyrics = $all_album_audio_lyrics->merge($current_audio_lyrics)->all();
@@ -734,6 +758,7 @@ class ThemeAudioController extends Controller{
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Album Songs',
+                'OtherMusicStation' => [],
             );
             
             // dd( $data);
@@ -1468,6 +1493,7 @@ class ThemeAudioController extends Controller{
             'category_name'    => $category_name ,
             'ThumbnailSetting' => ThumbnailSetting::first(),
             'songs' => (array("songs" => $merged_audios)),
+            'OtherMusicStation' => [],
             );
         } else {
             $data = array(

@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="{{ '/assets/js/tagsinput/jquery.tagsinput.css' }}" />
 @stop
 
-
 @section('content')
     <div id="content-page" class="content-page">
         <div class="container-fluid">
@@ -149,11 +148,20 @@
                                         <div>
                                             <label for="active" style="float:left; display:block; margin-right:10px;">Is
                                                 this page Active:</label>
-                                            <!-- <input type="checkbox" @if (!isset($page->active) || (isset($page->active) && $page->active)) checked="checked" value="1" @else value="0" @endif name="active" id="active" /> -->
+                                            <!-- <input type="checkbox" @if ((isset($page->active) && $page->active == 1)) checked="checked"  @endif name="active" id="active" /> -->
                                             <!-- <input name="active" id="active" type="checkbox"  @if (isset($page->active) == 1) {{ "checked='checked'" }} @else {{ '' }} @endif > -->
-                                            <input type="checkbox" value="1" name="active" checked
-                                                @if (isset($page->active)) checked @endif>
+                                            <!-- <input type="checkbox" value="1" name="active" checked
+                                                @if (isset($page->active)) checked @endif> -->
+                                        <input type="checkbox"  value="1" @if(isset($page->active) && $page->active == 1) checked @endif name="active">
 
+                                        </div>
+                                    </div>
+
+                                    <div class="panel-body">
+                                        <div>
+                                            <label for="active" style="float:left; display:block; margin-right:10px;">Is
+                                                this page Footer Active:</label>
+                                                <input type="checkbox" value="1"  @if(isset($page->footer_active) && $page->footer_active == 1) checked @endif  name="footer_active" >
 
                                         </div>
                                     </div>

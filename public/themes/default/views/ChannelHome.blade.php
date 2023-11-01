@@ -50,7 +50,17 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 <section class="mt-5 mb-5">
     <div class="container-fluid">
         <div class="row ">
+            <div class="col-6 col-lg-6">
+
+                <div class="channel-about">
+                    @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
+                     <h6>About Channel : <?php echo $channel_partner->channel_about;  ?></h6> 
+                    @endif
+                </div>
+            </div>
+        </div>
             <div class="col-2 col-lg-2">
+
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     @php
                         include(public_path('themes/default/views/partials/channel-social-share.php'));

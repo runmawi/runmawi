@@ -133,6 +133,8 @@ use App\UserMusicStation as UserMusicStation;
 use Stripe\Stripe;
 use App\TVSetting as TVSetting;
 use App\TvSearchData ;
+use App\Currency ;
+use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
 
 
 class ApiAuthController extends Controller
@@ -266,7 +268,7 @@ class ApiAuthController extends Controller
         }
 
         if(!$settings->free_registration && $skip == 0) {
-            $user_data['role'] = 'subscriber';
+            $user_data['role'] = 'registered';
             $user_data['active'] = '1';
         } else {
                 if($settings->activation_email):
@@ -428,61 +430,133 @@ class ApiAuthController extends Controller
           }
             }elseif( $paymentMode == "Paystack" ){
 
-              $paystack_subcription_id = '124v';
+              try {
+                  
+                $paystack_subscription_id = $request->paystack_subscription_id ;
 
-              // $subcription_details = Paystack::fetchSubscription($paystack_subcription_id) ;
+                    // Verify Subscription API
 
-              // $paystack_Sub_Startday  = Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s');
-              // $paystack_Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s');
-              // $paystack_trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString();
+                $curl = curl_init();
+          
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://api.paystack.co/subscription/".$paystack_subscription_id,
+                    CURLOPT_RETURNTRANSFER => true, CURLOPT_ENCODING => "",  CURLOPT_MAXREDIRS => 10, CURLOPT_TIMEOUT => 30, CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET", CURLOPT_HTTPHEADER => $this->SecretKey_array,
+                ));
 
-            //   Subscription::create([
-            //     'user_id'        =>  $userid,
-            //     'name'           =>  $subcription_details['data']['plan']['name'],
-            //     'price'          =>  $subcription_details['data']['amount'] ,   // Amount Paise to Rupees
-            //     'stripe_id'      =>  $subcription_details['data']['subscription_code'] ,
-            //     'stripe_status'  =>  $subcription_details['data']['status'] ,
-            //     'stripe_plan'    =>  $subcription_details['data']['plan']['plan_code'],
-            //     'quantity'       =>  null,
-            //     'countryname'    =>  Country_name(),
-            //     'regionname'     =>  Region_name(),
-            //     'cityname'       =>  city_name(),
-            //     'PaymentGateway' =>  'Paystack',
-            //     'trial_ends_at'  =>  $paystack_trial_ends_at,
-            //     'ends_at'        =>  $paystack_trial_ends_at,
-            // ]);
-            $next_date = $request->days;
-            $current_date = date('Y-m-d h:i:s');
-            $date = Carbon::parse($current_date)->addDays($next_date);
+                $subscription_respond = curl_exec($curl);
+                $subscription_error = curl_error($curl);
+                curl_close($curl);
 
-            Subscription::create([
-              'user_id'        =>  $userid,
-              'name'           =>  $request->plan_name,
-              'price'          =>  $request->amount,   // Amount Paise to Rupees
-              'stripe_id'      =>  $request->subscription_code ,
-              'stripe_status'  =>  $request->status,
-              'stripe_plan'    =>  $request->plan_code,
-              'quantity'       =>  null,
-              'countryname'    =>  Country_name(),
-              'regionname'     =>  Region_name(),
-              'cityname'       =>  city_name(),
-              'PaymentGateway' =>  'Paystack',
-              'trial_ends_at'  =>  $date,
-              'ends_at'        =>  $date,
-          ]);
+                $verify_subscription = $subscription_error ?  json_decode($subscription_respond, true) : json_decode($subscription_respond, true) ;
 
-            User::where('id',$userid)->update([
-                'role'                  =>  'subscriber',
-                'stripe_id'             =>  $request->subscription_code ,
-                'subscription_start'    =>  $current_date,
-                'subscription_ends_at'  =>  $date,
-                'payment_gateway'       =>  'Paystack',
-                'payment_type'          => 'recurring',
-                'payment_status'        => 'active',
-            ]);
+                    // Verify Payments Status (false)
 
-              return $response = array('status'=>'true',
-              'message' => 'Registered Successfully.');
+                if( $verify_subscription['status'] == false ){
+
+                    $response = array(
+                        'status'=>'false',
+                        'message'=> $verify_subscription['message'] ,
+                    );  
+
+                    return response()->json($response, 200);
+                }
+
+                    // Subscription Details
+
+                $subcription_details = Paystack::fetchSubscription($paystack_subscription_id) ;
+
+                $Sub_Startday  = Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+                $Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+                $trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString(); 
+
+                    // Subscription Details - Storing
+
+                Subscription::create([
+                    'user_id'        =>  $userid,
+                    'name'           =>  $subcription_details['data']['plan']['name'],
+                    'price'          =>  $subcription_details['data']['amount'] ,   // Amount Paise to Rupees
+                    'stripe_id'      =>  $subcription_details['data']['subscription_code'] ,
+                    'stripe_status'  =>  $subcription_details['data']['status'] ,
+                    'stripe_plan'    =>  $subcription_details['data']['plan']['plan_code'],
+                    'quantity'       =>  null,
+                    'countryname'    =>  Country_name(),
+                    'regionname'     =>  Region_name(),
+                    'cityname'       =>  city_name(),
+                    'PaymentGateway' =>  'Paystack',
+                    'trial_ends_at'  =>  $trial_ends_at,
+                    'ends_at'        =>  $trial_ends_at,
+                ]);
+
+                User::where('id',$userid)->update([
+                    'role'            =>  'subscriber',
+                    'stripe_id'       =>  $subcription_details['data']['subscription_code'] ,
+                    'subscription_start'    =>  $Sub_Startday,
+                    'subscription_ends_at'  =>  $Sub_Endday,
+                    'payment_gateway'       =>  'Paystack',
+                ]);
+
+                return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
+                
+              } catch (\Throwable $th) {
+
+                $response = array(
+                  'status'=>'false',
+                  'message'=> $th->getMessage() ,
+                );  
+
+                return response()->json($response, 200);
+
+              }
+
+            }elseif( $paymentMode == "CinetPay" ){
+              
+              try {
+                           
+                $email = User::where('email',$request->email)->pluck('email')->first();
+                $user_id = User::where('email',$request->email)->pluck('id')->first();
+
+                $plandetail = SubscriptionPlan::where('plan_id',$request->plan_id)->first();
+                $current_date = date('Y-m-d h:i:s');    
+                $next_date = $plandetail->days;
+                $ends_at = Carbon::now()->addDays($plandetail->days);
+
+                    Subscription::create([
+                      'user_id'        =>  $user_id,
+                      'name'           =>  $request->username,
+                      'price'          =>  $plandetail->price ,   // Amount Paise to Rupees
+                      'stripe_id'      =>  $request->plan_id ,
+                      'stripe_status'  =>  'active' ,
+                      'stripe_plan'    =>  $request->plan_id,
+                      'quantity'       =>  null,
+                      'countryname'    =>  $request->country,
+                      'regionname'     =>  $request->state,
+                      'cityname'       =>  $request->city,
+                      'PaymentGateway' =>  'CinetPay',
+                      'trial_ends_at'  =>  $ends_at,
+                      'ends_at'        =>  $ends_at,
+                  ]);
+
+                  User::where('id',$request->user_id)->update([
+                      'role'                 =>  'subscriber',
+                      'stripe_id'            =>  $request->plan_id ,
+                      'subscription_start'   =>  Carbon::now(),
+                      'subscription_ends_at' =>  $ends_at,
+                      'payment_gateway'      =>  'CinetPay',
+                  ]);
+
+                return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
+                
+              } catch (\Throwable $th) {
+
+                $response = array(
+                  'status'=>'false',
+                  'message'=> $th->getMessage() ,
+                );  
+
+                return response()->json($response, 200);
+
+              }
 
             }
             else{
@@ -1403,7 +1477,11 @@ public function verifyandupdatepassword(Request $request)
               break;
             
             case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-              $item['videos_url']    = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+              $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+              break;
+              
+            case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
+              $item['videos_url']   = $item->mp4_url ;
               break;
 
             default:
@@ -3057,7 +3135,7 @@ public function verifyandupdatepassword(Request $request)
         'message' => "Payment Failed"
       );
     }
-    }elseif ($payment_type == 'razorpay' || $payment_type == 'paypal'|| $payment_type == 'Applepay'|| $payment_type == 'recurring') {
+    }elseif ($payment_type == 'razorpay' || $payment_type == 'paypal'|| $payment_type == 'CinetPay' ||  $payment_type == 'Applepay'|| $payment_type == 'recurring') {
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $serie_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
@@ -3170,8 +3248,8 @@ public function verifyandupdatepassword(Request $request)
 
       if($user_id == 1){
 
-          $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-                $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
+        $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+              $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
           });
           
@@ -3188,8 +3266,8 @@ public function verifyandupdatepassword(Request $request)
 
             $stripe_plan = SubscriptionPlan();
 
-            $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-                $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
+            $user_details = DB::table('users')->select('*')->where('id', $user_id)->latest()->get()->map(function ($item) {
+                $item->profile_url = URL::to('/') . '/public/uploads/avatars/' . $item->avatar;
                 return $item;
             });
 
@@ -5024,6 +5102,8 @@ return response()->json($response, 200);
     $seriesid = $request->seriesid;
     $myData = array();
     $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
+    $seriestitle = Series::where('id',$seriesid)->pluck('title')->first();
+    $series_description = Series::where('id',$seriesid)->pluck('description')->first();
     // print_r($seasonlist);exit();
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
     if(!empty($seriesimage)){
@@ -5035,6 +5115,7 @@ return response()->json($response, 200);
 
     foreach ($seasonlist as $key => $season) {
       $seasonid = $season['id'];
+      $season_access = $season['access'];
       $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->orderBy('episode_order')->get()->map(function ($item)  {
         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['episode_id'] =$item->id;
@@ -5055,7 +5136,10 @@ return response()->json($response, 200);
       $settings = Setting::first();
 
       $myData[] = array(
+        "seriestitle"   => $seriestitle,
+        "series_description"   => $series_description,
         "season_name"   => $season_name,
+        "season_access"   => $season_access,
         // "settings"   => $settings,
         "series_image" => $image,
         "season_id"   => $seasonid,
@@ -7642,6 +7726,90 @@ public function LocationCheck(Request $request){
     return response()->json($response, 200);
   }
 
+  
+  public function Paystack_become_subscriber(Request $request)
+  {
+    try {
+                  
+      $paystack_subscription_id = $request->paystack_subscription_id ;
+      $userid = $request->user_id ;
+
+          // Verify Subscription API
+
+      $curl = curl_init();
+
+      curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://api.paystack.co/subscription/".$paystack_subscription_id,
+          CURLOPT_RETURNTRANSFER => true, CURLOPT_ENCODING => "",  CURLOPT_MAXREDIRS => 10, CURLOPT_TIMEOUT => 30, CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET", CURLOPT_HTTPHEADER => $this->SecretKey_array,
+      ));
+
+      $subscription_respond = curl_exec($curl);
+      $subscription_error = curl_error($curl);
+      curl_close($curl);
+
+      $verify_subscription = $subscription_error ?  json_decode($subscription_respond, true) : json_decode($subscription_respond, true) ;
+
+          // Verify Payments Status (false)
+
+      if( $verify_subscription['status'] == false ){
+
+          $response = array(
+              'status'=>'false',
+              'message'=> $verify_subscription['message'] ,
+          );  
+
+          return response()->json($response, 200);
+      }
+
+          // Subscription Details
+
+      $subcription_details = Paystack::fetchSubscription($paystack_subscription_id) ;
+
+      $Sub_Startday  = Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+      $Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+      $trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString(); 
+
+          // Subscription Details - Storing
+
+      Subscription::create([
+          'user_id'        =>  $userid,
+          'name'           =>  $subcription_details['data']['plan']['name'],
+          'price'          =>  $subcription_details['data']['amount'] ,   // Amount Paise to Rupees
+          'stripe_id'      =>  $subcription_details['data']['subscription_code'] ,
+          'stripe_status'  =>  $subcription_details['data']['status'] ,
+          'stripe_plan'    =>  $subcription_details['data']['plan']['plan_code'],
+          'quantity'       =>  null,
+          'countryname'    =>  Country_name(),
+          'regionname'     =>  Region_name(),
+          'cityname'       =>  city_name(),
+          'PaymentGateway' =>  'Paystack',
+          'trial_ends_at'  =>  $trial_ends_at,
+          'ends_at'        =>  $trial_ends_at,
+      ]);
+
+      User::where('id',$userid)->update([
+          'role'            =>  'subscriber',
+          'stripe_id'       =>  $subcription_details['data']['subscription_code'] ,
+          'subscription_start'    =>  $Sub_Startday,
+          'subscription_ends_at'  =>  $Sub_Endday,
+          'payment_gateway'       =>  'Paystack',
+      ]);
+
+      return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
+      
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'=>'false',
+        'message'=> $th->getMessage() ,
+      );  
+
+      return response()->json($response, 200);
+
+    }
+  }
+
 
   public function RazorpaySubscription(Request $request){
 
@@ -9153,6 +9321,8 @@ public function Adstatus_upate(Request $request)
 
           $series = Series::where('id','!=', $series_id)->where('active','=',1)->inRandomOrder()->get()->map(function ($item) {
             $item['image'] = URL::to('public/uploads/images/'.$item->image);
+            $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+            $item['episode_count'] = Episode::where('series_id',$item->id)->count();
             return $item;
           });
 
@@ -21818,7 +21988,408 @@ public function TV_login(Request $request)
           'message'=> $th->getMessage(),
         );
     }
+    return response()->json($response, 200);
+
+  }
+
+
+  function Currency_Convert(Request $request){
+
+    try {
+
+      $amount = $request->amount;
+
+      $Country_name = $request->Country_name;
+
+      $To_Currency_symbol = Currency::where('country',$Country_name)->pluck('code')->first();
+
+      $Currency_symbol = Currency::where('country',$Country_name)->pluck('symbol')->first();
+      $allCurrency = CurrencySetting::first();
+
+      $From_Currency_symbol = Currency::where('country',@$allCurrency->country)->pluck('code')->first();
+
+      // $Currency_Converter = \AmrShawky\LaravelCurrency\Facade\Currency::convert()
+      // ->from($From_Currency_symbol)
+      // ->to($To_Currency_symbol)
+      // ->amount($amount)
+      // ->get();  
+
+      $api_url = "https://open.er-api.com/v6/latest/$From_Currency_symbol";
+
+      // Make a GET request to the API
+      $ch = curl_init($api_url);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+  
+      $response = curl_exec($ch);
+  
+      if (curl_errno($ch)) {
+          // Handle cURL error here
+          echo "cURL error: " . curl_error($ch);
+      } else {
+          // Decode the API response into a JSON object
+          $exchangeRates = json_decode($response, true);
+  
+          // Check if the conversion rates are available
+          if (isset($exchangeRates['rates'])) {
+              // Replace 'USD' with the currency code you want to convert to
+              $targetCurrency = $To_Currency_symbol;
+  
+              // Replace 'amount' with the amount you want to convert
+              // $amount = 100; // For example, 100 INR
+  
+              if (isset($exchangeRates['rates'][$targetCurrency])) {
+                  $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                  $convertedAmount = $amount * $conversionRate;
+  
+                  // echo "Converted amount: " . $convertedAmount . ' ' . $targetCurrency;
+              } else {
+                  // echo "Conversion rate for {$targetCurrency} not available.";
+                  $convertedAmount = '';
+              }
+          } else {
+              // echo "Exchange rates data not found in the API response.";
+              $convertedAmount = '';
+          }
+      }
+      curl_close($ch);
+
+      $response = array(
+
+        'status'  => true,
+        'Message' => 'Retrieve the Currency Converter',
+        'Currency_Converted' => $Currency_symbol.' '.$convertedAmount ,
+
+      );
+
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => false,
+          'message'=> $th->getMessage(),
+        );
+
+    }
 
     return response()->json($response, 200);
+
   }
+
+    public function QRScannerCode(Request $request){
+
+      try {
+
+        $qr_code = $request->qr_code ;
+
+        TVLoginCode::create([
+          'tv_code'  => $request->qr_code,
+          'tv_name'  => $request->tv_type,
+          'tv_type'  => $request->tv_type,
+          'status'   => 0,
+       ]);
+    
+        $response = array(
+            'status'=> 'true',
+            'message' => 'Added verfication code',
+            'qr_code' => $request->qr_code,
+            'quick_response_url' => URL::to('mytv/quick-response'),
+        );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => false,
+          'message'=> $th->getMessage(),
+        );
+
+      }
+      return response()->json($response, 200);
+
+    }
+
+
+    public function QRMobilePair(Request $request){
+
+      try {
+
+        $qr_code = $request->qr_code;
+        $email = $request->email ;
+
+        $MobilePairCodecount = TVLoginCode::where('tv_code',$request->qr_code)->where('tv_type',$request->tv_type)->count();
+
+          if($MobilePairCodecount > 0){
+            
+            TVLoginCode::where('tv_code',$request->qr_code)->where('tv_type',$request->tv_type)->update([
+                'email'                   =>  $request->email,
+                'status'                  =>  1,
+            ]);
+
+            $user_details = User::where('email',$request->email)->first();
+
+              $response = array(
+                  'status'=> true,
+                  'message' => 'Verfication Successfully Done',
+                  'MobilePairCode_details' => TVLoginCode::where('tv_code',$request->qr_code)->where('tv_type',$request->tv_type)->first(),
+                  'user_details' => $user_details,
+              );
+
+          }else{
+                $response = array(
+                  'status'=> false,
+                  'message' => 'Invaild Pair QrCode',
+              );
+          }
+
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => false,
+          'message'=> $th->getMessage(),
+        );
+
+      }
+      return response()->json($response, 200);
+
+    }
+
+
+    public function TvSignUp(Request $request){
+
+      try {
+
+        $this->validate($request, [
+          'email' => 'required|email|unique:users,email'
+        ]);
+
+        User::create([
+            'name'          => $request->name,
+            'username'      => $request->name,
+            'gender'        => $request->gender,
+            'email '        => $request->email ,
+            'password'      => Hash::make($request->password),
+            'DOB'           => $request->DOB,
+        ]);
+
+        $settings = Setting::first();
+
+        if($settings->free_registration == 0 && $settings->activation_email == 1){
+
+          try {
+
+            $activation_code   = Str::random(60);
+
+            User::create([
+              'name'              => $request->name,
+              'username'          => $request->name,
+              'gender'            => $request->gender,
+              'email'             => $request->email ,
+              'password'          => Hash::make($request->password),
+              'activation_code'   => $activation_code,
+          ]);
+            
+              $email = $request->email;
+
+              $uname = $request->name;
+
+              Mail::send('emails.verify', array('activation_code' => $activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+
+                  $message->to($email,$uname)->subject('Verify your email address');
+
+              });
+
+              
+            $response = array(
+
+              'status'  => true,
+              'Message' => 'User Registered Successfully',
+              'User_Details' => User::where('email',$request->email)->first(),
+            );
+    
+          } catch (\Throwable $th) {
+
+            $response = array(
+              'status' => false,
+              'message'=> $th->getMessage(),
+            );
+
+          }
+  
+
+        }else{
+
+          User::create([
+            'name'          => $request->name,
+            'username'      => $request->name,
+            'gender'        => $request->gender,
+            'email'         => $request->email ,
+            'password'      => Hash::make($request->password),
+            'active'        => 1 ,
+          ]);
+
+          $response = array(
+
+            'status'  => true,
+            'Message' => 'User Registered Successfully',
+            'User_Details' => User::where('email',$request->email)->first(),
+          );
+
+        }
+        
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => false,
+          'message'=> $th->getMessage(),
+        );
+
+      }
+
+      return response()->json($response, 200);
+
+    }
+
+    
+    public function verifytokenCode(Request $request){
+
+      try {
+
+        $tvcode = $request->qr_code ;
+        $verifytoken = $request->verifytoken ;
+
+        $verifytoken = TVLoginCode::where('tv_code',$tvcode)->where('verifytoken',$verifytoken)->count();
+       
+        if($verifytoken == 1){
+            
+          $TVLoginCode = TVLoginCode::where('tv_code',$request->qr_code)->where('verifytoken',$request->verifytoken)->update([
+              'email'                   =>  $request->email,
+              'status'                  =>  1,
+          ]);
+
+          $user_details = User::where('email',$request->email)->first();
+
+            $response = array(
+                'status'=> true,
+                'message' => 'Verfication Successfully Done',
+                'user_details' => $user_details,
+                'TVLoginCode' => $TVLoginCode,
+            );
+
+        }else{
+              $response = array(
+                'status'=> false,
+                'message' => 'Invaild Pair QrCode',
+            );
+        }
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => false,
+          'message'=> $th->getMessage(),
+        );
+
+      }
+      return response()->json($response, 200);
+
+    }
+
+
+    
+    public function CinetPaySubscription(Request $request)
+    {
+
+        try{
+
+          $data = $request->all();
+          $email = User::where('id',$request->user_id)->pluck('email')->first();
+          $userdetail = User::where('id',$request->user_id)->first();
+  
+          $plandetail = SubscriptionPlan::where('plan_id',$request->plan_id)->first();
+          $current_date = date('Y-m-d h:i:s');    
+          $next_date = $plandetail->days;
+          $ends_at = Carbon::now()->addDays($plandetail->days);
+          
+            Subscription::create([
+                'user_id'        =>  $userdetail->id,
+                'name'           =>  $userdetail->username,
+                'price'          =>  $request->amount ,   // Amount Paise to Rupees
+                'stripe_id'      =>  $request->plan_id ,
+                'stripe_status'  =>  'active' ,
+                'stripe_plan'    =>  $request->plan_id,
+                'quantity'       =>  null,
+                'countryname'    =>  $request->country,
+                'regionname'     =>  $request->state,
+                'cityname'       =>  $request->city,
+                'PaymentGateway' =>  'CinetPay',
+                'trial_ends_at'  =>  $ends_at,
+                'ends_at'        =>  $ends_at,
+            ]);
+
+            User::where('id',$request->user_id)->update([
+                'role'                 =>  'subscriber',
+                'stripe_id'            =>  $request->plan_id ,
+                'subscription_start'   =>  Carbon::now(),
+                'subscription_ends_at' =>  $ends_at,
+                'payment_gateway'      =>  'CinetPay',
+            ]);
+
+            // Success 
+            $response = array(
+                "status"  => true ,
+                "message" => "Payment done! Successfully", 
+            );
+       
+    
+
+    } catch (\Exception $e) {
+
+        $response = array(
+            "status"  => false , 
+            "message" => $e->getMessage(), 
+       );
+    }
+        try {
+            $user = User::where('id',$request->user_id)->first();
+            $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+
+            \Mail::send('emails.subscriptionmail', array(
+                'name' => ucwords($user->username),
+                'uname' => $user->username,
+                'paymentMethod' => 'CinetPay',
+                'plan' => ucfirst($plandetail->plans_name),
+                'price' => $plandetail->price,
+                'plan_id' => $plandetail->plan_id,
+                'billing_interval' => $plandetail->billing_interval,
+                'next_billing' => $ends_at,
+                'subscription_type' => 'One Time',
+
+            ), function($message) use ($request,$user,$email_subject){
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($user->email, $user->username)->subject($email_subject);
+            });
+
+            $email_log      = 'Mail Sent Successfully from Register Subscription';
+            $email_template = "23";
+            $user_id = $user->id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        } catch (\Throwable $th) {
+
+            $user = User::where('id',$request->user_id)->first();
+
+            $email_log      = $th->getMessage();
+            $email_template = "23";
+            $user_id = $user->id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+    
+    return response()->json($response, 200);
+
+    }
+
+
 }

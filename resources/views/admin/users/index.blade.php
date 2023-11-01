@@ -95,9 +95,8 @@
                                  @foreach($users as $user)
                                     <tr>
                                        <td>
-                                       <img src="{{ URL::to('/') . '/public/uploads/avatars/' . $user->avatar }}"
+                                       <img src="{{ $user->avatar ? URL::to('public/uploads/avatars/' . $user->avatar) : URL::to('public/uploads/avatars/default_profile_image.png') }}"
                                        class="img-fluid avatar-50" alt="author-profile">
-                                          <!-- <img src="../assets/images/user/01.jpg" class="img-fluid avatar-50" alt="author-profile"> -->
                                        </td>
                                        <td>@if(!empty($user->username)){{$user->username}} @else {{$user->name}} @endif</td>
                                        <td>{{$user->mobile}}</td>

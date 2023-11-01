@@ -8,14 +8,13 @@
                 ?>
 
                 <li class="slide-item">
-                    <a href="<?php echo URL::to('home') ?>">
-                        <div class="block-images position-relative">
+                    <div class="block-images position-relative">
+                        <!-- block-images -->
+                            <div class="border-bg">
                                 <div class="img-box">
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
+                                    <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
                                         <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>" class="img-fluid loading w-100" alt="p-img"> 
-                                        <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->image;  ?>"  data-play="hover" >
-                                            <source src="<?php echo $preference_Languages->trailer;  ?>" type="video/mp4">
-                                        </video>-->
+                                        
                                     </a>
 
                                 <!-- PPV price -->   
@@ -37,14 +36,61 @@
                                         <?php } ?>
                                     </div>
                                 </div>
+                                </div>
 
                                 <div class="block-description">
+                                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
+                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_Languages->player_image;  ?>" class="img-fluid loading w-100" alt="p-img"> 
+                                        
+                                    
 
-
-                                <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
-                                         <h6><?php  echo (strlen($preference_Languages->title) > 17) ? substr($preference_Languages->title,0,18).'...' : $preference_Languages->title; ?></h6>
+                                <!-- PPV price -->   
+                                    <div class="corner-text-wrapper">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                        <div class="corner-text">
+                                            <?php  if($preference_Languages->access == 'subscriber' ){ ?>
+                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif($preference_Languages->access == 'registered'){?>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <?php } elseif(!empty($preference_Languages->ppv_price)){?>
+                                                <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_Languages->ppv_price; ?></p>
+                                            <?php }elseif( !empty($preference_Languages->global_ppv || !empty($preference_Languages->global_ppv) && $preference_Languages->ppv_price == null)){ ?>
+                                                <p class="p-tag1"><?php echo $preference_Languages->global_ppv.' '.$currency->symbol; ?></p>
+                                            <?php }elseif($preference_Languages->global_ppv == null && $preference_Languages->ppv_price == null ){ ?>
+                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
                                     </a>
+                                     <!-- PPV price -->   
+                                     <div class="corner-text-wrapper">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                        <div class="corner-text">
+                                            <?php  if($preference_Languages->access == 'subscriber' ){ ?>
+                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif($preference_Languages->access == 'registered'){?>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <?php } elseif(!empty($preference_Languages->ppv_price)){?>
+                                                <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_Languages->ppv_price; ?></p>
+                                            <?php }elseif( !empty($preference_Languages->global_ppv || !empty($preference_Languages->global_ppv) && $preference_Languages->ppv_price == null)){ ?>
+                                                <p class="p-tag1"><?php echo $preference_Languages->global_ppv.' '.$currency->symbol; ?></p>
+                                            <?php }elseif($preference_Languages->global_ppv == null && $preference_Languages->ppv_price == null ){ ?>
+                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <?php } ?>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+
+
+
+                            <div class="hover-buttons text-white">
+                                <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>">
+                                <?php if($ThumbnailSetting->title == 1) { ?> 
+                                               <!-- Title -->
+                                               <p class="epi-name text-left m-0">
+                                                <?php  echo (strlen($preference_Languages->title) > 17) ? substr($preference_Languages->title,0,18).'...' : $preference_Languages->title; ?></p>
+                                    
                                 <?php } ?>   
 
                                 <div class="movie-time d-flex align-items-center pt-1">
@@ -115,19 +161,16 @@
                                       </span>
                                       <?php } ?>
                                 </div>
+                                </a>
                                     
                                     
-                                   <div class="hover-buttons">
-                                       <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>" >
-                                         <img class="ply mr-1 " src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                   
+                                       <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_Languages->slug ?>" >
+                                         <img class="d-inline-block ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                       </a>
-                                    <!-- <div>
-                                       <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $preference_Languages->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a>
-                                </div> -->
                                 </div>
                             </div>
                         </div>
-                    </a>
                 </li>
                          <?php endforeach; endif; ?>
         </ul>
