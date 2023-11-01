@@ -165,7 +165,7 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
 
 /*---------------------*/
 #trending-slider .tranding-block, .banner-wrapper { background-size: cover; background-position: top right; position: relative; }
-.trending-pills { background: rgb(0, 0, 0, 0.25); }
+.trending-pills { background: rgb(0, 0, 0, 0.25);margin: 1.875em 0em; background: var(--iq-bg1); }
 .trending-info { padding: 60px 0; }
 .tab-title-info { z-index: 99; }
 .trending-content .tab-pane.fade { display: none; visibility: hidden; opacity: 0; }
@@ -273,11 +273,6 @@ span.text-white.rele-date {
     transition: transform 2s ease-in-out !important;
     transform-origin: center center;
 }
-.starring-description{
-	text-align: center !important;
-    width: 300px !important;
-	padding-left: 80px !important;
-}
 /* .episode-play { height: 45px; width: 45px; line-height: 45px; text-align: center; background: rgba(255, 255, 255, 0.15); border-radius: 50%; margin: 0 auto; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; } */
 .episode-play a { position: relative; display: block; height: 32px; width: 32px; line-height: 26px; font-size: 16px; text-align: center; background: var(--iq-white); color: var(--iq-primary); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -o-border-radius: 50%; margin: 0 auto; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; justify-content: center; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; }
 .episodes-slider1 .owl-nav { position: absolute; top: 50%; transform: translateY(-50%); left: 0; right: 0; color: #fff; }
@@ -289,6 +284,104 @@ span.text-white.rele-date {
 .parallax-window { height: 100%; padding: 100px 0; position: relative;  background-size: cover; background-attachment: fixed; }
 .parallax-window::after { position: absolute; content: ""; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.8); }
 .parallaxt-details { z-index: 9; position: relative; }
+
+/* Starring */
+.sectionArtists-Artists {
+    position: relative;
+    margin-bottom: 50px;
+}
+.Headingartist-artist {
+    font-size: 24px !important;
+    color: #fff;
+    margin-bottom: 25px;
+    margin-top: 45px;
+}
+
+.sectionArtists-Artists .listItems {
+    display: flex;
+    gap: 20px;
+    overflow-y: hidden;
+    margin-right: -20px;
+    margin-left: -20px;
+    padding: 0 20px;
+}
+@media only screen and (min-width: 768px){
+.sectionArtists .listItems {
+    margin: 0;
+    padding: 0;
+}
+}
+.sectionArtists-Artists .listItems .listItem {
+    text-align: center;
+    color: #fff;
+}
+@media only screen and (min-width: 768px){
+.sectionArtists-Artists .listItems .listItem .profileImg {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 25px;
+}
+}
+.sectionArtists-Artists .listItems .listItem .profileImg {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.lazy-load-image-background.blur.lazy-load-image-loaded {
+    filter: blur(0);
+    transition: filter .3s;
+}
+.sectionArtists-Artists .listItems .listItem .profileImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+}
+@media only screen and (min-width: 768px){
+.sectionArtists-Artists .listItems .listItem .name {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+}
+}
+@media only screen and (min-width: 768px){
+.sectionArtists-Artists .listItems .listItem .character {
+    font-size: 14px;
+    line-height: 24px;
+}
+}
+.sectionArtists-Artists .listItems .listItem .character {
+    font-size: 14px;
+    line-height: 20px;
+    opacity: .5;
+}
+
+.episodenum {
+    background: var(--iq-primary);
+    position: absolute !important;
+    top: 0.938em;
+    left: 0.938em;
+    color: var(--iq-white);
+    padding: 0 0.313em;
+}
+.run-time{
+    font-weight: 700 !important;
+}
+span.text-white.rel-date {
+    border-left: 0.25em solid var(--iq-primary) !important;
+    background: linear-gradient(270deg, var(--iq-form-gradient-color) 0%, var(--iq-to-gradient-color) 100%);
+    padding: 0.313em;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    font-style: italic;
+}
+
+
+
 
 /*-----------------------*/
 .topten-contens { position: relative; overflow: hidden; }

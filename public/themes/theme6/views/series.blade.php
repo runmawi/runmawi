@@ -306,89 +306,87 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                     </select>
                 </div>
 
-                <div class="trending-custom-tab">
-                <div class="tab-title-info position-relative mt-5">
-                    <ul class="trending-pills nav nav-pills text-center iq-ltr-direction" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active show m-0" data-toggle="pill" href="#episodes" role="tab"
-                                aria-selected="true">Episodes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  m-0" data-toggle="pill" href="#feature-clips" role="tab"
-                                aria-selected="false">FEATURED CLIPS</a>
-                        </li>
-                    </ul>
-                </div>
+                
 
-                <!-- Episodes -->
-                <div class="tab-content" id="nav-tabContent">
-                        <div id="episodes" class=" tab-pane animated fadeInUp active show">
+                <!-- Tablist -->
+
+                <div class="trending-custom-tab ">
+                     <div class="tab-title-info position-relative">
+                        <ul class="trending-pills nav nav-pills text-center iq-ltr-direction" role="tablist">
+                           <li class="nav-item">
+                              <a class="nav-link m-0" data-toggle="pill" href="#episodes" role="tab" aria-selected="false">Episodes</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link m-0 active show" data-toggle="pill" href="#feature-clips" role="tab" aria-selected="true">FEATURED CLIPS</a>
+                           </li>
+                        </ul>
+                     </div>
+
+                     <!-- Episode -->
+
+                     <div class="tab-content" id="nav-tabContent">
+                        <div id="episodes" class="tab-pane animated fadeInUp">
                            <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction ">
+                              
                               <div class="e-item col-lg-3 col-sm-12 col-md-6">
                                  <div class="block-image position-relative">
-                                    <!-- <a href="show-details.html">
-                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid img-zoom" alt="" loading="lazy">
-                                    </a> -->
                                     <a href="show-details.html">
-                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid img-zoom transfromhover" alt="" >
+                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid transimga img-zoom" alt="" >
                                     </a>
-                                    <div class="episode-number episodeS01E" >S01E01</div>
+                                    <div class="episode-number episodenum">S01E04</div>
                                     <div class="episode-play-info">
                                        <div class="episode-play">
-                                          <a
-                                             href="show-detail.html">
-                                             <i class="ri-play-fill"></i>
-                                          </a>
+                                          <a href="show-details.html" tabindex="0"><i class="ri-play-fill"></i></a>
                                        </div>
                                     </div>
                                  </div>
                                  <div class="epi-desc p-3">
                                     <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rele-date">October 1, 2020</span>
-                                       <span class="text-primary run-time">45min</span>
+                                       <span class="text-white rel-date">October 22, 2020</span>
+                                       <span class="text-primary run-time" style="font-weight: 700">41min</span>
                                     </div>
-                                    <a
-                                       href="show-detail.html">
+                                    <a href="show-detail.html">
                                        <h5 class="epi-name text-white mb-0">
-                                          The Reckless 1</h5>
+                                          The Reckless 4</h5>
                                     </a>
                                  </div>
                               </div>
-                              </div>
-                              </div>
-                              </div>
+                           </div>
+                        </div>
 
-                              <!-- Features clips -->
-                              <div id="feature-clips" class="tab-pane animated fadeInUp">
+                        <!-- Features clips -->
+                        
+                        <div id="feature-clips" class="tab-pane animated fadeInUp active show">
                            <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction">
+                              
+                              
                               <div class="e-item col-lg-3 col-sm-12 col-md-6">
                                  <div class="block-image position-relative">
                                     <a href="show-details.html">
-                                       <img src="images/tvthrillers/09.jpg" class="img-fluid img-zoom" alt="" loading="lazy">
+                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid img-zoom" alt="" >
                                     </a>
-                                    <div class="episode-number">S01E01</div>
+                                    <div class="episode-number episodenum">S01E02</div>
                                     <div class="episode-play-info">
                                        <div class="episode-play">
-                                          <a
-                                             href="show-detail.html">
-                                             <i class="ri-play-fill"></i>
-                                          </a>
+                                          <a href="show-details.html" tabindex="0"><i class="ri-play-fill"></i></a>
                                        </div>
                                     </div>
                                  </div>
                                  <div class="epi-desc p-3">
                                     <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 1, 2020</span>
-                                       <span class="text-primary run-time">45min</span>
+                                       <span class="text-white rel-date">October 8, 2020</span>
+                                       <span class="text-primary run-time" style="font-weight: 700">35min</span>
                                     </div>
-                                    <a
-                                       href="show-detail.html">
+                                    <a href="show-detail.html">
                                        <h5 class="epi-name text-white mb-0">
-                                          The Reckless 1 </h5>
+                                          The Reckless 2 </h5>
                                     </a>
                                  </div>
                               </div>
-                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
 
 
                 <ul class="category-page list-inline row p-3 mb-0">
@@ -498,36 +496,23 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 
 <!-- Starring -->
 
-<div id="iq-favorites" class="s-margin detail-cast-list iq-rtl-direction mt-5 starring">
-                  <div class="row m-0">
-                     <div class="col-sm-12 overflow-hidden p-0">
-                        <div class="iq-main-header d-flex align-items-center justify-content-between iq-ltr-direction">
-                           <h4 class="main-title">Starring</h4>
-                        </div>
-                        <div class="favorites-contens iq-smovie-slider">
-                           <ul class="inner-slider list-inline row p-0  iq-ltr-direction">
-                                 <li class=" slide-item iq-ltr-direction col-xl-3 col-lg-4 col-md-4 col-6">
-                                    <div class="cast-images position-relative row mx-0" style="max-width:137px">
-                                       <div class="starrging img-box p-0">
-                                             <img src="https://templates.iqonic.design/streamit/frontend/html/images/genre/43.jpg" class="person__poster--image img-fluid" alt="image" style="border-radius:50%">
-                                       </div>
-                                       <div class="starring-description starring-desc mt-3 " style="text-align:center; width:300px">
-                                             <h6 class="iq-title">
-                                                <a href="cast-james-jones.html" tabindex="0">
-                                                   James Chinlund </a>
-                                             </h6>
-                                             <div class="video-time d-flex align-items-center my-2" style="justify-content: center;">
-                                                <span class="text-white">As James</span>
-                                             </div>
-                                       </div>
+                    <div class="sectionArtists-Artists">   
+                        <div class="Headingartist-artist">Starring</div>
+                            <div class="listItems">
+                                <a href="https://dev-flick.webnexs.org/artist/The_Chainsmokers_-_Halsey">
+                                <div class="listItem">
+                                    <div class="profileImg">
+                                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                            <img src="https://templates.iqonic.design/streamit/frontend/html/images/genre/43.jpg">
+                                        </span>
                                     </div>
-                                 </li>
-                                
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+                                    <div class="name">The Chainsmokers - Halsey</div>
+                                    <div class="character">Art Director</div>
+                                </div>
+                                </a>
+                                                  
+                            </div>
+                    </div>
 
 
 

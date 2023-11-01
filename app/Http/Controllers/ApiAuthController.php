@@ -268,7 +268,7 @@ class ApiAuthController extends Controller
         }
 
         if(!$settings->free_registration && $skip == 0) {
-            $user_data['role'] = 'subscriber';
+            $user_data['role'] = 'registered';
             $user_data['active'] = '1';
         } else {
                 if($settings->activation_email):
@@ -459,8 +459,7 @@ class ApiAuthController extends Controller
                         'message'=> $verify_subscription['message'] ,
                     );  
 
-                    return response()->json($response, 400);
-                    exit();
+                    return response()->json($response, 200);
                 }
 
                     // Subscription Details
@@ -3249,8 +3248,8 @@ public function verifyandupdatepassword(Request $request)
 
       if($user_id == 1){
 
-          $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-                $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
+        $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+              $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
           });
           
@@ -3267,8 +3266,8 @@ public function verifyandupdatepassword(Request $request)
 
             $stripe_plan = SubscriptionPlan();
 
-            $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-                $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
+            $user_details = DB::table('users')->select('*')->where('id', $user_id)->latest()->get()->map(function ($item) {
+                $item->profile_url = URL::to('/') . '/public/uploads/avatars/' . $item->avatar;
                 return $item;
             });
 
