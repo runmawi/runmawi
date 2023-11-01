@@ -420,3 +420,13 @@
 .broadcast .listItems .listItem .profileImg{
     border-radius: 0px !important;
 }
+
+.titleoverflow{
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 115px;
+}
+.traileroverflow{
+    display: block;
+}

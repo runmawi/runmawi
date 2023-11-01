@@ -272,7 +272,7 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
                                         <img src="https://dev-flick.webnexs.org/public/uploads/artists/Webp.net-resizeimage.jpg">
                                     </span>
                                 </div>
-                                <div class="name">Money Heist - Trailer</div>
+                                <div class="name titleoverflow">Money Heist SEason - <span class="traileroverflow"> Trailer</span></div>
                             </div>
                         </a>
 
