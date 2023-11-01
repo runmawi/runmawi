@@ -10149,7 +10149,7 @@ $cpanel->end();
           // 'featured_videos' => $featured_videos,
           'latest_videos' => $latest_videos,
           // 'category_videos' => $myData,
-          'live_videos' => $live_videos,
+          // 'live_videos' => $live_videos,
           'series' => $series,
           // 'audios' => $audios,
           // 'albums' => $albums,
