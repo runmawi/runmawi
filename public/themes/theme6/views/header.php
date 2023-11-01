@@ -299,6 +299,8 @@
                                     
                                     
                                  <?php endforeach ;?>
+
+                                 <!-- static dropdown list Start Here -->
                                  <nav role="navigation" class="dropdown menu-item dskdflex">
                                     <ul id="top-menu" class=" mt-2 nav navbar-nav">
                                     <li class="dropdown menu-item dskdflex"><a class="dropdown-toggle justify-content-between " id="dn" href="#">One</a></li>
@@ -312,6 +314,7 @@
                                     <li class="dropdown menu-item dskdflex"><a class="dropdown-toggle justify-content-between " id="dn" href="#">Three</a></li>
                                     </ul>
                                  </nav>
+                                  <!-- static dropdown list End Here -->
                                  
                                   
                               </ul>
