@@ -233,17 +233,15 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 
                             <ul
                                 class="p-0 list-inline d-flex flex-wrap align-items-center movie-content movie-space-action flex-wrap iq_tag-list">
-                                <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
-                                        aria-hidden="true"></i>TAGS:</li>
-                                <li> <a class="tag-list" href="tags/brother.html">Brother,</a>
-                                </li>
-                                <li><a class="tag-list" href="tags/brother-relationship.html">Brother
-                                        Relationship,</a></li>
-                                <li> <a class="tag-list" href="tags/king.html">King,</a>
-                                </li>
-                                <li> <a class="tag-list" href="tags/kings.html">kings</a>
-                                </li>
+                                @if (optional($series)->search_tag)
+
+                                    <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
+                                            aria-hidden="true"></i>TAGS:</li>
+                                            
+                                    <li> <p class="tag-list m-0" >{{ optional($series)->search_tag }}</p></li>
+                                @endif
                             </ul>
+
                         </div>
                     </div>
                 </div>
