@@ -199,7 +199,7 @@ i.fa.fa-google-plus {
     $coupon = Request::get('coupon');
     // dd($SignupMenu);
 ?>
-<div class="container">
+<div class="container loginbackground">
       <div class="row justify-content-center align-items-center height-self-center">
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
 
