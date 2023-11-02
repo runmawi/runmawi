@@ -468,7 +468,7 @@
 } }
 @media (min-width:801px) { li.logout_mobile_view.menu-item{
    display:none !important;
-} }
+} } 
 
 </style>
 <body>
