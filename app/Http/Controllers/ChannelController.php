@@ -4046,6 +4046,7 @@ class ChannelController extends Controller
 
             $data = array(
                 'videodetail'    => $videodetail ,
+                'video'          => $videodetail ,   // Videos - Working Social Login 
                 'setting'        => Setting::first(),
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,
@@ -4053,9 +4054,6 @@ class ChannelController extends Controller
                 'ThumbnailSetting' => ThumbnailSetting::first() ,
                 'currency'         => CurrencySetting::first(),
             );
-
-            // dd( $data );
-
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
