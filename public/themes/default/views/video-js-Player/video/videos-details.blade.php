@@ -105,17 +105,27 @@
                         <div class="col-sm-6 col-md-6 col-xs-12">
                             <ul class="list-inline p-0 share-icons music-play-lists">
                                         <!-- Watchlater -->
-                                <li>
-                                    <span data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
+                                <li class="share">
+                                    <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
                                         <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
                                     </span>
+                                    <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
+                                        <div class="playbtn"  data-toggle="modal">  
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">Add To Watchlist</span>
+                                        </div>
+                                    </div>
                                 </li>
 
                                         <!-- Wishlist -->
-                                <li>
+                                <li class="share">
                                     <span data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
                                         <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'fa fa-heart' : 'fa fa-heart-o'  }}"></i>
                                     </span>
+                                    <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
+                                        <div class="playbtn"  data-toggle="modal">  
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">Add To Wishlist</span>
+                                        </div>
+                                    </div>
                                 </li>
 
                                 <!-- Like -->
@@ -264,7 +274,7 @@
                                         <img src="https://dev-flick.webnexs.org/public/uploads/artists/Webp.net-resizeimage.jpg">
                                     </span>
                                 </div>
-                                <div class="name titleoverflow">Money Heist SEason - <span class="traileroverflow"> Trailer</span></div>
+                                <div class="name titleoverflow">Money Heist Season - <span class="traileroverflow"> Trailer</span></div>
                             </div>
                         </a>
 
@@ -325,33 +335,78 @@
                                 
                                     <li class="slide-item">
                                         <div class="block-images position-relative">
-                                            <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
+                                            <!-- block-images -->
+                                            <div class="border-bg">
                                                 <div class="img-box">
-                                                    <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->image) }}">
-                                                    
-                                                    @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                        @if ($recommended_video->access == 'subscriber')
-                                                            <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
-                                                        @elseif($recommended_video->access == 'registered')
-                                                            <p class="p-tag"> {{ 'Register Now' }} </p>
-                                                        @elseif(!empty($recommended_video->ppv_price))
-                                                            <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
+                                                    <a class="playTrailer" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
+                                                        <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->image) }}">
+                                                    </a>
+                                                                    
+                                                             <!-- PPV price -->
+                                                     @if ($ThumbnailSetting->free_or_cost_label == 1)
+                                                         @if ($recommended_video->access == 'subscriber')
+                                                             <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
+                                                         @elseif($recommended_video->access == 'registered')
+                                                             <p class="p-tag"> {{ 'Register Now' }} </p>
+                                                         @elseif(!empty($recommended_video->ppv_price))
+                                                             <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
                                                         @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
                                                             <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
                                                         @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
                                                             <p class="p-tag">{{ 'Free' }} </p>
                                                         @endif
-                                                    @endif
+                                                     @endif
         
-                                                    @if ($ThumbnailSetting->published_on == 1)
-                                                        <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
+                                                     @if ($ThumbnailSetting->published_on == 1)
+                                                       <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
                                                     @endif
                                                 </div>
-                                            </a>
+                                            </div>
+                                                    
                                             <div class="block-description">
-                                                <div class="hover-buttons">
+                                                <a class="playTrailer" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
+                                                    <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->player_image) }}">
+                                                                  
+                                                                <!-- PPV price -->
+                                                        @if ($ThumbnailSetting->free_or_cost_label == 1)
+                                                            @if ($recommended_video->access == 'subscriber')
+                                                                <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
+                                                            @elseif($recommended_video->access == 'registered')
+                                                                <p class="p-tag"> {{ 'Register Now' }} </p>
+                                                            @elseif(!empty($recommended_video->ppv_price))
+                                                                <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
+                                                            @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
+                                                                <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
+                                                            @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
+                                                                <p class="p-tag">{{ 'Free' }} </p>
+                                                            @endif
+                                                        @endif
+        
+                                                        @if ($ThumbnailSetting->published_on == 1)
+                                                           <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
+                                                        @endif
+                                                </a>
+                                                           <!-- PPV price -->
+                                                        @if ($ThumbnailSetting->free_or_cost_label == 1)
+                                                            @if ($recommended_video->access == 'subscriber')
+                                                                <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
+                                                            @elseif($recommended_video->access == 'registered')
+                                                                <p class="p-tag"> {{ 'Register Now' }} </p>
+                                                            @elseif(!empty($recommended_video->ppv_price))
+                                                                <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
+                                                            @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
+                                                                <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
+                                                            @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
+                                                                <p class="p-tag">{{ 'Free' }} </p>
+                                                            @endif
+                                                        @endif
+        
+                                                        @if ($ThumbnailSetting->published_on == 1)
+                                                           <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
+                                                        @endif
+                                                <div class="hover-buttons text-white">
                                                     <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-                                                                                
+
                                                         @if ($ThumbnailSetting->title == 1)         <!-- Title -->
                                                             <p class="epi-name text-left m-0"> {{ strlen($recommended_video->title) > 20 ? substr($recommended_video->title, 0, 21) . '...' : $recommended_video->title }} </p>
                                                         @endif
@@ -382,7 +437,7 @@
                                                                     ?>
                                                                 </span>
                                                                 <?php } ?>
-                                                        </div>
+                                                            </div>
         
                                                         @if ($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->duration == 1)
                                                             <div class="movie-time d-flex align-items-center pt-1 mb-3">
@@ -404,7 +459,7 @@
                                                                         </span>
                                                                     </div>
                                                                 @endif
-                                                                
+
                                                                 @if ($ThumbnailSetting->featured == 1 && $recommended_video->featured == 1)  <!-- Featured -->
                                                                     <div class="badge badge-secondary p-1 mr-2">
                                                                         <span class="text-white"> <i class="fa fa-flag-o" aria-hidden="true"></i>
@@ -413,11 +468,11 @@
                                                                 @endif
                                                             </div>
                                                         @endif
-
-                                                        <a class="epi-name text-white mb-0 btn btn-primary">Watch Now</a>
-
-                                                        </div>
                                                     </a>
+
+                                                    <a class="epi-name text-white mb-0 btn btn-primary">Watch Now</a>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </li>

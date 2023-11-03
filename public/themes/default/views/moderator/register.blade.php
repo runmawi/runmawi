@@ -98,10 +98,10 @@ $system_settings = App\SystemSetting::find(1);
                                     </div>
                                 <div >
                                 <span class="input-group-btn" id="eyeSlash">
-                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important "><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button" ><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                                 </span>
                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important ;"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button" ><i class="fa fa-eye" aria-hidden="true"></i></button>
                                 </span>
                             </div>
                             @error('password')
@@ -118,10 +118,10 @@ $system_settings = App\SystemSetting::find(1);
                             </div>
                         <div >
                         <span class="input-group-btn" id="eyeSlash1">
-                            <button class="btn btn-default reveal" onclick="visibility2()" type="button" style=" background: transparent !important; color:#ff0000!important ; "><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                            <button class="btn btn-default reveal" onclick="visibility2()" type="button" ><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                         </span>
                         <span class="input-group-btn" id="eyeShow1" style="display: none;">
-                            <button class="btn btn-default reveal" onclick="visibility2()" type="button"  style=" background: transparent !important; color:#ff0000!important ; "><i class="fa fa-eye" aria-hidden="true"></i></button>
+                            <button class="btn btn-default reveal" onclick="visibility2()" type="button"  ><i class="fa fa-eye" aria-hidden="true"></i></button>
                         </span>
                     </div>
                 </div>

@@ -49,7 +49,7 @@ $system_settings = App\SystemSetting::find(1);
 ?>
 <div class="container">
     <div class="row justify-content-center align-items-center height-self-center">
-        <div class="col-sm-9 col-md-7 col-lg-7 align-self-center">
+        <div class="col-sm-9 col-md-7 col-lg-7 align-self-center mb-5">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto text-center">
@@ -140,7 +140,7 @@ $system_settings = App\SystemSetting::find(1);
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 p-0">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
