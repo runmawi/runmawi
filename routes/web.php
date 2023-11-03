@@ -2345,3 +2345,7 @@ Route::get('video-fullplayer/{slug}', 'ChannelController@video_js_fullplayer')->
 Route::post('video_js_watchlater', 'ChannelController@video_js_watchlater')->name('video-js.watchlater');
 
 Route::post('video_js_wishlist', 'ChannelController@video_js_wishlist')->name('video-js.wishlist');
+
+Route::post('video_js_Like', 'ChannelController@video_js_Like')->name('video-js.like');
+
+Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('video-js.dislike');

@@ -133,7 +133,8 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 ?>
 
 <div id="myImage" class="container"
-    style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%);  padding: 0px 0px 0px;">
+    style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%); background-size: cover;  padding: 0px 0px 0px;">
+    <div> </div>
     <div class="container-fluid pt-5">
         <div id="series_bg_dim" class="{{ ($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest())) ? '' : 'darker' }}"></div>
 
@@ -232,17 +233,15 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 
                             <ul
                                 class="p-0 list-inline d-flex flex-wrap align-items-center movie-content movie-space-action flex-wrap iq_tag-list">
-                                <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
-                                        aria-hidden="true"></i>TAGS:</li>
-                                <li> <a class="tag-list" href="tags/brother.html">Brother,</a>
-                                </li>
-                                <li><a class="tag-list" href="tags/brother-relationship.html">Brother
-                                        Relationship,</a></li>
-                                <li> <a class="tag-list" href="tags/king.html">King,</a>
-                                </li>
-                                <li> <a class="tag-list" href="tags/kings.html">kings</a>
-                                </li>
+                                @if (optional($series)->search_tag)
+
+                                    <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
+                                            aria-hidden="true"></i>TAGS:</li>
+                                            
+                                    <li> <p class="tag-list m-0" >{{ optional($series)->search_tag }}</p></li>
+                                @endif
                             </ul>
+
                         </div>
                     </div>
                 </div>
@@ -298,7 +297,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
         <div class="container-fluid mt-5">
             <div class="favorites-contens">
                 <div class="col-md-3 p-0" style="width:150px">
-                    <select class="form-control" id="season_id" name="season_id">
+                    <select class="form-control" id="season_id" name="season_id" style="box-shadow: none;">
                         @foreach ($season as $key => $seasons)
                             <option data-key="<?= $key + 1 ?>" value="season_<?= $seasons->id ?>">Season
                                 <?= $key + 1 ?></option>
@@ -307,24 +306,36 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                 </div>
 
                 
-
+                <!-- Season dropdown start -->
+                <div class="tab-container">
+                <div class="tab-navigation">              
+                    <select id="select-box">
+                    <option value="1">Season 1</option>
+                    <option value="2">Season 2</option>
+                    <option value="3">Season 3</option>
+                    </select>
+                </div>
+  
+                <!-- Season 1 Start Here -->
+                <div id="tab-1" class="tab-season">           
+                
                 <!-- Tablist -->
 
                 <div class="trending-custom-tab ">
                      <div class="tab-title-info position-relative">
                         <ul class="trending-pills nav nav-pills text-center iq-ltr-direction" role="tablist">
                            <li class="nav-item">
-                              <a class="nav-link m-0" data-toggle="pill" href="#episodes" role="tab" aria-selected="false">Episodes</a>
+                              <a class="nav-link m-0 active show" data-toggle="pill" href="#episodes" role="tab" aria-selected="true">Episodes</a>
                            </li>
                            <li class="nav-item">
-                              <a class="nav-link m-0 active show" data-toggle="pill" href="#feature-clips" role="tab" aria-selected="true">FEATURED CLIPS</a>
+                              <a class="nav-link m-0 " data-toggle="pill" href="#feature-clips" role="tab" aria-selected="false">FEATURED CLIPS</a>
                            </li>
                         </ul>
                      </div>
 
-                     <!-- Episode -->
-
-                     <div class="tab-content" id="nav-tabContent">
+                     <div class="tab-content" id="nav-tabContent" style="display: block !important ;">
+                        
+                        <!-- Episode -->
                         <div id="episodes" class="tab-pane animated fadeInUp">
                            <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction ">
                               
@@ -387,6 +398,36 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                         </div>
                      </div>
                   </div>
+                </div>
+                <!-- Season 1 End Here -->
+
+
+                <!-- Season 2 Start Here -->
+                <div id="tab-2" class="tab-season">
+                    <p> Money Heist Season 2 </p>
+                </div>
+                <!-- Season 2 End Here -->
+
+                <!-- Season 3 Start Here -->
+                <div id="tab-3" class="tab-season">
+                    <p> Money Heist Season 3 </p>
+                </div>
+                <!-- Season 3 End Here -->
+
+
+                  </div>
+
+                  <script>
+                    $('.tab-season').hide();
+                    $('#tab-1').show();
+
+                    $('#select-box').change(function () {                   
+                    dropdown = $('#select-box').val();
+                    $('.tab-season').hide();
+                    $('#' + "tab-" + dropdown).show();                                    
+                    });
+                </script>
+                <!-- Season dropdwon end -->
 
 
                 <ul class="category-page list-inline row p-3 mb-0">
@@ -425,33 +466,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                             <h6><?= $episodes->title ?></h6>
                             <p class="text-white desc mb-0"><?= gmdate('H:i:s', $episodes->duration) ?></p>
 
-                            <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                 <div class="block-image position-relative">
-                                    <a href="show-details.html">
-                                       <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid img-zoom" alt="" loading="lazy">
-                                    </a>
-                                    <div class="episode-number">S01E01</div>
-                                    <div class="episode-play-info">
-                                       <div class="episode-play">
-                                          <a
-                                             href="show-detail.html">
-                                             <i class="ri-play-fill"></i>
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="epi-desc p-3">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 1, 2020</span>
-                                       <span class="text-primary run-time">45min</span>
-                                    </div>
-                                    <a
-                                       href="show-detail.html">
-                                       <h5 class="epi-name text-white mb-0">
-                                          The Reckless 1</h5>
-                                    </a>
-                                 </div>
-                              </div>
+                           
 
                         </a>
                     </li>
@@ -459,33 +474,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                     <?php else : ?>
                     <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
                         <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
-                        <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                 <div class="block-image position-relative">
-                                    <a href="show-details.html">
-                                       <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid img-zoom" alt="" loading="lazy">
-                                    </a>
-                                    <div class="episode-number">S01E01</div>
-                                    <div class="episode-play-info">
-                                       <div class="episode-play">
-                                          <a
-                                             href="show-detail.html">
-                                             <i class="ri-play-fill"></i>
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="epi-desc p-3">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 1, 2020</span>
-                                       <span class="text-primary run-time">45min</span>
-                                    </div>
-                                    <a
-                                       href="show-detail.html">
-                                       <h5 class="epi-name text-white mb-0">
-                                          The Reckless 1</h5>
-                                    </a>
-                                 </div>
-                              </div>
+                        
 
                         </a>
                     </li>

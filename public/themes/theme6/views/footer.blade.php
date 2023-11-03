@@ -86,7 +86,7 @@
                         <?php } ?>
 
                         <?php if (!empty($settings->tiktok_page_id)) { ?>
-                            <a href="https://www.tiktok.com/en/<?php echo $settings->tiktok_page_id; ?>" target="_blank" class="s-icon">
+                            <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id; ?>" target="_blank" class="s-icon">
                                 <i class="ri-tiktok-fill"></i>
                             </a>
                         <?php } ?>

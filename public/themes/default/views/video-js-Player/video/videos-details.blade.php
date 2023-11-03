@@ -1,5 +1,3 @@
-import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css';
-
 @php  include public_path('themes/default/views/header.php'); @endphp
 
 {{-- Style Link--}}
@@ -122,12 +120,16 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
 
                                 <!-- Like -->
                                 <li>
-                                    <span><i  <?php if((isset($like_dislike[0]) && $like_dislike[0]->liked == 1 )): ?> class="ri-thumb-up-fill" <?php else: ?> class="ri-thumb-up-line" <?php endif; ?> <?php if( isset($like_dislike[0]) && $like_dislike[0]->liked == 1 ) { echo 'active';}?> aria-hidden="true" style="cursor:pointer;" data-like-val="1" like="1" id="like"  ></i></span>
+                                    <span data-video-id={{ $videodetail->id }}  onclick="video_like(this)" >
+                                        <i class="video-like {{ !is_null( $videodetail->Like_exist ) ? 'ri-thumb-up-fill' : 'ri-thumb-up-line'  }}"></i>
+                                    </span>
                                 </li>
 
                                 <!-- Dislike -->
                                 <li>
-                                    <span><i <?php if((isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 )): ?> class="ri-thumb-down-fill" <?php else: ?> class="ri-thumb-down-line" <?php endif; ?>  class="ri-thumb-down-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike"></i></span>
+                                    <span data-video-id={{ $videodetail->id }}  onclick="video_dislike(this)" >
+                                        <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>
+                                    </span>
                                 </li>
                             </ul>
                         </div>
@@ -148,19 +150,19 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
                         
                        
                         @if( optional($videodetail)->trailer_videos_url )
-                        <ul class="list-inline p-0 m-0 share-icons music-play-lists">
+                            <ul class="list-inline p-0 m-0 share-icons music-play-lists">
                                 <li class="share">
                                     <span  data-toggle="modal" data-target="#video-js-trailer-modal">   {{-- Trailer --}}
-                                        <i class="fal fa-play"></i></span>
+                                        <i class="fal fa-play"></i>
+                                    </span>
+
                                     <div class="share-box box-watchtrailer">
-                                    <div class="playbtn"  data-toggle="modal" data-target="#video-js-trailer-modal">     {{-- Trailer --}}
-                               
-                                        <span class="text" style="background-color: transparent; font-size: 14px; width:84px">Watch Trailer</span>
-                                    </div>
+                                        <div class="playbtn"  data-toggle="modal" data-target="#video-js-trailer-modal">     {{-- Trailer --}}
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:84px">Watch Trailer</span>
+                                        </div>
                                     </div>
                                 </li>
-
-                        </ul>
+                            </ul>
                          @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp    
                         @endif
                         
@@ -173,8 +175,6 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
                             </svg>
                         </div>
 
-                        
-                        
                         
 
                         {{-- <?php   $user = Auth::user(); 
@@ -225,14 +225,6 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
                         </div>
                     @endif
 
-                    <!-- @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
-                        <div class="info">      
-                            <span classname="text bold"> E-Paper : </span>
-                            <span class="text">
-                                <a href="{{ $videodetail->pdf_files_url }}" style="font-size:45px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
-                            </span>
-                        </div>
-                    @endif -->
                 </div>
             </div>
     
@@ -261,7 +253,7 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
 
             <div class="sectionArtists broadcast">   
                 <div class="artistHeading">
-                    {{ ucwords('Promos & Resources:') }}
+                    {{ ucwords('Promos & Resources ') }}
                 </div>
 
                     <div class="listItems">
@@ -272,7 +264,7 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
                                         <img src="https://dev-flick.webnexs.org/public/uploads/artists/Webp.net-resizeimage.jpg">
                                     </span>
                                 </div>
-                                <div class="name">Money Heist - Trailer</div>
+                                <div class="name titleoverflow">Money Heist SEason - <span class="traileroverflow"> Trailer</span></div>
                             </div>
                         </a>
 
@@ -287,16 +279,17 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min
                             </div>
                         </a>
 
+
                         @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
-                        <div class="listItem">
-                            <div class="profileImg">
-                                <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                                    <a href="{{ $videodetail->pdf_files_url }}" style="font-size:93px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
-                                </span>
+                            <div class="listItem">
+                                <div class="profileImg">
+                                    <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                        <a href="{{ $videodetail->pdf_files_url }}" style="font-size:93px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
+                                    </span>
+                                </div>
+                                <div class="name">Document</div>
                             </div>
-                            <div class="name">Document</div>
-                        </div>
-                    @endif
+                        @endif
                             
                     </div>
             </div>

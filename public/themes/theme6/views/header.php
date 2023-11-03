@@ -289,15 +289,30 @@
                               alt="" /> </a>
                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
                           <div class="menu-main-menu-container">
-                              <ul id="top-menu" class="navbar-nav ml-auto">
+                              <ul id="top-menu" class="navbar-nav ml-auto ">
                                  
                                  <?php  foreach ($menus as $key =>  $menu) : ?> 
 
                                     <li class="menu-item">
                                        <a href="<?= URL::to($menu->url) ?>"> <?= $menu->name ?></a>
                                     </li>
-
+                                    
+                                    
                                  <?php endforeach ;?>
+                                 <nav role="navigation" class="dropdown menu-item dskdflex">
+                                    <ul id="top-menu" class=" mt-2 nav navbar-nav">
+                                    <li class="dropdown menu-item dskdflex"><a class="dropdown-toggle justify-content-between " id="dn" href="#">One</a></li>
+                                    <li class="dropdown menu-item dskdflex"><a class="dropdown-toggle justify-content-between " id="dn" href="#">Two</a>
+                                          <ul class="dropdown-menu categ-head " style=" overflow: hidden;">
+                                          <li ><a class="dropdown-item cont-item drop-contentlist" href="#">Tamil</a></li>
+                                          <li ><a class="dropdown-item cont-item" href="#">English</a></li>
+                                          <li ><a class="dropdown-item cont-item" href="#">Malayalam</a></li>
+                                          </ul>
+                                       </li>
+                                    <li class="dropdown menu-item dskdflex"><a class="dropdown-toggle justify-content-between " id="dn" href="#">Three</a></li>
+                                    </ul>
+                                 </nav>
+                                 
                                   
                               </ul>
                           </div>
