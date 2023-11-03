@@ -706,6 +706,57 @@
                                             </a>
                                         </li>
                                         <?php } } ?>
+
+                                        <!-- Screen responsive buttons -->
+
+                                        
+                                        <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                            <div class="iq-search-bar ml-auto">
+                                <form method="POST" action="<?php echo URL::to('cpp/home'); ?>" class="mt-4">
+                                    <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden" name="email"
+                                        value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
+                                    <input id="password" type="hidden" name="password"
+                                        value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
+                                        <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
+                              <div class="row ">
+                              <div class="col-sm-6  menu-item pt-3">
+                                 <a type="submit" class="btn btn-primary" >Visit CPP Portal</a>
+                              </div>
+                              <div class="col-sm-6 logout_mobile_view menu-item pt-3">
+                              <li class="logout_mobile_view menu-item col-sm-6 "><a class="btn btn-primary" style="float:right;" href="<?php echo URL::to('/logout'); ?>">
+                                          <?php echo __('Logout');?>
+                                       </a> </li> 
+                              </div>
+                              
+                           </div>
+                           </div>
+                              </form>
+                              </li>
+
+                              
+                                <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
+                                <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                            <div class="iq-search-bar ml-auto">
+                                <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
+                                    <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden" name="email"
+                                        value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
+                                    <input id="password" type="hidden" name="password"
+                                        value="<?= @$Channel->unhased_password ?>" autocomplete="current-password">
+                                    <button type="submit" class="btn btn-hover"
+                                        style="margin-top: -13%;margin-left: -8%;">Visit Channel Portal </button>
+                                </form>
+                            </div>
+                              </li>
+                              <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
+                                          <?php echo __('My Profile');?>
+                                       </a> </li>      
+                           </div>
+
+
+
+
                                         <!-- <li class="nav-item dropdown menu-item"> -->
                                         <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">   -->
                                         <!-- Movies <i class="fa fa-angle-down"></i> -->
