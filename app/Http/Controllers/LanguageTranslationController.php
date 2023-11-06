@@ -22,35 +22,7 @@ class LanguageTranslationController extends Controller
     */
     public function index()
     {
-        $user =  User::where('id',1)->first();
-        $duedate = $user->package_ends;
-        $current_date = date('Y-m-d');
-        if ($current_date > $duedate)
-        {
-            $client = new Client();
-            $url = "https://flicknexs.com/userapi/allplans";
-            $params = [
-                'userid' => 0,
-            ];
-    
-            $headers = [
-                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-            ];
-            $response = $client->request('post', $url, [
-                'json' => $params,
-                'headers' => $headers,
-                'verify'  => false,
-            ]);
-    
-            $responseBody = json_decode($response->getBody());
-           $settings = Setting::first();
-           $data = array(
-            'settings' => $settings,
-            'responseBody' => $responseBody,
-    );
-            return View::make('admin.expired_dashboard', $data);
-        }else{
-   	  $languages = Language::get();
+   	  $languages = DB::table('translation_languages')->get();
 
 
    	  $columns = [];
@@ -67,9 +39,8 @@ class LanguageTranslationController extends Controller
 	    }
 
 
-   	  return view('admin.languages', compact('languages','columns','columnsCount'));
+        return view('admin.languages.translation.translation_languages', compact('languages','columns','columnsCount'));
     }   
-}
     /**
      * Remove the specified resource from storage.
      * @return Response
@@ -82,11 +53,11 @@ class LanguageTranslationController extends Controller
 		]);
 
 
-		$data = $this->openJSONFile('english');
+		$data = $this->openJSONFile('en');
         $data[$request->key] = $request->value;
 
 
-        $this->saveJSONFile('english', $data);
+        $this->saveJSONFile('en', $data);
 
 
         return redirect()->route('languages');
@@ -99,7 +70,7 @@ class LanguageTranslationController extends Controller
     */
     public function destroy($key)
     {
-        $languages = Language::get();
+        $languages = DB::table('translation_languages')->get();
 
 
         if($languages->count() > 0){
@@ -157,7 +128,7 @@ class LanguageTranslationController extends Controller
      * @return Response
     */
     public function transUpdateKey(Request $request){
-        $languages = Language::get();
+        $languages = DB::table('translation_languages')->get();
 
 
         if($languages->count() > 0){
