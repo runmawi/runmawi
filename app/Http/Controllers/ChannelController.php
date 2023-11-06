@@ -3921,6 +3921,7 @@ class ChannelController extends Controller
                 $item['image_url']          = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();
                 $item['player_image_url']   = $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
                 $item['Title_Thumbnail'] =   $item->video_title_image != null ? URL::to('public/uploads/images/'.$item->video_title_image) : default_vertical_image_url();     
+                $item['Reels_Thumbnail'] =   $item->reels_thumbnail != null ? URL::to('public/uploads/images/'.$item->reels_thumbnail) : default_vertical_image_url();     
                 $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
 
@@ -3986,6 +3987,11 @@ class ChannelController extends Controller
                                                     }
                                                 })->latest()->first();
 
+                    // Reels Videos
+
+                $item['Reels_videos'] = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')
+                                                ->where('videos.id', $video_id)->get();
+
                     //  Video URL
 
                 switch (true) {
@@ -4046,7 +4052,7 @@ class ChannelController extends Controller
 
             $data = array(
                 'videodetail'    => $videodetail ,
-                'video'          => $videodetail ,   // Videos - Working Social Login 
+                'video'          => $videodetail ,   // Videos - Working Social Login
                 'setting'        => Setting::first(),
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,

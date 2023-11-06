@@ -274,24 +274,18 @@
                             <div class="listItem">
                                 <div class="profileImg">
                                     <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                                        <img src="https://dev-flick.webnexs.org/public/uploads/artists/Webp.net-resizeimage.jpg">
+                                        <img src="{{ optional($videodetail)->image_url }}">
                                     </span>
                                 </div>
-                                <div class="name titleoverflow">Money Heist Season - <span class="traileroverflow"> Trailer</span></div>
+                                <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> Trailer</span></div>
                             </div>
                         </a>
 
-                        <a>
-                            <div class="listItem">
-                                <div class="profileImg">
-                                    <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                                        <img src="https://dev-flick.webnexs.org/public/uploads/artists/Webp.net-resizeimage.jpg">
-                                    </span>
-                                </div>
-                                <div class="name">Reels</div>
-                            </div>
-                        </a>
-
+                        @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
+                                                                
+                            @php  include public_path('themes/default/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
+                        
+                        @endif
 
                         @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
                             <div class="listItem">
@@ -305,9 +299,8 @@
                         @endif
                             
                     </div>
+                    
             </div>
-
-
 
             {{-- comment Section --}}
 
