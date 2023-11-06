@@ -5,6 +5,9 @@ use App\Http\Middleware\cpp;
 use App\Http\Middleware\Channel;
 use Carbon\Carbon as Carbon;
 
+$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale($translate_language);
+
 Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
@@ -448,6 +451,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/', 'AdminDashboardController@index');
     Route::get('/mobileapp', 'AdminUsersController@mobileapp');
+    Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
 
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
@@ -812,13 +816,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');
     Route::post('/translations/update', 'LanguageTranslationController@transUpdate')->name('translation.update.json');
     Route::post('/translations/updateKey', 'LanguageTranslationController@transUpdateKey')->name('translation.update.json.key');
-    Route::get('/translations/destroy/{key}', 'LanguageTranslationController@destroy')->name('translations.destroy');
+    Route::delete('/translations/destroy/{key}', 'LanguageTranslationController@destroy')->name('translations.destroy');
     Route::post('/translations/create', 'LanguageTranslationController@store')->name('translations.create');
     Route::get('check-translation', function () {
-        \App::setLocale('fr');
+        \App::setLocale('it');
 
-        dd(__('website'));
+        echo(__('About US')); exit;
     });
+
+    Route::get('/translate-languages-index', 'AdminTranslationLanguageController@index');
+    Route::post('/translate-languages-store', 'AdminTranslationLanguageController@store');
+    Route::post('/translate-languages-update', 'AdminTranslationLanguageController@update');
+    Route::get('/translate-languages-edit/{id}', 'AdminTranslationLanguageController@edit');
+    Route::get('/translate-languages-delete/{id}', 'AdminTranslationLanguageController@destroy');
+   
 
     // Site Meta Settings
     Route::get('/site-meta-setting', 'AdminSiteMetaController@meta_setting')->name('meta_setting');
