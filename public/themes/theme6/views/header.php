@@ -284,39 +284,142 @@
                           </div>
                       </a>
 
-                      <a class="navbar-brand" href="index.html"> <img class="img-fluid logo"
-                              src="<?= front_end_logo() ?>"
-                              alt="" /> </a>
+                      <a class="navbar-brand" href="#"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
+
                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
                           <div class="menu-main-menu-container">
-                              <ul id="top-menu" class="navbar-nav ml-auto ">
-                                 
-                                 <?php  foreach ($menus as $key =>  $menu) : ?> 
+                              <ul id="top-menu" class=" mt-2 nav navbar-nav ">
 
-                                    <li class="menu-item">
-                                       <a href="<?= URL::to($menu->url) ?>"> <?= $menu->name ?></a>
-                                    </li>
-                                    
-                                    
-                                 <?php endforeach ;?>
+                                 <?php  
 
-                                 <!-- static dropdown list Start Here -->
-                                 <nav role="navigation" class="dropdown menu-item dskdflex">
-                                    <ul id="top-menu" class=" mt-2 nav navbar-nav">
-                                    <li class="dropdown menu-item dskdflex"><a class="dropdown-toggle justify-content-between " id="dn" href="#">One</a></li>
-                                    <li class="dropdown menu-item dskdflex"><a class="dropdown-toggle justify-content-between " id="dn" href="#">Two</a>
-                                          <ul class="dropdown-menu categ-head " style=" overflow: hidden;">
-                                          <li ><a class="dropdown-item cont-item drop-contentlist" href="#">Tamil</a></li>
-                                          <li ><a class="dropdown-item cont-item" href="#">English</a></li>
-                                          <li ><a class="dropdown-item cont-item" href="#">Malayalam</a></li>
+                                    $video_category = App\VideoCategory::orderBy('order', 'asc');
+
+                                       if( (!Auth::guest() && Auth::user()->role != "admin") || Auth::guest()){
+                                          $video_category = $video_category->where('in_home',1);
+                                       }
+
+                                    $video_category = $video_category->get();
+
+                                    $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
+
+                                    $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
+
+                                    $tv_shows_series = App\Series::get();
+
+                                    $languages = App\Language::all();
+
+                                 ?>
+
+                                 <?php foreach ($menus as $menu) { 
+
+                                    if ( $menu->in_menu == "video" ) {  ?>
+
+                                       <li class="dropdown menu-item dskdflex">
+                                          <a class="dropdown-toggle justify-content-between " id="dn" href="<?= URL::to($menu->url) ?>" data-toggle="dropdown">
+                                             <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+                                          </a>
+                                          <ul class="dropdown-menu categ-head">
+                                             <?php foreach ( $video_category as $category) : ?>
+                                                <li>
+                                                   <a class="dropdown-item cont-item" href="<?php echo URL::to('category/'.$category->slug)?>">
+                                                      <?= $category->name;?>
+                                                   </a>
+                                                </li>
+                                             <?php endforeach ; ?>
                                           </ul>
                                        </li>
-                                    <li class="dropdown menu-item dskdflex"><a class="dropdown-toggle justify-content-between " id="dn" href="#">Three</a></li>
-                                    </ul>
-                                 </nav>
-                                  <!-- static dropdown list End Here -->
+
+                                    <?php } elseif ( $menu->in_menu == "movies") {  ?>
+
+                                       <li class="dropdown menu-item dskdflex">
+                                          <a class="dropdown-toggle justify-content-between " id="dn" href="<?= URL::to($menu->url) ?>" data-toggle="dropdown">
+                                                <?= ($menu->name);?> <i class="fa fa-angle-down"></i>
+                                          </a>
+
+                                          <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $languages as $language): ?>
+                                                <li>
+                                                      <a class="dropdown-item cont-item" href="<?= URL::to('language/'.$language->id.'/'.$language->name);?>">
+                                                         <?= $language->name;?>
+                                                      </a>
+                                                </li>
+                                                <?php endforeach; ?>
+                                          </ul>
+                                       </li>
+
+                                    <?php }elseif ( $menu->in_menu == "live") { ?>
+
+                                       <li class="dropdown menu-item dskdflex">
+                                          <a class="dropdown-toggle  justify-content-between " id="dn" href="<?= URL::to($menu->url) ?>" data-toggle="dropdown">
+                                                <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+                                          </a>
+                                          <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $LiveCategory as $category): ?>
+                                                <li>
+                                                      <a class="dropdown-item cont-item" href="<?= URL::to('/live/category/'.$category->name) ?>">
+                                                         <?= $category->name ?></a>
+                                                </li>
+                                                <?php endforeach; ?>
+                                          </ul>
+                                       </li>
+
+                                    <?php }elseif ( $menu->in_menu == "audios") { ?>
+
+                                       <li class="dropdown menu-item dskdflex">
+                                          <a class="dropdown-toggle  justify-content-between " id="dn" href="<?= URL::to('/').$menu->url;?>"
+                                                data-toggle="dropdown">
+                                                <?= ($menu->name);?> <i class="fa fa-angle-down"></i>
+                                          </a>
+                                          <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $AudioCategory as $category): ?>
+                                                <li>
+                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('audio/'.$category->name);?>">
+                                                         <?= $category->name;?>
+                                                      </a>
+                                                </li>
+                                                <?php endforeach; ?>
+                                          </ul>
+                                       </li>
+
+                                    <?php }elseif ( $menu->in_menu == "tv_show") { ?>
+                                          
+                                       <li class="dropdown menu-item ">
+
+                                          <a href="<?php echo URL::to('$menu->url')?>">
+                                                <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
+                                          </a>
+
+                                          <?php if(count($tv_shows_series) > 0 ){ ?>
+                                             <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series): ?>
+                                                <li>
+                                                      <?php if($key < 5): ?>
+                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('play_series/'.$tvshows_series->slug );?>">
+                                                            <?= $tvshows_series->title;?>
+                                                      </a>
+                                                      <?php else: ?>
+                                                      <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>">
+                                                            <?php echo 'More...';?>
+                                                      </a>
+                                                      <?php endif; ?>
+                                                </li>
+                                                <?php endforeach; ?>
+                                             </ul>
+                                          <?php } ?>
+                                       </li>
+
+                                    <?php } else { ?>
+                                       <li class="menu-item">
+                                          <a
+                                                href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to( $menu->url ); }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
+                                                <?php echo __($menu->name);?>
+                                          </a>
+                                       </li>
+
+                                    <?php  } ?>
+
+                                 <?php } ?>
                                  
-                                  
                               </ul>
                           </div>
                       </div>
@@ -732,3 +835,9 @@
             }
         });
         </script>
+
+        <style>
+         .dropdown-toggle::after{
+            display:none;
+         }
+         </style>

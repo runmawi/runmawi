@@ -884,7 +884,7 @@ infinite: true
 
 breakpoint: 600,
 settings: {
-slidesToShow: 2,
+slidesToShow: 3,
 dots: true
 }
 
@@ -983,7 +983,7 @@ infinite: true
 
 breakpoint: 600,
 settings: {
-slidesToShow: 2,
+slidesToShow: 3,
 dots: true
 }
 

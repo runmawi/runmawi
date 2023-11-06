@@ -161,7 +161,7 @@
                        
                         @if( optional($videodetail)->trailer_videos_url )
                             <ul class="list-inline p-0 m-0 share-icons music-play-lists">
-                                <li class="share">
+                                <li class="share sharemobres">
                                     <span  data-toggle="modal" data-target="#video-js-trailer-modal">   {{-- Trailer --}}
                                         <i class="fal fa-play"></i>
                                     </span>
@@ -178,12 +178,15 @@
                         
                         
                         <div class="circleRating">  {{-- Rating --}}
-                            <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar" style="width:63px">
+                            <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar" >
                                 <path class="CircularProgressbar-trail" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 0px;"></path>
                                 <path class="CircularProgressbar-path" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke: orange; stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 101.159px;"></path>
                                 <text class="CircularProgressbar-text" x="50" y="50"> {{ optional($videodetail)->rating }}  </text>
                             </svg>
                         </div>
+
+                        
+
 
                         
 
