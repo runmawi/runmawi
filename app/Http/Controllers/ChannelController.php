@@ -3992,6 +3992,9 @@ class ChannelController extends Controller
                 $item['Reels_videos'] = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')
                                                 ->where('videos.id', $video_id)->get();
 
+                $item['view_increment'] = $this->handleViewCount_movies($video_id);
+
+
                     //  Video URL
 
                 switch (true) {
@@ -4026,24 +4029,29 @@ class ChannelController extends Controller
 
                 switch (true) {
 
-                    case $item['trailer_type'] == "mp4_url":
+                    case $item['trailer_type'] === "mp4_url":
                         $item['trailer_videos_url']  =  $item->trailer ;
                         $item['trailer_video_player_type'] =  'video/mp4' ;
                     break;
 
-                    case $item['trailer_type'] == "m3u8_url" || "m3u8" :
+                    case $item['trailer_type'] === (("m3u8_url") || ("m3u8")) :
                         $item['trailer_videos_url']  =  $item->trailer ;
                         $item['trailer_video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
-                    case $item['trailer_type'] == "embed_url":
+                    case $item['trailer_type'] === "embed_url":
+                        $item['trailer_videos_url']  =  $item->trailer ;
+                        $item['trailer_video_player_type'] =  'video/mp4' ;
+                    break;
+
+                    case $item['trailer_type'] === "video_mp4":
                         $item['trailer_videos_url']  =  $item->trailer ;
                         $item['trailer_video_player_type'] =  'video/mp4' ;
                     break;
 
                     default:
-                        $item['videos_url']    = null ;
-                        $item['video_player_type']   =  null ;
+                        $item['trailer_videos_url']    = null ;
+                        $item['trailer_video_player_type']   =  null ;
                     break;
                 }
 

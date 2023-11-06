@@ -77,12 +77,11 @@
                         {{ optional($videodetail)->age_restrict }}
                         <i class="fas fa-circle"></i> 
                         
-                        <?php if(isset($view_increment) && $view_increment == true ): ?>
-                            <?= $movie->views + 1 ?>
-                        <?php else: ?>
-                            <?= $videodetail->views ?>
-                        <?php endif; ?>
-                        <?php echo __('Views'); ?>
+                        @if(isset($view_increment) && $view_increment == true )
+                            {{ ( $movie->views + 1) . " views" }}
+                        @else
+                            {{ $videodetail->views . " views" }} 
+                        @endif
                     </div>
                    
                     @if ( $setting->show_Links_and_details == 1 &&  optional($videodetail)->details )  {{-- Details --}}
@@ -146,7 +145,7 @@
                     </div>
 
                     <div class="row">  
-                    <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
+                        <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
                             <div class="playbtn" style="gap:5px">    {{-- Play --}}
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                     <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
@@ -160,6 +159,7 @@
                         
                        
                         @if( optional($videodetail)->trailer_videos_url )
+
                             <ul class="list-inline p-0 m-0 share-icons music-play-lists">
                                 <li class="share sharemobres">
                                     <span  data-toggle="modal" data-target="#video-js-trailer-modal">   {{-- Trailer --}}
@@ -173,7 +173,9 @@
                                     </div>
                                 </li>
                             </ul>
-                         @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp    
+
+                            @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+
                         @endif
                         
                         
@@ -185,10 +187,6 @@
                             </svg>
                         </div>
 
-                        
-
-
-                        
 
                         {{-- <?php   $user = Auth::user(); 
                                 if (  ($user->role!="subscriber" && $videodetail->access != 'guest' && $user->role!="admin") ) { ?>
@@ -268,18 +266,26 @@
                 <div class="artistHeading">
                     {{ ucwords('Promos & Resources ') }}
                 </div>
+                        
 
                     <div class="listItems">
-                        <a>
-                            <div class="listItem">
-                                <div class="profileImg">
-                                    <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                                        <img src="{{ optional($videodetail)->image_url }}">
-                                    </span>
+
+                        @if( optional($videodetail)->trailer_videos_url )
+                            <a>
+                                <div class="listItem" data-toggle="modal" data-target="#video-js-trailer-modal" >
+                                    <div class="profileImg">
+                                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                            <img src="{{ optional($videodetail)->image_url }}">
+                                        </span>
+
+                                        @php include public_path('themes/default/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+
+                                    </div>
+                                    
+                                    <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> Trailer</span></div>
                                 </div>
-                                <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> Trailer</span></div>
-                            </div>
-                        </a>
+                            </a>
+                        @endif
 
                         @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
                                                                 
