@@ -97,10 +97,10 @@ $system_settings = App\SystemSetting::find(1);
                                         <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
                                     </div>
                                 <div >
-                                <span class="input-group-btn" id="eyeSlash">
+                                <span class="input-group-btn pl-4" id="eyeSlash">
                                     <button class="btn btn-default reveal" onclick="visibility1()" type="button" ><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                                 </span>
-                                <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                <span class="input-group-btn pl-4" id="eyeShow" style="display: none;">
                                     <button class="btn btn-default reveal" onclick="visibility1()" type="button" ><i class="fa fa-eye" aria-hidden="true"></i></button>
                                 </span>
                             </div>
@@ -117,10 +117,10 @@ $system_settings = App\SystemSetting::find(1);
                                 <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         <div >
-                        <span class="input-group-btn" id="eyeSlash1">
+                        <span class="input-group-btn pl-4" id="eyeSlash1">
                             <button class="btn btn-default reveal" onclick="visibility2()" type="button" ><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                         </span>
-                        <span class="input-group-btn" id="eyeShow1" style="display: none;">
+                        <span class="input-group-btn pl-4" id="eyeShow1" style="display: none;">
                             <button class="btn btn-default reveal" onclick="visibility2()" type="button"  ><i class="fa fa-eye" aria-hidden="true"></i></button>
                         </span>
                     </div>
