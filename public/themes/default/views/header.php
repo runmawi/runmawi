@@ -7,6 +7,10 @@
 
       $signin_header = App\SiteTheme::pluck('signin_header')->first();
 
+      @$translate_language = App\Setting::pluck('translate_language')->first();
+      \App::setLocale(@$translate_language);
+
+
       if(!empty(Auth::User()->id)){
       
          $id = Auth::User()->id;
@@ -658,13 +662,13 @@
                                  </li> -->
                               <li class="dropdown menu-item dskdflex">
                                  <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                  <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+                                  <?php echo (__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $cat as $category) { ?>
                                     <li>
                                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
-                                       <?php echo $category->name;?> 
+                                       <?php echo (__($category->name)); ?> 
                                        </a>
                                     </li>
                                     <?php } ?>
@@ -675,13 +679,13 @@
                                  ?>
                               <li class="dropdown menu-item dskdflex">
                                  <a class="dropdown-toggle justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                 <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+                                 <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $languages as $language){ ?>
                                     <li>
                                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
-                                       <?php echo $language->name;?> 
+                                       <?php echo (__($language->name));?> 
                                        </a>
                                     </li>
                                     <?php } ?>
@@ -692,13 +696,13 @@
                                  ?>
                               <li class="dropdown menu-item dskdflex">
                                  <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                 <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+                                 <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $LiveCategory as $category){ ?>
                                     <li>
                                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
-                                       <?php echo $category->name;?> 
+                                       <?php echo (__($category->name));?> 
                                        </a>
                                     </li>
                                     <?php } ?>
@@ -712,13 +716,13 @@
                                  ?>
                               <li class="dropdown menu-item dskdflex">
                                  <a class="dropdown-toggle  justify-content-between " id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                 <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+                                 <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $AudioCategory as $category){ ?>
                                     <li>
                                        <a class="dropdown-item cont-item" href="<?php echo URL::to('audio/').'/'.$category->name;?>"> 
-                                       <?php echo $category->name;?> 
+                                       <?php echo (__($category->name));?> 
                                        </a>
                                     </li>
                                     <?php } ?>
@@ -776,7 +780,7 @@
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
                            <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                           <button type="submit" class="btn bd" style="padding:11px 16px" >Visit Channel Portal</button> </li>      
+                           <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>      
                         </form>
                            <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
                               <?php echo __('Logout');?>
@@ -791,7 +795,7 @@
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
                            <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                           <button type="submit" class="btn bd" style="padding:11px 16px" >Visit Content Portal</button> </li>      
+                           <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>      
                         </form>
                            <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
                                           <?php echo __('My Profile');?>
@@ -897,7 +901,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                          
+                           <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;"><?php echo (__('Visit CPP Portal'));?></button>                          
                         </form>
                      </div>
                      <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -906,7 +910,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-primary" style="margin-top: 0%;margin-left: 5%;">Visit Channel Portal </button>                          
+                           <button type="submit" class="btn btn-primary" style="margin-top: 0%;margin-left: 5%;"><?php echo (__('Visit Channel Portal'));?>  </button>                          
                         </form>
                      </div>
                      <?php } ?></div>
@@ -952,7 +956,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn bd " style="margin-top: -20%;margin-left: -14%;">Visit CPP Portal </button>                          
+                           <button type="submit" class="btn bd " style="margin-top: -20%;margin-left: -14%;"><?php echo (__('Visit CPP Portal'));?> </button>                          
                         </form>
                      </div>
                      <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -961,7 +965,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn bd" style="margin-top: -17%;margin-left: -8%;">Visit Channel Portal </button>                          
+                           <button type="submit" class="btn bd" style="margin-top: -17%;margin-left: -8%;"><?php echo (__('Visit Channel Portal'));?>  </button>                          
                         </form>
                      </div>
                      <?php } ?></div>
@@ -1051,7 +1055,7 @@
                                              </svg>
                                           </div>
                                           <div class="media-body">
-                                             <h6 class="mb-0 ">Signin</h6>
+                                             <h6 class="mb-0 "><?php echo (__('Signin'));?></h6>
                                           </div>
                                        </div>
                                     </a>
@@ -1067,7 +1071,7 @@
                                              </svg>
                                           </div>
                                           <div class="media-body">
-                                             <h6 class="mb-0 ">Signup</h6>
+                                             <h6 class="mb-0 "><?php echo (__('Signup'));?></h6>
                                           </div>
                                        </div>
                                     </a>
@@ -1132,7 +1136,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Manage Profile</h6>
+                                                <h6 class="mb-0 "><?php echo (__('Manage Profile'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1148,7 +1152,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Watch Later</h6>
+                                                <h6 class="mb-0 "><?php echo (__('Watch Later'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1182,7 +1186,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">My Wishlist</h6>
+                                                <h6 class="mb-0 "><?php echo (__('My Wishlist'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1209,7 +1213,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Purchased Medias</h6>
+                                                <h6 class="mb-0 "><?php echo (__('Purchased Medias'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1276,7 +1280,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Logout</h6>
+                                                <h6 class="mb-0 "><?php echo (__('Logout'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1332,7 +1336,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Manage Profile</h6>
+                                                <h6 class="mb-0 "><?php echo (__('Manage Profile'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1348,7 +1352,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Watch Later</h6>
+                                                <h6 class="mb-0 "><?php echo (__('Watch Later'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1382,7 +1386,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">My Wishlist</h6>
+                                                <h6 class="mb-0 "><?php echo (__('My Wishlist'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1409,7 +1413,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Purchased Medias</h6>
+                                                <h6 class="mb-0 "><?php echo (__('Purchased Medias'));?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1487,7 +1491,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Pricing Plan</h6>
+                                                <h6 class="mb-0 "><?php echo (__('Pricing Plan'));?> </h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1512,7 +1516,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Admin</h6>
+                                                <h6 class="mb-0 "><?php echo (__('Admin')); ?></h6>
                                              </div>
                                           </div>
                                        </a>
@@ -1544,7 +1548,7 @@
                                                 </svg>
                                              </div>
                                              <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Logout</h6>
+                                                <h6 class="mb-0 "><?php echo (__('Logout')); ?></h6>
                                              </div>
                                           </div>
                                        </a>
