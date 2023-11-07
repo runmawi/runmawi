@@ -351,9 +351,29 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
    <div class="slide slick-bg s-bg-1 lazyload"
      data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $series_slider->player_image; ?>"
      style="background-position: right;"
-     id="image-container"
+     id="image-container" 
 >
-  
+<div class="our-video" style="position: absolute; bottom: 0; left: 20%; left:34%; height: 100%;">
+    <video class="myvideos" controls loop muted  src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="100%" alt=""></video>
+  </div>
+  <script>
+  $(document).ready(function() {
+    const imageContainer = document.getElementById("image-container");
+    const video = document.querySelector(".myvideos");
+
+    imageContainer.addEventListener("mouseover", function(event) {
+      video.play();
+      video.style.opacity = 1;
+    });
+
+    imageContainer.addEventListener("mouseout", function(event) {
+      video.pause();
+      video.style.opacity = 0; // Set opacity to 0 when cursor is away
+    });
+
+  });
+</script>
+
 
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
