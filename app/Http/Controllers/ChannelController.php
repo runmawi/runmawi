@@ -3921,6 +3921,7 @@ class ChannelController extends Controller
                 $item['image_url']          = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();
                 $item['player_image_url']   = $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
                 $item['Title_Thumbnail'] =   $item->video_title_image != null ? URL::to('public/uploads/images/'.$item->video_title_image) : default_vertical_image_url();     
+                $item['Reels_Thumbnail'] =   $item->reels_thumbnail != null ? URL::to('public/uploads/images/'.$item->reels_thumbnail) : default_vertical_image_url();     
                 $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
 
@@ -3986,6 +3987,14 @@ class ChannelController extends Controller
                                                     }
                                                 })->latest()->first();
 
+                    // Reels Videos
+
+                $item['Reels_videos'] = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')
+                                                ->where('videos.id', $video_id)->get();
+
+                $item['view_increment'] = $this->handleViewCount_movies($video_id);
+
+
                     //  Video URL
 
                 switch (true) {
@@ -4020,24 +4029,29 @@ class ChannelController extends Controller
 
                 switch (true) {
 
-                    case $item['trailer_type'] == "mp4_url":
+                    case $item['trailer_type'] === "mp4_url":
                         $item['trailer_videos_url']  =  $item->trailer ;
                         $item['trailer_video_player_type'] =  'video/mp4' ;
                     break;
 
-                    case $item['trailer_type'] == "m3u8_url" || "m3u8" :
+                    case $item['trailer_type'] === (("m3u8_url") || ("m3u8")) :
                         $item['trailer_videos_url']  =  $item->trailer ;
                         $item['trailer_video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
-                    case $item['trailer_type'] == "embed_url":
+                    case $item['trailer_type'] === "embed_url":
+                        $item['trailer_videos_url']  =  $item->trailer ;
+                        $item['trailer_video_player_type'] =  'video/mp4' ;
+                    break;
+
+                    case $item['trailer_type'] === "video_mp4":
                         $item['trailer_videos_url']  =  $item->trailer ;
                         $item['trailer_video_player_type'] =  'video/mp4' ;
                     break;
 
                     default:
-                        $item['videos_url']    = null ;
-                        $item['video_player_type']   =  null ;
+                        $item['trailer_videos_url']    = null ;
+                        $item['trailer_video_player_type']   =  null ;
                     break;
                 }
 
@@ -4046,7 +4060,7 @@ class ChannelController extends Controller
 
             $data = array(
                 'videodetail'    => $videodetail ,
-                'video'          => $videodetail ,   // Videos - Working Social Login 
+                'video'          => $videodetail ,   // Videos - Working Social Login
                 'setting'        => Setting::first(),
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,

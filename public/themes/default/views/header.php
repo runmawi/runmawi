@@ -766,6 +766,7 @@
 
                               
                               
+                     <?php if(!Auth::guest()){ ?>
                              
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
@@ -782,7 +783,6 @@
                                        </a> </li>      
                            </div>
 
-                              <?php if(!Auth::guest()){ ?>
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
                            <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">

@@ -65,6 +65,7 @@ class DatabaseSeeder extends Seeder
             DeviceSeeder::class,
             SiteMetaSeeder::class,
             TVSettingTableSeeder::class,
+            CreateTranslationLanguages::class,
         ]);
     
     }
