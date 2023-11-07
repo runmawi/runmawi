@@ -24,7 +24,7 @@ if (Auth::guest() != true) {
         } ?>">
 
         <?php if ($order_settings_list[18]->header_name) {
-            echo $order_settings_list[18]->header_name;
+            echo __($order_settings_list[18]->header_name);
         } else {
             echo '';
         } ?>

@@ -1,5 +1,5 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title">Recently Added Episodes</h4>                      
+  <h4 class="main-title"><?php echo (__('Recently Added Episodes')); ?></h4>                      
 </div>
 <?php
       $ThumbnailSetting = App\ThumbnailSetting::first();

@@ -226,6 +226,8 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->content_partner_checkout       = !empty($data['content_partner_checkout']) ? '1' : '0';
 
+        $theme_settings->translate_checkout       = !empty($data['translate_checkout']) ? '1' : '0';
+
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);

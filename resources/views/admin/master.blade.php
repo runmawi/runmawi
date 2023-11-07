@@ -13,6 +13,8 @@
 <?php
 
 @$translate_language = App\Setting::pluck('translate_language')->first();
+$translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
 \App::setLocale(@$translate_language);
 
 $uri_path = $_SERVER['REQUEST_URI']; 
@@ -1478,6 +1480,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <div class="iq-search-bar ml-auto">
 
                    <!-- Translator Choose -->
+                   <?php if(@$translate_checkout == 1){ ?>
                    <div class="right-icon">
                            <svg id="dropdown-icon" style="position: absolute; margin-top: 11px; height: 50px; width: 9%; margin-left: 35%;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
                               <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
@@ -1489,7 +1492,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                            <?php endforeach; ?>
                               <!-- Add more options as needed -->
                            </div>
-                           </div>
+                     </div>
+                   <?php } ?>
                        <div class="pt-2 pull-right">
                             <a class="btn btn-primary" href="<?php echo URL::to('home') ?>" ><span>Visit Website </span><img style="filter: invert(1);" height="25" width="25" class="" src="<?php echo  URL::to('/assets/img/icon/gro.svg')?>"></a>
                        </div>

@@ -1,6 +1,6 @@
 <?php  if(isset($featured_movies)) :?>
 <div class="video-list">
-    <p class="Continue Watching section-head">Popular Films</p>
+    <p class="Continue Watching section-head"><?php echo (__('Popular Films')); ?></p>
     <div class="border-line" style="margin-bottom:15px;"></div>
 	<div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
         

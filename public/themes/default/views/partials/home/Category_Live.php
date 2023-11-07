@@ -24,7 +24,7 @@ ol.breadcrumb {
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="movie-title">Live Category Video</h4>
+                    <h4 class="movie-title"><?php echo (__('Live Category Video')); ?></h4>
                 </div>
 
                 <!-- BREADCRUMBS -->
