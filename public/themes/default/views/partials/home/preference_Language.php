@@ -24,13 +24,13 @@
                                             <?php  if($preference_Languages->access == 'subscriber' ){ ?>
                                                 <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <?php }elseif($preference_Languages->access == 'registered'){?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                 <?php } elseif(!empty($preference_Languages->ppv_price)){?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_Languages->ppv_price; ?></p>
                                             <?php }elseif( !empty($preference_Languages->global_ppv || !empty($preference_Languages->global_ppv) && $preference_Languages->ppv_price == null)){ ?>
                                                 <p class="p-tag1"><?php echo $preference_Languages->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($preference_Languages->global_ppv == null && $preference_Languages->ppv_price == null ){ ?>
-                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Free')); ?></p>
                                             <?php } ?>
                                         </div>
                                         <?php } ?>
@@ -51,13 +51,13 @@
                                             <?php  if($preference_Languages->access == 'subscriber' ){ ?>
                                                 <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <?php }elseif($preference_Languages->access == 'registered'){?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                 <?php } elseif(!empty($preference_Languages->ppv_price)){?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_Languages->ppv_price; ?></p>
                                             <?php }elseif( !empty($preference_Languages->global_ppv || !empty($preference_Languages->global_ppv) && $preference_Languages->ppv_price == null)){ ?>
                                                 <p class="p-tag1"><?php echo $preference_Languages->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($preference_Languages->global_ppv == null && $preference_Languages->ppv_price == null ){ ?>
-                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Free')); ?></p>
                                             <?php } ?>
                                         </div>
                                         <?php } ?>
@@ -70,13 +70,13 @@
                                             <?php  if($preference_Languages->access == 'subscriber' ){ ?>
                                                 <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <?php }elseif($preference_Languages->access == 'registered'){?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                 <?php } elseif(!empty($preference_Languages->ppv_price)){?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_Languages->ppv_price; ?></p>
                                             <?php }elseif( !empty($preference_Languages->global_ppv || !empty($preference_Languages->global_ppv) && $preference_Languages->ppv_price == null)){ ?>
                                                 <p class="p-tag1"><?php echo $preference_Languages->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($preference_Languages->global_ppv == null && $preference_Languages->ppv_price == null ){ ?>
-                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Free')); ?></p>
                                             <?php } ?>
                                         </div>
                                         <?php } ?>

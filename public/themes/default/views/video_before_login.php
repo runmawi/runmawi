@@ -456,8 +456,9 @@
             <div class="text-white col-lg-5 p-0">
                <a href="<?= URL::to('/becomesubscriber') ?>" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
                <?php if($video->access == 'subscriber'): ?> Become a 
-                     Subscriber<?php elseif($video->access == 'ppv' ): ?>Rent Now
-                  <?php endif; ?> 
+                     Subscriber<?php elseif($video->access == 'registered' ): ?>Become a Registered User
+                  <?php elseif($video->access == 'ppv' ): ?>Rent Now
+                  <?php endif; ?>
                    to view this Video!
                </a>
             </div>

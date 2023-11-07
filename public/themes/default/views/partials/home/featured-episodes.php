@@ -28,7 +28,7 @@
                     <?php }elseif( !empty($latest_episode->ppv_status || !empty($latest_episode->ppv_status) && $latest_episode->ppv_price == null)){ ?>
                       <p class="p-tag1"><?php echo $latest_episode->ppv_status.' '.$currency->symbol; ?></p>
                       <?php }elseif($latest_episode->ppv_status == null && $latest_episode->ppv_price == null ){ ?>
-                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <p class="p-tag"><?php echo (__('Free')); ?></p>
                       <?php } ?>
                     <?php } ?>
                   
@@ -47,7 +47,7 @@
                     <?php }elseif( !empty($latest_episode->ppv_status || !empty($latest_episode->ppv_status) && $latest_episode->ppv_price == null)){ ?>
                       <p class="p-tag1"><?php echo $latest_episode->ppv_status.' '.$currency->symbol; ?></p>
                       <?php }elseif($latest_episode->ppv_status == null && $latest_episode->ppv_price == null ){ ?>
-                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <p class="p-tag"><?php echo (__('Free')); ?></p>
                       <?php } ?>
                     <?php } ?>
                     </a>
@@ -58,7 +58,7 @@
                <?php }elseif( !empty($latest_episode->ppv_status || !empty($latest_episode->ppv_status) && $latest_episode->ppv_price == null)){ ?>
                  <p class="p-tag1"><?php echo $latest_episode->ppv_status.' '.$currency->symbol; ?></p>
                  <?php }elseif($latest_episode->ppv_status == null && $latest_episode->ppv_price == null ){ ?>
-                 <p class="p-tag"><?php echo "Free"; ?></p>
+                 <p class="p-tag"><?php echo (__('Free')); ?></p>
                  <?php } ?>
                <?php } ?>
 
