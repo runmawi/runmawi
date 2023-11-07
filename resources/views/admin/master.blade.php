@@ -11,6 +11,10 @@
    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $favicon_icon; ?>" />
 
 <?php
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
