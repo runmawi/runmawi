@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTranslateLanguageToSettings extends Migration
+class AddTranslateCheckoutToSiteThemes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddTranslateLanguageToSettings extends Migration
      */
     public function up()
     {
-        Schema::table('settings', function (Blueprint $table) {
-            $table->string('translate_language')->default('en');
+        Schema::table('site_themes', function (Blueprint $table) {
+            $table->string('translate_checkout')->default(0);
         });
     }
 
@@ -25,8 +25,8 @@ class AddTranslateLanguageToSettings extends Migration
      */
     public function down()
     {
-        Schema::table('settings', function (Blueprint $table) {
-            Schema::dropIfExists('translate_language');
+        Schema::table('site_themes', function (Blueprint $table) {
+            Schema::dropIfExists('translate_checkout');
         });
     }
 }

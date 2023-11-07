@@ -6,6 +6,8 @@
       $theme = App\SiteTheme::first();      
 
       $signin_header = App\SiteTheme::pluck('signin_header')->first();
+      
+      $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
 
       @$translate_language = App\Setting::pluck('translate_language')->first();
       \App::setLocale(@$translate_language);
@@ -950,6 +952,7 @@
                         </div>
                      </div>
 
+                     <?php if(@$translate_checkout == 1){ ?>
                       <!-- Translator Choose -->
                    <div class="right-icon" style="width:7% ; margin-right:20px">
                            <svg id="dropdown-icon" style="position: absolute; height: 50px; bottom:4px; width: 9%; " xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
@@ -963,6 +966,7 @@
                               <!-- Add more options as needed -->
                            </div>
                            </div>
+                   <?php } ?>
 
                       <div id="desk-top" class="d-flex align-items-center cppporrr">
                      <?php 

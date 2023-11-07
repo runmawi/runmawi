@@ -33,9 +33,9 @@
                     <h4 class="movie-title">
                         <?php
                         if (!empty($category->name)) {
-                            echo $category->name;
+                            echo __($category->name);
                         } else {
-                            echo $category->name;
+                            echo __($category->name);
                         }
                         ?>
                     </h4>

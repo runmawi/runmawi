@@ -1,6 +1,6 @@
 <?php if(count($free_Contents) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title">Free Episodes</h4>                      
+  <h4 class="main-title"><?php echo (__('Free Episodes')); ?></h4>                      
 </div>
 <?php
 endif;

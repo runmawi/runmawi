@@ -2,7 +2,7 @@
 <?php  if(!Auth::guest() && !empty($data['password_hash'])) { 
    $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-   <h4 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>">Continue watching</a></h4>
+   <h4 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>"><?php echo (__('Continue watching')); ?></a></h4>
 </div>
 <div class="favorites-contens">
    <ul class="favorites-slider list-inline  row p-0 mb-0">
