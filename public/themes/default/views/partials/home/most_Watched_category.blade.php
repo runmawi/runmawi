@@ -66,7 +66,7 @@
                         <?php if($category_video->access == 'subscriber' ){ ?>
                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                             <?php }elseif($category_video->access == 'registered'){?>
-                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                             <?php } elseif(!empty($category_video->ppv_price)) { 
                              echo $currency->symbol.' '.$category_video->ppv_price ; 
                             } 
@@ -90,7 +90,7 @@
                         <?php if($category_video->access == 'subscriber' ){ ?>
                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                             <?php }elseif($category_video->access == 'registered'){?>
-                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                             <?php } elseif(!empty($category_video->ppv_price)) { 
                              echo $currency->symbol.' '.$category_video->ppv_price ; 
                             } 
@@ -106,7 +106,7 @@
                         <?php if($category_video->access == 'subscriber' ){ ?>
                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                             <?php }elseif($category_video->access == 'registered'){?>
-                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                             <?php } elseif(!empty($category_video->ppv_price)) { 
                              echo $currency->symbol.' '.$category_video->ppv_price ; 
                             } 
