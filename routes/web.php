@@ -5,8 +5,8 @@ use App\Http\Middleware\cpp;
 use App\Http\Middleware\Channel;
 use Carbon\Carbon as Carbon;
 
-$translate_language = App\Setting::pluck('translate_language')->first();
-\App::setLocale($translate_language);
+// @$translate_language = App\Setting::pluck('translate_language')->first();
+// \App::setLocale(@$translate_language);
 
 Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
