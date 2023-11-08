@@ -718,7 +718,12 @@
                                         <?php } } ?>
 
                                         <!-- Screen responsive buttons -->
-
+                                        <?php                         
+                                            if(!Auth::guest()){                                                              
+                                            $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
+                                            $Channel = App\Channel::where('email', Auth::User()->email)->first();
+                                            }
+                                            if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
                                         <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
                                             <div class="row ">
                                                 <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr p-0">
@@ -731,6 +736,8 @@
                                                         </form>
                                                     </div>
                                                 </li>
+                            <?php }if(!Auth::guest() && !empty($Channel)){ ?>
+
                                                         <div class="col-sm-6 logout_mobile_view menu-item pt-3">
                                                             <li class="logout_mobile_view menu-item myp">
                                                                 <a class="btn btn-primary" style="float:right;" href="<?php echo URL::to('/logout'); ?>">                                                       
@@ -740,11 +747,17 @@
                                                         </div>
                                             </div>
                                         </div>
+                            <?php } ?>
                                                 
                                        
                                    
 
-                                    
+                                <?php                         
+                                    if(!Auth::guest()){                                                              
+                                    $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
+                                    $Channel = App\Channel::where('email', Auth::User()->email)->first();
+                                    }
+                                    if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
                                     <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
                                         <div class="row ">
                                             <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr p-0">
@@ -757,7 +770,7 @@
                                                     </form>
                                                 </div>
                                             </li>
-
+                                            <?php }if(!Auth::guest() && !empty($Channel)){ ?>
                                             <div class="col-sm-6 logout_mobile_view menu-item pt-3">
                                                 <li class="logout_mobile_view menu-item myp">
                                                     <a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
@@ -768,6 +781,7 @@
                               
                                         </div>
                                     </div>
+                                <?php } ?>
                               
                              
 
