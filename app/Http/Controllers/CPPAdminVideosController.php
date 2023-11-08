@@ -303,6 +303,8 @@ class CPPAdminVideosController extends Controller
     {
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
+        $user = Session::get('user');
+
         if ((!empty($package) && $package == 'Pro') || (!empty($package) && $package == 'Business')) {
             $value = [];
             $data = $request->all();
@@ -358,6 +360,8 @@ class CPPAdminVideosController extends Controller
                 $video->mp4_url = $storepath;
                 $video->type = 'mp4_url';
                 $video->draft = 0;
+                $video->user_id = $user->id;
+                $video->uploaded_by = 'CPP';
                 $video->image = 'default_image.jpg';
 
                 $PC_image_path = public_path('/uploads/images/default_image.jpg');
@@ -417,6 +421,7 @@ class CPPAdminVideosController extends Controller
                 $video->mp4_url = $storepath;
                 $video->draft = 0;
                 $video->duration = $Video_duration;
+                $video->uploaded_by = 'CPP';
                 $video->user_id = $user->id;
                 $video->image = 'default_image.jpg';
 
@@ -477,6 +482,8 @@ class CPPAdminVideosController extends Controller
                 $video->mp4_url = $storepath;
                 $video->type = 'mp4_url';
                 $video->draft = 0;
+                $video->user_id = $user->id;
+                $video->uploaded_by = 'CPP';
                 $video->duration = $Video_duration;
                 $video->image = 'default_image.jpg';
 
@@ -1189,7 +1196,9 @@ class CPPAdminVideosController extends Controller
             }
             if (empty($data['publish_type'])) {
                 // dd($data['global_ppv']);
-                $video->publish_type = 0;
+                $publish_type = 'publish_now';
+            }else{
+                $publish_type = $data['publish_type'];
             }
             if (empty($data['publish_time'])) {
                 // dd($data['global_ppv']);
@@ -1366,7 +1375,7 @@ class CPPAdminVideosController extends Controller
             $video->age_restrict = $data['age_restrict'];
             $video->access = $data['access'];
             $video->publish_status = $request['publish_status'];
-            $video->publish_type = $data['publish_type'];
+            $video->publish_type = $publish_type;
             $video->publish_time = $data['publish_time'];
             $video->active = $active;
             $video->status = $status;
