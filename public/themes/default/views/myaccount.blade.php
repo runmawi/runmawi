@@ -16,6 +16,9 @@ $user = App\User::where('id',$id)->first();
 
 }
 
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
  ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">
