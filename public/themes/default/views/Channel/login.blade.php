@@ -9,7 +9,7 @@ $system_settings = App\SystemSetting::find(1);
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Channel Partner Login | <?php echo $settings->website_name ; ?></title>
+      <title>{{ __('Channel Partner Login') }} | <?php echo $settings->website_name ; ?></title>
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
@@ -130,7 +130,7 @@ $system_settings = App\SystemSetting::find(1);
                           <hr style="color:#1e1e1e;">
                            <div class="mt-3">
                               <div class="d-flex justify-content-center links">
-                                 Become a Channel Partner <a href="<?= URL::to('/channel/register')?>" class="text-primary ml-2">Sign Up</a> Here!
+                              {{ __('Become a Channel Partner') }}  <a href="<?= URL::to('/channel/register')?>" class="text-primary ml-2">{{ __('Sign Up') }}</a> {{ __('Here!') }}
                               </div>                        
                            </div>
                      </form>
