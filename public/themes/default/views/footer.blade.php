@@ -16,7 +16,7 @@ $settings = App\Setting::first();
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
           <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
-              <h5 class="font-weight-bold mb-0  ">Download App</h5>
+              <h5 class="font-weight-bold mb-0  "><?php echo (__('Download App')); ?></h5>
           <?php } ?>
 
           <div class=" small m-0 text-white ">
@@ -43,7 +43,7 @@ $settings = App\Setting::first();
           <div class="col-sm-3. small m-0 text-white text-right">
                <div class="map1">
                     <div class="d-flex p-0 text-white icon align-items-baseline bmk">
-                      <p>Follow us :</p>
+                      <p><?php echo (__('Follow us :')); ?> </p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1">
                           <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/inst.png')?>" style="" />
@@ -118,10 +118,10 @@ $settings = App\Setting::first();
             $cmspages = App\Page::where('footer_active', 1)->get();
 
             foreach($cmspages as $key => $page) {?>
-              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= $page->title ?> </a> 
+              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a> 
             <?php } ?>
 
-          <?php echo $settings->website_name .' - '. Carbon::now()->year ; ?>  All Rights Reserved
+          <?php echo $settings->website_name .' - '. Carbon::now()->year ; ?> <?php echo (__('All Rights Reserved')); ?> 
         </p>
     </div>
 

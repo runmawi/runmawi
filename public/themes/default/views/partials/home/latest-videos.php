@@ -4,7 +4,7 @@ if(count($latest_video) > 0) : ?>
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title"><a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>">
-                    <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[1]->header_name ;} else { echo "" ; } ?>
+                    <?php if ($order_settings_list[1]->header_name) { echo __($order_settings_list[1]->header_name) ;} else { echo "" ; } ?>
                     </a></h4>                      
                  </div>
                  <div class="favorites-contens">
@@ -76,13 +76,13 @@ if(count($latest_video) > 0) : ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <!-- <i class="fa-solid fa-crown"></i> -->
                                             <?php }elseif($watchlater_video->access == 'registered'){?>
-                                          <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                          <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                           <?php }elseif(!empty($watchlater_video->ppv_price)){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Free')); ?></p>
                                             <?php } ?> 
                                           <?php } ?>
 
@@ -102,13 +102,13 @@ if(count($latest_video) > 0) : ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <!-- <i class="fa-solid fa-crown"></i> -->
                                             <?php }elseif($watchlater_video->access == 'registered'){?>
-                                          <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                          <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                           <?php }elseif(!empty($watchlater_video->ppv_price)){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Free')); ?></p>
                                             <?php } ?> 
                                           <?php } ?>   
                                           </a>   
@@ -119,13 +119,13 @@ if(count($latest_video) > 0) : ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <!-- <i class="fa-solid fa-crown"></i> -->
                                             <?php }elseif($watchlater_video->access == 'registered'){?>
-                                          <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                          <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                           <?php }elseif(!empty($watchlater_video->ppv_price)){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Free')); ?></p>
                                             <?php } ?> 
                                           <?php } ?> 
                                           <div class="hover-buttons text-white">

@@ -26,7 +26,7 @@
         } ?>">
 
             <?php if ($order_settings_list[16]->header_name) {
-                echo $order_settings_list[16]->header_name;
+                echo __($order_settings_list[16]->header_name);
             } else {
                 echo '';
             } ?></a>
@@ -111,7 +111,7 @@
                                         <?php  if($latest_view_livestreams->access == 'subscriber' ){ ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                         <?php }elseif($latest_view_livestreams->access == 'registered'){?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                 <?php }elseif(!empty($latest_view_livestreams->ppv_price)){?>
                                             <p class="p-tag1"><?php echo $currency->symbol . ' ' . $latest_view_livestreams->ppv_price; ?></p>
                                         <?php }elseif( !empty($latest_view_livestreams->global_ppv || !empty($latest_view_livestreams->global_ppv) && $latest_view_livestreams->ppv_price == null)){ ?>
@@ -137,7 +137,7 @@
                                         <?php  if($latest_view_livestreams->access == 'subscriber' ){ ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                         <?php }elseif($latest_view_livestreams->access == 'registered'){?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                 <?php }elseif(!empty($latest_view_livestreams->ppv_price)){?>
                                             <p class="p-tag1"><?php echo $currency->symbol . ' ' . $latest_view_livestreams->ppv_price; ?></p>
                                         <?php }elseif( !empty($latest_view_livestreams->global_ppv || !empty($latest_view_livestreams->global_ppv) && $latest_view_livestreams->ppv_price == null)){ ?>
@@ -151,7 +151,7 @@
                                         <?php  if($latest_view_livestreams->access == 'subscriber' ){ ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                         <?php }elseif($latest_view_livestreams->access == 'registered'){?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                 <?php }elseif(!empty($latest_view_livestreams->ppv_price)){?>
                                             <p class="p-tag1"><?php echo $currency->symbol . ' ' . $latest_view_livestreams->ppv_price; ?></p>
                                         <?php }elseif( !empty($latest_view_livestreams->global_ppv || !empty($latest_view_livestreams->global_ppv) && $latest_view_livestreams->ppv_price == null)){ ?>

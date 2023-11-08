@@ -425,4 +425,27 @@ class AdminDashboardController extends Controller
         // print_r($cityName);$geoip->getCity()
         // exit;
     }
+
+    public function TranslateLanguage(Request $request){
+
+        try {
+
+            $Setting = Setting::first();
+            Setting::first()
+            ->update([
+                    'translate_language'  => $request->languageCode ,
+                  ]);
+
+                  $Setting = Setting::first();
+                  $Setting->translate_language = $request->languageCode;
+                  $Setting->save();
+
+                  return 1 ;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+       
+
+    }
 }

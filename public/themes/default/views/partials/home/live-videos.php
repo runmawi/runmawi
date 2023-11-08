@@ -3,7 +3,7 @@
     <h4 class="main-title">
         <!-- Live Videos -->
 <a href="<?php if ($order_settings_list[3]->header_name) { echo URL::to('/').'/'.$order_settings_list[3]->url ;} else { echo "" ; } ?>">
-  <?php if ($order_settings_list[3]->header_name) { echo $order_settings_list[3]->header_name ;} else { echo "" ; } ?></a>
+  <?php if ($order_settings_list[3]->header_name) { echo __($order_settings_list[3]->header_name) ;} else { echo "" ; } ?></a>
     </h4>
 </div>
 <div class="favorites-contens">
@@ -92,11 +92,11 @@
                                 <?php if($video->access == 'subscriber' ){ ?>
                                   <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                 <?php }elseif($video->access == 'registered'){?>
-                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                 <?php } elseif(!empty($video->ppv_price)){?>
                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
                                 <?php }elseif($video->ppv_price == null ){ ?>
-                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                <p class="p-tag"><?php echo (__('Free')); ?></p>
                                 <?php } ?>
                          <?php } ?>   
 
@@ -118,11 +118,11 @@
                                 <?php if($video->access == 'subscriber' ){ ?>
                                   <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                 <?php }elseif($video->access == 'registered'){?>
-                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                 <?php } elseif(!empty($video->ppv_price)){?>
                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
                                 <?php }elseif($video->ppv_price == null ){ ?>
-                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                <p class="p-tag"><?php echo (__('Free')); ?></p>
                                 <?php } ?>
                          <?php } ?> 
                          </a>  
@@ -134,11 +134,11 @@
                         <?php if($video->access == 'subscriber' ){ ?>
                           <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                         <?php }elseif($video->access == 'registered'){?>
-                        <p class="p-tag"><?php echo "Register Now"; ?></p>
+                        <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                         <?php } elseif(!empty($video->ppv_price)){?>
                         <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
                         <?php }elseif($video->ppv_price == null ){ ?>
-                        <p class="p-tag"><?php echo "Free"; ?></p>
+                        <p class="p-tag"><?php echo (__('Free')); ?></p>
                         <?php } ?>
                  <?php } ?> 
 

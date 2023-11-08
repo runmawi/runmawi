@@ -99,9 +99,7 @@ $theme = App\SiteTheme::first();
     }*/.verify-buttons{
         margin-left: 36%;
     }
-    .container{
-        margin-top: 70px;
-    }
+    
     .panel-heading {
     margin-bottom: 1rem;
 }

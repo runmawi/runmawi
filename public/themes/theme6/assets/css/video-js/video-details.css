@@ -150,7 +150,7 @@
 }
 
 .CircularProgressbar {
-    width: 100%;
+    width: 63px;
     vertical-align: middle;
 }
 
@@ -352,7 +352,9 @@
     line-height: 20px;
     opacity: .5;
 }
-.scp-breadcrumb { }
+ul.breadcrumb.breadcrumb-csp{
+    background-color: transparent !important;
+}
 
 @media only screen and (min-width: 768px) {
     .vpageBanner {
@@ -381,7 +383,7 @@
     }
 
     .vpageBanner .content .right .playbtn svg {
-        width: 80px;
+        width: 40px;
     }
 
     .vpageBanner .content .right .overview .heading {

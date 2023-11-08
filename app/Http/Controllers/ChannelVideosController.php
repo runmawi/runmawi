@@ -283,6 +283,7 @@ class ChannelVideosController extends Controller
         {
             $value = array();
             $data = $request->all();
+            $user = Session::get('channel');
 
             $validator = Validator::make($request->all() , ['file' => 'required|mimes:video/mp4,video/x-m4v,video/*',
 
@@ -341,6 +342,7 @@ class ChannelVideosController extends Controller
                 $video->title = $file_folder_name;
                 $video->original_name = 'public';
                 $video->uploaded_by = 'Channel';
+                $video->user_id = $user->id;
                 $video->path = $path;
                 $video->mp4_url = $storepath;
                 $video->type = 'mp4_url';
@@ -486,7 +488,8 @@ class ChannelVideosController extends Controller
                 $video->disk = 'public';
                 $video->title = $file_folder_name;
                 $video->uploaded_by = 'Channel';
-                $video->original_name = 'public';
+                $video->original_name = 'public';          
+                $video->user_id = $user->id;
                 $video->path = $path;
                 $video->mp4_url = $storepath;
                 $video->type = 'mp4_url';
@@ -1381,10 +1384,11 @@ class ChannelVideosController extends Controller
             {
                 $video->slug = $this->createSlug($data['title']);
             }
-            if (empty($data['publish_type']))
-            {
+            if (empty($data['publish_type'])) {
                 // dd($data['global_ppv']);
-                $video->publish_type = 0;
+                $publish_type = 'publish_now';
+            }else{
+                $publish_type = $data['publish_type'];
             }
             if (empty($data['publish_time']))
             {
@@ -1589,7 +1593,7 @@ class ChannelVideosController extends Controller
             $video->age_restrict = $data['age_restrict'];
             $video->access = $data['access'];
             $video->publish_status = $request['publish_status'];
-            $video->publish_type = $data['publish_type'];
+            $video->publish_type = $publish_type;
             $video->publish_time = $data['publish_time'];
             $video->active = $active;
             $video->status = $status;

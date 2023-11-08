@@ -8,7 +8,7 @@
                 <a href="<?php echo URL::to('/live/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration:none;color:#fff">
                     <h4 class="movie-title">
                         <?php
-                        if(!empty($category->home_genre)){ echo 'Live'.' '.$category->home_genre ; }else{ echo 'Live'.' '.$category->name ; }  
+                        if(!empty($category->home_genre)){ echo __('Live').' '.__($category->home_genre) ; }else{ echo __('Live').' '.__($category->name) ; }  
                         //   echo __($category->name);
                           ?>
                     </h4>
@@ -97,7 +97,7 @@
                                                 <?php if($livestream->access == 'subscriber' ){ ?>
                                                     <i class="fas fa-crown" style='color:gold'></i> 
                                                     <?php }elseif($livestream->access == 'registered'){?>
-                                                    <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                    <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                     <?php } elseif(!empty($livestream->ppv_price)) {
                                                     echo $currency->symbol.' '.$livestream->ppv_price ; 
                                                     } elseif(!empty($livestream->global_ppv) && $livestream->ppv_price == null) {
@@ -125,7 +125,7 @@
                                                 <?php if($livestream->access == 'subscriber' ){ ?>
                                                     <i class="fas fa-crown" style='color:gold'></i> 
                                                     <?php }elseif($livestream->access == 'registered'){?>
-                                                    <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                    <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                     <?php } elseif(!empty($livestream->ppv_price)) {
                                                     echo $currency->symbol.' '.$livestream->ppv_price ; 
                                                     } elseif(!empty($livestream->global_ppv) && $livestream->ppv_price == null) {
@@ -142,7 +142,7 @@
                                                 <?php if($livestream->access == 'subscriber' ){ ?>
                                                     <i class="fas fa-crown" style='color:gold'></i> 
                                                     <?php }elseif($livestream->access == 'registered'){?>
-                                                    <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                    <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                     <?php } elseif(!empty($livestream->ppv_price)) {
                                                     echo $currency->symbol.' '.$livestream->ppv_price ; 
                                                     } elseif(!empty($livestream->global_ppv) && $livestream->ppv_price == null) {

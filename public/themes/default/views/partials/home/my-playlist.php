@@ -12,7 +12,7 @@
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
   <?php if ($my_play_list_settings_list->header_name) 
       {
-        echo $my_play_list_settings_list->header_name ;
+        echo __($my_play_list_settings_list->header_name) ;
         }
         else {
             echo "" ; 

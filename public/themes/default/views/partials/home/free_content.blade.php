@@ -1,6 +1,6 @@
 <?php if(count($free_Contents) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title">Free Episodes</h4>                      
+  <h4 class="main-title"><?php echo (__('Free Episodes')); ?></h4>                      
 </div>
 <?php
 endif;
@@ -28,7 +28,7 @@ endif;
                     <?php }elseif( !empty($free_Content->ppv_status || !empty($free_Content->ppv_status) && $free_Content->ppv_price == 1)){ ?>
                       <p class="p-tag1"><?php echo $free_Content->ppv_status.' '.$currency->symbol; ?></p>
                       <?php }elseif($free_Content->ppv_status == null ){ ?>
-                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <p class="p-tag"><?php echo (__('Free')); ?></p>
                       <?php } ?>
                   <?php } ?>
                  
@@ -47,7 +47,7 @@ endif;
                     <?php }elseif( !empty($free_Content->ppv_status || !empty($free_Content->ppv_status) && $free_Content->ppv_price == 1)){ ?>
                       <p class="p-tag1"><?php echo $free_Content->ppv_status.' '.$currency->symbol; ?></p>
                       <?php }elseif($free_Content->ppv_status == null ){ ?>
-                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <p class="p-tag"><?php echo (__('Free')); ?></p>
                       <?php } ?>
                   <?php } ?>
                   </a>
@@ -58,7 +58,7 @@ endif;
 <?php }elseif( !empty($free_Content->ppv_status || !empty($free_Content->ppv_status) && $free_Content->ppv_price == 1)){ ?>
   <p class="p-tag1"><?php echo $free_Content->ppv_status.' '.$currency->symbol; ?></p>
   <?php }elseif($free_Content->ppv_status == null ){ ?>
-  <p class="p-tag"><?php echo "Free"; ?></p>
+  <p class="p-tag"><?php echo (__('Free')); ?></p>
   <?php } ?>
 <?php } ?>
 
