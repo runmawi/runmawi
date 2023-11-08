@@ -345,13 +345,13 @@ $settings = App\Setting::first();
                     
                         <div class="form-group">
                           <label>{{ __('Email') }} :</label>
-                          <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
+                          <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="{{ __('Email') }}">
                         </div> 
                     
                     
                         <div class="form-group position-relative">
                           <label>{{ __('Password') }}:</label><br>
-                          <input type="password" id="pass_log_id"  name="password"   placeholder="Password"  class="form-control"  >
+                          <input type="password" id="pass_log_id"  name="password"   placeholder="{{ __('Password') }}"  class="form-control"  >
                             <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
 
                       </div> 
@@ -359,7 +359,7 @@ $settings = App\Setting::first();
                     
                         <div class="form-group">
                            <label> {{ __('Phone') }}:</label>
-                           <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+                           <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="{{ __('Mobile Number') }}">
                         </div>
                         <div class="form-group">
                         <label>{{ __('DOB') }} :</label>
