@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 overflow-hidden">
                 <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h2 class="Continue Watching">Media in My Wishlist</h2>
+                    <h2 class="Continue Watching"><?= __('Media in My Wishlist') ?></h2>
                 </div>
             </div>
         </div>
