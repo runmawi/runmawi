@@ -9,9 +9,9 @@
            
                     <div class="cpp">
                         <div class="container-fluid">
-                            <p class="text-white"> Subscription Plans</p>
+                            <p class="text-white"> {{ __('Subscription Plans') }}</p>
                             <div class="col-lg-8 p-0">
-                                <h1 class="">Introducing bundled subscription plans at special introductory prices</h1>
+                                <h1 class="">{{ __('Introducing bundled subscription plans at special introductory prices') }}</h1>
                             </div>
  
                             <div class="col-lg-4 p-0">
@@ -24,9 +24,9 @@
                                     
                                     <div class="row dm align-items-center">
                                         <div class="col-md-6">
-                                        <h2>Power Play</h2>
-                                        <p>All 5 OTTs in one pack</p>
-                                        <h2 class="per mt-4">$ 1999per yr <br><span>Save upto $12500</span></h2>
+                                        <h2>{{ __('Power Play') }}</h2>
+                                        <p>{{ __('All 5 OTTs in one pack') }}</p>
+                                        <h2 class="per mt-4">$ 1999per yr <br><span>{{ __('Save upto') }} $12500</span></h2>
                                     </div>
 
                                     <div class="col-md-6">
@@ -41,7 +41,7 @@
                                                 <img class="bg-white" src="<?php echo  URL::to('/assets/img/s2.png')?>" >
                                                 <img class="bg-white"  src="<?php echo  URL::to('/assets/img/s5.png')?>" >
                                             </div>
-                                            <a class="cpp-btn" href="https://www.w3schools.com">Start</a>
+                                            <a class="cpp-btn" href="https://www.w3schools.com">{{ __('Start') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
          
 
                 <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
-                    <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No Channels Available Now </h2>
+                    <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">{{ __('No Channels Available Now') }} </h2>
                 </div>
                 
             @endforelse

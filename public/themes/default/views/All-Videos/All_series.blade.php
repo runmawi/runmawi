@@ -13,7 +13,7 @@
 
 
              <div class="iq-main-header align-items-center justify-content-between">
-               <h3 class="vid-title"> Series List</h3>
+               <h3 class="vid-title"> {{ __('Series List') }}</h3>
             </div>
             
              
@@ -31,7 +31,7 @@
                                        @elseif( !empty($Serie->global_ppv || !empty($Serie->global_ppv) && $Serie->ppv_price == null)) 
                                           <p class="p-tag1"><?php echo $Serie->global_ppv.' '. $respond_data['currency']->symbol; ?></p>
                                        @elseif($Serie->global_ppv == null && $Serie->ppv_price == null )
-                                          <p class="p-tag" ><?php echo "Free"; ?></p>
+                                          <p class="p-tag" ><?php echo __("Free"); ?></p>
                                        @endif
                                  </div>
 
@@ -87,7 +87,7 @@
                                     <div class="hover-buttons">
                                        <a  href="<?php echo URL::to('') ?><?= '/play_series/' . $Serie->slug ?>">	
                                           <span class="text-white">
-                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
+                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
                                           </span>
                                        </a>
                                     <div>
@@ -107,7 +107,7 @@
                         </li>
                      @empty
                         <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                           <p ><h3 class="text-center">No Series Available</h3>
+                           <p ><h3 class="text-center">{{ __('No Series Available') }}</h3>
                         </div>
                      @endforelse
                </ul>
@@ -119,7 +119,7 @@
             </div>
          @else
             <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-               <p ><h3 class="text-center">No Series Available</h3>
+               <p ><h3 class="text-center">{{ __('No Series Available') }}</h3>
             </div>
          @endif
       </div>

@@ -11,7 +11,7 @@
 
                     <div class="iq-main-header align-items-center justify-content-between">
                         <h4 class="main-title mt-3">                  
-                            <b>Free Movies </b>
+                            <b>{{ __('Free Movies') }} </b>
                         </h4>                   
                     </div>
 
@@ -91,7 +91,7 @@
                                                 <div class="hover-buttons">
                                                     <a href="{{ URL::to('category/videos/'. $video->slug) }}">
                                                         <span class="text-white">
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
+                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
                                                         </span>
                                                     </a>
                                                 </div>
@@ -111,7 +111,7 @@
                                 <div class="col-md-12 text-center mt-4"
                                     style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
                                     <p>
-                                    <h3 class="text-center">No video Available</h3>
+                                    <h3 class="text-center">{{ __('No video Available') }}</h3>
                                 </div>
                             @endforelse
                         </ul>
@@ -125,7 +125,7 @@
                     <div class="col-md-12 text-center mt-4"
                         style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
                         <p>
-                        <h3 class="text-center">No Video Available</h3>
+                        <h3 class="text-center">{{ __('No video Available') }}</h3>
                     </div>
                 @endif
             </div>

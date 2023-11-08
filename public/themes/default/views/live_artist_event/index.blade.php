@@ -9,7 +9,7 @@
             <div class="col-sm-12 page-height">
 
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">Live Artist Event</h3>                     
+                    <h3 class="vid-title">{{ __('Live Artist Event') }}</h3>                     
                 </div>
 
                      <div class="favorites-contens">
@@ -29,7 +29,7 @@
                                             @elseif( !empty($artist_live_events->global_ppv || !empty($artist_live_events->global_ppv) && $artist_live_events->ppv_price == null))
                                                 <p class="p-tag1"><?php echo $artist_live_events->global_ppv.' '. $artist_live_event['currency']->symbol; ?></p>
                                             @elseif($artist_live_events->global_ppv == null && $artist_live_events->ppv_price == null )
-                                                <p class="p-tag" ><?php echo "Free"; ?></p>
+                                                <p class="p-tag" ><?php echo __("Free"); ?></p>
                                            @endif
 
                                     </div>
@@ -89,7 +89,7 @@
 
                                     <div class="hover-buttons">
                                         <a  href="{{ route('live_event_play',$artist_live_events->slug ) }}" >	
-                                          <span class="text-white"><i class="fa fa-play mr-1" aria-hidden="true"></i>Live Now</span>
+                                          <span class="text-white"><i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Live Now') }}</span>
                                         </a>
                                     <div>
                                         </div>

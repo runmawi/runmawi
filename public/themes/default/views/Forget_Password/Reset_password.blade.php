@@ -9,7 +9,7 @@
 
 <head>
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
-    <title> Reset Password | <?php echo $settings->website_name; ?></title>
+    <title>{{ __('Reset Password') }} | <?php echo $settings->website_name; ?></title>
     <link rel="shortcut icon" href="<?= getFavicon() ?>" />
 
     <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/font-awesome.min.css') ?>" />
@@ -140,8 +140,7 @@
                                             </span>
                                         @enderror
 
-                                        <p class="reset-help text-center">We will send you an email with instructions on
-                                            how to reset your password.</p>
+                                        <p class="reset-help text-center"> {{ __('We will send you an email with instructions on how to reset your password.') }}</p>
 
                                         <button type="submit" class="btn btn-primary">
                                             {{ __('Send Password Reset Link') }}
