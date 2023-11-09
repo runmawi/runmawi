@@ -6,12 +6,13 @@
   }
 
  ?>
+<style>
 
+</style>
 <div id="music-player">
   
         <img id="album-art"/>
         <div id="top-bar">
-          <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
           <button id="backStationbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
           <div id="station-music">
@@ -51,25 +52,29 @@
             <div id="totalTime"></div>
           </div>
           <div id="menu">
+          <button id="like-button" style="color:grey" class="like" title="Like"><i class="fa fa-thumbs-up"></i></button>
+          <button id="lyrics-toggle"><i class="fa fa-file-text" title="Lyrics"></i></button> <!-- Add this line -->
           <button id="back" title="Songs List"><i class="fas fa-list"></i></button> 
           <button id="prev" title="Previous"><i class="fa fa-step-backward"></i></button>
           <button id="play" ><i class="fa fa-play"></i></button>
           <button id="next" title="Next"><i class="fa fa-step-forward"></i></button>
           <button id="shuffle" style="color:grey" title="Shuffle"><i class="fa fa-random"></i></button>
           <button id="repeat" style="color:grey" title="Repeat"><i class="fa fa-repeat"></i></button>
-            <button id="lyrics-toggle"><i class="fa fa-file-text" title="Lyrics"></i></button> <!-- Add this line -->
-            <button id="like-button" style="color:grey" class="like" title="Like"><i class="fa fa-thumbs-up"></i></button>
-            <button id="dislike-button" style="color:grey" class="dislike" title="DisLike"><i class="fa fa-thumbs-down"></i></button>
-            <?php if(@$playlist_station == 1){ ?>
-            <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
-            <?php } ?>
+          <button id="dislike-button" style="color:grey" class="dislike" title="DisLike"><i class="fa fa-thumbs-down"></i></button>
+          <?php if(@$playlist_station == 1){ ?>
+          <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
+          <?php } ?>
           </div>
         </div>
         <div id="playlist">
+
           <div id="label">
             <h1><?php echo @$playlist_name ; ?></h1>
             <input id="search" type="text" placeholder="&#xF002; Search from all songs"></input>
           </div>
+
+        <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
+
           <div id="show-box">
             <div id="show-list">
             </div>
@@ -690,9 +695,10 @@ $('#Stationsearch').keyup(function(){
 
 var togglePlaylist = 0;
 $('#back').on('click',function(){
-
+// alert();  
   var backbutton = $('#backbutton');
   backbutton.show();
+  backbutton.css('opacity', 1); 
 
   var backStationbutton = $('#backStationbutton');
   backStationbutton.hide();
@@ -1327,6 +1333,19 @@ html,body{
     background: inherit;
   }
 
-
+  #backbutton{
+    opacity: 1;
+    margin: 0;
+    position: relative;
+    background: inherit;
+    border: none;
+    color: white;
+    font-size: 100%;
+    vertical-align: middle;
+    transform: translateY(-40%);
+    padding: 5px 10px;
+    left: 5%;
+  }
+  
 </style>
 <?php include(public_path('themes/default/views/footer.blade.php')); ?>
