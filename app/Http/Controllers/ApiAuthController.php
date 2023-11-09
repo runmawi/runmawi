@@ -1497,7 +1497,7 @@ public function verifyandupdatepassword(Request $request)
 
             $current_time = Carbon::now()->format('H:i:s');
 
-            $item['video_ads_tag_url'] = AdsEvent::select('videos.ads_tag_url_id','videos.id as video_id','advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
+            $video_ads_tag_url = AdsEvent::select('videos.ads_tag_url_id','videos.id as video_id','advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
                 ->Join('advertisements','advertisements.id','=','ads_events.ads_id')
                 ->Join('videos', 'advertisements.id', '=', 'videos.ads_tag_url_id');
                 // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
@@ -1506,7 +1506,7 @@ public function verifyandupdatepassword(Request $request)
                     $video_ads_tag_url =  $video_ads_tag_url->whereTime('ads_events.start', '<=', $current_time)->whereTime('ads_events.end', '>=', $current_time);
                 }
 
-                $video_ads_tag_url =  $video_ads_tag_url->where('ads_events.status',1)
+                $item['video_ads_tag_url'] =  $video_ads_tag_url->where('ads_events.status',1)
                       ->where('advertisements.status',1)
                       ->where('advertisements.ads_upload_type','tag_url')
                       ->where('advertisements.id',$video->ads_tag_url_id)
