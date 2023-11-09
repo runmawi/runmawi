@@ -840,4 +840,7 @@
          .dropdown-toggle::after{
             display:none;
          }
+         ul.dropdown-menu.categ-head{
+            overflow:hidden;
+         }
          </style>

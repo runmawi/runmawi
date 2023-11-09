@@ -354,7 +354,7 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
                         id="image-container" 
                     >
                     <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
-                        <video class="myvideos" controls loop muted  src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+                        <video class="myvideos" controls loop muted  src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35); transition: transform 3s ease, opacity 1s ease;"></video>
                     </div>
                     <script>
                     $(document).ready(function() {
