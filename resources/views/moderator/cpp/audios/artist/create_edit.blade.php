@@ -85,13 +85,8 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
 
-                <!-- <div class="row mt-3 p-3 align-items-center">
-                    <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> Artist Email</label>
-                        <div class="panel-body">
-                            <input type="email" placeholder="Artist Email" class="form-control" name="artist_email" id="artist_email" value="@if(!empty($artist->artist_email)){{ $artist->artist_email }}@endif" />
-                        </div>
-                    </div> -->
+                <div class="row mt-3 p-3 align-items-center">
+                
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0"> {{ ucwords('Description') }}</label>
@@ -100,10 +95,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
 
-                    </div>
-
-
-                <div class="row mt-3 p-3 align-items-center">
+                   
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0"> {{ ucwords('Artist type') }}</label>
                         <div class="panel-body">
@@ -129,6 +121,8 @@ border-radius: 0px 4px 4px 0px;
                             </select>
 
                         </div>
+                        </div>
+                    <div class="row mt-3 p-3 align-items-center">
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0">Picture</label>
