@@ -28,7 +28,7 @@
                                     <div class="hover-buttons">
                                         <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">	
                                             <span class="text-white">
-                                                <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now
+                                                <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Play Now') }}
                                             </span>
                                         </a>
                                     </div>
