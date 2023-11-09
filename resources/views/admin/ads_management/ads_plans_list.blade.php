@@ -41,10 +41,9 @@
                                  <td>{{ $ads_plan->no_of_ads }}</td>
                                  <td>{{ $ads_plan->created_at }}</td>
                                  <td><a class="iq-bg-success editcategory" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" data-toggle="modal" data-target='#edit_modal' data-id="{{ $ads_plan->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                    data-original-title="Edit" data-toggle="modal" data-target='#edit_modal' data-id="{{ $ads_plan->id }}"><img class="ply" src="{{ URL::to('/assets/img/icon/edit.svg') }}"></a>
                                     <a  onclick="return confirm('Are you sure?')" href="{{ URL::to('/admin/ads_plan_delete').'/'. $ads_plan->id }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
-                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
-                                    <!-- <i class="ri-delete-bin-line delete" id="delete"data-id="{{ $ads_plan->id }}" ></i> -->
+                                    <img class="ply" src="{{ URL::to('/assets/img/icon/delete.svg') }}"></a>
                                  </td>
                               </tr>
                               @endforeach
@@ -84,8 +83,6 @@
 </div>
    @section('javascript')
    <script src="{{ URL::to('/assets/admin/js/sweetalert.min.js') }}"></script>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
    <script>
 
       $(document).ready(function () {
