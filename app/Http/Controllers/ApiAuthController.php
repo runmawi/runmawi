@@ -1489,6 +1489,7 @@ public function verifyandupdatepassword(Request $request)
               break;
           }
 
+          $video = Video::find( $item->id);
                     
           $plans_ads_enable = $this->plans_ads_enable($request->user_id);
             
