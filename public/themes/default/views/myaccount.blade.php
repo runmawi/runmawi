@@ -835,7 +835,7 @@ cursor: pointer;
 
                               <div class="p-0">
                                  <span class="text-light font-size-13">
-                                       {{ ucwords('Current Membership -'.' '.$user->role) }}
+                                       {{ ucwords( __('Current Membership'). '-'.' '.$user->role) }}
                                     </span><br>
 
                                     @if(Auth::user()->role == "subscriber" )

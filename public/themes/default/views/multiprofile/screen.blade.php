@@ -10,7 +10,7 @@
         <div class="iq-card">
 		<div class="row">
 			<div class="col-md-4">
-				<h4><i class="entypo-list"></i> Choose Profile Screen </h4>
+				<h4><i class="entypo-list"></i> {{ __('Choose Profile Screen') }} </h4>
 			</div>
             <div class="col-md-8" align="right">
                 <a href="javascript:;" onclick="jQuery('#screen-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Update</a>
@@ -41,16 +41,16 @@
                 @endif    
     
 				<div class="modal-header">
-                    <h4 class="modal-title">Choose Profile Screen</h4>
+                    <h4 class="modal-title">{{ __('Choose Profile Screen') }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
 				<div class="modal-body p-3">
 					<form id="screenss" accept-charset="UTF-8" action="{{ URL::to('admin/ChooseProfileScreen_store') }}" method="post" enctype="multipart/form-data">
-				        <label for="name">Enter the New Screen Name below</label>
+				        <label for="name">{{ __('Enter the New Screen Name below') }}</label>
 				        <input name="screen_name" id="screen_name" placeholder="Screen Name"  class="form-control" value="" /><br />
 
-				        <label for="theme_image"> Screen Images</label>
+				        <label for="theme_image"> {{ __('Screen Images') }}</label>
 				   
                         <div class="control-group">
                             <input type="file" name="screen_image" id="screen_image" required>
@@ -59,8 +59,8 @@
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="submit-new-menu">Save changes</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">{{ __('Close') }}</button>
+                            <button type="submit" class="btn btn-primary" id="submit-new-menu">{{ __('Save changes') }}</button>
 				        </div>
 				    </form>
 				</div>
@@ -80,7 +80,7 @@
 						<div class="theme_name">{{ $screen_image ? ucwords($screen_image->profile_name) : ''  }}</div>
 					</div>
 				@empty 
-						<p> No Image Available </p>
+						<p> {{ __('No Image Available') }} </p>
 				@endforelse
 		</div>
 	</div>

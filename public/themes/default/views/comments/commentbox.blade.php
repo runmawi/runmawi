@@ -52,7 +52,7 @@
                 <div class="row align-items-end">
                     <div class="col-lg-6">
                         <div class="form-group">
-                    <label for="message" class="text-white">Add a comment:</label>
+                    <label for="message" class="text-white">{{ __('Add a comment') }}:</label>
                     <textarea class="form-control"  name="message" rows="2" required></textarea>
                 </div>
 
@@ -62,7 +62,7 @@
                 <input type="hidden" name="source" value="<?= Route::currentRouteName() ?>">
                 <input type="hidden" name="source_id" value="<?= $source_id ?>">
 
-                <button type="submit" class=" btn btn-sm bd">Submit</button>
+                <button type="submit" class=" btn btn-sm bd">{{ __('Submit') }}</button>
                     </div>
                 </div>
                
