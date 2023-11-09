@@ -90,7 +90,7 @@
 
                                 <div class="hover-buttons">
                                     <a  class="text-white"  href="<?php echo URL::to('category') ?><?= '/videos/' . $testinfg->slug ?>">
-                                        <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
+                                        <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>  {{ __('Watch Now') }}</span>
                                     </a>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
         @endforelse
         <?php } elseif( count($categoryVideos['categoryVideos']) == 0) { ?>
                 <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                    <p ><h3 class="text-center">No video Available</h3>
+                    <p ><h3 class="text-center">  {{ __('No video Available') }}</h3>
                 </div>
          <?php } ?>
 
