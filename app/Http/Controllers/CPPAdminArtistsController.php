@@ -125,7 +125,7 @@ class CPPAdminArtistsController extends Controller
 
             $artist = Artist::create([
                 "artist_name" => $data['artist_name'] ,
-                "artist_email" => $data['artist_email'] ,
+                // "artist_email" => $data['artist_email'] ,
                 "description" => $data['description'] ,
                 "image"       => $data['image'] ,
                 "artist_type" => $request->artist_type,
@@ -212,7 +212,7 @@ class CPPAdminArtistsController extends Controller
             // dd($data['artist_type']);
                 $artist->update([
                     "artist_name" => $data['artist_name'] ,
-                    "artist_email" => $data['artist_email'] ,
+                    // "artist_email" => $data['artist_email'] ,
                     "description" => $data['description'] ,
                     "artist_type" => $data['artist_type'] ,
                     "artist_slug" => $artist_slug ,

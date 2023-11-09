@@ -41,7 +41,7 @@
                 foreach($coupons as $coupon) { 
                 if ( $available_coupon > 0) {
             ?>
-               <input type="checkbox" name="is_apply" class="is_apply"> Want to use coupon ?<br>
+               <input type="checkbox" name="is_apply" class="is_apply"> {{ __('Want to use coupon')  }} ?<br>
                     <div class="form-group row coupon_apply" style="display:none;">
                         <label for="plan_name" class="col-md-4 col-sm-offset-1 col-form-label text-md-right text-right">
                             {{ __('Coupon Code') }}</label>
@@ -51,7 +51,7 @@
                     </div>
     <?php } }  ?>
     <button id="card-button" class="btn btn-primary"  data-secret="{{ $intent->client_secret }}">
-    Pay Now
+    {{ __('Pay Now') }}
     </button>
     </div>
     @endif
@@ -61,13 +61,13 @@
                                             <div class="form-group row">
                                                 <input type="hidden" name="plan_name" class="form-controll" id="plan_name" value="{{ $plan_id }}">
                                                 <div class="col-md-6"> 
-                                                    <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
+                                                    <input id="card-holder-name" type="text" class="form-control" placeholder="{{ __('Card Holder Name')  }}">
                                                 </div>
                                             </div>
                                             <div id="card-element"></div>
                                                 <div class="sign-up-buttons pay-button">
                                                     <button id="card-button" class="btn btn-primary"  data-secret="{{ $intent->client_secret }}">
-                                                        Pay Now
+                                                    {{ __('Pay Now')  }}
                                                     </button>
                                                 </div>
                                      @endif
@@ -78,14 +78,14 @@
    
                     <div class="col-md-5 col-sm-5" >
                             <div class="payment-option">
-                                <div class="invoice"><h1>Invoice</h1></div>
+                                <div class="invoice"><h1>{{ __('Invoice')  }}</h1></div>
                                      <!-- <svg class="svg-inline--fa fa-file fa-w-12" aria-hidden="true" data-prefix="far" data-icon="file" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M369.9 97.9L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zM332.1 128H256V51.9l76.1 76.1zM48 464V48h160v104c0 13.3 10.7 24 24 24h104v288H48z"></path></svg><i class="far fa-file"></i> -->
                                      <h4 class="billing-head detail_name" id="detail_name">
                                          {{ $plans_details->plans_name }}
                                      </h4>
                                  <p class="grey-border"></p>
                                  <div class="">
-                                     <p class="pay-prtext">Grab this plan for your best Movies to Watch.</p>
+                                     <p class="pay-prtext">{{ __('Grab this plan for your best Movies to Watch.')  }}</p>
                                  </div>
                                 <div class="table-responsive">
                      
@@ -93,21 +93,21 @@
 					 <table class="table white-bg m-0 mt-3">
 						 <tbody>
 							 <tr class="table-secondary">
-								 <td>Amount</td>
+								 <td>{{ __('Amount')  }}</td>
 								 <td class="detail_price" id="detail_price"><?="$".$plans_details->price;?></td>
 							 </tr>
 							 <tr>
-								  <td>Discount Coupon</td>
+								  <td>{{ __('Discount Coupon')  }}</td>
 								  <td class="detail_stripe_coupon"  id="detail_stripe_coupon">
-                                      <?php echo NewSubscriptionCouponCode();?> - (Coupon Appiled for your  Subscription) 
+                                      <?php echo NewSubscriptionCouponCode();?> - {{ __(Coupon Appiled for your  Subscription) }}
                                   </td>
 							 </tr>
 							 <tr>
-								 <td>Discount Amount</td>
+								 <td>{{ __('Discount Amount')  }}</td>
 								 <td class="detail_stripe_coupon"  id="detail_stripe_coupon"><?="$".$discount_price;?></td>
 							 </tr>
 							 <tr class="table-secondary">
-								 <td>Total</td>
+								 <td>{{ __('Total')  }}</td>
 								 <td class="total_price"  id="total_price"><?php echo "$";?><?php echo ($plans_details->price) - ($discount_price);?></td>
 							 </tr>
 						 </tbody>
@@ -117,19 +117,19 @@
                           <table class="table white-bg m-0 mt-3">
                              <tbody>
                                  <tr class="table-secondary">
-                                     <td>Amount</td>
+                                     <td>{{ __('Amount')  }}</td>
                                      <td class="detail_price" id="detail_price"><?="$".$plans_details->price;?></td>
                                  </tr>
                                  <tr>
-                                      <td>Discount Coupon</td>
+                                      <td>{{ __('Discount Coupon')  }}</td>
                                       <td class="detail_stripe_coupon"  id="detail_stripe_coupon">-</td>
                                  </tr>
                                  <tr>
-                                     <td>Discount Amount</td>
+                                     <td>{{ __('Discount Amount')  }}</td>
                                      <td class="detail_stripe_coupon"  id="detail_stripe_coupon">-</td>
                                  </tr>
                                  <tr class="table-secondary">
-                                     <td>Total</td>
+                                     <td>{{ __('Total')  }}</td>
                                      <td class="total_price"  id="total_price"><?php echo "$".$plans_details->price;?></td>
                                  </tr>
                              </tbody>
