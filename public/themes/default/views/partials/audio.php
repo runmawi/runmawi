@@ -20,7 +20,7 @@
                                 
                            <div class="hover-buttons text-white">
                               <a class="d-flex align-items-center" href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
-                                 <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> Play Now
+                                 <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /><?= __('Play Now')  ?>
                               </a>
                            </div>
                         </div>
