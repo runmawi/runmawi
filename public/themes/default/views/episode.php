@@ -170,21 +170,21 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             <div class="container-fluid">
                 <h4 class=""><?php echo $episode->title; ?></h4>
                 <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
-                <h4 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered
-                    Users<?php endif; ?></h4>
+                <h4 class=""><?php echo __('Subscribe to view more'); ?><?php if ($series->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Registered Users'); ?>
+                    <?php endif; ?></h4>
                 <div class="clear"></div>
             </div>
             <?php if( !Auth::guest() && Auth::user()->role == 'registered'):  ?>
             <div class=" mt-3">
                 <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
-                    <button class="btn btn-primary" id="button">Subscribe to view more</button>
+                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
                 </form>
             </div>
             <?php else: ?>
             <div class=" mt-3">
                 <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
-                    <button id="button" class="btn bd">Signup Now <?php if($series->access == 'subscriber'): ?>to Become a
-                        Subscriber<?php elseif($series->access == 'registered'): ?>for Free!<?php endif; ?></button>
+                    <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
+                        <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
                 </form>
             </div>
             <?php endif; ?>
@@ -240,7 +240,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             <div class="bc-icons-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                            href="<?= route('series.tv-shows') ?>"><?= ucwords( __('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
@@ -275,8 +275,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 <div class="row align-items-center justify-content-between"  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
                     
                     <div class="col-md-12 p-0">
-                        <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch thess
-                            Series:</span>
+                        <span class="text-white" style="font-size: 129%;font-weight: 700;"><?php echo __('Purchase to Watch the Series'); ?>
+                            :</span>
                         <?php 
                   if($series->access == 'subscriber'): ?>  <?php elseif($series->access == 'registered'): ?>   <?php endif; ?>
                         </p>
@@ -287,7 +287,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                         <input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
                         <?php if (@$Stripepayment->stripe_status == 1 ) {  ?>
                         <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
-                            Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+                        <?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
                         <?php } else if(@$PayPalpayment->paypal_status == 1){  ?> 
 
                             <?php }else if(@$Razorpay_payment_settings->status == 1){ ?> 
@@ -298,18 +298,18 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                         <input type="hidden" id="ppv_price" name="ppv_price" value="<?php echo $season[0]->ppv_price; ?>">
 
                                 <button onclick="cinetpay_checkout()" id=""
-                                                        class="btn2  btn-outline-primary">Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+                                                        class="btn2  btn-outline-primary"><?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
                                                 </div>
                             <?php }  else{ ?> 
                         <button class="btn btn-primary" id ="enable_any_payment">
-                            Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+                        <?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
                             <?php } ?>
                     </div>
                     <?php	} } ?>
 
                     </div>
                     <div class="col-md-12">
-                        <span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
+                        <span class="text-white" style="font-size: 120%;font-weight: 700;"><?php echo __("You're watching"); ?>:</span>
                         <p class="mb-0" style=";font-size: 80%;color: white;">
                             <?php 
                $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
@@ -457,16 +457,16 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
                }else{ ?>
                     <div class="col-md-6 p-0">
-                        <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the
-                            Series:</span>
-                        <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?>
+                        <span class="text-white" style="font-size: 129%;font-weight: 700;"><?php echo __('Purchase to Watch the Series'); ?>
+                            :</span>
+                        <?php if($series->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?>
                         </p>
                     </div>
                     <div class="col-md-6">
                         <?php if (!empty($season)) {   ;?>
                         <input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
                         <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
-                            Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+                        <?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
                     </div>
                     <?php	} } ?>
 
@@ -566,7 +566,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title text-center" id="exampleModalLongTitle"
-                        style="color:#000;font-weight: 700;">Rent Now</h4>
+                        style="color:#000;font-weight: 700;"><?php echo __('Rent Now'); ?></h4>
                     <img src="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"
                         alt=""width="50" height="60">
                 </div>
@@ -593,7 +593,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                             <button type="button" class="btn btn-primary"
                                 data-dismiss="modal"><?php echo __($currency->symbol . ' ' . $episodes->ppv_price); ?></button>
                             <label for="method">
-                                <h3>Payment Method</h3>
+                                <h3><?php echo __('Payment Method'); ?></h3>
                             </label>
                             <label class="radio-inline">
                                 <?php  foreach($payment_type as $payment){
@@ -640,9 +640,9 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 </div>
                 <div class="modal-footer">
                     <a onclick="pay(<?php echo $episode->ppv_price; ?>)">
-                        <button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
+                        <button type="button" class="btn btn-primary" id="submit-new-cat"><?php echo __('Continue'); ?></button>
                     </a>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo __('Close'); ?></button>
                 </div>
             </div>
         </div>

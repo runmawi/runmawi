@@ -17,7 +17,7 @@
                               <div class="col-sm-12 ">
                                  <div class="iq-main-header d-flex align-items-center justify-content-between">
                                     <?php if(isset($page_title) && count( $audios) > 0 ): ?>
-                                       <h4 class="main-title">Today Trending</h4>
+                                       <h4 class="main-title"><?php echo __('Today Trending'); ?></h4>
                                          
                                     <?php endif; ?> 
                                  </div>
@@ -38,7 +38,7 @@
                            <div class="iq-main-header d-flex align-items-center justify-content-between">
                               <?php if((isset($page_title))  && count( $albums) > 0 ):  ?>
                                  <a href=<?= route('albums_list') ?> >
-                                       <h4 class="main-title"> Albums </h4>
+                                       <h4 class="main-title"> <?php echo __('Albums'); ?> </h4>
                                  </a>
                             
                               <?php endif; ?> 
@@ -81,7 +81,7 @@
 
             <?php  if(count( $albums) == 0 &&  count( $audios) == 0 ) {  ?> 
                <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                    <p ><h3 class="text-center">No Audio Available</h3>
+                    <p ><h3 class="text-center"><?php echo __('No Audio Available'); ?></h3>
                 </div>
             
             <?php } ?>

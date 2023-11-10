@@ -61,7 +61,7 @@
                                                                 </p>
                                                             @elseif($category_video->global_ppv == null && $category_video->ppv_price == null )
                                                                 <p class="p-tag" > 
-                                                                    {{  "Free"}} 
+                                                                    {{  __("Free")}} 
                                                                 </p>
                                                             @endif
                                                         @endif 
@@ -142,7 +142,7 @@
                                                     <div class="hover-buttons">
                                                         <a type="button" class="text-white d-flex align-items-center"
                                                              href="<?php echo URL::to('live') ?><?= '/' . $category_video->slug ?>">
-                                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/>{{ __('Watch Now') }} 
                                                         </a>
                                                       
                                                     </div>                
@@ -163,7 +163,7 @@
             <?php } else:?>
 
             <div class="col-md-12 text-center mt-4">
-                <h1 class="text-white text-center med">Coming Soon......</h1>
+                <h1 class="text-white text-center med">{{ __('Coming Soon') }}......</h1>
                 <img class=" text-center w-100" src="<?php echo  URL::to('/assets/img/watch.png')?>" >
             </div>
 
