@@ -27,6 +27,8 @@
               <img height="250" width="250"  id="audio_img" src="" style="object-fit: contain;">
               <!-- height="150" width="150"  -->
            </div>
+           <div id="description-content">
+          </div>
            <div class="Subscribe_stripe_button">
                 <!-- Subscriber Button -->
   
@@ -54,6 +56,7 @@
           <div id="menu">
           <button id="like-button" style="color:grey" class="like" title="Like"><i class="fa fa-thumbs-up"></i></button>
           <button id="lyrics-toggle"><i class="fa fa-file-text" title="Lyrics"></i></button> <!-- Add this line -->
+          <button id="description-toggle"><i class="fa fa-book" title="Description"></i></button> <!-- Add this line -->
           <button id="back" title="Songs List"><i class="fas fa-list"></i></button> 
           <button id="prev" title="Previous"><i class="fa fa-step-backward"></i></button>
           <button id="play" ><i class="fa fa-play"></i></button>
@@ -154,6 +157,12 @@ $(document).ready(function(){
     if (lyrics.is(':visible')) {
         lyrics.hide(); // Hide lyrics
     }
+
+    var description = $('#description-content');
+        if (description.is(':visible')) {
+            description.hide(); // Hide lyrics
+        }
+
     var backbutton = $('#backbutton');
     backbutton.hide();
 
@@ -454,11 +463,33 @@ var data = listAudio; // Assuming listAudio contains the URL
             }
         });
 
+
         var html = "";
         html = html + "<h2>"+'Lyrics not Available'+"</h2>";
 
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
+
+        $('#description-toggle').on('click', function() {
+
+          var lyrics = $('#description-content');
+            $('#audio_img').show();
+
+            if (description.is(':visible')) {
+                description.hide(); // Hide description
+            } else {
+                $('#audio_img').show();
+                description.show(); // Show description
+                centerize(); // Centerize description (assuming you have this function)
+            }
+
+        });
+
+        var html = "";
+            html = html + "<h2>"+indexing.description+"</h2>";
+
+            // var html = "Lyrics not Available ";
+            $('#description-content').html(html);
 
 
             setSongName(indexing.title);
@@ -521,6 +552,27 @@ var data = listAudio; // Assuming listAudio contains the URL
 
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
+
+        $('#description-toggle').on('click', function() {
+
+          var lyrics = $('#description-content');
+            $('#audio_img').show();
+
+            if (description.is(':visible')) {
+                description.hide(); // Hide description
+            } else {
+                $('#audio_img').show();
+                description.show(); // Show description
+                centerize(); // Centerize description (assuming you have this function)
+            }
+
+          });
+
+          var html = "";
+            html = html + "<h2>"+indexing.description+"</h2>";
+
+            // var html = "Lyrics not Available ";
+            $('#description-content').html(html);
 
 
             setSongName(indexing.title);
@@ -590,6 +642,27 @@ var data = listAudio; // Assuming listAudio contains the URL
 
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
+
+        $('#description-toggle').on('click', function() {
+
+          var lyrics = $('#description-content');
+            $('#audio_img').show();
+
+            if (description.is(':visible')) {
+                description.hide(); // Hide description
+            } else {
+                $('#audio_img').show();
+                description.show(); // Show description
+                centerize(); // Centerize description (assuming you have this function)
+            }
+
+        });
+
+        var html = "";
+            html = html + "<h2>"+indexing.description+"</h2>";
+
+            // var html = "Lyrics not Available ";
+            $('#description-content').html(html);
 
           for (var i = 0; i < indexing.artistscrew.length; i++) {
               // Access the inner array
