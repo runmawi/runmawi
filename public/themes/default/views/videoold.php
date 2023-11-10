@@ -2,7 +2,7 @@
 <html>
    <head>
       <meta charset="utf-8">
-      <title>HLS Demo</title>
+      <title><?= __('HLS Demo') ?></title>
       <!-- <script src="https://cdn.jsdelivr.net/npm/hls.js"></script> -->
   <!-- <script src="https://unpkg.com/plyr@3"></script> -->
       <link rel="stylesheet" href="https://cdn.plyr.io/3.5.10/plyr.css" />
