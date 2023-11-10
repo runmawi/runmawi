@@ -496,15 +496,15 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
      <?php else: ?>
 
        <div id="subscribers_only">
-         <h2>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+         <h2><?= __('Sorry, this video is only available to') ?> <?php if($video->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($video->access == 'registered'): ?><?= __('Registered Users') ?><?php endif; ?></h2>
          <div class="clear"></div>
          <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
            <form method="get" action="<?= URL::to('/')?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
-             <button id="button">Become a subscriber to watch this video</button>
+             <button id="button"><?= __('Become a subscriber to watch this video') ?></button>
            </form>
          <?php else: ?>
            <form method="get" action="<?= URL::to('signup') ?>">
-             <button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+             <button id="button"> <?= __('Signup Now') ?><?php if($video->access == 'subscriber'): ?><?= __('to Become a Subscriber') ?><?php elseif($video->access == 'registered'): ?><?= __('for Free!') ?><?php endif; ?></button>
            </form>
          <?php endif; ?>
        </div>
@@ -550,14 +550,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <div id="subscribers_only">
   <div class="clear"></div>
   <div style="padding-top:10%;">
-  <h2 ><p style ="text-center">Sorry, this video is only available to</p> <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+  <h2 ><p style ="text-center"><?= __('Sorry, this video is only available to') ?></p> <?php if($video->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($video->access == 'registered'): ?><?= __('Registered Users') ?><?php endif; ?></h2>
   <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
     <form class="text-center" method="get" action="<?= URL::to('/stripe/billings-details') ?>">
-      <button style="margin-top: 0%;" class="btn btn-primary"id="button"> subscribe to watch this video</button>
+      <button style="margin-top: 0%;" class="btn btn-primary"id="button"> <?= __('subscribe to watch this video') ?></button>
     </form>
   <?php }else{ ?>
     <form method="get" action="<?= URL::to('signup') ?>">
-      <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+      <button id="button" style="margin-top: 0%;"><?= __('Signup Now') ?> <?php if($video->access == 'subscriber'): ?><?= __('to Purchase this video') ?> <?php elseif($video->access == 'registered'): ?><?= __('for Free!') ?><?php endif; ?></button>
     </form>
   <?php } ?>
   </div>
@@ -587,14 +587,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <div id="subscribers_only">
   <div class="clear"></div>
   <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
-  <h2 ><p style ="margin-left:14%">Sorry, this video is only available to</p> <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+  <h2 ><p style ="margin-left:14%"><?= __('Sorry, this video is only available to') ?></p> <?php if($video->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($video->access == 'registered'): ?> <?= __('Registered Users') ?><?php endif; ?></h2>
   <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
     <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
-      <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button">Purchase to watch this video</button>
+      <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button"> <?= __('Purchase to watch this video') ?></button>
     </form>
   <?php }else{ ?>
     <form method="get" action="<?= URL::to('signup') ?>">
-      <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+      <button id="button" style="margin-top: 0%;"> <?= __('Signup Now') ?> <?php if($video->access == 'subscriber'): ?> <?= __('to Purchase this video') ?><?php elseif($video->access == 'registered'): ?> <?= __('for Free!') ?><?php endif; ?></button>
     </form>
   <?php } ?>
   </div>
@@ -605,11 +605,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 
  <div id="subscribers_only">
- <h2 style ="margin-left:14%">Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+ <h2 style ="margin-left:14%"> <?= __('Sorry, this video is only available to') ?> <?php if($video->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($video->access == 'registered'): ?> <?= __('Registered Users') ?><?php endif; ?></h2>
  <div class="clear"></div>
  <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
    <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
-     <button style="margin-left: 27%;" id="button">Become a subscriber to watch this video</button>
+     <button style="margin-left: 27%;" id="button"><?= __('Become a subscriber to watch this video') ?></button>
    </form>
  <?php else: ?>
    <form method="get" action="<?= URL::to('signup') ?>">
