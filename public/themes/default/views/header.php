@@ -477,6 +477,9 @@
    display:none !important;
 } } 
 
+.navbar-right .iq-sub-dropdown{
+   width:150px;
+}
 </style>
 <body>
    <!-- loader Start -->
@@ -980,7 +983,7 @@
                      </div>
                      <?php } ?></div>
                      <div class="navbar-right menu-right pt-2">
-                        <ul class="d-flex align-items-center list-inline m-0">
+                        <ul class="d-flex align-items-center list-inline m-0" style="gap:5px">
                            <li class="nav-item nav-icon" style="margin-right:1px;">
                               <a href="<?php echo URL::to('searchResult');?>" aria-label="search" class="search-toggle device-search">
                                  <i class="ri-search-line"></i>
@@ -1007,7 +1010,7 @@
                            </li>
 
                            <!-- Translator Choose -->
-                           <li class="nav-item nav-icon iq-show">
+                           <li class="nav-item nav-icon  ml-3">
                               <a href="#" class="search-toggle active" data-toggle="search-toggle">
                                  <?php if(@$translate_checkout == 1){ ?>
                                     <svg id="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
@@ -1016,16 +1019,16 @@
                                     </svg>
                                  <?php } ?>
 
-                                 <div class="dropdown-content" id="languageDropdown">
+                                 <!-- <div class="dropdown-content" id="languageDropdown">
                                     <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?></a>
                                     <?php endforeach; ?>
-                                 </div>
+                                 </div> -->
                                  
                               </a>
                               <div class="iq-sub-dropdown">
-                                 <div class="iq-card shadow-none m-0">
-                                    <div class="iq-card-body" id="languageDropdown">
+                                 <div class="iq-card shadow-none m-0" >
+                                    <div class="iq-card-body " id="languageDropdown">
                                        <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?></a>
                                        <?php endforeach; ?>
