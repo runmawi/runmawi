@@ -1410,6 +1410,38 @@ border-radius: 0px 4px 4px 0px;
                             </div> 
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+                            <div class="panel-title"><label>Fire TV</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                            <div class="panel-body" style="display: block;"> 
+                                <input type="text" class="form-control" name="Firetv_url" id="Firetv_url" value="@if(!empty($app_settings->Firetv_url)){{ $app_settings->Firetv_url }}@endif"  />
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+                            <div class="panel-title"><label>Samsung TV</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                            <div class="panel-body" style="display: block;"> 
+                                <input type="text" class="form-control" name="samsungtv_url" id="samsungtv_url" value="@if(!empty($app_settings->samsungtv_url)){{ $app_settings->samsungtv_url }}@endif"  />
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+                            <div class="panel-title"><label>Lg TV</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                            <div class="panel-body" style="display: block;"> 
+                                <input type="text" class="form-control" name="Lgtv_url" id="Lgtv_url" value="@if(!empty($app_settings->Lgtv_url)){{ $app_settings->Lgtv_url }}@endif"  />
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+                            <div class="panel-title"><label>Roku TV</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                            <div class="panel-body" style="display: block;"> 
+                                <input type="text" class="form-control" name="Rokutv_url" id="Rokutv_url" value="@if(!empty($app_settings->Rokutv_url)){{ $app_settings->Rokutv_url }}@endif"  />
+                            </div> 
+                        </div>
+                    </div>
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
                     <div class="d-flex justify-content-end mt-3" style=" ">
