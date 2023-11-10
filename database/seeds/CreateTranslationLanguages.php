@@ -13,7 +13,7 @@ class CreateTranslationLanguages extends Seeder
     public function run()
     {
         \DB::table('translation_languages')->insert(['name' => 'English', 'code' => 'en','created_at' => Carbon::now(),'updated_at' => null]);
-        \DB::table('translation_languages')->insert(['name' => 'Franch', 'code' => 'fr','created_at' => Carbon::now(),'updated_at' => null]);
+        \DB::table('translation_languages')->insert(['name' => 'French', 'code' => 'fr','created_at' => Carbon::now(),'updated_at' => null]);
         \DB::table('translation_languages')->insert(['name' => 'Italy', 'code' => 'it','created_at' => Carbon::now(),'updated_at' => null]);
         \DB::table('translation_languages')->insert(['name' => ' Polish', 'code' => 'pl','created_at' => Carbon::now(),'updated_at' => null]);
     }
