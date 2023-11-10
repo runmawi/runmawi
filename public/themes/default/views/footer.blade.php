@@ -31,6 +31,22 @@ $settings = App\Setting::first();
                   <a href="<?= $app_settings->android_tv ?>">
                       <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
               <?php } ?>
+              <?php if(!empty($app_settings->Firetv_url)){ ?>
+                  <a href="<?= $app_settings->Firetv_url ?>">
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+              <?php } ?>
+              <?php if(!empty($app_settings->samsungtv_url)){ ?>
+                  <a href="<?= $app_settings->samsungtv_url ?>">
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+              <?php } ?>
+              <?php if(!empty($app_settings->Lgtv_url)){ ?>
+                  <a href="<?= $app_settings->Lgtv_url ?>">
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+              <?php } ?>
+              <?php if(!empty($app_settings->Rokutv_url)){ ?>
+                  <a href="<?= $app_settings->Rokutv_url ?>">
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+              <?php } ?>
               </div>
               
             <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->

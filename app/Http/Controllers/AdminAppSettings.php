@@ -128,7 +128,12 @@ class AdminAppSettings extends Controller
         if(!empty($app_setting)){
         $app_setting->android_url = $input['android_url'];
         $app_setting->ios_url = $input['ios_url'];
-        $app_setting->android_tv = $input['android_tv'];        
+        $app_setting->android_tv = $input['android_tv'];  
+        $app_setting->Firetv_url = $input['Firetv_url'];        
+        $app_setting->samsungtv_url = $input['samsungtv_url'];        
+        $app_setting->Lgtv_url = $input['Lgtv_url'];        
+        $app_setting->Rokutv_url = $input['Rokutv_url'];        
+
         // $app_setting->status = $status;
         $app_setting->user_id = Auth::User()->id;
         $app_setting->save();
@@ -137,6 +142,10 @@ class AdminAppSettings extends Controller
           $app_setting->android_url = $input['android_url'];
           $app_setting->ios_url = $input['ios_url'];
           $app_setting->android_tv = $input['android_tv'];        
+          $app_setting->Firetv_url = $input['Firetv_url'];        
+          $app_setting->samsungtv_url = $input['samsungtv_url'];        
+          $app_setting->Lgtv_url = $input['Lgtv_url'];        
+          $app_setting->Rokutv_url = $input['Rokutv_url'];   
           // $app_setting->status = $status;
           $app_setting->user_id = Auth::User()->id;
           $app_setting->save();
