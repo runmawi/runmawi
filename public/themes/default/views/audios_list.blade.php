@@ -4,7 +4,7 @@
 
 <div class="main-content">
     <section id="iq-favorites">
-        <h2 class="text-center  mb-3"> {{ 'Audios' }} </h2>
+        <h2 class="text-center  mb-3"> {{ __('Audios') }} </h2>
         <div class="container-fluid">
             <div class="row pageheight">
                 <div class="col-sm-12 overflow-hidden">
@@ -112,7 +112,7 @@
                                                             <a class="text-white"
                                                                 href="{{ URL::to('audio/' . $audios_data->slug) }}">
                                                                 <span><i class="fa fa-play mr-1"
-                                                                        aria-hidden="true"></i>Watch Now</span>
+                                                                        aria-hidden="true"></i>{{ __('Watch Now') }}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -126,7 +126,7 @@
                                         style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat:
                                     no-repeat;background-size:contain;height: 500px!important;">
                                         <p>
-                                        <h3 class="text-center">No Audios Available</h3>
+                                        <h3 class="text-center">{{ __('No Audios Available') }}</h3>
                                     </div>
                                 @endif
                             </ul>

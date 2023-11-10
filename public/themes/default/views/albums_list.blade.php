@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="vid-title text-center mt-3 mb-3 font-weight-bold">{{  $page_name." "."List" }}</h4>                     
+                    <h4 class="vid-title text-center mt-3 mb-3 font-weight-bold">{{  $page_name." ".__("List") }}</h4>                     
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
@@ -28,7 +28,7 @@
                                                     <div class="hover-buttons">
                                                             <a  href="<?php echo URL::to('album') ?><?= '/' . $albums_lists->slug ?>">
                                                                 <h5 class="font-weight-bold"><?php  echo (strlen($albums_lists->albumname) > 17) ? substr($albums_lists->albumname,0,18).'...' : $albums_lists->albumname; ?></h5>
-                                                                <p class="text-white mt-2 mb-0" style=" font-size: 14px;">View Profile</p>
+                                                                <p class="text-white mt-2 mb-0" style=" font-size: 14px;">{{  __("View Profile") }}</p>
                                                             </a>
                                                     </div>
                                             </div>
@@ -43,7 +43,7 @@
                             @endif
                         @else
                             <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                                <p ><h3 class="text-center"> {{  "No ". $page_name . " Available" }} </h3>
+                                <p ><h3 class="text-center"> {{  __("No").' '. $page_name .' '. __("Available") }} </h3>
                             </div>
                         @endif
                     </ul>

@@ -57,7 +57,7 @@ button:hover {
 <section>
 <div class="container">
         <div class="registration-form">
-            <p>Register a Device</p>
+            <p>{{ __('Register a Device') }}</p>
             <form action="{{ URL::to('device/store-code') }}" method="post">
 
             <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
@@ -67,21 +67,21 @@ button:hover {
                     <input type="text" id="device-name" name="device-name" required>
                 </div> -->
                 <div class="form-group">
-                    <label for="device-type">Device Type</label>
+                    <label for="device-type">{{ __('Device Type') }}</label>
                     <select id="device_type" name="device_type" required>
-                        <option value="smart-tv">Smart TV</option>
-                        <option value="fire-stick">Fire Stick</option>
-                        <option value="andriod-tv">Andriod TV</option>
-                        <option value="lg-tv">Lg TV</option>
+                        <option value="smart-tv">{{ __('Smart TV') }}</option>
+                        <option value="fire-stick">{{ __('Fire Stick') }}</option>
+                        <option value="andriod-tv">{{ __('Andriod TV') }}</option>
+                        <option value="lg-tv">{{ __('Lg TV') }}</option>
                         <!-- Add more options as needed -->
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="device-serial">Device Code Number</label>
+                    <label for="device-serial">{{ __('Device Code Number') }}</label>
                     <input type="text" id="device_code" name="device_code" required>
                 </div>
                 <div class="form-group">
-                    <button type="submit">Register Device</button>
+                    <button type="submit">{{ __('Register Device') }}</button>
                 </div>
             </form>
         </div>

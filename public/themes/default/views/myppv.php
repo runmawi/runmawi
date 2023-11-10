@@ -7,7 +7,7 @@
   <div class="col-sm-12 overflow-hidden">
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h4 class="main-title"><a href="#"><?= __('Media in My Watchlater') ?><?= __('Rental Videos') ?></a></h4>                      
+                    <h4 class="main-title"><a href="#"><?= __('Rental Videos') ?></a></h4>                      
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -38,7 +38,7 @@
             }
             elseif ($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null)
             { ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <p class="p-tag"><?php echo __("Free"); ?></p>
                                             <?php
             } ?>
                                       
@@ -92,7 +92,7 @@
   <div class="col-sm-12 overflow-hidden">
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h4 class="main-title"><a href="#"><?= __('Media in My Watchlater') ?>Rental Live Videos</a></h4>                      
+                    <h4 class="main-title"><a href="#"><?= __('Rental Live Videos') ?></a></h4>                      
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
