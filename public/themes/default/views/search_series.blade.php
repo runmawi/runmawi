@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
-                        <h3 class="vid-title"> Showing  Series for "{{  $search_value }}"</h3>                     
+                        <h3 class="vid-title"> {{  __("Showing  Series for") }} "{{  $search_value }}"</h3>                     
                     </div>
                     
                     <div class="favorites-contens">
@@ -78,7 +78,7 @@
                                                     <a  href="{{  URL::to('play_series') .'/' .$Series_search->slug }} ">	
                                                         <span class="text-white">
                                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                {{ "Watch Now" }}
+                                                                {{ __("Watch Now") }}
                                                         </span>
                                                     </a>
                                                 <div>

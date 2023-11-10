@@ -17,7 +17,7 @@
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
           <div id="station-music">
           <button id="addtoqueuebtn" class="addqubt"><i class="fa fa-plus" aria-hidden="true"></i></button>    
-          <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'>Add to Queue</button></div>
+          <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'><?php echo __('Add to Queue'); ?></button></div>
         </div>
         <div id="lyrics">
           <!-- <h2 class="song-name"></h2><h4 class="artist-name"></h4> -->
@@ -33,13 +33,13 @@
                 <!-- Subscriber Button -->
   
               <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="margin-left: -9%;position: absolute;margin-top: 20px;"
-                      class="btn bd btn-action">Subscribe to continue listening</button> 
+                      class="btn bd btn-action"><?php echo __('Subscribe to continue listening'); ?></button> 
                   </a>
               </div>
               <div class="ppv_stripe_button">
                   <!-- stripe Button -->
                   <button  onclick="stripe_checkout()" id="enable_button" style="margin-left: -9%;position: absolute;margin-top: 20px;"
-                      class="btn bd btn-action">Purchase to Play Audio</button> 
+                      class="btn bd btn-action"><?php echo __('Purchase to Play Audio'); ?></button> 
                   </a>
               </div>
         </div>
@@ -85,7 +85,7 @@
         </div>
         <div id="playlistStation">
           <div id="label">
-            <h1><?php echo 'Other Music Station' ; ?></h1>
+            <h1><?php echo __('Other Music Station') ; ?></h1>
             <input id="Stationsearch" type="text" placeholder="&#xF002; Search from all Station"></input>
           </div>
           <div id="show-box">
@@ -100,22 +100,22 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title text-black" id="myModalLabel">Create Station</h4>
+        <h4 class="modal-title text-black" id="myModalLabel"><?php echo __('Create Station'); ?></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">      
       <div class="col-sm-10 p-0">
-          <label for="name">Station Title</label>
-            <input name="station_name" id="station_name" placeholder="Station Title" class="form-control form-control1 text-black"  />
-            <span id='station_error' class="" style='color:red;'>Station Name Required</span>
+          <label for="name"><?php echo __('Station Title'); ?></label>
+            <input name="station_name" id="station_name" placeholder="<?php echo __('Station Title'); ?>" class="form-control form-control1 text-black"  />
+            <span id='station_error' class="" style='color:red;'><?php echo __('Station Name Required'); ?></span>
         </div>
           </div>
      
 <br>
       <div class="modal-footer">
-        <button type="button" id="station_save" class="btn btn-primary">Save</button>
+        <button type="button" id="station_save" class="btn btn-primary"><?php echo __('Save'); ?></button>
       </div>
     </div>
   </div>

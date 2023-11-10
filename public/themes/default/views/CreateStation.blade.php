@@ -39,7 +39,7 @@
           <div class="">
 		<div class="row">
 			<div class="col-md-12 text-center" >
-				<h4 class="font-weight-bold"><i class="entypo-archive"></i> Create Station </h4>
+				<h4 class="font-weight-bold"><i class="entypo-archive"></i> {{ __('Create Station') }} </h4>
 			</div>
 		</div>
 <div class="row justify-content-center mt-4 mb-5">
@@ -70,8 +70,8 @@
                 <label for="password" class="col-form-label text-md-right">{{ __('Station Type') }}</label>
 
                         <div class="form-group">
-                            <input type="radio" class="text-white" value="artist"   id="artist"   name="station_type" checked="checked"> <span class='artist'> Choose By Artist</span> &nbsp;&nbsp;&nbsp;
-                            <input type="radio" class="text-white" value="keyword"  id="keyword" name="station_type"> <span class='artist'> Choose By KeyWords</span>                
+                            <input type="radio" class="text-white" value="artist"   id="artist"   name="station_type" checked="checked"> <span class='artist'> {{ __('Choose By Artist') }}</span> &nbsp;&nbsp;&nbsp;
+                            <input type="radio" class="text-white" value="keyword"  id="keyword" name="station_type"> <span class='artist'> {{ __('Choose By KeyWords') }}</span>                
                         </div>
                         </div>
                         </div>

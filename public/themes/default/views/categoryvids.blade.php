@@ -63,12 +63,12 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                             <div class="bc-icons-2">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a class="black-text"
-                                            href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                                            href="<?= route('latest-videos') ?>"><?= ucwords(__('videos')) ?></a>
                                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                     </li>
 
                                     <li class="breadcrumb-item"><a class="black-text"
-                                            href="<?= route('categoryList') ?>"><?= ucwords('Category') ?></a>
+                                            href="<?= route('categoryList') ?>"><?= ucwords(__('Category')) ?></a>
                                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                     </li>
 

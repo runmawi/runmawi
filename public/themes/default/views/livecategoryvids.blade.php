@@ -117,7 +117,7 @@ $currency = App\CurrencySetting::first();
 
                                                     <div class="hover-buttons">
                                                         <a  class="text-white"  href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
+                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Watch Now') }}</span>
                                                         </a>
                    
     
@@ -132,7 +132,7 @@ $currency = App\CurrencySetting::first();
  <?php } } else { ?>
                                    
                                     <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
-                               <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
+                               <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">{{ __('No video Available') }}</h2>
                             </div>
       <?php } ?>
                     
