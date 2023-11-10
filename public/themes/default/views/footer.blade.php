@@ -33,19 +33,19 @@ $settings = App\Setting::first();
               <?php } ?>
               <?php if(!empty($app_settings->Firetv_url)){ ?>
                   <a href="<?= $app_settings->Firetv_url ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/firetv.png')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->samsungtv_url)){ ?>
                   <a href="<?= $app_settings->samsungtv_url ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/tizen-samsung.png')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Lgtv_url)){ ?>
                   <a href="<?= $app_settings->Lgtv_url ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/lg-webos.png')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Rokutv_url)){ ?>
                   <a href="<?= $app_settings->Rokutv_url ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/roku-app.png')?>" /></a>
               <?php } ?>
               </div>
               
