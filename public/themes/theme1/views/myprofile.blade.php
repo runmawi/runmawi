@@ -215,7 +215,7 @@ border-radius: 20px;
                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav ml-auto navbar-list">
                       <li class="nav-item nav-icon">
-                      <a type="button" class="btn btn-primary  noborder-radius btn-login nomargin visitbtn" href="<?php echo URL::to('home') ?>" ><span>Visit site</span></a>
+                      <a type="button" class="btn btn-primary  noborder-radius btn-login nomargin visitbtn" href="<?php echo URL::to('home') ?>" ><span>{{ __('Visit site') }}</span></a>
                       </li>
                      <li class="line-height pt-3">
                         <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
@@ -225,8 +225,8 @@ border-radius: 20px;
                            <div class="iq-card shadow-none m-0">
                               <div class="iq-card-body p-0 ">
                                  <div class="bg-primary p-3">
-                                    <h5 class="mb-0 text-white line-height">Hello Barry Tech</h5>
-                                    <span class="text-white font-size-12">Available</span>
+                                    <h5 class="mb-0 text-white line-height">{{ __('Hello Barry Tech') }}</h5>
+                                    <span class="text-white font-size-12">{{ __('Available') }}</span>
                                  </div>
                                  <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
@@ -234,8 +234,8 @@ border-radius: 20px;
                                           <i class="ri-file-user-line"></i>
                                        </div>
                                        <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">My Profile</h6>
-                                          <p class="mb-0 font-size-12">View personal profile details.</p>
+                                          <h6 class="mb-0 ">{{ __('My Profile') }}</h6>
+                                          <p class="mb-0 font-size-12">{{ __('View personal profile details') }}.</p>
                                        </div>
                                     </div>
                                  </a>
@@ -245,8 +245,8 @@ border-radius: 20px;
                                           <i class="ri-profile-line"></i>
                                        </div>
                                        <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Edit Profile</h6>
-                                          <p class="mb-0 font-size-12">Modify your personal details.</p>
+                                          <h6 class="mb-0 ">{{ __('Edit Profile') }}</h6>
+                                          <p class="mb-0 font-size-12">{{ __('Modify your personal details') }}.</p>
                                        </div>
                                     </div>
                                  </a>
@@ -256,8 +256,8 @@ border-radius: 20px;
                                           <i class="ri-account-box-line"></i>
                                        </div>
                                        <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Account settings</h6>
-                                          <p class="mb-0 font-size-12">Manage your account parameters.</p>
+                                          <h6 class="mb-0 ">{{ __('Account settings') }}</h6>
+                                          <p class="mb-0 font-size-12">{{ __('Manage your account parameters') }}.</p>
                                        </div>
                                     </div>
                                  </a>
@@ -267,13 +267,13 @@ border-radius: 20px;
                                           <i class="ri-lock-line"></i>
                                        </div>
                                        <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Privacy Settings</h6>
-                                          <p class="mb-0 font-size-12">Control your privacy parameters.</p>
+                                          <h6 class="mb-0 ">{{ __('Privacy Settings') }}</h6>
+                                          <p class="mb-0 font-size-12">{{ __('Control your privacy parameters') }}.</p>
                                        </div>
                                     </div>
                                  </a>
                                  <div class="d-inline-block w-100 text-center p-3">
-                                    <a class="bg-primary iq-sign-btn" href="#" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
+                                    <a class="bg-primary iq-sign-btn" href="#" role="button">{{ __('Sign out') }}<i class="ri-login-box-line ml-2"></i></a>
                                  </div>
                               </div>
                            </div>
@@ -301,41 +301,41 @@ border-radius: 20px;
 
             <div class="row sig ">
                 <div class="col-md-4 mt-3 pt-3">
-                    <h4 class="main-title mb-4">My Account</h4>
-                    <p class="text-white">Edit your name or change<br>your password.</p>
+                    <h4 class="main-title mb-4">{{ __('My Account') }}</h4>
+                    <p class="text-white">{{ __('Edit your name or change') }}<br>{{ __('your password') }}.</p>
                     <ul class="edit p-0 mt-5">
                         <li>
                             <div class="d-flex showSingle" target="1">
                                 <a>
                             <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/edit.png';  ?>"> 
-                                    Edit Profile
+                            {{ __('Edit Profile') }}
                                 </a>
 </div>
                             </li>
                         <li><div class="d-flex showSingle" target="3">
                                 <a>
                             <img class="ply mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/kids.png';  ?>"> 
-                                    Kids zone
+                            {{ __('Kids zone') }}
                                 </a>
                         </div></li>
                         <li><div class="d-flex showSingle" target="4">
                                 <a>
                             <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/video.png';  ?>"> 
-                                   Video preferences
+                            {{ __('Video preferences') }} 
                                 </a>
                      </div></li>
                         <li><div class="d-flex " target="#">
                         <?php if(Auth::User()->role == "registered"){ ?>
                            <a href="<?=URL::to('/becomesubscriber');?>">
                             <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
-                                    Plan
+                            {{ __('Plan') }}  
                                 </a>
                                 <?php } ?></div></li>
                                 <li><div class="d-flex showSingle" target="2">
                         <?php if(Auth::User()->role == "subscriber"){ ?>
                            <!-- <a href="<?=URL::to('/upgrade-subscription_plan');?>"> -->
                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
-                            Plan
+                           {{ __('Plan') }}  
                                 <!-- </a> -->
                                 <?php } ?></div></li>
                     </ul>
@@ -346,37 +346,37 @@ border-radius: 20px;
                     <div class="col-sm-3 d-flex  justify-content-end flex-column ">
                      <img class="rounded-circle img-fluid d-block ml-auto mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/ style="" width="150">
                        <div class="d-flex justify-content-end">
-                           <a href="<?php echo URL::to('logout') ?>" class="transpar">logout</a>
+                           <a href="<?php echo URL::to('logout') ?>" class="transpar">{{ __('logout') }}</a>
                    </div></div>
                    
                   
                     <div class=" mb-3" id="personal_det">
                     <div class="col-md-12 text-rigth mt-4" >
                         <div class="d-flex align-items-baseline justify-content-between">
-                        <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
-                        <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="Text-white" style="color: #fff!important;"><i class="fa fa-plus-circle"></i> Edit</a>
+                        <div><h5 class="mb-2 pb-3 ">{{ __('Personal Details') }}</h5></div>
+                        <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="Text-white" style="color: #fff!important;"><i class="fa fa-plus-circle"></i>{{ __('Edit') }} </a>
                             </div></div>
                         </div>
                         <div class="a-border"></div>
                         <div class="row  text-right justify-content-between mt-3 mb-3">
-                            <h4 class="p-3">Account Details</h4>
+                            <h4 class="p-3">{{ __('Account Details') }}</h4>
                             <div class="col-md-6 ">
                                 <div class="d-flex justify-content-between mt-2">
-                                <span class="text-light font-size-13">First Name</span>
+                                <span class="text-light font-size-13">{{ __('First Name') }}</span>
                                 <p class="mb-0">ALB</p></div>
                                 <div class="d-flex justify-content-between mt-2">
-                                <span class="text-light font-size-13">Last Name</span>
+                                <span class="text-light font-size-13">{{ __('Last Name') }}</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
                                 <div class="d-flex justify-content-between mt-2">
-                                <span class="text-light font-size-13">Password</span>
+                                <span class="text-light font-size-13">{{ __('Password') }}</span>
                                     <p class="mb-0">**********</p></div>
                                 <div class="d-flex justify-content-between mt-2">
-                                <span class="text-light font-size-13">Username</span>
+                                <span class="text-light font-size-13">{{ __('Username') }}</span>
                                 <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
                             </div> 
                                 <div class="d-flex justify-content-between mt-2">
-                                <span class="text-light font-size-13">Email</span>
+                                <span class="text-light font-size-13">{{ __('Email') }}</span>
                                 <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
                             </div>   
                             </div>
@@ -384,18 +384,18 @@ border-radius: 20px;
                           <hr style="color:#fff;">
                         <div class="row align-items-center text-right justify-content-between mt-3 mb-3">
                          <div class="col-md-6 d-flex justify-content-between mt-2">
-                                <span class="text-light font-size-13">Phone</span>
+                                <span class="text-light font-size-13">{{ __('Phone') }}</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
                         <div class="col-md-6 d-flex justify-content-between mt-2">
-                                <span class="text-light font-size-13">Country</span>
-                                <p class="mb-0">India</p>
+                                <span class="text-light font-size-13">{{ __('Country') }}</span>
+                                <p class="mb-0">{{ __('India') }}</p>
                             </div>
                           
                         </div>
                 <div class="row align-items-center text-right justify-content-between mt-3 mb-3">
                      <div class="col-md-6 d-flex justify-content-between mt-2">
-                           <span class="text-light font-size-13">DOB</span>
+                           <span class="text-light font-size-13">{{ __('DOB') }}</span>
                            <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
                         </div>
                 </div>
@@ -405,39 +405,39 @@ border-radius: 20px;
                 <div class="col-md-8 targetDiv" id="div2">
                     <div class="d-flex justify-content-around text-white">
                         <div class="d-felx text-center">
-                        <p>Choose plan</p>
+                        <p>{{ __('Choose plan') }}</p>
                         <input type="radio">
                             <ul>
                                 <li class="btn_prd_up_22"></li>
                             </ul>
                         </div>
                         <div class="d-felx text-center">
-                        <p>Make payment</p>
+                        <p>{{ __('Make payment') }}</p>
                             <input type="radio">
                              <ul>
                                 <li class="btn_prd_up_33"></li>
                             </ul>
                         </div>
                         <div class="d-felx text-center">
-                        <p>Confirmation</p>
+                        <p>{{ __('Confirmation') }}</p>
                             <input type="radio"></div>
                     </div>
                 <div class="col-md-12 mt-3">
                     <div class="bg-col">
                         <div class="container ">
                           
-                        <p>Existing Plan : </p>
+                        <p>{{ __('Existing Plan') }} : </p>
 
                         <?php  if($user_role == 'registered'){ ?>
                               <h6><?php echo 'Registered'." " .'(Free)'; ?></h6>                                       
-                              <h6>Subscription</h6>                                       
+                              <h6>{{ __('Subscription') }}</h6>                                       
                            <?php }elseif($user_role == 'subscriber'){ ?>
                               <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
                               <br>       
-                           <h5 class="card-title mb-0">Available Specification :</h5><br>
-                           <h6> Video Quality : <p> <?php if($plans != null ) {  $plans->video_quality ; } else { ' ';} ?></p></h6>  
-                           <h6> Video Resolution : <p> <?php if($plans != null ) {  $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
-                           <h6> Available Devices : <p> <?php if($plans != null ) {  $plans->devices_name ; } else { ' ';} ?> </p></h6>
+                           <h5 class="card-title mb-0">{{ __('Available Specification') }} :</h5><br>
+                           <h6>{{ __('Video Quality') }}  : <p> <?php if($plans != null ) {  $plans->video_quality ; } else { ' ';} ?></p></h6>  
+                           <h6> {{ __('Video Resolution') }} : <p> <?php if($plans != null ) {  $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
+                           <h6> {{ __('Available Devices') }} : <p> <?php if($plans != null ) {  $plans->devices_name ; } else { ' ';} ?> </p></h6>
                               <!--<h6>Subscription</h6>-->
                            <?php } ?>
 
@@ -445,7 +445,7 @@ border-radius: 20px;
                         </div>
                         <br>       
 
-                    <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
+                    <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >{{ __('Upgrade Plan') }} </a>        
                     <br>       
                         
                     </div>
@@ -483,8 +483,8 @@ border-radius: 20px;
                     <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
                         <div class="container ">
                           
-                        <p>SAVE $ 594</p>
-                        <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1></div>
+                        <p>{{ __('SAVE $ 594') }}</p>
+                        <h1><span class="dl">$</span>1197 <span>{{ __('for 9 months') }}</span></h1></div>
                         </div>
                         
                     </div>
@@ -493,8 +493,8 @@ border-radius: 20px;
                     <div class="bg-col">
                        <div class="container ">
                            
-                        <p>SAVE $ 300</p>
-                        <h1><span class="dl">$</span>894 <span>for 6 months</span></h1></div> </div>
+                        <p>{{ __('SAVE $ 300') }}</p>
+                        <h1><span class="dl">$</span>894 <span>{{ __('for 6 months') }}</span></h1></div> </div>
                       
                     </div>
             
@@ -503,8 +503,8 @@ border-radius: 20px;
                        <div class="container ">
                            
                                 
-                        <p>SAVE $ 99</p>
-                        <h1><span class="dl">$</span>498 <span>for 3 months</span></h1></div></div>
+                        <p>{{ __('SAVE $ 99') }}</p>
+                        <h1><span class="dl">$</span>498 <span>{{ __('for 3 months') }}</span></h1></div></div>
                         
                     </div>
            
@@ -513,21 +513,21 @@ border-radius: 20px;
                         <div class="container mt-4">
                           
                         <p></p>
-                                <h1><span class="dl">$</span>198 <span>for 1 months</span></h1></div></div>
+                                <h1><span class="dl">$</span>198 <span>{{ __('for 1 months') }}</span></h1></div></div>
                         
                     </div>
                 </div>
                
                 <div class="col-md-8 targetDiv" id="div4">
                   <div class=" mb-3">
-                      <h4 class="card-title mb-0">Preference for videos</h4>
+                      <h4 class="card-title mb-0">{{ __('Preference for videos') }}</h4>
                       <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
                       @csrf
                       <input type="hidden" name="user_id" value="<?= $user->id ?>" />
    
                       <div class="form-group  mt-4 pt-5">
                           <div class="col-md-6 p-0">
-                        <label><h5 class="mb-4">Preference Language</h5></label>
+                        <label><h5 class="mb-4">{{ __('Preference Language') }}</h5></label>
                           
                         <select id="" name="preference_language[]" class="js-example-basic-multiple myselect col-md-5" style="width: 46%!important;"  multiple="multiple">
                             @foreach($preference_languages as $preference_language)
@@ -537,7 +537,7 @@ border-radius: 20px;
                      </div> </div>
    <div class="form-group  mt-4">
                      <div class="col-sm-6 p-0">
-                         <label><h5 class="mb-4">Preference Genres</h5></label>
+                         <label><h5 class="mb-4">{{ __('Preference Genres') }}</h5></label>
       
                         <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 46%;" multiple="multiple">
                             @foreach($videocategory as $preference_genres)
@@ -756,7 +756,7 @@ border-radius: 5px;padding:10px;">
 			<div class="modal-content">
 				
 				<div class="modal-header">
-                    <h4 class="modal-title">Update Profile</h4>
+                    <h4 class="modal-title">{{ __('Update Profile') }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
@@ -766,30 +766,30 @@ border-radius: 5px;padding:10px;">
 						<input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                 
 						    <div class="form-group">
-		                        <label> Username:</label>
+		                        <label> {{ __('Username') }}:</label>
 		                        <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
                             </div>
                         
                             <div class="form-group">
-		                        <label> Email:</label>
+		                        <label> {{ __('Email') }}:</label>
 		                        <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
                             </div> 
                         
                         
                             <div class="form-group">
-		                        <label>Password:</label><br>
+		                        <label>{{ __('Password') }}:</label><br>
 		                        <input type="password"  name="password"  value="<?php if(!empty($user->password)): ?><?= $user->password ?><?php endif; ?>" placeholder="Password"  class="form-control"  >
 		                        <!-- <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  > -->
 		                    </div> 
                         
                         
                             <div class="form-group">
-		                         <label> Phone:</label>
+		                         <label>{{ __('Phone') }} :</label>
 		                         <input type="number" id="mobile"  pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
                             </div>
                             
                             <div class="form-group">
-                            <label> DOB:</label>
+                            <label>{{ __('DOB') }} :</label>
                             <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
                             </div>
 
@@ -797,8 +797,8 @@ border-radius: 5px;padding:10px;">
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" style="padding: 9px 30px !important;" class="btn btn-primary" data-dismiss="modal">Close</button>
-					<button type="button" style="padding: 9px 30px !important;" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+					<button type="button" style="padding: 9px 30px !important;" class="btn btn-primary" data-dismiss="modal">{{ __('Close') }}</button>
+					<button type="button" style="padding: 9px 30px !important;" class="btn btn-primary" id="submit-new-cat">{{ __('Save changes') }}</button>
 				</div>
 		</div>
 	</div>
@@ -1079,17 +1079,17 @@ border-radius: 5px;padding:10px;">
                 <div class="col-sm-4 details-back">
 					<div class="row data-back">
 						<div class="well-in col-sm-12 col-xs-12" >
-							<?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('name'); ?></div><?php endif; ?>
+							<?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>{{ __('Oh snap!') }}</strong> <?= $errors->first('name'); ?></div><?php endif; ?>
 							<label for="username" class="lablecolor"><?=__('Username');?></label>
 							<input type="text" class="form-control" name="name" id="name" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" />
 						</div>
 						<div class="well-in col-sm-12 col-xs-12">
-							<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('email'); ?></div><?php endif; ?>
+							<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>{{ __('Oh snap!') }}</strong> <?= $errors->first('email'); ?></div><?php endif; ?>
 							<label for="email"><?=__('Email');?></label>
 							<input type="text" class="form-control" name="email" id="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" />
 						</div>
 						<div class="well-in col-sm-12 col-xs-12">
-							<?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('name'); ?></div><?php endif; ?>
+							<?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>{{ __('Oh snap!') }}</strong> <?= $errors->first('name'); ?></div><?php endif; ?>
 							<label for="username" class="lablecolor"><?=__('Phone Number');?></label>
 							<div class="row">
 								 <div class="col-sm-6 col-xs-12">
@@ -1105,13 +1105,13 @@ border-radius: 5px;padding:10px;">
 							</div>
 						</div>
 						<div class="well-in col-sm-12 col-xs-12">
-							<label for="password"><?=__('Password');?> (leave empty to keep your original password)</label>
+							<label for="password"><?=__('Password');?> {{ __('(leave empty to keep your original password)') }}</label>
 							<input type="password" class="form-control" name="password" id="password"  />
 						</div>
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<div class="col-sm-12 col-xs-12 mt-3">
 							<input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary" />
-                             <button type="button" class="btn btn-primary" onclick="closeForm()">Close</button>
+                             <button type="button" class="btn btn-primary" onclick="closeForm()">{{ __('Close') }}</button>
 						</div>
 					</div>
 				</div>
