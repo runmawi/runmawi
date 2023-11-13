@@ -143,19 +143,59 @@
                             </ul>
                         </div>
                     </div>
-
                     <div class="row">  
-                        <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
-                            <div class="playbtn" style="gap:5px">    {{-- Play --}}
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                </svg>
-                                <span class="text pr-2"> {{ __('Watch Now') }} </span>
-                            </div>
-                        </a>
+                            @if ( $videodetail->PPV_Exits == 1 && $videodetail->access == 'ppv' ||  !Auth::guest() && Auth::user()->role =="admin" 
+                            || !Auth::guest() &&  settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' 
+                            || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'subscriber' )  
+                                <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
+                                            <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                </svg>
+                                                <span class="text pr-2"> {{ __('Watch Now') }} </span>
+                                            </div>
+                                    </a>
+                            @elseif(  !Auth::guest() &&  Auth::user()->role == 'subscriber' &&  settings_enable_rent() == 0  && $videodetail->access == 'ppv' 
+                                || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' || !Auth::guest() &&  Auth::user()->role == 'registered' && $videodetail->access == 'ppv')
 
-                        @php include public_path('themes/default/views/partials/social-share.php'); @endphp  
+                                    <a class="btn" onclick="pay(<?php if($videodetail->access == 'ppv' && $videodetail->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($videodetail->ppv_price); }else if($videodetail->access == 'ppv' && $videodetail->ppv_price != null && $CurrencySetting == 0){ echo __(@$videodetail->ppv_price) ; } ?>)">
+                                            <div class="playbtn" style="gap:5px">    {{-- Rent Play --}}
+                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                </svg>
+                                                <span class="text pr-2"> {{ __('Purchase Now') }} </span>
+                                            </div>
+                                    </a>
+                            @elseif(  !Auth::guest() && Auth::user()->role != 'subscriber' && $videodetail->access == 'subscriber')
+
+                                    <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                            <div class="playbtn" style="gap:5px">    {{-- Rent Play --}}
+                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                </svg>
+                                                <span class="text pr-2"> {{ __('Subscribe Now') }} </span>
+                                            </div>
+                                    </a>
+                            @else
+
+                                <a class="btn"  href="{{ URL::to('/login') }}" >
+                                        <div class="playbtn" style="gap:5px">    
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                            </svg>
+                                            <span class="text pr-2"> {{ __('Purchase Now') }} </span>
+                                        </div>
+                                </a>
+
+                            @endif
+
+
+                        @php include public_path('themes/default/views/partials/social-share.php'); @endphp 
+                         
                         
                        
                         @if( optional($videodetail)->trailer_videos_url )
@@ -500,5 +540,6 @@
 
 @php 
     include public_path('themes/default/views/video-js-Player/video/videos-details-script-file.blade.php');
+    include public_path('themes/default/views/video-js-Player/video/videos-details-script-stripe.blade.php');
     include public_path('themes/default/views/footer.blade.php'); 
 @endphp

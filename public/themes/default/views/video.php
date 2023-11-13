@@ -1958,7 +1958,7 @@ $artists = [];
                                                         <a type="button" class="mb-3 mt-3" data-dismiss="modal"
                                                             style="font-weight:400;"><?php echo __('Amount'); ?>: <span class="pl-2"
                                                                 style="font-size:20px;font-weight:700;">
-                                                                <?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$video->ppv_price)); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo __(@$video->ppv_price) ; } ?></span></a><br>
+                                                                <?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$video->ppv_price)); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo __(@$video->ppv_price) .' '.$currency->symbol ; } ?></span></a><br>
                                                         <label class="mb-0 mt-3 p-0" for="method">
                                                             <h5 style="font-size:20px;line-height: 23px;"
                                                                 class="font-weight-bold text-black mb-2"><?php echo __('Payment Method'); ?>
