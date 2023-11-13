@@ -9,7 +9,7 @@ include public_path('themes/theme1/views/header.php');
 
     <div class="iq-main-header align-items-center justify-content-between">
         <h4 class="main-title mt-3">
-            <b>Free Movies </b>
+            <b>{{ __('Free Movies') }}</b>
         </h4>
     </div>
 
@@ -134,7 +134,7 @@ include public_path('themes/theme1/views/header.php');
     <div class="col-md-12 text-center mt-4"
         style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
         <p>
-        <h3 class="text-center">No Video Available</h3>
+        <h3 class="text-center">{{ __('No Video Available') }}</h3>
     </div>
     <?php } ?>
 
