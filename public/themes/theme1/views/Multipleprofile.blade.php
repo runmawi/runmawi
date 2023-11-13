@@ -22,7 +22,7 @@
                  
 <div class="col-md-4">
     <div class="row1">
-    <h1 class="mt-5">Who's Watching ?</h1>
+    <h1 class="mt-5">{{ __('Who's Watching ?') }}</h1>
                     <div class="row-data" style="display:flex; " >
                       
                     

@@ -3,7 +3,7 @@
 @endphp
 
 <section id="iq-favorites">
-    <h3 class="vid-title text-center mt-4 mb-5">Showing Result of "{{  $search_value }}" Episode</h3>
+    <h3 class="vid-title text-center mt-4 mb-5">{{ __('Showing Result of') }} "{{  $search_value }}" {{ __('Episode') }}</h3>
     <div class="container-fluid" style="padding: 0px 40px!important;background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);">
  
             {{-- Episode  --}}
@@ -12,7 +12,7 @@
                 <div class="col-sm-12 page-height">
 
                     <div class="iq-main-header align-items-center justify-content-between"> 
-                        <h3 class="vid-title"> Showing  Episode for "{{  $search_value }}"</h3>              
+                        <h3 class="vid-title"> {{ __('Showing  Episode for') }} "{{  $search_value }}"</h3>              
                     </div>
                         <div class="favorites-contens">
                             <ul class="category-page list-inline row p-0 mb-0">

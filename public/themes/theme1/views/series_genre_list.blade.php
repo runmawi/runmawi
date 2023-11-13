@@ -78,7 +78,7 @@
                                         
                                         </li>
                                     @empty
-                                            {{  "No Vides" }}
+                                            {{  __("No Vides") }}
                                     @endforelse
                                 @endif
                             </ul>

@@ -222,8 +222,8 @@ cursor: pointer;
                                                 <img src="assets/images/notify/thumb-1.jpg" class="img-fluid mr-3"
                                                    alt="streamit" />
                                                 <div class="media-body">
-                                                   <h6 class="mb-0 ">Boot Bitty</h6>
-                                                   <small class="font-size-12"> just now</small>
+                                                   <h6 class="mb-0 ">{{ __('Boot Bitty') }}</h6>
+                                                   <small class="font-size-12"> {{ __('just now') }}</small>
                                                 </div>
                                              </div>
                                           </a>
@@ -232,8 +232,8 @@ cursor: pointer;
                                                 <img src="assets/images/notify/thumb-2.jpg" class="img-fluid mr-3"
                                                    alt="streamit" />
                                                 <div class="media-body">
-                                                   <h6 class="mb-0 ">The Last Breath</h6>
-                                                   <small class="font-size-12">15 minutes ago</small>
+                                                   <h6 class="mb-0 ">{{ __('The Last Breath') }}</h6>
+                                                   <small class="font-size-12">{{ __('15 minutes ago') }}</small>
                                                 </div>
                                              </div>
                                           </a>
@@ -242,8 +242,8 @@ cursor: pointer;
                                                 <img src="assets/images/notify/thumb-3.jpg" class="img-fluid mr-3"
                                                    alt="streamit" />
                                                 <div class="media-body">
-                                                   <h6 class="mb-0 ">The Hero Camp</h6>
-                                                   <small class="font-size-12">1 hour ago</small>
+                                                   <h6 class="mb-0 ">{{ __('The Hero Camp') }}</h6>
+                                                   <small class="font-size-12">{{ __('1 hour ago') }}</small>
                                                 </div>
                                              </div>
                                           </a>
@@ -270,7 +270,7 @@ cursor: pointer;
                                                    <i class="ri-settings-4-line text-primary"></i>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Signin</h6>
+                                                   <h6 class="mb-0 ">{{ __('Signin') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -280,7 +280,7 @@ cursor: pointer;
                                                    <i class="ri-logout-circle-line text-primary"></i>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Signup</h6>
+                                                   <h6 class="mb-0 ">{{ __('Signup') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -297,7 +297,7 @@ cursor: pointer;
                                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st5" d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z"/><path class="st5" d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z"/></svg>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">My Account</h6>
+                                                   <h6 class="mb-0 ">{{ __('My Account') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -307,7 +307,7 @@ cursor: pointer;
                                                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><style>.st0{fill:#198fcf;stroke:#198fcf;stroke-width:.75;stroke-miterlimit:10}</style><path class="st0" d="M21.5 23.7h14c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4h-14c-.2 0-.3-.2-.3-.4V24c0-.1.2-.3.3-.3zM21.5 32h13.4c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.2.2-.4.3-.4zM21.5 40.3h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.7c0-.3.2-.5.3-.5zM21.5 48.7h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.3.2-.4.3-.4z"/><path class="st1" d="M48.4 37c-5.1 0-9.2-4.1-9.2-9.2s4.1-9.2 9.2-9.2 9.2 4.1 9.2 9.2-4.1 9.2-9.2 9.2zm0-16.7c-4.2 0-7.5 3.3-7.5 7.5s3.3 7.5 7.5 7.5 7.5-3.3 7.5-7.5-3.3-7.5-7.5-7.5z" style="fill:#198fcf;stroke:#198fcf;stroke-width:.5;stroke-miterlimit:10"/><path class="st2" d="M52.1 28.7h-3.8c-.4 0-.7-.3-.7-.7v-3.8c0-.2.2-.4.4-.4h.8c.2 0 .4.2.4.4v2.2c0 .4.3.7.7.7h2.2c.2 0 .4.2.4.4v.8c.1.2-.1.4-.4.4z" style="fill:#198fcf"/><path class="st3" d="M54.3 34v20.1c0 1-.8 1.9-1.9 1.9H17.3c-1 0-1.9-.8-1.9-1.9V17.5c0-1 .8-1.9 1.9-1.9h35.1c1 0 1.9.8 1.9 1.9v4.2" style="fill:none;stroke:#198fcf;stroke-width:2;stroke-miterlimit:10"/></svg>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Watch list</h6>
+                                                   <h6 class="mb-0 ">{{ __('Watch list') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -342,7 +342,7 @@ cursor: pointer;
                                                    </svg>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Rented Movies</h6>
+                                                   <h6 class="mb-0 ">{{ __('Rented Movies') }}</h6>
                                                 </div>
                                              </div>
                                           </a> --}}
@@ -353,7 +353,7 @@ cursor: pointer;
                                                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"></path><path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"></path></svg>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Logout</h6>
+                                                   <h6 class="mb-0 ">{{ __('Logout') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -394,7 +394,7 @@ cursor: pointer;
 </svg>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">My Account</h6>
+                                                   <h6 class="mb-0 ">{{ __('My Account') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -404,7 +404,7 @@ cursor: pointer;
                                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><style>.st0{fill:#198fcf;stroke:#198fcf;stroke-width:.75;stroke-miterlimit:10}</style><path class="st0" d="M21.5 23.7h14c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4h-14c-.2 0-.3-.2-.3-.4V24c0-.1.2-.3.3-.3zM21.5 32h13.4c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.2.2-.4.3-.4zM21.5 40.3h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.7c0-.3.2-.5.3-.5zM21.5 48.7h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.3.2-.4.3-.4z"/><path class="st1" d="M48.4 37c-5.1 0-9.2-4.1-9.2-9.2s4.1-9.2 9.2-9.2 9.2 4.1 9.2 9.2-4.1 9.2-9.2 9.2zm0-16.7c-4.2 0-7.5 3.3-7.5 7.5s3.3 7.5 7.5 7.5 7.5-3.3 7.5-7.5-3.3-7.5-7.5-7.5z" style="fill:#198fcf;stroke:#198fcf;stroke-width:.5;stroke-miterlimit:10"/><path class="st2" d="M52.1 28.7h-3.8c-.4 0-.7-.3-.7-.7v-3.8c0-.2.2-.4.4-.4h.8c.2 0 .4.2.4.4v2.2c0 .4.3.7.7.7h2.2c.2 0 .4.2.4.4v.8c.1.2-.1.4-.4.4z" style="fill:#198fcf"/><path class="st3" d="M54.3 34v20.1c0 1-.8 1.9-1.9 1.9H17.3c-1 0-1.9-.8-1.9-1.9V17.5c0-1 .8-1.9 1.9-1.9h35.1c1 0 1.9.8 1.9 1.9v4.2" style="fill:none;stroke:#198fcf;stroke-width:2;stroke-miterlimit:10"/></svg>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Watch list</h6>
+                                                   <h6 class="mb-0 ">{{ __('Watch list') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -439,7 +439,7 @@ cursor: pointer;
                                                    </svg>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Rented Movies</h6>
+                                                   <h6 class="mb-0 ">{{ __('Rented Movies') }}</h6>
                                                 </div>
                                              </div>
                                           </a> --}}
@@ -463,7 +463,7 @@ cursor: pointer;
                                                    </svg>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Pricing Plan</h6>
+                                                   <h6 class="mb-0 ">{{ __('Pricing Plan') }}</h6>
                                                 </div>
                                              </div>
                                           </a> --}}
@@ -489,7 +489,7 @@ cursor: pointer;
 </svg>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Admin</h6>
+                                                   <h6 class="mb-0 ">{{ __('Admin') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -500,7 +500,7 @@ cursor: pointer;
                                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/><path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/></svg>
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Logout</h6>
+                                                   <h6 class="mb-0 ">{{ __('Logout') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -572,8 +572,8 @@ cursor: pointer;
                            <div class="iq-card shadow-none m-0">
                               <div class="iq-card-body p-0 ">
                                  <div class="bg-primary p-3">
-                                    <h5 class="mb-0 text-white line-height">Hello Barry Tech</h5>
-                                    <span class="text-white font-size-12">Available</span>
+                                    <h5 class="mb-0 text-white line-height">{{ __('Hello Barry Tech') }}</h5>
+                                    <span class="text-white font-size-12">{{ __('Available') }}</span>
                                  </div>
                                  <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
                                     <div class="media align-items-center">
@@ -581,8 +581,8 @@ cursor: pointer;
                                           <i class="ri-file-user-line"></i>
                                        </div>
                                        <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">My Profile</h6>
-                                          <p class="mb-0 font-size-12">View personal profile details.</p>
+                                          <h6 class="mb-0 ">{{ __('My Profile') }}</h6>
+                                          <p class="mb-0 font-size-12">{{ __('View personal profile details') }}.</p>
                                        </div>
                                     </div>
                                  </a>
@@ -592,8 +592,8 @@ cursor: pointer;
                                           <i class="ri-profile-line"></i>
                                        </div>
                                        <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Edit Profile</h6>
-                                          <p class="mb-0 font-size-12">Modify your personal details.</p>
+                                          <h6 class="mb-0 ">{{ __('Edit Profile') }}</h6>
+                                          <p class="mb-0 font-size-12">{{ __('Modify your personal details') }}.</p>
                                        </div>
                                     </div>
                                  </a>
@@ -603,8 +603,8 @@ cursor: pointer;
                                           <i class="ri-account-box-line"></i>
                                        </div>
                                        <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Account settings</h6>
-                                          <p class="mb-0 font-size-12">Manage your account parameters.</p>
+                                          <h6 class="mb-0 ">{{ __('Account settings') }}</h6>
+                                          <p class="mb-0 font-size-12">{{ __('Manage your account parameters') }}.</p>
                                        </div>
                                     </div>
                                  </a>
@@ -614,13 +614,13 @@ cursor: pointer;
                                           <i class="ri-lock-line"></i>
                                        </div>
                                        <div class="media-body ml-3">
-                                          <h6 class="mb-0 ">Privacy Settings</h6>
-                                          <p class="mb-0 font-size-12">Control your privacy parameters.</p>
+                                          <h6 class="mb-0 ">{{ __('Privacy Settings') }}</h6>
+                                          <p class="mb-0 font-size-12">{{ __('Control your privacy parameters') }}.</p>
                                        </div>
                                     </div>
                                  </a>
                                  <div class="d-inline-block w-100 text-center p-3">
-                                    <a class="bg-primary iq-sign-btn" href="#" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
+                                    <a class="bg-primary iq-sign-btn" href="#" role="button">{{ __('Sign out') }}<i class="ri-login-box-line ml-2"></i></a>
                                  </div>
                               </div>
                            </div>
@@ -650,11 +650,11 @@ cursor: pointer;
                      @if (Session::has('message'))
                         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                   @endif
-                        <h2 class="text-center">My Account</h2>
+                        <h2 class="text-center">{{ __('My Account') }}</h2>
                        
                          <div class="row mt-5 align-items-center justify-content-between">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">Email</span>
+                                 <span class="text-light font-size-13">{{ __('Email') }}</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13"> {{ $user->email ? $user->email : " "   }}</span></div>
                               </div>
@@ -673,7 +673,7 @@ cursor: pointer;
                                                 <input type="text"  name="user_email" class="form-control">
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_userEmail">Update</a></div>
+                                             <a type="button" class="btn round update_userEmail">{{ __('Update') }}</a></div>
                                        </div>
                               </span>
                            </form>
@@ -682,19 +682,19 @@ cursor: pointer;
                         <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-5 mt-3">
-                                <span class="text-light font-size-13">Password</span>
+                                <span class="text-light font-size-13">{{ __('Password') }}</span>
                                 <div class="p-0 mt-2">
                                        <span class="text-light font-size-13">*********</span>
                                 </div>
                            </div>
                             <div class="col-md-7 mt-2 text-right" style="font-size:14px;">
-                                <a href="{{ URL::to('/password/reset') }}" class="f-link text-white font-size-13">Send Reset Password Email</a>
+                                <a href="{{ URL::to('/password/reset') }}" class="f-link text-white font-size-13">{{ __('Send Reset Password Email') }}</a>
                             </div>
                             </div>
                           <hr style="border:0.5px solid #fff;">
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">Display Name</span>
+                                 <span class="text-light font-size-13">{{ __('Display Name') }}</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></div>
                               </div>
@@ -713,7 +713,7 @@ cursor: pointer;
                                                 <input type="text"  name="user_name" class="form-control">
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_username">Update</a></div>
+                                             <a type="button" class="btn round update_username">{{ __('Update') }}</a></div>
                                        </div>
                               </span>
                            </form>
@@ -723,7 +723,7 @@ cursor: pointer;
 
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">Display Image</span>
+                                 <span class="text-light font-size-13">{{ __('Display Image') }}</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13">
                                        @if( $user->avatar != null ) 
@@ -746,7 +746,7 @@ cursor: pointer;
                                                 <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" required/>
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_userimg">Update</a></div>
+                                             <a type="button" class="btn round update_userimg">{{ __('Update') }}</a></div>
                                        </div>
                               </span>
                            </form>
@@ -755,10 +755,10 @@ cursor: pointer;
 
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">Tv Activation Code</span>
+                                 <span class="text-light font-size-13">{{ __('Tv Activation Code') }}</span>
                               </div>
                               <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_tvcode">Add</a>
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_tvcode">{{ __('Add') }}</a>
                               </div>
                            </div>
 
@@ -774,9 +774,9 @@ cursor: pointer;
                                           </div>
                                        <div class="col-md-4">
                                        @if(!empty($UserTVLoginCode->tv_code))
-                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn round tv-code-remove text-red">{{ __('Remove') }}</a>
                                        @else
-                                       <a type="button"  class="btn round tv-code text-white">Add</a>
+                                       <a type="button"  class="btn round tv-code text-white">{{ __('Add') }}</a>
                                        @endif
                                           </div>
                                        </div>
@@ -785,7 +785,7 @@ cursor: pointer;
                           <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-8">
-                                <span class="text-light font-size-13">Membership Settings</span>
+                                <span class="text-light font-size-13">{{ __('Membership Settings') }}</span>
 
                               <div class="p-0">
                                  <span class="text-light font-size-13">
@@ -806,23 +806,23 @@ cursor: pointer;
 
                               <div class="col-md-4 text-right">
                                     @if( (Auth::user()->role == "subscriber" ) )
-                                       {{-- <a href=" {{ URL::to('/upgrade-subscription_plan') }} class="text-white font-size-13"> Update Payment</a> --}}
+                                       {{-- <a href=" {{ URL::to('/upgrade-subscription_plan') }} class="text-white font-size-13">{{ __('Update Payment') }} </a> --}}
                                     @elseif( (Auth::user()->role == "admin" ) )
 
                                     @else
-                                       <a href="<?=URL::to('/becomesubscriber');?>"  class="text-white font-size-13"> Subscriber Payment</a>
+                                       <a href="<?=URL::to('/becomesubscriber');?>"  class="text-white font-size-13"> {{ __('Subscriber Payment') }}</a>
                                     @endif
                               </div>
                         </div>
                          <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <a  href="{{ URL::to('logout') }}" type="button" class="btn round">Logout</a>
+                                <a  href="{{ URL::to('logout') }}" type="button" class="btn round">{{ __('Logout') }}</a>
                             </div>
 
                             @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
                               <div class="col-md-6 text-right">
-                                    <a  href="{{ URL::to('/cancelSubscription') }}" class="text-white font-size-13" >Cancel Membership</a>
+                                    <a  href="{{ URL::to('/cancelSubscription') }}" class="text-white font-size-13" >{{ __('Cancel Membership') }}</a>
                               </div>
                             @endif
                             
@@ -946,7 +946,7 @@ cursor: pointer;
 			<div class="modal-content">
 				
 				<div class="modal-header">
-                    <h4 class="modal-title text-black">Update Profile</h4>
+                    <h4 class="modal-title text-black">{{ __('Update Profile') }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					
 				</div>
@@ -957,30 +957,30 @@ cursor: pointer;
 						<input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                 
 						    <div class="form-group">
-		                        <label> Username:</label>
+		                        <label> {{ __('Username') }}:</label>
 		                        <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
                             </div>
                         
                             <div class="form-group">
-		                        <label> Email:</label>
+		                        <label> {{ __('Email') }}:</label>
 		                        <input type="email" id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
                             </div> 
                         
                         
                             <div class="form-group">
-		                        <label>Password:</label><br>
+		                        <label>{{ __('Password') }}:</label><br>
 		                        <input type="password"  name="password"   placeholder="Password"  class="form-control"  >
 		                    </div> 
                         
                            {{--                         
                               <div class="form-group">
-                                 <label> Phone:</label>
+                                 <label> {{ __('Phone') }}:</label>
                                  <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
                               </div>
                              --}}
 
                             <div class="form-group">
-                              <label> DOB:</label>
+                              <label>{{ __('DOB') }} :</label>
                                <input type="date" id="DOB" name="DOB" class="form-control"   value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
                             </div>
 
@@ -988,8 +988,8 @@ cursor: pointer;
 				</div>
 				
 				<div class="modal-footer">
-					{{-- <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button> --}}
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+					{{-- <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __('Close') }}</button> --}}
+					<button type="button" class="btn btn-primary" id="submit-new-cat">{{ __('Save changes') }}</button>
 				</div>
 			</div>
 		</div>
@@ -1006,15 +1006,15 @@ cursor: pointer;
                         
           <div class="text-center">
                        <?php  if($user_role == 'registered'){ ?>
-                              <h6><?php echo 'Registered'." " .'(Free)'; ?> Subscription</h6>                                       
+                              <h6><?php echo 'Registered'." " .'(Free)'; ?> {{ __('Subscription') }}</h6>                                       
                               <h6></h6>                                       
                            <?php }elseif($user_role == 'subscriber'){ ?>
                               <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
                               <br>       
-                           <h5 class="card-title mb-0">Available Specification :</h5><br>
-                           <h6> Video Quality : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
-                           <h6> Video Resolution : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
-                           <h6> Available Devices : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
+                           <h5 class="card-title mb-0">{{ __('Available Specification') }} :</h5><br>
+                           <h6>{{ __('Video Quality') }}  : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
+                           <h6>{{ __('Video Resolution') }}  : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
+                           <h6> {{ __('Available Devices') }} : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
                               <!--<h6>Subscription</h6>-->
                            <?php } ?>
                            </div>
@@ -1022,14 +1022,14 @@ cursor: pointer;
                              <!-- -->
                     <div class="row align-items-center justify-content-center mb-3 mt-3">
                          <div class=" text-center colsm-4 ">
-                <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
+                <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('View Transaction Details') }}</a>
             </div>
                             
                             <div class="col-sm-4 text-center">
                                <?php if(Auth::user()->role == "subscriber"){ ?>
-                                <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
+                                <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >{{ __('Upgrade Plan') }} </a>        
                                 <?php }else{ ?>
-                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
                         <?php } ?>
                             </div>
                         </div>
@@ -1044,18 +1044,18 @@ cursor: pointer;
                            <?php }elseif($user_role == 'subscriber'){ ?>
                               <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
                               <br>       
-                           <h5 class="card-title mb-0">Available Specification :</h5><br>
-                           <h6> Video Quality : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
-                           <h6> Video Resolution : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
-                           <h6> Available Devices : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
+                           <h5 class="card-title mb-0">{{ __('Available Specification') }} :</h5><br>
+                           <h6> {{ __('Video Quality') }} : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
+                           <h6>{{ __('Video Resolution') }}  : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
+                           <h6>{{ __('Available Devices') }}  : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
                               <!--<h6>Subscription</h6>-->
                            <?php } ?>
                            </div>
                             <div class="col-sm-6">
                                <?php if(Auth::user()->role == "subscriber"){ ?>
-                                <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
+                                <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >{{ __('Upgrade Plan') }} </a>        
                                 <?php }else{ ?>
-                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > {{ __('Become Subscriber') }}</a>
                         <?php } ?>
                             </div>
                         </div>
@@ -1067,13 +1067,13 @@ cursor: pointer;
                     </div>
                     <div class="targetDiv mt-5" id="div5">
                         <div class=" mb-3">
-                      <h4 class="card-title mb-0">Preference for videos</h4>
+                      <h4 class="card-title mb-0">{{ __('Preference for videos') }}</h4>
                       <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
                       @csrf
                       <input type="hidden" name="user_id" value="<?= $user->id ?>" />
    
                       <div class="col-sm-9 form-group p-0 mt-3">
-                        <label><h5>Preference Language</h5></label>
+                        <label><h5>{{ __('Preference Language') }}</h5></label>
                         <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
                             @foreach($preference_languages as $preference_language)
                                 <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
@@ -1082,7 +1082,7 @@ cursor: pointer;
                      </div>
    
                      <div class="col-sm-9 form-group p-0 mt-3">
-                        <label><h5>Preference Genres</h5></label>
+                        <label><h5>{{ __('Preference Genres') }}</h5></label>
                         <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
                             @foreach($videocategory as $preference_genres)
                                 <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
@@ -1095,7 +1095,7 @@ cursor: pointer;
                   </div>
                     </div>
                     <div class="targetDiv" id="div6"><div class=" mb-3">
-               <h4 class="card-title mb-0 manage"> My Account</h4>
+               <h4 class="card-title mb-0 manage">{{ __('My Account') }} </h4>
                   <div class="col-md-12 profile_image">
                       @forelse  ($profile_details as $profile)
                         <div class="">
@@ -1112,7 +1112,7 @@ cursor: pointer;
                                  </div>
                         </div>
                       @empty
-                        <div class="col-sm-6">  <p class="name">No Profile</p>  </div>
+                        <div class="col-sm-6">  <p class="name">{{ __('No Profile') }}</p>  </div>
                       @endforelse
                   </div>    
               </div> </div>
@@ -1120,7 +1120,7 @@ cursor: pointer;
                         <div class="iq-card" id="recentviews" style="background-color:#191919;">
                      <div class="iq-card-header d-flex justify-content-between" >
                         <div class="iq-header-title">
-                           <h4 class="card-title">Recently Viewd Items</h4>
+                           <h4 class="card-title">{{ __('Recently Viewd Items') }}</h4>
                         </div>
                         
                      </div>
@@ -1129,12 +1129,12 @@ cursor: pointer;
                            <table class="data-tables table movie_table recent_table" style="width:100%">
                               <thead>
                                  <tr>
-                                    <th style="width:20%;">Video</th>
-                                    <th style="width:10%;">Rating</th>
-                                    <th style="width:20%;">Category</th>
-                                    <th style="width:10%;">Views</th>
+                                    <th style="width:20%;">{{ __('Video') }}</th>
+                                    <th style="width:10%;">{{ __('Rating') }}</th>
+                                    <th style="width:20%;">{{ __('Category') }}</th>
+                                    <th style="width:10%;">{{ __('Views') }}</th>
                                    <!-- <th style="width:10%;">User</th>-->
-                                     <th style="width:20%;">Date</th> 
+                                     <th style="width:20%;">{{ __('Date') }}</th> 
                                     <th style="width:10%;"><i class="lar la-heart"></i></th>
                                  </tr>
                               </thead>
@@ -1451,17 +1451,17 @@ cursor: pointer;
                 <div class="col-sm-4 details-back">
 					<div class="row data-back">
 						<div class="well-in col-sm-12 col-xs-12" >
-							<?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">Ãƒâ€”</button> <strong>Oh snap!</strong> <?= $errors->first('name'); ?></div><?php endif; ?>
+							<?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">Ãƒâ€”</button> <strong>{{ __('Oh snap!') }}</strong> <?= $errors->first('name'); ?></div><?php endif; ?>
 							<label for="username" class="lablecolor"><?=__('Username');?></label>
 							<input type="text" class="form-control" name="name" id="name" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" />
 						</div>
 						<div class="well-in col-sm-12 col-xs-12">
-							<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">Ãƒâ€”</button> <strong>Oh snap!</strong> <?= $errors->first('email'); ?></div><?php endif; ?>
+							<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">Ãƒâ€”</button> <strong>{{ __('Oh snap!') }}</strong> <?= $errors->first('email'); ?></div><?php endif; ?>
 							<label for="email"><?=__('Email');?></label>
 							<input type="text" class="form-control" name="email" id="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" />
 						</div>
 						<div class="well-in col-sm-12 col-xs-12">
-							<?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">Ãƒâ€”</button> <strong>Oh snap!</strong> <?= $errors->first('name'); ?></div><?php endif; ?>
+							<?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">Ãƒâ€”</button> <strong>{{ __('Oh snap!') }}</strong> <?= $errors->first('name'); ?></div><?php endif; ?>
 							<label for="username" class="lablecolor"><?=__('Phone Number');?></label>
 							<div class="row">
 								 <div class="col-sm-6 col-xs-12">
@@ -1477,13 +1477,13 @@ cursor: pointer;
 							</div>
 						</div>
 						<div class="well-in col-sm-12 col-xs-12">
-							<label for="password"><?=__('Password');?> (leave empty to keep your original password)</label>
+							<label for="password"><?=__('Password');?>{{ __('(leave empty to keep your original password)') }} </label>
 							<input type="password" class="form-control" name="password" id="password"  />
 						</div>
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<div class="col-sm-12 col-xs-12 mt-3">
 							<input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary" />
-                             <button type="button" class="btn btn-primary" onclick="closeForm()">Close</button>
+                             <button type="button" class="btn btn-primary" onclick="closeForm()">{{ __('Close') }}</button>
 						</div>
 					</div>
 				</div>
@@ -1597,7 +1597,7 @@ cursor: pointer;
             </div>
          <div class="copyright py-2">
             <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
+               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - {{ __('2021 All Rights Reserved') }}</p>
             </div>
          </div>
       </footer>

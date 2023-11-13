@@ -50,7 +50,7 @@
     <div class="row">
       <div class="col-sm-12 overflow-hidden">
          <div class="iq-main-header d-flex align-items-center justify-content-between">
-            <h4 class="main-title">Live Videos</h4>
+            <h4 class="main-title"> <?= __('Live Videos') ?></h4>
 <!--            <a href="show-single.html" class="text-primary">View all</a>-->
          </div>
       </div>
@@ -82,7 +82,7 @@
                           <span class="text-white"><?= ucfirst($video->title); ?></span>
                        </div>
                        <a href="<?= URL::to('/') ?><?= '/live'.'/'. $video->slug ?>">
-                          <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
+                          <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> <?= __('Live Now') ?> </h6>
                        </a>
             </div>
             <!-- @$video->categories->name -->

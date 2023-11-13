@@ -1320,3 +1320,10 @@ function GoogleTranslate_object_values($data)
     return $object ;
 }
 
+
+function settings_enable_rent(){
+
+    $settings_enable_rent = App\Setting::first()->pluck('enable_ppv_rent')->first();
+    return $settings_enable_rent;
+
+}
