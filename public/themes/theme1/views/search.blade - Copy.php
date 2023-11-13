@@ -3,7 +3,7 @@
 @endphp
 
 <section id="iq-favorites">
-    <h3 class="vid-title text-center mt-4 mb-5">Search Result of "{{  $search_value }}" Videos</h3>
+    <h3 class="vid-title text-center mt-4 mb-5">{{ __('Search Result of') }} "{{  $search_value }}" {{ __('Videos') }}</h3>
     <div class="container-fluid" style="padding: 0px 40px!important;background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);">
  
             {{-- Latest - Videos,Episode,livestream,audio --}}
@@ -11,7 +11,7 @@
             <div class="col-sm-12 page-height">
                 
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">Showing Recent Videos for "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title">{{ __('Showing Recent Videos for') }} "{{  $search_value }}"</h3>                     
                 </div>
 
                 <div class="iq-main-header align-items-center justify-content-between"> </div>
@@ -380,7 +380,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">Showing Trending videos for "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title">{{ __('Showing Trending videos for') }} "{{  $search_value }}"</h3>                     
                 </div>
 
                 <div class="iq-main-header align-items-center justify-content-between"> </div>
@@ -750,7 +750,7 @@
             <div class="col-sm-12 page-height">
 
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title"> Showing Highlighted videos for "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title">{{ __('Showing Highlighted videos for') }}  "{{  $search_value }}"</h3>                     
                 </div>
 
                 <div class="iq-main-header align-items-center justify-content-between"> </div>

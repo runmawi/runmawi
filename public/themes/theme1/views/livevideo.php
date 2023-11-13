@@ -280,7 +280,7 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                     <div class="row">
                         <div class="col-lg-3 ">
                             <div class="border-end" id="sidebar-wrapper">
-                                <div class="sidebar-heading border-bottom">Channels</div>
+                                <div class="sidebar-heading border-bottom"> <?= __('Channels') ?></div>
                                 <div class="list-group list-group-flush">
                                     <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
                                         <a data-toggle="modal" data-target="#M3U-Modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
@@ -308,7 +308,7 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                     <div class="modal-content" style="background:#1B1212;">
 
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
+                            <h4 class="modal-title" id="myModalLabel"> <?= __('Channel Category') ?> </h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
 
@@ -344,9 +344,9 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
             <div class="row justify-content-center pay-live">
                 <div class="col-md-4 col-sm-offset-4">
                     <div class="ppv-block">
-                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+                        <h2 class="mb-3"> <?= __('Pay now to watch') ?> <?php echo $video->title; ?></h2>
 
-                        <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+                        <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p> <?= __('Click Here To Become Subscriber') ?></p></a></h4>
 
                            <!-- PPV button -->
                             <?php $users = Auth::user();  ?>
@@ -456,7 +456,7 @@ else{
 
                 <div class="col-lg-3 p-0">
                     <div class="border-end" id="sidebar-wrapper">
-                        <div class="sidebar-heading border-bottom">Channels</div>
+                        <div class="sidebar-heading border-bottom"> <?= __('Channels') ?></div>
                         <div class="list-group list-group-flush">
                             <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
                                 <a data-toggle="modal" data-target="#M3U-url-modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
@@ -473,7 +473,7 @@ else{
                     <div class="modal-content" style="background:#1B1212;">
 
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
+                            <h4 class="modal-title" id="myModalLabel">  <?= __('Channel Category') ?> </h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
 
@@ -494,12 +494,12 @@ else{
             <div class="row justify-content-center pay-live">
                 <div class="col-md-4 col-sm-offset-4">
                     <div class="ppv-block">
-                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+                        <h2 class="mb-3"><?= __('Pay now to watch') ?> <?php echo $video->title; ?></h2>
                         <div class="clear"></div>
                         <?php if(Auth::guest()){ ?>
-                        <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                        <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" ><?= __('Purchase For Pay') ?> <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
                         <?php }else{ ?>
-                        <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                        <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)"><?= __('Purchase For Pay') ?> <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                         <?php } ?>
                     </div>
                 </div>
@@ -509,7 +509,7 @@ else{
     }
     } elseif(!empty($new_date)){ ?>
         <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
-            <h2> COMING SOON </h2>
+            <h2><?= __('COMING SOON') ?>  </h2>
             <p class="countdown" id="demo"></p>
             </div>
            <?php }
@@ -751,19 +751,19 @@ else{
             <div class="modal-footer">
 
               <div class="Stripe_button">  <!-- Stripe Button -->
-                <button class="btn2  btn-outline-primary" onclick="pay(<?php echo $video->ppv_price; ?>)"> Continue </button>
+                <button class="btn2  btn-outline-primary" onclick="pay(<?php echo $video->ppv_price; ?>)"> <?= __('Continue') ?> </button>
               </div>
                                   
               <div class="Razorpay_button">   <!-- Razorpay Button -->
                 <?php if( $Razorpay_payment_setting != null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
-                        <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" > Continue </button>
+                        <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" ><?= __('Continue') ?>  </button>
                 <?php } ?>
               </div>
                 
               <?php if( $video->ppv_price != null &&  $video->ppv_price != " " ) {?>
                 <div class="paystack_button">  <!-- Paystack Button -->
                     <?php if( $Paystack_payment_setting != null && $Paystack_payment_setting->payment_type == "Paystack" ){?>
-                            <button class="btn2  btn-outline-primary" onclick="location.href ='<?= route('Paystack_live_Rent', ['live_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" >  Continue </button>
+                            <button class="btn2  btn-outline-primary" onclick="location.href ='<?= route('Paystack_live_Rent', ['live_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" > <?= __('Continue') ?>  </button>
                     <?php } ?>
                 </div>
               <?php } ?>

@@ -57,7 +57,7 @@
                                                         </p>
                                                     @elseif($category_video->global_ppv == null && $category_video->ppv_price == null )
                                                         <p class="p-tag" > 
-                                                            {{  "Free"}} 
+                                                             {{ __("Free")}} 
                                                         </p>
                                                     @endif
                                                 @endif 

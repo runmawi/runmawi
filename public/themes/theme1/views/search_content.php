@@ -112,7 +112,7 @@
 
 <?php if( (count($latest_videos) > 1) || (count($latest_livestreams) > 1) || (count($latest_audio) > 1) ||  (count($latest_Episode) > 1) ||  (count($latest_Series) > 1)   ){ ; ?>
 <ul class="list-group home-search" style="display: block; position: relative; z-index: 999999; margin-bottom: 0; border-radius: 0; ">
-    <h6 style="margin: 0; text-align: left; padding: 10px;">Recent Videos </h6>
+    <h6 style="margin: 0; text-align: left; padding: 10px;"><?= __('Recent Videos') ?> </h6>
 
     <?php foreach ($latest_videos as $row) { ?>
         <li class="list-group-item">

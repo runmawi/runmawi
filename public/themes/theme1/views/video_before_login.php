@@ -291,14 +291,14 @@ if(!empty($request_url)){
       <h4 class="text-center"><?php echo $video->title; ?></h4>
       <p class="text-center text-white col-lg-8" style="margin:0 auto";>
          <?php echo $video->description; ?></p>
-      <h2>Sorry, this video is only available to
-         <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered
-         Users<?php endif; ?></h2>
+      <h2><?= __('Sorry, this video is only available to') ?>
+         <?php if($video->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($video->access == 'registered' ): ?><?= __('Registered') ?>
+          <?= __('Users') ?><?php endif; ?></h2>
       <div class="clear"></div>
       <?php if(Auth::guest() && $video->access == 'registered'): ?>
       <form method="get"
          action="<?= URL::to('/signup') ?>">
-         <button   class="btn btn-primary" id="button">Become a Registered to watch this video</button>
+         <button   class="btn btn-primary" id="button"><?= __('Become a Registered to watch this video') ?></button>
       </form>
       <?php else: ?>
       <form method="get" action="<?= URL::to('signup') ?>">
@@ -364,8 +364,8 @@ if(!empty($request_url)){
                 <div class="col-sm-3 col-md-3 col-xs-12">
                     <div class=" d-flex mt-4 pull-right">     
                         <?php if($video->trailer != ''){ ?>
-                            <div class="watchlater btn btn-secondary btn-lg btn-block watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
-                            <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
+                            <div class="watchlater btn btn-secondary btn-lg btn-block watch_trailer"><i class="ri-film-line"></i><?= __('Watch Trailer') ?> </div>
+                            <div style=" display: none;" class="skiptrailer btn btn-default skip"><?= __('Skip') ?></div>
                         <?php } ?>
                     </div>
                 </div>
@@ -568,7 +568,7 @@ if(!empty($request_url)){
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
+            <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;"><?= __('Rent Now') ?></h4>
            
           </div>
           <div class="modal-body">
@@ -585,7 +585,7 @@ if(!empty($request_url)){
               </div>                    
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary"  data-dismiss="modal"><?= __('Close') ?></button>
           </div>
         </div>
       </div>
