@@ -97,7 +97,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 					</div>-->
 					<div class="row p-2 text-white">
                         <div class="col-md-7">
-                        Season  <span class="sea"> 1 </span> - U/A English
+                        <?= __('Season') ?>  <span class="sea"> 1 </span> -<?= __('U/A English') ?> 
                             <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p>
 						<b><p class="desc" style="color:#fff;"><?php echo $series->description;?></p></b>
                             <div class="row p-0 mt-3 align-items-center">
@@ -118,7 +118,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                   class="ri-links-fill"></i></a>
        </div>
     </div>
-</li>Share
+</li><?= __('Share') ?>
                                     </ul></div>
                                           
                                           
@@ -213,7 +213,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 			<div class="col-md-12 mt-4">
 				<nav class="nav-justified">
 					<div class="container-fluid " id="nav-tab" role="tablist">
-                        <h4 class="ml-3">Episode</h4>
+                        <h4 class="ml-3"><?= __('Episode') ?></h4>
 						<!--<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
 						<!--<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Related</a>
 						<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Detail</a>-->
@@ -227,7 +227,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                     <div class="col-md-3 p-0">
                     <select class="form-control" id="season_id" name="season_id">
 							<?php foreach($season as $key => $seasons): ?>
-								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
+								<option value="season_<?= $seasons->id;?>"><?= __('Season') ?> <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select></div>
           <ul class="category-page list-inline row p-3 mb-0">
@@ -268,7 +268,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                             <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Watch Now
+                                          <?= __('Watch Now') ?> 
                                           </span>
                                            </a>
                                            <div>
@@ -312,7 +312,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Watch Now
+                                          <?= __('Watch Now') ?> 
                                           </span>
                                            </a>
                                            <div>
@@ -337,7 +337,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
           <!-- <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
 			<div class="col-sm-12">
 					<div id="ppv">
-				<h2 class="text-center" style="margin-top:80px;">Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+				<h2 class="text-center" style="margin-top:80px;"><?= __('Purchase to Watch the Series') ?> <?php if($series->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($series->access == 'registered'): ?><?= __('Registered Users') ?><?php endif; ?></h2>
 				<div class="clear"></div>
 				</div> 
 				<!-- </div>  -->
@@ -347,7 +347,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                 <div class="col-md-4">
 			<?php if ( $series->ppv_status == 1 && !Auth::guest() && Auth::User()->role !="admin") { ?>
 			<button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
-			Purchase For <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button>
+      <?= __('Purchase For') ?>	 <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button>
 			<?php } ?>
             <br>
 			<!-- </div> -->
@@ -372,7 +372,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
      <div class="modal-dialog modal-dialog-centered" role="document">
        <div class="modal-content">
          <div class="modal-header">
-           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
+           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;"><?= __('Rent Now') ?></h4>
          </div>
          <div class="modal-body">
              <div class="row">
@@ -382,7 +382,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                 <?php $payment_type = App\PaymentSetting::get(); ?>
                  
                  <div class="col-sm-4">
-                 <label for="method"><h3>Payment Method</h3></label>
+                 <label for="method"><h3><?= __('Payment Method') ?></h3></label>
                 <label class="radio-inline">
 				<?php  foreach($payment_type as $payment){
                           if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
@@ -415,9 +415,9 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
          </div>
          <div class="modal-footer">
          <a onclick="pay(<?php echo $settings->ppv_price ;?>)">
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat"><?= __('Continue') ?></button>
                    </a>
-           <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
+           <button type="button" class="btn btn-primary"  data-dismiss="modal"><?= __('Close') ?></button>
          </div>
        </div>
  </div></div>

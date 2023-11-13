@@ -477,7 +477,7 @@
    display:none !important;
 } } 
 
-.navbar-right .iq-sub-dropdown{
+.navbar-right .transdropdownlist{
    width:150px;
 }
 </style>
@@ -1026,9 +1026,9 @@
                                  </div> -->
                                  
                               </a>
-                              <div class="iq-sub-dropdown">
+                              <div class="iq-sub-dropdown transdropdownlist">
                                  <div class="iq-card shadow-none m-0" >
-                                    <div class="iq-card-body " id="languageDropdown">
+                                    <div class="iq-card-body " id="languageDropdown" >
                                        <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?></a>
                                        <?php endforeach; ?>
@@ -1802,6 +1802,9 @@
 /* Style the dropdown content to be visible when the dropdown-icon is clicked */
 .show {
   display: block;
+}
+#languageDropdown{
+   display:block !important;
 }
 
 </style>
