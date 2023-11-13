@@ -3008,41 +3008,52 @@ class HomeController extends Controller
 
     public function Featured_videos(Request $request)
     {
-        $ThumbnailSetting = ThumbnailSetting::first();
-        $currency = CurrencySetting::first();
-        $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
-
-        $ppv_gobal_price = !empty($PPV_settings ) ? $PPV_settings->ppv_price :  null;
-
-        $multiuser = Session::get('subuser_id');
-             
-        $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
-           
-        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
-
-
-        $featured_videos = Video::where('videos.active', '=', '1')->where('videos.status', '=', '1')
-                             ->where('videos.draft', '=', '1')->where('videos.featured','=','1');
-
-            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                $featured_videos = $featured_videos  ->whereNotIn('videos.id',Block_videos());
-            }
+        try {
             
-            if( $check_Kidmode == 1 )
-            {
-                $featured_videos = $featured_videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+            $ThumbnailSetting = ThumbnailSetting::first();
+            $currency = CurrencySetting::first();
+            $PPV_settings = Setting::where('ppv_status', 1)->first();
+
+            $ppv_gobal_price = !empty($PPV_settings ) ? $PPV_settings->ppv_price :  null;
+
+            if(!Auth::guest() ){
+
+                $multiuser = Session::get('subuser_id');
+                    
+                $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+                
+                $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
             }
 
-        $featured_videos = $featured_videos->orderBy('videos.created_at','desc')->limit(50)->paginate($this->videos_per_page);
 
-        $data = array(
-            'featured_videos' => $featured_videos,
-            'ppv_gobal_price' => $ppv_gobal_price,
-            'currency' => $currency,
-            'ThumbnailSetting' => $ThumbnailSetting,
-        );
+            $featured_videos = Video::where('videos.active', '1')->where('videos.status', '1')
+                                    ->where('videos.draft', '1')->where('videos.featured','1');
 
-        return Theme::view('featured', $data);
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                    $featured_videos = $featured_videos  ->whereNotIn('videos.id',Block_videos());
+                }
+                
+                if( !Auth::guest() && $check_Kidmode == 1 )
+                {
+                    $featured_videos = $featured_videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+                }
+
+                $featured_videos = $featured_videos->orderBy('videos.created_at','desc')->limit(50)->paginate($this->videos_per_page);
+
+            $data = array(
+                'featured_videos' => $featured_videos,
+                'ppv_gobal_price' => $ppv_gobal_price,
+                'currency' => $currency,
+                'ThumbnailSetting' => $ThumbnailSetting,
+            );
+
+            return Theme::view('featured', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+        
     }
 
     public function LatestVideos()
