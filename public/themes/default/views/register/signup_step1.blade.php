@@ -319,7 +319,7 @@ i.fa.fa-google-plus {
                                  </span>
                                          </div>
                                         <span class="text-danger error_password" id='error_password' style='padding-left: 22px' >
-                                            <strong>{{ __('Password Not matching'). }}</strong>
+                                            <strong>{{ __('Password Not matching') }}.</strong>
                                         </span>
                                      
                                          </div>

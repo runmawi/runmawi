@@ -32,13 +32,13 @@
     <div class="col-md-2 text-right Refine p-0">
         <select class="selectpicker " multiple title="Newly added First" id="sorting" name="sorting"
             data-live-search="true">
-            <option value="latest_videos">Latest Videos</option>
+            <option value="latest_videos">{{ __('Latest Videos') }}</option>
         </select>
     </div>
 
     <input type="hidden" id="category_id" value={{ $category_id }} name="category_id">
 
     <div class="col-md-1 text-right p-0 Refine">
-        <button type="submit" class="btn btn-primary filter">Filter</button>
+        <button type="submit" class="btn btn-primary filter">{{ __('Filter') }}</button>
     </div>
 </div>
