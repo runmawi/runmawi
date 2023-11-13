@@ -191,7 +191,7 @@
 
                                             {{-- Footer --}}
                         <div class="modal-footer">
-                            <input type="submit" class="btn btn-primary" id="" value="Update" />
+                            <input type="submit" class="btn btn-primary" id="submit-update-cat" value="Update" />
                             <a type="button" class="btn btn-danger" data-dismiss="modal"  href="{{ URL::to('admin/ads_list') }}">Close</a>
                         </div>
 
