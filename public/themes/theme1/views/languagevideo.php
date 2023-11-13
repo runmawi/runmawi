@@ -139,10 +139,10 @@
             ?>
             <p><h2 style="display"></h2></p>
                 <div class=" text-center mt-4" style="padding:15px;">
-                     <h3 class="text-white text-center">No video Available</h3>
+                     <h3 class="text-white text-center"><?= __('No video Available') ?></h3>
                     
                  <img class=" text-center w-100" src="<?php echo  URL::to('/assets/img/watch.png')?>" >
-                     <a class="mb-5  text-white" style="padding:15px;">Please refresh your page to retry</a>  
+                     <a class="mb-5  text-white" style="padding:15px;"><?= __('Please refresh your page to retry') ?></a>  
                                <!-- <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2> -->
 
 

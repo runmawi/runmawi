@@ -3,7 +3,7 @@
 ?>
 
 <section id="iq-favorites">
-      <h3 class="vid-title text-center mt-4 mb-5">Featured Videos</h3> 
+      <h3 class="vid-title text-center mt-4 mb-5">{{ __('Featured Videos') }}</h3> 
             <div class="container-fluid" style="padding: 0px 40px!important;background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);">
            
                <div class="row">
@@ -109,7 +109,7 @@
                               @endif
                            @else
                               <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
-                                 <p><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
+                                 <p><h2 style="position: absolute;top: 50%;left: 50%;color: white;">{{ __('No video Available') }}</h2>
                               </div>
                            @endif
                         </ul>

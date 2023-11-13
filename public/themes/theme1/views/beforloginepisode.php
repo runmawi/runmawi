@@ -72,7 +72,7 @@ if (Auth::guest())
                     srclang="<?= $episodesubtitles_file->sub_language ?>"
                     label="<?= $episodesubtitles_file->shortcode ?>" default>
                 <?php } } } ?>
-							<p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
+							<p class="vjs-no-js"><?= __('To view this series please enable JavaScript, and consider upgrading to a web browser that') ?> <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 series') ?></a></p>
 						</video>
 						</div>
             <?php  elseif($episode->type == 'm3u8'): ?>
@@ -142,21 +142,21 @@ if (Auth::guest())
         <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
       <h4 class=""><?php echo $episode->title ; ?></h4>
       <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
-         <h2 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?><?php
-            elseif ($series->access == 'registered'): ?>Registered Users<?php
+         <h2 class=""><?= __('Subscribe to view more') ?><?php if ($series->access == 'subscriber'): ?><?php
+            elseif ($series->access == 'registered'): ?><?= __('Registered Users') ?><?php
             endif; ?></h2>
          <div class="clear"></div>
          <?php if (!Auth::guest() && $series->access == 'subscriber'): ?>
          <form method="get" action="<?=URL::to('/') ?>/user/<?=Auth::user()->username ?>/upgrade_subscription">
              <div class="">
-             <button id="button">Become a subscriber to watch this episode</button></div>
+             <button id="button"><?= __('Become a subscriber to watch this episode') ?></button></div>
          </form>
          <?php
             else: ?>
          <form method="get" action="<?=URL::to('signup') ?>">
              <div class=" mt-3">
-            <button id="button" class="btn btn-primary">Subscribe to view more <?php if ($series->access == 'subscriber'): ?><?php
-               elseif ($series->access == 'registered'): ?>for Free!<?php
+            <button id="button" class="btn btn-primary"><?= __('Subscribe to view more') ?> <?php if ($series->access == 'subscriber'): ?><?php
+               elseif ($series->access == 'registered'): ?><?= __('for Free!') ?><?php
                endif; ?></button></div>
          </form>
          <?php
@@ -257,9 +257,9 @@ if (Auth::guest())
 else
 { ?>
 			<div class="col-md-6">
-			<span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the Series:</span>
-			<?php if ($series->access == 'subscriber'): ?>Subscribers<?php
-    elseif ($series->access == 'registered'): ?>Registered Users<?php
+			<span class="text-white" style="font-size: 129%;font-weight: 700;"><?= __('Purchase to Watch the Series') ?>:</span>
+			<?php if ($series->access == 'subscriber'): ?><?= __('Subscribers') ?><?php
+    elseif ($series->access == 'registered'): ?><?= __('Registered Users') ?><?php
     endif; ?>
 			</p>
 		
@@ -271,7 +271,7 @@ else
 		<input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
 
 			<button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)" >
-			Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+			<?= __('Purchase For') ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
 	</div>
 	<?php
     }
@@ -280,7 +280,7 @@ else
 	<br>
 	<br>
                 <div class="col-md-5">
-			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span>
+			<span class="text-white" style="font-size: 129%;font-weight: 700;"><?= __("You're watching") ?>:</span>
       <p style=";font-size: 130%;color: white;"><?php if(!empty($series)){ echo 'Series'.' '.$series->id.' ';}
 			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} 
 			if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
@@ -301,13 +301,13 @@ else
 			<?php if (isset($view_increment) && $view_increment == true): ?><?=$episode->views + 1 ?>
 			<?php
 else: ?><?=$episode->views ?><?php
-endif; ?> Views 
+endif; ?><?= __('Views') ?>  
 			</span>
 			</div>
 
       <div class="col-md-5 text-right">
-        <div class="watchlater btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" >  Watch Later </div>
-        <div class="mywishlist btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" > Add  Wishlist </div>
+        <div class="watchlater btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" ><?= __('Watch Later') ?>   </div>
+        <div class="mywishlist btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" ><?= __('Add  Wishlist') ?>  </div>
     </div>
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") {
@@ -323,7 +323,7 @@ endif; ?> Views
 <!-- <div class="clear" style="display:flex;justify-content: space-between;
     align-items: center;">
     <div> -->
-		<h2 id="tags">Tags: 
+		<h2 id="tags"><?= __('Tags') ?>: 
 		<?php if (isset($episode->tags))
 {
     foreach ($episode->tags as $key => $tag): ?>
@@ -400,7 +400,7 @@ foreach ($season as $key => $seasons):
 				<span class="label label-success">Subscribers Only</span>
 				<?php
             elseif ($episodes->access == 'registered'): ?>
-				<span class="label label-warning">Registered Users</span>
+				<span class="label label-warning"><?= __('Registered Users') ?></span>
 				<?php
             endif; ?>
 				</p>
@@ -476,7 +476,7 @@ $Auth = Auth::guest();
      <div class="modal-dialog modal-dialog-centered" role="document">
        <div class="modal-content">
          <div class="modal-header">
-           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
+           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;"><?= __('Rent Now') ?></h4>
            <img src="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" alt=""width="50" height="60">
          </div>
          <div class="modal-body">
@@ -572,9 +572,9 @@ else
          </div>
          <div class="modal-footer">
          <a onclick="pay(<?php echo $episode->ppv_price; ?>)">
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat"><?= __('Continue') ?></button>
                    </a>
-           <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
+           <button type="button" class="btn btn-primary"  data-dismiss="modal"><?= __('Close') ?></button>
          </div>
        </div>
      </div>
