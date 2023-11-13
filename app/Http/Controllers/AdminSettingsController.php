@@ -501,6 +501,7 @@ class AdminSettingsController extends Controller
 
         $settings->default_ads_url = $request['default_ads_url'];
         $settings->video_clip_enable = !empty($request->video_clip_enable) ?  "1" : "0" ;
+        $settings->enable_ppv_rent = !empty($request->enable_ppv_rent) ?  "1" : "0" ;
 
         $settings->save();
 

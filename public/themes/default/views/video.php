@@ -420,13 +420,14 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
     if(!Auth::guest()) {
 
-        if( !empty($ppv_video_play) || $video_access == 'free' || Auth::user()->role == 'registered' || 
+        if( !empty($ppv_video_play) || settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $video->access == 'ppv' || $video_access == 'free' || Auth::user()->role == 'registered' || 
             $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'
             || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
-                if ( $ppv_exist > 0 || $video_access == 'free' || Auth::user()->subscribed() && $video->type != "" || 
+                if ( $ppv_exist > 0 || settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $video->access == 'ppv' || $video_access == 'free' || Auth::user()->subscribed() && $video->type != "" || 
                 Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="subscriber" && $video->type != ""
-                || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { ?>
+                || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { 
+                    ?>
 
                     <div id="video_bg">
                         <div class="col-sm-12 intro_skips">
@@ -450,7 +451,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                         $paypal_subscription = !empty($paypal_id) && !empty(PaypalSubscriptionStatus() ) ? PaypalSubscriptionStatus() : " ";
 
-                        if($ppv_exist > 0  || $video_access == 'free' || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
+                        if($ppv_exist > 0  || settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $video->access == 'ppv' || $video_access == 'free' || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
                             
                             <?php if($video->type == 'embed'): ?>
                                 <div id="video_container" class="fitvid">
