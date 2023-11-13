@@ -5,7 +5,7 @@
    <div class="row">
       <div class="col-sm-12 page-height">
          <div class="iq-main-header align-items-center justify-content-between">
-            <h3 class="vid-title">Movies</h3>
+            <h3 class="vid-title"><?php echo __('Movies'); ?></h3>
          </div>
          <div class="favorites-contens">
             <ul class="category-page list-inline row p-0 mb-0">
@@ -74,7 +74,7 @@
                   <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">	
                   <span class="text-white">
                   <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                  Watch Now
+                  <?php echo __('Watch Now'); ?>
                   </span>
                   </a>
                   <div>

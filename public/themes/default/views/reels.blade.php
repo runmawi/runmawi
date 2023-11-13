@@ -3,7 +3,7 @@
     include(public_path('themes/default/views/header.php'));
 @endphp
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title">Reels</h4>                                          
+    <h4 class="main-title">{{ __('Reels') }}</h4>                                          
 </div>
 <div class="favorites-contens">
     

@@ -31,6 +31,22 @@ $settings = App\Setting::first();
                   <a href="<?= $app_settings->android_tv ?>">
                       <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
               <?php } ?>
+              <?php if(!empty($app_settings->Firetv_url)){ ?>
+                  <a href="<?= $app_settings->Firetv_url ?>">
+                      <img class=""  width="100" src="<?php echo  URL::to('/assets/img/firetv.png')?>" /></a>
+              <?php } ?>
+              <?php if(!empty($app_settings->samsungtv_url)){ ?>
+                  <a href="<?= $app_settings->samsungtv_url ?>">
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/tizen-samsung.png')?>" /></a>
+              <?php } ?>
+              <?php if(!empty($app_settings->Lgtv_url)){ ?>
+                  <a href="<?= $app_settings->Lgtv_url ?>">
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/lg-webos.png')?>" /></a>
+              <?php } ?>
+              <?php if(!empty($app_settings->Rokutv_url)){ ?>
+                  <a href="<?= $app_settings->Rokutv_url ?>">
+                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/roku-app.png')?>" /></a>
+              <?php } ?>
               </div>
               
             <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
@@ -43,7 +59,7 @@ $settings = App\Setting::first();
           <div class="col-sm-3. small m-0 text-white text-right">
                <div class="map1">
                     <div class="d-flex p-0 text-white icon align-items-baseline bmk">
-                      <p><?php echo (__('Follow us :')); ?> </p>
+                      <p><?php echo (__('Follow us')) .' :'; ?> </p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1">
                           <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/inst.png')?>" style="" />

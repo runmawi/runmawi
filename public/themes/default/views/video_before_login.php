@@ -346,20 +346,20 @@
 
                
                <div>
-                  <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscriber to watch this video</a> 
+                  <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" ><?php echo __('Become a Subscriber to watch this video'); ?></a> 
                </div>
                <div class="text-white col-lg-5 p-0">
                <a href="<?= URL::to('/become a') ?>" class="btn btn-primary" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
                   <?php if($video->access == 'subscriber'): ?>
-                     Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users
+                     <?php echo __('Subscribers'); ?><?php elseif($video->access == 'registered' ): ?><?php echo __('Registered Users'); ?>
                   <?php endif; ?>           
                </a>
             </div>            
-               <h4 class="mb-3" style="color: red;">Sorry, this video is only available to Subscribers / PPV Rent </h4>
+               <h4 class="mb-3" style="color: red;"><?php echo __('Sorry, this video is only available to Subscribers / PPV Rent'); ?> </h4>
                <a href="<?= URL::to('/becomesubscriber') ?>" class="btn btn-primary" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
                   To Become a 
                   <?php if($video->access == 'subscriber'): ?>
-                     Subscriber <?php elseif($video->access == 'registered' ): ?>Registered User
+                     Subscriber <?php elseif($video->access == 'registered' ): ?><?php echo __('Registered User'); ?>
                   <?php endif; ?>           
                </a>
             </div>
@@ -455,11 +455,11 @@
             </div>
             <div class="text-white col-lg-5 p-0">
                <a href="<?= URL::to('/becomesubscriber') ?>" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
-               <?php if($video->access == 'subscriber'): ?> Become a 
-                     Subscriber<?php elseif($video->access == 'registered' ): ?>Become a Registered User
-                  <?php elseif($video->access == 'ppv' ): ?>Rent Now
+               <?php if($video->access == 'subscriber'): ?> <?php echo __('Become a Subscriber'); ?>
+                     <?php elseif($video->access == 'registered' ): ?><?php echo __('Become a Registered User'); ?>
+                  <?php elseif($video->access == 'ppv' ): ?><?php echo __('Rent Now'); ?>
                   <?php endif; ?>
-                   to view this Video!
+                  <?php echo __('to view this Video!'); ?>
                </a>
             </div>
             <div class="clear"></div>
@@ -533,7 +533,7 @@
             <div class=" d-flex mt-4 pull-right">
                <?php if($video->trailer != ''){ ?>
                <!-- <div class="watchlater btn btn-outline-primary watch_trailer"><i class="ri-film-line"></i>Watch Trailer</div> -->
-               <div style=" display: none;" class="skiptrailer btn btn-default skip">Skip</div>
+               <div style=" display: none;" class="skiptrailer btn btn-default skip"><?php echo __('Skip'); ?></div>
                <?php } ?>
             </div>
          </div>
@@ -700,7 +700,7 @@
                   <div class="hover-buttons text-center">
                <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal"  data-backdrop="static" data-keyboard="false" >	
                <span class="text-white">
-               <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now
+               <i class="fa fa-play mr-1" aria-hidden="true"></i> <?php echo __('Play Now'); ?>
                </span>
                </a>
                </div>
@@ -760,7 +760,7 @@
    <div class="col-md-7 p-0" style="margin-top: 2%;">
 
       <?php if(!empty($video->description) && $settings->show_description == 1 ) : ?>
-         <h4>Description</h4>
+         <h4><?php echo __('Description'); ?></h4>
       <?php endif; ?>
 
       <div class="text-white">
@@ -772,7 +772,7 @@
          
                          <!-- Artists -->
          <?php  if( $settings->show_artist == 1  && count($artists) > 0 ) { ?> 
-            <p class="trending-dec w-100 mb-0 text-white mt-2">Starring :
+            <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __('Starring'); ?> :
                <?php 
                   $numartists = count($artists);
                   $k = 0;
@@ -789,7 +789,7 @@
          <?php } ?>
 
          <?php if( $settings->show_genre == 1 ) : ?>
-            <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : 
+            <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __('Genres'); ?> : 
                <?php 
                   $numItems = count($category_name);
                   $i = 0;
@@ -807,7 +807,7 @@
 
                     <!-- Languages -->
          <?php if( $settings->show_languages == 1 ) : ?>
-            <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :
+            <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __('This Movie is'); ?> :
                <?php 
                   $numItems = count($Movie_name);
                   $i = 0;
@@ -823,7 +823,7 @@
          <?php endif; ?>
 
          <?php if($settings->show_subtitle == 1 ): ?>
-            <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
+            <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __('Subtitles'); ?> : <?php echo $subtitles_name; ?></p>
          <?php endif; ?>
 
       </div>
@@ -841,15 +841,15 @@
    <?php  }?>
 
    <?php if(!empty($video->pdf_files) ) { ?>
-   <h4>E-Paper:</h4>
-   <p class="p1">Download the E-Paper</p>
+   <h4><?php echo __('E-Paper'); ?>:</h4>
+   <p class="p1"><?php echo __('Download the E-Paper'); ?></p>
    <div class="text-white">
       <a  href="<?php echo __(URL::to('/') . '/public/uploads/videoPdf/' . $video->pdf_files); ?>" style="font-size:48px; color: #a51212 !important;" class="fa fa-file-pdf-o video_pdf" width="" height="" download></a>
    </div>
    <?php  }?>
    <?php 
       if(count($artists) > 0 ) { ?>
-   <h4 >Cast & Crew</h4>
+   <h4 ><?php echo __('Cast & Crew'); ?></h4>
    <div class="row">
       <div class="favorites-contens">
          <ul class="category-page list-inline row p-0 mb-0 m-3">
@@ -885,7 +885,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
          <div class="modal-content">
             <div class="modal-header">
-               <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
+               <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;"><?php echo __('Rent Now'); ?></h4>
             </div>
             <div class="modal-body">
                <div class="row">
@@ -900,7 +900,7 @@
                </div>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
+               <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __('Close'); ?></button>
             </div>
          </div>
       </div>

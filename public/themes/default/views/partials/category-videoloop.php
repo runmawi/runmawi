@@ -109,7 +109,7 @@
                                           } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                              echo $currency->symbol .' '.$category_video->global_ppv;
                                           } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo "Free"; 
+                                             echo __("Free"); 
                                           }
                                        ?>
                                     </p>
@@ -137,7 +137,7 @@
                                           } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                              echo $currency->symbol .' '.$category_video->global_ppv;
                                           } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo "Free"; 
+                                             echo __("Free"); 
                                           }
                                        ?>
                                     </p>
@@ -158,7 +158,7 @@
                                           } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                              echo $currency->symbol .' '.$category_video->global_ppv;
                                           } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo "Free"; 
+                                             echo __("Free"); 
                                           }
                                        ?>
                                     </p>
@@ -246,7 +246,7 @@
                                             <a type="button" class="epi-name mt-3 mb-0 btn"
                                                 href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
                                                 <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
-                                                    width="10%" height="10%" /> Watch Now
+                                                    width="10%" height="10%" /> <?= __('Watch Now')  ?> 
                                             </a>
                                         </div>
                                 </div>
@@ -325,7 +325,7 @@
                                             <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('episode'); ?><?= '/' . @$Episode_video->series_slug . '/' . $Episode_video->slug ?>">
                                                 <img class="ply mr-1" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
-                                                    height="10%" /> Watch Now
+                                                    height="10%" /> <?= __('Watch Now')  ?>
                                             </a>
                                         </div>
                                     </a>

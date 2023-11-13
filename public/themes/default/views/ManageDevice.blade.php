@@ -46,17 +46,17 @@ a {
 </style>
 <section>
 <div class="container">
-    <h1>Manage Login Devices</h1>
+    <h1>{{ __('Manage Login Devices') }} </h1>
 
   <div class="card">
     <div class="card-content ">
-      <p>Register Another Device</p>
+      <p>{{ __('Register Another Device') }}</p>
 
-      Register Your Device for the best experience and access to platform.
+      {{ __('Register Your Device for the best experience and access to platform') }}.
 
       <div class="pull-right">
         <a href="{{ URL::to('register-new-devices') }}">
-        <button type="button" class="btn btn-default">Register New Device</button></a>
+        <button type="button" class="btn btn-default">{{ __('Register New Device') }}</button></a>
       </div>
     </div>
     
@@ -66,11 +66,11 @@ a {
       <p>{{ @$value->tv_name  }}</p>
 
       <div class="text-info">
-        Date of registration : {{  date('M d, Y', strtotime($value->created_at)) }}.
+      {{ __('Date of registration') }} : {{  date('M d, Y', strtotime($value->created_at)) }}.
       </div>
       
       <div class="pull-right">
-        <a href="{{ URL::to('/device/deregister').'/'.$value->id }}"><button type="button" class="btn btn-danger">Deregister</button></a>
+        <a href="{{ URL::to('/device/deregister').'/'.$value->id }}"><button type="button" class="btn btn-danger">{{ __('Deregister') }}</button></a>
       </div>
       @endforeach
     </div>

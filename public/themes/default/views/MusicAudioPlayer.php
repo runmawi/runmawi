@@ -6,17 +6,18 @@
   }
 
  ?>
+<style>
 
+</style>
 <div id="music-player">
   
         <img id="album-art"/>
         <div id="top-bar">
-          <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
           <button id="backStationbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
           <div id="station-music">
           <button id="addtoqueuebtn" class="addqubt"><i class="fa fa-plus" aria-hidden="true"></i></button>    
-          <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'>Add to Queue</button></div>
+          <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'><?php echo __('Add to Queue'); ?></button></div>
         </div>
         <div id="lyrics">
           <!-- <h2 class="song-name"></h2><h4 class="artist-name"></h4> -->
@@ -26,17 +27,19 @@
               <img height="250" width="250"  id="audio_img" src="" style="object-fit: contain;">
               <!-- height="150" width="150"  -->
            </div>
+           <div id="description-content">
+          </div>
            <div class="Subscribe_stripe_button">
                 <!-- Subscriber Button -->
   
               <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="margin-left: -9%;position: absolute;margin-top: 20px;"
-                      class="btn bd btn-action">Subscribe to continue listening</button> 
+                      class="btn bd btn-action"><?php echo __('Subscribe to continue listening'); ?></button> 
                   </a>
               </div>
               <div class="ppv_stripe_button">
                   <!-- stripe Button -->
                   <button  onclick="stripe_checkout()" id="enable_button" style="margin-left: -9%;position: absolute;margin-top: 20px;"
-                      class="btn bd btn-action">Purchase to Play Audio</button> 
+                      class="btn bd btn-action"><?php echo __('Purchase to Play Audio'); ?></button> 
                   </a>
               </div>
         </div>
@@ -51,25 +54,30 @@
             <div id="totalTime"></div>
           </div>
           <div id="menu">
+          <button id="like-button" style="color:grey" class="like" title="Like"><i class="fa fa-thumbs-up"></i></button>
+          <button id="lyrics-toggle"><i class="fa fa-file-text" title="Lyrics"></i></button> <!-- Add this line -->
+          <button id="description-toggle"><i class="fa fa-book" title="Description"></i></button> <!-- Add this line -->
           <button id="back" title="Songs List"><i class="fas fa-list"></i></button> 
           <button id="prev" title="Previous"><i class="fa fa-step-backward"></i></button>
           <button id="play" ><i class="fa fa-play"></i></button>
           <button id="next" title="Next"><i class="fa fa-step-forward"></i></button>
           <button id="shuffle" style="color:grey" title="Shuffle"><i class="fa fa-random"></i></button>
           <button id="repeat" style="color:grey" title="Repeat"><i class="fa fa-repeat"></i></button>
-            <button id="lyrics-toggle"><i class="fa fa-file-text" title="Lyrics"></i></button> <!-- Add this line -->
-            <button id="like-button" style="color:grey" class="like" title="Like"><i class="fa fa-thumbs-up"></i></button>
-            <button id="dislike-button" style="color:grey" class="dislike" title="DisLike"><i class="fa fa-thumbs-down"></i></button>
-            <?php if(@$playlist_station == 1){ ?>
-            <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
-            <?php } ?>
+          <button id="dislike-button" style="color:grey" class="dislike" title="DisLike"><i class="fa fa-thumbs-down"></i></button>
+          <?php if(@$playlist_station == 1){ ?>
+          <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
+          <?php } ?>
           </div>
         </div>
         <div id="playlist">
+
           <div id="label">
             <h1><?php echo @$playlist_name ; ?></h1>
             <input id="search" type="text" placeholder="&#xF002; Search from all songs"></input>
           </div>
+
+        <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
+
           <div id="show-box">
             <div id="show-list">
             </div>
@@ -77,7 +85,7 @@
         </div>
         <div id="playlistStation">
           <div id="label">
-            <h1><?php echo 'Other Music Station' ; ?></h1>
+            <h1><?php echo __('Other Music Station') ; ?></h1>
             <input id="Stationsearch" type="text" placeholder="&#xF002; Search from all Station"></input>
           </div>
           <div id="show-box">
@@ -92,22 +100,22 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title text-black" id="myModalLabel">Create Station</h4>
+        <h4 class="modal-title text-black" id="myModalLabel"><?php echo __('Create Station'); ?></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">      
       <div class="col-sm-10 p-0">
-          <label for="name">Station Title</label>
-            <input name="station_name" id="station_name" placeholder="Station Title" class="form-control form-control1 text-black"  />
-            <span id='station_error' class="" style='color:red;'>Station Name Required</span>
+          <label for="name"><?php echo __('Station Title'); ?></label>
+            <input name="station_name" id="station_name" placeholder="<?php echo __('Station Title'); ?>" class="form-control form-control1 text-black"  />
+            <span id='station_error' class="" style='color:red;'><?php echo __('Station Name Required'); ?></span>
         </div>
           </div>
      
 <br>
       <div class="modal-footer">
-        <button type="button" id="station_save" class="btn btn-primary">Save</button>
+        <button type="button" id="station_save" class="btn btn-primary"><?php echo __('Save'); ?></button>
       </div>
     </div>
   </div>
@@ -149,6 +157,12 @@ $(document).ready(function(){
     if (lyrics.is(':visible')) {
         lyrics.hide(); // Hide lyrics
     }
+
+    var description = $('#description-content');
+        if (description.is(':visible')) {
+            description.hide(); // Hide lyrics
+        }
+
     var backbutton = $('#backbutton');
     backbutton.hide();
 
@@ -449,11 +463,33 @@ var data = listAudio; // Assuming listAudio contains the URL
             }
         });
 
+
         var html = "";
         html = html + "<h2>"+'Lyrics not Available'+"</h2>";
 
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
+
+        $('#description-toggle').on('click', function() {
+
+          var lyrics = $('#description-content');
+            $('#audio_img').show();
+
+            if (description.is(':visible')) {
+                description.hide(); // Hide description
+            } else {
+                $('#audio_img').show();
+                description.show(); // Show description
+                centerize(); // Centerize description (assuming you have this function)
+            }
+
+        });
+
+        var html = "";
+            html = html + "<h2>"+indexing.description+"</h2>";
+
+            // var html = "Lyrics not Available ";
+            $('#description-content').html(html);
 
 
             setSongName(indexing.title);
@@ -516,6 +552,27 @@ var data = listAudio; // Assuming listAudio contains the URL
 
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
+
+        $('#description-toggle').on('click', function() {
+
+          var lyrics = $('#description-content');
+            $('#audio_img').show();
+
+            if (description.is(':visible')) {
+                description.hide(); // Hide description
+            } else {
+                $('#audio_img').show();
+                description.show(); // Show description
+                centerize(); // Centerize description (assuming you have this function)
+            }
+
+          });
+
+          var html = "";
+            html = html + "<h2>"+indexing.description+"</h2>";
+
+            // var html = "Lyrics not Available ";
+            $('#description-content').html(html);
 
 
             setSongName(indexing.title);
@@ -585,6 +642,27 @@ var data = listAudio; // Assuming listAudio contains the URL
 
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
+
+        $('#description-toggle').on('click', function() {
+
+          var lyrics = $('#description-content');
+            $('#audio_img').show();
+
+            if (description.is(':visible')) {
+                description.hide(); // Hide description
+            } else {
+                $('#audio_img').show();
+                description.show(); // Show description
+                centerize(); // Centerize description (assuming you have this function)
+            }
+
+        });
+
+        var html = "";
+            html = html + "<h2>"+indexing.description+"</h2>";
+
+            // var html = "Lyrics not Available ";
+            $('#description-content').html(html);
 
           for (var i = 0; i < indexing.artistscrew.length; i++) {
               // Access the inner array
@@ -690,9 +768,10 @@ $('#Stationsearch').keyup(function(){
 
 var togglePlaylist = 0;
 $('#back').on('click',function(){
-
+// alert();  
   var backbutton = $('#backbutton');
   backbutton.show();
+  backbutton.css('opacity', 1); 
 
   var backStationbutton = $('#backStationbutton');
   backStationbutton.hide();
@@ -1327,6 +1406,19 @@ html,body{
     background: inherit;
   }
 
-
+  #backbutton{
+    opacity: 1;
+    margin: 0;
+    position: relative;
+    background: inherit;
+    border: none;
+    color: white;
+    font-size: 100%;
+    vertical-align: middle;
+    transform: translateY(-40%);
+    padding: 5px 10px;
+    left: 5%;
+  }
+  
 </style>
 <?php include(public_path('themes/default/views/footer.blade.php')); ?>

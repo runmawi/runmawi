@@ -40,7 +40,7 @@
             <div class="scp-breadcrumb">
                 <ul class="breadcrumb">
                 
-                    <li><a href="{{ route('latest-videos') }}">{{ ucwords('videos') }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
+                    <li><a href="{{ route('latest-videos') }}">{{ ucwords(__('videos')) }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
                 
                     @foreach( $videodetail->categories as $key => $category )
 
@@ -110,7 +110,7 @@
                                     </span>
                                     <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
                                         <div class="playbtn"  data-toggle="modal">  
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">Add To Watchlist</span>
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Watchlist') }}</span>
                                         </div>
                                     </div>
                                 </li>
@@ -122,7 +122,7 @@
                                     </span>
                                     <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
                                         <div class="playbtn"  data-toggle="modal">  
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">Add To Wishlist</span>
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Wishlist') }}</span>
                                         </div>
                                     </div>
                                 </li>
@@ -151,7 +151,7 @@
                                     <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                     <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
                                 </svg>
-                                <span class="text pr-2"> Watch Now </span>
+                                <span class="text pr-2"> {{ __('Watch Now') }} </span>
                             </div>
                         </a>
 
@@ -168,7 +168,7 @@
 
                                     <div class="share-box box-watchtrailer">
                                         <div class="playbtn"  data-toggle="modal" data-target="#video-js-trailer-modal">     {{-- Trailer --}}
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:84px">Watch Trailer</span>
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:84px">{{ __('Watch Trailer') }}</span>
                                         </div>
                                     </div>
                                 </li>
@@ -210,7 +210,7 @@
 
                     @if( $setting->show_description == 1 && optional($videodetail)->description )   {{-- Description --}}
                         <div class="overview">
-                            <div class="heading">Description</div>
+                            <div class="heading">{{ __('Description') }}</div>
                             <div class="description">
                                 {!!  html_entity_decode( optional($videodetail)->description ) !!}
                             </div>
@@ -219,7 +219,7 @@
 
                     <div class="info">       {{-- publish_status --}}
                         <div classname="infoItem">
-                            <span classname="text bold">Status: </span>
+                            <span classname="text bold">{{ __('Status') }}: </span>
                             <span class="text">{{ $videodetail->video_publish_status }}</span>
                         </div>
                     </div>
@@ -227,7 +227,7 @@
 
                     @if ( $setting->show_languages == 1 &&  !$videodetail->Language->isEmpty())   {{-- Languages --}}
                         <div class="info">      
-                            <span classname="text bold"> Languages:&nbsp;</span> 
+                            <span classname="text bold"> {{ __('Languages') }}:&nbsp;</span> 
                             @foreach( $videodetail->Language as $item )
                                 <span class="text">
                                     <span><a href="{{ URL::to('language/'. $item->language_id . '/' . $item->name ) }} "> {{ $item->name }} </a>   </span>
@@ -241,7 +241,7 @@
     
             @if ($setting->show_artist == 1 && !$videodetail->artists->isEmpty() ) {{-- Artists --}}
                 <div class="sectionArtists">   
-                    <div class="artistHeading">Top Cast</div>
+                    <div class="artistHeading">{{ __('Top Cast') }}</div>
                     <div class="listItems">
                         @foreach ( $videodetail->artists as $item )
                             <a href="{{ route('artist',[ $item->artist_slug ])}}">
@@ -264,7 +264,7 @@
 
             <div class="sectionArtists broadcast">   
                 <div class="artistHeading">
-                    {{ ucwords('Promos & Resources ') }}
+                    {{ ucwords(__('Promos & Resources')) }}
                 </div>
                         
 
@@ -282,7 +282,7 @@
 
                                     </div>
                                     
-                                    <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> Trailer</span></div>
+                                    <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> {{ __('Trailer') }}</span></div>
                                 </div>
                             </a>
                         @endif
@@ -300,7 +300,7 @@
                                         <a href="{{ $videodetail->pdf_files_url }}" style="font-size:93px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
                                     </span>
                                 </div>
-                                <div class="name">Document</div>
+                                <div class="name">{{ __('Document') }}</div>
                             </div>
                         @endif
                             
@@ -312,7 +312,7 @@
 
             @if( $CommentSection != null && $CommentSection->videos == 1 )
                 <div class="sectionArtists">   
-                    <div class="artistHeading"> Comments </div>
+                    <div class="artistHeading"> {{ __('Comments') }} </div>
                         <div class="overflow-hidden">
                             @php include public_path('themes/default/views/comments/index.blade.php') @endphp
                         </div>
@@ -325,7 +325,7 @@
 
                 <div class=" container-fluid video-list  overflow-hidden p-0">
 
-                    <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords('recommended videos') }}</h4> 
+                    <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords( __('recommended videos')) }}</h4> 
 
                     <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
 
@@ -349,13 +349,13 @@
                                                          @if ($recommended_video->access == 'subscriber')
                                                              <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
                                                          @elseif($recommended_video->access == 'registered')
-                                                             <p class="p-tag"> {{ 'Register Now' }} </p>
+                                                             <p class="p-tag"> {{ __('Register Now') }} </p>
                                                          @elseif(!empty($recommended_video->ppv_price))
                                                              <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
                                                         @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
                                                             <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
                                                         @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                            <p class="p-tag">{{ 'Free' }} </p>
+                                                            <p class="p-tag">{{ __('Free') }} </p>
                                                         @endif
                                                      @endif
         
@@ -374,13 +374,13 @@
                                                             @if ($recommended_video->access == 'subscriber')
                                                                 <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
                                                             @elseif($recommended_video->access == 'registered')
-                                                                <p class="p-tag"> {{ 'Register Now' }} </p>
+                                                                <p class="p-tag"> {{ __('Register Now') }} </p>
                                                             @elseif(!empty($recommended_video->ppv_price))
                                                                 <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
                                                             @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
                                                                 <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
                                                             @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                                <p class="p-tag">{{ 'Free' }} </p>
+                                                                <p class="p-tag">{{ __('Free') }} </p>
                                                             @endif
                                                         @endif
         
@@ -393,13 +393,13 @@
                                                             @if ($recommended_video->access == 'subscriber')
                                                                 <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
                                                             @elseif($recommended_video->access == 'registered')
-                                                                <p class="p-tag"> {{ 'Register Now' }} </p>
+                                                                <p class="p-tag"> {{ __('Register Now') }} </p>
                                                             @elseif(!empty($recommended_video->ppv_price))
                                                                 <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
                                                             @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
                                                                 <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
                                                             @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                                <p class="p-tag">{{ 'Free' }} </p>
+                                                                <p class="p-tag">{{ __('Free') }} </p>
                                                             @endif
                                                         @endif
         
@@ -472,7 +472,7 @@
                                                         @endif
                                                     </a>
 
-                                                    <a class="epi-name text-white mb-0 btn btn-primary">Watch Now</a>
+                                                    <a class="epi-name text-white mb-0 btn btn-primary">{{ __('Watch Now') }}</a>
 
                                                 </div>
                                             </div>
@@ -490,7 +490,7 @@
         <div class="videoPopup ">
             <div class="opacityLayer"></div>
             <div class="videoPlayer">
-                <span class="closeBtn">Close</span>
+                <span class="closeBtn">{{ __('Close') }}</span>
                 <div style="width: 100%; height: 100%;">
                     <!-- Placeholder for video player -->
                 </div>

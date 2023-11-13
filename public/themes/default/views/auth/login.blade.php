@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Login | <?php echo $settings->website_name ; ?></title>
+      <title>{{ __('Login') }} | <?php echo $settings->website_name ; ?></title>
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
@@ -111,9 +111,9 @@ text-align: left;
 
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
-                            <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">Demo Login</p>
-                            <p class="links"><strong>Email</strong>: admin@admin.com</p>
-                            <p class="links mb-0"><strong>Password</strong>: Webnexs123!@#</p>
+                            <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">{{ __('Demo Login') }}</p>
+                            <p class="links"><strong>{{ __('Email') }}</strong>: admin@admin.com</p>
+                            <p class="links mb-0"><strong>{{ __('Password') }}</strong>: Webnexs123!@#</p>
                         </div>
                       <?php } else  { ?>
                       <?php } ?>
@@ -162,7 +162,7 @@ text-align: left;
                             </div>
                         
                          <div class="d-flex justify-content-end links">
-                                    <a href="{{ route('Reset_Password') }}" class="f-link">Forgot your password?</a>
+                                    <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password').'?' }}</a>
                         </div>
                         
                                          {{-- reCAPTCHA  --}}
@@ -174,7 +174,7 @@ text-align: left;
                         @endif
                         
                         <div class="sign-info">
-                            <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>                     
+                            <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">{{ __('SIGN IN') }}</button>                     
                         </div> 
 
                          <div class="mt-3" align="left" style="" >
@@ -207,7 +207,7 @@ text-align: left;
                             <div class="d-flex align-items-center">
                                 <?php if($system_settings != null){ ?>
                                     <div>
-                                        <p class="links">Login with using:</p>
+                                        <p class="links">{{ __('Login with using').':' }}</p>
                                     </div>
                                 <?php } ?>
                                <?php if($system_settings != null && $system_settings->facebook == 1){ ?>
@@ -228,7 +228,7 @@ text-align: left;
                      </form>
                        <div class="">
                   <div class="text -left links">
-                     Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2">Sign Up here!</a>
+                  {{ __("Don't have an account?") }} <a href="{{ route('signup') }}" class="text-primary ml-2">{{ __('Sign Up here!') }}</a>
                   </div>
                   
                </div>

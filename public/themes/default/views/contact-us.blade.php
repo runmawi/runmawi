@@ -27,7 +27,7 @@
           <div class="">
 		<div class="row">
 			<div class="col-md-12 text-center" >
-				<h4 class="font-weight-bold"><i class="entypo-archive"></i> CONTACT US </h4>
+				<h4 class="font-weight-bold"><i class="entypo-archive"></i> {{ ('CONTACT US') }} </h4>
 			</div>
 		</div>
 <div class="row justify-content-center mt-4 mb-5">

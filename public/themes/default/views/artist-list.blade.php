@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="vid-title text-center mt-3 mb-3 font-weight-bold">{{ "Artist List" }}</h4>                     
+                    <h4 class="vid-title text-center mt-3 mb-3 font-weight-bold">{{ __("Artist List") }}</h4>                     
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
@@ -29,7 +29,7 @@
                                                           <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                                         <a  href="<?php echo URL::to('artist') ?><?= '/' . $artist_lists->artist_slug ?>">
                                                             <h5 class="font-weight-bold"><?php  echo (strlen($artist_lists->artist_name) > 17) ? substr($artist_lists->artist_name,0,18).'...' : $artist_lists->artist_name; ?></h5>
-                                                            <p class="text-white mt-2 mb-0" style=" font-size: 14px;">View Profile</p>
+                                                            <p class="text-white mt-2 mb-0" style=" font-size: 14px;">{{ __("View Profile") }}</p>
                                                         </a>
                                                     <?php } ?> 
                                                        
@@ -46,7 +46,7 @@
                             @endif
                         @else
                             <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                                <p ><h3 class="text-center">No Artist Available</h3>
+                                <p ><h3 class="text-center">{{ __("No Artist Available") }}</h3>
                             </div>
                         @endif
                     </ul>

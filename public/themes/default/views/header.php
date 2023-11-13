@@ -477,6 +477,9 @@
    display:none !important;
 } } 
 
+.navbar-right .iq-sub-dropdown{
+   width:150px;
+}
 </style>
 <body>
    <!-- loader Start -->
@@ -952,21 +955,7 @@
                         </div>
                      </div>
 
-                     <?php if(@$translate_checkout == 1){ ?>
-                      <!-- Translator Choose -->
-                   <div class="right-icon" style="width:7% ; margin-right:20px">
-                           <svg id="dropdown-icon" style="position: absolute; height: 50px; bottom:4px; width: 9%; " xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
-                              <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
-                              <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
-                           </svg>
-                           <div class="dropdown-content" id="languageDropdown">
-                           <?php foreach($TranslationLanguage as $Language): ?>
-                              <a href="#" class="language-link" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?></a>
-                           <?php endforeach; ?>
-                              <!-- Add more options as needed -->
-                           </div>
-                           </div>
-                   <?php } ?>
+                     
 
                       <div id="desk-top" class="d-flex align-items-center cppporrr">
                      <?php 
@@ -994,7 +983,7 @@
                      </div>
                      <?php } ?></div>
                      <div class="navbar-right menu-right pt-2">
-                        <ul class="d-flex align-items-center list-inline m-0">
+                        <ul class="d-flex align-items-center list-inline m-0" style="gap:5px">
                            <li class="nav-item nav-icon" style="margin-right:1px;">
                               <a href="<?php echo URL::to('searchResult');?>" aria-label="search" class="search-toggle device-search">
                                  <i class="ri-search-line"></i>
@@ -1019,16 +1008,61 @@
 
                               
                            </li>
+
+                           <!-- Translator Choose -->
+                           <li class="nav-item nav-icon  ml-3">
+                              <a href="#" class="search-toggle active" data-toggle="search-toggle">
+                                 <?php if(@$translate_checkout == 1){ ?>
+                                    <svg id="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
+                                       <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
+                                       <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
+                                    </svg>
+                                 <?php } ?>
+
+                                 <!-- <div class="dropdown-content" id="languageDropdown">
+                                    <?php foreach($TranslationLanguage as $Language): ?>
+                                       <a href="#" class="language-link" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?></a>
+                                    <?php endforeach; ?>
+                                 </div> -->
+                                 
+                              </a>
+                              <div class="iq-sub-dropdown">
+                                 <div class="iq-card shadow-none m-0" >
+                                    <div class="iq-card-body " id="languageDropdown">
+                                       <?php foreach($TranslationLanguage as $Language): ?>
+                                       <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?></a>
+                                       <?php endforeach; ?>
+                                       <!-- <a href="#" class="iq-sub-card">
+                                          <div class="media align-items-center">
+                                             <img src="assets/images/notify/thumb-3.jpg" class="img-fluid mr-3" alt="streamit">
+                                             <div class="media-body">
+                                                <h6 class="mb-0 ">The Hero Camp</h6>
+                                                <small class="font-size-12">1 hour ago</small>
+                                             </div>
+                                          </div>
+                                       </a> -->
+                                    </div>
+                                 </div>
+                              </div>
+                           </li>
+
                            <li class="nav-item nav-icon">
-                              <!--<a href="#" class="search-toggle" data-toggle="search-toggle">
-                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"
-                                    class="noti-svg">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path
-                                       d="M18 10a6 6 0 1 0-12 0v8h12v-8zm2 8.667l.4.533a.5.5 0 0 1-.4.8H4a.5.5 0 0 1-.4-.8l.4-.533V10a8 8 0 1 1 16 0v8.667zM9.5 21h5a2.5 2.5 0 1 1-5 0z" />
-                                 </svg>
-                                 <span class="bg-danger dots"></span>
-                                 </a>-->
+
+                           <!-- <?php if(@$translate_checkout == 1){ ?>
+                           <svg id="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
+                              <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
+                              <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
+                           </svg>
+                           <div class="dropdown-content" id="languageDropdown">
+                           <?php foreach($TranslationLanguage as $Language): ?>
+                              <a href="#" class="language-link" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?></a>
+                           <?php endforeach; ?>
+                           </div>
+                   <?php } ?> -->
+                   <svg id="dropdown-icon" style="position: absolute; height: 50px; bottom:4px; width: 9%; " xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
+                              <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
+                              <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
+                           </svg>
                               <div class="iq-sub-dropdown">
                                  <div class="iq-card shadow-none m-0">
                                     <div class="iq-card-body">

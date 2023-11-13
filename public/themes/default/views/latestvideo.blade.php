@@ -12,7 +12,7 @@
          @if(isset($latestvideo['latest_videos']) && count($latestvideo['latest_videos']) > 0 )
 
             <div class="iq-main-header align-items-center justify-content-between">
-               <h3 class="vid-title">Latest Videos</h3>
+               <h3 class="vid-title">{{ __('Latest Videos') }}</h3>
             </div>
             
             <div class="favorites-contens">
@@ -30,7 +30,7 @@
                                        @elseif( !empty($latest_video->global_ppv || !empty($latest_video->global_ppv) && $latest_video->ppv_price == null)) 
                                           <p class="p-tag1"><?php echo $latest_video->global_ppv.' '. $latestvideo['currency']->symbol; ?></p>
                                        @elseif($latest_video->global_ppv == null && $latest_video->ppv_price == null )
-                                          <p class="p-tag" ><?php echo "Free"; ?></p>
+                                          <p class="p-tag" ><?php echo __("Free"); ?></p>
                                        @endif
                                     @endif
                                  </div>
@@ -87,7 +87,7 @@
                                     <div class="hover-buttons">
                                        <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
                                           <span class="text-white">
-                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
+                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
                                           </span>
                                        </a>
                                     <div>
@@ -107,7 +107,7 @@
                         </li>
                      @empty
                         <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                           <p ><h3 class="text-center">No Latest video Available</h3>
+                           <p ><h3 class="text-center">{{ __('No Latest Video Available') }}</h3>
                         </div>
                      @endforelse
                </ul>
@@ -119,7 +119,7 @@
             </div>
          @else
             <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-               <p ><h3 class="text-center">No Latest Video Available</h3>
+               <p ><h3 class="text-center">{{ __('No Latest Video Available') }}</h3>
             </div>
          @endif
       </div>
