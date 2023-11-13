@@ -3050,7 +3050,7 @@ class HomeController extends Controller
             return Theme::view('featured', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
         
