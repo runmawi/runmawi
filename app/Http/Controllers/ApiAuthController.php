@@ -1714,14 +1714,6 @@ public function verifyandupdatepassword(Request $request)
               $languages = "";
             }
   
-  
-      if(\App\AdsVideo::where('video_id',$videoid)->exists()){
-          $ads_id = \App\AdsVideo::where('video_id',$videoid)->first()->ads_id;
-          $videoads = \App\Advertisement::find($ads_id)->ads_path;
-      }else{
-          $videoads = '';
-      }
-
       $video = Video::find( $request->videoid);
       
       $AdsVideosPre = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
@@ -1824,7 +1816,6 @@ public function verifyandupdatepassword(Request $request)
         'videossubtitles' => $moviesubtitles,
         'main_genre' => $main_genre,
         'languages' => $languages,
-        'videoads' => $videoads,
         'Ads_videos_Pre' => $AdsVideosPre,
         'Ads_videos_Mid' => $AdsVideosMid,
         'Ads_videos_post' => $AdsVideosPost,
