@@ -1,7 +1,7 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h4 class="main-title">
         <a href="">
-            Most Watching Videos in
+        <?= __('Most Watching Videos in')  ?>
             <?php echo $countryName;?>
         </a>
     </h4>
@@ -33,7 +33,7 @@
                                     <?php }elseif( !empty($Most_watched_countries->global_ppv || !empty($Most_watched_countries->global_ppv) && $Most_watched_countries->ppv_price == null)){ ?>
                                     <p class="p-tag1"><?php echo $Most_watched_countries->global_ppv.' '.$currency->symbol; ?></p>
                                     <?php }elseif($Most_watched_countries->global_ppv == null && $Most_watched_countries->ppv_price == null ){ ?>
-                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <p class="p-tag"><?php echo __("Free"); ?></p>
                                     <?php } ?>
                                     <?php } ?>
                                 

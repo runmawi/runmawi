@@ -4,7 +4,7 @@
 
 <head>
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
-    <title>Reset Password | <?php echo $settings->website_name; ?></title>
+    <title>{{ __('Reset Password') }}| <?php echo $settings->website_name; ?></title>
     <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
 
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css" />

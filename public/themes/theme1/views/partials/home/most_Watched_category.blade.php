@@ -8,7 +8,7 @@
                          $setting= \App\HomeSetting::first();
                             if($setting['Recommendation'] !=null && $setting['Recommendation'] != 0 ):
 
-                         echo __('Most watched videos from '.$category->name.' Genre');?>
+                         echo __(('Most watched videos from').' ' .$category->name.' '. __('Genre'));?>
                 </h4>
             </a>
         </div>
@@ -41,7 +41,7 @@
                                     <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
                                     <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
                                     <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
-                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <p class="p-tag"><?php echo __("Free"); ?></p>
                                     <?php } ?>
                                     <?php } ?>
                                 

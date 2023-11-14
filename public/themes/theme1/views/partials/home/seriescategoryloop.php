@@ -35,9 +35,9 @@
                     <h4 class="movie-title">
                         <?php
                         if (!empty($category->home_genre)) {
-                            echo $category->home_genre;
+                            echo __($category->home_genre);
                         } else {
-                            echo $category->name;
+                            echo __($category->name);
                         }
                         ?>
                     </h4>
@@ -69,7 +69,7 @@
                                           } elseif(!empty($series_video->global_ppv) && $series_video->ppv_price == null) {
                                              echo $currency->symbol .' '.$series_video->global_ppv;
                                           } elseif(empty($series_video->global_ppv) && $series_video->ppv_price == null) {
-                                             echo "Free"; 
+                                             echo __("Free"); 
                                           }
                                        ?>
                                     </p>
@@ -140,7 +140,7 @@
                                             <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
                                                 <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
-                                                    width="10%" height="10%" /> Watch Now
+                                                    width="10%" height="10%" /> <?= __('Watch Now')  ?>
                                             </a>
                                         </div>
                                     </a>
