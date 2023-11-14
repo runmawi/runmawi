@@ -19,7 +19,14 @@
         $uppercase = 'Home';
     } else {
     }
-    
+
+     
+    $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
+    @$translate_language = App\Setting::pluck('translate_language')->first();
+    \App::setLocale(@$translate_language);
+
+
     $TranslationLanguage = App\TranslationLanguage::where('status',1)->get(); 
     if (!empty(Auth::User()->id)) {
         $id = Auth::User()->id;
@@ -501,6 +508,9 @@
     .Search_error_class {
       color: red;
    }
+   #languageDropdown{
+   display:block !important;
+}
 </style>
 
 <body>
@@ -912,7 +922,9 @@
                                         </div>
                                     </li>
 
-                                    <!-- Translator Choose -->
+                                    
+
+                                <!-- Translator Choose -->
                            <li class="nav-item nav-icon  ml-3">
                               <a href="#" class="search-toggle active" data-toggle="search-toggle">
                                  <?php if(@$translate_checkout == 1){ ?>
@@ -929,7 +941,7 @@
                                  </div> -->
                                  
                               </a>
-                              <div class="iq-sub-dropdown">
+                              <div class="iq-sub-dropdown transdropdownlist" style="width:150px">
                                  <div class="iq-card shadow-none m-0" >
                                     <div class="iq-card-body " id="languageDropdown" >
                                        <?php foreach($TranslationLanguage as $Language): ?>
@@ -1681,6 +1693,52 @@
                }
             }
           });
+      </script>
+      <script>
+      const dropdownIcon = document.getElementById("dropdown-icon");
+      const dropdownContent = document.getElementById("languageDropdown");
+
+      // Add a click event listener to the SVG icon
+      dropdownIcon.addEventListener("click", function() {
+      // Toggle the visibility of the dropdown content
+      if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+      } else {
+      dropdownContent.style.display = "block";
+      }
+      });
+
+      // Close the dropdown if the user clicks outside of it
+      document.addEventListener("click", function (event) {
+      if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+      dropdownContent.style.display = "none";
+      }
+      });
+
+
+      $(".language-link").click(function(){
+
+         event.preventDefault();
+         var languageCode = $(this).data("language-code");
+
+      $.ajax({
+            url: '<?php echo URL::to("admin/translate_language") ;?>',
+            method: 'post',
+            data: 
+               {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  languageCode: languageCode,
+               },
+               success: (response) => {
+                  console.log(response);
+                  alert("Changed The Language !");
+                  location.reload();
+
+               },
+            })
+         });
+         
+
       </script>
     </header>
     <!-- Header End -->
