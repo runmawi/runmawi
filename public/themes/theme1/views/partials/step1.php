@@ -30,21 +30,21 @@
                         <div class="col-sm-12 align-items-center">
                             <div class="text-center">
                                 <p>STEP 1 To 3</p>
-                                <h2 class="mt-3">SELECT YOUR PLAN</h2>
+                                <h2 class="mt-3"><?= __('SELECT YOUR PLAN') ?></h2>
                                 
                             </div>
                             <div class="comm">
                                     <ul>
-                                        <li>No commitments, cancel anytime.</li>
-                                        <li>Everythinig on Flicknexs for one low price</li>
-                                        <li>No ads and no extra fees. Ever.</li>
+                                        <li><?= __('No commitments, cancel anytime') ?>.</li>
+                                        <li><?= __('Everythinig on Flicknexs for one low price') ?></li>
+                                        <li><?= __('No ads and no extra fees. Ever') ?>.</li>
                                        
                                     </ul>
                                 </div>
                         </div>
                         <div class="tyk">
                       
-					<a type="button" herf="">CHECK OUR PLANS</a>
+					<a type="button" herf=""><?= __('CHECK OUR PLANS') ?></a>
                     
 				  </div>
                     </div>

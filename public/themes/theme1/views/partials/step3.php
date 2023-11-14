@@ -26,8 +26,8 @@
 	        
              <section class="mt-5 pt-4 Step33">
                 <div class="text-center">
-                                <p>STEP 3 To 3</p>
-                                <h2 class="mt-3">STEP UP YOUR CREDIT OR <br>DEBIT CARD.</h2>
+                                <p><?= __('STEP 3 To 3') ?></p>
+                                <h2 class="mt-3"><?= __('STEP UP YOUR CREDIT OR') ?> <br><?= __('DEBIT CARD') ?>.</h2>
                                 
                             </div>
                  <div class="col-sm-4 mt-2 tyk">
@@ -56,10 +56,10 @@
                 </div>
                      <div class="d-flex lk1 col-sm-4 justify-content-around p-0 ">
                          <div>
-                              <p class="stk">Premium plan:$799.00</p>
+                              <p class="stk"><?= __('Premium plan') ?>:$799.00</p>
                          </div>
                          <div class="">
-                            <a>Change plan</a>
+                            <a><?= __('Change plan') ?></a>
                      </div></div>
                  
                 

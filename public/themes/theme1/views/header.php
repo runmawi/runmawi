@@ -733,7 +733,7 @@
                                                             <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                                             <input id="email" type="hidden" name="email" value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
                                                             <input id="password" type="hidden" name="password" value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
-                                                            <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                                            <button type="submit" class="btn btn-hover" ><?= __('Visit Channel Portal') ?></button>
                                                         </form>
                                                     </div>
                                                 </li>
@@ -767,7 +767,7 @@
                                                         <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                                         <input id="email" type="hidden" name="email" value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
                                                         <input id="password" type="hidden" name="password" value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
-                                                        <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
+                                                        <button type="submit" class="btn btn-hover" ><?= __('Visit CPP Portal') ?></button>
                                                     </form>
                                                 </div>
                                             </li>
@@ -838,7 +838,7 @@
                                                             </i>
                                                             <input type="text" name="search" class="searches"
                                                                 id="search" autocomplete="off"
-                                                                placeholder="Search movies,series">
+                                                                placeholder="<?= __('Search movies,series') ?>">
                                                         </div>
                                                     </form>
                                                 </div>
@@ -864,7 +864,7 @@
                                     <input id="password" type="hidden" name="password"
                                         value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
                                     <button type="submit" class="btn btn-hover "
-                                        style="margin-top: -14%;margin-left: -14%;">Visit CPP Portal </button>
+                                        style="margin-top: -14%;margin-left: -14%;"><?= __('Visit CPP Portal') ?> </button>
                                 </form>
                             </div>
                             <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -876,7 +876,7 @@
                                     <input id="password" type="hidden" name="password"
                                         value="<?= @$Channel->unhased_password ?>" autocomplete="current-password">
                                     <button type="submit" class="btn btn-hover"
-                                        style="margin-top: -13%;margin-left: -8%;">Visit Channel Portal </button>
+                                        style="margin-top: -13%;margin-left: -8%;"><?= __('Visit Channel Portal') ?> </button>
                                 </form>
                             </div>
                             <?php } ?>
@@ -890,7 +890,7 @@
                                                 <div class="form-group position-relative">
                                                     <input type="text" name="search"
                                                         class="text search-input font-size-12 searches"
-                                                        placeholder="Type here to Search Videos" />
+                                                        placeholder="<?= __('Type here to Search Videos') ?>" />
                                                     <i class="search-link ri-search-line"></i>
 
                                                     <?php include 'public/themes/default/partials/Search_content.php'; ?>
@@ -969,8 +969,8 @@
                                                             <img src="assets/images/notify/thumb-1.jpg"
                                                                 class="img-fluid mr-3" alt="streamit" />
                                                             <div class="media-body">
-                                                                <h6 class="mb-0 ">Boot Bitty</h6>
-                                                                <small class="font-size-12"> just now</small>
+                                                                <h6 class="mb-0 "><?= __('Boot Bitty') ?></h6>
+                                                                <small class="font-size-12"><?= __('just now') ?></small>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -979,8 +979,8 @@
                                                             <img src="assets/images/notify/thumb-2.jpg"
                                                                 class="img-fluid mr-3" alt="streamit" />
                                                             <div class="media-body">
-                                                                <h6 class="mb-0 ">The Last Breath</h6>
-                                                                <small class="font-size-12">15 minutes ago</small>
+                                                                <h6 class="mb-0 "><?= __('The Last Breath') ?></h6>
+                                                                <small class="font-size-12"> <?= __('15 minutes ago') ?> </small>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -989,8 +989,8 @@
                                                             <img src="assets/images/notify/thumb-3.jpg"
                                                                 class="img-fluid mr-3" alt="streamit" />
                                                             <div class="media-body">
-                                                                <h6 class="mb-0 ">The Hero Camp</h6>
-                                                                <small class="font-size-12">1 hour ago</small>
+                                                                <h6 class="mb-0 "><?= __('The Hero Camp') ?></h6>
+                                                                <small class="font-size-12"><?= __('1 hour ago') ?></small>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1015,7 +1015,7 @@
                                                     </svg>
                                                 </div>
                                                 <div class="media-body ">
-                                                    <h6 class="mb-0 ">Signin</h6>
+                                                    <h6 class="mb-0 "><?= __('Signin') ?></h6>
                                                 </div>
                                             </div>
                                         </a>
@@ -1035,7 +1035,7 @@
                                                     </svg>
                                                 </div>
                                                 <div class="media-body ">
-                                                    <h6 class="mb-0 ">Signup</h6>
+                                                    <h6 class="mb-0 "><?= __('Signup') ?></h6>
                                                 </div>
                                             </div>
                                         </a>
@@ -1120,7 +1120,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Manage Profile</h6>
+                                                                <h6 class="mb-0 "><?= __('Manage Profile') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1155,7 +1155,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Watch Later</h6>
+                                                                <h6 class="mb-0 "><?= __('Watch Later') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1204,7 +1204,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">My Wishlist</h6>
+                                                                <h6 class="mb-0 "><?= __('My Wishlist') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1243,7 +1243,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Purchased Medias</h6>
+                                                                <h6 class="mb-0 "><?= __('Purchased Medias') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1263,7 +1263,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Logout</h6>
+                                                                <h6 class="mb-0 "><?= __('Logout') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1323,7 +1323,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Manage Profile</h6>
+                                                                <h6 class="mb-0 "><?= __('Manage Profile') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1358,7 +1358,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Watch Later</h6>
+                                                                <h6 class="mb-0 "><?= __('Watch Later') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1407,7 +1407,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">My Wishlist</h6>
+                                                                <h6 class="mb-0 "> <?= __('My Wishlist') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1446,7 +1446,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Purchased Medias</h6>
+                                                                <h6 class="mb-0 "> <?= __('Purchased Medias') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1475,7 +1475,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Pricing Plan</h6>
+                                                                <h6 class="mb-0 "><?= __('Pricing Plan') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1507,7 +1507,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Admin</h6>
+                                                                <h6 class="mb-0 "><?= __('Admin') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1548,7 +1548,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Logout</h6>
+                                                                <h6 class="mb-0 "><?= __('Logout') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>

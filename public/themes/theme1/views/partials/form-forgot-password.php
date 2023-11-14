@@ -11,11 +11,11 @@
         <?php elseif (Session::has('success')): ?>
           <span class="success"><?= Lang::get('lang.email_sent') ?></span>
         <?php endif; ?>
-        <h2 class="form-signin-heading">Reset Password</h2>
-        <p>Enter your email address and we'll send you a password reset link</p><br />
-        <input name="email" type="text" class="form-control" placeholder="Email Address">
+        <h2 class="form-signin-heading"><?= __('Reset Password') ?></h2>
+        <p><?= __("Enter your email address and we'll send you a password reset link") ?></p><br />
+        <input name="email" type="text" class="form-control" placeholder="<?= __('Email Address') ?>">
         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
-        <button class="btn btn-lg btn-primary btn-block password-reset-btn" type="submit">Send Password Reset</button>
+        <button class="btn btn-lg btn-primary btn-block password-reset-btn" type="submit"><?= __('Send Password Reset') ?></button>
      
     </form>
 

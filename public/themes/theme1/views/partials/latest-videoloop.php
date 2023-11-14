@@ -117,7 +117,7 @@ overflow-hidden {
                                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">	
                                           <span class="btn btn-hover">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Play Now
+                                          <?= __('Play Now') ?>
                                           </span>
                                            </a>
                                        </div>
@@ -174,10 +174,10 @@ foreach($latest_videos as $watchlater_video): ?>
                                             <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->webm_url; ?>" type='video/webm' label='auto' >
                                             <source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->ogg_url; ?>" type='video/ogg' label='auto' >-->
 
-                                            <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                                            <p class="vjs-no-js"><?= __('To view this video please enable JavaScript, and consider upgrading to a web browser that') ?> <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 video') ?></a></p>
                                         </video>
                                         <div class="playertextbox hide">
-                                        <h2>Up Next</h2>
+                                        <h2><?= __('Up Next') ?></h2>
                                         <p><?php if(isset($videonext)){ ?>
                                         <?= $watchlater_video::where('id','=',$videonext->id)->pluck('title'); ?>
                                         <?php }elseif(isset($videoprev)){ ?>
@@ -201,7 +201,7 @@ foreach($latest_videos as $watchlater_video): ?>
 
 
                                         <div class="playertextbox hide">
-                                        <h2>Up Next</h2>
+                                        <h2><?= __('Up Next') ?></h2>
                                         <p><?php if(isset($videonext)){ ?>
                                         <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
                                         <?php }elseif(isset($videoprev)){ ?>
@@ -558,13 +558,13 @@ foreach($latest_videos as $watchlater_video): ?>
                                                     <span class="viewers"><i class="fa fa-eye"></i>(<?= $watchlater_video->views;?>)</span>
                                                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                                     </p>
-                                                  <p>Welcome</p>
+                                                  <p><?= __('Welcome') ?></p>
                                            	
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
                                         <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"><i class="fa fa-play mr-2"
-                                 aria-hidden="true"></i>Play Now</a>
+                                 aria-hidden="true"></i><?= __('Play Now') ?></a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
 
@@ -609,26 +609,26 @@ foreach($latest_videos as $watchlater_video): ?>
     </div>
     <div id="like<?= $watchlater_video->id;?>" class="container tab-pane "><br>
      
-           <h2>More Like This</h2>
+           <h2><?= __('More Like This') ?></h2>
     </div>
      <div id="details<?= $watchlater_video->id;?>" class="container tab-pane "><br>
-        <h2>Description</h2>
+        <h2><?= __('Description') ?></h2>
 
     </div>
 	</div>
     <div align="center">
             <ul class="nav nav-tabs">
                     <li class="nav-item">
-                      <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>">OVERVIEW</a>
+                      <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>"><?= __('OVERVIEW') ?></a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#trailer<?= $watchlater_video->id;?>">TRAILER AND MORE</a>
+                      <a class="nav-link" data-toggle="tab" href="#trailer<?= $watchlater_video->id;?>"><?= __('TRAILER AND MORE') ?></a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#like<?= $watchlater_video->id;?>">MORE LIKE THIS</a>
+                      <a class="nav-link" data-toggle="tab" href="#like<?= $watchlater_video->id;?>"><?= __('MORE LIKE THIS') ?></a>
                     </li>
                      <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#details<?= $watchlater_video->id;?>">DETAILS </a>           
+                      <a class="nav-link" data-toggle="tab" href="#details<?= $watchlater_video->id;?>"><?= __('DETAILS') ?> </a>           
                     </li>
               </ul>
         </div>

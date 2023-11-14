@@ -122,7 +122,7 @@
             </div>
    <?php } else{?>
       <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                    <p ><h3 class="text-center">No Latest Video Available</h3>
+                    <p ><h3 class="text-center"><?= __('No Latest Video Available') ?></h3>
                 </div>
    <?php } ?>
 

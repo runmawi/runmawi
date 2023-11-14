@@ -72,7 +72,7 @@ background-color: #30312f !important;
                   <?php if(!$settings->free_registration): ?>
                     <h1 class="panel-title"><?= ThemeHelper::getThemeSetting(@$theme_settings->signup_message, 'Signup to Gain access to all content on the site!') ?></h1>
                   <?php else: ?>
-                    <h1 class="panel-title">Enter your Info below to signup for an account.</h1>
+                    <h1 class="panel-title"><?= __('Enter your Info below to signup for an account') ?>.</h1>
                   <?php endif; ?>
                   
               </div>
@@ -82,12 +82,12 @@ background-color: #30312f !important;
             <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active">
                 <a class="persistant-disabled" href="#stepper-step-1" data-toggle="tab" aria-controls="stepper-step-1" role="tab" title="Step 1">
-                  <span class="round-tab">Enter your Details</span>
+                  <span class="round-tab"><?= __('Enter your Details') ?></span>
                 </a>
               </li>
               <li role="presentation" class="disabled">
                 <a class="persistant-disabled" href="#stepper-step-2" data-toggle="tab" aria-controls="stepper-step-2" role="tab" title="Step 2">
-                  <span class="round-tab">Choose Your Plan</span>
+                  <span class="round-tab"><?= __('Choose Your Plan') ?></span>
                 </a>
               </li>
             </ul>
@@ -104,7 +104,7 @@ background-color: #30312f !important;
             <?php endif; ?>
             <!-- Text input-->
             <div class="form-group row">
-                <label class="col-md-4 control-label" for="username">Username</label>
+                <label class="col-md-4 control-label" for="username"><?= __('Username') ?></label>
 
                 <div class="col-md-8">
                   <input type="text" class="form-control" id="username" name="username" value="<?= old('username'); ?>" required="" />
@@ -112,7 +112,7 @@ background-color: #30312f !important;
             </div>
 
                  <div class="form-group row">
-                    <label class="col-md-4 control-label" for="username">Profile Image</label>
+                    <label class="col-md-4 control-label" for="username"><?= __('Profile Image') ?></label>
                         <div class="col-md-8">
                             <input type="file" class="form-control" id="profile_image" name="profile_image" value="<?= old('avatar'); ?>"  />
                         </div>
@@ -129,7 +129,7 @@ background-color: #30312f !important;
             <!-- Text input-->
                 
             <div class="form-group row">
-                <label class="col-md-4 control-label" for="email">Email Address</label>
+                <label class="col-md-4 control-label" for="email"><?= __('Email Address') ?></label>
 
                 <div class="col-md-8">
                     <input type="text" class="form-control" id="email" name="email" value="<?= old('email'); ?>" required="">
@@ -146,7 +146,7 @@ background-color: #30312f !important;
             <!-- Text input-->
                 
             <div class="form-group row">
-                <label class="col-md-4 control-label" for="password">Desired Password</label>
+                <label class="col-md-4 control-label" for="password"><?= __('Desired Password') ?></label>
 
                 <div class="col-md-8">
                     <input type="password" class="form-control" id="password" name="password" required="" />
@@ -160,7 +160,7 @@ background-color: #30312f !important;
             <!-- Text input-->
             <div class="form-group row">
                 
-                <label class="col-md-4 control-label" for="password_confirmation">Confirm Password</label>
+                <label class="col-md-4 control-label" for="password_confirmation"><?= __('Confirm Password') ?></label>
                 
                 <div class="col-md-8">
                     
@@ -176,7 +176,7 @@ background-color: #30312f !important;
                     
                     <div class="col-md-8">
                        
-                        <label class="control-label" for="password_confirmation">  Yes , <a data-toggle="modal" data-target="#myModal" style="text-decoration:none;"> I Agree to Terms and  Conditions and privacy policy </a> </label>
+                        <label class="control-label" for="password_confirmation"> <?= __('Yes') ?>  , <a data-toggle="modal" data-target="#myModal" style="text-decoration:none;"> <?= __('I Agree to Terms and  Conditions and privacy policy') ?> </a> </label>
                     </div>
 
 
@@ -185,7 +185,7 @@ background-color: #30312f !important;
                 
              <ul class="list-inline pull-right">
                 <li>
-                  <a class="btn btn-primary next-step">Next</a>
+                  <a class="btn btn-primary next-step"><?= __('Next') ?></a>
                 </li>
               </ul>
           </div>
@@ -196,7 +196,7 @@ background-color: #30312f !important;
        
                    
                      <div class="form-group row">
-                              <label class="col-md-4 control-label">Skip Subscription</label>
+                              <label class="col-md-4 control-label"><?= __('Skip Subscription') ?></label>
 
                                   <div id="ck-button">
                                        <label>
@@ -208,7 +208,7 @@ background-color: #30312f !important;
                           </div>
 
                              <div class="form-group row C selectt">
-                              <label class="col-md-4 control-label" >Choose a Plan</label>
+                              <label class="col-md-4 control-label" ><?= __('Choose a Plan') ?></label>
                                  <div class="col-md-8">
                                   <select class="form-control cc-subscrip-plan"  name="subscrip_plan" id="cc-subscrip-plan">
                                       <?php foreach ($plans as $plan) { ?>
@@ -220,7 +220,7 @@ background-color: #30312f !important;
 
               <!-- Credit Card Number -->
               <div class="form-group row">
-                  <label class="col-md-4 control-label">Credit Card Number</label>
+                  <label class="col-md-4 control-label"><?= __('Credit Card Number') ?></label>
 
                   <div class="col-md-8">
                       <input type="text" id="cc-number" class="form-control input-md cc-number" data-stripe="number" required="">
@@ -230,7 +230,7 @@ background-color: #30312f !important;
 
               <!-- Expiration Date -->
               <div class="form-group row">
-                  <label class="col-md-4 control-label" for="cc-expiration-month">Expiration Date</label>
+                  <label class="col-md-4 control-label" for="cc-expiration-month"><?= __('Expiration Date') ?></label>
 
                   <div class="col-md-3">
                       <select class="form-control cc-expiration-month" data-stripe="exp-month" id="cc-expiration-month"><option value="1">01-January</option><option value="2">02-February</option><option value="3">03-March</option><option value="4">04-April</option><option value="5">05-May</option><option value="6">06-June</option><option value="7">07-July</option><option value="8">08-August</option><option value="9">09-September</option><option value="10">10-October</option><option value="11">11-November</option><option value="12">12-December</option></select>        </div>
@@ -241,7 +241,7 @@ background-color: #30312f !important;
 
               <!-- CVV Number -->
               <div class="form-group row">
-                  <label class="col-md-4 control-label" for="cvv">CVV Number</label>
+                  <label class="col-md-4 control-label" for="cvv"><?= __('CVV Number') ?></label>
 
                   <div class="col-md-3">
                       <input id="cvv" type="text" placeholder="" class="form-control input-md cvc" data-stripe="cvc" required="">
@@ -253,9 +253,9 @@ background-color: #30312f !important;
           </div>
       
           <div class="pull-right sign-up-buttons">
-            <button class="btn btn-primary" type="submit" name="create-account">Sign Up Today </button>
+            <button class="btn btn-primary" type="submit" name="create-account"><?= __('Sign Up Today') ?> </button>
               <span> Or </span>
-            <a href="/login" class="btn">Log In</a>
+            <a href="/login" class="btn"><?= __('Log In') ?></a>
           </div>
 
   
@@ -289,7 +289,7 @@ background-color: #30312f !important;
               <?php if(!$settings->free_registration): ?>
                 <h1 class="panel-title"><?= ThemeHelper::getThemeSetting(@$theme_settings->signup_message, 'Signup to Gain access to all content on the site for $7 a month.') ?></h1>
               <?php else: ?>
-                <h1 class="panel-title">Enter your Info below to signup for an Account!</h1>
+                <h1 class="panel-title"><?= __('Enter your Info below to signup for an Account!') ?></h1>
               <?php endif; ?>
 
           </div>
@@ -307,7 +307,7 @@ background-color: #30312f !important;
             <?php endif; ?>
             <!-- Text input-->
             <div class="form-group row">
-                <label class="col-md-4 control-label" for="username">Username</label>
+                <label class="col-md-4 control-label" for="username"><?= __('Username') ?></label>
 
                 <div class="col-md-8">
                   <input type="text" class="form-control" id="username" name="username" value="<?= old('username'); ?>" style="background-color:gray!important;"/>
@@ -315,7 +315,7 @@ background-color: #30312f !important;
             </div>
 
                  <div class="form-group row">
-                                <label class="col-md-4 control-label" for="username">Profile Image</label>
+                                <label class="col-md-4 control-label" for="username"><?= __('Profile Image') ?></label>
                                     <div class="col-md-8">
                                         <input type="file" class="form-control" id="profile_image" name="profile_image" value="<?= old('avatar'); ?>" />
                                     </div>
@@ -327,7 +327,7 @@ background-color: #30312f !important;
             <?php endif; ?>
             <!-- Text input-->
             <div class="form-group row">
-                <label class="col-md-4 control-label" for="email">Email Address</label>
+                <label class="col-md-4 control-label" for="email"><?= __('Email Address') ?></label>
 
                 <div class="col-md-8">
                     <input type="text" class="form-control" id="email" name="email" value="<?= old('email'); ?>" >
@@ -340,7 +340,7 @@ background-color: #30312f !important;
             <?php endif; ?>
             <!-- Text input-->
             <div class="form-group row">
-                <label class="col-md-4 control-label" for="password">Desired Password</label>
+                <label class="col-md-4 control-label" for="password"><?= __('Desired Password') ?></label>
 
                 <div class="col-md-8">
                     <input type="password" class="form-control" id="password" name="password">
@@ -353,7 +353,7 @@ background-color: #30312f !important;
             <?php endif; ?>
             <!-- Text input-->
             <div class="form-group row">
-                <label class="col-md-4 control-label" for="password_confirmation">Confirm Password</label>
+                <label class="col-md-4 control-label" for="password_confirmation"><?= __('Confirm Password') ?></label>
 
                 <div class="col-md-8">
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
@@ -365,16 +365,16 @@ background-color: #30312f !important;
                     
                     <div class="col-md-8">
                         <input type="checkbox"  id="terms" name="terms"  class="terms" value="0" required="" />
-                        <label class="control-label" for="password_confirmation">  Yes , <a data-toggle="modal" data-target="#myModal" style="text-decoration:none;"> I Agree to Terms and  Conditions and privacy policy </a> </label>
+                        <label class="control-label" for="password_confirmation"><?= __('Yes') ?>   , <a data-toggle="modal" data-target="#myModal" style="text-decoration:none;"> I Agree to Terms and  Conditions and privacy policy </a> </label>
                     </div>
                 
 
             </div>
                 
                     <div class="pull-right sign-up-buttons">
-                      <button class="btn btn-primary btn-login" type="submit" name="create-account">Sign Up Today</button>
+                      <button class="btn btn-primary btn-login" type="submit" name="create-account"><?= __('Sign Up Today') ?></button>
                       <span>Or</span>
-                       <a href="/login" class="btn btn-login">Log In</a>
+                       <a href="/login" class="btn btn-login"><?= __('Log In') ?></a>
                      </div>
             </div>
                 
@@ -398,13 +398,13 @@ background-color: #30312f !important;
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title" style="color:#000;">Terms and Conditions</h4>
+        <h4 class="modal-title" style="color:#000;"><?= __('Terms and Conditions') ?></h4>
       </div>
       <div class="modal-body">
         <p style="color:#000;"><?php echo $terms ;?></p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?= __('Close') ?></button>
       </div>
     </div>
 

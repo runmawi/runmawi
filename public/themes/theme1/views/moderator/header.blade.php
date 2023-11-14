@@ -98,7 +98,7 @@ $uppercase =  ucfirst($request_url);
                                               <div>
                                                 <i class="fa fa-search">
                                                 </i>
-                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Search">
+                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="{{ __('Search') }}">
                                               </div>
                                             </form>
                                           </div>
@@ -121,7 +121,7 @@ $uppercase =  ucfirst($request_url);
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
                                           <input type="text" name="search" class="text search-input font-size-12 searches"
-                                             placeholder="type here to search...">
+                                             placeholder="{{ __('type here to search') }}...">
                                           <i class="search-link ri-search-line"></i>
                                        </div>
                                     </form>
@@ -187,7 +187,7 @@ $uppercase =  ucfirst($request_url);
                                                 <i class="ri-settings-4-line text-primary"></i>
                                             </div>
                                             <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Signin</h6>
+                                                <h6 class="mb-0 ">{{ __('Signin') }}</h6>
                                             </div>
                                         </div>
                                     </a>
@@ -199,7 +199,7 @@ $uppercase =  ucfirst($request_url);
                                            <i class="ri-logout-circle-line text-primary"></i>
                                         </div>
                                         <div class="media-body ml-3">
-                                           <h6 class="mb-0 ">Signup</h6>
+                                           <h6 class="mb-0 ">{{ __('Signup') }}</h6>
                                         </div>
                                      </div>
                                   </a>
@@ -209,7 +209,7 @@ $uppercase =  ucfirst($request_url);
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                        <p class="mt-3" style="font-size: 16px;">Welcome <?php echo Auth::user()->username.' '.'!'  ; ?> <i class="ri-arrow-down-s-line"></i></p>
+                                        <p class="mt-3" style="font-size: 16px;">{{ __('Welcome') }} <?php echo Auth::user()->username.' '.'!'  ; ?> <i class="ri-arrow-down-s-line"></i></p>
                                     </a>
                                    <?php if(Auth::user()->role == 'registered'): ?>
                                    <div class="iq-sub-dropdown iq-user-dropdown">
@@ -222,7 +222,7 @@ $uppercase =  ucfirst($request_url);
                                                    <img src="<?php echo URL::to('/').'/assets/icons/user.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Manage Profile</h6>
+                                                   <h6 class="mb-0 ">{{ __('Manage Profile') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -232,7 +232,7 @@ $uppercase =  ucfirst($request_url);
                                                    <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Watch Later</h6>
+                                                   <h6 class="mb-0 ">{{ __('Watch Later') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -242,7 +242,7 @@ $uppercase =  ucfirst($request_url);
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Rented Movies</h6>
+                                                   <h6 class="mb-0 ">{{ __('Rented Movies') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -252,7 +252,7 @@ $uppercase =  ucfirst($request_url);
                                                    <img src="<?php echo URL::to('/').'/assets/icons/logout.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Logout</h6>
+                                                   <h6 class="mb-0 ">{{ __('Logout') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -275,7 +275,7 @@ $uppercase =  ucfirst($request_url);
                                                    <img src="<?php echo URL::to('/').'/assets/icons/user.svg';?> ">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Manage Profile</h6>
+                                                   <h6 class="mb-0 ">{{ __('Manage Profile') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -285,7 +285,7 @@ $uppercase =  ucfirst($request_url);
                                                  <img src="<?php echo URL::to('/').'/assets/icons/watchlater.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Watch Later</h6>
+                                                   <h6 class="mb-0 ">{{ __('Watch Later') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -295,7 +295,7 @@ $uppercase =  ucfirst($request_url);
                                                    <img src="<?php echo URL::to('/').'/assets/icons/rented.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Rented Movies</h6>
+                                                   <h6 class="mb-0 ">{{ __('Rented Movies') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -305,7 +305,7 @@ $uppercase =  ucfirst($request_url);
                                                   <img src="<?php echo URL::to('/').'/assets/icons/plan.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Pricing Plan</h6>
+                                                   <h6 class="mb-0 ">{{ __('Pricing Plan') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -315,7 +315,7 @@ $uppercase =  ucfirst($request_url);
                                                    <img src="<?php echo URL::to('/').'/assets/icons/admin.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Admin</h6>
+                                                   <h6 class="mb-0 ">{{ __('Admin') }}</h6>
                                                 </div>
                                              </div>
                                           </a>
@@ -325,7 +325,7 @@ $uppercase =  ucfirst($request_url);
                                                    <img src="<?php echo URL::to('/').'/assets/icons/logout.svg';?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Logout</h6>
+                                                   <h6 class="mb-0 ">{{ __('Logout') }}</h6>
                                                 </div>
                                              </div>
                                           </a>

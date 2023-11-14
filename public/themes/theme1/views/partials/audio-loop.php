@@ -1,5 +1,5 @@
 <div class="video-list">
-    <h4 class="Continue Watching text-left padding-top-40 padding-bottom-20">Latest Audios</h4>
+    <h4 class="Continue Watching text-left padding-top-40 padding-bottom-20"><?= __('Latest Audios') ?></h4>
     <div class="border-line" style="margin-bottom:15px;"></div>
 	<div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
         <?php  if(isset($latest_audios)) :
