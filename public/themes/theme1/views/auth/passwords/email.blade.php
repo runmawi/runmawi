@@ -4,7 +4,7 @@
 
 <head>
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
-    <title>Reset Password | <?php echo $settings->website_name; ?></title>
+    <title>{{ __('Reset Password') }} | <?php echo $settings->website_name; ?></title>
     <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
     <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/font-awesome.min.css') ?>" />
     <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/email/hellovideo-fonts.css') ?>" />
@@ -110,8 +110,8 @@
                                             class="form-control @error('email') is-invalid @enderror" name="email"
                                             placeholder="email@example.com" value="{{ old('email') }}" required
                                             autocomplete="email" autofocus>
-                                        <p class="reset-help text-center">We will send you an email with instructions on
-                                            how to reset your password.</p>
+                                        <p class="reset-help text-center">{{ __('We will send you an email with instructions on
+                                            how to reset your password') }}.</p>
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

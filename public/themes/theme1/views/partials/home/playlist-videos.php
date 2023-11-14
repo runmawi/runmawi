@@ -12,7 +12,7 @@
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
   <?php if ($my_video_play_list_settings_list->header_name) 
       {
-        echo $my_video_play_list_settings_list->header_name ;
+        echo __($my_video_play_list_settings_list->header_name) ;
         }
         else {
             echo "" ; 
@@ -42,7 +42,7 @@
                 <div class="hover-buttons d-flex">
                   <a class="text-white" href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                   Visit Video PlayList
+                    <?= __('Visit Video PlayList')  ?>
                   </a>
                 </div>
                      </a>

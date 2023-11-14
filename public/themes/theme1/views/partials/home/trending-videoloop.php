@@ -1,7 +1,7 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
 <h4 class="main-title">
 <a href="<?php if ($order_settings_list[0]->header_name) { echo URL::to('/').'/'.$order_settings_list[0]->url ;} else { echo "" ; } ?>">                   
-  <?php if ($order_settings_list[0]->header_name) { echo $order_settings_list[0]->header_name ;} else { echo "" ; } ?>
+  <?php if ($order_settings_list[0]->header_name) { echo __($order_settings_list[0]->header_name) ;} else { echo "" ; } ?>
                     <!-- Featured Movies -->
                   </a></h4>    
 </div>
@@ -64,7 +64,7 @@
                                     <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
                                     <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
                                     <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
-                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <p class="p-tag"><?php echo __("Free"); ?></p>
                                     <?php } ?>
                                     <?php } ?>
                                     <?php if($ThumbnailSetting->published_on == 1) { ?>                                            

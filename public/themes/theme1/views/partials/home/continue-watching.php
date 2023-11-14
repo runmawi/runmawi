@@ -2,7 +2,7 @@
 <?php  if(!Auth::guest() && !empty($data['password_hash'])) { 
  $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Continue Watching</a></h4>
+    <h4 class="main-title"><a href="<?php echo URL::to('home') ?>"><?= __('Continue Watching')  ?></a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -29,7 +29,7 @@
                                     <?php }elseif( !empty($cont_video->global_ppv || !empty($cont_video->global_ppv) && $cont_video->ppv_price == null)){ ?>
                                     <p class="p-tag1"><?php echo $cont_video->global_ppv.' '.$currency->symbol; ?></p>
                                     <?php }elseif($cont_video->global_ppv == null && $cont_video->ppv_price == null ){ ?>
-                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <p class="p-tag"><?php echo __("Free"); ?></p>
                                     <?php } ?>
                                     <?php } ?>
                              
