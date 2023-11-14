@@ -9,7 +9,7 @@
         <div class="container-fluid px-5">
             <div class="row  justify-content-between flex-column flex-sm-row">
                 <div class="col-sm-3"> 
-                    <div class="small m-0 text-white"><p><?= __('The Best Streaming Platform') ?></p></div>
+                    <div class="small m-0 text-white"><p><?php echo  __('The Best Streaming Platform') ?></p></div>
                     <div class="d-flex p-0 text-white icon mt-4">
 
                     <?php if(!empty($settings->facebook_page_id)){?>
@@ -63,7 +63,7 @@
 
                 </div>
                 </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2"> <?= __('Explore') ?></p>
+                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2"> <?php echo __('Explore') ?></p>
                     <ul class="text-white p-0 mt-3 ">
                       
                       <?php $column2_footer = App\FooterLink::where('column_position',2)->orderBy('order')->get();  
@@ -80,7 +80,7 @@
 
                     </ul>
                 </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2"> <?= __('Company') ?></p>
+                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2"> <?php echo  __('Company') ?></p>
                     <ul class="text-white p-0 mt-3">
 
                         <?php
@@ -105,7 +105,7 @@
                     </ul>
                 </div>
                 <?php $app_settings = App\AppSetting::where('id','=',1)->first();  ?>     
-                <div class="col-sm-3 small m-0 text-white"><p> <?= __('Download App') ?></p>
+                <div class="col-sm-3 small m-0 text-white"><p> <?php echo __('Download App'); ?></p>
                     <p>Available on Play Store</p>
                     <!-- <img src="<?php //echo URL::to('assets/img/gplay.png') ?> " alt="Play store" class=""> -->
                     <?php if(!empty($app_settings->android_url)){ ?> 
