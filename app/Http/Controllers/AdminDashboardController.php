@@ -119,7 +119,12 @@ class AdminDashboardController extends Controller
                         $spaceusage = $storage->result->account_info->space_usage  ;
                         $spacedisk = $storage->result->account_info->space_disk  ;
 
-                        $space_available = intval(round($spaceavailable  / 1024 ,3)).' '.'GB';
+                        if($spaceavailable == 'unlimited'){
+                            $space_available = 'unlimited';
+                        }else{
+                            $space_available = intval(round($spaceavailable  / 1024 ,3)).' '.'GB';
+                        }
+
                         $space_usage = intval(round($spaceusage  / 1024 ,3)).' '.'GB';	
                         $space_disk = intval(round($spacedisk  / 1024 ,3)).' '.'GB';	
 
