@@ -1488,38 +1488,6 @@ public function verifyandupdatepassword(Request $request)
               $item['videos_url']    = null ;
               break;
           }
-
-          $video = Video::find( $item->id);
-                    
-          $plans_ads_enable = $this->plans_ads_enable($request->user_id);
-            
-
-          if($plans_ads_enable == 1){
-
-            $current_time = Carbon::now()->format('H:i:s');
-
-            $video_ads_tag_url = AdsEvent::select('videos.ads_tag_url_id','videos.id as video_id','advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
-                ->Join('advertisements','advertisements.id','=','ads_events.ads_id')
-                ->Join('videos', 'advertisements.id', '=', 'videos.ads_tag_url_id');
-                // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-
-                if($this->adveristment_plays_24hrs == 0){
-                    $video_ads_tag_url =  $video_ads_tag_url->whereTime('ads_events.start', '<=', $current_time)->whereTime('ads_events.end', '>=', $current_time);
-                }
-
-                $item['video_ads_tag_url'] =  $video_ads_tag_url->where('ads_events.status',1)
-                      ->where('advertisements.status',1)
-                      ->where('advertisements.ads_upload_type','tag_url')
-                      ->where('advertisements.id',$video->ads_tag_url_id)
-                      ->where('videos.id', $video->id)
-                      ->groupBy('advertisements.id')
-                      ->pluck('ads_path')
-                      ->first();
-
-          }else{
-            $item['video_ads_tag_url'] = null ;
-          }
-
           return $item;
         });
 
@@ -1746,14 +1714,6 @@ public function verifyandupdatepassword(Request $request)
               $languages = "";
             }
   
-  
-      if(\App\AdsVideo::where('video_id',$videoid)->exists()){
-          $ads_id = \App\AdsVideo::where('video_id',$videoid)->first()->ads_id;
-          $videoads = \App\Advertisement::find($ads_id)->ads_path;
-      }else{
-          $videoads = '';
-      }
-
       $video = Video::find( $request->videoid);
       
       $AdsVideosPre = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
@@ -1856,7 +1816,6 @@ public function verifyandupdatepassword(Request $request)
         'videossubtitles' => $moviesubtitles,
         'main_genre' => $main_genre,
         'languages' => $languages,
-        'videoads' => $videoads,
         'Ads_videos_Pre' => $AdsVideosPre,
         'Ads_videos_Mid' => $AdsVideosMid,
         'Ads_videos_post' => $AdsVideosPost,

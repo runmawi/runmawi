@@ -3994,6 +3994,15 @@ class ChannelController extends Controller
 
                 $item['view_increment'] = $this->handleViewCount_movies($video_id);
 
+                // Rent Video Exits
+
+                if($item['access'] == 'ppv' && !Auth::guest()){
+                    $item['PPV_Exits'] = PpvPurchase::where('video_id', $item['id'])
+                                            ->where('user_id', Auth::user()->id)->count();
+                }else{
+                    $item['PPV_Exits'] = 0 ;
+                }
+
 
                     //  Video URL
 
@@ -4058,6 +4067,28 @@ class ChannelController extends Controller
                 return $item;
             })->first();
 
+
+            // Payment Gateway Stripe 
+
+            $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->first();
+
+            $mode = $Stripepayment->live_mode;
+
+            if ($mode == 0) {
+
+                $secret_key = $Stripepayment->test_secret_key;
+                $publishable_key = $Stripepayment->test_publishable_key;
+
+            } elseif ($mode == 1) {
+
+                $secret_key = $Stripepayment->live_secret_key;
+                $publishable_key = $Stripepayment->live_publishable_key;
+                
+            } else {
+                $secret_key = null;
+                $publishable_key = null;
+            }
+
             $data = array(
                 'videodetail'    => $videodetail ,
                 'video'          => $videodetail ,   // Videos - Working Social Login
@@ -4067,6 +4098,8 @@ class ChannelController extends Controller
                 'commentable_type' => 'play_videos',
                 'ThumbnailSetting' => ThumbnailSetting::first() ,
                 'currency'         => CurrencySetting::first(),
+                'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
+                'publishable_key'    => $publishable_key ,
             );
 
             return Theme::view('video-js-Player.video.videos-details', $data);
