@@ -394,10 +394,10 @@ foreach ($season as $key => $seasons):
               <div class="block-contents">
 			  <p class="date" style="color:#fff;"><?=date("F jS, Y", strtotime($episodes->created_at)); ?>
 				<?php if ($episodes->access == 'guest'): ?>
-				<span class="label label-info">Free</span>
+				<span class="label label-info"><?= __('Free') ?></span>
 				<?php
             elseif ($episodes->access == 'subscriber'): ?>
-				<span class="label label-success">Subscribers Only</span>
+				<span class="label label-success"><?= __('Subscribers Only') ?></span>
 				<?php
             elseif ($episodes->access == 'registered'): ?>
 				<span class="label label-warning"><?= __('Registered Users') ?></span>

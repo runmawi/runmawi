@@ -13,7 +13,7 @@ foreach($favorite_videos as $favorite_video): ?>
 		<div class="block-contents">
 			<p class="date"><?= date("F jS, Y", strtotime($favorite_video->created_at)); ?>
 				<?php if($favorite_video->access == 'guest'): ?>
-					<span class="label label-info">Free</span>
+					<span class="label label-info"><?= __('Free') ?></span>
 				<?php elseif($favorite_video->access == 'subscriber'): ?>
 					<span class="label label-success">Subscribers Only</span>
 				<?php elseif($favorite_video->access == 'registered'): ?>
