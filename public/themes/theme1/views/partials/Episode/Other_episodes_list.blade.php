@@ -1,6 +1,6 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h4 class="main-title">
-        Episode
+    {{ __('Episode') }}
     </h4>
 </div>
 

@@ -1,3 +1,7 @@
+
+
+
+
 <!-- Sliders -->
 
 <?php if(isset($sliders)) :
@@ -501,31 +505,6 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
 </div>
 <?php endforeach;  endif; ?>
 
-<script>
-    $(document).ready(function() {
-        const imageContainer = document.getElementById("image-container");
-        const video = document.querySelector(".myvideos");
-
-        imageContainer.addEventListener("mouseover", function(event) {
-        video.play();
-        video.style.opacity = 1;
-        });
-
-        imageContainer.addEventListener("mouseout", function(event) {
-        video.pause();
-        video.style.opacity = 0; // Set opacity to 0 when cursor is away
-        });
-
-    });
-</script>
 
 
 
-<style>
-     video::-webkit-media-controls {
-    display: none !important;
-  }
-  .myvideos{
-    height: 420px !important;
-  }
-  </style>

@@ -26,9 +26,9 @@
 	        
            <section class="mt-5 pt-2 p-5 Step2">
                 <div class="text-center">
-                                <p>STEP 2 To 3</p>
-                                <h2 class="mt-3">CREATE YOUR ACCOUNT</h2>
-                    <p class="st">Just two steps and you're done!</p>
+                                <p><?= __('STEP 2 To 3') ?></p>
+                                <h2 class="mt-3"><?= __('CREATE YOUR ACCOUNT') ?></h2>
+                    <p class="st"><?= __("Just two steps and you're done!") ?></p>
                             <div class="col-sm-4 mt-3 tyk1">        
                     <form>
   <div class="form-group">
@@ -45,7 +45,7 @@
                 
                 <div class="tyk3 text-center">
                       
-					<a type="button" herf="">CONTINUE</a>
+					<a type="button" herf=""><?= __('CONTINUE') ?></a>
                     
 				  </div>
             </section>

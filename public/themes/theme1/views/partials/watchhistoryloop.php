@@ -13,11 +13,11 @@ foreach($watchhistory_videos as $watchhistory_video): ?>
 		<div class="block-contents">
 			<p class="date"><?= date("F jS, Y", strtotime($watchhistory_video->created_at)); ?>
 				<?php if($watchhistory_video->access == 'guest'): ?>
-					<span class="label label-info">Free</span>
+					<span class="label label-info"><?= __('Free') ?></span>
 				<?php elseif($watchhistory_video->access == 'subscriber'): ?>
-					<span class="label label-success">Subscribers Only</span>
+					<span class="label label-success"><?= __('Subscribers Only') ?></span>
 				<?php elseif($watchhistory_video->access == 'registered'): ?>
-					<span class="label label-warning">Registered Users</span>
+					<span class="label label-warning"><?= __('Registered Users') ?></span>
 				<?php endif; ?>
 			</p>
 			<p class="desc"><?php if(strlen($watchhistory_video->description) > 90){ echo substr($watchhistory_video->description, 0, 90) . '...'; } else { echo $watchhistory_video->description; } ?></p>
@@ -44,9 +44,9 @@ foreach($watchhistory_movies as $watchhistory_movie): ?>
 				<?php if($watchhistory_movie->access == 'guest'): ?>
 					<span class="label label-info">Free</span>
 				<?php elseif($watchhistory_movie->access == 'subscriber'): ?>
-					<span class="label label-success">Subscribers Only</span>
+					<span class="label label-success"><?= __('Subscribers Only') ?></span>
 				<?php elseif($watchhistory_movie->access == 'registered'): ?>
-					<span class="label label-warning">Registered Users</span>
+					<span class="label label-warning"><?= __('Registered Users') ?></span>
 				<?php endif; ?>
 			</p>
 			<p class="desc"><?php if(strlen($watchhistory_movie->description) > 90){ echo substr($watchhistory_movie->description, 0, 90) . '...'; } else { echo $watchhistory_movie->description; } ?></p>
@@ -71,11 +71,11 @@ foreach($watchhistory_episodes as $watchhistory_episode): ?>
 		<div class="block-contents">
 			<p class="date"><?= date("F jS, Y", strtotime($watchhistory_episode->created_at)); ?>
 				<?php if($watchhistory_episode->access == 'guest'): ?>
-					<span class="label label-info">Free</span>
+					<span class="label label-info"><?= __('Free') ?></span>
 				<?php elseif($watchhistory_episode->access == 'subscriber'): ?>
-					<span class="label label-success">Subscribers Only</span>
+					<span class="label label-success"><?= __('Subscribers Only') ?></span>
 				<?php elseif($watchhistory_episode->access == 'registered'): ?>
-					<span class="label label-warning">Registered Users</span>
+					<span class="label label-warning"><?= __('Registered Users') ?></span>
 				<?php endif; ?>
 			</p>
 			<p class="desc"><?php if(strlen($watchhistory_episode->description) > 90){ echo substr($watchhistory_episode->description, 0, 90) . '...'; } else { echo $watchhistory_episode->description; } ?></p>

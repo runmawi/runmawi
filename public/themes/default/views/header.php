@@ -1806,7 +1806,12 @@
 #languageDropdown{
    display:block !important;
 }
-
+     /* video::-webkit-media-controls {
+    display: none !important;
+  }
+  .myvideos{
+    height: 420px !important;
+  } */
 </style>
 
    </header>

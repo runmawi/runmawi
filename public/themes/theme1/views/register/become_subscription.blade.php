@@ -34,7 +34,7 @@ $plan_details = App\SubscriptionPlan::where("plan_id","=",$plan_id)->first();
                   
                     <div class="d-flex">                    <div class="col-sm-6 mt-2">
                     <input type="hidden" name="plan_name" class="form-controll" id="plan_name" value="{{ session()->get('become_plan') }}">
-            <input id="card-holder-name"type="text" class="form-control"  placeholder="Name on card" value="">
+            <input id="card-holder-name"type="text" class="form-control"  placeholder="{{ __('Name on card') }}" value="">
                 
             </div>
             <!-- <div class="col-sm-10 d-flex mt-2"> -->
@@ -67,26 +67,26 @@ $plan_details = App\SubscriptionPlan::where("plan_id","=",$plan_id)->first();
 				
 				<div class="sign-up-buttons pay-button mt-4 pl-3">
 					<button id="card-button" class="btn btn-primary"  data-secret="{{ $intent->client_secret }}">
-						Pay Now
+          {{ __('Pay Now') }}
 					</button>
 				</div>
 			</div>
 <div class="overlay"></div>
                
 			<div class="payment-option mt-3">
-				<div class="invoice" ><h1 style=" color: #000!important;">Invoice</h1></div>
+				<div class="invoice" ><h1 style=" color: #000!important;">{{ __('Invoice') }}</h1></div>
                 <div class="d-flex">
 					 <svg style="height:20px;" class="svg-inline--fa fa-file fa-w-12" aria-hidden="true" data-prefix="far" data-icon="file" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M369.9 97.9L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zM332.1 128H256V51.9l76.1 76.1zM48 464V48h160v104c0 13.3 10.7 24 24 24h104v288H48z"></path></svg><!-- <i class="far fa-file"></i> -->
 					 <h4 class="billing-head detail_name text-black" id="detail_name"><?=$plan_details->plans_name;?></h4></div>
 				 <p class="grey-border"></p>
 				 <div class="">
-					 <p class="pay-prtext text-black">Grab this plan for your best Movies to Watch.</p>
+					 <p class="pay-prtext text-black">{{ __('Grab this plan for your best Movies to Watch') }}.</p>
 				 </div>
 				 <div class="table-responsive">
 					 <table class="table white-bg m-0 mt-3">
 						 <tbody>
 							 <tr class="table-secondary">
-								 <td>Amount</td>
+								 <td>{{ __('Amount') }}</td>
 								 <td class="detail_price" id="detail_price"><?="$".$plan_details->price;?></td>
                              </tr>
 						 </tbody>
