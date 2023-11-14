@@ -24,7 +24,7 @@ ol.breadcrumb {
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="movie-title">Audio Genre <?php echo @$CategoryAudio->name ?></h4>
+                    <h4 class="movie-title"><?= __('Audio Genre')  ?> <?php echo @$CategoryAudio->name ?></h4>
                 </div>
 
                 <!-- BREADCRUMBS -->
@@ -66,7 +66,7 @@ ol.breadcrumb {
                                         <div>
                                             <a class="text-white" href="<?php echo URL::to('/audio'.'/'.$Audio_Category->slug  ) ?> ">
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                Visit Audio Player
+                                                <?= __('Visit Audio Player')  ?>
                                             </a>
                                         </div>
                                     </div>

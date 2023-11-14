@@ -33,12 +33,12 @@ ol.breadcrumb {
                         <div class="bc-icons-2">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a class="black-text"
-                                        href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                                        href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Series')) ?></a>
                                     <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                 </li>
 
                                 <li class="breadcrumb-item"><a class="black-text"
-                                        href="<?= route('SeriescategoryList') ?>"><?= ucwords('category') ?></a>
+                                        href="<?= route('SeriescategoryList') ?>"><?= ucwords(__('category')) ?></a>
                                     <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                 </li>
 
@@ -75,7 +75,7 @@ ol.breadcrumb {
                                             <a class="text-white"
                                                 href="<?php echo URL::to('/play_series'.'/'.$Series_Genre->slug  ) ?> ">
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                Visit Series
+                                                <?= __('Visit Series')  ?>
                                             </a>
                                         </div>
                                     </div>

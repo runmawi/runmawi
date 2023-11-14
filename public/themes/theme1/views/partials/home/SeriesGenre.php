@@ -2,7 +2,7 @@
         $SeriesGenre = App\SeriesGenre::all();
         if(isset($SeriesGenre)) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title"> Series Genre</h4>                      
+  <h4 class="main-title"> <?= __('Series Genre')  ?></h4>                      
 </div>
 <?php
  endif;
@@ -32,7 +32,7 @@
                 <div class="hover-buttons d-flex">
                 <a class="text-white" href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                   Visit Series Category Video
+                    <?= __('Visit Series Category Video')  ?>
                   </a>
                 </div>
               </div>

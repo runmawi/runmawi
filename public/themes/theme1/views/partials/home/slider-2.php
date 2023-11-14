@@ -27,9 +27,9 @@
                         </div>
                         <div class="p-0">
                             <a href="<?php echo $slider_video->link; ?>" class="btn bd "><i class="fa fa-play mr-2"
-                                    aria-hidden="true"></i> Play Now</a>
+                                    aria-hidden="true"></i> <?= __('Play Now')  ?></a>
                             <a href="<?php echo $slider_video->link; ?>" class="btn bd ml-2"><i class="fa fa-play ml-2"
-                                    aria-hidden="true"></i> Watch Trailer</a>
+                                    aria-hidden="true"></i> <?= __('Watch Trailer')  ?></a>
                         </div>
                     </div>
                     <div class="col-xl-2 col-lg-12 col-md-6 mt-5 pt-5 b2">
@@ -101,9 +101,9 @@ endif; ?>
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23"
                             data-animation-in="fadeInUp" data-delay-in="1.2">
                             <a href="<?= URL::to('/live' . '/' . $slider_video->slug) ?>" class="btn bd"><i
-                                    class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+                                    class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play')  ?></a>
                             <a class="btn bd ml-2" href="<?= URL::to('/live' . '/' . $slider_video->slug) ?>"><i
-                                    class="fa fa-info" aria-hidden="true"></i> More details</a>
+                                    class="fa fa-info" aria-hidden="true"></i> <?= __('More details')  ?></a>
                         </div>
                     </div>
                 </div>
@@ -161,10 +161,10 @@ endif; ?>
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23"
                             data-animation-in="fadeInUp" data-delay-in="1.2">
                             <a href="<?= route('live_event_play', $live_event_banner->slug) ?>" class="btn bd"><i
-                                    class="fa fa-play mr-2" aria-hidden="true"></i> Play
+                                    class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play')  ?>
                             </a>
                             <a class="btn bd ml-2" href="<?= route('live_event_play', $live_event_banner->slug) ?>"><i
-                                    class="fa fa-info" aria-hidden="true"></i> More details</a>
+                                    class="fa fa-info" aria-hidden="true"></i> <?= __('More details')  ?></a>
                         </div>
                     </div>
                 </div>
@@ -220,11 +220,11 @@ endif; ?>
                         <!-- Trailer  -->
                         <div class="justify r-mb-23  p-0">
                             <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>" class="btn bd"><i
-                                    class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
+                                    class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play Now')  ?></a>
                             <a href="#theme1-trailer" class="theme1-trailer btn bd ml-2"
                                 data-trailer-url="<?= $videos->trailer ?>"
                                 data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_video(this)">
-                                <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
+                                <i class="fa fa-info" aria-hidden="true"></i><?= __('Watch Trailer')  ?> 
                             </a>
                         </div>
 
@@ -317,11 +317,11 @@ if(Route::current()->getName() == "home"){
                         <!-- Trailer  -->
                         <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp" data-delay-in="1.2">
                             <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>" class="btn bd"><i
-                                    class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
+                                    class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play Now')  ?></a>
                             <a href="#theme1-trailer" class="theme1-trailer btn bd ml-2"
                                 data-trailer-url="<?= $videos->trailer ?>"
                                 data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_video(this)">
-                                <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
+                                <i class="fa fa-info" aria-hidden="true"></i> <?= __('Play')  ?>x
                             </a>
                         </div>
 
@@ -397,10 +397,10 @@ if(Route::current()->getName() == "home"){
                         </div>
                         <div class="justify r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                             <a href="<?php echo URL::to('episode'); ?><?= '/' . @$slider_video->series_title->slug . '/' . $slider_video->slug ?>"
-                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play')  ?></a>
                             <a class="btn bd"
                                 href="<?php echo URL::to('episode'); ?><?= '/' . @$slider_video->series_title->slug . '/' . $slider_video->slug ?>"><i
-                                    class="fa fa-info" aria-hidden="true"></i> More details</a>
+                                    class="fa fa-info" aria-hidden="true"></i> <?= __('More details')  ?></a>
                         </div>
                     </div>
                 </div>
@@ -418,7 +418,7 @@ if(Route::current()->getName() == "home"){
                                 stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8"
                                 r="103.3" />
                         </svg>
-                        <span class="w-trailor">Watch Trailer</span>
+                        <span class="w-trailor"><?= __('Watch Trailer')  ?></span>
                     </a>
                 </div>
             </div>
@@ -472,12 +472,12 @@ endif; ?>
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23">
 
                             <a href="<?= URL::to('/play_series' . '/' . $series_slider->slug) ?>" class="btn bd">
-                                <i class="fa fa-play mr-2" aria-hidden="true"></i> Play
+                                <i class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play')  ?>
                             </a>
 
                             <a class="btn bd ml-2" href="<?= URL::to('/play_series' . '/' . $series_slider->slug) ?>">
                                 <i class="fa fa-info" aria-hidden="true"></i>
-                                More details
+                                <?= __('More details')  ?>
                             </a>
                         </div>
                     </div>

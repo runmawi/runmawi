@@ -87,7 +87,7 @@ $currency = App\CurrencySetting::first();
                                                 } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                                     echo $category_video->global_ppv .' '.$currency->symbol;
                                                 } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                                    echo "Free"; 
+                                                    echo __("Free"); 
                                                 }
                                             ?>
                                         </p>

@@ -13,7 +13,7 @@
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
   <?php if ($order_settings_list[13]->header_name) 
       {
-        echo $order_settings_list[13]->header_name ;
+        echo __($order_settings_list[13]->header_name) ;
         }
         else {
             echo "" ; 
@@ -42,7 +42,7 @@
                 <div class="hover-buttons d-flex">
                   <a class="text-white" href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                   Visit Channel
+                    <?= __('Visit Channel')  ?>
                   </a>
                 </div>
               </div>
