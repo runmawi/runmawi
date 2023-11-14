@@ -13,7 +13,7 @@
                 <div style="width: 90%;">
                     <h4><?= ucfirst($movie->title); ?></h4>
                     <p style="margin-bottom: 30px;">
-                        IMDb <?= $movie->rating;?> 
+                    <?= __('IMDb') ?>  <?= $movie->rating;?> 
                         <span>(<?= $movie->views;?>)</span>
                         <span style="margin-left:5%;">1h 50m</span>
                         <span style="margin-left:5%;">2018</span>

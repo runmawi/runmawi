@@ -11,7 +11,7 @@
         <div class="col-md-12">
             <div class="">            
                     <div class="sign-in-from  m-auto" >
-                        <h3 class="manage">Manage Profile</h3>
+                        <h3 class="manage">{{ __('Manage Profile') }}</h3>
                         <div class="col-md-12">
                             @foreach ($multiprofile as $profile)
                             <div>
@@ -33,7 +33,7 @@
                             </li>  
                         </div>    
                         
-                        {{-- <button type="button" class="btn btn-outline-light"> Done</button> --}}
+                        {{-- <button type="button" class="btn btn-outline-light"> {{ __('Done') }}</button> --}}
 
                     </div> 
              </div>

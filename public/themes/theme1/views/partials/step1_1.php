@@ -28,9 +28,9 @@
                     <div class="row">
                         <div class="col-sm-12 align-items-center">
                             <div class="text-center">
-                                <p>STEP 1 To 3</p>
-                                <h2 class="mt-3">SELECT YOUR PLAN THATS RIGHT FOR YOU</h2>
-                                <p class="st">Downgrade or upgrade at any time</p>
+                                <p><?= __('STEP 1 To 3') ?></p>
+                                <h2 class="mt-3"><?= __("SELECT YOUR PLAN THATS RIGHT FOR YOU") ?></h2>
+                                <p class="st"><?= __('Downgrade or upgrade at any time') ?></p>
                             </div>
                 </div>
                             
@@ -38,18 +38,18 @@
                     <div class="row">
                         <div class="col-sm-6 p-0">
                             <p class="mt-5"></p>
-                            <p>Monthly price</p>
-                            <p>HD available</p>
-                            <p>Ultra HD available </p>
-                            <p>Watch on your laptop and TV</p>
-                            <p>Watch on your moblie phone and tablet</p>
-                            <p>Screens you can watch on at the same time</p>
-                            <p>Umlimited movies and tv shows</p>
-                            <p>Cancel anytime</p>
+                            <p><?= __('Monthly price') ?></p>
+                            <p><?= __('HD available') ?></p>
+                            <p><?= __('Ultra HD available') ?> </p>
+                            <p><?= __('Watch on your laptop and TV') ?></p>
+                            <p><?= __('Watch on your moblie phone and tablet') ?></p>
+                            <p><?= __('Screens you can watch on at the same time') ?></p>
+                            <p><?= __('Umlimited movies and tv shows') ?></p>
+                            <p><?= __('Cancel anytime') ?></p>
                             <p></p>
                         </div>
                         <div class="col-sm-2 xv ">
-                            <p>Basic</p>
+                            <p><?= __('Basic') ?></p>
                             <p>$199</p>
                             <i class="fa fa-times" aria-hidden="true"></i>
                             <div class="d-flex flex-column">
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         <div class="col-sm-2 xv">
-                            <p>Standard</p>
+                            <p><?= __('Standard') ?></p>
                             <p>$499</p>
                             <i class="fa fa-times" aria-hidden="true"></i>
                              <div class="d-flex flex-column">
@@ -79,7 +79,7 @@
                             </div>
                         </div>
                         <div class="col-sm-2 xv">
-                            <p>Premium</p>
+                            <p><?= __('Premium') ?></p>
                             <p>$499</p>
                             <i class="fa fa-check" aria-hidden="true"></i>
                              <div class="d-flex flex-column">
@@ -95,10 +95,10 @@
                         </div>
                         
                     </div>
-                    <p class="st">HD and Ultra HD avaliblity subject to your internet service and device capabilities.Not all content available in HD or Ultra HD. See Terms of Use for more details.</p>
+                    <p class="st"><?= __('HD and Ultra HD avaliblity subject to your internet service and device capabilities.Not all content available in HD or Ultra HD. See Terms of Use for more details') ?>.</p>
                     <div class="tyk1 text-center">
                       
-					<a type="button" herf="">CONTINUE</a>
+					<a type="button" herf=""><?= __('CONTINUE') ?></a>
                     
 				  </div>
                 </div>

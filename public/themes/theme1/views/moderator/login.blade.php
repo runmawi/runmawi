@@ -129,13 +129,13 @@ i.fa.fa-google-plus {
                         </div>
                          <div class="d-flex justify-content-around links">
                       @if (Route::has('password.request'))
-                      <a href="{{  URL::to('cpp/password/reset') }}" class="f-link">Forgot your password?</a>
+                      <a href="{{  URL::to('cpp/password/reset') }}" class="f-link">{{ __('Forgot your password?') }}</a>
                       @endif
 							
                   </div>
                         
                            <div class="sign-info">
-                              <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>
+                              <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">{{ __('SIGN IN') }}</button>
                                                             
                            </div> 
                            <div class="clear"></div>
@@ -151,7 +151,7 @@ i.fa.fa-google-plus {
                           <hr style="color:#1e1e1e;">
                            <div class="mt-3">
                               <div class="d-flex justify-content-center links">
-                                 To Content Partner Portal <a href="<?= URL::to('/cpp/signup')?>" class="text-primary ml-2">Sign Up </a> Here!
+                              {{ __('To Content Partner Portal') }} <a href="<?= URL::to('/cpp/signup')?>" class="text-primary ml-2">{{ __('Sign Up') }} </a> {{ __('Here!') }}
                               </div>                        
                            </div>
                      </form>

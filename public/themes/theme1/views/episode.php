@@ -93,9 +93,9 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     srclang="<?= $episodesubtitles_file->sub_language ?>"
                     label="<?= $episodesubtitles_file->shortcode ?>" default>
                 <?php } } } ?>
-                <p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web
-                    browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5
-                        series</a></p>
+                <p class="vjs-no-js"><?= __('To view this series please enable JavaScript, and consider upgrading to a web
+                    browser that') ?> <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5
+                    series') ?></a></p>
             </video>
         </div>
         <?php  elseif($episode->type == 'm3u8'): ?>
@@ -167,21 +167,21 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
             <h4 class=""><?php echo $episode->title; ?></h4>
             <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
-            <h2 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered
+            <h2 class=""><?= __('Subscribe to view more') ?><?php if ($series->access == 'subscriber'): ?><?= __('Subscribers') ?><?php elseif($series->access == 'registered'): ?><?= __('Registered') ?>
                 Users<?php endif; ?></h2>
             <div class="clear"></div>
 
             <?php if( !Auth::guest() && Auth::user()->role == 'registered'):  ?>
             <div class=" mt-3">
                 <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
-                    <button class="btn btn-primary" id="button">Subscribe to view more</button>
+                    <button class="btn btn-primary" id="button"><?= __('Subscribe to view more') ?></button>
                 </form>
             </div>
             <?php else: ?>
             <div class=" mt-3">
                 <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
-                    <button id="button" class="btn bd">Signup Now <?php if($series->access == 'subscriber'): ?>to Become a
-                        Subscriber<?php elseif($series->access == 'registered'): ?>for Free!<?php endif; ?></button>
+                    <button id="button" class="btn bd"><?= __('Signup Now') ?> <?php if($series->access == 'subscriber'): ?><?= __('to Become a
+                        Subscriber') ?><?php elseif($series->access == 'registered'): ?><?= __('for Free!') ?><?php endif; ?></button>
                 </form>
             </div>
             <?php endif; ?>
@@ -265,9 +265,9 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
 			}else{ ?>
                 <div class="col-md-6">
-                    <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the
-                        Series:</span>
-                    <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?>
+                    <span class="text-white" style="font-size: 129%;font-weight: 700;"><?= __('Purchase to Watch the
+                        Series') ?>:</span>
+                    <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?><?= __('Registered Users') ?><?php endif; ?>
                     </p>
 
                 </div>
@@ -276,7 +276,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     <input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
 
                     <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
-                        Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+                    <?= __('Purchase For') ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
                 </div>
                 <?php	} } ?>
                 <br>
@@ -310,7 +310,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     <span class="view-count " style="float:right;">
                         <i class="fa fa-eye"></i>
                         <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?>
-                        <?php else: ?><?= $episode->views ?><?php endif; ?> Views
+                        <?php else: ?><?= $episode->views ?><?php endif; ?><?= __('Views') ?> 
                     </span>
                 </div>
 
@@ -465,7 +465,7 @@ $Auth = Auth::guest();
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">
-                    Rent Now</h4>
+                <?= __('Rent Now') ?> </h4>
                 <img src="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"
                     alt=""width="50" height="60">
             </div>
@@ -493,7 +493,7 @@ $Auth = Auth::guest();
                         <button type="button" class="btn btn-primary"
                             data-dismiss="modal"><?php echo __($currency->symbol . ' ' . $episodes->ppv_price); ?></button>
                         <label for="method">
-                            <h3>Payment Method</h3>
+                            <h3><?= __('Payment Method') ?></h3>
                         </label>
                         <label class="radio-inline">
                             <?php  foreach($payment_type as $payment){
@@ -541,9 +541,9 @@ $Auth = Auth::guest();
             </div>
             <div class="modal-footer">
                 <a onclick="pay(<?php echo $episode->ppv_price; ?>)">
-                    <button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
+                    <button type="button" class="btn btn-primary" id="submit-new-cat"><?= __('Continue') ?></button>
                 </a>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><?= __('Close') ?></button>
             </div>
         </div>
     </div>

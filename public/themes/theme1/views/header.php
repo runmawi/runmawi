@@ -838,7 +838,7 @@
                                                             </i>
                                                             <input type="text" name="search" class="searches"
                                                                 id="search" autocomplete="off"
-                                                                placeholder="Search movies,series">
+                                                                placeholder="<?= __('Search movies,series') ?>">
                                                         </div>
                                                     </form>
                                                 </div>
@@ -890,7 +890,7 @@
                                                 <div class="form-group position-relative">
                                                     <input type="text" name="search"
                                                         class="text search-input font-size-12 searches"
-                                                        placeholder="Type here to Search Videos" />
+                                                        placeholder="<?= __('Type here to Search Videos') ?>" />
                                                     <i class="search-link ri-search-line"></i>
 
                                                     <?php include 'public/themes/default/partials/Search_content.php'; ?>

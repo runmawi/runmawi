@@ -19,7 +19,7 @@
           <div class="">
 		<div class="row">
 			<div class="col-md-12" style="margin-left: 45%;">
-				<h4><i class="entypo-archive"></i> CONTACT US </h4>
+				<h4><i class="entypo-archive"></i>{{ __('CONTACT US') }}  </h4>
 			</div>
 		</div>
 <div class="clear"></div>

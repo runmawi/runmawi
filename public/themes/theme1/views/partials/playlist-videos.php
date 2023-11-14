@@ -42,7 +42,7 @@
                 <div class="hover-buttons d-flex">
                   <a class="text-white" href="<?php echo URL::to('/video-playlist'.'/'.$VideoPlaylist->slug  ) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                   Visit Video PlayList
+                    <?= __('Visit Video PlayList') ?>
                   </a>
                 </div>
                      </a>

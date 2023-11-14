@@ -169,7 +169,7 @@ cursor: pointer;
                     
                                                 <i class="fa fa-search">
                                                 </i>
-                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Search">
+                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="{{ __('Search') }}">
                                               </div>
                                             </form>
                                           </div>
@@ -194,7 +194,7 @@ cursor: pointer;
                      
                                         <div class="form-group position-relative">
                                           <input type="text" name="search" class="text search-input font-size-12 searches"
-                                             placeholder="type here to search...">
+                                             placeholder="{{ __('type here to search') }}...">
                                           <i class="search-link ri-search-line"></i>
                                        </div>
                                     </form>
@@ -958,24 +958,24 @@ cursor: pointer;
                                 
 						    <div class="form-group">
 		                        <label> {{ __('Username') }}:</label>
-		                        <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
+		                        <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="{{ __('username') }}">
                             </div>
                         
                             <div class="form-group">
 		                        <label> {{ __('Email') }}:</label>
-		                        <input type="email" id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
+		                        <input type="email" id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="{{ __('Email') }}">
                             </div> 
                         
                         
                             <div class="form-group">
 		                        <label>{{ __('Password') }}:</label><br>
-		                        <input type="password"  name="password"   placeholder="Password"  class="form-control"  >
+		                        <input type="password"  name="password"   placeholder="{{ __('Password') }}"  class="form-control"  >
 		                    </div> 
                         
                            {{--                         
                               <div class="form-group">
                                  <label> {{ __('Phone') }}:</label>
-                                 <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+                                 <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="{{ __('Mobile Number') }}">
                               </div>
                              --}}
 

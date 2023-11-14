@@ -767,25 +767,25 @@ border-radius: 5px;padding:10px;">
                                 
 						    <div class="form-group">
 		                        <label> {{ __('Username') }}:</label>
-		                        <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
+		                        <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="{{ __('username') }}">
                             </div>
                         
                             <div class="form-group">
 		                        <label> {{ __('Email') }}:</label>
-		                        <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
+		                        <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="{{ __('Email') }}">
                             </div> 
                         
                         
                             <div class="form-group">
 		                        <label>{{ __('Password') }}:</label><br>
-		                        <input type="password"  name="password"  value="<?php if(!empty($user->password)): ?><?= $user->password ?><?php endif; ?>" placeholder="Password"  class="form-control"  >
+		                        <input type="password"  name="password"  value="<?php if(!empty($user->password)): ?><?= $user->password ?><?php endif; ?>" placeholder="{{ __('Password') }}"  class="form-control"  >
 		                        <!-- <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  > -->
 		                    </div> 
                         
                         
                             <div class="form-group">
 		                         <label>{{ __('Phone') }} :</label>
-		                         <input type="number" id="mobile"  pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+		                         <input type="number" id="mobile"  pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="{{ ('Mobile Number') }}">
                             </div>
                             
                             <div class="form-group">
