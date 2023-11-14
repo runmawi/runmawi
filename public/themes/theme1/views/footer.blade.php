@@ -105,8 +105,8 @@
                     </ul>
                 </div>
                 <?php $app_settings = App\AppSetting::where('id','=',1)->first();  ?>     
-                <div class="col-sm-3 small m-0 text-white"><p> <?php echo __('Download App'); ?></p>
-                    <p>Available on Play Store</p>
+                <div class="col-sm-3 small m-0 text-white"><p> <?= __('Download App') ?></p>
+                    <p><?= __('Available on Play Store') ?></p>
                     <!-- <img src="<?php //echo URL::to('assets/img/gplay.png') ?> " alt="Play store" class=""> -->
                     <?php if(!empty($app_settings->android_url)){ ?> 
                     <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
