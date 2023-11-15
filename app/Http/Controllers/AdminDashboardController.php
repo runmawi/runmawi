@@ -451,6 +451,27 @@ class AdminDashboardController extends Controller
             throw $th;
         }
        
-
     }
+        public function AdminTranslateLanguage(Request $request){
+
+            try {
+    
+                $Setting = Setting::first();
+                Setting::first()
+                ->update([
+                        'translate_language'  => $request->languageCode ,
+                      ]);
+    
+                      $Setting = Setting::first();
+                      $Setting->admin_translate_language = $request->languageCode;
+                      $Setting->save();
+    
+                      return 1 ;
+    
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+           
+        }
+    
 }

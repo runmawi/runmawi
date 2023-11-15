@@ -12,7 +12,7 @@
 
 <?php
 
-@$translate_language = App\Setting::pluck('translate_language')->first();
+@$translate_language = App\Setting::pluck('admin_translate_language')->first();
 $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
 
 \App::setLocale(@$translate_language);
@@ -1488,7 +1488,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                            </svg>
                            <div class="dropdown-content" id="languageDropdown">
                            <?php foreach($TranslationLanguage as $Language): ?>
-                              <a href="#" class="language-link" id="Language_code" data-Language-code= "{{ @$Language->code }}">{{ @$Language->name }}</a>
+                              <a href="#" class="language-link" id="Language_code" data-Language-code= "{{ @$Language->code }}">{{ @$Language->name }}
+                                 <?php if($Language->code == $settings->translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
+                              </a>
                            <?php endforeach; ?>
                               <!-- Add more options as needed -->
                            </div>
@@ -2200,7 +2202,7 @@ $(".language-link").on("click", function(event) {
   var languageCode = $(this).data("language-code");
 
   $.ajax({
-            url: "{{ URL::to('admin/translate_language')  }}",
+            url: "{{ URL::to('admin/admin_translate_language')  }}",
             type: "post",
                 data: {
                   _token: '{{ csrf_token() }}',
