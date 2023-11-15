@@ -5,8 +5,14 @@
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
   <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
-    $jsondata = json_decode($jsonString, true); ?>
-@extends('moderator.header')
+    $jsondata = json_decode($jsonString, true);
+    @$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+ ?>
+
+@php
+    include(public_path('themes/theme1/views/Channel/header.blade.php'));
+@endphp
 
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
@@ -15,7 +21,7 @@
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">{{ __('Login') }}Channel Sign Up</h3>
+                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">{{ __('Channel Sign Up') }}</h3>
                       </div>
                       <div class="clear"></div>
                       @if (Session::has('message'))
@@ -120,7 +126,7 @@
                                     </div>
                                 </div>
     
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
+                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">{{ __('(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)') }}</span>
                             </div>
                                  
                             </div>

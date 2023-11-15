@@ -1,6 +1,9 @@
 <?php
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
 ?>
 <html>
 <head>
@@ -150,7 +153,7 @@ i.fa.fa-google-plus {
                           <hr style="color:#1e1e1e;">
                            <div class="mt-3">
                               <div class="d-flex justify-content-center links">
-                              {{ __('To Channel Portal') }} <a href="<?= URL::to('/channel/register')?>" class="text-primary ml-2">{{ __('Sign Up') }} </a> {{ __('Here') }}!
+                              {{ __('To Channel Portal') }} <a href="<?= URL::to('/channel/register')?>" class="text-primary ml-2">{{ __('Sign Up') }} </a> {{ __('Here!') }}
                               </div>                        
                            </div>
                      </form>

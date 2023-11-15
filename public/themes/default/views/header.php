@@ -480,6 +480,14 @@
 .navbar-right .transdropdownlist{
    width:150px;
 }
+
+#languageSearch{
+        width: 116px;
+        font-size: 12px;
+        right: 5px;
+        position: relative;
+    }
+
 </style>
 <body>
    <!-- loader Start -->
@@ -1032,6 +1040,9 @@
                               <div class="iq-sub-dropdown transdropdownlist">
                                  <div class="iq-card shadow-none m-0" >
                                     <div class="iq-card-body " id="languageDropdown" >
+
+                                       <input type="text" id="languageSearch" placeholder="Search languages">
+
                                        <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?>
                                           <?php if($Language->code == $settings->translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
@@ -1736,18 +1747,29 @@
       </script>
 
 <script>
-      const dropdownIcon = document.getElementById("dropdown-icon");
-      const dropdownContent = document.getElementById("languageDropdown");
+                  document.getElementById('languageSearch').addEventListener('click', function(event) {
+            event.stopPropagation();
+            });
+            document.getElementById('languageSearch').addEventListener('input', function() {
+                var searchValue = this.value.toLowerCase();
+                var languageLinks = document.querySelectorAll('.language-link');
 
-      // Add a click event listener to the SVG icon
-      dropdownIcon.addEventListener("click", function() {
-      // Toggle the visibility of the dropdown content
-      if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-      } else {
-      dropdownContent.style.display = "block";
-      }
-      });
+                languageLinks.forEach(function(languageLink) {
+                    var languageName = languageLink.textContent.toLowerCase();
+                    if (languageName.includes(searchValue)) {
+                        languageLink.style.display = 'block';
+                    } else {
+                        languageLink.style.display = 'none';
+                    }
+                });
+            });
+            
+            document.addEventListener("click", function (event) {
+                if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+                    dropdownContent.style.display = "none";
+                }
+            });
+
 
       // Close the dropdown if the user clicks outside of it
       document.addEventListener("click", function (event) {
@@ -1755,6 +1777,7 @@
       dropdownContent.style.display = "none";
       }
       });
+
 
 
       $(".language-link").click(function(){
