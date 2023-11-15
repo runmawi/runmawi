@@ -127,7 +127,7 @@ i.fa.fa-google-plus {
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
                             								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
                         </div>
-                         <div class="d-flex justify-content-around links">
+                         <div class="d-flex justify-content-end links">
                       @if (Route::has('password.request'))
                       <a href="{{  URL::to('cpp/password/reset') }}" class="f-link">{{ __('Forgot your password?') }}</a>
                       @endif
@@ -139,12 +139,12 @@ i.fa.fa-google-plus {
                                                             
                            </div> 
                            <div class="clear"></div>
-                         <div class="custom-control custom-checkbox" align="left" style="" >
+                         <div class="custom-control custom-checkbox mt-2" align="left" style="" >
                                  <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
                                  
                                  <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
                                   <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-								<label class="form-check-label nv" for="remember">
+								<label class="form-check-label nv m-0" for="remember">
 									{{ __('Keep me signed in') }}
 								</label>
                               </div>  
