@@ -42,7 +42,7 @@ foreach($watchhistory_movies as $watchhistory_movie): ?>
 		<div class="block-contents">
 			<p class="date"><?= date("F jS, Y", strtotime($watchhistory_movie->created_at)); ?>
 				<?php if($watchhistory_movie->access == 'guest'): ?>
-					<span class="label label-info">Free</span>
+					<span class="label label-info"><?= __('Free') ?></span>
 				<?php elseif($watchhistory_movie->access == 'subscriber'): ?>
 					<span class="label label-success"><?= __('Subscribers Only') ?></span>
 				<?php elseif($watchhistory_movie->access == 'registered'): ?>

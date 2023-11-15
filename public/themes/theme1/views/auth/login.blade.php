@@ -233,7 +233,7 @@
                                     </div>
 
                                     <div class="links text-right">
-                                        <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Can't Login') }}?</a>
+                                        <a href="{{ route('Reset_Password') }}" class="f-link">{{ __("Can't Login") }}?</a>
                                     </div>
 
                                     {{-- reCAPTCHA  --}}
