@@ -452,6 +452,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/', 'AdminDashboardController@index');
     Route::get('/mobileapp', 'AdminUsersController@mobileapp');
     Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
+    Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
 
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');

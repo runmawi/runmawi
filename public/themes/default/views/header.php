@@ -1008,6 +1008,8 @@
 
                               
                            </li>
+                           
+                           <?php if(!Auth::guest()){ ?>
 
                            <!-- Translator Choose -->
                            <li class="nav-item nav-icon  ml-3">
@@ -1026,11 +1028,14 @@
                                  </div> -->
                                  
                               </a>
+
                               <div class="iq-sub-dropdown transdropdownlist">
                                  <div class="iq-card shadow-none m-0" >
                                     <div class="iq-card-body " id="languageDropdown" >
                                        <?php foreach($TranslationLanguage as $Language): ?>
-                                       <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?></a>
+                                       <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?>
+                                          <?php if($Language->code == $settings->translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
+                                       </a>
                                        <?php endforeach; ?>
                                        <!-- <a href="#" class="iq-sub-card">
                                           <div class="media align-items-center">
@@ -1045,6 +1050,8 @@
                                  </div>
                               </div>
                            </li>
+   
+                           <?php } ?>
 
                            <li class="nav-item nav-icon">
 
