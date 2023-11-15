@@ -9,9 +9,20 @@
         .progress { position:relative; width:100%; }
         .bar { background-color: #008000; width:0%; height:20px; }
          .percent { position:absolute; display:inline-block; left:50%; color: #7F98B2;}
-         .dataTables_filter label {
-    background: rgb(230 228 227)
-}
+         #translator-table_filter input[type="search"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            width: 200px; /* Adjust as needed */
+            background: rgb(230, 228, 227); /* Your background color */
+            }
+
+            #translator-table_filter input[type="search"]:focus {
+            outline: none;
+            border-color: #66afe9;
+            box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+            }
    </style>
 
 @section('content')
