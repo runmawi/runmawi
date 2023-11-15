@@ -11,6 +11,9 @@
 
         $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
         $theme = App\SiteTheme::first();
+
+        @$translate_language = App\Setting::pluck('translate_language')->first();
+        \App::setLocale(@$translate_language);
       ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">

@@ -38,7 +38,7 @@
                             <div class="form-group">
 
                                 <div class="col-md-12">
-                                    <input id="username" type="text"  class="form-control alphaonly  @error('name') is-invalid @enderror" name="username" value="{{ old('name') }}" placeholder="Username" required autocomplete="off" autofocus>
+                                    <input id="username" type="text"  class="form-control alphaonly  @error('name') is-invalid @enderror" name="username" value="{{ old('name') }}" placeholder="{{ __('Username') }}" required autocomplete="off" autofocus>
 
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">
@@ -47,7 +47,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-12">
-                                <input id="email_id" type="email" placeholder="Email Address"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
+                                <input id="email_id" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -91,7 +91,7 @@
                                  <div class="col-md-12">
                                      <div class="row">
                                      <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                <input id="password" type="password" placeholder="{{ __('Password') }}" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
                                          </div>
                                          <div >
                                 <span class="input-group-btn" id="eyeSlash">
@@ -155,7 +155,7 @@
                </div>    
                <div class="mt-3">
                   <div class="d-flex justify-content-center links">
-                  {{ __('Already have an account? ') }}<a href="<?= URL::to('/cpp/login')?>" class="text-primary ml-2">{{ __('Sign In') }}</a>
+                  {{ __('Already have an account?') }}<a href="<?= URL::to('/cpp/login')?>" class="text-primary ml-2">{{ __('Sign In') }}</a>
                   </div>                        
                </div>
             </div>

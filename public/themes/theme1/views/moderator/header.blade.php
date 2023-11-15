@@ -8,6 +8,9 @@ $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 // dd($uppercase);
 // exit();UA-42534483-14
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
       ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -187,7 +190,7 @@ $uppercase =  ucfirst($request_url);
                                                 <i class="ri-settings-4-line text-primary"></i>
                                             </div>
                                             <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">{{ __('Signin') }}</h6>
+                                                <h6 class="mb-0 "><?= __('Signin') ?></h6>
                                             </div>
                                         </div>
                                     </a>
@@ -199,7 +202,7 @@ $uppercase =  ucfirst($request_url);
                                            <i class="ri-logout-circle-line text-primary"></i>
                                         </div>
                                         <div class="media-body ml-3">
-                                           <h6 class="mb-0 ">{{ __('Signup') }}</h6>
+                                           <h6 class="mb-0 "><?= __('Signup') ?></h6>
                                         </div>
                                      </div>
                                   </a>

@@ -3,7 +3,9 @@
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
 ?>
-@extends('moderator.header')
+@php
+    include(public_path('themes/theme1/views/Channel/header.blade.php'));
+@endphp
 <link rel="stylesheet" href="<?= typography_link()?>" />
 <!-- Style -->
 <link rel="stylesheet" href="<?= style_sheet_link() ;?>" />
