@@ -9,6 +9,9 @@
         .progress { position:relative; width:100%; }
         .bar { background-color: #008000; width:0%; height:20px; }
          .percent { position:absolute; display:inline-block; left:50%; color: #7F98B2;}
+         .dataTables_filter label {
+    background: rgb(230 228 227)
+}
    </style>
 
 @section('content')

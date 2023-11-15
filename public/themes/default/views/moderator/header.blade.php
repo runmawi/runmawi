@@ -6,6 +6,10 @@ $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 // dd($uppercase);
 // exit();UA-42534483-14
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
       ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">

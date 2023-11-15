@@ -7,7 +7,8 @@ $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 $channel = Session::get('channel'); 
-
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
 // dd($channel);
 // exit();UA-42534483-14
       ?>
@@ -186,7 +187,7 @@ $channel = Session::get('channel');
                                                 <i class="ri-settings-4-line text-primary"></i>
                                             </div>
                                             <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">{{ __('Signin') }}</h6>
+                                                <h6 class="mb-0 "><?= __('Signin') ?></h6>
                                             </div>
                                         </div>
                                     </a>
@@ -198,7 +199,7 @@ $channel = Session::get('channel');
                                            <i class="ri-logout-circle-line text-primary"></i>
                                         </div>
                                         <div class="media-body ml-3">
-                                           <h6 class="mb-0 ">{{ __('Signup') }}</h6>
+                                           <h6 class="mb-0 "><?= __('Signup') ?></h6>
                                         </div>
                                      </div>
                                   </a>

@@ -511,6 +511,13 @@
    #languageDropdown{
    display:block !important;
 }
+
+    #languageSearch{
+        width: 116px;
+        font-size: 12px;
+        right: 5px;
+        position: relative;
+    }
 </style>
 
 <body>
@@ -934,31 +941,20 @@
                                        <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
                                     </svg>
                                  <?php } ?>
-
-                                 <!-- <div class="dropdown-content" id="languageDropdown">
-                                    <?php foreach($TranslationLanguage as $Language): ?>
-                                       <a href="#" class="language-link" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?></a>
-                                    <?php endforeach; ?>
-                                 </div> -->
                                  
-                              </a>
+                              </a> 
                               <div class="iq-sub-dropdown transdropdownlist" style="width:150px">
                                  <div class="iq-card shadow-none m-0" >
                                     <div class="iq-card-body " id="languageDropdown" >
+                                          <!-- Add a search input box -->
+                                         <input type="text" id="languageSearch" placeholder="Search languages">
+          
                                        <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?>
                                             <?php if($Language->code == $settings->translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
                                         </a>
                                        <?php endforeach; ?>
-                                       <!-- <a href="#" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             <img src="assets/images/notify/thumb-3.jpg" class="img-fluid mr-3" alt="streamit">
-                                             <div class="media-body">
-                                                <h6 class="mb-0 ">The Hero Camp</h6>
-                                                <small class="font-size-12">1 hour ago</small>
-                                             </div>
-                                          </div>
-                                       </a> -->
+    
                                     </div>
                                  </div>
                               </div>
@@ -1699,18 +1695,29 @@
           });
       </script>
       <script>
-      const dropdownIcon = document.getElementById("dropdown-icon");
-      const dropdownContent = document.getElementById("languageDropdown");
+            document.getElementById('languageSearch').addEventListener('click', function(event) {
+            event.stopPropagation();
+            });
+            document.getElementById('languageSearch').addEventListener('input', function() {
+                var searchValue = this.value.toLowerCase();
+                var languageLinks = document.querySelectorAll('.language-link');
 
-      // Add a click event listener to the SVG icon
-      dropdownIcon.addEventListener("click", function() {
-      // Toggle the visibility of the dropdown content
-      if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-      } else {
-      dropdownContent.style.display = "block";
-      }
-      });
+                languageLinks.forEach(function(languageLink) {
+                    var languageName = languageLink.textContent.toLowerCase();
+                    if (languageName.includes(searchValue)) {
+                        languageLink.style.display = 'block';
+                    } else {
+                        languageLink.style.display = 'none';
+                    }
+                });
+            });
+            
+            document.addEventListener("click", function (event) {
+                if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+                    dropdownContent.style.display = "none";
+                }
+            });
+
 
       // Close the dropdown if the user clicks outside of it
       document.addEventListener("click", function (event) {
