@@ -647,5 +647,6 @@ Route::group(
             Route::post('tv_signup', 'ApiAuthController@TvSignUp');
             Route::post('tv_code_verifyToken', 'ApiAuthController@verifytokenCode');
             Route::post('CinetPaySubscription', 'ApiAuthController@CinetPaySubscription');
+            Route::post('PayPalSubscription', 'ApiAuthController@PayPalSubscription');
 
         });
