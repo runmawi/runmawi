@@ -18,6 +18,8 @@
         else {
             echo "" ; 
         } 
+      $settings = App\Setting::first();
+
   ?>
   </a>
   </h4>  
@@ -32,7 +34,8 @@
           <div class="border-bg">
             <div class="img-box">
                 <a class="playTrailer" href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?>">
-                <img src="<?php echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  ?>" class="img-fluid w-100" alt="content_user">                 
+                <img src="<?php if($content_user->picture == 'Default.png'){ echo URL::to('/').'/public/uploads/images/'. $settings->default_video_image; }else { echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  } ?>" class="img-fluid w-100" alt="content_user">  
+
                 </a>
               </div>
               </div>
