@@ -474,4 +474,44 @@ class AdminDashboardController extends Controller
            
         }
     
+        public function BunnyCDNUpload(Request $request){
+
+            try {
+
+                
+                // Your BunnyCDN API Key
+                $apiKey = '26a367c4-353f-4030-bb3a-6d91a90eaa714281b472-2fee-4454-990c-afe871f94c73';
+                
+                // Your Storage Zone Name
+                $storageZone = 'filestoragelaravel';
+                
+                // Local path to the video file you want to upload
+                $uploadFile = 'http://localhost/flicknexs/storage/app/public/6gEf874vRWsMyTSp.mp4';
+                
+                // File name to use on BunnyCDN (change if needed)
+                $remoteFileName = 'video.mp4';
+                
+                // $apiKey = 'your_bunnycdn_api_key';
+                // $storageZone = 'your_storage_zone';
+
+                $client = new Client();
+
+                $response = $client->request('GET', 'https://api.bunny.net/storagezone', [
+                    'headers' => [
+                      'AccessKey' => '26a367c4-353f-4030-bb3a-6d91a90eaa714281b472-2fee-4454-990c-afe871f94c73',
+                      'accept' => 'application/json',
+                    ],
+                  ]);
+                  
+                //   echo $response->getBody();
+
+              
+                $data = json_decode($response->getBody(), true);
+                return $data;
+                
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+           
+        }
 }

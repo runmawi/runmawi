@@ -558,6 +558,55 @@ class ApiAuthController extends Controller
 
               }
 
+            }elseif( $paymentMode == "PayPal" ){
+              
+              try {
+                           
+                $email = User::where('email',$request->email)->pluck('email')->first();
+                $user_id = User::where('email',$request->email)->pluck('id')->first();
+
+                $plandetail = SubscriptionPlan::where('plan_id',$request->plan_id)->first();
+                $current_date = date('Y-m-d h:i:s');    
+                $next_date = $plandetail->days;
+                $ends_at = Carbon::now()->addDays($plandetail->days);
+
+                    Subscription::create([
+                      'user_id'        =>  $user_id,
+                      'name'           =>  $request->username,
+                      'price'          =>  $plandetail->price ,   // Amount Paise to Rupees
+                      'stripe_id'      =>  $request->plan_id ,
+                      'stripe_status'  =>  'active' ,
+                      'stripe_plan'    =>  $request->plan_id,
+                      'quantity'       =>  null,
+                      'countryname'    =>  $request->country,
+                      'regionname'     =>  $request->state,
+                      'cityname'       =>  $request->city,
+                      'PaymentGateway' =>  'PayPal',
+                      'trial_ends_at'  =>  $ends_at,
+                      'ends_at'        =>  $ends_at,
+                  ]);
+
+                  User::where('id',$request->user_id)->update([
+                      'role'                 =>  'subscriber',
+                      'stripe_id'            =>  $request->plan_id ,
+                      'subscription_start'   =>  Carbon::now(),
+                      'subscription_ends_at' =>  $ends_at,
+                      'payment_gateway'      =>  'PayPal',
+                  ]);
+
+                return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
+                
+              } catch (\Throwable $th) {
+
+                $response = array(
+                  'status'=>'false',
+                  'message'=> $th->getMessage() ,
+                );  
+
+                return response()->json($response, 200);
+
+              }
+
             }
             else{
                      $payment_type = $input['payment_type'];
@@ -3129,6 +3178,7 @@ public function verifyandupdatepassword(Request $request)
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $serie_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
+      $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
@@ -3160,6 +3210,18 @@ public function verifyandupdatepassword(Request $request)
         ->where('user_id', $user_id)
         ->update(['to_time' => $date]);
       }
+    
+      if ( $live_ppv_count == 0 ) {
+        DB::table('live_purchases')->insert(
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
+        );
+        
+      } else {
+        DB::table('live_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
+        );
+      }
+  
       $response = array(
         'status' => 'true',
         'message' => "video has been added"
@@ -22348,6 +22410,102 @@ public function TV_login(Request $request)
                 'name' => ucwords($user->username),
                 'uname' => $user->username,
                 'paymentMethod' => 'CinetPay',
+                'plan' => ucfirst($plandetail->plans_name),
+                'price' => $plandetail->price,
+                'plan_id' => $plandetail->plan_id,
+                'billing_interval' => $plandetail->billing_interval,
+                'next_billing' => $ends_at,
+                'subscription_type' => 'One Time',
+
+            ), function($message) use ($request,$user,$email_subject){
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($user->email, $user->username)->subject($email_subject);
+            });
+
+            $email_log      = 'Mail Sent Successfully from Register Subscription';
+            $email_template = "23";
+            $user_id = $user->id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        } catch (\Throwable $th) {
+
+            $user = User::where('id',$request->user_id)->first();
+
+            $email_log      = $th->getMessage();
+            $email_template = "23";
+            $user_id = $user->id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+    
+    return response()->json($response, 200);
+
+    }
+
+
+    
+    public function PayPalSubscription(Request $request)
+    {
+
+        try{
+
+          $data = $request->all();
+          $email = User::where('id',$request->user_id)->pluck('email')->first();
+          $userdetail = User::where('id',$request->user_id)->first();
+  
+          $plandetail = SubscriptionPlan::where('plan_id',$request->plan_id)->first();
+          $current_date = date('Y-m-d h:i:s');    
+          $next_date = $plandetail->days;
+          $ends_at = Carbon::now()->addDays($plandetail->days);
+          
+            Subscription::create([
+                'user_id'        =>  $userdetail->id,
+                'name'           =>  $userdetail->username,
+                'price'          =>  $request->amount ,   // Amount Paise to Rupees
+                'stripe_id'      =>  $request->plan_id ,
+                'stripe_status'  =>  'active' ,
+                'stripe_plan'    =>  $request->plan_id,
+                'quantity'       =>  null,
+                'countryname'    =>  $request->country,
+                'regionname'     =>  $request->state,
+                'cityname'       =>  $request->city,
+                'PaymentGateway' =>  'PayPal',
+                'trial_ends_at'  =>  $ends_at,
+                'ends_at'        =>  $ends_at,
+            ]);
+
+            User::where('id',$request->user_id)->update([
+                'role'                 =>  'subscriber',
+                'stripe_id'            =>  $request->plan_id ,
+                'subscription_start'   =>  Carbon::now(),
+                'subscription_ends_at' =>  $ends_at,
+                'payment_gateway'      =>  'PayPal',
+            ]);
+
+            // Success 
+            $response = array(
+                "status"  => true ,
+                "message" => "Payment done! Successfully", 
+            );
+       
+    
+
+    } catch (\Exception $e) {
+
+        $response = array(
+            "status"  => false , 
+            "message" => $e->getMessage(), 
+       );
+    }
+        try {
+            $user = User::where('id',$request->user_id)->first();
+            $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+
+            \Mail::send('emails.subscriptionmail', array(
+                'name' => ucwords($user->username),
+                'uname' => $user->username,
+                'paymentMethod' => 'PayPal',
                 'plan' => ucfirst($plandetail->plans_name),
                 'price' => $plandetail->price,
                 'plan_id' => $plandetail->plan_id,
