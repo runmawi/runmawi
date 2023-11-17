@@ -4,6 +4,7 @@
       $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
       $order_settings_list = App\OrderHomeSetting::get(); 
       $ModeratorsUsers = App\ModeratorsUser::get(); 
+      $settings = App\Setting::first();
 
       ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -31,7 +32,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  ?>" class="img-fluid w-100" alt="content_user">                 
+              <img src="<?php if($content_user->picture == 'Default.png'){ echo URL::to('/').'/public/uploads/images/'. $settings->default_video_image; }else { echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  } ?>" class="img-fluid w-100" alt="content_user">  
               </div>
 
               <div class="block-description">
