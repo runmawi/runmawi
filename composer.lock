@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fd4d223cd3c5100c1a21e41585ef793",
+    "content-hash": "6d4fd34fa88d5f7a99678549a3d3bb45",
     "packages": [
         {
             "name": "acaronlex/laravel-calendar",
@@ -7284,6 +7284,104 @@
                 }
             ],
             "time": "2023-03-15T21:02:42+00:00"
+        },
+        {
+            "name": "platformcommunity/bunnycdn-storage",
+            "version": "v0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PlatformCommunity/BunnyCDN.PHP.Storage.git",
+                "reference": "8734621d88f3ba2e342967ebdf60bbe185630b76"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PlatformCommunity/BunnyCDN.PHP.Storage/zipball/8734621d88f3ba2e342967ebdf60bbe185630b76",
+                "reference": "8734621d88f3ba2e342967ebdf60bbe185630b76",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BunnyCDN\\Storage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dejan Grofelnik Pelzel",
+                    "email": "hello@bunnycdn.com"
+                }
+            ],
+            "description": "Library for BunnyCDN Storage",
+            "support": {
+                "issues": "https://github.com/PlatformCommunity/BunnyCDN.PHP.Storage/issues",
+                "source": "https://github.com/PlatformCommunity/BunnyCDN.PHP.Storage/tree/master"
+            },
+            "time": "2020-08-04T11:21:04+00:00"
+        },
+        {
+            "name": "platformcommunity/flysystem-bunnycdn",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PlatformCommunity/flysystem-bunnycdn.git",
+                "reference": "e0bb6b998fa400fc896e1423987a149dc0b546ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PlatformCommunity/flysystem-bunnycdn/zipball/e0bb6b998fa400fc896e1423987a149dc0b546ee",
+                "reference": "e0bb6b998fa400fc896e1423987a149dc0b546ee",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "league/flysystem": "~1.0",
+                "platformcommunity/bunnycdn-storage": "~0.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3",
+                "phpunit/phpunit": "@stable"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PlatformCommunity\\Flysystem\\BunnyCDN\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Sinnott",
+                    "email": "alex@platformapp.io"
+                }
+            ],
+            "description": "Flysystem adapter for BunnyCDN",
+            "support": {
+                "issues": "https://github.com/PlatformCommunity/flysystem-bunnycdn/issues",
+                "source": "https://github.com/PlatformCommunity/flysystem-bunnycdn/tree/v1.1.1"
+            },
+            "time": "2022-01-14T02:40:54+00:00"
         },
         {
             "name": "psr/cache",

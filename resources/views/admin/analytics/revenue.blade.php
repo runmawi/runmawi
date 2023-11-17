@@ -183,7 +183,7 @@ $jsondata = json_decode($jsonString, true);
 
                             <div class="row">
                                 <div class="col-md-12">
-                                <table class="table" id="user_tabledss" style="width:100%">
+                                <table class="table  table movie_table " id="user_tabledss" style="width:100%">
                               <thead>
                                  <tr class="r1">
                                     <th>User</th>
@@ -195,7 +195,7 @@ $jsondata = json_decode($jsonString, true);
                                     <th>Status</th>
                                  </tr>
                               </thead>
-                              <tbody>
+                              <tbody class='movie_table'>
                               @foreach($total_user as $key => $user)
 
                              <tr>

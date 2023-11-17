@@ -496,17 +496,60 @@ class AdminDashboardController extends Controller
 
                 $client = new Client();
 
-                $response = $client->request('GET', 'https://api.bunny.net/storagezone', [
+                $response = $client->request('GET', 'https://api.bunny.net/storagezone/437978', [
                     'headers' => [
                       'AccessKey' => '26a367c4-353f-4030-bb3a-6d91a90eaa714281b472-2fee-4454-990c-afe871f94c73',
                       'accept' => 'application/json',
                     ],
                   ]);
                   
-                //   echo $response->getBody();
+                  try {
+                    $REGION = 'la';
+                    $BASE_HOSTNAME = 'storage.bunnycdn.com';
+                    $HOSTNAME = 'https://la.bunnycdn.com';
+                    $STORAGE_ZONE_NAME = 'filestoragelaravel';
+                    $FILENAME_TO_UPLOAD = 'Video';
+                    $ACCESS_KEY = '26a367c4-353f-4030-bb3a-6d91a90eaa714281b472-2fee-4454-990c-afe871f94c73';
+                    $FILE_PATH = 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4';  // Full path to your local file
+                    
+                    $url = "https://{$HOSTNAME}/{$STORAGE_ZONE_NAME}/{$FILENAME_TO_UPLOAD}";
+                    $ch = curl_init();
+                    
+                    $options = array(
+                        CURLOPT_URL => $url,
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_CUSTOMREQUEST => 'PUT',
+                        CURLOPT_POSTFIELDS => file_get_contents($FILE_PATH),
+                        CURLOPT_HTTPHEADER => array(
+                            "AccessKey: {$ACCESS_KEY}",
+                            'Content-Type: application/octet-stream',
+                        ),
+                    );
+                    
+                    $response = curl_exec($ch);
+                    curl_close($ch);
+                    
+                    // Process $response as needed
+                    
+                    curl_setopt_array($ch, $options);
 
-              
+                    $response = curl_exec($ch);
+
+                    if (!$response) {
+                    die("Error: " . curl_error($ch));
+                    } else {
+                    print_r($response);
+                    }
+
+                    curl_close($ch);
+                //code...
+            } catch (\Throwable $th) {
+                throw $th;
+              }
                 $data = json_decode($response->getBody(), true);
+                echo '<pre>';
+                print_r( $data);
+                exit;
                 return $data;
                 
             } catch (\Throwable $th) {
