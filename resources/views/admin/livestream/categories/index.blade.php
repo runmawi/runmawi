@@ -165,11 +165,20 @@ border-radius: 0px 4px 4px 0px;
             <table class="table table-bordered iq-card text-center">
                 <tr class="table-header r1">
                     <th><label>Video Category Name</label></th>
+                    <th><label>Active</label></th>          
                     <th><label>Operation</label></th>
 					<tbody id="tablecontents">
                     @foreach($allCategories as $category)
     	            <tr class="row1" data-id="{{ $category->id }}">
                         <td valign="bottom"><p>{{ $category->name }}</p></td>
+                        <td valign="bottom">
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="active" class="active" id="{{ 'category_'.$category->id }}" type="checkbox" @if( $category->in_menu == "1") checked  @endif data-category-id={{ $category->id }}  data-type="category" onchange="update_category(this)" >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </td>
                         <td>
                             <div class="align-items-center list-user-action"><a href="{{ URL::to('admin/livestream/categories/edit/') }}/{{$category->id}}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> <a href="{{ URL::to('admin/livestream/categories/delete/') }}/{{$category->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
@@ -201,6 +210,60 @@ border-radius: 0px 4px 4px 0px;
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     
+    
+	<script>
+		function update_category(ele){
+
+		var category_id = $(ele).attr('data-category-id');
+		var status   = '#category_'+category_id;
+		var category_Status = $(status).prop("checked");
+
+		if(category_Status == true){
+			var status  = '1';
+			var check = confirm("Are you sure you want to active this Category?");  
+
+		}else{
+			var  status  = '0';
+			var check = confirm("Are you sure you want to remove this Category?");  
+		}
+
+
+		if(check == true){ 
+
+		$.ajax({
+					type: "POST", 
+					dataType: "json", 
+					url: "{{ url('admin/livestream_category_active') }}",
+						data: {
+							_token  : "{{csrf_token()}}" ,
+							category_id: category_id,
+							status: status,
+					},
+					success: function(data) {
+						if(data.message == 'true'){
+							//  location.reload();
+						}
+						else if(data.message == 'false'){
+							swal.fire({
+							title: 'Oops', 
+							text: 'Something went wrong!', 
+							allowOutsideClick:false,
+							icon: 'error',
+							title: 'Oops...',
+							}).then(function() {
+								location.href = '{{ URL::to('admin/audios/categories') }}';
+							});
+						}
+					},
+				});
+		}else if(check == false){
+		$(status).prop('checked', true);
+
+		}
+		}
+	</script>
+
+
 	<script type="text/javascript">
 
       $(function () {

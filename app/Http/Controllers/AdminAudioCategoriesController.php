@@ -722,4 +722,19 @@ class AdminAudioCategoriesController extends Controller
         }    
               
 
+        public function audio_category_active(Request $request)
+        {
+            try {
+                $category = AudioCategory::where('id',$request->category_id)->update([
+                    'active' => $request->status,
+                ]);
+    
+                return response()->json(['message'=>"true"]);
+    
+            } catch (\Throwable $th) {
+                return response()->json(['message'=>"false"]);
+            }
+        }
+    
+    
 }

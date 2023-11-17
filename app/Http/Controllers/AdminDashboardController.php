@@ -545,7 +545,7 @@ class AdminDashboardController extends Controller
                     CURLOPT_URL => $url,
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_HTTPHEADER => array(
-                        "AccessKey: '2b2e513c-c6e9-4ffe-8d8a24b8f1f6-9b68-4434'",
+                        "AccessKey: 2b2e513c-c6e9-4ffe-8d8a24b8f1f6-9b68-4434",
                         'Content-Type: application/json',
                     ),
                 );
@@ -562,7 +562,7 @@ class AdminDashboardController extends Controller
                     if ($decodedResponse === null) {
                         die("Error decoding JSON response: " . json_last_error_msg());
                     }
-                
+                echo"<pre>";
                     // Process $decodedResponse as needed, it contains information about the files in the storage zone
                     print_r($decodedResponse);
                 }

@@ -160,4 +160,19 @@ class AdminSeriesGenreController extends Controller
         }
         return 1;
     }
+
+    public function series_category_active(Request $request)
+    {
+        try {
+            $category = SeriesGenre::where('id',$request->category_id)->update([
+                'in_menu' => $request->status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
 }
