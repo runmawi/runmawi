@@ -1177,4 +1177,23 @@ class AdminSettingsController extends Controller
 
         return response()->json(['success' => true , 'id' => 'status-'.$request->id , 'status_button' => $status_button  ]);
     }   
+
+    
+    public function footer_menu_active(Request $request)
+    {
+
+
+        try {
+
+            $category = FooterLink::where('id',$request->active)->update([
+                'active' => $request->status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
 }

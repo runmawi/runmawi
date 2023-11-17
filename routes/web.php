@@ -163,6 +163,8 @@ Route::get('admin/subtitles/edit/{id}', 'AdminSubtitlesController@edit');
 Route::post('admin/subtitles/update', 'AdminSubtitlesController@update');
 Route::get('admin/subtitles/delete/{id}', 'AdminSubtitlesController@destroy');
 
+Route::post('admin/footer_menu_active', 'AdminSettingsController@footer_menu_active');
+
 // CPP Video Analytics
 
 Route::get('admin/cpp/video-analytics', 'ModeratorsUserController@VideoAnalytics');
@@ -740,6 +742,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::post('/settings/store_inapp', 'AdminSettingsController@Store_InApp');
 
+    // Active  - Categories
+    
+        Route::post('/audio_category_active', 'AdminAudioCategoriesController@audio_category_active');
+        Route::post('/livestream_category_active', 'AdminLiveCategoriesController@livestream_category_active');
+        Route::post('/video_category_active', 'AdminVideoCategoriesController@video_category_active');
+        Route::post('/series_category_active', 'AdminSeriesGenreController@series_category_active');
+        Route::post('/menus_active', 'AdminMenuController@menus_active');
+
+        
     // Admin Landing page
 
     Route::get('/landing-page/index', 'AdminLandingpageController@index')->name('landing_page_index');
