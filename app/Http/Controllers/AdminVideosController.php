@@ -720,35 +720,42 @@ class AdminVideosController extends Controller
                 
                 $storage_settings = StorageSetting::first();
 
-                $url = "{$storage_settings->bunny_cdn_hostname}/{$storage_settings->bunny_cdn_storage_zone_name}/";
+                if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+                && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
+                && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
+
+                    $url = "{$storage_settings->bunny_cdn_hostname}/{$storage_settings->bunny_cdn_storage_zone_name}/";
+                    
+                    $ch = curl_init();
+                    
+                    $options = array(
+                        CURLOPT_URL => $url,
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_HTTPHEADER => array(
+                            "AccessKey: {$storage_settings->bunny_cdn_ftp_access_key}",
+                            'Content-Type: application/json',
+                        ),
+                    );
+                    
+                    curl_setopt_array($ch, $options);
+                    
+                    $response = curl_exec($ch);
+                    
+                    if (!$response) {
+                        die("Error: " . curl_error($ch));
+                    } else {
+                        $decodedResponse = json_decode($response, true);
+                    
+                        if ($decodedResponse === null) {
+                            die("Error decoding JSON response: " . json_last_error_msg());
+                        }
                 
-                $ch = curl_init();
-                
-                $options = array(
-                    CURLOPT_URL => $url,
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_HTTPHEADER => array(
-                        "AccessKey: {$storage_settings->bunny_cdn_ftp_access_key}",
-                        'Content-Type: application/json',
-                    ),
-                );
-                
-                curl_setopt_array($ch, $options);
-                
-                $response = curl_exec($ch);
-                
-                if (!$response) {
-                    die("Error: " . curl_error($ch));
-                } else {
-                    $decodedResponse = json_decode($response, true);
-                
-                    if ($decodedResponse === null) {
-                        die("Error decoding JSON response: " . json_last_error_msg());
                     }
-               
+                    curl_close($ch);
+                    // dd($decodedResponse);
+                }else{
+                    $decodedResponse = [];
                 }
-                curl_close($ch);
-                // dd($decodedResponse);
                 
             $data = [
                 "headline" => '<i class="fa fa-plus-circle"></i> New Video',
