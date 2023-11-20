@@ -710,7 +710,7 @@
                                                 <li>
                                                     <?php if($key < 5): ?>
                                                         <a class="dropdown-item cont-item" href="<?php echo URL::to('/series/category') . '/' . $tvshows_series->slug; ?>">
-                                                            <?php echo $tvshows_series->title; ?>
+                                                            <?php echo $tvshows_series->name; ?>
                                                         </a>
                                                     <?php else: ?>
                                                         <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>"> 
