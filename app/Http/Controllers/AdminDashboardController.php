@@ -505,7 +505,8 @@ class AdminDashboardController extends Controller
 
             try {
 
-                
+                $storage_settings = StorageSetting::first();
+                    // dd($storage_settings);
                 // Your BunnyCDN API Key
                 $apiKey = '26a367c4-353f-4030-bb3a-6d91a90eaa714281b472-2fee-4454-990c-afe871f94c73';
                 
@@ -537,7 +538,7 @@ class AdminDashboardController extends Controller
                 $STORAGE_ZONE_NAME = 'filestoragelaravel';  
                 $ACCESS_KEY = '2b2e513c-c6e9-4ffe-8d8a24b8f1f6-9b68-4434';  // Replace with your actual access key
                 
-                $url = "{$HOSTNAME}/{$STORAGE_ZONE_NAME}/";
+                $url = "{$storage_settings->bunny_cdn_hostname}/{$storage_settings->bunny_cdn_storage_zone_name}/";
                 
                 $ch = curl_init();
                 
@@ -545,7 +546,7 @@ class AdminDashboardController extends Controller
                     CURLOPT_URL => $url,
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_HTTPHEADER => array(
-                        "AccessKey: 2b2e513c-c6e9-4ffe-8d8a24b8f1f6-9b68-4434",
+                        "AccessKey: {$storage_settings->bunny_cdn_ftp_access_key}",
                         'Content-Type: application/json',
                     ),
                 );
