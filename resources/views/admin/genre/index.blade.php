@@ -156,6 +156,7 @@ border-radius: 0px 4px 4px 0px;
 								<tr class="table-header r1">
 									<th><label>Series Genre Image</label></th>
 									<th><label>Series Genre Name</label></th>
+                                    <th><label>Series Active</label></th>          
 									<th><label>Operation</label></th>
 								</tr>
 
@@ -163,6 +164,14 @@ border-radius: 0px 4px 4px 0px;
 									<tr id="{{ $category->id }}">
 										<td valign="bottom" class=""><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->image }}" width="50" height="50"></td>
 										<td valign="bottom"><p>{{ $category->name }}</p></td>
+										<td valign="bottom">
+                                            <div class="mt-1">
+                                                <label class="switch">
+                                                    <input name="active" class="active" id="{{ 'category_'.$category->id }}" type="checkbox" @if( $category->in_menu == "1") checked  @endif data-category-id={{ $category->id }}  data-type="category" onchange="update_category(this)" >
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </td>
 										<td>
 											<div class=" align-items-center list-user-action">
 											<a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title=""
@@ -186,6 +195,61 @@ border-radius: 0px 4px 4px 0px;
 	</div>
 
 	@section('javascript')
+
+
+	
+	<script>
+		function update_category(ele){
+
+		var category_id = $(ele).attr('data-category-id');
+		var status   = '#category_'+category_id;
+		var category_Status = $(status).prop("checked");
+
+		if(category_Status == true){
+			var status  = '1';
+			var check = confirm("Are you sure you want to active this Category?");  
+
+		}else{
+			var  status  = '0';
+			var check = confirm("Are you sure you want to remove this Category?");  
+		}
+
+
+		if(check == true){ 
+
+		$.ajax({
+					type: "POST", 
+					dataType: "json", 
+					url: "{{ url('admin/series_category_active') }}",
+						data: {
+							_token  : "{{csrf_token()}}" ,
+							category_id: category_id,
+							status: status,
+					},
+					success: function(data) {
+						if(data.message == 'true'){
+							//  location.reload();
+						}
+						else if(data.message == 'false'){
+							swal.fire({
+							title: 'Oops', 
+							text: 'Something went wrong!', 
+							allowOutsideClick:false,
+							icon: 'error',
+							title: 'Oops...',
+							}).then(function() {
+								location.href = '{{ URL::to('admin/audios/categories') }}';
+							});
+						}
+					},
+				});
+		}else if(check == false){
+		$(status).prop('checked', true);
+
+		}
+		}
+	</script>
+
 
 	<script type="text/javascript">
 

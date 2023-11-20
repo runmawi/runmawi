@@ -77,11 +77,11 @@ border-radius: 0px 4px 4px 0px;
                 <form method="POST" action="{{ URL::to('admin/storage_settings/save') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="storage_settings">
                 <div class="col-sm-12">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="panel panel-primary" data-collapsed="0">
                                 <div class="panel-heading"> <div class="panel-title"><label>Site Storage</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                                 <div class="panel-body row"> 
-                                    <div class="form-group col-md-4">  
+                                    <div class="form-group col-md-6">  
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                             <div class="mr-2">OFF</div>
                                                 <label class="switch mt-2">
@@ -94,11 +94,11 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="panel panel-primary" data-collapsed="0">
                                 <div class="panel-heading"> <div class="panel-title"><label>AWS Storage</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                                 <div class="panel-body row"> 
-                                    <div class="form-group col-md-4">     
+                                    <div class="form-group col-md-6">     
                                         <div class="mt-1 d-flex align-items-center justify-content-around">
                                             <div class="mr-2">OFF</div>
                                                 <label class="switch mt-2">
@@ -111,8 +111,25 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                            <div class="panel panel-primary" data-collapsed="0">
+                                <div class="panel-heading"> <div class="panel-title"><label>Bunny CDN Storage</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                <div class="panel-body row"> 
+                                    <div class="form-group col-md-6">  
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                            <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                <input name="bunny_cdn_storage" class="bunny_cdn_storage" id="bunny_cdn_storage" type="checkbox" @if( $storage_settings->bunny_cdn_storage == "1") checked  @endif >
+                                                <span class="slider round"></span>
+                                                </label>
+                                            <div class="ml-2">ON</div>
+                                        </div>                              
+                                    </div>                               
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                      <!-- AWS Env Details -->
+                      <!-- Site Env Details -->
                       <div class="row" id="site_details">
                         <div class="col-sm-6">
                             <label class="">Site KEY  </label>
@@ -226,6 +243,61 @@ border-radius: 0px 4px 4px 0px;
 
                     </div>
                     
+
+                        <!-- Bunny CDN Env Details -->
+                    <div class="row" id="bunny_cdn_details">
+                        <div class="col-sm-6">
+                            <label class="">Bunny CDN Region  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="bunny_cdn_region" id="bunny_cdn_region" value="@if(!empty($storage_settings->bunny_cdn_region)){{ $storage_settings->bunny_cdn_region }}  @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Bunny CDN Storage Zone Name  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="bunny_cdn_storage_zone_name" id="bunny_cdn_storage_zone_name" value="@if(!empty($storage_settings->bunny_cdn_storage_zone_name)){{ $storage_settings->bunny_cdn_storage_zone_name }}  @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Bunny CDN Hostname  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="bunny_cdn_hostname" id="bunny_cdn_hostname" value="@if(!empty($storage_settings->bunny_cdn_hostname)){{ $storage_settings->bunny_cdn_hostname }} @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Bunny CDN Linked Hostname</label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="bunny_cdn_file_linkend_hostname" id="bunny_cdn_file_linkend_hostname" value="@if(!empty($storage_settings->bunny_cdn_file_linkend_hostname)){{ $storage_settings->bunny_cdn_file_linkend_hostname }} @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Bunny CDN FTP Access Key</label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="bunny_cdn_ftp_access_key" id="bunny_cdn_ftp_access_key" value="@if(!empty($storage_settings->bunny_cdn_ftp_access_key)){{ $storage_settings->bunny_cdn_ftp_access_key }} @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Bunny CDN Account Access Key</label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="bunny_cdn_access_key" id="bunny_cdn_access_key" value="@if(!empty($storage_settings->bunny_cdn_access_key)){{ $storage_settings->bunny_cdn_access_key }} @endif" />
+                           </div>
+                        </div>
+
+                        <!-- <div class="col-sm-6">
+                            <label class="">Bunny CDN Video Path</label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="bunny_cdn_video_path" id="bunny_cdn_video_path" value="@if(!empty($storage_settings->bunny_cdn_video_path)){{ $storage_settings->bunny_cdn_video_path }} @endif" />
+                           </div>
+                        </div> -->
+
+                    </div>
+
+
                 </div>
                 <input type="hidden" name="_token" value="{{ csrf_token() }} " />
 
@@ -259,29 +331,70 @@ border-radius: 0px 4px 4px 0px;
 
         
         $('#aws_details').hide(); 
+        $('#bunny_cdn_details').hide(); 
+
         var aws_storage = "{{ $storage_settings->aws_storage }}";
         if(aws_storage == 1){
             $('#aws_details').show(); 
             $('#site_details').hide(); 
+            $('#bunny_cdn_details').hide(); 
         }
+
+        var bunny_cdn_storage = "{{ $storage_settings->bunny_cdn_storage }}";
+        if(bunny_cdn_storage == 1){
+            $('#aws_details').hide(); 
+            $('#site_details').hide(); 
+            $('#bunny_cdn_details').show(); 
+        }
+
+        $('.bunny_cdn_storage').on('change', function(event) {
+            var bunny_cdn_storage = $("#bunny_cdn_storage").prop("checked");
+            // Unchecks it
+                if(bunny_cdn_storage == true){
+                    $('#site_storage').prop('checked', false);
+                    $('#aws_storage').prop('checked', false);
+
+                    $('#aws_details').hide(); 
+                    $('#site_details').hide(); 
+                    $('#bunny_cdn_details').show(); 
+
+                    Swal.fire({
+                        title: 'Bunny CDN - Storage',
+                        imageWidth: 320,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
+                    })
+                }
+        });
 
         $('.aws_storage').on('change', function(event) {
             var aws_storage = $("#aws_storage").prop("checked");
             // Unchecks it
                 if(aws_storage == true){
                     $('#site_storage').prop('checked', false);
+                    $('#bunny_cdn_storage').prop('checked', false);
                     $('#aws_details').show(); 
                     $('#site_details').hide(); 
+                    $('#bunny_cdn_details').hide(); 
+
                     Swal.fire({
                         title: 'Aws - Storage',
                         imageWidth: 320,
                         imageHeight: 200,
                         imageAlt: 'Custom image',
                     })
-                }else{
-                    var site_storage = $("#site_storage").prop("checked", true);
-                    $('#aws_details').hide(); 
+                }
+        });
+
+        $('#site_storage').on('change', function(event) {
+            var site_storage = $("#site_storage").prop("checked");
+            // Unchecks it
+                if(site_storage == true){
+                    $('#aws_storage').prop('checked', false);
+                    $('#bunny_cdn_storage').prop('checked', false);
                     $('#site_details').show(); 
+                    $('#bunny_cdn_details').hide(); 
+                    $('#aws_details').hide(); 
                     Swal.fire({
                         title: 'Site - Storage',
                         imageWidth: 320,
@@ -290,6 +403,7 @@ border-radius: 0px 4px 4px 0px;
                     })
                 }
         });
+
     });
 
 

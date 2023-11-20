@@ -4,7 +4,7 @@
       $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
       $order_settings_list = App\OrderHomeSetting::get(); 
       $channels = App\Channel::get(); 
-
+      $settings = App\Setting::first();
       ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h4 class="main-title">
@@ -33,7 +33,7 @@
             <div class="border-bg">
             <div class="img-box">
                 <a class="playTrailer" href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug  ) ?>">
-                <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="channel">  
+                <img src="<?php if($channel->channel_image == 'default_image.jpg'){ echo URL::to('/').'/public/uploads/images/'. $settings->default_video_image;}else { echo $channel->channel_image;  } ?>" class="img-fluid w-100" alt="channel">  
                 </a>               
               </div>
               </div>

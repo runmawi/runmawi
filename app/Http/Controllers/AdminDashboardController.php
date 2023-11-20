@@ -32,10 +32,25 @@ use App\PpvPurchase;
 use App\Language;
 use App\LoggedDevice;
 use App\GuestLoggedDevice;
+use GuzzleHttp\Exception\RequestException;
+use League\Flysystem\Filesystem;
+use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
+use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
+use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
+use Illuminate\Support\Facades\Storage;
 
 class AdminDashboardController extends Controller
 {
-   
+
+
+    public function __construct() 
+    {
+        $storageZoneRegion = 'LA';
+        $this->storageZoneName = 'filestoragelaravel';
+        $this->apiAccessKey = '26a367c4-353f-4030-bb3a-6d91a90eaa714281b472-2fee-4454-990c-afe871f94c73';
+        $this->storageZoneRegion = strtolower($storageZoneRegion);
+    }
+
     public function Index()
     {
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
@@ -474,4 +489,93 @@ class AdminDashboardController extends Controller
            
         }
     
+        private function getBaseUrl()
+        {
+            if($this->storageZoneRegion == "la" || $this->storageZoneRegion == "")
+            {
+                return "https://storage.bunnycdn.com/";
+            }
+            else
+            {
+                return "https://{$this->storageZoneRegion}.storage.bunnycdn.com/";
+            }
+        }
+
+        public function BunnyCDNUpload(Request $request){
+
+            try {
+
+                $storage_settings = StorageSetting::first();
+                    // dd($storage_settings);
+                // Your BunnyCDN API Key
+                $apiKey = '26a367c4-353f-4030-bb3a-6d91a90eaa714281b472-2fee-4454-990c-afe871f94c73';
+                
+                // Your Storage Zone Name
+                $storageZone = 'filestoragelaravel';
+                
+                // Local path to the video file you want to upload
+                $uploadFile = 'http://localhost/flicknexs/storage/app/public/6gEf874vRWsMyTSp.mp4';
+                
+                // File name to use on BunnyCDN (change if needed)
+                $remoteFileName = 'video.mp4';
+                
+                // $apiKey = 'your_bunnycdn_api_key';
+                // $storageZone = 'your_storage_zone';
+
+                // $client = new Client();
+
+                // $response = $client->request('GET', 'https://api.bunny.net/storagezone/438031', [
+                //     'headers' => [
+                //       'AccessKey' => '26a367c4-353f-4030-bb3a-6d91a90eaa714281b472-2fee-4454-990c-afe871f94c73',
+                //       'accept' => 'application/json',
+                //     ],
+                //   ]);
+                  
+                //   echo $response->getBody();
+
+                $REGION = 'la';
+                $HOSTNAME = 'la.storage.bunnycdn.com';
+                $STORAGE_ZONE_NAME = 'filestoragelaravel';  
+                $ACCESS_KEY = '2b2e513c-c6e9-4ffe-8d8a24b8f1f6-9b68-4434';  // Replace with your actual access key
+                
+                $url = "{$storage_settings->bunny_cdn_hostname}/{$storage_settings->bunny_cdn_storage_zone_name}/";
+                
+                $ch = curl_init();
+                
+                $options = array(
+                    CURLOPT_URL => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HTTPHEADER => array(
+                        "AccessKey: {$storage_settings->bunny_cdn_ftp_access_key}",
+                        'Content-Type: application/json',
+                    ),
+                );
+                
+                curl_setopt_array($ch, $options);
+                
+                $response = curl_exec($ch);
+                
+                if (!$response) {
+                    die("Error: " . curl_error($ch));
+                } else {
+                    $decodedResponse = json_decode($response, true);
+                
+                    if ($decodedResponse === null) {
+                        die("Error decoding JSON response: " . json_last_error_msg());
+                    }
+                echo"<pre>";
+                    // Process $decodedResponse as needed, it contains information about the files in the storage zone
+                    print_r($decodedResponse);
+                }
+                
+                curl_close($ch);
+                exit;
+                $data = json_decode($response->getBody(), true);
+                return $data;
+                
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+           
+        }
 }

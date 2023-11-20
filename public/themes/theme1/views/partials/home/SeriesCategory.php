@@ -43,7 +43,7 @@ ol.breadcrumb {
                                 </li>
 
                                 <li class="breadcrumb-item"><a
-                                        class="black-text"><?php echo strlen($CategorySeries->name) > 50 ? ucwords(substr($CategorySeries->name, 0, 120) . '...') : ucwords($CategorySeries->name); ?>
+                                        class="black-text"><?php echo strlen(@$CategorySeries->name) > 50 ? ucwords(substr(@$CategorySeries->name, 0, 120) . '...') : ucwords(@$CategorySeries->name); ?>
                                     </a></li>
                             </ol>
                         </div>

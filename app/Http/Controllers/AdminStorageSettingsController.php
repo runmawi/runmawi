@@ -83,6 +83,7 @@ class AdminStorageSettingsController extends Controller
 
         $storage_settings->site_storage = $request->has('site_storage') ? 1 : 0 ?? 0; ;
         $storage_settings->aws_storage = $request->has('aws_storage') ? 1 : 0 ?? 0; ;
+        $storage_settings->bunny_cdn_storage = $request->has('bunny_cdn_storage') ? 1 : 0 ?? 0; ;
         $storage_settings->aws_access_key = $request->aws_access_key;
         $storage_settings->aws_secret_key = $request->aws_secret_key;
         $storage_settings->aws_region = $request->aws_region;
@@ -98,6 +99,12 @@ class AdminStorageSettingsController extends Controller
         $storage_settings->site_user = $request->site_user;
         $storage_settings->site_action = $request->site_action;
         $storage_settings->site_IPSERVERAPI = $request->site_IPSERVERAPI;
+        $storage_settings->bunny_cdn_region = $request->bunny_cdn_region;
+        $storage_settings->bunny_cdn_storage_zone_name = $request->bunny_cdn_storage_zone_name;
+        $storage_settings->bunny_cdn_hostname = $request->bunny_cdn_hostname;
+        $storage_settings->bunny_cdn_ftp_access_key = $request->bunny_cdn_ftp_access_key;
+        $storage_settings->bunny_cdn_access_key = $request->bunny_cdn_access_key;
+        $storage_settings->bunny_cdn_file_linkend_hostname = $request->bunny_cdn_file_linkend_hostname;
 
         $storage_settings->save();
 

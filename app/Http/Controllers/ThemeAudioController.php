@@ -897,6 +897,7 @@ class ThemeAudioController extends Controller{
                 'artist_videos' => $artist_videos,
                 'albums' => $albums,
                 'artist_following' => $artist_following,
+                'artist_slug' => $artist_slug,
             );
             return Theme::view('artist', $data);
 

@@ -19,6 +19,7 @@ Route::get('/video-chat', function () {
 });
 // Route::get('video_chat', 'VideoChatController@index');
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
+Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
 
 $router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
@@ -162,6 +163,8 @@ Route::get('admin/subtitles/edit/{id}', 'AdminSubtitlesController@edit');
 Route::post('admin/subtitles/update', 'AdminSubtitlesController@update');
 Route::get('admin/subtitles/delete/{id}', 'AdminSubtitlesController@destroy');
 
+Route::post('admin/footer_menu_active', 'AdminSettingsController@footer_menu_active');
+
 // CPP Video Analytics
 
 Route::get('admin/cpp/video-analytics', 'ModeratorsUserController@VideoAnalytics');
@@ -271,6 +274,8 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('audios', 'ThemeAudioController@audios');
     //Route::get('audios/category/{slug}', 'ThemeAudioController@category' );
     Route::get('artist/{slug}', 'ThemeAudioController@artist')->name('artist');
+    Route::get('artist/calendar-event-index/{slug}', 'ArtistEventCalendarController@index');
+    Route::get('artist/calendar-event/', 'ArtistEventCalendarController@getEvents')->name('events.get');
 
     Route::post('artist/following', 'ThemeAudioController@ArtistFollow');
     Route::get('audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
@@ -739,6 +744,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::post('/settings/store_inapp', 'AdminSettingsController@Store_InApp');
 
+    // Active  - Categories
+    
+        Route::post('/audio_category_active', 'AdminAudioCategoriesController@audio_category_active');
+        Route::post('/livestream_category_active', 'AdminLiveCategoriesController@livestream_category_active');
+        Route::post('/video_category_active', 'AdminVideoCategoriesController@video_category_active');
+        Route::post('/series_category_active', 'AdminSeriesGenreController@series_category_active');
+        Route::post('/menus_active', 'AdminMenuController@menus_active');
+
+        
     // Admin Landing page
 
     Route::get('/landing-page/index', 'AdminLandingpageController@index')->name('landing_page_index');
@@ -1026,6 +1040,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/uploadFile', 'AdminVideosController@uploadFile');
     Route::post('/uploadEditVideo', 'AdminVideosController@uploadEditVideo');
     Route::post('/AWSuploadEditVideo', 'AdminVideosController@AWSuploadEditVideo');
+    Route::post('/upload_bunny_cdn_video', 'AdminVideosController@UploadBunnyCDNVideo');
 
     Route::post('/AWSUploadFile', 'AdminVideosController@AWSUploadFile');
 
