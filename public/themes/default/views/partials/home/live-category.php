@@ -13,6 +13,7 @@
                           ?>
                     </h4>
                 </a>
+                <h4 class="main-title"><a href="<?php echo URL::to('/live/category/').'/'.$category->slug;?>"><?php echo (__('View All')); ?></a></h4>
             </div>
 
             <div class="favorites-contens">
