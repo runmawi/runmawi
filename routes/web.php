@@ -274,6 +274,8 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('audios', 'ThemeAudioController@audios');
     //Route::get('audios/category/{slug}', 'ThemeAudioController@category' );
     Route::get('artist/{slug}', 'ThemeAudioController@artist')->name('artist');
+    Route::get('artist/calendar-event-index/{slug}', 'ArtistEventCalendarController@index');
+    Route::get('artist/calendar-event/', 'ArtistEventCalendarController@getEvents')->name('events.get');
 
     Route::post('artist/following', 'ThemeAudioController@ArtistFollow');
     Route::get('audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
@@ -1038,6 +1040,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/uploadFile', 'AdminVideosController@uploadFile');
     Route::post('/uploadEditVideo', 'AdminVideosController@uploadEditVideo');
     Route::post('/AWSuploadEditVideo', 'AdminVideosController@AWSuploadEditVideo');
+    Route::post('/upload_bunny_cdn_video', 'AdminVideosController@UploadBunnyCDNVideo');
 
     Route::post('/AWSUploadFile', 'AdminVideosController@AWSUploadFile');
 
