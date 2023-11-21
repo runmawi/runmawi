@@ -38,7 +38,7 @@
                          $setting= \App\HomeSetting::first();
                             if($setting['Recommendation'] !=null && $setting['Recommendation'] != 0 ):
 
-                         echo (__('Most watched videos from').__($category->name).__('Genre'));?>
+                         echo __('Most watched videos from '.$category->name.' Genre');?>
             </h4>
         </a>
     </div>
@@ -54,11 +54,11 @@
             <li class="slide-item">
                 <div class="block-images position-relative">
                     <!-- block-images -->
-                    <div class="border-bg">
-                        <div class="img-box">
-                    <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                    <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                         <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid loading w-100" alt="m-img" />
-                      
+                        <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
+                                            <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
+                                            </video>-->
                     </a>
 
                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
@@ -66,7 +66,7 @@
                         <?php if($category_video->access == 'subscriber' ){ ?>
                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                             <?php }elseif($category_video->access == 'registered'){?>
-                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
+                            <p class="p-tag"><?php echo "Register Now"; ?></p>
                             <?php } elseif(!empty($category_video->ppv_price)) { 
                              echo $currency->symbol.' '.$category_video->ppv_price ; 
                             } 
@@ -76,54 +76,13 @@
                         } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) { echo "Free"; } ?>
                     </p>
                     <?php }?>
-                    </div>
-                                </div>
              
                 <div class="block-description">
-                <a class="playTrailer" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>" class="img-fluid loading w-100" alt="m-img" />
-                      
-                   
-
-                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                    <p class="p-tag1">
-                        <?php if($category_video->access == 'subscriber' ){ ?>
-                            <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                            <?php }elseif($category_video->access == 'registered'){?>
-                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
-                            <?php } elseif(!empty($category_video->ppv_price)) { 
-                             echo $currency->symbol.' '.$category_video->ppv_price ; 
-                            } 
-                            elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null)
-                             { 
-                                echo $currency->symbol.' '.$category_video->ppv_price ; 
-                        } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) { echo "Free"; } ?>
-                    </p>
-                    <?php }?>
-                    </a>
-                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                    <p class="p-tag1">
-                        <?php if($category_video->access == 'subscriber' ){ ?>
-                            <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                            <?php }elseif($category_video->access == 'registered'){?>
-                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
-                            <?php } elseif(!empty($category_video->ppv_price)) { 
-                             echo $currency->symbol.' '.$category_video->ppv_price ; 
-                            } 
-                            elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null)
-                             { 
-                                echo $currency->symbol.' '.$category_video->ppv_price ; 
-                        } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) { echo "Free"; } ?>
-                    </p>
-                    <?php }?>
-
-                    <div class="hover-buttons text-white">
                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                     <?php if($ThumbnailSetting->title == 1) { ?>
                     <!-- Title -->
                  
-                    <p class="epi-name text-left m-0">
-                        <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></p>
+                        <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
                 
                     <?php } ?>
 
@@ -189,13 +148,25 @@
                         </span>
                         <?php } ?>
                     </div>
-                    </a>
 
-              
-                        <a class="epi-name mt-3 mb-0 btn" type="button" class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                            <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" /> Watch Now
+                    <div class="hover-buttons">
+                        <a type="button" class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                            <img alt="c-img" class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" /> Watch Now
                         </a>
+                        <!-- <a   href="<?php // echo URL::to('category') ?><? // '/wishlist/' . $cont_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
+                        <!-- </a> -->
                     </div>
+
+                    <!--
+                           <div>
+                               <button class="show-details-button" data-id="<?= $category_video->id;?>">
+                                   <span class="text-center thumbarrow-sec">
+                                       <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
+                                   </span>
+                                </button>
+                            </div>
+                        -->
+                               </a>
                 </div>
                        </div>
             </li>

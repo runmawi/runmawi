@@ -7,30 +7,24 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href=""> {{ "Recommend For You" }}</a></h4>
+                        <h4 class="main-name"><a href="{{ $order_settings_list[10]->url ? URL::to($order_settings_list[10]->url) : null }} ">{{ optional($order_settings_list[10])->header_name }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ($data as $key => $video)
+                            @foreach ($data as $key => $video_details)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('category/videos/'.$video->slug ) }}">
+                                    <a href="{{ URL::to('schedule/videos/embed/'.$video_details->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{ $video->image ? URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                <img src="{{ $video_details->image ?  $video_details->image : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}
+                                                <h6> {{ strlen($video_details->name) > 17 ? substr($video_details->name, 0, 18) . '...' : $video_details->name }}
                                                 </h6>
+
                                                 <div class="movie-time d-flex align-items-center my-2">
 
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($video)->age_restrict.'+' }}
-                                                    </div>
-
-                                                    <span class="text-white">
-                                                        {{ $video->duration != null ? gmdate('H:i:s', $video->duration) : null }}
-                                                    </span>
                                                 </div>
 
                                                 <div class="hover-buttons">

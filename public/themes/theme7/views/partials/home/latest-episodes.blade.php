@@ -1,3 +1,4 @@
+
 @if (!empty($data) && $data->isNotEmpty())
 
     <section id="iq-favorites">
@@ -7,29 +8,29 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href=""> {{ "Recommend For You" }}</a></h4>
+                        <h4 class="main-title">{{ 'Latest Episodes' }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ($data as $key => $video)
+                            @foreach ($data as $key => $episode_details)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('category/videos/'.$video->slug ) }}">
+                                    <a href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{ $video->image ? URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                <img src="{{ $episode_details->image ? URL::to('public/uploads/images/'.$episode_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}
+                                                <h6> {{ strlen($episode_details->title) > 17 ? substr($episode_details->title, 0, 18) . '...' : $episode_details->title }}
                                                 </h6>
                                                 <div class="movie-time d-flex align-items-center my-2">
 
                                                     <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($video)->age_restrict.'+' }}
+                                                        {{ optional($episode_details)->age_restrict.'+' }}
                                                     </div>
 
                                                     <span class="text-white">
-                                                        {{ $video->duration != null ? gmdate('H:i:s', $video->duration) : null }}
+                                                        {{ $episode_details->duration != null ? gmdate('H:i:s', $episode_details->duration) : null }}
                                                     </span>
                                                 </div>
 
