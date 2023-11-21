@@ -35,9 +35,9 @@
                     <h4 class="movie-title">
                         <?php
                         if (!empty($category->home_genre)) {
-                            echo $category->home_genre;
+                            echo __($category->home_genre);
                         } else {
-                            echo $category->name;
+                            echo __($category->name);
                         }
                         ?>
                     </h4>
@@ -45,7 +45,7 @@
             </div>
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline  row p-0 mb-0">
-                    <?php if (!empty($data['password_hash'])) {
+                    <?php if (!Auth::guest() && !empty($data['password_hash'])) {
                         $id = Auth::user()->id;
                     } else {
                         $id = 0;
@@ -54,16 +54,21 @@
                             foreach($series as $series_video): 
                         ?>
                     <li class="slide-item">
-                        <a href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
-                            <div class="block-images position-relative">
-                                <div class="img-box">
-                                    <!-- block-images -->
+                        <div class="block-images position-relative">
+                            <!-- block-images -->
+                            <div class="border-bg">
+                            <div class="img-box">
+                                <a class="playTrailer" href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
                                     <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->image; ?>" class="img-fluid w-100" alt="cate">
+                                </a>
+                                    
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
                                         <?php  if($series_video->access == 'subscriber' ){ ?>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php }
+                                    <?php }elseif($series_video->access == 'registered'){?>
+                                    <p class="p-tag"><?php echo (__('Register Now')); ?></p>
+                                    <?php } 
                                        elseif(!empty($series_video->ppv_price)) {
                                           echo $currency->symbol.' '.$series_video->ppv_price ; 
                                           } elseif(!empty($series_video->global_ppv) && $series_video->ppv_price == null) {
@@ -76,13 +81,59 @@
                                     <?php } ?>
                                     
                                 </div>
+                                </div>
+
+
                                 <div class="block-description">
+                                <a class="playTrailer" href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->player_image; ?>" class="img-fluid w-100" alt="cate">
+                                
+                                    
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                    <p class="p-tag1">
+                                        <?php  if($series_video->access == 'subscriber' ){ ?>
+                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                    <?php }elseif($series_video->access == 'registered'){?>
+                                    <p class="p-tag"><?php echo (__('Register Now')); ?></p>
+                                    <?php } 
+                                       elseif(!empty($series_video->ppv_price)) {
+                                          echo $currency->symbol.' '.$series_video->ppv_price ; 
+                                          } elseif(!empty($series_video->global_ppv) && $series_video->ppv_price == null) {
+                                             echo $currency->symbol .' '.$series_video->global_ppv;
+                                          } elseif(empty($series_video->global_ppv) && $series_video->ppv_price == null) {
+                                             echo "Free"; 
+                                          }
+                                       ?>
+                                    </p>
+                                    <?php } ?>
+                                    </a>
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                    <p class="p-tag1">
+                                        <?php  if($series_video->access == 'subscriber' ){ ?>
+                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                    <?php }elseif($series_video->access == 'registered'){?>
+                                    <p class="p-tag"><?php echo (__('Register Now')); ?></p>
+                                    <?php } 
+                                       elseif(!empty($series_video->ppv_price)) {
+                                          echo $currency->symbol.' '.$series_video->ppv_price ; 
+                                          } elseif(!empty($series_video->global_ppv) && $series_video->ppv_price == null) {
+                                             echo $currency->symbol .' '.$series_video->global_ppv;
+                                          } elseif(empty($series_video->global_ppv) && $series_video->ppv_price == null) {
+                                             echo "Free"; 
+                                          }
+                                       ?>
+                                    </p>
+                                    <?php } ?>
+
+
+
+                                    <div class="hover-buttons text-white">
                                     <a href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
                                         <?php if($ThumbnailSetting->title == 1) { ?>
                                         <!-- Title -->
-                                        <h6>
+                                        <p class="epi-name text-left m-0">
                                             <?php echo strlen($series_video->title) > 17 ? substr($series_video->title, 0, 18) . '...' : $series_video->title; ?>
-                                        </h6>
+                                        </p>
                                         <?php } ?>
                                         <div class="movie-time d-flex align-items-center pt-1">
                                             
@@ -136,17 +187,17 @@
                                             </span>
                                             <?php } ?>
                                         </div>
-                                        <div class="hover-buttons">
-                                            <a type="button" class="text-white d-flex align-items-center"
+                                            </a>
+
+                                  
+                                            <a class="epi-name mt-3 mb-0 btn" type="button" 
                                                 href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
-                                                <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
+                                                <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
                                                     width="10%" height="10%" /> Watch Now
                                             </a>
                                         </div>
-                                    </a>
                                 </div>
                             </div>
-                        </a>
                     </li>
                     <?php   endforeach;  endif; ?>
 

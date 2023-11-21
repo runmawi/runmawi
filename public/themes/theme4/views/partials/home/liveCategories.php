@@ -4,7 +4,7 @@ if(count($latest_video) > 0) : ?>
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title"><a href="<?php if ($order_settings_list[12]->header_name) { echo URL::to('/').'/'.$order_settings_list[12]->url ;} else { echo "" ; } ?>">
-                    <?php if ($order_settings_list[12]->header_name) { echo $order_settings_list[12]->header_name ;} else { echo "" ; } ?>
+                    <?php if ($order_settings_list[12]->header_name) { echo __($order_settings_list[12]->header_name) ;} else { echo "" ; } ?>
                     </a></h4>                      
                  </div>
                  <div class="favorites-contens">
@@ -14,36 +14,40 @@ if(count($latest_video) > 0) : ?>
                          if(isset($parentCategories)) :
                          foreach($parentCategories as $Categories): ?>
                        <li class="slide-item">
-                          <a href="<?php echo URL::to('/live/category/').'/'.$Categories->slug ?>">
+                          <div class="block-images position-relative">
                              <!-- block-images -->
-                             <div class="block-images position-relative">
-                                <div class="img-box">
-                                <a  href="<?php echo URL::to('/live/category/').'/'.$Categories->slug ?>">
+                           <div class="border-bg">
+                             <div class="img-box">
+                                   <a class="playTrailer" href="<?php echo URL::to('LiveCategory/').'/'.$Categories->slug ?>">
+                              
                                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->image;  ?>" class="img-fluid loading w-100" alt="l-img">
-                                    </a>  
+                                 </a>
                                 </div>
+                                </div>
+
                                 <div class="block-description">
-                                     <a  href="<?php URL::to('/live/category/').'/'.$Categories->slug ?>">
-                                <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                     <h6><?php  echo (strlen($Categories->name) > 17) ? substr($Categories->name,0,18).'...' : $Categories->name; ?></h6>
+                                <a class="playTrailer" href="<?php echo URL::to('LiveCategory/').'/'.$Categories->slug ?>">
+                              
+                              <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->player_image;  ?>" class="img-fluid loading w-100" alt="l-img">
+                            </a>
+
+                            <div class="hover-buttons text-white">
+                                   <a class="text-white d-flex align-items-center" href="<?php echo URL::to('/LiveCategory/').'/'.$Categories->slug ?>" >
+                                <?php if($ThumbnailSetting->title == 1) { ?>           
+                                 <p class="epi-name text-left m-0">
+                                    <?php  echo (strlen($Categories->name) > 17) ? substr($Categories->name,0,18).'...' : $Categories->name; ?></p>
                                  
                                 <?php } ?> 
-
+                                    </a>
                                     
-                                   <div class="hover-buttons">
-                                       <a class="text-white d-flex align-items-center" href="<?php echo URL::to('/live/category/').'/'.$Categories->slug ?>" >
-                                         <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                  
+                                       <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('/LiveCategory/').'/'.$Categories->slug ?>" >
+                                         <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                        </a>
-                                       <div class="hover-buttons d-flex">
-
-                                    </div>
-                              
-                             </div>
-                                          </a>
+                                     </div>
+                                         
                                  </div>
                               </div>
-                              
-                          </a>
                        </li>
                        <?php                     
                         endforeach; 

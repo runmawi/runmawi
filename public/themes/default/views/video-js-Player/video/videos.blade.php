@@ -21,6 +21,8 @@
     <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
     <script src="{{ asset('public/themes/default/assets/js/video-js/end-card.js') }}"></script>
+    <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
+    <script src="{{ URL::to('node_modules/videojs-offset/dist/videojs-offset.js') }}"></script>
 
     <div class="container-fluid p-0">
 
@@ -34,7 +36,6 @@
         @else
         
             <video id="my-video" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls preload="auto" width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" >
-                <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
             </video>
         @endif
         

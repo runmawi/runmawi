@@ -1,5 +1,5 @@
 @extends('layouts.app')
-<?php include(public_path('themes/theme4/views/header.php')); ?>
+<?php include(public_path('themes/theme7/views/header.php')); ?>
 
 <head>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -11,7 +11,7 @@
         <div class="col-md-12">
             <div class="">            
                     <div class="sign-in-from  m-auto" >
-                        <h3 class="manage">Manage Profile</h3>
+                        <h3 class="manage">{{ __('Manage Profile') }}</h3>
                         <div class="col-md-12">
                             @foreach ($multiprofile as $profile)
                             <div>
@@ -33,7 +33,7 @@
                             </li>  
                         </div>    
                         
-                        {{-- <button type="button" class="btn btn-outline-light"> Done</button> --}}
+                        {{-- <button type="button" class="btn btn-outline-light"> {{ __('Done') }}</button> --}}
 
                     </div> 
              </div>
@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<?php include(public_path('themes/theme4/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>
 
  @endsection
 

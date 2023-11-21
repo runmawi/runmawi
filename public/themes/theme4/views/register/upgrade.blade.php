@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
 @php
-    include(public_path('themes\theme3\views\header.php'));
+    include(public_path('themes/theme7/views/header.php'));
 @endphp
 
 <head>
@@ -22,46 +23,13 @@
     * {
       box-sizing: border-box;
     }
-        .modal-title {
-    margin-bottom: 0;
-    line-height: 1.5;
-   
-}
-        .bg-col p{
-        font-family: Chivo;
-font-style: normal;
-font-weight: 400;
-font-size: 26px;
-line-height: 31px;
-/* identical to box height */
-padding-top:10px;
-display: flex;
-align-items: center;
- padding-left: 20px;
-color: #FFFFFF;
-    }
-         .bg-col{
-       background:rgb(32, 32, 32);
-
-mix-blend-mode: color-dodge;
-border-radius: 20px;
-    padding: 10px;
-    color: #fff;
-        height: 150px;
-        width: 650px;
-        padding-left: 50px;
-        
-   
-}
 
     .columns {
       float: left;
       width: 25%;
       padding: 8px;
     }
-        .dl{
-            font-size: 20px;
-        }
+
     .price {
       list-style-type: none;
 
@@ -159,26 +127,9 @@ border-radius: 20px;
             background-color: #4895d1 !important;
             border: none !important;
         }
-        h1{
-            font-family: Chivo;
-font-style: normal;
-font-weight: normal;
-font-size: 60px;
-line-height: 31px;
 
-
-
-color: #FFFFFF;
-        }
-        span{
-            font-weight: 100;
-            font-size: 40px;
-        }
 </style>
 <style>
-    .ak{
-        border-right: 2px solid #fff;
-    }
 .overlay{
     display: none;
     position: fixed;
@@ -197,45 +148,6 @@ body.loading{
 body.loading .overlay{
     display: block;
 }
-    .bg-col p{
-        font-family: Chivo;
-font-style: normal;
-font-weight: normal;
-font-size: 26px;
-line-height: 31px;
-/* identical to box height */
-
-display: flex;
-align-items: center;
-
-color: #FFFFFF;
-    }
-    .bg-col{
-    background: #C4C4C4;
-mix-blend-mode: color-dodge;
-border-radius: 20px;
-    padding: 10px;
-    color: #fff;
-        
-   
-}
-    .bl{
-       background: #161617;
-        padding: 10px;
-
-
-    }
-    .edit li{
-        list-style: none;
-        padding: 10px 20px;
-    }
-    .bl1{
-        background: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0) 100%);
-padding: 40px;
-border-radius: 20px;
-        color: #fff!important;
-    }
-
 </style>
 
 <script>
@@ -245,60 +157,109 @@ border-radius: 20px;
   });
     
   </script>
- <section class="bl pt-2 mt-2">
 
-        <div class="container mb-3 ">
-            <div class="bl1">
-            <h1 class="text-white text-center mb-4">Choose Your plan</h1>
-            <div class="row justify-content-center mt-5 ">
-                
-                <div class="col-md-4 col-lg-4 ak padding-20">
-                    <h2 class="">Plan Details</h2>
-                    <p class="text-white mt-2">Edit your name or change<br>
-your password.</p>
-                    <ul class="edit">
-                        <li>Edit Profile</li>
-                        <li>Plan</li>
-                        <li>Kids Safemode</li>
-                        <li>video Preferences</li>
-                    </ul>
-                </div>
-                <div class="col-md-8 targetDiv" id="div2">
-                    <div class="d-flex justify-content-around text-white">
-                                 <?php                          
+<div class="container">
+    <div class="row justify-content-center page-height" id="signup-form">  
+        <div class="col-md-11 col-sm-offset-1 plandetails">
+			<div class="login-block">
+                    <div class="panel-heading" align="center"><h1>{{ __('Choose Your Plan') }}</h1></div>
+                     <div class="panel-body become-sub">
+                        <div class="tab">
+                          <!-- <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
+                            <img width="100" height="auto"src="<?php // echo URL::to('/assets/img/1280px-Stripe_Logo,_revised_2016.svg.png');?>">
+                          </button>
+                        <button class="tablinks payment-logo" onclick="openCity(event, 'paypal_pg')"> 
+                            <img width="100" height="auto"src="<?php // echo URL::to('/assets/img/PayPal-Logo.png');?>">
+                        </button> -->
+                        </div>
+
+<div id="stripe_pg" class="tabcontent" style="display:block;"> 
+        <!-- <form action="<?php // echo URL::to('/').'/stripe-subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data"> -->
+                <div id="AddPassport" >
+                    <div class="row">
+                      <?php 
+                            // $plans = App\Plan::get();
+
                                foreach($plans_data as $plan) {
                                   $plan_name = $plan[0]->plans_name;
                             ?>
-                 <div class="col-md-12 mt-3 p-0">
-                    <button  data-price="<?php echo $plan[0]->price;?>" 
-                    data-name="<?php echo $plan[0]->plans_name;?>"  
-                    class="bg-col plans_name_choose" onclick="jQuery('#add-new').modal('show');" 
-                     name="plan_name"  value="<?php echo $plan_name;?>">
-                   
-                    <div class="container">
-                        <p><?php echo $plan[0]->plans_name;?></p>
-                        <h1><span class="dl">$</span><?php echo $plan[0]->price;?> </span><span class="dl1">
+                                    <div class="col-sm-4">
+                                        <div class="plan-card">
+                                            <div class="header">
+                                                <h3 class="plan-head">
+                                                    <?php echo $plan[0]->plans_name;?></h3>
+                                            </div>
+                                            <div class="plan-price">
+                                                <p>{{ __('plan') }}</p>
+                                                <h4><?php echo "$".$plan[0]->price;?>
+                                                    <small>
+                                                    <?php if ($plan_name == 'Monthly') { echo __('for a Month'); } else if ($plan_name == 'Yearly') { echo __('for 1 Year'); } else if ($plan_name == 'Quarterly') { echo __('for 3 Months'); } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+                                                    </small>
+                                                </h4>
+                                            </div>
+                                            <div class="plan-details">
+                                                <p>{{ __('Grab this plan for your best Movies to Watch') }}.</p>
+                                                <p>{{ __('Welcome') }} :</p>
+                                                <h6 style ="color:yellow;background-color:black;"> {{ __('Welcome') }}Video Quality : <p style ="color:white;"><?php echo $plan[0]->video_quality; ?></p>  
+                                                {{ __('Video Resolution') }} : <p style ="color:white;"><?php echo $plan[0]->resolution; ?></p></h6>   
+                                                <?php   
+                                                    $permission = $plan[0]->devices;
+                                                    // dd($permission);
+                                                    if(!empty($permission)){
+                                                    $user_devices = explode(",",$permission);   
+                                                    foreach($devices as $key => $value){
+                                                        if(in_array($value->id, $user_devices)){
+                                                            $devices_name[] = $value->devices_name;
+                                                        }
+                                                    }
+                                                    $plan_devices = implode(",",$devices_name);
+                                                }else{
 
-                        <!-- <h1><span class=""><?php echo "$".' '.$plan[0]->price;?></span><span class="dl1">  -->
-                        <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
-                        </span></h1></div>                
-
-                    </button>
-                       <?php } ?>
-                </div>
-            </div>
-                       </div>
-                        
+                                                }   
+                                                if(!empty($plan_devices)){ 
+                                              ?>
+                                                <h6 style ="color:yellow;background-color:black;"  > {{ __('Available Devices') }} : <p><?php echo $plan_devices; ?></p></h6>   
+                                            <?php } ?>
+                                                <div class="mt-4">
+                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">{{ __('Pay Now') }}
+                                            </button>
+                                                    <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                           <?php } ?>
                     </div>
-                
-     </div> 
-    </section>
+                </div>
+              </div>    
+              @csrf
+                            
+                            @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
+                        <div class="form-group row">
+                            <div class="col-md-12 ">
+                            <div class="sign-up-buttons" align="center">
+
+                                    <p> <span>Or</span></p>
+                                    <a type="button" href="<?php echo URL::to('/').'/myprofile';?>" class="btn btn-secondary">
+                                        <?php echo __('Skip');?>
+                                    </a>
+                            </div>
+                            </div>
+                        </div>
               <div class="modal fade" id="add-new">
-		<div class="modal-dialog ">
-			<div class="modal-content " style=" background:rgb(32, 32, 32);">				
+		<div class="modal-dialog">
+			<div class="modal-content">				
 				<div class="modal-header">
-                    <h4 class="modal-title">You are one step away from purchasing subscription Gate Way</h4>
+                    <h4 class="modal-title" style="color: #000">{{ __('You are one step away from purchasing subscription Gate Way') }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
@@ -312,27 +273,27 @@ your password.</p>
                            
                             <label class="radio-inline">
                             <?php  foreach($payment_type as $payment){
-                          if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
-                          if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
+                          if($payment->status == 1 || $payment->status == 1){ 
+                          if($payment->live_mode == 1 && $payment->status == 1){ ?>
                 <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
                 <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
             </label>
-                <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
+                <?php }elseif($payment->paypal_live_mode == 1 && $payment->status == 1){ ?>
                 <label class="radio-inline">
                 <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
                 <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label>
-                <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
+                <?php }elseif($payment->live_mode == 0 && $payment->status == 1){ ?>
                 <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
                 <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
             </label><br>
                           <?php 
-						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
+						 }elseif( $payment->paypal_live_mode == 0 && $payment->status == 1){ ?>
                 <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
                 <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label>
 						<?php  } }else{
-                            echo "Please Turn on Payment Mode to Purchase";
+                            // echo "Please Turn on Payment Mode to Purchase";
                             break;
                          }
                          }?>
@@ -342,8 +303,8 @@ your password.</p>
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">{{ __('Close') }}</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">{{ __('Continue') }}</button>
 				</div>
 			</div>
 		</div>
@@ -372,12 +333,12 @@ your password.</p>
         
         <!-- </form> -->
         
-        
+        </div>
 
     <div id="paypal_pg" class="tabcontent" >
         <label for="chkPassports">
                     <input type="checkbox" id="chkPassports" />
-                     Click here for Recurring subscription!
+                    {{ __('Click here for Recurring subscription!') }}
         </label>
         <form action="<?php echo URL::to('/').'/paypal_subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data">
       
@@ -396,18 +357,18 @@ your password.</p>
                             <?php echo $plan->name;?></h3>
 					</div>
 					<div class="plan-price">
-						<p>plan</p>
+						<p>{{ __('plan') }}</p>
 						<h4><?php echo "$".$plan->price;?>
 							<small>
-							<?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+							<?php if ($plan_name == 'Monthly') { echo __('for a Month'); } else if ($plan_name == 'Yearly') { echo __('for 1 Year'); } else if ($plan_name == 'Quarterly') { echo __('for 3 Months'); } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
 							</small>
 						</h4>
 					</div>
 					<div class="plan-details">
-						<p>Grab this plan for your best Movies to Watch.</p>
+						<p>{{ __('Grab this plan for your best Movies to Watch') }}.</p>
                        
                         <div class="mt-4">
-							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >{{ __('Pay Now') }}</button>
 						</div>
 <!--
 						<div class="text-right mt-4">
@@ -445,17 +406,17 @@ your password.</p>
                                                     <?php echo $plan->plans_name;?></h3>
                                             </div>
                                             <div class="plan-price">
-                                                <p>plan</p>
+                                                <p>{{ __('plan') }}</p>
                                                 <h4><?php echo "$".$plan->price;?>
                                                     <small>
-                                                    <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+                                                    <?php if ($plan_name == 'Monthly') { echo __('for a Month'); } else if ($plan_name == 'Yearly') { echo __('for 1 Year'); } else if ($plan_name == 'Quarterly') { echo __('for 3 Months'); } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
                                                     </small>
                                                 </h4>
                                             </div>
                                             <div class="plan-details">
-                                                <p>Grab this plan and watch unlimited movies</p>
+                                                <p>{{ __('Grab this plan and watch unlimited movies') }}</p>
                                                 <div class="text-right mt-4">
-                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >{{ __('Pay Now') }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -470,7 +431,7 @@ your password.</p>
                         <div id="paypal-button-container"></div>
                 </div>
                  <div class="col-sm-2 hide-box" style="margin-top: 4%;text-align: center;">
-                      <span class=" text-center">(OR)</span>
+                      <span class=" text-center">{{ __('OR') }}</span>
                 </div>
                  <div class="col-sm-4 hide-box" style="margin-top: 2%;">
                         <div class="text-center  pull-left" style="width: 100%;">
@@ -482,7 +443,11 @@ your password.</p>
           
         </form>         
         </div>
-         
+         </div>
+    </div>
+</div>
+    </div>
+</div>
 
 <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
 <input type="hidden" id="stripe_coupon_code" value="<?php echo NewSubscriptionCouponCode();?>">
@@ -576,8 +541,8 @@ your password.</p>
             });
         </script>
 
-@php
-    include(public_path('themes\theme3\views\footer.blade.php'));
-@endphp
 
+@php
+  include(public_path('themes/theme7/views/footer.blade.php'));
+@endphp
 @endsection 
