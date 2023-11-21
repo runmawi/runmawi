@@ -1,10 +1,14 @@
-<?php $settings = App\Setting::first(); ?>
+<?php 
+    $settings = App\Setting::first(); 
+    $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+    $theme = App\SiteTheme::first();
+?>
 
 <html>
 
 <head>
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
-    <title>Reset Password | <?php echo $settings->website_name; ?></title>
+    <title>{{ __('Reset Password') }} | <?php echo $settings->website_name; ?></title>
     <link rel="shortcut icon" href="<?= getFavicon() ?>" />
 
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css" />
@@ -168,8 +172,16 @@
                             <div class="sign-in-from w-100 m-auto">
 
                                 <div align="center">
-                                    <img src="<?php echo URL::to('/public/uploads/settings/' . $settings->logo); ?>" style="margin-bottom:1rem;">
-                                    <h3 class="mb-3 text-center"> Reset Password </h3>
+                                    
+                                    <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                        <img  src="<?php echo URL::to('public/uploads/settings/'. $theme->light_mode_logo) ; ?>"  style="margin-bottom:1rem;">
+                                    <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                                        <img  src="<?php echo URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ; ?>"  style="margin-bottom:1rem;">
+                                    <?php }else { ?> 
+                                        <img  src="<?php echo URL::to('public/uploads/settings/'. $settings->logo) ; ?>" style="margin-bottom:1rem;">
+                                    <?php } ?>
+
+                                    <h3 class="mb-3 text-center">{{ __('Reset Password') }} </h3>
                                 </div>
 
                                   @if (session('status_message'))
@@ -211,7 +223,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <input id="password_confirmation" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required>
+                                                    <input id="password_confirmation" type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required>
                                                 </div>
 
                                                 <div class="">
@@ -229,8 +241,9 @@
 
                                             <span
                                                 style="color: var(--iq-white);font-size: 14px;font-style: italic;">
-                                                (Password should be at least 8 characters in length and should include at least
-                                                one upper case letter, one number, and one special character.)
+                                                {{ __('(Password should be at least 8 characters in length and should include at least
+                                                one upper case letter, one number, and one special character.)') }}
+
                                             </span>
                                         </div>
                                     </div>
@@ -308,6 +321,6 @@
         });
     </script>
 
-    @php include(public_path('themes/default/views/footer.blade.php')); @endphp
+    @php include(public_path('themes/theme7/views/footer.blade.php')); @endphp
 
 </body>

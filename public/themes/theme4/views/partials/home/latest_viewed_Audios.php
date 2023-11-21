@@ -30,93 +30,119 @@
         } ?>">
 
             <?php if ($order_settings_list[17]->header_name) {
-                echo $order_settings_list[17]->header_name;
+                echo __($order_settings_list[17]->header_name);
             } else {
                 echo '';
             } ?></a>
     </h4>
 </div>
 
-
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline row p-0 mb-0">
-        <?php  if(isset($latest_view_audios)) :
+    <ul class="favorites-slider list-inline  row p-0 mb-0">
+        <?php  
         
-            foreach($latest_view_audios as $key =>  $latest_view_audio): ?>
+        if(isset($latest_view_audios)) :
 
+            foreach($latest_view_audios as $key => $latest_view_audio): ?>
+                
                 <li class="slide-item">
-                    <a href="<?php echo URL::to('category/videos/'.$latest_view_audio->slug ); ?>">
-
-                        <div class="block-images position-relative">
+                    <div class="block-images position-relative">
+                        <!-- block-images -->
+                        <div class="border-bg">
                             <div class="img-box">
-                                <a href="<?php echo URL::to('category/videos/'.$latest_view_audio->slug ); ?>">
-                                    <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->image; ?>" class="img-fluid w-100" alt="">
+                                <a class="playTrailer" href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
+                                    <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->image; ?>" class="img-fluid loading w-100"
+                                        alt="l-img">
                                 </a>
 
-                                <?php if($ThumbnailSetting->published_on == 1) { ?>
-                                    <p class="published_on1"><?= "Published"; ?></p>
-                                <?php  } ?>
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                       
+                                    <?php } ?>
+
+                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                        <p class="published_on1"><?= "Published"; ?></p>
+                                    <?php  } ?>
+                               
                             </div>
-                        </div>
-
-                        <div class="block-description">
-                            <div class="hover-buttons">
-                                <a class="" href="<?php echo URL::to('audio/' .$latest_view_audio->slug); ?>"> 
-
-                                <img class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" /> </a>
+                            </div>
                             
-                                <div class="hover-buttons d-flex"> </div>
-                            </div>
-                        </div>
+                            <div class="block-description">
+                            <a class="playTrailer" href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
+                                    <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->player_image; ?>" class="img-fluid loading w-100"
+                                        alt="l-img">
+                                
 
-                        <div class="p-0">
-                            <div class="mt-2 d-flex justify-content-between p-0">
-                                <?php if($ThumbnailSetting->title == 1) { ?>
-                                    <h6><?php echo strlen($latest_view_audio->title) > 17 ? substr($latest_view_audio->title, 0, 18) . '...' : $latest_view_audio->title; ?></h6>
-                                <?php } ?>
-                            </div>
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                       
+                                    <?php } ?>
+                            </a>
+                            <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+                                       
+                                       <?php } ?>
+                        <div class="hover-buttons text-white">
+                                <a href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
+                                    <?php if($ThumbnailSetting->title == 1) { ?>
+                                               <!-- Title -->
+                                    <p class="epi-name text-left m-0">
+                                                <?php echo strlen($latest_view_audio->title) > 17 ? substr($latest_view_audio->title, 0, 18) . '...' : $latest_view_audio->title; ?></p>
+                                    <?php } ?>
 
-                            <div class="movie-time my-2">
-                                <!-- Duration -->
+                                    <div class="movie-time d-flex align-items-center pt-1">
+                                        <?php if($ThumbnailSetting->age == 1) { ?>      <!-- Age -->
+                                            <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_view_audio->age_restrict . ' ' . '+'; ?></div>
+                                        <?php } ?>
 
-                                <?php if($ThumbnailSetting->duration == 1) { ?>
-                                    <span class="text-white">
-                                        <i class="fa fa-clock-o"></i>
-                                            <?= gmdate('H:i:s', $latest_view_audio->duration) ?>
-                                    </span>
-                                <?php } ?>
+                                        <?php if($ThumbnailSetting->duration == 1) { ?>   <!-- Duration -->
+                                            <span class="text-white">
+                                                <i class="fa fa-clock-o"></i>
+                                                <?= gmdate('H:i:s', $latest_view_audio->duration) ?>
+                                            </span>
+                                        <?php } ?>
+                                    </div>
 
-                                <!-- Rating -->
+                                    <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
+                                        <div class="movie-time d-flex align-items-center pt-1">
+                                            <?php if($ThumbnailSetting->rating == 1) { ?>   <!--Rating  -->
+                                                <div class="badge badge-secondary p-1 mr-2">
+                                                    <span class="text-white">
+                                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                        <?php echo __($latest_view_audio->rating); ?>
+                                                    </span>
+                                                </div>
+                                            <?php } ?>
 
-                                <?php if($ThumbnailSetting->rating == 1 && $latest_view_audio->rating != null) { ?>
-                                    <span class="text-white">
-                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                        <?php echo __($latest_view_audio->rating); ?>
-                                    </span>
-                                <?php } ?>
+                                            <?php if($ThumbnailSetting->published_year == 1) { ?>   <!-- published_year -->
+                                                <div class="badge badge-secondary p-1 mr-2">
+                                                    <span class="text-white">
+                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                        <?php echo __($latest_view_audio->year); ?>
+                                                    </span>
+                                                </div>
+                                            <?php } ?>
 
-                                <?php if($ThumbnailSetting->featured == 1 && $latest_view_audio->featured == 1) { ?>
-                                <!-- Featured -->
-                                    <span class="text-white">
-                                        <i class="fa fa-flag" aria-hidden="true"></i>
-                                    </span>
-                                <?php }?>
-                            </div>
+                                            <?php if($ThumbnailSetting->featured == 1 && $latest_view_audio->featured == 1) { ?>  <!-- Featured -->
+                                                <div class="badge badge-secondary p-1 mr-2">
+                                                    <span class="text-white">
+                                                        <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                                    </span>
+                                                </div>
+                                            <?php }?>
+                                        </div>
+                                    <?php } ?>
+                                </a>
 
-                            <div class="movie-time my-2">
-                                <!-- published_year -->
-                                <?php  if ( ($ThumbnailSetting->published_year == 1) && ( $latest_view_audio->year != null ) ) { ?>
-                                    <span class="text-white">
-                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                        <?php echo __($latest_view_audio->year); ?>
-                                    </span>
-                                <?php } ?>
-                            </div>
-                    </a>
+                                 
+                                        <a class="epi-name mt-3 mb-0 btn"
+                                            href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
+                                            <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
+                                                height="10%" /> Play Now
+                                        </a>
+                                        </div>  
+                                        </div>
+                                        </div>
                 </li>
-            <?php                     
-                endforeach; 
-                    endif; ?>
+            <?php endforeach; 
+        endif; ?>
     </ul>
 </div>
 

@@ -61,7 +61,7 @@ endif; ?>
     <div class="border-line" style="margin-bottom:15px;"></div>
 	<div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
         <?php  if(isset($watchlater_audeos)) :?>
-         <h3 class="vid-title"> Watchlater Audios. </h3>
+         <h3 class="vid-title"> <?= __('Free') ?>Watchlater Audios. </h3>
 		<?php
 			foreach($watchlater_audeos as $audio): 
         

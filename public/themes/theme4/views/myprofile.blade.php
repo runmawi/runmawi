@@ -1,6 +1,6 @@
 
 @php
-include(public_path('themes/theme3/views/header.php'));
+include(public_path('themes/theme7/views/header.php'));
 $settings = App\Setting::first(); 
 @endphp
 
@@ -67,6 +67,21 @@ $settings = App\Setting::first();
      padding: 10px 10px;
      cursor: pointer;
   }
+    .rounded-circle {
+    height: 150px;
+    width: 150px;
+}
+    .fa-fw{
+        position: absolute;
+    right: 0px;
+    top: 34px;
+        color: #000;
+    background-color: #578cea;
+    padding: 12px 22px;
+    /* width: 100%; */
+    display: flex;
+    justify-content: center;
+    }
 </style>
 
 <body>
@@ -74,6 +89,9 @@ $settings = App\Setting::first();
 @php
   $jsonString = file_get_contents(base_path('assets/country_code.json'));   
   $jsondata = json_decode($jsonString, true); 
+
+  $data = Session::all(); 
+  
 @endphp
 
 
@@ -189,60 +207,66 @@ $settings = App\Setting::first();
 
          <div class="sign-user_card">
         <div class="row align-items-center">
-           
             <div class="col-lg-4 mb-3 bdr">
-                <h3>Account Settings</h3>
+                  <a class="" href="{{ URL::to('/home') }}"><button class='fas fa-arrow-alt-circle-left btn bd btn-action back'  style=''> {{ (__('Home')) }}</button></a>
+                  <br><br>
+                <h3>{{ (__('Account Settings')) }}</h3>
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
                           <!-- <li><a class="showSingle" target="2">Transaction details</a></li>-->
                          <!--  <li><a class="showSingle" target="3">Plan details</a></li>-->
-                        <li><a class="showSingle" target="1">Manage Profile</a></li>
-                        <li><a class="showSingle" target="2">Plan details</a></li>
-                        <li><a class="showSingle" target="5">Preference for videos</a></li>
-                        <li><a class="showSingle" target="6">Profile</a></li>
-                        <li><a class="showSingle" target="7">Recently Viewed Items</a></li>
-                        <li><a class="showSingle" target="8">Tv Activation Code</a></li>
+                        <li><a class="showSingle" target="1">{{ (__('Manage Profile')) }}</a></li>
+                        <li><a class="showSingle" target="2">{{ (__('Plan details')) }}</a></li>
+                        <li><a class="showSingle" target="5">{{ (__('Preference for videos')) }}</a></li>
+                        <li><a class="showSingle" target="6">{{ (__('Profile')) }}</a></li>
+                        <li><a class="showSingle" target="7">{{ (__('Recently Viewed Items')) }}</a></li>
+                        <li><a class="showSingle" target="8">{{ (__('Tv Activation Code')) }}</a></li>
+                        <li><a class="showSingle" target="9">{{ (__('Tv Logged User List')) }}</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-8 mb-3">
                 <div class="targetDiv" id="div1">
                 <div class=" d-flex justify-content-between mb-3">
+                <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
                     <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                    <?php }else{ ?> 
+                    <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?=  $user->provider_avatar; ?>"  alt="profile-bg"/>
+                     <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                    <a href="#updatepic" class="edit-icon text-primary">Edit</a></div>
+                   </div>
                      <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
                 <div class="" id="personal_det">
                 <div class="" >
                     <div class="d-flex align-items-baseline justify-content-between">
-                    <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
-                    <div><a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a>
+                    <div><h5 class="mb-2 pb-3 ">{{ __('Personal Details') }}</h5></div>
+                    <div><a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a>
                         </div></div>
                     </div>
                     <div class="a-border"></div>
                    <div class="a-border"></div>
                       <div class="row jusitfy-content-center">
                         <div class="col-md-3 mt-3">
-                            <h5>Account Details</h5>
+                            <h5>{{ __('Account Details') }}</h5>
                           </div>
                         <div class="col-md-9">
                              <div class="row align-items-center justify-content-end">
                         <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">Email</span>
+                            <span class="text-light font-size-13">{{ __('Email') }}</span>
                             <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
                         </div>   
                     </div>
                     <div class="row align-items-center justify-content-end">
                         <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">Username</span>
+                            <span class="text-light font-size-13">{{ __('Username') }}</span>
                             <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
                         </div>   
                     </div>
                     <div class="row align-items-center justify-content-end">
                         <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">Password</span>
-                            <p class="mb-0"></p>
+                            <span class="text-light font-size-13">{{ __('Password') }}</span>
+                            <p class="mb-0">***********</p>
                         </div>
                     </div>
                     
@@ -258,13 +282,13 @@ $settings = App\Setting::first();
                         <div class="col-md-9">
                              <div class="row align-items-center justify-content-end">
                         <div class="col-md-8 d-flex justify-content-between mt-2 mb-2">
-                            <span class="text-light font-size-13">Phone</span>
+                            <span class="text-light font-size-13">{{ __('Phone') }}</span>
                             <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                         </div>
                     </div> 
                     <div class="row align-items-center justify-content-end">
                         <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">DOB</span>
+                            <span class="text-light font-size-13">{{ __('DOB') }}</span>
                             <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
                               
                         </div>
@@ -277,8 +301,8 @@ $settings = App\Setting::first();
                           <div class="a-border"></div>
                          
                           <div class="mt-3 row align-items-center">
-                              <div class="col-md-3"> <h5 class="card-title mb-2">Update Profile</h5></div>
-                              <div class="col-md-9"> <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
+                              <div class="col-md-3"> <h5 class="card-title mb-2">{{ __('Update Profile') }}</h5></div>
+                              <div class="col-md-9"> 
                     <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                     @csrf
                         <div class="row align-items-center">
@@ -288,7 +312,7 @@ $settings = App\Setting::first();
                     <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
                             </div>
                             <div class="col-sm-6">
-                                 <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
+                                 <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;">{{ __('Verify Profile') }} </button>
                     <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
                             </div>
                         </div>
@@ -299,12 +323,12 @@ $settings = App\Setting::first();
                       
                 </div>
                     <!-- Add New Modal -->
-<div class="modal fade" id="add-new">
+<div class="modal fade" id="add-profile">
   <div class="modal-dialog">
      <div class="modal-content">
         
         <div class="modal-header">
-                <h4 class="modal-title">Update Profile</h4>
+                <h4 class="modal-title text-black">{{ __('Update Profile') }}</h4>
            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
            
         </div>
@@ -315,28 +339,30 @@ $settings = App\Setting::first();
               <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                             
                   <div class="form-group">
-                          <label> Username:</label>
+                          <label>{{ __('Username') }} :</label>
                           <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
                         </div>
                     
                         <div class="form-group">
-                          <label> Email:</label>
-                          <input type="email" id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
+                          <label>{{ __('Email') }} :</label>
+                          <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="{{ __('Email') }}">
                         </div> 
                     
                     
-                        <div class="form-group">
-                          <label>Password:</label><br>
-                          <input type="password"  name="password"   placeholder="Password"  class="form-control"  >
+                        <div class="form-group position-relative">
+                          <label>{{ __('Password') }}:</label><br>
+                          <input type="password" id="pass_log_id"  name="password"   placeholder="{{ __('Password') }}"  class="form-control"  >
+                            <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
+
                       </div> 
                     
                     
                         <div class="form-group">
-                           <label> Phone:</label>
-                           <input type="number" id="mobile" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+                           <label> {{ __('Phone') }}:</label>
+                           <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="{{ __('Mobile Number') }}">
                         </div>
                         <div class="form-group">
-                        <label> DOB:</label>
+                        <label>{{ __('DOB') }} :</label>
                         <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
                            <!-- <input type="text" id="DOB" name="DOB" value="" class="form-control" placeholder="DOB"> -->
                         </div>
@@ -345,8 +371,8 @@ $settings = App\Setting::first();
         </div>
         
         <div class="modal-footer">
-           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-           <button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+           <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __('Close') }}</button>
+           <button type="button" class="btn btn-primary" id="submit-new-cat">{{ __('Save changes') }}</button>
         </div>
      </div>
   </div>
@@ -355,72 +381,80 @@ $settings = App\Setting::first();
 
          
                 <div class="col-sm-12 text-center targetDiv" id="div2">
-                    <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
-                    
+                <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
+                        <?php }else{ ?> 
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
+                           <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                       <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
                       <h4 class="mb-3"></h4>
                     
       <div class="text-center">
                    <?php  if($user_role == 'registered'){ ?>
-                          <h6><?php echo 'Registered'." " .'(Free)'; ?> Subscription</h6>                                       
+                          <h6><?php echo 'Registered'." " .'(Free)'; ?> {{ __('Subscription') }}</h6>                                       
                           <h6></h6>                                       
                        <?php }elseif($user_role == 'subscriber'){ ?>
-                          <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
+                          <h6><?php echo $role_plan." " .'__(Paid User)'; ?></h6>
                           <br>       
-                       <h5 class="card-title mb-0">Available Specification :</h5><br>
-                       <h6> Video Quality : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
-                       <h6> Video Resolution : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
-                       <h6> Available Devices : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
+                       <h5 class="card-title mb-0">{{ __('Available Specification') }} :</h5><br>
+                       <h6> {{ __('Video Quality') }} : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
+                       <h6> {{ __('Video Resolution') }} : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
+                       <h6> {{ __('Available Devices') }} : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
                           <!--<h6>Subscription</h6>-->
                        <?php } ?>
                        </div>
                          
                          <!-- -->
-                <div class="row align-items-center justify-content-center mb-3 mt-3">
-                     <div class=" text-center colsm-4 ">
-            <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
-        </div>
+                  <div class="row align-items-center justify-content-center mb-3 mt-3">
+                     <div class=" text-center col-sm-4 ">
+                        <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('View Transaction Details') }}</a>
+                     </div>
+
                         
                         <div class="col-sm-4 text-center">
                            @if(Auth::user()->role == "subscriber")
-                              <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
+                              <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >{{ __('Upgrade Plan') }} </a>        
                            
                            @elseif( Auth::user()->role == "admin")
 
                            @else
-                                 <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                                 <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
                            @endif
                         </div>
 
-                        @if ( $payment_package != null  && $payment_package->payment_gateway == "Paystack")
-                           <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius" > Cancel Membership </a>
+                        @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
+                              <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn" >{{ __('Cancel Membership') }}</a>
                         @endif
-                        
+
+                        @if ( $payment_package != null  && $payment_package->payment_gateway == "Paystack")
+                              <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius" > {{ __('Cancel Membership') }} </a>
+                        @endif
+
                     </div>
-    </div>
+                  </div>
                 
                 <div class="targetDiv" id="div3">
                     <div class="row align-items-center justify-content-between mb-3 mt-3">
                         <div class="col-sm-4">
                    <?php  if($user_role == 'registered'){ ?>
                           <h6><?php echo 'Registered'." " .'(Free)'; ?></h6>                                       
-                          <h6>Subscription</h6>                                       
+                          <h6>{{ __('Subscription') }}</h6>                                       
                        <?php }elseif($user_role == 'subscriber'){ ?>
                           <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
                           <br>       
-                       <h5 class="card-title mb-0">Available Specification :</h5><br>
-                       <h6> Video Quality : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
-                       <h6> Video Resolution : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
-                       <h6> Available Devices : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
+                       <h5 class="card-title mb-0">{{ __('Available Specification') }} :</h5><br>
+                       <h6> {{ __('Video Quality') }} : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
+                       <h6> {{ __('Video Resolution') }} : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
+                       <h6> {{ __('Available Devices') }} : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
                           <!--<h6>Subscription</h6>-->
                        <?php } ?>
                        </div>
                         <div class="col-sm-6">
                            <?php if(Auth::user()->role == "subscriber"){ ?>
-                            <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
+                            <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >{{ __('Upgrade Plan') }} </a>        
                             <?php }else{ ?>
-                    <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                    <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > {{ __('Become Subscriber') }}</a>
                     <?php } ?>
                         </div>
                     </div>
@@ -432,13 +466,13 @@ $settings = App\Setting::first();
                 </div>
                 <div class="targetDiv" id="div5">
                     <div class=" mb-3">
-                  <h4 class="card-title mb-0">Preference for videos</h4>
+                  <h4 class="card-title mb-0">{{ __('Preference for videos') }}</h4>
                   <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
                   @csrf
                   <input type="hidden" name="user_id" value="<?= $user->id ?>" />
 
                   <div class="col-sm-9 form-group p-0 mt-3">
-                    <label><h5>Preference Language</h5></label>
+                    <label><h5>{{ __('Preference Language') }}</h5></label>
                     <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
                         @foreach($preference_languages as $preference_language)
                             <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
@@ -447,7 +481,7 @@ $settings = App\Setting::first();
                  </div>
 
                  <div class="col-sm-9 form-group p-0 mt-3">
-                    <label><h5>Preference Genres</h5></label>
+                    <label><h5>{{ __('Preference Genres') }}</h5></label>
                     <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
                         @foreach($videocategory as $preference_genres)
                             <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
@@ -460,32 +494,44 @@ $settings = App\Setting::first();
               </div>
                 </div>
                 <div class="targetDiv" id="div6"><div class=" mb-3">
-           <h4 class="card-title mb-0 manage"> Profile</h4>
-              <div class="col-md-12 profile_image">
-                  @forelse  ($profile_details as $profile)
+           <h4 class="card-title mb-0 manage">{{ __('Profile') }} </h4>
+              <div class="col-md-12 profile_image mt-3 p-0">                  
+                  @forelse  ( $profile_details as $profile )
+
                     <div class="">
-                             <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                        <div>
+                         <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
+
+                        <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                        </div>
+                        <div class=" text-center text-white">
                             
-                             <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
-                         <div class="circle">
-                                <a  href="{{ URL::to('profileDetails_edit', $profile->id)}}">
-                                       <i class="fa fa-pencil"></i> </a>
-                                @if($Multiuser == null)
-                                 <a  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
-                                   <i class="fa fa-trash"></i> </a> 
-                                @endif
-                             </div>
-                    </div>
+                           <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
+
+                           @if($Multiuser == null)
+                              <a class="ml-2"  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
+                                 <i class="fa fa-trash"></i>
+                              </a> 
+                           @endif
+
+                        </div>
+                    </div> 
                   @empty
-                    <div class="col-sm-6">  <p class="name">No Profile</p>  </div>
+                    <div class="col-sm-6">  
+                        <p class="name">{{ __('No Profile') }}  </p>  </div>
                   @endforelse
+
+                  <div class="col-md-6" style="margin-top: 63px;">
+                     <li> <a class="fa fa-plus-circle fa-100x" style="color: white !important; " href="{{ route('Multi-profile-create') }}" ></a> </li>
+                  </div>
+
               </div>    
           </div> </div>
                 <div class="targetDiv" id="div7">
                     <div class="iq-card" id="recentviews" style="background-color:#191919;">
                  <div class="iq-card-header d-flex justify-content-between" >
                     <div class="iq-header-title">
-                       <h4 class="card-title">Recently Viewd Items</h4>
+                       <h4 class="card-title">{{ __('Recently Viewed Items') }}</h4>
                     </div>
                     
                  </div>
@@ -494,13 +540,13 @@ $settings = App\Setting::first();
                        <table class="data-tables table movie_table recent_table" style="width:100%">
                           <thead>
                              <tr>
-                                <th style="width:20%;">Video</th>
-                                <th style="width:10%;">Rating</th>
-                                <th style="width:20%;">Category</th>
-                                <th style="width:10%;">Views</th>
-                               <!-- <th style="width:10%;">User</th>-->
+                                <th style="width:20%;">{{ __('Video') }}</th>
+                                <th style="width:10%;">{{ __('Rating') }}</th>
+                                <th style="width:20%;">{{ __('Category') }}</th>
+                                   <!-- <th style="width:10%;">Views</th>
+                            <th style="width:10%;">User</th>
                                  <th style="width:20%;">Date</th> 
-                                <th style="width:10%;"><i class="lar la-heart"></i></th>
+                                <th style="width:10%;"><i class="lar la-heart"></i></th>-->
                              </tr>
                           </thead>
                           <tbody>
@@ -521,10 +567,10 @@ $settings = App\Setting::first();
                                 </td>
                                 <td>{{ $val->rating }}<i class="lar la-star mr-2"></i></td>
                                 <td>@if(isset($val->categories->name)) {{ $val->categories->name }} @endif</td>
-                                <td>{{ $val->views }}</td> 
+                               <!-- <td>{{ $val->views }}</td> 
                               
-                                 <td>{{ $val->created_at }}</td> 
-                                <td><i class="las la-heart text-primary"></i></td>
+                                 <td>{{ $val->created_at }}</td>
+                                <td><i class="las la-heart text-primary"></i></td> -->
                              </tr>
                              @endforeach                                                                     
                              @endforeach                                                                     
@@ -533,30 +579,62 @@ $settings = App\Setting::first();
                     </div>
                  </div>
                 </div>
-                <div class="targetDiv" id="div8">
+               
+                </div>
+                 <div class="targetDiv" id="div8">
                   
-                  <p class="text-white">Enter Tv Activation Code</p>
-                  <form id="tv-code" accept-charset="UTF-8" action="{{ URL::to('user/tv-code') }}"   enctype="multipart/form-data" method="post">
+                          <p class="text-white">{{ __('Enter Tv Activation Code') }}</p>
+                <form id="tv-code" accept-charset="UTF-8" action="{{ URL::to('user/tv-code') }}"   enctype="multipart/form-data" method="post">
                               @csrf
                               <input type="hidden" name="users_id" value="{{ $user->id }}" />
                               <input type="hidden" name="email" value="{{ $user->email }}" />
                                        <div class="row mt-3">
                                           <div class="col-md-8">
-                                                <input type="text" name="tv_code" id="tv_code" value="@if(!empty($UserTVLoginCode->tv_code)){{ $UserTVLoginCode->tv_code }}@endif" />
+                                                <input type="text" name="tv_code" id="tv_code" value="@if(!empty($UserTVLoginCode->tv_code)){{ $UserTVLoginCode->tv_code.' '.$UserTVLoginCode->uniqueId }}@endif" />
 
                                           </div>
                                        <div class="col-md-4">
                                        @if(!empty($UserTVLoginCode->tv_code))
-                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="z-index:999; position: absolute;background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="z-index:999; position: absolute; background-color:#df1a10!important;" class="btn round tv-code-remove text-red">{{ __('Remove') }}</a>
                                        @else
-                                       <a type="button" id='tvCode' style='z-index:999; position: absolute;' class="btn round tv-code text-white">Add</a>
+                                       <a type="button" id='tvCode' style='z-index:999; position: absolute;' class="btn round tv-code text-white">{{ __('Add') }}</a>
                                        @endif
                                           </div>
                                        </div>
                            </form>
+                  </div>
+                  <div class="targetDiv" id="div9">
+                  
+                  <p class="text-white">{{ __('Tv Logged User List') }}</p>
+       
+                               <div class="col-md-4">
+
+                               <table class="table  artists-table iq-card text-center p-0">
+                                          <tr class="r1">
+                                             <th><label> {{ __('S.No') }} </label></th>
+                                             <th><label> {{ __('Email') }} </label></th>
+                                             <th><label> {{ __('TV Code') }} </label></th>
+                                             <th><label> {{ __('Action') }} </label></th>
+                                             
+                                             @foreach($LoggedusersCode as $key=>$Logged_usersCode)
+                                             <tr>
+                                                <td>{{ $key+1 }}</td>
+                                                <td valign="bottom"><p> {{ $Logged_usersCode->email  }} </p></td>
+                                                <td valign="bottom"><p> {{ $Logged_usersCode->tv_code  }} </p></td>
+                                                <td>
+                                                   <p class=" align-items-center list-user-action">
+                                                      <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$Logged_usersCode->id}}" style="z-index:999; position: absolute; background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                                   </p>
+                                                </td>
+                                             </tr>
+                                          @endforeach
+                                    </table>
+
+                                  </div>
+                               </div>
           </div>
-    </div>
-            </div>
+            </div></div>
+            
 <style>
 .form-control {
 background-color: #F2F5FA;
@@ -573,326 +651,9 @@ border-radius: 4px;
 </style>
             
 
-<!--
-                    <div class="row align-items-center justify-content-between">
-                        <div class="col-md-8">
-                            <span class="text-light font-size-13">Language</span>
-                            <p class="mb-0">English</p>
-                        </div>
-                    </div>
-                    <h5 class="mb-3 mt-4 pb-3 a-border">Billing Details</h5>
-                    <div class="row justify-content-between mb-3">
-                        <div class="col-md-8 r-mb-15">
-                            <p>Your next billing date is 19 September 2020.</p>
-                            <a href="#" class="btn btn-hover">Cancel Membership</a>
-                        </div>
-                        <div class="col-md-4 text-md-right text-left">
-                            <a href="#" class="text-primary">Update Payment info</a>
-                        </div>
-                    </div>
-                    <h5 class="mb-3 mt-4 pb-3 a-border">Plan Details</h5>
-                    <div class="row justify-content-between mb-3">
-                        <div class="col-md-8">
-                            <p>Premium</p>                                
-                        </div>
-                        <div class="col-md-4 text-md-right text-left">
-                            <a href="pricing-plan.html" class="text-primary">Change Plan</a>
-                        </div>
-                    </div>
--->
-<!--
-                    <h5 class="mb-3 pb-3 mt-4 a-border">Setting</h5>
-                    <div class="row">
-                        <div class="col-12 setting">
-                            <a href="#" class="text-body d-block mb-1">Recent device streaming activity</a>
-                            <a href="#" class="text-body d-block mb-1">Sign out of all devices </a>
-                            <a href="#" class="text-body d-block">Download your person information</a>
-                        </div>                            
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="container">
-        <div class="row">
-            <div class="col-lg-6 mb-3">
-                <div class="sign-user_card" style="height: 400px;">
-                    <h4 class="card-title mb-0">Plan Details</h4>
-                    <div class="row align-items-center justify-content-between mb-3 mt-3">
-                        <div class="col-sm-4">
-                   <?php  if($user_role == 'registered'){ ?>
-                          <h6><?php echo 'Registered'." " .'(Free)'; ?></h6>                                       
-                          <h6>Subscription</h6>                                       
-                       <?php }elseif($user_role == 'subscriber'){ ?>
-                          <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
-                          <br>       
-                       <h5 class="card-title mb-0">Available Specification :</h5><br>
-                       <h6> Video Quality : <p> <?php if($plans != null ) {  $plans->video_quality ; } else { ' ';} ?></p></h6>  
-                       <h6> Video Resolution : <p> <?php if($plans != null ) {  $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
-                       <h6> Available Devices : <p> <?php if($plans != null ) {  $plans->devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
-                          <!--<h6>Subscription</h6>
-                       <?php } ?>
-                       </div>
-                        <div class="col-sm-6">
-                           <?php if(Auth::user()->role == "subscriber"){ ?>
-                            <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
-                            <?php }else{ ?>
-                    <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
-                    <?php } ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-3" id="updatepic">
-                <div class="sign-user_card mb-3">
-                    <h4 class="card-title mb-2">Manage Profile</h4>
-                    <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> 
-                    <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                    <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
-                    <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" />  <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
-                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
-                    </form>		
-                </div>
-            </div>
-
-  <!-- {{-- Preference for videos --}} 
-            <div class="col-lg-6 mb-3" id="">
-              <div class="sign-user_card mb-3">
-                  <h4 class="card-title mb-0">Preference for videos</h4>
-                  <form action="{{ URL::to('admin/profilePreference') }}" method="POST"  >
-                  @csrf
-                  <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-
-                  <div class="col-sm-9 form-group p-0 mt-3">
-                    <label><h5>Preference Language</h5></label>
-                    <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
-                        {{-- @foreach($language as $preference_language)
-                            <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
-                        @endforeach --}}
-                    </select>
-                 </div>
-
-                 <div class="col-sm-9 form-group p-0 mt-3">
-                    <label><h5>Preference Genres</h5></label>
-                    <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
-                        @foreach($videocategory as $preference_genres)
-                            <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
-                        @endforeach
-                    </select>
-                 </div>
-
-                  <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
-                  </form>		
-              </div>
-          </div>
-
-<!-- {{-- Multiuser Profile --}} 
-     <div class="col-lg-6 mb-3" >
-        <div class="sign-user_card mb-3">
-           <h4 class="card-title mb-0 manage"> Profile</h4>
-              <div class="col-md-12 profile_image">
-                  @forelse  ($profile_details as $profile)
-                    <div class="">
-                             <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
-                            
-                             <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
-                         <div class="circle">
-                                <a  href="{{ URL::to('profileDetails_edit', $profile->id)}}">
-                                       <i class="fa fa-pencil"></i> </a>
-                                @if($Multiuser == null)
-                                 <a  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
-                                   <i class="fa fa-trash"></i> </a> 
-                                @endif
-                             </div>
-                    </div>
-                  @empty
-                    <div class="col-sm-6">  <p class="name">No Profile</p>  </div>
-                  @endforelse
-              </div>    
-          </div> 
-        </div>
-     </div>
-<!-- {{-- Multiuser Profile --}} 
-        </div>
-   </div>
-    </div>
-</section>
-
-<div id="main-admin-content">
-    <div id="content-page" class="content-page">
-        <div class="container-fluid">  
-<!--
-      <div class="row">
-            <div class="col-12 col-md-12 col-lg-6" >
-       <div class="iq-card">
-                <div class="row" id="card">
-                <div class="col-md-12" >
-              <div class="iq-card-header d-flex justify-content-between align-items-center mb-0 ">
-                 <div class="iq-header-title">
-                    <h4 class="card-title mb-0">Card Details</h4>
-                 </div>
-              </div> 
-              <div class="iq-card-body">
-                 <ul class="list-inline p-0 mb-0">
-                    <li>
-                       <div class="row align-items-center justify-content-between mb-3 mt-3">
-                          <div class="col-sm-4">
-                               Card1                                    
-                          </div>
-                          <div class="col-sm-4">
-                               
-                                                                    
-                          </div>
-                           <div class="col-sm-4">
-                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >Transaction Details</a>								               
-                          </div>
-                       </div>
-                    </li>
-                 </ul>
-              </div>
-                </div>
-                </div>
-                </div></div>
-
-      </div>
-
-
-      <div class="row">
-      <div class="col-md-12">
-              <div class="iq-card" id="recentviews" style="background-color:#191919;">
-                 <div class="iq-card-header d-flex justify-content-between" >
-                    <div class="iq-header-title">
-                       <h4 class="card-title">Recently Viewd Items</h4>
-                    </div>
-                    
-                 </div>
-                  <div class="iq-card-body">
-                    <div class="table-responsive " >
-                       <table class="data-tables table movie_table recent_table" style="width:100%">
-                          <thead>
-                             <tr>
-                                <th style="width:20%;">Video</th>
-                                <th style="width:10%;">Rating</th>
-                                <th style="width:20%;">Category</th>
-                                <th style="width:10%;">Views</th>
-                               <!-- <th style="width:10%;">User</th>
-                                 <th style="width:20%;">Date</th> 
-                                <th style="width:10%;"><i class="lar la-heart"></i></th>
-                             </tr>
-                          </thead>
-                          <tbody>
-                          @foreach($recent_videos as $video)
-                          @foreach($video as $val)
-                             <tr>
-                                <td>
-                                   <div class="media align-items-center">
-                                      <div class="iq-movie">
-                                      <a href="javascript:void(0);"><img
-                                               src="{{ URL::to('/') . '/public/uploads/images/' . $val->image }}"
-                                               class="img-border-radius avatar-40 img-fluid" alt=""></a>  </div>
-                                      <div class="media-body text-white text-left ml-3">
-                                         <p class="mb-0"></p>
-                                         <small> </small>
-                                      </div>
-                                   </div>
-                                </td>
-                                <td>{{ $val->rating }}<i class="lar la-star mr-2"></i></td>
-                                <td>@if(isset($val->categories->name)) {{ $val->categories->name }} @endif</td>
-                                <td>{{ $val->views }}</td> 
-                              
-                                 <td>{{ $val->created_at }}</td> 
-                                <td><i class="las la-heart text-primary"></i></td>
-                             </tr>
-                             @endforeach                                                                     
-                             @endforeach                                                                     
-                          </tbody>
-                       </table>
-                    </div>
-                 </div>
-              </div>
-           </div></div>
-   
-          <div class="container data-mdb-smooth-scroll">
-         <div class="row justify-content-center">	
-          <div class="col-md-12">
-            
-        <div class="login-block nomargin">
-
-         <!--<h4 class="my_profile">
-            <i class="fa fa-edit"></i> 
-            <?php echo __('Update Your Profile Info');?>
-          </h4>-->
 
   <div class="clear"></div>   
-  <form method="POST" action="<?= $post_route ?>" id="update_profile_form" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-     <div class="well row">
-        <!--<div class="col-sm-6 col-xs-12">
-           <div class="row">
-              <div class="col-sm-12 col-xs-12">
-                 <label for="avatar">My Avatar - Elite_<?php echo $user->id;?></label>
-                 <div id="user-badge">
-                    <img src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>" />
-                    <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />
-                 </div>	
-              </div>
-           </div>
-        </div>-->
-            <!--popup-->
-            <div class="form-popup " id="myForm" style="background:url(<?php echo URL::to('/').'/assets/img/Landban.png';?>) no-repeat;	background-size: cover;padding:40px;display:none;">
-            <div class="col-sm-4 details-back">
-           <div class="row data-back">
-              <div class="well-in col-sm-12 col-xs-12" >
-                 <?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('name'); ?></div><?php endif; ?>
-                 <label for="username" class="lablecolor"><?=__('Username');?></label>
-                 <input type="text" class="form-control" name="name" id="name" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" />
-              </div>
-              <div class="well-in col-sm-12 col-xs-12">
-                 <?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('email'); ?></div><?php endif; ?>
-                 <label for="email"><?=__('Email');?></label>
-                 <input type="text" class="form-control" name="email" id="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" />
-              </div>
-              <div class="well-in col-sm-12 col-xs-12">
-                 <?php if($errors->first('name')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('name'); ?></div><?php endif; ?>
-                 <label for="username" class="lablecolor"><?=__('Phone Number');?></label>
-                 <div class="row">
-                     <div class="col-sm-6 col-xs-12">
-                        <select name="ccode" >
-                          @foreach($jsondata as $code)
-                          <option value="{{ $code['dial_code'] }}" <?php if($code['dial_code'] == $user->ccode ) { echo "selected='selected'"; } ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
-                          @endforeach
-                       </select>
-                    </div>
-                    <div class="col-sm-6 col-xs-12">
-                       <input type="text" class="form-control" name="mobile" id="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" />
-                    </div>
-                 </div>
-              </div>
-              <div class="well-in col-sm-12 col-xs-12">
-                 <label for="password"><?=__('Password');?> (leave empty to keep your original password)</label>
-                 <input type="password" class="form-control" name="password" id="password"  />
-              </div>
-              <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-              <div class="col-sm-12 col-xs-12 mt-3">
-                 <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary" />
-                         <button type="button" class="btn btn-primary" onclick="closeForm()">Close</button>
-              </div>
-           </div>
-        </div>
-            </div>
-        
-        
-            <div class="row" id="subscribe">
-<!--                    <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
-                <a href="<?=URL::to('/stripe/billings-details');?>" class="btn btn-primary noborder-radius btn-login nomargin" > View Subscription Details</a>-->
-                 
-              
-           </div>
-            
-     </div>
-     <div class="clear"></div>
-  </form>
+  
     </div>
     </div>
    
@@ -903,19 +664,18 @@ border-radius: 4px;
         
 
   </div>
+  
   <?php $settings = App\Setting::first(); ?>
-
-@php
-  include(public_path('themes/theme3/views/footer.blade.php'));
-@endphp
 
   
    <script>
-      $(document).ready(function () {
+$(document).ready(function () {
+
 $(".tv-code").click(function(){
 $('#tv-code').submit();
 });
 });
+
 $(document).ready(function () {
   $(".thumb-cont").hide();
   $(".show-details-button").on("click", function () {
@@ -948,27 +708,7 @@ document.getElementById(id).style.display = "block";
 // Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();
 </script>
-<!--<script>
-// Prevent closing from click inside dropdown
-$(document).on('click', '.dropdown-menu', function (e) {
-e.stopPropagation();
-});
 
-// make it as accordion for smaller screens
-if ($(window).width() < 992) {
-$('.dropdown-menu a').click(function(e){
-  e.preventDefault();
-  if($(this).next('.submenu').length){
-    $(this).next('.submenu').toggle();
-  }
-  $('.dropdown').on('hide.bs.dropdown', function () {
-    $(this).find('.submenu').hide();
-  }
-                   )
-}
-                           );
-}
-</script>-->
 <script type="text/javascript">
 $(document).ready(function () {
 $('.searches').on('keyup',function() {
@@ -1117,7 +857,6 @@ responsive: [{
   }
 }]
 };
-console.log(chart_01_lable);
 var chart = new ApexCharts(document.querySelector("#view-chart-01"), options);
 chart.render();
 } 
@@ -1261,3 +1000,15 @@ $('#submit-new-cat').click(function(){
         }, 3000);
     })
 </script>
+<script>
+    $(document).on('click', '.toggle-password', function() {
+
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    
+    var input = $("#pass_log_id");
+    input.attr('type') === 'password' ? input.attr('type','text') : input.attr('type','password')
+});
+</script>
+@php
+include(public_path('themes/theme7/views/footer.blade.php'));
+@endphp

@@ -1,32 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+@partial('header')
+
 @content()
 
+@partial('footer')
+
+@scripts()
+
+
 <style>
+    .text-primary {
+        color: {{ button_bg_color() . '!important' }};
+    }
+
     /*Button Bg color  */
-    button.btn.signup {
-        border: #f3ece0 !important;
-        background-color: #FF0052 !important;
-    }
-
-    button.transpar {
+    button.btn.btn-hover.ab {
         border: #f3ece0 !important;
         background-color: {{ button_bg_color() . '!important' }};
     }
 
-    button.btn.btn-primary {
+    button.btn-hover:before {
         border: #f3ece0 !important;
         background-color: {{ button_bg_color() . '!important' }};
     }
 
-    i.ri-settings-4-line.text-primary {
-        color: {{ button_bg_color() . '!important' }};
-    }
-
-    i.ri-logout-circle-line.text-primary {
-        color: {{ button_bg_color() . '!important' }};
-    }
-
-    /* price tag in homepage */
-    p.p-tag1 {
+    /* sign up  */
+    button.btn.btn-hover.btn-primary.btn-block.signup {
+        border: #f3ece0 !important;
         background-color: {{ button_bg_color() . '!important' }};
     }
 
@@ -36,6 +38,57 @@
         background-color: {{ button_bg_color() . '!important' }};
     }
 
+    /* price tag in homepage */
+    p.p-tag1 {
+        background-color: {{ button_bg_color() . '!important' }};
+    }
+
+    .p-tag {
+        background-color: {{ button_bg_color() . '!important' }};
+    }
+
+    .sta {
+        color: {{ button_bg_color() . '!important' }};
+    }
+
+    .circle {
+
+        stroke-dasharray: 650;
+        stroke-dashoffset: 650;
+        -webkit-transition: all 0.5s ease-in-out;
+        opacity: 0.3;
+        stroke: {{ button_bg_color() . '!important' }};
+    }
+    .header .navbar ul li.menu-item a:hover{
+       
+    }
+    .main-title a:hover, .main-title a:focus{
+        color: {{ button_bg_color() . '!important' }}; 
+    }
+   header .navbar ul li.menu-item a:hover {
+   color: {{ button_bg_color() . '!important' }}; 
+      
+       font-weight: 500;
+   }
+    .menu-item:hover{
+        border-bottom: 2px solid  {{ button_bg_color() . '!important' }};
+    }
+    .playbtn:hover .triangle {
+        stroke-dashoffset: 0;
+        opacity: 1;
+        animation: trailorPlay 0.7s ease-in-out;
+        stroke: {{ button_bg_color() . '!important' }};
+    }
+
+    i.ri-settings-4-line.text-primary {
+        color: {{ button_bg_color() . '!important' }};
+    }
+    .f-link li a:hover{
+         color: {{ button_bg_color() . '!important' }};
+    }
+    i.ri-logout-circle-line.text-primary {
+        color: {{ button_bg_color() . '!important' }};
+    }
 
     /* Home page Admin icon */
     .st0 {
@@ -80,6 +133,10 @@
         stroke-linejoin: round;
         stroke: {{ button_bg_color() . '!important' }}
     }
+
+    .sta {
+        color: {{ button_bg_color() . '!important' }};
+    }
 </style>
 
 {{-- Toggle - Dark-Mode & Light-Mode --}}
@@ -101,3 +158,5 @@
         }
     });
 </script>
+
+</html>

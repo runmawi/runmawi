@@ -1533,6 +1533,10 @@ public function verifyandupdatepassword(Request $request)
               $item['videos_url']   = $item->mp4_url ;
               break;
 
+            case $item['type'] == " " && !is_null($item->transcoded_url) :
+              $item['videos_url']   = $item->transcoded_url ;
+              break;
+
             default:
               $item['videos_url']    = null ;
               break;

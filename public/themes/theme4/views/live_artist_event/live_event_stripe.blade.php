@@ -1,12 +1,16 @@
 <?php 
-    include(public_path('themes/theme3/views/header.php'));
+    include(public_path('themes/theme7/views/header.php'));
 ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 {{--Live Event Tips  --}}
+
+ <img class=""  src="<?php echo  URL::to('/assets/img/landban.png')?>" style="margin-top:-20px;">
+
 <div class="container">
    <div class="row">
+                             
       <div class="col-md-12"><pre id="token_response"></pre></div>
     </div>
 
@@ -78,4 +82,4 @@ document.getElementById("trigger").click();
 
 </script>
 
-<?php include(public_path('themes/theme3/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>

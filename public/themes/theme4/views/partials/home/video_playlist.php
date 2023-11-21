@@ -29,7 +29,6 @@ if ($ads_details != null) {
 
 $autoplay =  "autoplay" ;
 ?>
-@extends('Adstagurl.php')
 
 <?php
 $str = $first_videos->m3u8_url;
@@ -62,8 +61,8 @@ if (!empty($request_url)) { ?>
       echo "0";
   } ?>">
   <input type="hidden" id="base_url" value="<?php echo URL::to("/"); ?>">
-  <input type="hidden" id="video_type" value="<?php echo $first_videos->type; ?>">
-  <input type="hidden" id="video_video" value="video">
+  <input type="hidden" id="videotype" value="<?php echo $first_videos->type; ?>">
+  <input type="hidden" id="videovideo" value="video">
   <input type="hidden" id="adsurl" value="<?php if (isset($ads->ads_id)) {
       echo get_adurl($ads->ads_id);
   } ?>">
@@ -88,7 +87,7 @@ if (!empty($request_url)) { ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 
 
-          <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to(
+          <video  <?= $autoplay ?> id="video_playlist_player"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to(
     "/"
 ) .
     "/public/uploads/images/" .
@@ -108,7 +107,7 @@ if (!empty($request_url)) { ?>
   } ?>
 </video>
 
-  <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to(
+  <input type="hidden" id="hlsm3u8" name="hls_m3u8" value="<?php echo URL::to(
       "/storage/app/public/"
   ) .
       "/" .
