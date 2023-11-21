@@ -27,7 +27,8 @@ class AddArtistEventCalendarToAudio extends Migration
     public function down()
     {
         Schema::table('audio', function (Blueprint $table) {
-            //
+            Schema::dropIfExists('start');
+            Schema::dropIfExists('end');
         });
     }
 }
