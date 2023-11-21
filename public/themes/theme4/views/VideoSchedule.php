@@ -1,12 +1,13 @@
 <?php 
-    include(public_path('themes/theme3/views/header.php'));   ?>
+   include(public_path('themes/theme7/views/header.php'));
+   ?>
 <!-- MainContent -->
 <section id="iq-favorites">
 <div class="container-fluid">
    <div class="row">
       <div class="col-sm-12 page-height">
          <div class="iq-main-header align-items-center justify-content-between">
-            <h3 class="vid-title">Scheduled Videos</h3>
+            <h3 class="vid-title"><?= __('Scheduled Videos') ?></h3>
          </div>
          <div class="favorites-contens">
             <ul class="category-page list-inline row p-0 mb-0">
@@ -29,7 +30,7 @@
                                     
                                    <div class="hover-buttons">
                                        <a class="text-white d-flex align-items-center" href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>" >
-                                         <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                         <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> <?= __('Watch Now') ?>
                                        </a>
                                        <div class="hover-buttons d-flex">
                                     </div>
@@ -48,4 +49,4 @@
       </div>
    </div>
 </div>
-<?php include(public_path('themes/theme3/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>

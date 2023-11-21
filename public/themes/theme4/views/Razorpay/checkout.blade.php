@@ -1,6 +1,6 @@
-@php  include(public_path('themes/theme4/views/header.php')); @endphp
+@php  include(public_path('themes/theme7/views/header.php')); @endphp
 
-<button id="rzp-button1" hidden>Pay</button>
+<button id="rzp-button1" hidden>{{ __('Pay')  }}</button>
 
 <div class="col-lg-12  h-100">
     <div class="d-flex justify-content-center">
@@ -64,9 +64,9 @@ document.getElementById('rzp-button1').onclick = function(e){
     <input type="text"  name="cityName"    id="cityName" value= {{ $respond['cityName'] }} />
     <input type="text"  name="regionName"  id="regionName" value= {{ $respond['regionName'] }}   />
 
-    <button type="submit" id="razorpay_respond">Pay</button>
+    <button type="submit" id="razorpay_respond">{{ __('Pay')  }}</button>
 </form>
 
 @php
-    include(public_path('themes/theme4/views/footer.blade.php'));
+    include(public_path('themes/theme7/views/footer.blade.php'));
 @endphp

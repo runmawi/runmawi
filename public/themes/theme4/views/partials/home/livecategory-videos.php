@@ -44,12 +44,12 @@ $currency = App\CurrencySetting::first();
 <?php  if(count($live_videos) > 0) : ?>
 
 
-<div class="container-fluid">
+<div class="mb-5">
     <div class="row">
         <div class="col-sm-12 overflow-hidden">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
-                <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading"
+                <a href="<?= URL::to('/') ?><?= '/LiveCategory'.'/' . $category->slug ?>" class="category-heading"
                     style="text-decoration:none;color:#fff">
                     <h4 class="movie-title">
                         <?php 
@@ -66,23 +66,26 @@ $currency = App\CurrencySetting::first();
                         
                         ?>
                     <li class="slide-item">
+                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                             <div class="block-images position-relative">
                             <!-- block-images -->
-                            <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
+                           <div class="img-box">
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid" alt="">
+                                        class="img-fluid w-100" alt="live-c">
                                         <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video> -->
-                                    </a>
+                                  
 
                             <!-- PPV price -->
                                 
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                         <p class="p-tag1">
                                             <?php if($category_video->access == 'subscriber' ){ ?>
-                                         <i class="fas fa-crown" style='color:gold'></i>    
-                                    <?php }elseif(!empty($category_video->ppv_price)) {
+                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif($category_video->access == 'registered'){?>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <?php } elseif(!empty($category_video->ppv_price)) {
                                                    echo $category_video->ppv_price.' '.$currency->symbol ; 
                                                 } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                                     echo $category_video->global_ppv .' '.$currency->symbol;
@@ -92,7 +95,7 @@ $currency = App\CurrencySetting::first();
                                             ?>
                                         </p>
                                         <?php } ?>
-                                   
+                                    
                                 </div>
                                 <div class="block-description">
 
@@ -176,7 +179,7 @@ $currency = App\CurrencySetting::first();
                                     <div class="hover-buttons">
                                         <a type="button" class="text-white d-flex align-items-center"
                                             href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%" alt="ply"/> Watch Now
                                         </a>
                                         <div class="d-flex">
                     </div>
@@ -185,6 +188,7 @@ $currency = App\CurrencySetting::first();
                                 </div>
                               
                             </div>
+                        </a>
                     </li>
                     <?php           
                           endforeach; 

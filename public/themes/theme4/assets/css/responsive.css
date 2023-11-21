@@ -1,5 +1,13 @@
+.music-play-lists{
+    display: flex;
+}
 @media (min-width:1300px) {
   .container { max-width: 1170px; }
+}
+@media only screen and (max-device-width: 480px){
+ video {
+    object-fit: fill;
+}
 }
 @media (min-width:1499px) {
   .container { max-width: 1266px; }
@@ -26,18 +34,21 @@
   #home-slider .slick-bg { height: 100%; }
 }
 @media(max-width:991px) {
+    video {
+    object-fit: fill;
+}
   li.slide-item .block-description .parallax-ratting span, li.slide-item .block-description .movie-time span, li.slide-item .block-description .ratting-start, .block-description .movie-content li { font-size: 10px; }
   .hover-buttons .btn { font-size: 10px; }
   #home-slider .slick-bg { padding: 50px 0; }
   .r-mb-23 { margin-bottom: 23px; }
-   
   header .navbar-light .navbar-brand img.logo { width: 100px; }
   .navbar-collapse { position: fixed; top: 0; left: 0; padding-bottom: 15px; width: 260px; height: 100vh; background: var(--iq-bg1); padding-top: 40px; -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.2); box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.2); }
   .vertical_s { position: static; }
   #top-ten-slider-nav { width: 100%; height: 100%; }
   .navbar-collapse.collapsing { height: auto; -webkit-transition: left 0.3s ease; -o-transition: left 0.3s ease; -moz-transition: left 0.3s ease; transition: left 0.3s ease; left: -100%; }
   .navbar-collapse.show { left: -15px; -webkit-transition: left 0.3s ease-in; -o-transition: left 0.3s ease-in; -moz-transition: left 0.3s ease-in; transition: left 0.3s ease-in; z-index: 999; }
-  header .navbar ul li.menu-item a { line-height: 10px; float: left; width: 100%; text-align: left; padding: 10px 30px; color: var(--iq-white); }
+  header .navbar ul li.menu-item a { line-height: 10px; float: left; width: 100%; text-align: left; padding-left: 10px;*/ color: var(--iq-white); }
+  header .navbar ul li.menu-item  { padding:15px 25px; }
   .mobile-more-menu { display: block; }
   .menu-right { display: none; }
   .navbar-brand { padding: 0; margin-right: 0; }
@@ -60,8 +71,8 @@
   .topten-title { display: none; }
   .device-margin { margin-top: 15px; }
   #home-slider h1.slider-text { font-size: 35px;}
-  header .navbar ul li{display:block;}
-  .iq-main-slider{padding-top:0px!important;}
+  header .navbar ul li{display:block;padding-left: 25px;}
+  .iq-main-slider{/*padding-top:60px!important;*/}
   .m-profile {padding-top: 100px;padding-bottom: 60px;}
   .trending-info .trending-dec{width: 52%;}
 }
@@ -75,15 +86,6 @@
   .type { padding: 9px 10px; font-size: 13px; }
 }
 @media (max-width:767px) {
-     #menuToggle{
-        display: none;
-    }
-    #menu{
-        display: none;
-    }
-    #menuToggle span{
-        display: none!important;
-    }
   .parallax-window { padding: 60px 0; }
   .banner-wrapper { height: 100%; padding: 100px 0; }
   .trending-content { padding: 0; }
@@ -94,14 +96,18 @@
   .container-fluid { padding-left: 15px; padding-right: 15px; }
   #home-slider h1.slider-text {line-height: 62px; margin: 0px; }
   .trending-info .block-social.social1 { margin-left: 0 !important; }
-  .trending-info .trending-text { font-size: 35px !important; line-height: 1.3; }
+  .trending-info .trending-text { font-size: 24px !important; line-height: 1.3; }
   .trending-info { padding: 60px 15px; }
   #home-slider p { margin: 22px 0; }
   .r-mt-20 { margin-top: 20px; }
   .p-btns { flex-direction: column; }
-  h4{ font-size: 1em; }
+  .main-title { font-size: 1em; }
   .sign-info { flex-direction: column; }
-  .sign-info .btn { margin-bottom: 15px; }
+  .sign-info .btn { margin-bottom: 15px;font-size: 15px; }
+    .signup{
+        font-size: 15px!important;
+        padding: 10px 10px!important;
+    }
   .banner-caption, .overlay-s-name { left: 15px; }
   .episode-name { flex-direction: column; align-items: flex-start !important; }
   .text-detail.episode-name .trending-year { padding-left: 0; font-size: 24px; }
@@ -112,6 +118,81 @@
   header#main-header { position: static; }
   .shows-img .movie-time { display: none !important; }
   .genres-box { top: 10px; }
+    #top-menu{
+    display: block;
+}
+    .aw{
+        width: 60%!important;
+    }
+    #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed {
+        height: auto!important;
+    }
+    .badge {
+    display: inline-block;
+    padding: 0.28em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 16px;
+    /*height: 20px;*/
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}
+    .player-ctn{
+        margin-bottom: 10px;
+    }
+    #mySidebar{
+        display: none;
+    }
+    #home-slider{
+        height: 380px;
+    }
+    #home-slider p {
+        font-size: 15px!important;
+    }
+    .h-100{
+        height: auto!important;
+        padding: 0px 0px 0 10px!important;
+        height:300px;
+    }
+    h1{
+        font-size: 18px!important;
+    }
+    h6{
+        font-size: 14px!important;
+         font-family: 'futuramedium'!important;
+    }
+     video{
+        object-fit: contain!important;
+    }
+    #main{
+        margin-left: 0!important;
+    }
+    .pad{
+        padding: 0px!important;
+    }
+    .in {
+        font-size: 23px!important;}
+    #hid{
+        display: none;
+    }
+    .get {
+   
+    font-size: 18px!important;
+    line-height: 30px!important;
+}
+    #ikm {
+        font-size: 23px!important;padding: 0;}
+    .text-right{
+        text-align: left!important;
+    }
+    .wrap{
+        display: inline-block!important;
+    }
+    .share-icons{
+        justify-content: flex-start!important;
+    }
   .shows-content { bottom: 14px; }
   .main-content { padding-top: 25px; }
   #home-slider p { width: 100%; }
@@ -135,34 +216,6 @@
   #trending-slider-nav .slick-arrow:hover{background: none;}
   .favorites-slider .slick-prev,
   #trending-slider-nav .slick-prev{right:37px;}
-    .navbar-nav{padding: 10px 10px 10px 30px;
-    color: #fff;}
-    .menu-item{
-        padding: 10px;
-    }
-    #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed{
-        height: 200px!important;
-    }
-    h-100{
-        height: 300px!important;
-    }
-    h1{
-        font-size: 22px;
-    }
-    #home-slider .slick-bg.s-bg-1{
-        background-size: cover!important;
-    }
-    #home-slider .slick-dots li button{
-        display: none;
-    }
-    .btn{
-        font-size: 10px;
-        padding: 10px 10px;
-    }
-    .btn1{
-       
-        padding: 10px 10px!important;
-    }
 }
 @media (min-width:576px) {
   .iq-search-bar a.search-toggle { display: none; }
