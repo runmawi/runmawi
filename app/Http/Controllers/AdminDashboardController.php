@@ -578,4 +578,34 @@ class AdminDashboardController extends Controller
             }
            
         }
+
+
+        public function BunnyCDNStream(Request $request){
+            
+            $client = new Client();
+
+
+            $client = new \GuzzleHttp\Client();
+
+            $response = $client->request('GET', 'https://video.bunnycdn.com/library/120702/videos?page=1&itemsPerPage=100&orderBy=date', [
+            'headers' => [
+                'AccessKey' => '4ff64e8f-227f-482a-8234c571e2ae-edd6-402e',
+                'accept' => 'application/json',
+            ],
+            ]);
+            echo "<pre>";
+            print_r( $response->getBody()->getContents());
+            exit;
+            // $body = $response->getBody()->getContents();
+
+            // dd($body);   
+            $response = $client->request('GET', 'https://api.bunny.net/videolibrary/120702?includeAccessKey=false', [
+                'headers' => [
+                'AccessKey' => 'ed136712-3082-4ed2-a942-2aa01890bc2fa25f5d0c-fa5b-4738-aeb2-cdd4c9e22854 ',
+                'accept' => 'application/json',
+                ],
+            ]);
+
+
+        }
 }
