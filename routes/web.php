@@ -20,6 +20,7 @@ Route::get('/video-chat', function () {
 // Route::get('video_chat', 'VideoChatController@index');
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
+Route::get('/BunnyCDNStream', 'AdminDashboardController@BunnyCDNStream');
 
 $router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
@@ -1041,6 +1042,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/uploadEditVideo', 'AdminVideosController@uploadEditVideo');
     Route::post('/AWSuploadEditVideo', 'AdminVideosController@AWSuploadEditVideo');
     Route::post('/upload_bunny_cdn_video', 'AdminVideosController@UploadBunnyCDNVideo');
+    Route::post('/bunnycdn_videolibrary', 'AdminVideosController@BunnycdnVideolibrary');
+    Route::post('/stream_bunny_cdn_video', 'AdminVideosController@StreamBunnyCdnVideo');
 
     Route::post('/AWSUploadFile', 'AdminVideosController@AWSUploadFile');
 
