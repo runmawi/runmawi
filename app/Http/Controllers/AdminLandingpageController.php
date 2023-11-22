@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\AdminLandingPage;
-use \Redirect as Redirect;
+use Illuminate\Support\Str;
+use \Redirect ;
+use Illuminate\Support\Facades\Validator;
 
 
 class AdminLandingpageController extends Controller
@@ -27,6 +29,17 @@ class AdminLandingpageController extends Controller
   
     public function store(Request $request)
     {
+      try {
+
+          $validator = Validator::make($request->all(), [
+            'title'   => 'required',
+            'section.*' => 'required',
+            'date.*'    => 'required',
+          ]);
+          
+          if ($validator->fails()) {
+            return Redirect::back()->with('error-message', "Please! Fill the title and section Field");
+          }
 
         $landing_page_id = AdminLandingPage::max('landing_page_id') + 1 ;
 
@@ -40,7 +53,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "1";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
                     $AdminLandingPage->save();
             }
           }
@@ -55,7 +68,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "2";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
                     $AdminLandingPage->save();
             }
           }
@@ -70,7 +83,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "3";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
                     $AdminLandingPage->save();
             }
           }
@@ -85,7 +98,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "4";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
                     $AdminLandingPage->save();
             }
           }
@@ -110,6 +123,10 @@ class AdminLandingpageController extends Controller
           ]);
 
         return Redirect::route('landing_page_index')->with('message', 'Successfully! Created Landing Page');
+      } 
+        catch (\Throwable $th) {
+          return Redirect::back()->with('error-message', $th->getMessage());
+      }
     }
 
     public function edit(Request $request,$id)
@@ -149,7 +166,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "1";
                     $AdminLandingPage->landing_page_id = $request->landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
                     $AdminLandingPage->save();
             }
           }
@@ -164,7 +181,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "2";
                     $AdminLandingPage->landing_page_id = $request->landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
                     $AdminLandingPage->save();
             }
           }
@@ -179,7 +196,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "3";
                     $AdminLandingPage->landing_page_id = $request->landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
                     $AdminLandingPage->save();
             }
           }
@@ -194,7 +211,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "4";
                     $AdminLandingPage->landing_page_id = $request->landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->slug =  $request->slug != null ? Str::slug($request->slug) : Str::slug($request->title) ;
                     $AdminLandingPage->save();
             }
           }

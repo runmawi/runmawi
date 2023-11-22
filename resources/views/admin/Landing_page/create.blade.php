@@ -24,6 +24,11 @@
                             <h4 class="card-title">Add New Landing Page</h4>
                         </div>
                     </div>
+
+                    @if (Session::has('error-message'))
+                         <div id="successMessage" class=" col-md-12 alert alert-danger">{{ Session::get('error-message') }}</div>
+                    @endif 
+                  
                     <div class="iq-card-body table-responsive">
                         <form  accept-charset="UTF-8" action="{{ route('landing_page_store') }}" method="post" >
                         @csrf
@@ -244,14 +249,11 @@
                 toolbar : 'simple'
         });
 
+        $(document).ready(function(){
+
+            setTimeout(function() {
+                $('#successMessage').fadeOut('fast');
+            }, 3000);
+        });
+
 </script>
-
-
-
-
-
-
-
-
-
-
