@@ -1,7 +1,7 @@
-@php  include public_path('themes/theme7/views/header.php'); @endphp
+@php  include public_path('themes/theme4/views/header.php'); @endphp
 
 {{-- Style Link--}}
-    <link rel="stylesheet" href="{{ asset('public/themes/theme7/assets/css/video-js/video-details.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/theme4/assets/css/video-js/video-details.css') }}">
 
 {{-- video-js Style --}}
 
@@ -10,14 +10,14 @@
     <link href="https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
-    {{-- <link href="{{ asset('public/themes/theme7/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
+    {{-- <link href="{{ asset('public/themes/theme4/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
 
 {{-- video-js Script --}}
 
-    <script src="{{ asset('public/themes/theme7/assets/js/video-js/video.min.js') }}"></script>
-    <script src="{{ asset('public/themes/theme7/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
-    <script src="{{ asset('public/themes/theme7/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
-    <script src="{{ asset('public/themes/theme7/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('public/themes/theme4/assets/js/video-js/video.min.js') }}"></script>
+    <script src="{{ asset('public/themes/theme4/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
+    <script src="{{ asset('public/themes/theme4/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+    <script src="{{ asset('public/themes/theme4/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
 
 {{-- Section content --}}
@@ -194,7 +194,7 @@
                             @endif
 
 
-                        @php include public_path('themes/theme7/views/partials/social-share.php'); @endphp 
+                        @php include public_path('themes/theme4/views/partials/social-share.php'); @endphp 
                          
                         
                        
@@ -214,7 +214,7 @@
                                 </li>
                             </ul>
 
-                            @php include public_path('themes/theme7/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+                            @php include public_path('themes/theme4/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
 
                         @endif
                         
@@ -318,7 +318,7 @@
                                             <img src="{{ optional($videodetail)->image_url }}">
                                         </span>
 
-                                        @php include public_path('themes/theme7/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+                                        @php include public_path('themes/theme4/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
 
                                     </div>
                                     
@@ -329,7 +329,7 @@
 
                         @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
                                                                 
-                            @php  include public_path('themes/theme7/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
+                            @php  include public_path('themes/theme4/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
                         
                         @endif
 
@@ -354,7 +354,7 @@
                 <div class="sectionArtists">   
                     <div class="artistHeading"> {{ __('Comments') }} </div>
                         <div class="overflow-hidden">
-                            @php include public_path('themes/theme7/views/comments/index.blade.php') @endphp
+                            @php include public_path('themes/theme4/views/comments/index.blade.php') @endphp
                         </div>
                 </div>
             @endif
@@ -539,7 +539,7 @@
     </div>
 
 @php 
-    include public_path('themes/theme7/views/video-js-Player/video/videos-details-script-file.blade.php');
-    include public_path('themes/theme7/views/video-js-Player/video/videos-details-script-stripe.blade.php');
-    include public_path('themes/theme7/views/footer.blade.php'); 
+    include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-file.blade.php');
+    include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-stripe.blade.php');
+    include public_path('themes/theme4/views/footer.blade.php'); 
 @endphp

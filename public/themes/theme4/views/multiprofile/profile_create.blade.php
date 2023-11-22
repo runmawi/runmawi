@@ -1,5 +1,5 @@
 @extends('layouts.app')
-<?php include(public_path('themes/theme7/views/header.php')); ?>
+<?php include(public_path('themes/theme4/views/header.php')); ?>
 @extends('multiprofile.style')
 
 @section('content')
@@ -70,7 +70,7 @@
     </div>
 </div>
 
-<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php'));  ?>
 
 @endsection 
 

@@ -163,7 +163,7 @@
         })
     </script>
 
-    @php include(public_path('themes/theme7/views/footer.blade.php')); @endphp
+    @php include(public_path('themes/theme4/views/footer.blade.php')); @endphp
 
 </body>
 

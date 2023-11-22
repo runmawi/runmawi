@@ -1947,5 +1947,5 @@ jQuery(document).ready(function($){
 });
    </script>
 @php
-include(public_path('themes/theme7/views/footer.blade.php'));
+include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp

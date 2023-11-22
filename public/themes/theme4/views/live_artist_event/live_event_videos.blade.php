@@ -1,5 +1,5 @@
 <?php 
-    include(public_path('themes/theme7/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -747,5 +747,5 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 }, 1000);
 </script>
 
-<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php'));  ?>
 

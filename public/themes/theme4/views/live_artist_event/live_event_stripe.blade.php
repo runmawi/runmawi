@@ -1,5 +1,5 @@
 <?php 
-    include(public_path('themes/theme7/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -82,4 +82,4 @@ document.getElementById("trigger").click();
 
 </script>
 
-<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php'));  ?>
