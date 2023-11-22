@@ -38,6 +38,35 @@ class MyPlaylistController extends Controller
         Theme::uses(  $this->Theme );
     }
 
+    
+    public function CreatePlaylist(Request $request){
+
+        try {
+
+            $Theme = HomeSetting::pluck('theme_choosen')->first();
+
+            Theme::uses($Theme);
+
+            $settings = Setting::first();
+
+            $Artist = Artist::get();
+
+            $data = [
+                'settings' => $settings,
+                'Artists' => $Artist,
+                'AudioCategory' => AudioCategory::get(),
+
+            ];
+
+        return Theme::view('CreatePlaylist', $data);
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return Theme::view('CreatePlaylist', $data);
+    }
+
     public function MyPlaylist(Request $request){
         try {
             //code...
@@ -295,4 +324,5 @@ class MyPlaylistController extends Controller
             "note_type" => "success",
         ]);
     }
+
 }
