@@ -285,14 +285,24 @@
          </div>
           
       </div>
+
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script>
+
+         $(document).ready(function() {
+            $('#bunny_cdn_linked_video').select2();
+         });
+
          $(document).ready(function(){
 
             $('#videolibrary').on('change', function() {
                   
                   var videolibrary_id = this.value;
-
                   $("#bunny_cdn_linked_video").html('');
                      $.ajax({
                      url:"{{url::to('admin/bunnycdn_videolibrary')}}",
@@ -304,11 +314,14 @@
                      dataType : 'json',
                      success: function(result){
                         // alert();
+                  var streamUrl = '{{$streamUrl}}' ;
+
                      $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
                      $.each(result.items,function(key,value){
-                        // console.log(value.title);
+                        console.log(value.title);
+                        $("#bunny_cdn_linked_video").append('<option value="'+streamUrl+'/'+value.guid+'/'+'playlist.m3u8'+'">'+value.title+'</option>');
 
-                     $("#bunny_cdn_linked_video").append('<option value="'+value.title+'">'+value.title+'</option>');
+                     // $("#bunny_cdn_linked_video").append('<option value="'+value.title+'">'+value.title+'</option>');
                      });
                      }
                   });

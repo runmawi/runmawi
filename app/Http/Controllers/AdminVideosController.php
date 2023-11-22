@@ -786,6 +786,13 @@ class AdminVideosController extends Controller
                     // dd($storage_settings->bunny_cdn_access_key);
             
                 // $response->getBody();
+
+                if(!empty($storage_settings) && !empty($storage_settings->bunny_cdn_file_linkend_hostname) ){
+                    $streamUrl = $storage_settings->bunny_cdn_file_linkend_hostname;
+                }else{
+                    $streamUrl = '';
+                }
+
             $data = [
                 "headline" => '<i class="fa fa-plus-circle"></i> New Video',
                 "post_route" => URL::to("admin/videos/fileupdate"),
@@ -812,6 +819,7 @@ class AdminVideosController extends Controller
                 'Bunny_Cdn_Videos' => $decodedResponse ,
                 'storage_settings' => $storage_settings ,
                 'videolibrary' => $videolibrary ,
+                'streamUrl' => $streamUrl ,
             ];
 
             return View::make("admin.videos.fileupload", $data);
@@ -9906,8 +9914,9 @@ class AdminVideosController extends Controller
                 ],
                 ]);
                 $streamvideos = $response->getBody()->getContents();
-                echo $response->getBody();
-                exit;
+                // echo $response->getBody();
+                // exit;
+           
             }else{
                 $streamvideos = [];
             }
