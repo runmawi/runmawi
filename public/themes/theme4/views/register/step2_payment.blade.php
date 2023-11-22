@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @php
-    include(public_path('themes/theme7/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 @endphp
 
 @section('content')
@@ -1728,7 +1728,7 @@ function paypalplan_details(ele){
 
     </script>
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
 
 @endsection 

@@ -1,4 +1,4 @@
-<?php include(public_path('themes/theme7/views/header.php'));  
+<?php include(public_path('themes/theme4/views/header.php'));  
 
 $audio = $audios ;
 
@@ -995,4 +995,4 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
     </script>
-<?php include(public_path('themes/theme7/views/footer.blade.php')); ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php')); ?>

@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/theme7/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 @endphp
     
 <section id="iq-favorites">
@@ -54,6 +54,6 @@
 </section>
 
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
 
