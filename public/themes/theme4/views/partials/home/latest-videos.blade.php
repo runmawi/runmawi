@@ -57,10 +57,10 @@ $data = App\Series::where('active', '=', '1')
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center">
+                        <ul id="trending-slider " class="list-inline p-0 m-0  d-flex align-items-center dropdwon-trending">
                             @foreach ($data as $key => $series_details )
                                 <li>
-                                    <div class="tranding-block position-relative"
+                                    <div class="tranding-block position-relative videoInfo"
                                         style="background-image: url( {{ $series_details->Player_image_url }} );">
                                         <div class="trending-custom-tab">
                                                             
@@ -68,194 +68,40 @@ $data = App\Series::where('active', '=', '1')
 
                                                                 {{-- overview --}}
                                                 <div id="{{'trending-data-overview-'.$key }}" class="overview-tab tab-pane fade active show">
-                                                    <div class="trending-info align-items-center w-100" id=" videoInfo">
-                                                        <button class="close"><i class="fas fa-times"></i></button>
+                                                    <div class="trending-info align-items-center w-100 p-0 " id=" videoInfo">
+                                                    <button class="wtv-close" id="closeButton"><i class="fas fa-times"></i></button>
                                                         <div class="vip"> 
-                                                            <div class="caption"> 
-                                                                <h2 class="trending-text m-0">{{ optional($series_details)->title }}</h2>
+                                                            <div class="caption col-6 pl-0"> 
+                                                                <h2 class="mb-2">{{ optional($series_details)->title }}</h2>
+                                                                <p class="trending-dec col-6">{!! html_entity_decode( optional($series_details)->details) !!}</p>
                                                             </div>
                                                         </div>
-                                                        
 
-                                                        <p class="trending-dec">{!! html_entity_decode( optional($series_details)->details) !!}</p>
-
-                                                        <div class="p-btns">
-                                                            <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
-                                                                <a href="#" class="btn btn-link" tabindex="0"><i class="ri-add-line"></i>My List</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="trending-list mt-4">
-
-                                                            @if ( $series_details->Series_artist->isNotEmpty() )
-                                                                <div class="text-primary title">Starring:
-                                                                    <span class="text-body"> 
-                                                                        @foreach($series_details->Series_artist as $item )
-                                                                            <a href="{{ route('artist',[ $item->artist_slug ])}}">{{ $item->name }}</a> {{ !$loop->last ? ',' : '' }}
-                                                                        @endforeach
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-
-                                                            @if ( ($series_details->Series_Category)->isNotEmpty() )
-                                                                <div class="text-primary title">Genres: 
-                                                                    <span class="text-body"> 
-                                                                        @foreach($series_details->Series_Category as  $item)
-                                                                            <a href=" {{  URL::to('/series/category'.'/'.$item->slug ) }}">{{ $item->name }}</a> {{ !$loop->last ? ',' : '' }} 
-                                                                        @endforeach
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-                                                            
-                                                            @if ( $series_details->Series_Language->isNotEmpty() )
-                                                                <div class="text-primary title">This Is:
-                                                                    <span class="text-body">
-                                                                        @foreach($series_details->Series_Language as $item)
-                                                                            <a href="{{ URL::to('language/'. $item->language_id . '/' . $item->name ) }}">{{ $item->name }}</a> {{ !$loop->last ? ',' : '' }}
-                                                                        @endforeach
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-
-                                                        </div>
+                                                        <nav class=" wtv-buttons-group d-flex">
+                                                            <a>
+                                                                <button type="button">
+                                                                <i class="fas fa-eye"></i></i> View Content
+                                                                </button>
+                                                            </a>
+                                                            <button>
+                                                                <i class="fas fa-info-circle"></i> More Info
+                                                            </button>
+                                                        </nav>
+                                                         <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
+                            @foreach ($data as $series_details)
+                                <li>
+                                    <a href="javascript:void(0);">
+                                        <div class="movie-slick position-relative">
+                                            <img src="{{ $series_details->image_url }}" class="img-fluid dropdown-slider-img">
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
                                                     </div>
                                                 </div>
 
-                                                                {{--  Episode --}}
-                                                <div id="{{ 'trending-data-Episodes-'.$key }}" class="overlay-tab tab-pane fade">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="#" tabindex="0">
-                                                            <div class="channel-logo">
-                                                                <img src="{{ front_end_logo() }}" class="c-logo" alt="">
-                                                            </div>
-                                                        </a>
-
-                                                        <h1 class="trending-text big-title text-uppercase"> {{ optional($series_details)->title }}</h1></h1>
-
-                                                        {{-- <div class="iq-custom-select d-inline-block sea-epi">
-                                                            <select name="cars" class="form-control season-select">
-                                                                @foreach ( $series_details->season as $key =>  $item )
-                                                                    <option value="{{ 'season-'.$item }}">{{ 'Season '.($key+1 )}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div> --}}
-
-                                                        <div class="episodes-contens mt-4">
-                                                            <div
-                                                                class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                
-                                                                @foreach ($series_details->Episode_details as $key => $item)
-                                                                    <div class="e-item">
-                                                                        <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
-                                                                                <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                                                            </a>
-                                                                            <div class="episode-number">{{ ($key+1) }}</div>
-                                                                            <div class="episode-play-info">
-                                                                                <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="episodes-description text-body mt-2">
-                                                                            <div
-                                                                                class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
-                                                                                <span class="text-primary">                           
-                                                                                    {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
-                                                                                </span>
-                                                                            </div>
-                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                                {{-- Trailers --}}
-                                                <div id="{{ 'trending-data-Trailers-'.$key }}" class="overlay-tab tab-pane fade">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="#" tabindex="0">
-                                                            <div class="channel-logo">
-                                                                <img src="{{ front_end_logo() }}" class="c-logo" alt="">
-                                                            </div>
-                                                        </a>
-                                                        <h1 class="trending-text big-title text-uppercase"> {{ optional($series_details)->title }}</h1>
-
-                                                        <div class="episodes-contens mt-4">
-                                                            <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                @foreach ($series_details->Episode_Traler_details as $key => $item)
-                                                                    <div class="e-item">
-                                                                        <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
-                                                                                <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                                                            </a>
-                                                                            <div class="episode-number">{{ ($key+1) }}</div>
-                                                                            <div class="episode-play-info">
-                                                                                <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="episodes-description text-body mt-2">
-                                                                            <div
-                                                                                class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
-                                                                                <span class="text-primary">                           
-                                                                                    {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
-                                                                                </span>
-                                                                            </div>
-                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                                    
-                                                                    {{-- Similar --}}
-                                                <div id="{{ 'trending-data-Similar-'.$key }}" class="overlay-tab tab-pane fade">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
-                                                        <a href="#" tabindex="0">
-                                                            <div class="channel-logo">
-                                                                <img src="{{ front_end_logo() }}" class="c-logo" alt="">
-                                                            </div>
-                                                        </a>
-
-                                                        <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
-
-                                                        <div class="episodes-contens mt-4">
-                                                            <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                @foreach ( $series_details->Episode_Similar_content as $key =>  $item )
-                                                                    <div class="e-item">
-                                                                        <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
-                                                                                <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                                                            </a>
-                                                                            <div class="episode-number">{{ ($key+1) }}</div>
-                                                                            <div class="episode-play-info">
-                                                                                <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="episodes-description text-body mt-2">
-                                                                            <div
-                                                                                class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
-                                                                                <span class="text-primary">                           
-                                                                                    {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
-                                                                                </span>
-                                                                            </div>
-                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
+                                                
                                                     </div>
                                                 </div>
                                             </div>
@@ -272,21 +118,80 @@ $data = App\Series::where('active', '=', '1')
     </section>
 @endif
 
+<script>
+    $(document).ready(function () {
+        // Initially hide the #trending-slider
+        $('.tranding-block').hide();
+
+        // Add click event to #trending-slider-nav
+        $('#trending-slider-nav').on('click', 'li', function () {
+            // Show or hide #trending-slider based on its current visibility
+            $('.tranding-block').toggle();
+        });
+
+        // Add click event to close button
+        $('#closeButton').on('click', function () {
+            // Hide #trending-slider when close button is clicked
+            $('.tranding-block').hide();
+        });
+    });
+</script>
+
+
+
 <style>
 
-
-.tranding-block.position-relative{
-    height:325px;
+    .trending-slider .videoInfo{
+        height: 44vw;
+    max-height: 460px;
+    }
+    .trending-dec {
+    display:none;
 }
-    
-#videoInfo {
-    display: none;
-    background-color: rgba(0, 0, 0, 0.15);
-    z-index: 1;
-    position: relative;
-    top: -29px;
+.dropdown-slider-img{
+    width:50%
 }
-#videoInfo .close {
+.wtv-buttons-group button {
+    color: #fff;
+    background-color: rgba(51, 51, 51, 0.4);
+    border-width: 0;
+    padding: 8px 16px;
+    border-radius: 4px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-size: calc(12px + 0.5vmin);
+    font-weight: bold;
+    margin-bottom: 0.75em;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    margin-right: 10px;
+    cursor: pointer;
+    outline: none;
+}
+.wtv-buttons-group button {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    /* margin-top: 1.5vw; */
+}
+.wtv-buttons-group button  button svg, .wtv-buttons-group button i {
+    margin-right: 8px;
+}
+.wtv-buttons-group button .far {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 400;
+}
+ .vib .caption h2,  .vib .caption p {
+    font-size: calc(14px + 2vmin);
+    font-weight: 700;
+    margin: 0 0 0.2em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+.wtv-close{
     position: absolute;
     right: 2%;
     top: 4%;
@@ -313,6 +218,37 @@ $data = App\Series::where('active', '=', '1')
     -webkit-transition: all 0.15s ease;
     transition: all 0.15s ease;
 }
+
+@media screen and (min-width: 1200px){
+ .vib .caption h2, .vib .caption p {
+    font-size: 35px;
+}
+}
+@media (min-width: 992px){
+.wtv-buttons-group {
+    white-space: nowrap;
+}
+}
+@media (min-width: 992px){
+.wtv-buttons-group button {
+    padding: 0.75em 2.3em;
+}
+}
+</style>
+
+<style>
+
+
+
+ 
+#videoInfo {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    position: relative;
+    top: -29px;
+}
+
 #videoInfo .vib {
     padding: 18px 4% 12px;
     width: 100%;
@@ -335,7 +271,7 @@ $data = App\Series::where('active', '=', '1')
     color: var(--text-color);
     width: 100%;
 }
-#videoInfo .vib .caption h2 {
+#videoInfo .vib .caption h2, {
     font-size: calc(14px + 2vmin);
     font-weight: 700;
     margin: 0 0 0.2em;
