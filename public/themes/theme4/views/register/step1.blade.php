@@ -4,12 +4,16 @@
 <html lang="en-US">
    <head>
       <?php
-$uri_path = $_SERVER['REQUEST_URI']; 
-$uri_parts = explode('/', $uri_path);
-$request_url = end($uri_parts);
-$uppercase =  ucfirst($request_url);
-// print_r($uppercase);
-// exit();
+        $uri_path = $_SERVER['REQUEST_URI']; 
+        $uri_parts = explode('/', $uri_path);
+        $request_url = end($uri_parts);
+        $uppercase =  ucfirst($request_url);
+
+        $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+        $theme = App\SiteTheme::first();
+
+        @$translate_language = App\Setting::pluck('translate_language')->first();
+        \App::setLocale(@$translate_language);
       ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -23,38 +27,22 @@ $uppercase =  ucfirst($request_url);
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-
-    <!-- Bootstrap CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme3/assets/css/bootstrap.min.css') ?>" />
-
-    <!-- Typography CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme3/assets/css/typography.css') ?>" />
-         
-    <!-- Style -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme3/assets/css/style.css') ?>" />
-  
-    <!-- font awesome Icon -->
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-
-         
+     <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+      <!-- Typography CSS -->
+      <link rel="stylesheet" href="<?= style_sheet_link(); ?>" />
+      <!-- Style -->
+      <link rel="stylesheet" href="<?= typography_link(); ?>" />
       <!-- Responsive -->
-       <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chivo&family=Lato&family=Open+Sans:wght@473&family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="assets/css/responsive.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
-        .error {
-    color: brown;
-    
-    }
-    .sign-user_card {
-       background: linear-gradient(rgba(136, 136, 136, 0.1) , rgba(64, 32, 32, 0.13), rgba(81, 57, 57, 0.12));!important;
-
-    }
+    /*.sign-user_card {
+        background: none !important;
+    }*/
 #ck-button {
     margin:4px;
 /*    background-color:#EFEFEF;*/
@@ -67,13 +55,6 @@ $uppercase =  ucfirst($request_url);
     float:left;
     width:4.0em;
 }
-    .text-primary{
-        text-decoration: underline!important;
-    }
-    .hbo{
-        font-size: 12px;
-        color: #fff;
-    }
 #ck-button label span {
     text-align:center;
     display:block;
@@ -140,55 +121,22 @@ $uppercase =  ucfirst($request_url);
     color: var(--iq-body-text);
     text-decoration: none;
 }*/
-    select.form-control {
-    -webkit-appearance: menulist;
-}
-    .form-control {
-    height: 45px!important;
-    line-height: 45px;
-    background-color: transparent!important;
-        letter-spacing: 0px!important;
-    
-    font-size: 14px;
-    color: var(--iq-white) !important;
-    border-radius: 0;
-    margin-bottom: 1rem !important;
-    border: none!important;
- 
-font-weight: 400;
-font-size: 20px;
-
-display: flex;
-align-items: center;
-
-color: #FFFFFF;
-       
-}
-    input[type=file]::file-selector-button{
-        background-color: #fff;
-        outline: none;
-        color: #000;
-        border: none;
-    }
 .phselect{
-  
+    
     width: 100%;
     height: 45px !important;
     background: transparent !important;
     color: var(--iq-white) !important;
-    border-bottom:1px solid #fff!important;
-    border-radius: 10px;
 }
-    
 .form-control {
     height: 45px;
     line-height: 45px;
-   background-color: aqua;
+    background: transparent !important;
     border: 1px solid var(--iq-body-text);
     font-size: 14px;
     color: var(--iq-white) !important;
     border-radius: 0;
-    margin-bottom: 0rem !important;
+    margin-bottom: 1rem !important;
 }
     .form-control:focus {
      color: var(--iq-white) !important;
@@ -205,16 +153,10 @@ color: #FFFFFF;
 }
 /*input[type="file"] {
     display: none;
-    }.lab{
-        background: rgba(22, 22, 23, 0.5)!important;padding-left:15px; border-radius: 5px!important;padding-bottom:6px;color: #fff!important
-    }*/
+}*/
     .catag {
     padding-right: 150px !important;
 }
-    .sign-user_card input{
-       background: transparent!important;
-        border-bottom: 1px solid #fff!important;
-    }
 i.fa.fa-google-plus {
     padding: 10px !important;
 }
@@ -222,24 +164,27 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-       top: 10px;
-        right: 0;
+        margin-left: -60px;
     height: 45px !important;
     background: transparent !important;
     color: #fff !important;
-        position: absolute;
     }
-    .sign-in-page{
-        
-        padding: 40px;
-      
-        
-    } 
-    
-
+    .error {
+    color: brown;
+    font-family: 'remixicon';
+    }
+    #fileLabel{
+        position: absolute;
+        top: 8px;
+        color: #fff;
+        padding: 8px;
+        left: 114px;
+        background:rgba(11, 11, 11,1);
+        font-size: 12px;
+    }
 </style>
 
-<section class="sign-in-page" >
+<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -252,7 +197,6 @@ i.fa.fa-google-plus {
     
 
 ?>
-    
 
 <!--<div class="container">
     <div class="row justify-content-center" id="signup-form">
@@ -380,40 +324,44 @@ i.fa.fa-google-plus {
         </div>
     </div>
 </div>-->
-    
+
+
+
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
-          
-         <div class="col-sm-10 col-md-7 col-lg-8 align-self-center text-center">
-             <div class="text-center">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">  
-          </div>
+         <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
 
-                                                  {{-- recaptcha --}}
-            <div class="col-md-12">
-                @if ($errors->has('g-recaptcha-response'))
-                    <span class="alert alert-danger display-hide" id="successMessage" >
-                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                    </span>
-                @endif
-            </div>
+                            {{-- recaptcha --}}
+                <div class="col-md-12">
+                    @if ($errors->has('g-recaptcha-response'))
+                        <span class="alert alert-danger display-hide" id="successMessage" >
+                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                        </span>
+                     @endif
+                </div>
 
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                               <h3 class="mb-3 text-center text-white">Create Your Account</h3>
-                          <p class="hbo">You are one step closer to enjoying the best entertainment that HBO Max has to offer</p>
+                                                
+                        <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                            <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
+                        <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                            <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
+                        <?php }else { ?> 
+                            <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                        <?php } ?>
+
+                        <h3 class="mb-3 text-center">{{ __('Sign Up') }}</h3>
                       </div>
                       <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
-                          <div class="row justify-content-center">
-                              <div class="col-lg-10">
-                                  <div class="row align-items-center">
-                                      <div class="col-lg-6">
-                                           <div class="lab" style=" ">
-                            
-                                    <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Account id" required autocomplete="off" autofocus>
+                            <div class="form-group">
+                                <!--<label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Username') }} <span style="color:#4895d1">*</span></label>-->
+
+                                <div class="col-md-12">
+                                    <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="{{ __('Username') }}" required autocomplete="off" autofocus>
 
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">
@@ -421,13 +369,9 @@ i.fa.fa-google-plus {
                                         </span>
                                     @enderror
                                 </div>
-                                      </div>
-                                      
-                                  
-                                  <div class="col-lg-6">
-                                      <div class=" lab ">
-                                <input id="email" type="email" placeholder="Email id"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
-                                <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
+                                <div class="col-md-12">
+                                <input id="email" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                <span class="invalid-feedback" id="email_error" role="alert">{{ __('Email Already Exits') }}
                                 </span>
 
                                 @error('email')
@@ -436,52 +380,52 @@ i.fa.fa-google-plus {
                                     </span>
                                 @enderror
                             </div>
-                                  </div>
-                                  <div class="col-lg-6 mt-3">
-                                       <div class="">
+                                 <div class="col-md-12">
+                                            <div class="row">
+                               
+                            <div class="col-md-5 col-sm-12">
                               <select class="phselect form-control" name="ccode" id="ccode" >
-                              <option>Select Country</option>
+                              <option>{{ __('Select Country') }}</option>
                                 @foreach($jsondata as $code)
                                 <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
-                                 <!-- <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>  -->
+                                <!-- <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option> -->
                                 @endforeach
                             </select>
                             </div>
-                                  </div>
-                                      <div class="col-lg-6">
-                                            <div class="lab mt-3">
-                                           
-                               
-                          
-                            <div class="">
-                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Moblie') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
-                                <span class="verify-error"></span>
-                                
+                            <div class="col-md-7 col-sm-8">
+                                <!-- <input id="text" type="text"  onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <span class="verify-error"></span> -->
+                                <input type="text" id="mobile" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" class="form-control" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" required autocomplete="off" autofocus/>
+                                <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                                  @error('mobile')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror                                    
-                            </div>						
+                            </div></div>
+						
 
                                 </div>
-                                      </div>
-                                      <div class="col-lg-12">
-                                          <div class=" lab mt-3">
-                               <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                
+                                
+                            <div class="col-md-12" style="postion:relative;">
+                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                <label id="fileLabel">{{ __('Choose Profile Image') }}</label>
                                  </div>
-                                      </div>
-                                      <div class="col-md-12">
+                                 <div class="col-md-12">
                                 <select class="phselect form-control" name="country" id="country" >
-                                    <option>Select Country</option>
-                                        @foreach($jsondata as $code)
+                                    <option>{{ __('Select Country') }}</option>
+                                        @foreach($AllCountry as $code)
                                         <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
                                         @endforeach
                                 </select>  
                             </div>
 
                             <div class="col-md-12">
-                                <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus>
+                                <!-- <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus> -->
+                                    <select class="phselect form-control" name="state" id="state-dropdown" >
+                                        <option>{{ __('Select State') }}</option>
+                                    </select> 
                                 @error('state')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -490,8 +434,10 @@ i.fa.fa-google-plus {
                             </div>
 
                             <div class="col-md-12">
-                                <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus>
-
+                                <!-- <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus> -->
+                                    <select class="phselect form-control" name="city" id="city-dropdown" >
+                                        <option>{{ __('Select City') }}</option>
+                                    </select>  
                                 @error('city')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -501,18 +447,18 @@ i.fa.fa-google-plus {
 
                             <div class="col-md-12">
                                 <select class="phselect form-control" name="support_username" id="support_username" >
-                                        <option>Select Support User</option>
+                                        <option>{{ __('Select Support Musician') }}</option>
                                             @foreach($Artists as $Artist)
                                             <option value="{{  $Artist['artist_name'] }}">{{ $Artist['artist_name'] }}</option>
                                             @endforeach
                                     </select>  
                             </div>
                             
-                                      <div class="col-lg-6">
-                                       
-                                   
-                                     <div class=" lab mt-3">
-                                <input id="password" type="password" placeholder="PASSWORD" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+
+                                 <div class="col-md-12">
+                                     <div class="row">
+                                     <div class="col-md-12">
+                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
                                          </div>
                                          <div >
                                 <span class="input-group-btn" id="eyeSlash">
@@ -527,11 +473,11 @@ i.fa.fa-google-plus {
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                                        
-                                      </div>
-                                      <div class="col-lg-6">
-
-                                     <div class=" lab mt-3">
+                                         </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                     <div class="col-md-12">
                                 <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
                                     </div>
                                     <div >
@@ -541,29 +487,14 @@ i.fa.fa-google-plus {
                                  <span class="input-group-btn" id="eyeShow1" style="display: none;">
                                    <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
-                                   
+                                    </div>
+                                </div>
     
-
+                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">{{ __('(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)') }}</span>
                             </div>
-                                      </div>
-                                  </div> 
-                            <div class="form-group">
-                                <!--<label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Username') }} <span style="color:#4895d1">*</span></label>-->
-
-                                
-                                
-                               
-                                
-                                
-                            
-                                 
-                           
                                  
                             </div>
                           
-                        
-                            
-
                        
                          
                         <div class="form-group row">
@@ -587,12 +518,19 @@ i.fa.fa-google-plus {
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror                                    
-                            </div>
+                            </div>x
 						</div>-->
                         </div>
                        
                           
 
+                        <div class="form-group row">
+                            <!--<label for="password-confirm" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Confirm Password') }} <span style="color:#4895d1">*</span>
+                            </label>-->
+                            <!--<div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>-->
+                        </div>
                             <?php if ( isset($ref)) { ?>
                                 <div class="form-group row">
                                     <label for="password-confirm" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Referrer ID') }} <span style="color:#4895d1"></span>
@@ -600,37 +538,32 @@ i.fa.fa-google-plus {
                                     <div class="col-md-6">
                                         <input id="referrer_code" type="text" class="form-control" value="<?php echo $ref;?>" name="referrer_code" readonly>
                                     </div>
-                                    
                                 </div>
-                          
                             <?php } ?>
-                            
-                               {{-- reCAPTCHA  --}}
-                               <div class="col-md-12" id="">
+                        
+                        <div class="form-group" >
+	                             {{-- reCAPTCHA  --}}
+                            <div class="col-md-12" id="">
                                 @if( get_enable_captcha()  == 1)   
-                                    <div class="form-group text-left" style="  margin-top: 30px;">
+                                    <div class="form-group" style="  margin-top: 30px;">
                                         {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
                                         {!! NoCaptcha::display() !!}
                                     </div>
                                 @endif
                             </div>
 
-                         <div class="form-group row">
-                              <div class="col-md-12">
-                                <input id="password-confirm" type="checkbox" name="terms" value="1" required checked>
-								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
+							<div class="col-md-12" id="mob">
+                                <input id="password-confirm" type="checkbox" name="terms" value="1" required>
+								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;text-decoration: underline;
+    cursor: pointer;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
-                          </div>
-                      
-                          <div class="d-flex justify-content-center links mb-3">
-                     Already have an account? <a href="<?= URL::to('/login')?>" class=" ml-2" style="color: #007bff!important;font-weight: 600;">SIGN IN</a>
-                  </div>  
+
                             <div class="sign-up-buttons col-md-12" align="right">
-                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('SUBMIT') }}</button>
+                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> {{ __('Verify Profile') }}</button>
+                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
-                                                
-                       
+                            </div>
+                           
 						<div class="form-group row">
 							<div class="col-md-10 col-sm-offset-1">
                                 <!--<div class="sign-up-buttons">
@@ -640,14 +573,16 @@ i.fa.fa-google-plus {
 							</div>
 						</div>
                         
-                    </div>
-                          </div>
-                                  </form>
-                  </div>
-               </div>    
-               <div class="mt-3">
-                                        
+                    </form>
+                       <div class="mt-3">
+                  <div class="d-flex justify-content-center links">
+                  {{ __('Already have an account?') }} <a href="<?= URL::to('/login')?>" class="text-primary ml-2">{{ __('Sign In') }}</a>
+                  </div>                        
                </div>
+                  </div>
+                  
+               </div>    
+               
             </div>
          </div>
       </div>
@@ -661,13 +596,13 @@ i.fa.fa-google-plus {
       <div class="modal-content" >
         <div class="modal-header" style="border:none;">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color:#000;"><?php echo __('Terms and Conditions');?></h4>
+          <h4 class="modal-title" ><?php echo __('Terms and Conditions');?></h4>
         </div>
-        <div class="modal-body" >
+        <div class="modal-body" style='color: white;'>
             <?php
                 $terms_page = App\Page::where('slug','terms-and-conditions')->pluck('body');
              ?>
-            <p style='color: white;'><?php echo $terms_page[0];?></p>
+            <p ><?php echo $terms_page[0];?></p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('Close');?></button>
@@ -699,7 +634,7 @@ i.fa.fa-google-plus {
 						<input type="text" class="form-control" maxlength="4" name="otp" id="otp" value="" style="background-color: #000;" />
 						<input type="hidden" class="form-control" name="verify" id="verify_id" value="" />
 						<div class="row timerco" >
-						 	<p> OTP will Expire in <span id="countdowntimer"></span>
+						 	<p> {{ __('OTP will Expire in') }} <span id="countdowntimer"></span>
 					 	</div>
 						<div class="text-center"> 
 							<input type="button" value="{{ __('Verify') }}" id="checkotp"  placeholder="Please Enter OTP" class="btn btn-primary btn-login" style="">
@@ -714,9 +649,6 @@ i.fa.fa-google-plus {
                     </div>
                   </div>
                   </div>
-             
-               
-                 
           </form>
       </div>
    
@@ -730,6 +662,80 @@ i.fa.fa-google-plus {
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
+
+$(document).ready(function() {
+
+$('#country').on('change', function() {
+    
+    var country_id = this.value;
+    // alert(country_id);
+    $("#state-dropdown").html('');
+        $.ajax({
+        url:"{{url::to('/getState')}}",
+        type: "POST",
+        data: {
+        country_id: country_id,
+        _token: '{{csrf_token()}}' 
+        },
+        dataType : 'json',
+        success: function(result){
+        $('#state-dropdown').html('<option value="">Select State</option>'); 
+        $.each(result.states,function(key,value){
+        $("#state-dropdown").append('<option value="'+value.name+'">'+value.name+'</option>');
+        });
+        $('#city-dropdown').html('<option value="">Select State First</option>'); 
+        }
+    });
+
+}); 
+
+
+
+        $('#state-dropdown').on('change', function() {
+            var state_id = this.value;
+            // alert(state_id);
+            $("#city-dropdown").html('');
+            $.ajax({
+            url:"{{url::to('/getCity')}}",
+            type: "POST",
+            data: {
+            state_id: state_id,
+            _token: '{{csrf_token()}}' 
+            },
+            dataType : 'json',
+            success: function(result){
+            $('#city-dropdown').html('<option value="">Select City</option>'); 
+            $.each(result.cities,function(key,value){
+            $("#city-dropdown").append('<option value="'+value.name+'">'+value.name+'</option>');
+            });
+            }
+            });
+        });
+});
+
+
+var specialKeys = new Array();
+        specialKeys.push(8); //Backspace
+
+    function IsNumeric(e) {
+    var keyCode = e.which ? e.which : e.keyCode;
+    var inputField = e.target || e.srcElement;
+    var inputValue = inputField.value;
+    var digitCount = inputValue.replace(/[^0-9]/g, '').length;
+
+    var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
+
+    if (digitCount >= 10) {
+        alert('Please enter at least 10 characters');
+        ret = ret || specialKeys.indexOf(keyCode) !== -1;
+        document.getElementById("error").style.display = ret ? "none" : "inline";
+        return false;
+    }
+
+    document.getElementById("error").style.display = ret ? "none" : "inline";
+    return ret;
+}
+
     function visibility1() {
   var x = document.getElementById('password');
   if (x.type === 'password') {
@@ -775,13 +781,12 @@ $.ajaxSetup({
         $('#email_error').hide();
 
 // $('#email').change(function(){
-    // alert(($('#email').val()));
 
 // 	var email = $('#email').val();
 // 	$.ajax({
 //         url:"{{ URL::to('/emailvalidation') }}",
 //         method:'GET',
-// data: {
+//         data: {
 //                _token: '{{ csrf_token() }}',
 //                email: $('#email').val()
 
@@ -973,6 +978,7 @@ $(document).ready(function() {
     }
 
     // When the user clicks on <span> (x), close the modal
+
     span.onclick = function() {
       modal.style.display = "none";
     }
@@ -993,19 +999,19 @@ $(document).ready(function() {
         
     </script>
 
-
 {{-- Validation --}}
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
-<script>
+    <script>
 
 
-$( "#stripe_plan" ).validate({
-    rules: {
-            username: {
-                required: true,
-            },
-            password:{
+    $( "#stripe_plan" ).validate({
+        
+        rules: {
+                username: {
+                    required: true,
+                },
+                password:{
                     required: true,
                     minlength: 8,
                     maxlength: 30,
@@ -1019,19 +1025,31 @@ $( "#stripe_plan" ).validate({
                 maxlength: 30,
                 equalTo: "#password"
             },
-            mobile: {
-                required: true,
-                remote: {
-                    url: '{{ URL::to('SignupMobile_val') }}',
-                    type: "post",
-                    data: {
-                        _token: "{{csrf_token()}}" ,
-                        MobileNo: function() {
-                        return $( "#mobile" ).val(); }
+                mobile: {
+                    required: true,
+                    remote: {
+                        url: '{{ URL::to('SignupMobile_val') }}',
+                        type: "post",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            MobileNo: function() {
+                            return $( "#mobile" ).val(); }
+                        }
                     }
-                }
-            },
-            username: {
+                },
+                email: {
+                    required: true,
+                    remote: {
+                        url:"{{ URL::to('/emailvalidation') }}",
+                        type: "get",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            success: function() {
+                            return $('#email').val(); }
+                        }
+                    }
+                },
+                username: {
                     required: true,
                     remote: {
                         url:"{{ URL::to('/usernamevalidation') }}",
@@ -1043,39 +1061,32 @@ $( "#stripe_plan" ).validate({
                         }
                     }
                 },
-            email: {
-                required: true,
-                remote: {
-                    url:"{{ URL::to('/emailvalidation') }}",
-                    type: "get",
-                    data: {
-                        _token: "{{csrf_token()}}" ,
-                        success: function() {
-                        return $('#email').val(); }
-                    }
-                }
-            }
-        },
-            messages: {
-                mobile: {
-                    required: "Please Enter the Mobile Number",
-                    remote: "Mobile Number already in taken ! Please try another Mobile Number"
-                },
-                username: {
-                     required: "Please Enter the Name",
-                     remote: "Name already in taken ! Please try another Username"
-                },
-                email: {
-                    required: "Please Enter the Email Id",
-                    remote: "Email Id already in taken ! Please try another Mobile Number"
-                },
-                password: {
+            },
+
+                messages: {
+                    mobile: {
+                        required: "Please Enter the Mobile Number",
+                        remote: "Mobile Number already in taken ! Please try another Mobile Number"
+                    },
+                    username: {
+                         required: "Please Enter the Name",
+                         remote: "Name already in taken ! Please try another Username"
+                    },
+                    email: {
+                        required: "Please Enter the Email Id",
+                        remote: "Email Id already in taken ! Please try another Email ID"
+                    },
+                    password: {
                         pwcheck: "Password is not strong enough"
                     }   
-               
-            }
-});
-</script>
+                   
+                }
+    });
+
+    $.validator.addMethod("regx", function(value, element, regexpr) {          
+    return regexpr.test(value);
+}, "Please enter a valid pasword.");
+    </script>
 
 
  <!-- jQuery, Popper JS -->
@@ -1095,10 +1106,10 @@ $( "#stripe_plan" ).validate({
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
+       <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
 
 
-@php
-    @include(public_path('themes\theme3\views\footer.blade.php'));
-@endphp
+
 
 @endsection 

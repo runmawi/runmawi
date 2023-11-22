@@ -19,12 +19,12 @@
                         <form method="POST" action="{{ route('Choose-profile.store') }}" class="mt-4" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <h4> New Profile</h4>
+                                <h4> {{ __('New Profile') }}</h4>
                             </div>
 
                             <div class="form-group">  
                                 <img src="{{URL::asset('public/multiprofile/chooseimage.jpg')}}" id="upfile1"  />
-                                     <p class="" style="color:#fff "  style="cursor:pointer" id="upfile"  >Change</p>
+                                     <p class="" style="color:#fff "  style="cursor:pointer" id="upfile"  >{{ __('Change') }}</p>
                                 <input type="file" id="subuser_image"  name="image" style="display:none"  />
                             </div>
   
@@ -35,7 +35,7 @@
                             <div class="row">
                                     <div class="col-md-9">
                                         <div class="form-group">
-                                             <h5 style="text-align: left"> kid's profile ?</h5>
+                                             <h5 style="text-align: left"> {{ __('kid's profile ?') }}</h5>
                                         </div>
                                     </div>
 
@@ -51,16 +51,16 @@
 
                             <div class="row">
                                 <div class="col-md-9">
-                                         <p align="left" class="kid">TV shows and movies for ages 12 and under <br>
-                                             <a class="learn_more" href="">Learn More </a> 
+                                         <p align="left" class="kid">{{ __('TV shows and movies for ages 12 and under') }} <br>
+                                             <a class="learn_more" href="">{{ __('Learn More') }} </a> 
                                          </p>
                                 </div>
                             </div>   
                         </div>
 
                         <div class="row sumbit_btn">
-                            <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('Multiprofile')}}'" >Cancel</button>
-                            <button type="submit" class="btn btn-hover ab" >Save Changes</button>
+                            <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('Choose-profile')}}'" >{{ __('kid's profile ?') }}Cancel</button>
+                            <button type="submit" class="btn btn-hover ab" >{{ __('Save Changes') }}</button>
                         </div>
 
                         </form>

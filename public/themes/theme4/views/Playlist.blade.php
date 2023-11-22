@@ -1,5 +1,5 @@
 @php
-include(public_path('themes/default/views/header.php'));
+include(public_path('themes/theme4/views/header.php'));
 $settings = App\Setting::first(); 
 @endphp
 
@@ -286,8 +286,8 @@ $settings = App\Setting::first();
                          <img src="<?= @$MyPlaylist->image ?>" height="250" width="250" class="img-responsive" >
                     </div>
                     <div class="col-lg-4 p-0">
-                <p>PLAYLIST</p>
-                <h2>My Playlist</h2>
+                <p><?php echo __('PLAYLIST'); ?></p>
+                <h2><?php echo __('My Playlist'); ?></h2>
                         
 
 
@@ -340,7 +340,7 @@ $settings = App\Setting::first();
      
     <div class="container-fluid">
  <div class="playlist-ctn">
-             <h4 class="mb-3">Tracks</h4>
+             <h4 class="mb-3"><?php echo __('Tracks'); ?></h4>
      <table class="w-100">
      <?php foreach ($All_Audios as $key => $audio) { ?>
             <tr>
@@ -370,7 +370,7 @@ $settings = App\Setting::first();
 <?php if(isset($playlist_audio)){ $playlist_audio_count = count(@$playlist_audio) ; }else{$playlist_audio_count = 0 ;} if( $playlist_audio_count == 0 ){ ?>
 
   <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-      <p ><h3 class="text-center">No Audio Available</h3>
+      <p ><h3 class="text-center"><?php echo __('No Audio Available '); ?></h3>
   </div>
   
 <?php }else{ ?>
@@ -390,17 +390,17 @@ $settings = App\Setting::first();
 
         <div class="col-lg-8">
           <audio id="myAudio" ontimeupdate="onTimeUpdate()">
-            <source id="source-audio" src="" type="audio/mpeg"> Your browser does not support the audio element.
+            <source id="source-audio" src="" type="audio/mpeg"> <?php echo __('Your browser does not support the audio element'); ?>.
           </audio>
               <div class="cinetpay_button">
                   <!-- CinetPay Button -->
                   <button onclick="cinetpay_checkout()" id="enable_button" style="display:none;margin-left: 72%;position: absolute;margin-top: 20px;"
-                      class="btn2  btn-outline-primary">Purchase to Play Audio</button>
+                      class="btn2  btn-outline-primary"><?php echo __('Purchase to Play Audio'); ?></button>
 
                                      <!-- Subscriber Button -->
                          
                                       <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="display:none;margin-left: 72%;position: absolute;margin-top: 20px;"
-                      class="btn2  btn-outline-primary">Become Subscriber</button> 
+                      class="btn2  btn-outline-primary"><?php echo __('Become Subscriber'); ?></button> 
                       </a>
 
 
@@ -438,7 +438,8 @@ $settings = App\Setting::first();
                     },
                     dataType: "html",
                     success: function(data) {
-                        if (data == "Added To Wishlist") {
+                        if (data == 1) {
+                          // alert(data);
 
                             // $('#' + audioid).text('');
                             // $('#' + audioid).text('Remove From Wishlist');
@@ -450,6 +451,11 @@ $settings = App\Setting::first();
                             }, 3000);
                         } else {
 
+                          $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from PlayList</div>');
+                        setTimeout(function() {
+                            $('.remove_watch').slideUp('fast');
+                        }, 3000);
+                          // alert('data');
                       
                         }
                     }
@@ -668,5 +674,5 @@ window.location = '<?= URL::to('login') ?>';
 
 </script>
 @php
-include(public_path('themes/default/views/footer.blade.php'));
+include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp

@@ -58,7 +58,7 @@ ol.breadcrumb {
                             <a href="<?php echo URL::to('/play_series/'.$Series_Genre->slug ) ?>">
                                 <div class="block-images position-relative">
                                     <div class="img-box">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.@$Series_Genre->image;  ?>"
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Genre->image;  ?>"
                                             class="img-fluid w-100" alt="">
                                     </div>
 

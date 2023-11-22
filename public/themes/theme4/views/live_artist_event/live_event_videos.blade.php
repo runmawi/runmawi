@@ -1,46 +1,53 @@
 <?php 
-    include(public_path('themes/theme3/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
-		.video-js *, .video-js :after, .video-js :before {box-sizing: inherit;display: grid;}
-		.video-js .vjs-watermark-top-right {right: 5%;top: 50%;}
-		.video-js .vjs-watermark-content {opacity: 0.3;}
-		.vjs-menu-button-popup .vjs-menu {width: auto;}
-.btn.btn-default.views {color: #fff !important;}
-.pay-live{
-    vertical-align: middle; 
-    padding: 150px 0;
-    text-align: center;
-}
-    .text-detail{
-        margin-left: -50px;
-    }
+	
 #video_bg_dim{
-    background: rgb(0 0 0 / 45%);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+/*background: rgb(0 0 0 / 45%);*/
+position: absolute;
+top: 0;
+bottom: 0;
+left: 0;
+right: 0;
 }
+    .bd{
+        font-weight: 700;
+    }
+    .form-control{
+        height: 33px;
+    }
 .countdown {
-  text-align: center;
-  font-size: 60px;
-  margin-top: 0px;
-  color:red;
+text-align: center;
+font-size: 60px;
+margin-top: 0px;
+color:red;
 }
 h2{
-  text-align: center;
-  font-size: 60px;
-  margin-top: 0px;
+text-align: center;
+font-size: 35px;
+margin-top: 0px;
+font-weight: 400;
 }
+#videoPlayer {
+    width: 100%;
+    height: 100%;
+    margin: 20px auto;
+}
+    .plyr audio, .plyr iframe, .plyr video {
+    display: block;
+    /* height: 100%; */
+    /* width: 100%; */
+}
+    .plyr--video{
+         height: calc(80vh - 80px - 75px);
+    max-width: none;
+    width: 100%;
+    }  
 </style>
-<link href="https://vjs.zencdn.net/7.8.3/video-js.css" rel="stylesheet" />
 
-<!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
-<script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 <style>
 
 .vjs-skin-hotdog-stand { color: #FF0000; }
@@ -57,281 +64,324 @@ if(!empty($str)){
 $uri_parts = explode('.', $video->mp4_url);
 $request_url = end($uri_parts);
 }
-// dd($request_url);
-// print_r ($request_url);
-// exit();
+
+
+$rtmp_url = $video->rtmp_url;
+
+$Rtmp_url = str_replace ('rtmp', 'http', $rtmp_url);
+
 if(empty($new_date)){
 
 if(!Auth::guest()){
-    
- if(!empty($password_hash)){
-if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" && $video->ppv_price == null ) { ?>
+// dd($ppv_exist);
+if(!empty($password_hash)){
+if ($ppv_exist > 0 || Auth::user()->subscribed() || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
 <div id="video_bg"> 
         <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
-            <?php if(!empty($video->mp4_url && $request_url != "m3u8" && $video->url_type == "mp4" )){  
-            ?>
-                <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
-                    <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
-                    <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-                    <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
-                </video>
 
-            <?php }elseif(!empty($video->embed_url) && $video->url_type == "embed" ){ ?> 
-                <div class="plyr__video-embed" id="player">
-                    <iframe
-                    src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
-                    allowfullscreen
-                    allowtransparency
-                    allow="autoplay">
-                    </iframe>
-                </div>
+            <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-            <?php  }elseif(!empty($request_url == "m3u8" && $video->url_type == "mp4" )){  ?> 
-                <!-- <div class="plyr__video-embed" id="player"> -->
-                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
-                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                    <input type="hidden" id="live" name="live" value="live">
-                    <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
-                        <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                                <source type="application/x-mpegURL" src="<?php echo $video->mp4_url; ?>">
-                        </video>
-                <!-- </div>  -->
-                
-            <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
-
-                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
-                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                <input type="hidden" id="live" name="live" value="live">
-                 <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
-                    <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                                <source type="application/x-mpegURL" src="<?php echo $video->hls_url ; ?>">
+                    <video id="videoPlayer"  class="" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                        <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
+                        <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                        <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
                     </video>
 
-            
-            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+            <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
+                <div class="plyr__video-embed" id="player">
+                    <iframe
+                        src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+                        allowfullscreen
+                        allowtransparency
+                        allow="autoplay">
+                    </iframe>
+                </div>
+                <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
+                    <!-- <div class="plyr__video-embed" id="player"> -->
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+
+                        <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
+                        </video>
+                    <!-- </div>  -->
+            <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
+
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+
+                         <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                        </video>
+
+               <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
 
                 <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
                 <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
                 <input type="hidden" id="live" name="live" value="live">
-                 <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
-                    <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                                <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
-                    </video>
+                <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-            <?php } ?>
-
-                <div class="playertextbox hide">
-                    <p> <?php if (isset($videonext)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videonext->id)->pluck('title'); ?>
-                        <?php } elseif (isset($videoprev)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videoprev->id)->pluck('title'); ?>
-                        <?php } ?>
-
-                        <?php if (isset($videos_category_next)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videos_category_next->id)->pluck('title'); ?>
-                        <?php } elseif (isset($videos_category_prev)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videos_category_prev->id)->pluck('title'); ?>
-                        <?php } ?>
-                    </p>
-                </div>
-            </div>
-
-            <?php  } else {  ?>       
-                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-                    <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
-                    <div class="row justify-content-center pay-live">
-                        <div class="col-md-4 col-sm-offset-4">
-                            <div class="ppv-block">
-                                <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
-                                <div class="clear"></div>
-                                <!-- Stripe Button -->
-                                   <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Stripe Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
-
-                                <!-- Razorpay Button -->
-                                    <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
-                                            <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >Razorpay Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
-                                    <?php } ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php } }
-        }else{  
-        //   dd($settings);
-
-                if (Auth::guest() && empty($video->ppv_price)) { ?>
-                <div id="video_bg"> 
-        <div class="container">
-            <div id="video sda" class="fitvid" style="margin: 0 auto;">
-                <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
-
-                    <source src="<?=$video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
-                    <!--
-                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
-                    -->
+                 <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                    <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
                 </video>
 
-                <div class="playertextbox hide">
-                    <p> <?php if (isset($videonext)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videonext->id)->pluck('title'); ?>
-                        <?php } elseif (isset($videoprev)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videoprev->id)->pluck('title'); ?>
-                        <?php } ?>
+       <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
 
-                        <?php if (isset($videos_category_next)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videos_category_next->id)->pluck('title'); ?>
-                        <?php } elseif (isset($videos_category_prev)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videos_category_prev->id)->pluck('title'); ?>
-                        <?php } ?>
-                    </p>
+        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+        <input type="hidden" id="live" name="live" value="live">
+        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+            <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
+            </video>
+
+    <?php } ?>
+
+        <div class="playertextbox hide">
+            <p> <?php if (isset($videonext)) { ?>
+                <?=App\LiveStream::where('id', '=', $videonext->id)->pluck('title'); ?>
+                <?php } elseif (isset($videoprev)) { ?>
+                <?=App\LiveStream::where('id', '=', $videoprev->id)->pluck('title'); ?>
+                <?php } ?>
+
+                <?php if (isset($videos_category_next)) { ?>
+                <?=App\LiveStream::where('id', '=', $videos_category_next->id)->pluck('title'); ?>
+                <?php } elseif (isset($videos_category_prev)) { ?>
+                <?=App\LiveStream::where('id', '=', $videos_category_prev->id)->pluck('title'); ?>
+                <?php } ?>
+            </p>
+        </div>
+    </div>
+
+    <?php  } else {  ?>       
+        <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+            <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
+            <div class="row justify-content-center pay-live">
+                <div class="col-md-4 col-sm-offset-4">
+                    <div class="ppv-block">
+                        <h2 class="mb-3">{{ __('Pay now to watch') }} <?php echo $video->title; ?></h2>
+                        <div class="clear"></div>
+
+                       
+            <!-- Stripe Button -->
+                    <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">{{ __('Watch Now For') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+
+            <!-- Razorpay Button -->
+            <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
+                    <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >{{ __('Razorpay Purchase For') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+            <?php } ?>
+                    </div>
                 </div>
             </div>
+        </div>
+    <?php } }
+}
 
-            <?php  } else { ?>       
-                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-                    <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
-                    <div class="row justify-content-center pay-live">
-                        <div class="col-md-4 col-sm-offset-4">
-                            <div class="ppv-block">
-                                <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
-                                <div class="clear"></div>
-                                <?php if(Auth::guest()){ ?>
-                                    <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
-                                    <?php }else{ ?>
-                                    <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
-                                    <?php } ?>
-                            </div>
-                        </div>
+else{  
+
+        if (Auth::guest() && empty($video->ppv_price)) {  ?>
+       <div id="video_bg"> 
+<div class="">
+    <div id="video sda" class="fitvid" style="margin: 0 auto;">
+
+    <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
+
+            <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
+                <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
+            </video>
+
+    <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
+        <div class="plyr__video-embed" id="player">
+            <iframe
+                src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+                allowfullscreen
+                allowtransparency
+                allow="autoplay">
+            </iframe>
+        </div>
+        <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
+            <!-- <div class="plyr__video-embed" id="player"> -->
+                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                <input type="hidden" id="live" name="live" value="live">
+                <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+
+                <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                    <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
+                </video>
+            <!-- </div>  -->
+    <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
+
+                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                <input type="hidden" id="live" name="live" value="live">
+                <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+
+                 <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                    <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                </video>
+
+       <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+
+        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+        <input type="hidden" id="live" name="live" value="live">
+        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+            <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
+            </video>
+
+    <?php } ?>
+
+    <?php  } else { ?>       
+        <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+            <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
+            <div class="row justify-content-center pay-live">
+                <div class="col-md-4 col-sm-offset-4">
+                    <div class="ppv-block">
+                        <h2 class="mb-3">{{ __('Pay now to watch') }} <?php echo $video->title; ?></h2>
+                        <div class="clear"></div>
+                        <?php if(Auth::guest()){ ?>
+                        <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >{{ __('Purchase For Pay') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                        <?php }else{ ?>
+                        <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">{{ __('Purchase For Pay') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                        <?php } ?>
                     </div>
                 </div>
+            </div>
+        </div>
+   <?php }
+    }
+    } elseif(!empty($new_date)){ ?>
+        <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+            <h2> {{ __('COMING SOON') }} </h2>
+            <p class="countdown" id="demo"></p>
+            </div>
            <?php }
-            }
-        } elseif(!empty($new_date)){ ?>
-            <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-                <h2> COMING SOON </h2>
-                <p class="countdown" id="demo"></p>
-                </div>
-               <?php }
-            ?>
+    ?>
+    
+    <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
+
+    <div class="container-fluid video-details">
+        <div class="row align-items-center">
+            <div class="col-sm-7 col-md-7 col-xs-12">
+                <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
+                    <!-- Category -->
+                <ul class="p-0 list-inline d-flex align-items-center movie-content">
+                 <li class="text-white"><?//= $videocategory ;?></li>
+                </ul>
+            </div>
             
-            <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
+            <div class="col-sm-4 col-md-4 col-xs-12">
 
-            <div class="container video-details">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-xs-12">
-                        <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
-                            <!-- Category -->
-                        <ul class="p-0 list-inline d-flex align-items-center movie-content">
-                         <li class="text-white"><?//= $videocategory ;?></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-2 col-md-3 col-xs-12">
-                        <div class=" d-flex mt-4 pull-right"> 
-                            <div class="btn btn-default views">
-                                <span class="view-count"><i class="fa fa-eye"></i> 
-                                    <?php if(isset($view_increment) && $view_increment == true ): ?><?= $video->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
-                                </span>
-                            </div>
+                @if(  $video->tips == 1 )
+                                {{--Tips  --}}
+                    <div class="d-flex justify-content-end mt-2">
+                        <div> <button class="btn bd btn-primary" id="tips" onclick="tips_hide()" >{{  $video->donations_label ? $video->donations_label : __("TIPS") }} {{ __('TIPS') }} </button></div> </div>
+                        <div><form action="{{ route('live_event_tips') }}" method="post">
+                        @csrf
+                        <div class=" mt-2" id="live_event_amount">
+                            <div class="d-flex justify-content-end">
+                                <div><input type="hidden" name="live_event_video_slug" class="form-control " required  value="{{ $video->slug  }}">
+                            <input type="text" name="live_event_amount" class="form-control " placeholder="{{ __('Please Enter the Amount') }}" required></div>
+                                <div class="ml-1">  <button class="btn bd btn-primary" > {{ __('Amount Pay') }} </button></div>
+                            
+                          </div>
                         </div>
-                    </div>
-                        <div class="col-sm-4 col-md-3 col-xs-12">
-                             <div id="" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
-                        </div>
+                    </form></div>
+                       
+                       
+                   
 
-                                            {{-- Tips --}}
+                    
+                @endif
 
-                                            @if(  $video->tips == 1 )
-                                            <div class="d-flex mt-4">
-                                                <button class="btn btn-primary" id="tips" onclick="tips_hide()" >{{  $video->donations_label ? $video->donations_label : "TIPS" }} TIPS </button>
-                                            </div>
-                        
-                                            <form action="{{ route('live_event_tips') }}" method="post">
-                                                @csrf
-                                                <div class="col-xs-12" id="live_event_amount">
-                                                    <input type="hidden" name="live_event_video_slug" class="form-control" required  value="{{ $video->slug  }}">
-                                                    <input type="text" name="live_event_amount" class="form-control" placeholder="Please Enter the Amount" required>
-                                                    <button class="btn btn-primary" > Amount Pay </button>
-                                                </div>
-                                            </form>
-                                        @endif
-                 
-                                    {{-- End Tips --}}
-                                    
-                        </div>
-                        
-                </div>
-                <!-- Year, Running time, Age -->
-               <?php 
-               if(!empty($video->publish_time)){
-                $originalDate = $video->publish_time;
-                $publishdate = date('d F Y', strtotime($originalDate));
-               }else{
-                $originalDate = $video->created_at;
-                $publishdate = date('d F Y', strtotime($originalDate));
-               }
-             ?>
-                
-                <div class="d-flex align-items-center text-white text-detail">
-                <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-secondary p-2">Published On : <?php  echo $publishdate;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-             
-                  </div>
-                
-                <?php if(!Auth::guest()) { ?>
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-xs-12">
-                         <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                              <!-- Social Share, Like Dislike -->
-                                 <?php // include('partials/social-share.php'); ?>                     
-                          </ul>
+                                {{-- views --}}
+               <!-- <div class=" d-flex mt-4 pull-right"> 
+                    <div class="views">
+                        <span class="view-count"><i class="fa fa-eye"></i> 
+                            <?php if(isset($view_increment) && $view_increment == true ): ?><?= $video->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                        </span>
                     </div>
+                </div>-->
+            </div>        
+        </div>
+        <!-- Year, Running time, Age -->
+       <?php 
+       if(!empty($video->publish_time)){
+        $originalDate = $video->publish_time;
+        $publishdate = date('d F Y', strtotime($originalDate));
+       }else{
+        $originalDate = $video->created_at;
+        $publishdate = date('d F Y', strtotime($originalDate));
+       }
+     ?>
+        <div class=" align-items-center text-white text-detail p-0">
+        <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>
+        <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>
+        <span class="badge badge-secondary p-2">Published On : <?php  echo $publishdate;?></span>
+        <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>
+     
+          </div>
+        
+        <?php if(!Auth::guest()) { ?>
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-xs-12">
+                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                      <!-- Social Share, Like Dislike -->
+                         <?php // include('partials/social-share.php'); ?>                     
+                  </ul>
+            </div>
 
 <!--                    <div class="col-sm-6 col-md-6 col-xs-12">-->
-        <!--
-                          <div class="d-flex align-items-center series mb-4">
-                             <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
-                                   alt=""></a>
-                             <span class="text-gold ml-3">#2 in Series Today</span>
-                          </div>
-        -->                 
+<!--
+                  <div class="d-flex align-items-center series mb-4">
+                     <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
+                           alt=""></a>
+                     <span class="text-gold ml-3">#2 in Series Today</span>
+                  </div>
+-->                 
 <!--                        <ul class="list-inline p-0 mt-4 rental-lists">-->
-                        <!-- Subscribe -->
+                <!-- Subscribe -->
 <!--
-                            <li>
-                                <?php     
-                                    $user = Auth::user(); 
-                                    if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
-                                        <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-                                <?php } ?>
-                            </li>
+                    <li>
+                        <?php     
+                            $user = Auth::user(); 
+                            if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
+                                <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
+                        <?php } ?>
+                    </li>
 -->
-                            <!-- PPV button -->
+                    <!-- PPV button -->
 <!--
-                            <li>
-                                <?php if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin")  ) { ?>
-                                    <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
-                                    <?php echo __('Rent');?> </button>
-                                <?php } ?>
-                            </li>
-                        </ul>
-                    </div>
+                    <li>
+                        <?php if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin")  ) { ?>
+                            <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
+                            <?php echo __('Rent');?> </button>
+                        <?php } ?>
+                    </li>
+                </ul>
+            </div>
 -->
-                </div>
+        </div>
 
-                <?php } ?>
-                
-                <?php if(Auth::guest()) { ?>
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-xs-12">
-                         <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                              <!-- Social Share, Like Dislike -->
-                                 <?php include('partials/social-share.php'); ?>                     
-                          </ul>
-                    </div>
+        <?php } ?>
+        
+        <?php if(Auth::guest()) { ?>
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-xs-12">
+                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                      <!-- Social Share, Like Dislike -->
+                         <?php include('partials/social-share.php'); ?>                     
+                  </ul>
+            </div>
 
 
                   
@@ -350,39 +400,39 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                             </li>
                             <!-- PPV button -->
                             <li>
-                                <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login');?>">
+                                <a data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
                                     <?php echo __('Rent');?> </a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <?php   }?>
-                <div class="text-white">
+                <div class="text-white col-md-6 p-0">
                     <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-xs-12">
                         <div class="video-details-container">
                             <?php if (!empty($video->details)) { ?>
-                                <h6 class="mt-3 mb-1">Live Details</h6>
+                                <h6 class="mt-3 mb-1">{{ __('Live Details') }}</h6>
                                 <p class="trending-dec w-100 mb-3 text-white"><?=$video->details; ?></p>
                             <?php  } ?>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                        <!-- Related Videos -->
-                        {{-- <div class="row">
-                    <div class="container-fluid video-list you-may-like overflow-hidden">
-                        <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
-                        <div class="slider">   
-                            <?php include(public_path('themes/theme3/views/partials/live_related_video.blade.php'));  ?>
-                        </div>
+            {{-- <div class="row">
+                <div class=" container-fluid video-list you-may-like overflow-hidden">
+                    <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
+                    <div class="slider">   
+                        <?php include('partials/live_related_video');?>
+
                     </div>
-                </div> --}}
+                </div>
+            </div> --}}
+        </div>
 
-                
 <!-- <div style="text-align:right;padding:5px 0";>
 <span class="view-count" style="margin-right:10px";><i class="fa fa-eye"></i> <?php if (isset($view_increment) && $view_increment == true): ?><?=$video->views + 1 ?><?php
 else: ?><?=$video->views ?><?php
@@ -390,51 +440,51 @@ endif; ?> Views </span>
 <div class="favorite btn btn-default <?php if (isset($favorited->id)): ?>active<?php
 endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id ?>"><i class="fa fa-heart"></i> Favorite</div>
 </div> -->
-                
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
-           
+        
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">{{ __('Rent Now') }}</h4>
+   
+  </div>
+  <div class="modal-body">
+      <div class="row">
+          <div class="col-sm-2" style="width:52%;">
+            <span id="paypal-button"></span> 
           </div>
-          <div class="modal-body">
-              <div class="row">
-                  <div class="col-sm-2" style="width:52%;">
-                    <span id="paypal-button"></span> 
-                  </div>
-                  
-                  <div class="col-sm-4">
-                    <a onclick="pay(<?php echo PvvPrice();?>)">
-                        <img src="<?php echo URL::to('/assets/img/card.png');?>" class="rent-card">
-                    </a>
-                  </div>
-              </div>                    
+          
+          <div class="col-sm-4">
+            <a onclick="pay(<?php echo $video->ppv_price;?>)">
+                <img src="<?php echo URL::to('/assets/img/card.png');?>" class="rent-card">
+            </a>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
+      </div>                    
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary"  data-dismiss="modal">{{ __('Close') }}</button>
+  </div>
+</div>
+</div>
+</div>
 
 
 
-                <?php if (isset($videonext)) { ?>
-                    <div class="next_video" style="display: none;"><?=$videonext->slug; ?></div>
-                    <div class="next_url" style="display: none;"><?=$url; ?></div>
-                <?php } elseif (isset($videoprev)) { ?>
-                    <div class="prev_video" style="display: none;"><?=$videoprev->slug; ?></div>
-                    <div class="next_url" style="display: none;"><?=$url; ?></div>
-                <?php } ?>
+        <?php if (isset($videonext)) { ?>
+            <div class="next_video" style="display: none;"><?=$videonext->slug; ?></div>
+            <div class="next_url" style="display: none;"><?=$url; ?></div>
+        <?php } elseif (isset($videoprev)) { ?>
+            <div class="prev_video" style="display: none;"><?=$videoprev->slug; ?></div>
+            <div class="next_url" style="display: none;"><?=$url; ?></div>
+        <?php } ?>
 
-                <?php if (isset($videos_category_next)) { ?>
-                    <div class="next_cat_video" style="display: none;"><?=$videos_category_next->slug; ?></div>
-                <?php } elseif (isset($videos_category_prev)) { ?>
-                    <div class="prev_cat_video" style="display: none;"><?=$videos_category_prev->slug; ?></div>
-                <?php } ?>
-                <div class="clear"></div>
+        <?php if (isset($videos_category_next)) { ?>
+            <div class="next_cat_video" style="display: none;"><?=$videos_category_next->slug; ?></div>
+        <?php } elseif (isset($videos_category_prev)) { ?>
+            <div class="prev_cat_video" style="display: none;"><?=$videos_category_prev->slug; ?></div>
+        <?php } ?>
+        <div class="clear"></div>
 <!--
 <div id="tags">Tags: 
 <php foreach($video->tags as $key => $tag): ?>
@@ -443,23 +493,23 @@ endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id
 </div>
 -->
 
-                <div id="social_share">
-                <!--            <php include('partials/social-share.php'); ?>-->
-                </div>
-                <script>
-                    //$(".share a").hide();
-                    $(".share").on("mouseover", function() {
-                        $(".share a").show();
-                    }).on("mouseout", function() {
-                        $(".share a").hide();
-                    });
-                </script>
+        <div id="social_share">
+        <!--            <php include('partials/social-share.php'); ?>-->
+        </div>
+        <script>
+            //$(".share a").hide();
+            $(".share").on("mouseover", function() {
+                $(".share a").show();
+            }).on("mouseout", function() {
+                $(".share a").hide();
+            });
+        </script>
 
-            </div>
     </div>
 </div>
-        <script src="<?=THEME_URL . '/assets/js/jquery.fitvid.js'; ?>"></script>
-        <script type="text/javascript">
+</div>
+<script src="<?=THEME_URL . '/assets/js/jquery.fitvid.js'; ?>"></script>
+<script type="text/javascript">
 
 $(document).ready(function(){
 $('#video_container').fitVids();
@@ -570,14 +620,12 @@ var livepayment = $('#purchase_url').val();
 var publishable_key = $('#publishable_key').val();
 
 
-// alert(livepayment);
-
 $(document).ready(function () {  
-$.ajaxSetup({
-headers: {
-'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-}
-});
+        $.ajaxSetup({
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 });
 
 function pay(amount) {
@@ -588,52 +636,31 @@ var handler = StripeCheckout.configure({
 key: publishable_key,
 locale: 'auto',
 token: function (token) {
-// You can access the token ID with `token.id`.
-// Get the token ID to your server-side code for use.
 console.log('Token Created!!');
 console.log(token);
 $('#token_response').html(JSON.stringify(token));
-$.ajax({
- url: '<?php echo URL::to("purchase-live") ;?>',
- method: 'post',
- data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , video_id: video_id },
- success: (response) => {
-   alert("You have done  Payment !");
-   setTimeout(function() {
-     location.reload();
-   }, 2000);
 
- },
- error: (error) => {
-   swal('error');
-//swal("Oops! Something went wrong");
-/* setTimeout(function() {
-location.reload();
-}, 2000);*/
+$.ajax({
+url: '<?php echo route("rent_live_artist_event") ;?>',
+method: 'post',
+data: {"_token": 
+        "<?= csrf_token(); ?>",
+        tokenId:token.id, 
+        amount: amount , 
+        video_id: video_id 
+},
+success: (response) => {
+    alert("You have done  Payment !");
+    setTimeout(function() {
+    location.reload();
+}, 2000);
+},
+error: (error) => {
+swal('error');
 }
 })
-// $.ajax({
-// url: livepayment,
-// method: 'post',
-// data: {  _token: '<?= csrf_token(); ?>',tokenId: token.id, amount: amount , video_id: video_id },
-// success: (response) => {
-// swal("You have done  Payment !");
-// setTimeout(function() {
-// location.reload();
-// }, 2000);
-
-// },
-// error: (error) => {
-// swal('error');
-// //swal("Oops! Something went wrong");
-// /* setTimeout(function() {
-// location.reload();
-// }, 2000);*/
-// }
-// })
 }
 });
-
 
 handler.open({
 name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
@@ -641,6 +668,16 @@ description: 'PAY PeR VIEW',
 amount: amount * 100
 });
 }
+
+        // Tips 
+
+$(document).ready(function(){
+    $('#live_event_amount').hide();
+
+    $("#tips").click(function(){
+        $("#live_event_amount").toggle();
+    });
+});
 </script>
 
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
@@ -675,48 +712,40 @@ settings: "unslick" // destroys slick
 
 }]
 });
-
-
-
-//My Wishlist
-$('.mywishlist').click(function(){
-       if($(this).data('authenticated')){
-         $.post('<?= URL::to('LiveWishlist') ?>', { livestream_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-         $(this).toggleClass('active');
-         $(this).html("");
-             if($(this).hasClass('active')){
-              $(this).html('<i class="fa fa-minus-circle" aria-hidden="true" ></i> Remove wishlist');
-            
-              $(".add_data_test").empty();
-              $(".add_data_test").append("<div>Remove from Wishlist</div> ");
-               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
-               setTimeout(function() {
-                $('.add_watch').slideUp('fast');
-               }, 3000);
-             }else{
-              $(this).html('+ Add to Whislist');
-              $(".add_data_test").empty();
-               $(".add_data_test").append("<div>Added to  Wishlist</div> ");
-              $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
-               setTimeout(function() {
-                $('.remove_watch').slideUp('fast');
-               }, 3000);
-             }
-       } else {
-         window.location = '<?= URL::to('login') ?>';
-       }
-     });
-
- $(document).ready(function(){
-    $('#live_event_amount').hide();
-
-    $("#tips").click(function(){
-        $("#live_event_amount").toggle();
-    });
-});
-
 </script>
 <!-- <script src="https://vjs.zencdn.net/7.8.3/video.js"></script> -->
 
-<?php include(public_path('themes/theme3/views/footer.blade.php'));  ?>
+
+<script>
+// Set the date we're counting down to
+var date = "<?= $new_date ?>";
+var countDownDate = new Date(date).getTime();
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+// Get today's date and time
+var now = new Date().getTime();
+
+// Find the distance between now and the count down date
+var distance = countDownDate - now;
+
+// Time calculations for days, hours, minutes and seconds
+var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+// Output the result in an element with id="demo"
+document.getElementById("demo").innerHTML = days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+
+// If the count down is over, write some text 
+if (distance < 0) {
+clearInterval(x);
+document.getElementById("demo").innerHTML = "EXPIRED";
+}
+}, 1000);
+</script>
+
+<?php include(public_path('themes/theme4/views/footer.blade.php'));  ?>
 

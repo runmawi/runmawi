@@ -21,6 +21,8 @@
   ?>
   </a>
   </h4>  
+  <h4 class="main-title"><a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>"> <?php echo (__('View All')); ?></a> </h4>
+
 </div>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -107,7 +109,7 @@
                 </a>
 
                
-                  <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
+                  <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Watch Series
                   </a>

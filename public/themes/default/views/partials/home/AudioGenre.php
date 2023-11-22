@@ -20,7 +20,8 @@
         } 
   ?>
   </a>
-  </h4>  
+  </h4> 
+  <h4 class="main-title"><a href="<?php if ($order_settings_list->header_name) { echo URL::to('/').'/'.$order_settings_list->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4> 
 </div>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -49,7 +50,7 @@
                 </a>
                               
                 
-                  <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?> " >
+                  <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/audios/category'.'/'.$Audio_Category->slug  ) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Visit Audio Category
                   </a>

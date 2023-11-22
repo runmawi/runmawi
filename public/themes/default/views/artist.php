@@ -89,9 +89,6 @@
                  </ul>
 
             </div>
-            <div class="flw">
-                <a href="<?php echo URL::to('artist/calendar-event-index'.'/'.$artist_slug ); ?>"><span>Click Here To Check The Artist Events :</span></a>
-            </div>
         </div>
     </div>
             </div>
