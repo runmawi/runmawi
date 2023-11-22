@@ -91,6 +91,7 @@ Route::post('/auto-station/store', 'MusicStationController@AutoStoreStation');
 // Endpoints Playlist Audios.
 
 Route::get('/my-playlist', 'MyPlaylistController@MyPlaylist');
+Route::get('/playlist/create', 'MyPlaylistController@CreatePlaylist');
 Route::post('/playlist/store', 'MyPlaylistController@StorePlaylist');
 Route::get('/playlist/{slug}', 'MyPlaylistController@Audio_Playlist');
 Route::post('/add_audio_playlist', 'MyPlaylistController@Add_Audio_Playlist');
