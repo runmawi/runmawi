@@ -1,5 +1,5 @@
 @php
-include(public_path('themes/theme7/views/header.php'));
+include(public_path('themes/theme4/views/header.php'));
 $settings = App\Setting::first(); 
 @endphp
 
@@ -422,5 +422,5 @@ padding-top: 20px;
   }
       </script>
   @php
-include(public_path('themes/theme7/views/footer.blade.php'));
+include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp

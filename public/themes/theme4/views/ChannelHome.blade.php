@@ -1,6 +1,6 @@
 <!-- Header Start -->
 <?php
-include public_path('themes/theme7/views/header.php');
+include public_path('themes/theme4/views/header.php');
 
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
 $order_settings_list = App\OrderHomeSetting::get();
@@ -63,7 +63,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     @php
-                        include(public_path('themes/theme7/views/partials/channel-social-share.php'));
+                        include(public_path('themes/theme4/views/partials/channel-social-share.php'));
                     @endphp
                 </ul>
             </div>
@@ -241,7 +241,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php include public_path('themes/theme7/views/partials/home/latest-videos.php');  ?>
+                    <?php include public_path('themes/theme4/views/partials/home/latest-videos.php');  ?>
                 </div>
             </div>
         </div>
@@ -257,7 +257,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/theme7/views/partials/home/live-videos.php');
+                    include public_path('themes/theme4/views/partials/home/live-videos.php');
                     ?>
                 </div>
             </div>
@@ -275,7 +275,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/theme7/views/partials/home/latest-series.php');
+                    include public_path('themes/theme4/views/partials/home/latest-series.php');
                     ?>
                 </div>
             </div>
@@ -293,7 +293,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/theme7/views/partials/home/latest-audios.php');
+                    include public_path('themes/theme4/views/partials/home/latest-audios.php');
                     ?>
                 </div>
             </div>
@@ -443,5 +443,5 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
 
 <?php
-    include public_path('themes/theme7/views/footer.blade.php');
+    include public_path('themes/theme4/views/footer.blade.php');
 ?>

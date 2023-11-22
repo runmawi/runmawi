@@ -153,7 +153,7 @@ $system_settings = App\SystemSetting::find(1);
 </script>
                        {{-- Footer --}}
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
 
       <!-- jQuery, Popper JS -->
