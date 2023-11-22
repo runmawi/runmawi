@@ -19854,7 +19854,8 @@ public function IOS_ShowVideo_favorite(Request $request) {
         public function social_network_setting(Request $request) {
 
           try {
-            $socail_networl_setting = Setting::select('facebook_page_id','google_page_id','twitter_page_id','instagram_page_id','linkedin_page_id','whatsapp_page_id','skype_page_id','youtube_page_id')->get();
+            $socail_networl_setting = Setting::select('facebook_page_id','google_page_id','twitter_page_id','instagram_page_id',
+                    'linkedin_page_id','whatsapp_page_id','skype_page_id','youtube_page_id','email_page_id')->get();
             $response = array(
               'status' => "true",
               'socail_networl_setting'=> $socail_networl_setting,
