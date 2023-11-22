@@ -862,8 +862,8 @@ class ApiAuthController extends Controller
           ->where('subscriptions.user_id',Auth::user()->id)
           ->orderBy('subscriptions.created_at', 'desc')->first();
 
-          $plans_name = $Subscription->plans_name;
-          $plan_ends_at = $Subscription->ends_at;
+          $plans_name   = !is_null($Subscription) ? $Subscription->plans_name :null ;
+          $plan_ends_at = !is_null($Subscription) ? $Subscription->ends_at : null ;
 
         }else{
           $plans_name = '';
