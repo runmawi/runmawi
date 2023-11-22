@@ -1,5 +1,5 @@
    @php
-      include(public_path('themes/theme7/views/header.php'));
+      include(public_path('themes/theme4/views/header.php'));
    @endphp
 
 <!-- MainContent -->
@@ -125,4 +125,4 @@
       </div>
    </div>
 </div>
-<?php include(public_path('themes/theme7/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php'));  ?>
