@@ -799,7 +799,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
                                     <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                        <?php echo __('Purchase Now'); ?> 
+                                        <?php echo __('Rent Now'); ?> 
                                     </button>
                                 <?php } ?>
                             </div>
