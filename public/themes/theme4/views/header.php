@@ -221,19 +221,19 @@
     <link rel="shortcut icon" type="image/png" href="<?= URL::to('public/uploads/settings/'.$settings->favicon); ?>" />
     
    <!-- Bootstrap CSS -->
-         <link rel="stylesheet" href="<?= URL::to('public/themes/theme6/assets/css/bootstrap.min.css') ?>">
+         <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>">
 
    <!-- Typography CSS -->
-      <link rel="stylesheet" href="<?= URL::to('public/themes/theme6/assets/css/typography.css') ?>">
+      <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>">
 
    <!-- Style -->
-      <link rel="stylesheet" href="<?= URL::to('public/themes/theme6/assets/css/style.css') ?>">
+      <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>">
       
    <!-- Responsive -->
-      <link rel="stylesheet" href="<?= URL::to('public/themes/theme6/assets/css/responsive.css') ?>">
+      <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>">
 
    <!-- slick -->
-      <link rel="stylesheet" href="<?= URL::to('public/themes/theme6/assets/css/slick.css') ?>">
+      <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>">
 
    <!-- Font Awesome -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -470,7 +470,7 @@
                                           <input type="text" class="text search-input font-size-12 searches"
                                              placeholder="type here to search...">
                                           <i class="search-link ri-search-line"></i>
-                                          <?php  include 'public/themes/theme6/partials/Search_content.php'; ?>
+                                          <?php  include 'public/themes/theme4/partials/Search_content.php'; ?>
                                        </div>
                                     </form>
                                  </div>
@@ -499,7 +499,7 @@
                                           <div class="iq-card-body">
                                               <a href="#" class="iq-sub-card">
                                                   <div class="media align-items-center">
-                                                      <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/notify/thumb-1.jpg"
+                                                      <img src="https://localhost/flicknexs/public/themes/theme4/assets/images/notify/thumb-1.jpg"
                                                           class="img-fluid mr-3" alt="" />
                                                       <div class="media-body">
                                                           <h6 class="mb-0 ">Boot Bitty</h6>
@@ -509,7 +509,7 @@
                                               </a>
                                               <a href="#" class="iq-sub-card">
                                                   <div class="media align-items-center">
-                                                      <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/notify/thumb-2.jpg"
+                                                      <img src="https://localhost/flicknexs/public/themes/theme4/assets/images/notify/thumb-2.jpg"
                                                           class="img-fluid mr-3" alt="" />
                                                       <div class="media-body">
                                                           <h6 class="mb-0 ">The Last Breath</h6>
@@ -519,7 +519,7 @@
                                               </a>
                                               <a href="#" class="iq-sub-card">
                                                   <div class="media align-items-center">
-                                                      <img src="https://localhost/flicknexs/public/themes/theme6/assets/images/notify/thumb-3.jpg"
+                                                      <img src="https://localhost/flicknexs/public/themes/theme4/assets/images/notify/thumb-3.jpg"
                                                           class="img-fluid mr-3" alt="" />
                                                       <div class="media-body">
                                                           <h6 class="mb-0 ">The Hero Camp</h6>
@@ -537,7 +537,7 @@
 
                                        <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                           data-toggle="search-toggle">
-                                              <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme6/assets/images/user/user.jpg') ?>"
+                                              <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme4/assets/images/user/user.jpg') ?>"
                                                 class="img-fluid avatar-40 rounded-circle" alt="user">
                                        </a>
 
