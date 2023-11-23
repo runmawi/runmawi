@@ -307,42 +307,43 @@ Index Of Script
 			]
 		});
 
-		jQuery('#trending-slider').slick({
+		$('.trending-slider').slick({
 			slidesToShow: 1,
-			slidesToScroll: 1,		 
+			slidesToScroll: 1,
 			arrows: false,
 			fade: true,
-			draggable:false,
-			asNavFor: '#trending-slider-nav',	
+			draggable: false,
+			asNavFor: '.trending-slider-nav',
 		});
-		jQuery('#trending-slider-nav').slick({
+		
+		$('.trending-slider-nav').slick({
 			slidesToShow: 5,
 			slidesToScroll: 1,
-			asNavFor: '#trending-slider',
+			asNavFor: '.trending-slider',
 			dots: false,
 			arrows: true,
 			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
 			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
 			infinite: true,
 			centerMode: true,
-			centerPadding:0,
+			centerPadding: 0,
 			focusOnSelect: true,
 			responsive: [
-			{
-				breakpoint: 1024,
-				settings: {
-				slidesToShow: 2,
-				slidesToScroll: 1,
-				}
-			},
-			{
-				breakpoint: 600,
-				settings: {
-				slidesToShow: 1,
-				slidesToScroll: 1
-				}
-			}
-			]
+				{
+					breakpoint: 1024,
+					settings: {
+						slidesToShow: 2,
+						slidesToScroll: 1,
+					},
+				},
+				{
+					breakpoint: 600,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1,
+					},
+				},
+			],
 		});
 		
 		jQuery('#tvshows-slider').slick({
