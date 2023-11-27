@@ -7,30 +7,60 @@
 
  ?>
 <style>
-  .playlist-ctn {
-  
+  .plus-minus-toggle {
+    cursor: pointer;
+    position: relative;
+    width: 21px;
+    &: before,;
 }
-    .playlist-ctn::-webkit-scrollbar {
-width: 2px;
+.collapsed {
+    text-decoration: none;
+    font-size: 35px;
+    color: #fff;
 }
-.playlist-ctn::-webkit-scrollbar-track {
-  background: rgba(255,255,255,0.2);
-    
+.plus-minus-toggle
+&:before, &:after {
+    background: red;
+    content: '';
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 21px;
+    transition: transform 500ms ease;
 }
-.playlist-ctn::-webkit-scrollbar-thumb {
-  background-color: red;
-  border-radius: 2px;
-  border: 2px solid red;
-    width: 2px;
+.plus-minus-toggle
+&:before, &:after {
+    background: red;
+    content: '';
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 21px;
+    transition: transform 500ms ease;
 }
-.playlist-ctn{
-    padding-bottom: 20px;
-      /*overflow: scroll;
-      scroll-behavior: auto;
-      min-height:335px;
-      scrollbar-color: rebeccapurple green!important;
-      overflow-x: hidden;*/
+.plus-minus-toggle
+&:after {
+    transform-origin: center;
+}
+  .playlist-ctn td {
+  color: white;
+}
+.active-track > .playlist-info-track,.active-track >.playlist-duration,.active-track > .playlist-btn-play{
+    color: #ffc266 !important;
   }
+  .playlist-ctn::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.2);
+      
+  }
+  .active-track{
+    background: #4d4d4d;
+    color: #ffc266 !important;
+    font-weight: bold;
+    
+  }
+
 </style>
 <div id="music-player">
   
@@ -91,25 +121,37 @@ width: 2px;
           <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
           <?php } ?>
           </div>
-          <?php if(!empty(@$All_Playlist_Audios) && count(@$All_Playlist_Audios) > 0){ ?>
-          <div class="playlist-ctn">
-          <!-- Add the new code here -->
-<h4 class="mb-3"><?php echo __('Tracks'); ?></h4>
-<table class="w-100">
-    <?php foreach ($All_Playlist_Audios as $key => $audio) { //dd($All_Playlist_Audios);?>
-        <tr>
-            <td><?= $key + 1 ?></td>
-            <td><img src="<?= URL::to('/').'/public/uploads/images/' . $audio->image ?>" class="" height="50" width="50"></td>
-            <td><h4><?= $audio->title ?></h4></td>
-            <td><?= $audio->albumname ?></td>
-            <td><div class="plus-minus-toggle collapsed add_audio_playlist" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio->id ?>"></div></td>
-            <td><?php echo gmdate("H:i:s", $audio->duration);?></td>
-        </tr>
-    <?php } ?>
-</table>
-          </div>
-          <?php } ?>
+          
         </div>
+
+        <?php if(!empty(@$All_Playlist_Audios) && count(@$All_Playlist_Audios) > 0){ ?>
+            <div class="playlist-ctn mb-5">
+                <!-- Add the new code here -->
+              <h4 class="mb-3"><?php echo __('Tracks'); ?></h4>
+                <table class="w-100">
+                    <?php foreach ($All_Playlist_Audios as $key => $audio) { //dd($All_Playlist_Audios);?>
+                        <tr>
+                            <td><?= $key + 1 ?></td>
+                            <td><img src="<?= URL::to('/').'/public/uploads/images/' . $audio->image ?>" class="" height="50" width="50"></td>
+                            <td><h4><?= $audio->title ?></h4></td>
+                            <td><?= $audio->albumname ?></td>
+                            <td><div class="plus-minus-toggle collapsed add_audio_playlist" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio->id ?>"></div></td>
+                            <td><?php echo gmdate("H:i:s", $audio->duration);?></td>
+                        </tr>
+                    <?php } ?>
+                </table>
+                <ol>
+                  <li>
+                    <div class="track d-flex">
+                    </div>
+                  </li>
+                </ol>
+            </div>
+
+        <?php } ?>
+
+          
+
         <div id="playlist">
 
           <div id="label">
@@ -1121,6 +1163,7 @@ html,body{
   width:100%;
   height:100vh;
   background: var(--bg-color);
+  overflow: auto;
 }
 #album-art{ position:fixed; z-index:-1; left: 50%; transform: translateX(-50%);opacity: 0.15;width: auto; height: 100%;}
 #top-bar{
@@ -1173,7 +1216,7 @@ html,body{
 }
 #player{
   background: var(--menu-color);
-  position: fixed;
+  position: relative;
   bottom: 0;
   height: 25vh;
   width: 100%;
