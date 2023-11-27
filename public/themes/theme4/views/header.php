@@ -843,4 +843,8 @@
          ul.dropdown-menu.categ-head{
             overflow:hidden;
          }
+         .home-page-close-button {position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 30px; cursor: pointer; color: white; transition: transform 0.3s ease; transform-origin: center center; transform: scale(1);}
+
+         .home-page-close-button:hover { transform: scale(1.2); }
+         .home-page-bg-img { width: 1485px; !important }
          </style>
