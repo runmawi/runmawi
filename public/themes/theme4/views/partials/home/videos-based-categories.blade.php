@@ -57,55 +57,64 @@
 
 @if (!empty($data) && $data->isNotEmpty())
     @foreach( $data as $key => $video_category )
-        <section id="iq-favorites">
+        <section id="iq-trending" class="s-margin">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
-
-                        {{-- Header --}}
+                                        
+                                        {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
                         </div>
 
-                        <div class="favorites-contens">
-                            <ul class="favorites-slider list-inline  row p-0 mb-0">
-                                @foreach ($video_category->category_videos as $key => $latest_video)
-                                    <li class="slide-item">
-                                        <a href="{{ $latest_video->image ? URL::to('category/videos/'.$latest_video->slug ) : default_vertical_image_url() }}">
-                                            <div class="block-images position-relative">
-                                                <div class="img-box">
-                                                    <img src="{{  URL::to('public/uploads/images/'.$latest_video->image) }}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="block-description">
-                                                    <h6> {{ strlen($latest_video->title) > 17 ? substr($latest_video->title, 0, 18) . '...' : $latest_video->title }}
-                                                    </h6>
-                                                    <div class="movie-time d-flex align-items-center my-2">
+                        <div class="trending-contens">
+                            <ul id="trending-slider-nav" class="{{ 'category-videos-slider-nav list-inline p-0 mb-0 row align-items-center' }}" data-key-id="{{$key}}">
 
-                                                        <div class="badge badge-secondary p-1 mr-2">
-                                                            {{ optional($latest_video)->age_restrict.'+' }}
-                                                        </div>
-
-                                                        <span class="text-white">
-                                                            {{ $latest_video->duration != null ? gmdate('H:i:s', $latest_video->duration) : null }}
-                                                        </span>
-                                                    </div>
-
-                                                    <div class="hover-buttons">
-                                                        <span class="btn btn-hover">
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="block-social-info">
-                                                    <ul class="list-inline p-0 m-0 music-play-lists">
-                                                        {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                        <li><span><i class="ri-heart-fill"></i></span></li>
-                                                        <li><span><i class="ri-add-line"></i></span></li>
-                                                    </ul>
-                                                </div>
+                                @foreach ($video_category->category_videos as $videos )
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="movie-slick position-relative">
+                                                <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid" >
                                             </div>
                                         </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+
+                            <ul id="trending-slider" class= "{{ 'category-videos-slider list-inline p-0 m-0 align-items-center category-videos-'.$key }}" >
+                                @foreach ($video_category->category_videos as $videos )
+                                    <li>
+                                        <div class="tranding-block position-relative home-page-bg-img" style="background-image: url({{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }});">
+                                            <button class="home-page-close-button">×</button>
+
+                                            <div class="trending-custom-tab">
+                                                <div class="trending-content">
+                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                        <div class="trending-info align-items-center w-100 animated fadeInUp">
+
+                                                            <h1 class="trending-text big-title text-uppercase">{{ optional($videos)->title }}</h1>
+
+                                                            @if ( $videos->year != null && $videos->year != 0 )
+                                                                <div class="d-flex align-items-center text-white text-detail">
+                                                                    <span class="trending">{{ ($videos->year != null && $videos->year != 0) ? $videos->year : null   }}</span>
+                                                                </div>
+                                                            @endif
+                                                                                                                        
+                                                            @if ( optional($videos)->description )
+                                                                <p class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</p>
+                                                            @endif
+
+                                                            <div class="p-btns">
+                                                                <div class="d-flex align-items-center p-0">
+                                                                    <a href="{{ URL::to('category/videos/'.$videos->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                    <a href="#" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </li>
                                 @endforeach
                             </ul>
@@ -116,3 +125,63 @@
         </section>
     @endforeach
 @endif
+
+<script>
+    
+    $( window ).on("load", function() {
+        $('.category-videos-slider').hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.category-videos-slider').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            draggable: false,
+            asNavFor: '.category-videos-slider-nav',
+        });
+
+        $('.category-videos-slider-nav').slick({
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            asNavFor: '.category-videos-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+        
+        $('.category-videos-slider-nav').click(function() {
+
+            $( ".home-page-close-button" ).trigger( "click" );
+
+             let category_key_id = $(this).attr("data-key-id");
+             $('.category-videos-slider').hide();
+             $('.category-videos-' + category_key_id).show();
+        });
+
+        $('body').on('click', '.home-page-close-button', function() {
+            $('.category-videos-slider').hide();
+        });
+    });
+</script>

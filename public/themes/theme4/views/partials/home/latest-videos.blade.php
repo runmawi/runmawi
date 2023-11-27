@@ -22,11 +22,12 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0  d-flex align-items-center latest-videos-slider">
+                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
                             @foreach ($data as $key => $latest_video )
                                 <li>
-                                    <div class="tranding-block position-relative"
-                                        style="background-image: url( {{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }} );">
+                                    <div class="tranding-block position-relative" style="background-image: url({{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }});">
+                                        <button class="home-page-close-button">×</button>
+
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
                                                 <div id="" class="overview-tab tab-pane fade active show">
@@ -34,11 +35,15 @@
 
                                                         <h1 class="trending-text big-title text-uppercase">{{ optional($latest_video)->title }}</h1>
 
-                                                        <div class="d-flex align-items-center text-white text-detail">
-                                                            <span class="trending">{{ optional($latest_video)->year }}</span>
-                                                        </div>
+                                                        @if ( $latest_video->year != null && $latest_video->year != 0)
+                                                            <div class="d-flex align-items-center text-white text-detail">
+                                                                <span class="trending">{{ ($latest_video->year != null && $latest_video->year != 0) ? $latest_video->year : null   }}</span>
+                                                            </div>
+                                                        @endif
 
-                                                        <p class="trending-dec">{!! html_entity_decode( optional($latest_video)->details) !!}</p>
+                                                        @if (optional($latest_video)->description)
+                                                            <p class="trending-dec">{!! html_entity_decode( optional($latest_video)->description) !!}</p>
+                                                        @endif
 
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
@@ -62,7 +67,12 @@
 @endif
 
 <script>
-    $(document).ready(function(){
+    
+    $( window ).on("load", function() {
+        $('.latest-videos-slider').hide();
+    });
+
+    $(document).ready(function() {
 
         $('.latest-videos-slider').slick({
             slidesToShow: 1,
@@ -72,18 +82,16 @@
             draggable: false,
             asNavFor: '.latest-videos-slider-nav',
         });
-        
+
         $('.latest-videos-slider-nav').slick({
             slidesToShow: 5,
             slidesToScroll: 1,
             asNavFor: '.latest-videos-slider',
             dots: false,
             arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
-            infinite: true,
-            centerMode: true,
-            centerPadding: 0,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
             focusOnSelect: true,
             responsive: [
                 {
@@ -101,6 +109,15 @@
                     },
                 },
             ],
+        });
+
+        $('.latest-videos-slider-nav').on('click', function() {
+            $( ".home-page-close-button" ).trigger( "click" );
+            $('.latest-videos-slider').show();
+        });
+
+        $('body').on('click', '.home-page-close-button', function() {
+            $('.latest-videos-slider').hide();
         });
     });
 </script>

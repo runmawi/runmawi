@@ -22,17 +22,19 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center livestream-videos-slider">
+                        <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider">
                             @foreach ($data as $key => $livestream_videos )
                                 <li>
                                     <div class="tranding-block position-relative"
                                         style="background-image: url( {{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }} );">
+                                        <button class="home-page-close-button">×</button>
+
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <h1 class="trending-text big-title text-uppercase">{{ optional($livestream_videos)->title }}</h1>
+                                                        <h6 class="trending-text big-title text-uppercase">{{ optional($livestream_videos)->title }}</h6>
 
                                                         @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
                                                             <ul class="vod-info">
@@ -65,45 +67,59 @@
     </section>
 @endif
 
+
 <script>
-    $( document ).ready(function() {
+    
+    $( window ).on("load", function() {
+        $('.livestream-videos-slider').hide();
+    });
+
+    $(document).ready(function() {
+
         $('.livestream-videos-slider').slick({
-			slidesToShow: 1,
-			slidesToScroll: 1,
-			arrows: false,
-			fade: true,
-			draggable: false,
-			asNavFor: '.livestream-videos-slider-nav',
-		});
-		
-		$('.livestream-videos-slider-nav').slick({
-			slidesToShow: 5,
-			slidesToScroll: 1,
-			asNavFor: '.livestream-videos-slider',
-			dots: false,
-			arrows: true,
-			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
-			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
-			infinite: true,
-			centerMode: true,
-			centerPadding: 0,
-			focusOnSelect: true,
-			responsive: [
-				{
-					breakpoint: 1024,
-					settings: {
-						slidesToShow: 2,
-						slidesToScroll: 1,
-					},
-				},
-				{
-					breakpoint: 600,
-					settings: {
-						slidesToShow: 1,
-						slidesToScroll: 1,
-					},
-				},
-			],
-		});
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            draggable: false,
+            asNavFor: '.livestream-videos-slider-nav',
+        });
+
+        $('.livestream-videos-slider-nav').slick({
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            asNavFor: '.livestream-videos-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.livestream-videos-slider-nav').on('click', function() {
+            $( ".home-page-close-button" ).trigger( "click" );
+            $('.livestream-videos-slider').show();
+        });
+
+        $('body').on('click', '.home-page-close-button', function() {
+            $('.livestream-videos-slider').hide();
+        });
     });
 </script>
