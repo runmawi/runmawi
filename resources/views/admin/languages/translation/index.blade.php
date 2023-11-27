@@ -19,7 +19,7 @@
 </style>
 @section('content')
     <div id="content-page" class="content-page">
-        <div class="container-fluid">
+        <div class="container-fluid" style=" overflow: scroll">
             <div class="admin-section-title">
                 <div class="">
                     <div class="row">
