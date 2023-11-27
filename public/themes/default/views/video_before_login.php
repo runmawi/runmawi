@@ -729,26 +729,22 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   <div class="modal-body">
                      <?php if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
-                     <video id="videoPlayer1"  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                        type="video/mp4" src="<?php echo $video->trailer;?>">
-                     </video>
-                     <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
-                     <video  id="videos"   class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                        type="application/x-mpegURL">
-                        <source  type="application/x-mpegURL"   src="<?php echo $video->trailer;?>" >
-                     </video>
-                     <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
-                     <video  id="videoPlayer1"   class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                        type="application/x-mpegURL">
-                     </video>
+                        <video id="videoPlayer1"  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                           controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                           type="video/mp4" src="<?php echo $video->trailer;?>">
+                        </video>
+                     <?php }elseif($video->trailer_type !=null && ($video->trailer_type == "m3u8" ||  $video->trailer_type == "m3u8_url" )){ ?>
+                        <video  id="videos"   class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                           controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                           type="application/x-mpegURL">
+                           <source  type="application/x-mpegURL"   src="<?php echo $video->trailer;?>" >
+                        </video>
+                     
                      <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
-                     <div id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" >
-                        <iframe src="<?php echo $video->trailer ?>" allowfullscreen allowtransparency >
-                        </iframe>
-                     </div>
+                        <div id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" >
+                           <iframe src="<?php echo $video->trailer ?>" allowfullscreen allowtransparency >
+                           </iframe>
+                        </div>
                      <?php  }else{ ?>
                      <video  id="videos" <?= $autoplay ?> class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
                         controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
