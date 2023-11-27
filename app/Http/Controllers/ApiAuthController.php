@@ -22463,11 +22463,11 @@ public function TV_login(Request $request)
           $current_date = date('Y-m-d h:i:s');    
           $next_date = $plandetail->days;
           $ends_at = Carbon::now()->addDays($plandetail->days);
-          
+          $amount = $plandetail->price;
             Subscription::create([
                 'user_id'        =>  $userdetail->id,
                 'name'           =>  $userdetail->username,
-                'price'          =>  $request->amount ,   // Amount Paise to Rupees
+                'price'          =>  $amount ,   // Amount Paise to Rupees
                 'stripe_id'      =>  $request->plan_id ,
                 'stripe_status'  =>  'active' ,
                 'stripe_plan'    =>  $request->plan_id,

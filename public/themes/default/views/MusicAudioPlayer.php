@@ -7,7 +7,30 @@
 
  ?>
 <style>
-
+  .playlist-ctn {
+  
+}
+    .playlist-ctn::-webkit-scrollbar {
+width: 2px;
+}
+.playlist-ctn::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.2);
+    
+}
+.playlist-ctn::-webkit-scrollbar-thumb {
+  background-color: red;
+  border-radius: 2px;
+  border: 2px solid red;
+    width: 2px;
+}
+.playlist-ctn{
+    padding-bottom: 20px;
+      /*overflow: scroll;
+      scroll-behavior: auto;
+      min-height:335px;
+      scrollbar-color: rebeccapurple green!important;
+      overflow-x: hidden;*/
+  }
 </style>
 <div id="music-player">
   
@@ -68,6 +91,24 @@
           <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
           <?php } ?>
           </div>
+          <?php if(!empty(@$All_Playlist_Audios) && count(@$All_Playlist_Audios) > 0){ ?>
+          <div class="playlist-ctn">
+          <!-- Add the new code here -->
+<h4 class="mb-3"><?php echo __('Tracks'); ?></h4>
+<table class="w-100">
+    <?php foreach ($All_Playlist_Audios as $key => $audio) { //dd($All_Playlist_Audios);?>
+        <tr>
+            <td><?= $key + 1 ?></td>
+            <td><img src="<?= URL::to('/').'/public/uploads/images/' . $audio->image ?>" class="" height="50" width="50"></td>
+            <td><h4><?= $audio->title ?></h4></td>
+            <td><?= $audio->albumname ?></td>
+            <td><div class="plus-minus-toggle collapsed add_audio_playlist" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio->id ?>"></div></td>
+            <td><?php echo gmdate("H:i:s", $audio->duration);?></td>
+        </tr>
+    <?php } ?>
+</table>
+          </div>
+          <?php } ?>
         </div>
         <div id="playlist">
 

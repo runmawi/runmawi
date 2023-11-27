@@ -134,19 +134,25 @@ class MyPlaylistController extends Controller
           $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
           $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
           $AudioUserPlaylist = AudioUserPlaylist::where('user_id',Auth::user()->id)->where('playlist_id',$MyPlaylist_id)->get();
-        //   dd($AudioUserPlaylist);
+          $excludedAudioIds = AudioUserPlaylist::where('user_id', Auth::user()->id)
+            ->where('playlist_id', $MyPlaylist_id)
+            ->pluck('audio_id');
+
+
         if(count($AudioUserPlaylist) > 0 ){
-          foreach ($AudioUserPlaylist as $value){
-            $All_Audios = Audio::Select('audio.*','audio_albums.albumname')->Join('audio_albums','audio_albums.id','=','audio.album_id')
-            ->where('audio.id','!=',$value->audio_id)
-            ->orderBy('audio.created_at', 'desc')->get();
-          }
+
+            $All_Audios = Audio::select('audio.*', 'audio_albums.albumname')
+            ->join('audio_albums', 'audio_albums.id', '=', 'audio.album_id')
+            ->whereNotIn('audio.id', $excludedAudioIds)
+            ->orderBy('audio.created_at', 'desc')
+            ->get();
+
         }else{
+
             $All_Audios = Audio::Select('audio.*','audio_albums.albumname')->Join('audio_albums','audio_albums.id','=','audio.album_id')
             ->orderBy('audio.created_at', 'desc')->get();
         }
 
-        //   dd($All_Audios);
           $playlist_audio =
            Audio::Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
           ->where('audio_user_playlist.user_id',Auth::user()->id)
@@ -282,10 +288,26 @@ class MyPlaylistController extends Controller
         $audioppv = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')
         ->groupby("audio_id")
         ->orderBy('created_at', 'desc')->get();
-        
+
+            $AudioUserPlaylist = AudioUserPlaylist::where('user_id',Auth::user()->id)->where('playlist_id',$MyPlaylist_id)->get();
+            $playlistAudioIds = AudioUserPlaylist::where('user_id', Auth::user()->id)
+            ->where('playlist_id', $MyPlaylist_id)
+            ->pluck('audio_id');
+
+
+            if(count($AudioUserPlaylist) > 0 ){
+
+                $All_Playlist_Audios = Audio::select('audio.*', 'audio_albums.albumname')
+                ->join('audio_albums', 'audio_albums.id', '=', 'audio.album_id')
+                ->whereIn('audio.id', $playlistAudioIds)
+                ->orderBy('audio.created_at', 'desc')
+                ->get();
+            }
+            // dd($All_Playlist_Audios);
           $data = [
             'audioppv' => $audioppv,
             'MyPlaylist' => $MyPlaylist,
+            'All_Playlist_Audios' => $All_Playlist_Audios,
             'All_Audios' => $All_Audios,
             'playlist_audio' => $playlist_audio,
             'media_url' => URL::to('/').'/playlist/'.$slug,
