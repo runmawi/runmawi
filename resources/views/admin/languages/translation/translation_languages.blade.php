@@ -38,7 +38,7 @@
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
     <div id="content-page" class="content-page">
-            <div class="container-fluid">
+            <div class="container-fluid" style=" overflow: scroll">
                 <div class="container">
 
                 <h1>Language Translation</h1>

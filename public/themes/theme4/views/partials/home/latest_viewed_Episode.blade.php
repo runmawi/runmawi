@@ -27,51 +27,120 @@ if (Auth::guest() != true) {
                         <h4 class="main-title"><a href="{{ $order_settings_list[18]->url ? URL::to($order_settings_list[18]->url) : null }} ">{{ optional($order_settings_list[18])->header_name }}</a></h4>
                     </div>
 
-                    <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                    <div class="trending-contens">
+                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mb-0 row align-items-center">
                             @foreach ($data as $key => $latest_view_episode)
-                                <li class="slide-item">
-                                    <a href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}">
-                                        <div class="block-images position-relative">
-                                            <div class="img-box">
-                                                <img src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                            </div>
-                                            <div class="block-description">
-                                                <h6> {{ strlen($latest_view_episode->title) > 17 ? substr($latest_view_episode->title, 0, 18) . '...' : $latest_view_episode->title }}
-                                                </h6>
-                                                <div class="movie-time d-flex align-items-center my-2">
-
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($latest_view_episode)->age_restrict.'+' }}
-                                                    </div>
-
-                                                    <span class="text-white">
-                                                        {{ $latest_view_episode->duration != null ? gmdate('H:i:s', $latest_view_episode->duration) : null }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                <li >
+                                    <a href="javascript:void(0);">
+                                        <div  class="movie-slick position-relative">
+                                            <img src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                         </div>
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
+
+
+                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
+                            @foreach ($data as $key => $latest_view_episode)
+                                <li>
+                                    <div class="tranding-block position-relative" style="background-image: url({{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }});">
+                                        <button class="home-page-close-button">×</button>
+
+                                        <div class="trending-custom-tab">
+                                            <div class="trending-content">
+                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+
+                                                        <h1 class="trending-text big-title text-uppercase">{{ optional($latest_view_episode)->title }}</h1>
+
+                                                        @if ( $latest_view_episode->year != null && $latest_view_episode->year != 0)
+                                                            <div class="d-flex align-items-center text-white text-detail">
+                                                                <span class="trending">{{ ($latest_view_episode->year != null && $latest_view_episode->year != 0) ? $latest_view_episode->year : null   }}</span>
+                                                            </div>
+                                                        @endif
+
+                                                        @if (optional($latest_view_episode)->description)
+                                                            <p class="trending-dec">{!! html_entity_decode( optional($latest_view_episode)->description) !!}</p>
+                                                        @endif
+
+                                                        <div class="p-btns">
+                                                            <div class="d-flex align-items-center p-0">
+                                                                <a href="{{ URL::to('category/videos/'.$latest_view_episode->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                <a href="#" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
 @endif
+
+
+<script>
+    
+    $( window ).on("load", function() {
+        $('.latest-videos-slider').hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.latest-videos-slider').slick({
+            slidesToShow: 1,
+            initialSlide:0,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            draggable: false,
+            asNavFor: '.latest-videos-slider-nav',
+        });
+
+        $('.latest-videos-slider-nav').slick({
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            asNavFor: '.latest-videos-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.latest-videos-slider-nav').on('click', function() {
+            $( ".home-page-close-button" ).trigger( "click" );
+            $('.latest-videos-slider').show();
+        });
+
+        $('body').on('click', '.home-page-close-button', function() {
+            $('.latest-videos-slider').hide();
+        });
+    });
+</script>
