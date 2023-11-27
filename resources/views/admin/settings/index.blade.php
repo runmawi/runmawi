@@ -871,7 +871,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row d-flex">
                     <div class="col-md-6">
                 <div class="panel-body" style="display: block;">
 
@@ -897,7 +897,7 @@ border-radius: 0px 4px 4px 0px;
                     <br />
 
                     <p class="p1">TikTok:</p>
-                    <input type="text" class="form-control" name="tiktok_page_id" id="tiktok_page_id" placeholder="TikTok User ID:"
+                    <input type="text" class="form-control" name="tiktok_page_id" id="tiktok_page_id" placeholder="TikTok User ID"
                         value="@if(!empty($settings->tiktok_page_id)){{ $settings->tiktok_page_id }}@endif" />
 
                 </div>
@@ -924,6 +924,12 @@ border-radius: 0px 4px 4px 0px;
                     <input type="text" class="form-control" name="youtube_page_id" id="youtube_page_id"
                         placeholder="YouTube Channel"
                         value="@if(!empty($settings->youtube_page_id)){{ $settings->youtube_page_id }}@endif" />
+                        <br />
+
+                        <p class="p1">E-Mail:</p>
+                    <input type="email" class="form-control" name="email_page_id" id="email_page_id"
+                        placeholder="E-Mail ID"
+                        value="@if(!empty($settings->email_page_id)){{ $settings->email_page_id }}@endif"  />
                         <br />
 
                   

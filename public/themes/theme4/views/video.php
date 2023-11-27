@@ -799,7 +799,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
                                     <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                        <?php echo __('Purchase Now'); ?> 
+                                        <?php echo __('Rent Now'); ?> 
                                     </button>
                                 <?php } ?>
                             </div>
@@ -1731,24 +1731,15 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                     data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
                                                     type="video/mp4" src="<?php echo $video->trailer; ?>">
                                                 </video>
-                                                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
+                                                <?php }elseif($video->trailer_type !=null && ($video->trailer_type == "m3u8" ||  $video->trailer_type == "m3u8_url" )){ ?>
 
-                                                <video id="videos" class=""
-                                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                                    controls
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    type="application/x-mpegURL">
-                                                    <source type="application/x-mpegURL" src="<?php echo $video->trailer; ?>">
-                                                </video>
-
-                                                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
-
-                                                <video id="videoPlayer1" class=""
-                                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                                    controls
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    type="application/x-mpegURL">
-                                                </video>
+                                                    <video id="videos" class=""
+                                                        poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                                                        controls
+                                                        data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
+                                                        type="application/x-mpegURL">
+                                                        <source type="application/x-mpegURL" src="<?php echo $video->trailer; ?>">
+                                                    </video>
 
                                                 <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
 
@@ -2909,20 +2900,7 @@ $artists = [];
                     var trailer_video_type = <?php echo json_encode($video->trailer_type); ?>;
 
 
-                    if (trailer_video_type == "m3u8_url") {
-                        (function() {
-                            var video = document.querySelector('#videoPlayer1');
-
-                            if (Hls.isSupported()) {
-                                var hls = new Hls();
-                                hls.loadSource(trailer_video_m3u8);
-                                hls.attachMedia(video);
-                                hls.on(Hls.Events.MANIFEST_PARSED, function() {});
-                            }
-
-                        })();
-
-                    } else if (trailer_video_type == "m3u8") {
+                    if (trailer_video_type == "m3u8" || trailer_video_type == "m3u8_url" ) {
                         // alert(trailer_video_type);
                         document.addEventListener("DOMContentLoaded", () => {
                             const videos = document.querySelector('#videos');
@@ -2994,7 +2972,6 @@ $artists = [];
                         });
 
                     }
-
 
                     // Trailer - Modal
                     $(document).ready(function() {

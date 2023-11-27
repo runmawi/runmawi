@@ -1,6 +1,6 @@
 {{-- Header --}}
 @php 
-    include(public_path('themes/theme3/views/header.php')); 
+    include(public_path('themes/theme4/views/header.php')); 
     include(public_path('themes/theme4/views/ChannelPartner/channelpartner_style.blade.php')); 
 @endphp
 
@@ -59,4 +59,4 @@
     </section>
 
 {{-- Footer --}}
-@php include(public_path('themes/theme3/views/footer.blade.php')); @endphp
+@php include(public_path('themes/theme4/views/footer.blade.php')); @endphp

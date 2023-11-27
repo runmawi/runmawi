@@ -740,7 +740,7 @@ cursor: pointer;
                                  <span class="text-light font-size-13">{{ __('Display Image') }}</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13">
-                                       <img src="{{ !is_null($user->avatar) ? URL::to('public/uploads/avatars/'.$user->avatar) : URL::to('public/uploads/avatars/default_profile_image.png')   }}" height="50px" width="50px" />
+                                       <img src="{{ !is_null($user->avatar) ? URL::to('public/uploads/avatars/'.$user->avatar) : URL::to('public/uploads/avatars/theme4_profile_image.png')   }}" height="50px" width="50px" />
                                     </span>
                                  </div>
                               </div>

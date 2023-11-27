@@ -42,10 +42,10 @@ $data = App\Series::where('active', '=', '1')
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="show-category.html">Trending</a></h4>
+                        <h4 class="main-title"><a href="#">Trending</a></h4>
                     </div>
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
+                        <ul id="trending-slider-nav" class="trending-slider-nav list-inline p-0 mb-0 row align-items-center">
                             @foreach ($data as $series_details)
                                 <li>
                                     <a href="javascript:void(0);">
@@ -57,7 +57,7 @@ $data = App\Series::where('active', '=', '1')
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center">
+                        <ul id="trending-slider" class="list-inline p-0 m-0  d-flex align-items-center trending-slider">
                             @foreach ($data as $key => $series_details )
                                 <li>
                                     <div class="tranding-block position-relative"

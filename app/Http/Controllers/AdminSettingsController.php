@@ -136,6 +136,9 @@ class AdminSettingsController extends Controller
         } else {
             $skype_page_id = null;
         }
+
+        $email_page_id = !empty($request['email_page_id']) ? $request['email_page_id'] : null ;
+
         if (!empty($request['series_season'])) {
             $series_season = $request['series_season'];
         } else {
@@ -198,6 +201,7 @@ class AdminSettingsController extends Controller
         $settings->premium_upgrade = $request['premium_upgrade'];
         $settings->access_free = $request['access_free'];
         $settings->enable_landing_page = $request['enable_landing_page'];
+
         $settings->facebook_page_id = $request['facebook_page_id'];
         $settings->tiktok_page_id = $request['tiktok_page_id'];
         $settings->google_page_id = $request['google_page_id'];
@@ -205,6 +209,8 @@ class AdminSettingsController extends Controller
         $settings->instagram_page_id = $instagram_page_id;
         $settings->linkedin_page_id = $linkedin_page_id;
         $settings->whatsapp_page_id = $whatsapp_page_id;
+        $settings->email_page_id    = $email_page_id;
+
         $settings->series_season = $series_season;
         $settings->transcoding_access = $transcoding_access;
         $settings->payout_method = $payout_method;

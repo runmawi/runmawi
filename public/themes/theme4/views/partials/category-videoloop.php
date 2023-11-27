@@ -245,7 +245,7 @@
                                        
                                             <a type="button" class="epi-name mt-3 mb-0 btn"
                                                 href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                                <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
+                                                <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/theme4_play_buttons.svg'; ?>"
                                                     width="10%" height="10%" /> <?= __('Watch Now')  ?> 
                                             </a>
                                         </div>
@@ -324,7 +324,7 @@
                                         <div class="hover-buttons">
                                             <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('episode'); ?><?= '/' . @$Episode_video->series_slug . '/' . $Episode_video->slug ?>">
-                                                <img class="ply mr-1" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
+                                                <img class="ply mr-1" src="<?php echo URL::to('/') . '/assets/img/theme4_play_buttons.svg'; ?>" width="10%"
                                                     height="10%" /> <?= __('Watch Now')  ?>
                                             </a>
                                         </div>

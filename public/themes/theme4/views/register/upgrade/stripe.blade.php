@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @php
-   include(public_path('themes/default/views/header.php'));
+   include(public_path('themes/theme4/views/header.php'));
 @endphp
 
 @section('content')
@@ -360,7 +360,7 @@ $('.is_apply').on('change', function(){
 </script>
 
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
 
 @endsection

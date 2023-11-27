@@ -862,8 +862,8 @@ class ApiAuthController extends Controller
           ->where('subscriptions.user_id',Auth::user()->id)
           ->orderBy('subscriptions.created_at', 'desc')->first();
 
-          $plans_name = $Subscription->plans_name;
-          $plan_ends_at = $Subscription->ends_at;
+          $plans_name   = !is_null($Subscription) ? $Subscription->plans_name :null ;
+          $plan_ends_at = !is_null($Subscription) ? $Subscription->ends_at : null ;
 
         }else{
           $plans_name = '';
@@ -19854,7 +19854,8 @@ public function IOS_ShowVideo_favorite(Request $request) {
         public function social_network_setting(Request $request) {
 
           try {
-            $socail_networl_setting = Setting::select('facebook_page_id','google_page_id','twitter_page_id','instagram_page_id','linkedin_page_id','whatsapp_page_id','skype_page_id','youtube_page_id')->get();
+            $socail_networl_setting = Setting::select('facebook_page_id','google_page_id','twitter_page_id','instagram_page_id',
+                    'linkedin_page_id','whatsapp_page_id','skype_page_id','youtube_page_id','email_page_id')->get();
             $response = array(
               'status' => "true",
               'socail_networl_setting'=> $socail_networl_setting,
@@ -22462,11 +22463,11 @@ public function TV_login(Request $request)
           $current_date = date('Y-m-d h:i:s');    
           $next_date = $plandetail->days;
           $ends_at = Carbon::now()->addDays($plandetail->days);
-          
+          $amount = $plandetail->price;
             Subscription::create([
                 'user_id'        =>  $userdetail->id,
                 'name'           =>  $userdetail->username,
-                'price'          =>  $request->amount ,   // Amount Paise to Rupees
+                'price'          =>  $amount ,   // Amount Paise to Rupees
                 'stripe_id'      =>  $request->plan_id ,
                 'stripe_status'  =>  'active' ,
                 'stripe_plan'    =>  $request->plan_id,

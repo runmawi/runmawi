@@ -217,11 +217,18 @@
                   <div id="bunnycdnvideo" style="">
                      <div class="new-audio-file mt-3">
                         <label for="bunny_cdn_linked_video">BunnyCDN URL:</label>
+                        <!-- videolibrary -->
+                        <select class="phselect form-control" name="videolibrary" id="videolibrary" >
+                                 <option>{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                                    @foreach($videolibrary as $library)
+                                    <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                                    @endforeach
+                           </select>  
+                     </div>
+                           
+                     <div class="new-audio-file mt-3">
                         <select class="form-control" id="bunny_cdn_linked_video" name="bunny_cdn_linked_video">
-                           <option selected  value="0">Choose Linked Video </option>
-                           @foreach($Bunny_Cdn_Videos as $Videos)
-                           <option value="{{ @$storage_settings->bunny_cdn_file_linkend_hostname.'/'.$Videos['ObjectName'] }}" >{{ $Videos['ObjectName'] }}</option>
-                           @endforeach
+                           <!-- <option selected  value="0">Choose Videos from Bunny CDN</option> -->
                         </select>
                      </div>
                      <div class="new-audio-file mt-3">
@@ -278,9 +285,50 @@
          </div>
           
       </div>
+
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script>
+
+         $(document).ready(function() {
+            $('#bunny_cdn_linked_video').select2();
+         });
+
          $(document).ready(function(){
+
+            $('#videolibrary').on('change', function() {
+                  
+                  var videolibrary_id = this.value;
+                  $("#bunny_cdn_linked_video").html('');
+                     $.ajax({
+                     url:"{{url::to('admin/bunnycdn_videolibrary')}}",
+                     type: "POST",
+                     data: {
+                     videolibrary_id: videolibrary_id,
+                     _token: '{{csrf_token()}}' 
+                     },
+                     dataType : 'json',
+                     success: function(result){
+                        // alert();
+                  var streamUrl = '{{$streamUrl}}' ;
+
+                     $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
+                     $.each(result.items,function(key,value){
+                        console.log(value.title);
+                        $("#bunny_cdn_linked_video").append('<option value="'+streamUrl+'/'+value.guid+'/'+'playlist.m3u8'+'">'+value.title+'</option>');
+
+                     // $("#bunny_cdn_linked_video").append('<option value="'+value.title+'">'+value.title+'</option>');
+                     });
+                     }
+                  });
+
+               }); 
+
+
          	$('#video_upload').show();
          	$('#video_mp4').hide();
          	$('#embedvideo').hide();
@@ -464,7 +512,7 @@
       $('#submit_bunny_cdn').click(function(){
    	// alert($('#embed_code').val());
    	$.ajax({
-           url: '{{ URL::to('/admin/upload_bunny_cdn_video') }}',
+           url: '{{ URL::to('/admin/stream_bunny_cdn_video') }}',
            type: "post",
    data: {
                   _token: '{{ csrf_token() }}',

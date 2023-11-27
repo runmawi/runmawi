@@ -76,7 +76,7 @@
             <input id="search" type="text" placeholder="&#xF002; Search from all songs"></input>
           </div>
 
-        <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
+        <button id="backbutton"><i class="fas fa-times"></i></button> 
 
           <div id="show-box">
             <div id="show-list">
