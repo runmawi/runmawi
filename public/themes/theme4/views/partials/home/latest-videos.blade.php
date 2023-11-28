@@ -25,7 +25,7 @@
                         <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
                             @foreach ($data as $key => $latest_video )
                                 <li>
-                                    <div class="tranding-block position-relative" style="background-image: url({{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
+                                    <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
                                         <button class="home-page-close-button">×</button>
 
                                         <div class="trending-custom-tab">

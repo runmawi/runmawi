@@ -190,7 +190,7 @@ Avatar Size
 .avatar-20 { height: 20px; width: 20px; min-width: 20px; line-height: 20px; }
 .avatar-30 { height: 30px; width: 30px; min-width: 30px; line-height: 30px; font-size: 0.4rem; }
 .avatar-35 { height: 35px; width: 35px; min-width: 35px; line-height: 35px; font-size: 0.5rem; }
-.avatar-40 { height: 40px; width: 40px; min-width: 40px; line-height: 40px; font-size: 0.6rem; }
+.avatar-40 { height: 40px !important; width: 40px !important; min-width: 40px; line-height: 40px; font-size: 0.6rem; }
 .avatar-45 { height: 45px; width: 45px; min-width: 45px; line-height: 45px; font-size: 0.8rem; }
 .avatar-50 { height: 50px; width: 50px; min-width: 50px; line-height: 50px; font-size: 1rem; }
 .avatar-60 { height: 60px; width: 60px; min-width: 60px; line-height: 60px; font-size: 1.2rem; }

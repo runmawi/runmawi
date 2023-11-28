@@ -742,6 +742,9 @@ a.button-groups.btn.btn-hover.mr-2:hover {
     transform: scale(1.1);
 }
 
+.trending-thumbnail-image{
+    width: 1319px !important;
+}
 @media screen and (min-width: 992px) and (max-width: 1399px){
 .trending-custom-tab {
     height: auto !important;

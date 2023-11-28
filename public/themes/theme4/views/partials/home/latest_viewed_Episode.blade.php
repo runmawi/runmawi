@@ -44,7 +44,7 @@ if (Auth::guest() != true) {
                         <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
                             @foreach ($data as $key => $latest_view_episode)
                                 <li>
-                                    <div class="tranding-block position-relative" style="background-image: url({{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }});">
+                                    <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
                                         <button class="home-page-close-button">×</button>
 
                                         <div class="trending-custom-tab">
@@ -54,20 +54,20 @@ if (Auth::guest() != true) {
 
                                                         <h2 class="trending-text big-title text-uppercase">{{ optional($latest_view_episode)->title }}</h2>
 
-                                                        @if ( $latest_view_episode->year != null && $latest_view_episode->year != 0)
+                                                        <!-- @if ( $latest_view_episode->year != null && $latest_view_episode->year != 0)
                                                             <div class="d-flex align-items-center text-white text-detail">
                                                                 <span class="trending">{{ ($latest_view_episode->year != null && $latest_view_episode->year != 0) ? $latest_view_episode->year : null   }}</span>
                                                             </div>
-                                                        @endif
+                                                        @endif -->
 
                                                         @if (optional($latest_view_episode)->description)
-                                                            <p class="trending-dec">{!! html_entity_decode( optional($latest_view_episode)->description) !!}</p>
+                                                            <div class="trending-dec">{!! html_entity_decode( optional($latest_view_episode)->description) !!}</div>
                                                         @endif
 
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('category/videos/'.$latest_view_episode->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                <a href="#" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
+                                                                <a href="{{ URL::to('category/videos/'.$latest_view_episode->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
                                                             </div>
                                                         </div>
                                                     </div>
