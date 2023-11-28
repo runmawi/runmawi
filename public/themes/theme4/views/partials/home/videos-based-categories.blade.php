@@ -56,6 +56,7 @@
 ?>
 
 @if (!empty($data) && $data->isNotEmpty())
+
     @foreach( $data as $key => $video_category )
         <section id="iq-trending" class="s-margin">
             <div class="container-fluid">
@@ -124,6 +125,7 @@
             </div>
         </section>
     @endforeach
+    
 @endif
 
 <script>
@@ -144,7 +146,7 @@
         });
 
         $('.category-videos-slider-nav').slick({
-            slidesToShow: 5,
+            slidesToShow: 6,
             slidesToScroll: 1,
             asNavFor: '.category-videos-slider',
             dots: false,

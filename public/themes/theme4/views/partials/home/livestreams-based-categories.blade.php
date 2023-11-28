@@ -32,61 +32,70 @@ $data->each(function ($category) {
 
 ?>
 
+
 @if (!empty($data) && $data->isNotEmpty())
 
-    @foreach ($data as $key => $live_Category)
-        <section id="iq-upcoming-movie">
+    @foreach( $data as $key => $live_Category )
+        <section id="iq-trending" class="s-margin">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
-
-                        {{-- Header --}}
+                                        
+                                        {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h2 class="main-title"><a
-                                    href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ optional($live_Category)->name }}</a>
-                            </h2>
+                            <h4 class="main-title"><a
+                                href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ optional($live_Category)->name }}</a>
+                            </h4>
                         </div>
 
-                        <div class="favorites-contens">
-                            <ul class="favorites-slider list-inline  row p-0 mb-0">
-                                @foreach ($live_Category->category_livestream as $livestream_videos)
-                                    <li class="slide-item">
-                                        <a href="{{ URL::to('live/' . $livestream_videos->slug) }}">
-                                            <div class="block-images position-relative">
-                                                <div class="img-box">
-                                                    <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/' . $livestream_videos->image) : default_vertical_image_url() }}"
-                                                        class="img-fluid" alt="">
-                                                </div>
-                                                <div class="block-description">
-                                                    <h6> {{ strlen($livestream_videos->title) > 17 ? substr($livestream_videos->title, 0, 18) . '...' : $livestream_videos->title }}
-                                                    </h6>
-                                                    <div class="movie-time d-flex align-items-center my-2">
+                        <div class="trending-contens">
+                            <ul id="trending-slider-nav" class="{{ 'category-live-slider-nav list-inline p-0 mb-0 row align-items-center' }}" data-key-id="{{$key}}">
 
-                                                        <div class="badge badge-secondary p-1 mr-2">
-                                                            {{ optional($livestream_videos)->age_restrict . '+' }}
-                                                        </div>
-
-                                                        <span class="text-white">
-                                                            {{ $livestream_videos->duration != null ? gmdate('H:i:s', $livestream_videos->duration) : null }}
-                                                        </span>
-                                                    </div>
-
-                                                    <div class="hover-buttons">
-                                                        <span class="btn btn-hover">
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="block-social-info">
-                                                    <ul class="list-inline p-0 m-0 music-play-lists">
-                                                        {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                        <li><span><i class="ri-heart-fill"></i></span></li>
-                                                        <li><span><i class="ri-add-line"></i></span></li>
-                                                    </ul>
-                                                </div>
+                                @foreach ($live_Category->category_livestream as $livestream_videos )
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="movie-slick position-relative">
+                                                <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" >
                                             </div>
                                         </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+
+                            <ul id="trending-slider" class= "{{ 'category-live-slider list-inline p-0 m-0 align-items-center category-live-'.$key }}" >
+                                @foreach ($live_Category->category_livestream as $livestream_videos )
+                                    <li>
+                                        <div class="tranding-block position-relative home-page-bg-img" style="background-image: url({{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }});">
+                                            <button class="home-page-close-button">×</button>
+
+                                            <div class="trending-custom-tab">
+                                                <div class="trending-content">
+                                                    <div id="" class="overview-tab tab-pane fade active show">
+                                                        <div class="trending-info align-items-center w-100 animated fadeInUp">
+
+                                                            <h1 class="trending-text big-title text-uppercase">{{ optional($livestream_videos)->title }}</h1>
+
+                                                            @if ( $livestream_videos->year != null && $livestream_videos->year != 0 )
+                                                                <div class="d-flex align-items-center text-white text-detail">
+                                                                    <span class="trending">{{ ($livestream_videos->year != null && $livestream_videos->year != 0) ? $livestream_videos->year : null   }}</span>
+                                                                </div>
+                                                            @endif
+                                                                                                                        
+                                                            @if ( optional($livestream_videos)->description )
+                                                                <p class="trending-dec">{!! html_entity_decode( optional($livestream_videos)->description) !!}</p>
+                                                            @endif
+
+                                                            <div class="p-btns">
+                                                                <div class="d-flex align-items-center p-0">
+                                                                    <a href="{{ URL::to('live/' . $livestream_videos->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                    <a href="#" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </li>
                                 @endforeach
                             </ul>
@@ -97,3 +106,64 @@ $data->each(function ($category) {
         </section>
     @endforeach
 @endif
+
+
+<script>
+    
+    $( window ).on("load", function() {
+        $('.category-live-slider').hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.category-live-slider').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            draggable: false,
+            asNavFor: '.category-live-slider-nav',
+        });
+
+        $('.category-live-slider-nav').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            asNavFor: '.category-live-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+        
+        $('.category-live-slider-nav').click(function() {
+
+            $( ".home-page-close-button" ).trigger( "click" );
+
+             let category_key_id = $(this).attr("data-key-id");
+             $('.category-live-slider').hide();
+             $('.category-live-' + category_key_id).show();
+        });
+
+        $('body').on('click', '.home-page-close-button', function() {
+            $('.category-live-slider').hide();
+        });
+    });
+</script>
