@@ -292,17 +292,33 @@
 
                                  <?php  
 
-                                    $video_category = App\VideoCategory::orderBy('order', 'asc')->where('in_menu',1)->get();
+                                    $video_category = App\VideoCategory::orderBy('order', 'asc')->where('in_menu',1)->get()->map(function ($item) {
+                               
+                                       $item['Parent_video_category'] = App\VideoCategory::where('id',$item->parent_id)->orderBy('order', 'asc')->where('in_menu',1)->first();
+                               
+                                       return $item;
+                                   });
 
-                                    $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
+                                    $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get()->map(function ($item) {
+                               
+                                       $item['Parent_live_category'] = App\LiveCategory::where('id',$item->parent_id)->orderBy('order', 'asc')->first();
+                               
+                                       return $item;
+                                    });
 
-                                    $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
+                                    $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get()->map(function ($item) {
+                               
+                                       $item['Parent_Audios_category'] = App\AudioCategory::where('id',$item->parent_id)->first();
+                               
+                                       return $item;
+                                    });
 
                                     $tv_shows_series = App\Series::where('active',1)->get();
 
                                     $languages = App\Language::all();
 
                                  ?>
+
 
                                  <?php foreach ($menus as $menu) { 
 
@@ -320,6 +336,17 @@
                                                       <?= $category->name;?>
                                                    </a>
                                                 </li>
+
+                                                <?php if( !is_null($category->Parent_video_category) ): ?>
+                                                   <ul>
+                                                      <li>
+                                                         <a class="dropdown-item cont-item" href="<?php echo URL::to('category/'.$category->Parent_video_category->slug)?>">
+                                                            <?= '<i class="fa fa-arrow-right" aria-hidden="true"></i> &nbsp &nbsp' . $category->Parent_video_category->name ;?>
+                                                         </a>
+                                                      </li>
+                                                   </ul>
+                                                <?php endif; ?>
+
                                              <?php endforeach ; ?>
                                           </ul>
                                        </li>
