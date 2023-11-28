@@ -346,7 +346,44 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
           <!-- <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
 			<div class="col-sm-12">
 					<div id="ppv">
-				<h2 class="text-center" style="margin-top:80px;"><?php echo __('Purchase to Watch the Series'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?></h2>
+          <?php if(Auth::Guest()){ ?>
+
+              <h2 class="text-center" style="margin-top:80px;"> 
+              <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
+              <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+          <?php elseif($series->access == 'registered'): ?>
+            <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary">
+                    <?php echo __('Become a Registered User to watch this video'); ?></button>
+              </form>
+          <?php elseif($series->ppv_status == 1): ?>
+
+            <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+
+            <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary">
+                    <?php echo __('Purchase Now'); ?></button>
+              </form>
+
+            <?php endif; ?></h2>
+
+            <?php }else { ?>
+              <h2 class="text-center" style="margin-top:80px;"> 
+              <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
+          <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                  <button id="button"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+              <?php elseif($series->ppv_status == 1): ?>
+            <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+                    class="view-count rent-video btn btn-primary">
+                    <?php echo __('Purchase Now'); ?> </button>
+            <?php endif; ?></h2>
+            <?php } ?>
+				
 				<div class="clear"></div>
 				</div> 
 				<!-- </div>  -->
@@ -368,12 +405,38 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
             </div>
         </div>
         </div>
-		</section>
-		
+				<?php elseif($series->ppv_status == 1 || Auth::User()->role == "subscriber"  || Auth::User()->role == "registered" ): ?>
+
+        <h2 class="text-center" style="margin-top:80px;"> 
+              <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
+          <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                  <button id="button"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+              <?php elseif($series->ppv_status == 1 &&  Auth::User()->role == "subscriber" ): ?>
+            <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+                    class="view-count rent-video btn btn-primary">
+                    <?php echo __('Purchase Now'); ?> </button>
+            <?php elseif($series->ppv_status == 1 ): ?>
+              <form style="margin-left: 46%;margin-top: 1%;"method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                  <button id="button"  class="view-count rent-video btn btn-primary"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+                  <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+                    class="view-count rent-video btn btn-primary">
+                    <?php echo __('Purchase Now'); ?> </button>
+            <?php endif; ?></h2>
+          </div>
+          </div>
+         
+
 				<?php endif;?>
+        </div>
+        </div>
+
+		</section>
+<?php include('footer.blade.php');?>
+		
 				<?php $payment_type = App\PaymentSetting::get(); ?>
 
-<?php include('footer.blade.php');?>
 
 
 				          <!-- Modal -->
