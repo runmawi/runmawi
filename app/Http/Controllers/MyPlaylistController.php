@@ -302,6 +302,8 @@ class MyPlaylistController extends Controller
                 ->whereIn('audio.id', $playlistAudioIds)
                 ->orderBy('audio.created_at', 'desc')
                 ->get();
+            }else{
+                $All_Playlist_Audios = [];
             }
             // dd($All_Playlist_Audios);
           $data = [
