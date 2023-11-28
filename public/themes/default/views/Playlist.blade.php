@@ -340,7 +340,7 @@ $settings = App\Setting::first();
      
     <div class="container-fluid">
  <div class="playlist-ctn">
-             <h4 class="mb-3"><?php echo __('Tracks'); ?></h4>
+             <h4 class="mb-3"><?php echo __('Add songs in your Playlist'); ?></h4>
      <table class="w-100">
      <?php foreach ($All_Audios as $key => $audio) { ?>
             <tr>
