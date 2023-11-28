@@ -84,7 +84,7 @@
                             <ul id="trending-slider" class= "{{ 'category-videos-slider list-inline p-0 m-0 align-items-center category-videos-'.$key }}" >
                                 @foreach ($video_category->category_videos as $videos )
                                     <li>
-                                        <div class="tranding-block position-relative home-page-bg-img" style="background-image: url({{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }});">
+                                        <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover; ">
                                             <button class="home-page-close-button">×</button>
 
                                             <div class="trending-custom-tab">
@@ -94,20 +94,20 @@
 
                                                             <h1 class="trending-text big-title text-uppercase">{{ optional($videos)->title }}</h1>
 
-                                                            @if ( $videos->year != null && $videos->year != 0 )
+                                                            <!-- @if ( $videos->year != null && $videos->year != 0 )
                                                                 <div class="d-flex align-items-center text-white text-detail">
                                                                     <span class="trending">{{ ($videos->year != null && $videos->year != 0) ? $videos->year : null   }}</span>
                                                                 </div>
-                                                            @endif
+                                                            @endif -->
                                                                                                                         
                                                             @if ( optional($videos)->description )
-                                                                <p class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</p>
+                                                                <div class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</div>
                                                             @endif
 
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
-                                                                    <a href="{{ URL::to('category/videos/'.$videos->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a href="#" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
+                                                                    <a href="{{ URL::to('category/videos/'.$videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                    <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
                                                                 </div>
                                                             </div>
                                                         </div>

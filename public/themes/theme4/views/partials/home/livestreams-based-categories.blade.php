@@ -42,9 +42,9 @@ $data->each(function ($category) {
 
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title"><a
+                            <h2 class="main-title"><a
                                     href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ optional($live_Category)->name }}</a>
-                            </h4>
+                            </h2>
                         </div>
 
                         <div class="favorites-contens">

@@ -25,8 +25,8 @@
                         <ul id="trending-slider" class="list-inline p-0 m-0  align-items-center livestream-videos-slider">
                             @foreach ($data as $key => $livestream_videos )
                                 <li>
-                                    <div class="tranding-block position-relative"
-                                        style="background-image: url( {{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }} );">
+                                    <div class="tranding-block position-relative trending-thumbnail-image"
+                                        style="background-image: url( {{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }} ); background-repeat: no-repeat;background-size: cover;">
                                         <button class="home-page-close-button">×</button>
 
                                         <div class="trending-custom-tab">
@@ -44,12 +44,12 @@
                                                             <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($livestream_videos->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }} </span>
                                                         @endif
 
-                                                        <p class="trending-dec">{!! html_entity_decode( optional($livestream_videos)->details) !!}</p>
+                                                        <div class="trending-dec">{!! html_entity_decode( optional($livestream_videos)->details) !!}</div>
 
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                <a href="#" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
+                                                                <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
                                                             </div>
                                                         </div>
                                                     </div>

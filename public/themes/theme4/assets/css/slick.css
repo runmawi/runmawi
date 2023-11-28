@@ -1,6 +1,7 @@
 /* Slider */
 .slick-slider
 {
+    width: 100% !important;
     position: relative;
 
     display: block;
