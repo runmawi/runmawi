@@ -34,7 +34,7 @@
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <h1 class="trending-text big-title text-uppercase">{{ optional($video_details)->title }}</h1>
+                                                        <h2 class="trending-text big-title text-uppercase">{{ optional($video_details)->title }}</h2>
 
                                                         @if ( $video_details->year != null && $video_details->year != 0)
                                                             <div class="d-flex align-items-center text-white text-detail">

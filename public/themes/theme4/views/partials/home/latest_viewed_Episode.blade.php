@@ -52,7 +52,7 @@ if (Auth::guest() != true) {
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <h1 class="trending-text big-title text-uppercase">{{ optional($latest_view_episode)->title }}</h1>
+                                                        <h2 class="trending-text big-title text-uppercase">{{ optional($latest_view_episode)->title }}</h2>
 
                                                         @if ( $latest_view_episode->year != null && $latest_view_episode->year != 0)
                                                             <div class="d-flex align-items-center text-white text-detail">
