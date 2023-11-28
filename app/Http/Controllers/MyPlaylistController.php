@@ -316,6 +316,7 @@ class MyPlaylistController extends Controller
             'first_album_title' => $MyPlaylist->first() ? $MyPlaylist->first()->title : null ,
             'songs' => (array("songs" => $merged_audios_lyrics)),
             'playlist_name' => 'Related Songs From PlayList',
+            'OtherMusicStation' => [],
         ];
 
         } catch (\Throwable $th) {

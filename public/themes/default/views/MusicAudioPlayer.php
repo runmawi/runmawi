@@ -444,7 +444,59 @@ var data = listAudio; // Assuming listAudio contains the URL
             break;
         }
     });
-    function toggleRepeat(){if(songRepeat == 0){$('#repeat').css("color",buttonColorOnPress);songRepeat=1;}else{$('#repeat').css("color","grey");songRepeat=0;}}function toggleShuffle(){if(songShuffle == 0){$('#shuffle').css("color",buttonColorOnPress);songShuffle = 1;}else{$('#shuffle').css("color","grey");songShuffle = 0;}}function toggleMute(){if(mute == 0){mute=1;audio.volume = 0;}else{mute = 0;audio.volume = 1;}}
+    
+    function toggleRepeat(){if(songRepeat == 0){$('#repeat').css("color",buttonColorOnPress);songRepeat=1;}else{$('#repeat').css("color","grey");songRepeat=0;}}
+    function toggleShuffle() {
+            if (songShuffle == 0) {
+                $('#shuffle').css("color", buttonColorOnPress);
+                songShuffle = 1;
+
+                // Shuffle the playlist
+                shufflePlaylist();
+
+                // Start playing the first song in the shuffled playlist
+                playShuffledSong();
+            } else {
+                $('#shuffle').css("color", "grey");
+                songShuffle = 0;
+            }
+        }
+
+        
+        function shuffleArray(array) {
+            var currentIndex = array.length, randomIndex;
+
+            // While there remain elements to shuffle...
+            while (currentIndex != 0) {
+
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+
+                // And swap it with the current element.
+                [array[currentIndex], array[randomIndex]] = [
+                    array[randomIndex], array[currentIndex]];
+            }
+
+            return array;
+        }
+
+        function shufflePlaylist() {
+            playlist.songs = shuffleArray(playlist.songs);
+            updateCurrentSong();
+        }
+
+        function updateCurrentSong() {
+            index = 0;
+            indexing = playlist.songs[index];
+        }
+
+        function playShuffledSong() {
+            loadSong();
+        }
+
+
+    function toggleMute(){if(mute == 0){mute=1;audio.volume = 0;}else{mute = 0;audio.volume = 1;}}
     $(document).bind('keypress',function(event){
         //console.log(event.keyCode);
         switch(event.keyCode){
