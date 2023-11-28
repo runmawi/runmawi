@@ -16,9 +16,13 @@ if(isset($sliders)) :
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">
-                                <h1 class="text-white text-uppercase mb-3" style="color:#fff!important;">
-                                    <?php echo strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title; ?>
-                                </h1>
+                                <p class="text-white text-uppercase mb-3" style="color:#fff!important;">
+                                    <?php echo strlen($slider_video->title) > 25 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title; ?>
+                                </p>
+
+                                <p class="text-white mb-3" style="color:#fff!important;">
+                                    <?php echo strlen($slider_video->title) > 25 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title; ?>
+                                </p>
 
                                 <div class="mb-3">
                                     <span class="fa fa-star checked"></span>
