@@ -135,7 +135,7 @@
           <div class="container-fluid">
       <h4 class=""><?php echo $episode->title ; ?></h4>
       <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
-         <h4 class=""><?php echo __('Subscribe to view more'); ?><?php if ($series->access == 'subscriber'): ?><?php
+         <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php
             elseif ($series->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php
             endif; ?></h4>
          <div class="clear"></div>
@@ -148,7 +148,7 @@
             else: ?>
          <form method="get" action="<?=URL::to('signup') ?>">
              <div class=" mt-3">
-            <button id="button" class="btn btn-primary"><?php echo __('Subscribe to view more'); ?> <?php if ($series->access == 'subscriber'): ?><?php
+            <button id="button" class="btn btn-primary"><?php echo __('Become a Subscribe to Watch This Episode'); ?> <?php if ($series->access == 'subscriber'): ?><?php
                elseif ($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php
                endif; ?></button></div>
          </form>
