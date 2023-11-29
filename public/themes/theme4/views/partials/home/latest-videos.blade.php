@@ -85,7 +85,7 @@
         });
 
         $('.latest-videos-slider-nav').slick({
-            slidesToShow: 5,
+            slidesToShow: 6,
             slidesToScroll: 1,
             asNavFor: '.latest-videos-slider',
             dots: false,
