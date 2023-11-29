@@ -665,7 +665,7 @@ class TvshowsController extends Controller
         endif;
 
         $series = Series::where('slug', '=', $name)->first();
-
+// dd($series);
         if (@$series->uploaded_by == 'Channel') {
             $user_id = $series->user_id;
 
