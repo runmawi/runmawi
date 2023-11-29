@@ -61,7 +61,7 @@
                             <div class="border-bg">
                                 <div class="img-box">
                             <a href="<?php echo URL::to('/audio/'.$Audio_Category->slug ) ?>">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Audio_Category->image;  ?>"
+                                        <img src="<?php echo URL::to('/').'/public/uploads/audios/'.@$Audio_Category->image;  ?>"
                                             class="img-fluid w-100" alt="">
                             </a>
                                     </div>
@@ -69,7 +69,7 @@
 
                                     <div class="block-description">
                                     <a href="<?php echo URL::to('/audio/'.$Audio_Category->slug ) ?>">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Audio_Category->player_image;  ?>"
+                                        <img src="<?php echo URL::to('/').'/public/uploads/audios/'.@$Audio_Category->player_image;  ?>"
                                             class="img-fluid w-100" alt="">
                             </a>
                             <div class="hover-buttons text-white">
