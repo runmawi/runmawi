@@ -130,10 +130,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
      <div class="row mt-3 align-items-center">
-		<?php if( $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
+		<?php if( Auth::guest() && $series->access == 'guest' || $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
 		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
-		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) || $series->access == 'subscriber' && Auth::user()->role == 'subscriber'):  ?>
+		$settings->free_registration && !Auth::guest() && Auth::user()->role != 'registered' && $series->ppv_status != 1) 
+    || $series->access == 'subscriber' && !Auth::guest() && Auth::user()->role == 'subscriber'):  ?>
 		<div class="col-md-7">
 			<div id="series_title">
 				<div class="container">
@@ -400,8 +401,9 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                               <p  style="color:#fff!important;"><?php echo $series->details;?></p>
                                 <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
                                   <div class="row p-0 mt-3 align-items-center">
-                                      <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
-                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
+                                      <!-- <div class="col-md-2"> 
+                                         <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div> -->
                                             <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
                                               <div class="col-md-1 pls  d-flex text-center mt-2">
                                                   <div></div>
@@ -515,11 +517,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                         <p  style="color:#fff!important;"><?php echo $series->details;?></p>
                         <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
                         <div class="row p-0 mt-3 align-items-center">
-                                        <div class="col-md-2">
+                                        <!-- <div class="col-md-2">
                                           <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                             <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                           </a>
-                                        </div>
+                                        </div> -->
                                             <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
                                           <div class="col-md-1 pls  d-flex text-center mt-2">
                                             <div></div>
@@ -603,11 +605,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             <p  style="color:#fff!important;"><?php echo $series->details;?></p>
                             <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
                             <div class="row p-0 mt-3 align-items-center">
-                                            <div class="col-md-2">
+                                            <!-- <div class="col-md-2">
                                               <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                                 <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                               </a>
-                                            </div>
+                                            </div> -->
                                                 <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
                                               <div class="col-md-1 pls  d-flex text-center mt-2">
                                                 <div></div>

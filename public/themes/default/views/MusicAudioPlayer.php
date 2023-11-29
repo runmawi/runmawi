@@ -54,7 +54,7 @@
           <div id="lyrics-content">
           </div>
           <div class="<?php echo URL::to('/becomesubscriber'); ?>">
-              <img height="250" width="250"  id="audio_img" src="<?php echo URL::to('/').'/public/uploads/images/' .@$first_album_image ;?>" style="object-fit: contain;">
+              <img height="250" width="250"  id="audio_img" src="<?php echo URL::to('/').'/public/uploads/images/' . @$first_album_image ;?>" style="object-fit: contain;">
               <!-- height="150" width="150"  -->
            </div>
            <div id="description-content">

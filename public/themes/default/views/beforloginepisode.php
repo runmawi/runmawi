@@ -44,12 +44,11 @@
          if (Auth::guest())
          {
          
-             if ($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' || Auth::guest())
+             if ($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' )
              {
          
-                 if ($episode->access == 'guest' || (($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()
-                     ->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered')):
-         ?>
+                 if ($series->access == 'guest' ): 
+                     ?>
       <?php if ($episode->type == 'embed'): ?>
       <div id="series_container" class="fitvid">
          <?=$episode->embed_code
@@ -136,7 +135,7 @@
           <div class="container-fluid">
       <h4 class=""><?php echo $episode->title ; ?></h4>
       <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
-         <h4 class=""><?php echo __('Subscribe to view more'); ?><?php if ($series->access == 'subscriber'): ?><?php
+         <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php
             elseif ($series->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php
             endif; ?></h4>
          <div class="clear"></div>
@@ -149,7 +148,7 @@
             else: ?>
          <form method="get" action="<?=URL::to('signup') ?>">
              <div class=" mt-3">
-            <button id="button" class="btn btn-primary"><?php echo __('Subscribe to view more'); ?> <?php if ($series->access == 'subscriber'): ?><?php
+            <button id="button" class="btn btn-primary"><?php echo __('Become a Subscribe to Watch This Episode'); ?> <?php if ($series->access == 'subscriber'): ?><?php
                elseif ($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php
                endif; ?></button></div>
          </form>
@@ -161,6 +160,7 @@
          }
          else
          { //dd($season);
+            
           ?>
       <div id="series_container">
          <video id="videoPlayer"  <?= $autoplay ?> class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">

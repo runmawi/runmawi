@@ -305,6 +305,13 @@ class MyPlaylistController extends Controller
             }else{
                 $All_Playlist_Audios = [];
             }
+
+            if(count($merged_audios_lyrics) > 0){
+                $first_album_image = @$merged_audios_lyrics[0]->image;
+            }else{
+                $first_album_image = null;
+            }
+
             // dd($All_Playlist_Audios);
           $data = [
             'audioppv' => $audioppv,
@@ -319,7 +326,7 @@ class MyPlaylistController extends Controller
             'songs' => (array("songs" => $merged_audios_lyrics)),
             'playlist_name' => 'Related Songs From PlayList',
             'OtherMusicStation' => [],
-            'first_album_image' => $merged_audios_lyrics->first() ? $merged_audios_lyrics->first()->image : null ,
+            'first_album_image' => $first_album_image ,
         ];
 
         } catch (\Throwable $th) {
