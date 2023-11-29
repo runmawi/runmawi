@@ -58,7 +58,6 @@
                                 </div>
                             </a>
                             <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 25 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
-                            <p class="slider-text big-title title " data-animation-in="fadeInLeft">{{ strlen($item->description) > 25 ? substr($item->description, 0, 18) . '...' : $item->description }} </p>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                 <span class="badge badge-secondary p-2"> {{ optional($item)->age_restrict.'+' }} </span>
