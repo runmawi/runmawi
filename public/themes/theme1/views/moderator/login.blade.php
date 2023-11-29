@@ -1,6 +1,10 @@
 <?php
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
 ?>
 <html>
 <head>
@@ -127,31 +131,31 @@ i.fa.fa-google-plus {
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
                             								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
                         </div>
-                         <div class="d-flex justify-content-around links">
+                         <div class="d-flex justify-content-end links">
                       @if (Route::has('password.request'))
-                      <a href="{{  URL::to('cpp/password/reset') }}" class="f-link">Forgot your password?</a>
+                      <a href="{{  URL::to('cpp/password/reset') }}" class="f-link">{{ __('Forgot your password?') }}</a>
                       @endif
 							
                   </div>
                         
                            <div class="sign-info">
-                              <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>
+                              <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">{{ __('SIGN IN') }}</button>
                                                             
                            </div> 
                            <div class="clear"></div>
-                         <div class="custom-control custom-checkbox" align="left" style="" >
+                         <div class="custom-control custom-checkbox mt-2" align="left" style="" >
                                  <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
                                  
                                  <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
                                   <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-								<label class="form-check-label nv" for="remember">
+								<label class="form-check-label nv m-0" for="remember">
 									{{ __('Keep me signed in') }}
 								</label>
                               </div>  
                           <hr style="color:#1e1e1e;">
                            <div class="mt-3">
                               <div class="d-flex justify-content-center links">
-                                 To Content Partner Portal <a href="<?= URL::to('/cpp/signup')?>" class="text-primary ml-2">Sign Up </a> Here!
+                              {{ __('To Content Partner Portal') }} <a href="<?= URL::to('/cpp/signup')?>" class="text-primary ml-2">{{ __('Sign Up') }} </a> {{ __('Here!') }}
                               </div>                        
                            </div>
                      </form>

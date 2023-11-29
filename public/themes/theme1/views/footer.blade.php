@@ -8,8 +8,8 @@
 <footer class=" py-4 mt-auto">
         <div class="container-fluid px-5">
             <div class="row  justify-content-between flex-column flex-sm-row">
-                <div class="col-sm-3">
-                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
+                <div class="col-sm-3"> 
+                    <div class="small m-0 text-white"><p><?php echo  __('The Best Streaming Platform') ?></p></div>
                     <div class="d-flex p-0 text-white icon mt-4">
 
                     <?php if(!empty($settings->facebook_page_id)){?>
@@ -63,7 +63,7 @@
 
                 </div>
                 </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Explore</p>
+                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2"> <?php echo __('Explore') ?></p>
                     <ul class="text-white p-0 mt-3 ">
                       
                       <?php $column2_footer = App\FooterLink::where('column_position',2)->orderBy('order')->get();  
@@ -80,7 +80,7 @@
 
                     </ul>
                 </div>
-                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Company</p>
+                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2"> <?php echo  __('Company') ?></p>
                     <ul class="text-white p-0 mt-3">
 
                         <?php
@@ -105,17 +105,17 @@
                     </ul>
                 </div>
                 <?php $app_settings = App\AppSetting::where('id','=',1)->first();  ?>     
-                <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
-                    <p>Available on Play Store</p>
+                <div class="col-sm-3 small m-0 text-white"><p> <?= __('Download App') ?></p>
+                    <p><?= __('Available on Play Store') ?></p>
                     <!-- <img src="<?php //echo URL::to('assets/img/gplay.png') ?> " alt="Play store" class=""> -->
                     <?php if(!empty($app_settings->android_url)){ ?> 
-                    <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
+                      <a href="<?= $app_settings->android_url ?>"><img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;"></a>
                     <?php } ?>
                     <?php if(!empty($app_settings->ios_url)){ ?> 
-                    <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;">
+                      <a href="<?= $app_settings->ios_url ?>"><img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;"></a>
                     <?php } ?>
                     <?php if(!empty($app_settings->android_tv)){ ?> 
-                    <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;">
+                      <a href="<?= $app_settings->android_tv ?>"><img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;"></a>
                     <?php } ?>
                 </div>
             </div>
@@ -238,7 +238,7 @@
             </div>-->
          <div class="copyright py-2">
             <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
+               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?>  {{ __('All Rights Reserved') }}</p>
             </div>
          </div>
       </footer>

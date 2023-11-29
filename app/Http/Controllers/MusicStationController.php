@@ -317,7 +317,8 @@ class MusicStationController extends Controller
             }
             $OtherMusicStation = MusicStation::where('id','!=', $MusicStation_id)->get();
 
-            // dd($merged_audios_lyrics);
+            // dd($merged_audios_lyrics->first());
+            // $merged_audios_lyrics[0]->image
             $data = array(
                 'audioppv' => $audioppv,
                 'album' => $MusicStation,
@@ -337,10 +338,12 @@ class MusicStationController extends Controller
                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
                 'songs' => (array("songs" => $merged_audios_lyrics)),
-                'playlist_name' => 'Related Station Songs',
+                'playlist_name' => 'Songs in '.@$MusicStation->station_name,
                 'playlist_station' => 1,
                 'OtherMusicStation' => $OtherMusicStation,
                 'show_station_button' => 1,
+                'first_album_image' => $merged_audios_lyrics->first() ? $merged_audios_lyrics->first()->image : null ,
+
             );
             
             // dd( $data);

@@ -665,7 +665,7 @@ class TvshowsController extends Controller
         endif;
 
         $series = Series::where('slug', '=', $name)->first();
-
+// dd($series);
         if (@$series->uploaded_by == 'Channel') {
             $user_id = $series->user_id;
 
@@ -687,23 +687,22 @@ class TvshowsController extends Controller
                 ->join('users', 'moderators_users.email', '=', 'users.email')
                 ->select('users.id as user_id')
                 ->first();
-            if (!Auth::guest() && $user_id == Auth::user()->id) {
-                $video_access = 'free';
-            } else {
-                $video_access = 'pay';
-            }
-        } else {
-            if ((!Auth::guest() && @$categoryVideos->access == 'ppv') || (@$categoryVideos->access == 'subscriber' && Auth::user()->role != 'admin')) {
-                $video_access = 'pay';
-            } else {
-                $video_access = 'free';
-            }
+
         }
         $series = Series::where('slug', '=', $name)->first();
 
+
+        if((Auth::guest() && @$series->access == 'ppv') || (Auth::guest() && @$series->access == 'subscriber') || (Auth::guest() && @$series->access == 'registered') ){
+            $video_access = 'pay';
+        }else if ((!Auth::guest() && @$series->access == 'ppv') || (@$series->access == 'subscriber' && Auth::user()->role != 'admin')) {
+            $video_access = 'pay';
+        }  else {
+            $video_access = 'free';
+        }
+    // dd($video_access);
         $id = $series->id;
 
-        if ($series->ppv_status == 1) {
+        if (!Auth::guest() && $series->ppv_status == 1) {
             $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
                 ->where('series_id', '=', $id)
                 ->count();

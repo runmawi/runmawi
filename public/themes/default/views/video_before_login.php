@@ -454,13 +454,28 @@
                <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
             </div>
             <div class="text-white col-lg-5 p-0">
-               <a href="<?= URL::to('/becomesubscriber') ?>" class="mb-3 btn btn-primary" style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;">
-               <?php if($video->access == 'subscriber'): ?> <?php echo __('Become a Subscriber'); ?>
-                     <?php elseif($video->access == 'registered' ): ?><?php echo __('Become a Registered User'); ?>
-                  <?php elseif($video->access == 'ppv' ): ?><?php echo __('Rent Now'); ?>
+               
+             <?php if(Auth::guest() || $video->access == 'subscriber'): ?>
+                  <button style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                        <?php echo __('Become a Subscriber to view this Video!'); ?> 
+                  </button>
                   <?php endif; ?>
-                  <?php echo __('to view this Video!'); ?>
-               </a>
+
+               <?php if(Auth::guest() && $video->access == 'registered' ): ?>
+                 
+                 <button style="position: absolute;color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;margin-left: 10px;margin-top: -2px;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                       <?php echo __('Register Now to view this Video!'); ?> 
+                 </button>
+               <?php endif; ?>
+               
+               <?php if(Auth::guest() && $video->access == 'ppv' ): ?>
+                 
+                     <button style="position: absolute;color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;margin-left: 10px;margin-top: -2px;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                           <?php echo __('Rent Now to view this Video!'); ?> 
+                     </button>
+               <?php endif; ?>
+
+            
             </div>
             <div class="clear"></div>
 
@@ -714,26 +729,22 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   <div class="modal-body">
                      <?php if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
-                     <video id="videoPlayer1"  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                        type="video/mp4" src="<?php echo $video->trailer;?>">
-                     </video>
-                     <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
-                     <video  id="videos"   class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                        type="application/x-mpegURL">
-                        <source  type="application/x-mpegURL"   src="<?php echo $video->trailer;?>" >
-                     </video>
-                     <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
-                     <video  id="videoPlayer1"   class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                        type="application/x-mpegURL">
-                     </video>
+                        <video id="videoPlayer1"  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                           controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                           type="video/mp4" src="<?php echo $video->trailer;?>">
+                        </video>
+                     <?php }elseif($video->trailer_type !=null && ($video->trailer_type == "m3u8" ||  $video->trailer_type == "m3u8_url" )){ ?>
+                        <video  id="videos"   class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                           controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                           type="application/x-mpegURL">
+                           <source  type="application/x-mpegURL"   src="<?php echo $video->trailer;?>" >
+                        </video>
+                     
                      <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
-                     <div id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" >
-                        <iframe src="<?php echo $video->trailer ?>" allowfullscreen allowtransparency >
-                        </iframe>
-                     </div>
+                        <div id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" >
+                           <iframe src="<?php echo $video->trailer ?>" allowfullscreen allowtransparency >
+                           </iframe>
+                        </div>
                      <?php  }else{ ?>
                      <video  id="videos" <?= $autoplay ?> class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
                         controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  

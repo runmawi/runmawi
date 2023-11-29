@@ -25,14 +25,14 @@
          
 	        <section class="mt-5 pt-5 p-5 Step2">
                 <div class="text-center">
-                                <p>STEP 2 To 3</p>
-                                <h2 class="mt-3">CREATE YOUR ACCOUNT</h2>
-                                <p class="st">Flicknexs is personalised for you. Use your email and create a <br>password to watch Flicknexs on any device at any time.</p>
+                                <p><?= __('STEP 2 To 3') ?></p>
+                                <h2 class="mt-3"><?= __('CREATE YOUR ACCOUNT') ?></h2>
+                                <p class="st"><?= __('Flicknexs is personalised for you. Use your email and create a') ?> <br><?= __('password to watch Flicknexs on any device at any time') ?>.</p>
                             </div>
                 
                 <div class="tyk1 text-center">
                       
-					<a type="button" herf="">CONTINUE</a>
+					<a type="button" herf=""><?= __('CONTINUE') ?></a>
                     
 				  </div>
             </section>

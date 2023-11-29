@@ -13,7 +13,7 @@
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
   <?php if ($order_settings_list->header_name) 
       {
-        echo $order_settings_list->header_name ;
+        echo __($order_settings_list->header_name) ;
         }
         else {
             echo "" ; 

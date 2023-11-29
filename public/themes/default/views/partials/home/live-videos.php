@@ -5,6 +5,7 @@
 <a href="<?php if ($order_settings_list[3]->header_name) { echo URL::to('/').'/'.$order_settings_list[3]->url ;} else { echo "" ; } ?>">
   <?php if ($order_settings_list[3]->header_name) { echo __($order_settings_list[3]->header_name) ;} else { echo "" ; } ?></a>
     </h4>
+    <h4 class="main-title"><a href="<?php if ($order_settings_list[3]->header_name) { echo URL::to('/').'/'.$order_settings_list[3]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">

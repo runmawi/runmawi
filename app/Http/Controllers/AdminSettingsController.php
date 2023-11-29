@@ -136,6 +136,9 @@ class AdminSettingsController extends Controller
         } else {
             $skype_page_id = null;
         }
+
+        $email_page_id = !empty($request['email_page_id']) ? $request['email_page_id'] : null ;
+
         if (!empty($request['series_season'])) {
             $series_season = $request['series_season'];
         } else {
@@ -198,6 +201,7 @@ class AdminSettingsController extends Controller
         $settings->premium_upgrade = $request['premium_upgrade'];
         $settings->access_free = $request['access_free'];
         $settings->enable_landing_page = $request['enable_landing_page'];
+
         $settings->facebook_page_id = $request['facebook_page_id'];
         $settings->tiktok_page_id = $request['tiktok_page_id'];
         $settings->google_page_id = $request['google_page_id'];
@@ -205,6 +209,8 @@ class AdminSettingsController extends Controller
         $settings->instagram_page_id = $instagram_page_id;
         $settings->linkedin_page_id = $linkedin_page_id;
         $settings->whatsapp_page_id = $whatsapp_page_id;
+        $settings->email_page_id    = $email_page_id;
+
         $settings->series_season = $series_season;
         $settings->transcoding_access = $transcoding_access;
         $settings->payout_method = $payout_method;
@@ -501,6 +507,7 @@ class AdminSettingsController extends Controller
 
         $settings->default_ads_url = $request['default_ads_url'];
         $settings->video_clip_enable = !empty($request->video_clip_enable) ?  "1" : "0" ;
+        $settings->enable_ppv_rent = !empty($request->enable_ppv_rent) ?  "1" : "0" ;
 
         $settings->save();
 
@@ -1176,4 +1183,23 @@ class AdminSettingsController extends Controller
 
         return response()->json(['success' => true , 'id' => 'status-'.$request->id , 'status_button' => $status_button  ]);
     }   
+
+    
+    public function footer_menu_active(Request $request)
+    {
+
+
+        try {
+
+            $category = FooterLink::where('id',$request->active)->update([
+                'active' => $request->status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
 }

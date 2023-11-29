@@ -282,7 +282,7 @@ Your browser does not support the audio element.
 <?php if($audio): ?>
 <?php if ( $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin') { ?>
 <div id="subscribers_only">
-<a  class="text-center btn btn-success" id="paynowbutton"> Pay for View  </a>
+<a  class="text-center btn btn-success" id="paynowbutton"> <?= __('Pay for View') ?>   </a>
 </div>
 <?php } else { ?>                
 
@@ -304,12 +304,12 @@ Your browser does not support the audio element.
 <div class="blur"></div>
 <div class="overlay_blur">
 <h2 class="hero-title album"> <?php echo ucfirst($audio->title); ?></h2>
-<p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
-<p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
+<p class="mt-2"> <?= __('Music by') ?> <?php echo get_audio_artist($audio->id); ?></p>
+<p class="mt-2"> <?= __('Album') ?> <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
 <div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
 
 <div onclick="toggleAudio()">
-  <button class=" bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+  <button class=" bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i>  <?= __('Play') ?></button>
 </div>
 
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
@@ -424,7 +424,7 @@ Your browser does not support the audio element.
     <div class="col-lg-4 p-0">
         <audio id="myAudio" ontimeupdate="onTimeUpdate()">
           <source id="source-audio" src="" type="audio/mpeg">
-            Your browser does not support the audio element.
+          <?= __('Your browser does not support the audio element') ?>.
         </audio>
       <div class="playlist-ctn"></div>
     </div>
@@ -498,7 +498,7 @@ Your browser does not support the audio element.
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
    
-<h4  class="album-title">Other Albums </h4>
+<h4  class="album-title"> <?= __('Other Albums') ?> </h4>
     <div class="favorites-contens">
 <ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php foreach ($other_albums as $other_album) { ?>
@@ -587,15 +587,15 @@ Your browser does not support the audio element.
 <?php else: ?>
 
 <div id="subscribers_only">
-<h2>Sorry, this audio is only available to <?php if($audio->access == 'subscriber'): ?>Subscribers<?php elseif($audio->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+<h2> <?= __('Sorry, this audio is only available to') ?> <?php if($audio->access == 'subscriber'): ?> <?= __('Subscribers') ?><?php elseif($audio->access == 'registered'): ?> <?= __('Registered Users') ?><?php endif; ?></h2>
 <div class="clear"></div>
 <?php if(!Auth::guest() && $audio->access == 'subscriber'): ?>
 <form method="get" action="/user/<?= Auth::user()->username ?>/upgrade_subscription">
-<button id="button">Become a subscriber to watch this audio</button>
+<button id="button"> <?= __('Become a subscriber to watch this audio') ?></button>
 </form>
 <?php else: ?>
 <form method="get" action="/signup">
-<button id="button">Signup Now <?php if($audio->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($audio->access == 'registered'): ?>for Free!<?php endif; ?></button>
+<button id="button"> <?= __('Signup Now') ?> <?php if($audio->access == 'subscriber'): ?> <?= __('to Become a Subscriber') ?><?php elseif($audio->access == 'registered'): ?> <?= __('for Free!') ?><?php endif; ?></button>
 </form>
 <?php endif; ?>
 </div>

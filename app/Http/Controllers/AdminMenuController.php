@@ -302,4 +302,21 @@ class AdminMenuController extends Controller
     
 
     }
+
+    
+    public function menus_active(Request $request)
+    {
+
+        try {
+            $status = Menu::where('id',$request->in_home)->update([
+                'in_home' => $request->status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
 }

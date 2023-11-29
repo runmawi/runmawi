@@ -8,6 +8,16 @@ $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 // dd(Auth::User()->id);
+$data = Session::all(); 
+
+if(isset($data['user'])){
+$id = $data['user']->id ;
+$user = App\User::where('id',$id)->first();
+
+}
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
 
  ?>
       <!-- Required meta tags -->
@@ -58,6 +68,9 @@ $uppercase =  ucfirst($request_url);
     font-size: 14px;
     color: var(--iq-secondary);
     border-radius: 4px;
+}
+#navbarSupportedContent{
+   display:none;
 }
    .sign-user_card input{
       background-color: rgb(255 255 255) !important;
@@ -530,6 +543,7 @@ cursor: pointer;
     <?php 
     $jsonString = file_get_contents(base_path('assets/country_code.json'));   
     $jsondata = json_decode($jsonString, true); 
+   //  dd($jsondata);
 ?>
 
 	
@@ -650,17 +664,17 @@ cursor: pointer;
                      @if (Session::has('message'))
                         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                   @endif
-                        <h2 class="text-center">My Account</h2>
+                        <h2 class="text-center">{{ __('My Account') }}</h2>
                        
                          <div class="row mt-5 align-items-center justify-content-between">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">Email</span>
+                                 <span class="text-light font-size-13">{{ __('Email') }}</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13"> {{ $user->email ? $user->email : " "   }}</span></div>
                               </div>
-                              <div class="col-md-4 text-right">
+                              <!-- <div class="col-md-4 text-right">
                                     <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#update_userEmails">Change</a>
-                              </div>
+                              </div> -->
                            </div>
 
                            <form id="update_userEmail" accept-charset="UTF-8" action="{{ URL::to('/profile/update_userEmail') }}" method="post">
@@ -673,7 +687,7 @@ cursor: pointer;
                                                 <input type="text"  name="user_email" class="form-control">
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_userEmail">Update</a></div>
+                                             <a type="button" class="btn round update_userEmail">{{ __('Update') }}</a></div>
                                        </div>
                               </span>
                            </form>
@@ -682,24 +696,24 @@ cursor: pointer;
                         <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-5 mt-3">
-                                <span class="text-light font-size-13">Password</span>
+                                <span class="text-light font-size-13">{{ __('Password') }}</span>
                                 <div class="p-0 mt-2">
                                        <span class="text-light font-size-13">*********</span>
                                 </div>
                            </div>
                             <div class="col-md-7 mt-2 text-right" style="font-size:14px;">
-                                <a href="{{ URL::to('/password/reset') }}" class="f-link text-white font-size-13">Send Reset Password Email</a>
+                                <a href="{{ URL::to('/password/reset') }}" class="f-link text-white font-size-13">{{ __('Send Reset Password Email') }}</a>
                             </div>
                             </div>
                           <hr style="border:0.5px solid #fff;">
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">Display Name</span>
+                                 <span class="text-light font-size-13">{{ __('Display Name') }}</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></div>
                               </div>
                               <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#demo">Change</a>
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#demo">{{ __('Change') }}</a>
                                  
                               </div>
                            </div>
@@ -713,7 +727,7 @@ cursor: pointer;
                                                 <input type="text"  name="user_name" class="form-control">
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_username">Update</a></div>
+                                             <a type="button" class="btn round update_username">{{ __('Update') }}</a></div>
                                        </div>
                               </span>
                            </form>
@@ -723,17 +737,15 @@ cursor: pointer;
 
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">Display Image</span>
+                                 <span class="text-light font-size-13">{{ __('Display Image') }}</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13">
-                                       @if( $user->avatar != null ) 
-                                          <img src="{{ URL::to('public/uploads/avatars/'.$user->avatar)  }}" height="50px" width="50px" />
-                                       @endif
+                                       <img src="{{ !is_null($user->avatar) ? URL::to('public/uploads/avatars/'.$user->avatar) : URL::to('public/uploads/avatars/theme4_profile_image.png')   }}" height="50px" width="50px" />
                                     </span>
                                  </div>
                               </div>
                               <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_img">Change</a>
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_img">{{ __('Change') }}</a>
                               </div>
                            </div>
 
@@ -746,7 +758,7 @@ cursor: pointer;
                                                 <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" required/>
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_userimg">Update</a></div>
+                                             <a type="button" class="btn round update_userimg">{{ __('Update') }}</a></div>
                                        </div>
                               </span>
                            </form>
@@ -756,10 +768,10 @@ cursor: pointer;
 
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">Tv Activation Code</span>
+                                 <span class="text-light font-size-13">{{ __('Tv Activation Code') }}</span>
                               </div>
                               <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_tvcode">Add</a>
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_tvcode">{{ __('Add') }}</a>
                               </div>
                            </div>
 
@@ -771,33 +783,67 @@ cursor: pointer;
                               <span id="user_tvcode" class="collapse">
                                        <div class="row mt-3">
                                           <div class="col-md-8">
-                                                <input type="text" name="tv_code" id="tv_code" value="@if(!empty($UserTVLoginCode->tv_code)){{ $UserTVLoginCode->tv_code }}@endif" />
+                                                <input type="text" name="tv_code" id="tv_code" value="@if(!empty($UserTVLoginCode->tv_code)){{ $UserTVLoginCode->tv_code .' '. $UserTVLoginCode->uniqueId}}@endif" />
                                           </div>
                                        <div class="col-md-4">
                                        @if(!empty($UserTVLoginCode->tv_code))
-                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn round tv-code-remove text-red">{{ __('Remove') }}</a>
                                        @else
-                                       <a type="button"  class="btn round tv-code text-white">Add</a>
+                                       <a type="button"  class="btn round tv-code text-white">{{ __('Add') }}</a>
                                        @endif
                                           </div>
                                        </div>
                               </span>
                            </form>
+
+                           {{-- DOB --}}
+                           <hr style="border:0.5px solid #fff;">
+
+                           <div class="row align-items-center">
+                              <div class="col-md-8">
+                                 <span class="text-light font-size-13">{{ __('Date of Birth') }}</span>
+                              </div>
+                              <div class="col-md-4 text-right">
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_DOB">{{ __('Add') }}</a>
+                              </div>
+                           </div>
+
                            
+                           <form id="DOB" accept-charset="UTF-8" action="{{ URL::to('user/DOB') }}"   enctype="multipart/form-data" method="post">
+                              @csrf
+                              <input type="hidden" name="users_id" value="{{ $user->id }}" />
+                              <input type="hidden" name="email" value="{{ $user->email }}" />
+                              <span id="user_DOB" class="collapse">
+                                       <div class="row mt-3">
+                                          <div class="col-md-8">
+                                                <input type="date" id="DOB" name="DOB" value="@if(!empty($user->DOB)){{ $user->DOB }}@endif">
+
+                                          </div>
+                                       <div class="col-md-4">
+                   
+                                       <a type="button"  class="btn round DOB text-white">{{ __('Add') }}</a>
+                                          </div>
+                                       </div>
+                              </span>
+                           </form>
+
+
                           <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-8">
-                                <span class="text-light font-size-13">Membership Settings</span>
+                                <span class="text-light font-size-13">{{ __('Membership Settings') }}</span>
 
                               <div class="p-0">
                                  <span class="text-light font-size-13">
-                                       {{ ucwords('Current Membership -'.' '.$user->role) }}
+                                       {{ ucwords( __('Current Membership'). '-'.' '.$user->role) }}
                                     </span><br>
 
                                     @if(Auth::user()->role == "subscriber" )
-                                    <span class="text-light font-size-13">
-                                          @if( $user->subscription_ends_at != null && !empty($user->subscription_ends_at) )
-                                             {{   "your subscription renew on ". ($user->subscription_ends_at)->format('d-m-Y') }}
+                                       <span class="text-light font-size-13">
+                                          @php  $subscription_ends_at = \DB::table('users')->where('id',Auth::user()->id)->pluck('subscription_ends_at')->first(); @endphp
+
+                                          @if( !is_null($subscription_ends_at)  && !empty($subscription_ends_at) )
+                                             {{   "your subscription renew on ". $subscription_ends_at  }}
                                           @endif
                                        </span>
                                     @endif
@@ -808,23 +854,23 @@ cursor: pointer;
 
                               <div class="col-md-4 text-right">
                                     @if( (Auth::user()->role == "subscriber" ) )
-                                       {{-- <a href=" {{ URL::to('/upgrade-subscription_plan') }} class="text-white font-size-13"> Update Payment</a> --}}
+                                       {{--<a href=" {{ URL::to('/upgrade-subscription_plan') }} class="text-white font-size-13"> Update Payment</a> --}}
                                     @elseif( (Auth::user()->role == "admin" ) )
 
                                     @else
-                                       <a href="<?=URL::to('/becomesubscriber');?>"  class="text-white font-size-13"> Subscriber Payment</a>
+                                       <a href="<?=URL::to('/becomesubscriber');?>"  class="text-white font-size-13"> {{ __('Subscriber Payment') }}</a>
                                     @endif
                               </div>
                         </div>
                          <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <a  href="{{ URL::to('logout') }}" type="button" class="btn round">Logout</a>
+                                <a  href="{{ URL::to('logout') }}" type="button" class="btn round">{{ __('Logout') }}</a>
                             </div>
 
                             @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
                               <div class="col-md-6 text-right">
-                                    <a  href="{{ URL::to('/cancelSubscription') }}" class="text-white font-size-13" >Cancel Membership</a>
+                                    <a  href="{{ URL::to('/cancelSubscription') }}" class="text-white font-size-13" >{{ __('Cancel Membership') }}</a>
                               </div>
                             @endif
                             
@@ -855,7 +901,7 @@ cursor: pointer;
                     <div class=" d-flex justify-content-between mb-3">
                         <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
                         <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                        <a href="#updatepic" class="edit-icon text-primary">Edit</a></div>
+                       </div>
                          <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"
                     <div class="" id="personal_det">
                     <div class="" >
@@ -1000,8 +1046,11 @@ cursor: pointer;
 
              
                     <div class="col-sm-12 mt-4 text-center targetDiv" id="div2">
+                     <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
                         <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
-                        
+                        <?php }else{ ?> 
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
+                           <?php } ?>
                         <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                           <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
                           <h4 class="mb-3"></h4>
@@ -1513,118 +1562,9 @@ cursor: pointer;
 
 		</div>
 		<?php $settings = App\Setting::first(); ?>
-      <footer class="mb-0">
-         <div class="container-fluid">
-            <div class="block-space">
-               <div class="row align-items-center">
-                   <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
-                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
-                     <div class="d-flex mt-2">
-                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
-                        <i class="ri-facebook-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-skype-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-linkedin-fill"></i>
-                        </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-whatsapp-fill"></i>
-                        </a>
-                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
-                        <i class="fa fa-google-plus"></i>
-                        </a>
-                     </div>
-                  </div>
-                  <div class="col-lg-3 col-md-4 col-sm-12 p-0">
-                     <ul class="f-link list-unstyled mb-0">
-                        <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
-                     </ul>
-                  </div>                  
-                  <div class="col-lg-3 col-md-4">
-                      <!-- <div class="row">
-                     <ul class="f-link list-unstyled mb-0 catag"> -->
-                        <!-- <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
-                        <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
-                        <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
-                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li> -->
-                         
-                          <!-- </ul>
-                          <ul class="f-link list-unstyled mb-0"> -->
-                        
-                         <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
-                         <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
-                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> -->
-                          <!-- </ul> -->
-                      <!-- </div> -->
-                      
-                      <!--<ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>-->
-				</div>
-                   <div class="col-lg-3 col-md-4 p-0">
-                     <!--<ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Cotact Us</a></li>
-                        <li><a href="#">Legal Notice</a></li>
-                     </ul>-->
-                      <ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-                  
-                   </div>
-               </div>
-            </div>
-         <div class="copyright py-2">
-            <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
-            </div>
-         </div>
-      </footer>
 
           <!-- back-to-top End -->
-     <!-- back-to-top End -->
-      <!-- jQuery, Popper JS -->
-      <script src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
-      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
-      <!-- Bootstrap JS -->
-      <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
-      <!-- Slick JS -->
-      <script src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
-      <!-- owl carousel Js -->
-      <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
-      <!-- select2 Js -->
-      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
-	   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-      <!-- Magnific Popup-->
-      <script src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
-      <!-- Slick Animation-->
-      <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
-      <!-- Custom JS-->
-      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
+   
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
@@ -1751,43 +1691,6 @@ function myFunction() {
 
 
 	<!-- Imported styles on this page -->
-	 <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/popper.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.dataTables.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/dataTables.bootstrap4.min.js';?>"></script>
-   <!-- Appear JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.appear.js';?>"></script>
-   <!-- Countdown JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/countdown.min.js';?>"></script>
-   <!-- Select2 JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/select2.min.js';?>"></script>
-   <!-- Counterup JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/waypoints.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.counterup.min.js';?>"></script>
-   <!-- Wow JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/wow.min.js';?>"></script>
-   <!-- Slick JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/slick.min.js';?>"></script>
-   <!-- Owl Carousel JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/owl.carousel.min.js';?>"></script>
-   <!-- Magnific Popup JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.magnific-popup.min.js';?>"></script>
-   <!-- Smooth Scrollbar JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/smooth-scrollbar.js';?>"></script>
-   <!-- apex Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/apexcharts.js';?>"></script>
-   <!-- Chart Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/chart-custom.js';?>"></script>
-   <!-- Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/custom.js';?>"></script>
-	<!-- End Notifications -->
-
-	<!--@yield('javascript')-->
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
 
     
     <script>
@@ -2024,6 +1927,10 @@ jQuery(document).ready(function($){
             $('#tv-code').submit();
          });
 
+         $(".DOB").click(function(){
+            $('#DOB').submit();
+         });
+
       });
 
       
@@ -2034,3 +1941,11 @@ jQuery(document).ready(function($){
     })
       
 </script>
+<script>
+   $('.navbar-toggle a').on('click',function() {
+    $('.main-nav').removeClass('open');
+});
+   </script>
+@php
+include(public_path('themes/theme4/views/footer.blade.php'));
+@endphp

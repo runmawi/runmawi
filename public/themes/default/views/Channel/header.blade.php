@@ -8,6 +8,8 @@ $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 $channel = Session::get('channel'); 
 
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
 // dd($channel);
 // exit();UA-42534483-14
       ?>

@@ -233,7 +233,7 @@ border-bottom: 1px solid #141414;
 <?php if( count($album_audios) == 0 ){ ?>
 
 <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-    <p ><h3 class="text-center">No Audio Available</h3>
+    <p ><h3 class="text-center"><?= __('No Audio Available') ?></h3> 
 </div>
 
 <?php }else{ ?>
@@ -251,7 +251,7 @@ border-bottom: 1px solid #141414;
  <audio id="myAudio" ontimeupdate="onTimeUpdate()">
   <!-- <source src="audio.ogg" type="audio/ogg"> -->
   <source id="source-audio" src="" type="audio/mpeg">
-  Your browser does not support the audio element.
+  <?= __('Your browser does not support the audio element') ?>.
 </audio>
 <div class="player-ctn">
     <div class="row align-items-center mb-4">
@@ -264,11 +264,11 @@ border-bottom: 1px solid #141414;
 <div class="blur"></div>
 <div class="overlay_blur">
  <h4 class="hero-title album mb-2"> <?= $album->albumname; ?></h4>
-     <p class="mt-2">Music by    <br>A. R. Rahman</p>
+     <p class="mt-2"> <?= __('Music by') ?>    <br>A. R. Rahman</p>
     <div class="d-flex" style="justify-content: space-between;width: 33%;align-items: center;">
 
     <div onclick="toggleAudio()">
-      <button class="btn bd btn-action" id="vidbutton" style="width:90px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+      <button class="btn bd btn-action" id="vidbutton" style="width:90px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i>  <?= __('Play') ?></button>
     </div>
 
         <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
@@ -340,7 +340,7 @@ border-bottom: 1px solid #141414;
 </div>
         <div class="col-lg-4">
             <div class="play-border">
-                <div class="playlist-ctn">                <h6 class="mb-2 font-weight-bold">AUDIO LIST <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <div class="playlist-ctn">                <h6 class="mb-2 font-weight-bold"> <?= __('AUDIO LIST') ?> <i class="fa fa-arrow-right" aria-hidden="true"></i>
 </h6></div></div>
         </div>
     </div>
@@ -353,7 +353,7 @@ border-bottom: 1px solid #141414;
 <div class="container-fluid overflow-hidden">
 <div class="row album-top-30 mt-3 p-0">  
 <div class="col-sm-12">
-<p  class="album-title">Other Albums </p>
+<p  class="album-title"> <?= __('Other Albums') ?> </p>
 <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
  <?php foreach ($other_albums as $other_album) { ?>

@@ -36,9 +36,9 @@ endif;
 
 <div class="pagination">
 	<?php if($current_page != 1) : ?>
-		<a class="previous_page s" href="<?= $pagination_url . '?page=' . intval($current_page - 1); ?>">Prev Page</a>
+		<a class="previous_page s" href="<?= $pagination_url . '?page=' . intval($current_page - 1); ?>"><?= __('Prev Page') ?></a>
 	<?php endif; ?>
 	<?php if($media->hasMorePages()) : ?>
-		<a class="next_page" href="<?= $pagination_url . '?page=' . intval($current_page + 1); ?>">Next Page</a>
+		<a class="next_page" href="<?= $pagination_url . '?page=' . intval($current_page + 1); ?>"><?= __('Next Page') ?></a>
 	<?php endif; ?>
 </div>

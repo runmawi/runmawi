@@ -25,17 +25,17 @@
          
 	         <section class="mt-5 pt-5 p-5 Step2">
                 <div class="text-center">
-                                <p>STEP 3 To 3</p>
-                                <h2 class="mt-3">STEP YOUR PAYMENT</h2>
-                                <p class="st">Your membership starts as soon <br>as you set up payment.</p>
+                                <p><?= __('STEP 3 To 3') ?></p>
+                                <h2 class="mt-3"><?= __('STEP YOUR PAYMENT') ?></h2>
+                                <p class="st"><?= __('Your membership starts as soon') ?> <br><?= __('as you set up payment') ?>.</p>
                             </div>
                 
                  <div class="col-sm-10 text-center tyk1">
                     <select class="form-select form-select-lg col-sm-4 mb-5" aria-label=".form-select-lg example">
-                      <option selected>Debit/Credit card</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      <option selected><?= __('Debit/Credit card') ?></option>
+                      <option value="1"><?= __('One') ?></option>
+                      <option value="2"><?= __('Two') ?></option>
+                      <option value="3"><?= __('Three') ?></option>
                     </select>
                      <div class="d-flex lk col-sm-4 justify-content-around p-0 ">
                          <div>
@@ -43,7 +43,7 @@
                          </div>
                          <div class="d-flex align-items-start">
                              <i class="fa fa-lock pt-1" aria-hidden="true"></i>
-                     <p class="st">Secure payment</p> </div></div>
+                     <p class="st"><?= __('Secure payment') ?></p> </div></div>
                  </div>
                 
                       

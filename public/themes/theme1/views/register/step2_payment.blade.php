@@ -540,8 +540,8 @@ i.fa.fa-google-plus {
         <div class="row justify-content-center">
             <div class="col-lg-7 col-md-6">
                 <div class="flick1">
-                 <div class="small-heading text-white">Step 2 of  <span class="ml-2">2</span></div>
-                    <p class="text-white">Hello, {{ $user_mail }}</p>
+                 <div class="small-heading text-white">{{ __('Step 2 of ') }} <span class="ml-2">2</span></div>
+                    <p class="text-white">{{ __('Hello') }}, {{ $user_mail }}</p>
                     <div class="medium-heading text-white"> {{  $signup_step2_title }} </div>
                     <div class="col-md-12 p-0 mt-2">
 
@@ -602,12 +602,12 @@ i.fa.fa-google-plus {
                                     <div class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
                                         <div class="col-md-7 p-0">
                                             <h4 class="text-black font-weight-bold"> {{ $plan->plans_name  }} </h4>
-                                            <p>{{ $plan->plans_name  }} Membership</p>
+                                            <p>{{ $plan->plans_name  }}{{ __('Membership') }} </p>
                                         </div>
                                         <div class="vl "></div>
                                         <div class="col-md-4 p-2" >
                                             <h4 class="text-black">{{ "$".$plan->price }}</h4>
-                                            <p>Billed as {{ "$".$plan->price }}</p>
+                                            <p>{{ __('Billed as') }} {{ "$".$plan->price }}</p>
                                         </div>
                                     </div>
 
@@ -632,7 +632,7 @@ i.fa.fa-google-plus {
                                     <div class="vl "></div>
                                     <div class="col-md-4 p-2" >
                                         <h4 class="text-black"> {{ currency_symbol().$AdminLifeTimeSubscription->price }}  </h4>
-                                        <p class="mb-0">Billed as {{ $AdminLifeTimeSubscription  ? currency_symbol().$AdminLifeTimeSubscription->price : " "  }} </p>
+                                        <p class="mb-0">{{ __('Billed as') }} {{ $AdminLifeTimeSubscription  ? currency_symbol().$AdminLifeTimeSubscription->price : " "  }} </p>
                                         <div class="text-center">
                                             <button  type="submit" class="btn1 btn-lg  text-white " style="font-size:10px !important ; padding:5px 20px ;" >Pay Now</button>
                                        </div>
@@ -655,12 +655,12 @@ i.fa.fa-google-plus {
       
                          <div class="d-flex justify-content-between align-items-center">
                              <div>
-                                 <h3>Payment</h3>
+                                 <h3>{{ __('Payment') }}</h3>
                              </div>
                              
 
                              <div>
-                                 <label for="fname">Accepted Cards</label>
+                                 <label for="fname">{{ __('Accepted Cards') }}</label>
                                  <div class="icon-container">
                                      <i class="fa fa-cc-visa" style="color: navy;"></i>
                                      <i class="fa fa-cc-amex" style="color: blue;"></i>
@@ -672,25 +672,25 @@ i.fa.fa-google-plus {
 
                      <div class="mt-3"></div>
 
-                     <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+                     <label for="fname"><i class="fa fa-user"></i> {{ __('Full Name') }}</label>
 
-                     <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
+                     <input id="card-holder-name" type="text" class="form-control" placeholder="{{ __('Card Holder Name') }}">
 
                      <!-- Stripe Elements Placeholder -->
-                     <label for="ccnum"> Card Number</label>
+                     <label for="ccnum"> {{ __('Card Number') }}</label>
                      <div id="card-element" style=""></div>
 
                      @if( get_coupon_code() == 1)
                                     <!-- Add Promotion Code -->
                         <div class="mt-3">
-                            <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
+                            <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> {{ __('Add Promotion Code') }} </label>
                             <div class="collapse show" id="collapseExample">
                                 <div class="row p-0">
                                     <div class="col-lg-6 p-0" >
-                                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code" >
+                                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="{{ __('Add Promotion Code') }}" >
                                         <input id="final_coupon_code_stripe" name="final_coupon_code_stripe" type="hidden" >
                                         </div>
-                                    <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">Apply</a></div>
+                                    <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">{{ __('Apply') }}</a></div>
                                     <span id="coupon_message"></span>
 
                                                 {{-- Coupon Code from backend(admin) --}}
@@ -713,8 +713,8 @@ i.fa.fa-google-plus {
                     @if( get_coupon_code() == 1)
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <div class="stripe_payment">
-                                <p> Amount Deducted for Promotion Code   </p>
-                                <p> Payable Amount    </p>
+                                <p> {{ __('Amount Deducted for Promotion Code') }}   </p>
+                                <p> {{ __('Payable Amount') }}    </p>
                             </div>
                             
                             <div class="stripe_payment">
@@ -726,7 +726,7 @@ i.fa.fa-google-plus {
 
                      {{-- <div class="d-flex justify-content-between align-items-center mt-2">
                          <div>
-                             <p>Annual Membership</p>
+                             <p>{{ __('Annual Membership') }}</p>
                          </div>
                          <div>
                              <p > {{ $SubscriptionPlan ? '$'.$SubscriptionPlan->price * 12 : '$0:0' }} </p>
@@ -734,8 +734,8 @@ i.fa.fa-google-plus {
                      </div> --}}
 
                      <hr/>
-                     {{-- <h6 class="text-black text-center font-weight-bold">You will be charged $56.99 for an annual membership on 05/18/2022. Cancel anytime.</h6> --}}
-                     <p class="text-center mt-3">All state sales taxes apply</p>
+                     {{-- <h6 class="text-black text-center font-weight-bold">{{ __('You will be charged $56.99 for an annual membership on 05/18/2022. Cancel anytime') }}.</h6> --}}
+                     <p class="text-center mt-3">{{ __('All state sales taxes apply') }}</p>
                  </div>
 
                  <p class="text-white mt-3 dp">
@@ -746,21 +746,21 @@ i.fa.fa-google-plus {
                                             {{-- Stripe --}}
                     <div class="col-md-12 stripe_payment">
                         <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
-                            Pay Now
+                        {{ __(' Pay Now') }} 
                         </button>
                     </div>
                   
                                             {{-- Paystack --}}
                     <div class="col-md-12 paystack_payment">
                         <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert" >
-                            Pay Now
+                        {{ __('Pay Now') }}
                         </button>
                     </div>
 
                                              {{-- Razorpay --}}
                     <div class="col-md-12 Razorpay_payment">
                         <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert" >
-                            Pay Now
+                        {{ __('Pay Now') }} 
                         </button>
                     </div>
 
@@ -768,7 +768,7 @@ i.fa.fa-google-plus {
                     
                     <div class="col-md-12 cinetpay_payment">
                         <button  onclick="cinetpay_checkout()" data-subscription-price='100' type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button" >
-                            Pay Now
+                        {{ __('Pay Now') }}
                         </button>
                     </div>
                     
@@ -780,11 +780,11 @@ i.fa.fa-google-plus {
                     
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h3>Payment</h3>
+                            <h3>{{ __('Payment') }}</h3>
                         </div>
 
                         <div>
-                            <label for="fname">Accepted Cards</label>
+                            <label for="fname">{{ __('Accepted Cards') }}</label>
                             <div class="icon-container">
                                 <i class="fa fa-cc-visa" style="color: navy;"></i>
                                 <i class="fa fa-cc-amex" style="color: blue;"></i>

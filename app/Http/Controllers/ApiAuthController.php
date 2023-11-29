@@ -558,6 +558,55 @@ class ApiAuthController extends Controller
 
               }
 
+            }elseif( $paymentMode == "PayPal" ){
+              
+              try {
+                           
+                $email = User::where('email',$request->email)->pluck('email')->first();
+                $user_id = User::where('email',$request->email)->pluck('id')->first();
+
+                $plandetail = SubscriptionPlan::where('plan_id',$request->plan_id)->first();
+                $current_date = date('Y-m-d h:i:s');    
+                $next_date = $plandetail->days;
+                $ends_at = Carbon::now()->addDays($plandetail->days);
+
+                    Subscription::create([
+                      'user_id'        =>  $user_id,
+                      'name'           =>  $request->username,
+                      'price'          =>  $plandetail->price ,   // Amount Paise to Rupees
+                      'stripe_id'      =>  $request->plan_id ,
+                      'stripe_status'  =>  'active' ,
+                      'stripe_plan'    =>  $request->plan_id,
+                      'quantity'       =>  null,
+                      'countryname'    =>  $request->country,
+                      'regionname'     =>  $request->state,
+                      'cityname'       =>  $request->city,
+                      'PaymentGateway' =>  'PayPal',
+                      'trial_ends_at'  =>  $ends_at,
+                      'ends_at'        =>  $ends_at,
+                  ]);
+
+                  User::where('id',$request->user_id)->update([
+                      'role'                 =>  'subscriber',
+                      'stripe_id'            =>  $request->plan_id ,
+                      'subscription_start'   =>  Carbon::now(),
+                      'subscription_ends_at' =>  $ends_at,
+                      'payment_gateway'      =>  'PayPal',
+                  ]);
+
+                return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
+                
+              } catch (\Throwable $th) {
+
+                $response = array(
+                  'status'=>'false',
+                  'message'=> $th->getMessage() ,
+                );  
+
+                return response()->json($response, 200);
+
+              }
+
             }
             else{
                      $payment_type = $input['payment_type'];
@@ -813,8 +862,8 @@ class ApiAuthController extends Controller
           ->where('subscriptions.user_id',Auth::user()->id)
           ->orderBy('subscriptions.created_at', 'desc')->first();
 
-          $plans_name = $Subscription->plans_name;
-          $plan_ends_at = $Subscription->ends_at;
+          $plans_name   = !is_null($Subscription) ? $Subscription->plans_name :null ;
+          $plan_ends_at = !is_null($Subscription) ? $Subscription->ends_at : null ;
 
         }else{
           $plans_name = '';
@@ -1484,42 +1533,14 @@ public function verifyandupdatepassword(Request $request)
               $item['videos_url']   = $item->mp4_url ;
               break;
 
+            case $item['type'] == " " && !is_null($item->transcoded_url) :
+              $item['videos_url']   = $item->transcoded_url ;
+              break;
+
             default:
               $item['videos_url']    = null ;
               break;
           }
-
-          $video = Video::find( $item->id);
-                    
-          $plans_ads_enable = $this->plans_ads_enable($request->user_id);
-            
-
-          if($plans_ads_enable == 1){
-
-            $current_time = Carbon::now()->format('H:i:s');
-
-            $video_ads_tag_url = AdsEvent::select('videos.ads_tag_url_id','videos.id as video_id','advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
-                ->Join('advertisements','advertisements.id','=','ads_events.ads_id')
-                ->Join('videos', 'advertisements.id', '=', 'videos.ads_tag_url_id');
-                // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-
-                if($this->adveristment_plays_24hrs == 0){
-                    $video_ads_tag_url =  $video_ads_tag_url->whereTime('ads_events.start', '<=', $current_time)->whereTime('ads_events.end', '>=', $current_time);
-                }
-
-                $item['video_ads_tag_url'] =  $video_ads_tag_url->where('ads_events.status',1)
-                      ->where('advertisements.status',1)
-                      ->where('advertisements.ads_upload_type','tag_url')
-                      ->where('advertisements.id',$video->ads_tag_url_id)
-                      ->where('videos.id', $video->id)
-                      ->groupBy('advertisements.id')
-                      ->pluck('ads_path')
-                      ->first();
-
-          }else{
-            $item['video_ads_tag_url'] = null ;
-          }
-
           return $item;
         });
 
@@ -1746,14 +1767,6 @@ public function verifyandupdatepassword(Request $request)
               $languages = "";
             }
   
-  
-      if(\App\AdsVideo::where('video_id',$videoid)->exists()){
-          $ads_id = \App\AdsVideo::where('video_id',$videoid)->first()->ads_id;
-          $videoads = \App\Advertisement::find($ads_id)->ads_path;
-      }else{
-          $videoads = '';
-      }
-
       $video = Video::find( $request->videoid);
       
       $AdsVideosPre = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
@@ -1856,7 +1869,6 @@ public function verifyandupdatepassword(Request $request)
         'videossubtitles' => $moviesubtitles,
         'main_genre' => $main_genre,
         'languages' => $languages,
-        'videoads' => $videoads,
         'Ads_videos_Pre' => $AdsVideosPre,
         'Ads_videos_Mid' => $AdsVideosMid,
         'Ads_videos_post' => $AdsVideosPost,
@@ -3170,6 +3182,7 @@ public function verifyandupdatepassword(Request $request)
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $serie_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
+      $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
@@ -3201,6 +3214,18 @@ public function verifyandupdatepassword(Request $request)
         ->where('user_id', $user_id)
         ->update(['to_time' => $date]);
       }
+    
+      if ( $live_ppv_count == 0 ) {
+        DB::table('live_purchases')->insert(
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
+        );
+        
+      } else {
+        DB::table('live_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
+        );
+      }
+  
       $response = array(
         'status' => 'true',
         'message' => "video has been added"
@@ -19829,7 +19854,8 @@ public function IOS_ShowVideo_favorite(Request $request) {
         public function social_network_setting(Request $request) {
 
           try {
-            $socail_networl_setting = Setting::select('facebook_page_id','google_page_id','twitter_page_id','instagram_page_id','linkedin_page_id','whatsapp_page_id','skype_page_id','youtube_page_id')->get();
+            $socail_networl_setting = Setting::select('facebook_page_id','google_page_id','twitter_page_id','instagram_page_id',
+                    'linkedin_page_id','whatsapp_page_id','skype_page_id','youtube_page_id','email_page_id')->get();
             $response = array(
               'status' => "true",
               'socail_networl_setting'=> $socail_networl_setting,
@@ -22389,6 +22415,102 @@ public function TV_login(Request $request)
                 'name' => ucwords($user->username),
                 'uname' => $user->username,
                 'paymentMethod' => 'CinetPay',
+                'plan' => ucfirst($plandetail->plans_name),
+                'price' => $plandetail->price,
+                'plan_id' => $plandetail->plan_id,
+                'billing_interval' => $plandetail->billing_interval,
+                'next_billing' => $ends_at,
+                'subscription_type' => 'One Time',
+
+            ), function($message) use ($request,$user,$email_subject){
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($user->email, $user->username)->subject($email_subject);
+            });
+
+            $email_log      = 'Mail Sent Successfully from Register Subscription';
+            $email_template = "23";
+            $user_id = $user->id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        } catch (\Throwable $th) {
+
+            $user = User::where('id',$request->user_id)->first();
+
+            $email_log      = $th->getMessage();
+            $email_template = "23";
+            $user_id = $user->id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+    
+    return response()->json($response, 200);
+
+    }
+
+
+    
+    public function PayPalSubscription(Request $request)
+    {
+
+        try{
+
+          $data = $request->all();
+          $email = User::where('id',$request->user_id)->pluck('email')->first();
+          $userdetail = User::where('id',$request->user_id)->first();
+  
+          $plandetail = SubscriptionPlan::where('plan_id',$request->plan_id)->first();
+          $current_date = date('Y-m-d h:i:s');    
+          $next_date = $plandetail->days;
+          $ends_at = Carbon::now()->addDays($plandetail->days);
+          $amount = $plandetail->price;
+            Subscription::create([
+                'user_id'        =>  $userdetail->id,
+                'name'           =>  $userdetail->username,
+                'price'          =>  $amount ,   // Amount Paise to Rupees
+                'stripe_id'      =>  $request->plan_id ,
+                'stripe_status'  =>  'active' ,
+                'stripe_plan'    =>  $request->plan_id,
+                'quantity'       =>  null,
+                'countryname'    =>  $request->country,
+                'regionname'     =>  $request->state,
+                'cityname'       =>  $request->city,
+                'PaymentGateway' =>  'PayPal',
+                'trial_ends_at'  =>  $ends_at,
+                'ends_at'        =>  $ends_at,
+            ]);
+
+            User::where('id',$request->user_id)->update([
+                'role'                 =>  'subscriber',
+                'stripe_id'            =>  $request->plan_id ,
+                'subscription_start'   =>  Carbon::now(),
+                'subscription_ends_at' =>  $ends_at,
+                'payment_gateway'      =>  'PayPal',
+            ]);
+
+            // Success 
+            $response = array(
+                "status"  => true ,
+                "message" => "Payment done! Successfully", 
+            );
+       
+    
+
+    } catch (\Exception $e) {
+
+        $response = array(
+            "status"  => false , 
+            "message" => $e->getMessage(), 
+       );
+    }
+        try {
+            $user = User::where('id',$request->user_id)->first();
+            $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+
+            \Mail::send('emails.subscriptionmail', array(
+                'name' => ucwords($user->username),
+                'uname' => $user->username,
+                'paymentMethod' => 'PayPal',
                 'plan' => ucfirst($plandetail->plans_name),
                 'price' => $plandetail->price,
                 'plan_id' => $plandetail->plan_id,

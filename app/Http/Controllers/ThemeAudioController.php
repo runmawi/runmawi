@@ -382,6 +382,8 @@ class ThemeAudioController extends Controller{
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Songs',
                 'OtherMusicStation' => [],
+                'first_album_image' => $merged_audios_lyrics->first() ? $merged_audios_lyrics->first()->image : null ,
+
             );
             } else {
                 $data = array(
@@ -759,6 +761,7 @@ class ThemeAudioController extends Controller{
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Album Songs',
                 'OtherMusicStation' => [],
+                'first_album_image' => $merged_audios_lyrics->first() ? $merged_audios_lyrics->first()->image : null ,
             );
             
             // dd( $data);
@@ -897,6 +900,7 @@ class ThemeAudioController extends Controller{
                 'artist_videos' => $artist_videos,
                 'albums' => $albums,
                 'artist_following' => $artist_following,
+                'artist_slug' => $artist_slug,
             );
             return Theme::view('artist', $data);
 
@@ -1494,6 +1498,7 @@ class ThemeAudioController extends Controller{
             'ThumbnailSetting' => ThumbnailSetting::first(),
             'songs' => (array("songs" => $merged_audios)),
             'OtherMusicStation' => [],
+            'first_album_image' => $merged_audios_lyrics->first() ? $merged_audios_lyrics->first()->image : null ,
             );
         } else {
             $data = array(

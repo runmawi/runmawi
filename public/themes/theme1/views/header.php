@@ -19,7 +19,15 @@
         $uppercase = 'Home';
     } else {
     }
-    
+
+     
+    $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
+    @$translate_language = App\Setting::pluck('translate_language')->first();
+    \App::setLocale(@$translate_language);
+
+
+    $TranslationLanguage = App\TranslationLanguage::where('status',1)->get(); 
     if (!empty(Auth::User()->id)) {
         $id = Auth::User()->id;
         $users = App\User::find($id);
@@ -500,6 +508,16 @@
     .Search_error_class {
       color: red;
    }
+   #languageDropdown{
+   display:block !important;
+}
+
+    #languageSearch{
+        width: 116px;
+        font-size: 12px;
+        right: 5px;
+        position: relative;
+    }
 </style>
 
 <body>
@@ -732,7 +750,7 @@
                                                             <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                                             <input id="email" type="hidden" name="email" value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
                                                             <input id="password" type="hidden" name="password" value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
-                                                            <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                                            <button type="submit" class="btn btn-hover" ><?= __('Visit Channel Portal') ?></button>
                                                         </form>
                                                     </div>
                                                 </li>
@@ -766,7 +784,7 @@
                                                         <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                                         <input id="email" type="hidden" name="email" value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
                                                         <input id="password" type="hidden" name="password" value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
-                                                        <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
+                                                        <button type="submit" class="btn btn-hover" ><?= __('Visit CPP Portal') ?></button>
                                                     </form>
                                                 </div>
                                             </li>
@@ -837,7 +855,7 @@
                                                             </i>
                                                             <input type="text" name="search" class="searches"
                                                                 id="search" autocomplete="off"
-                                                                placeholder="Search movies,series">
+                                                                placeholder="<?= __('Search movies,series') ?>">
                                                         </div>
                                                     </form>
                                                 </div>
@@ -863,7 +881,7 @@
                                     <input id="password" type="hidden" name="password"
                                         value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
                                     <button type="submit" class="btn btn-hover "
-                                        style="margin-top: -14%;margin-left: -14%;">Visit CPP Portal </button>
+                                        style="margin-top: -14%;margin-left: -14%;"><?= __('Visit CPP Portal') ?> </button>
                                 </form>
                             </div>
                             <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -875,7 +893,7 @@
                                     <input id="password" type="hidden" name="password"
                                         value="<?= @$Channel->unhased_password ?>" autocomplete="current-password">
                                     <button type="submit" class="btn btn-hover"
-                                        style="margin-top: -13%;margin-left: -8%;">Visit Channel Portal </button>
+                                        style="margin-top: -13%;margin-left: -8%;"><?= __('Visit Channel Portal') ?> </button>
                                 </form>
                             </div>
                             <?php } ?>
@@ -889,7 +907,7 @@
                                                 <div class="form-group position-relative">
                                                     <input type="text" name="search"
                                                         class="text search-input font-size-12 searches"
-                                                        placeholder="Type here to Search Videos" />
+                                                        placeholder="<?= __('Type here to Search Videos') ?>" />
                                                     <i class="search-link ri-search-line"></i>
 
                                                     <?php include 'public/themes/default/partials/Search_content.php'; ?>
@@ -910,6 +928,41 @@
                                             </div>
                                         </div>
                                     </li>
+
+                                    
+                        <?php if(!Auth::guest()){ ?>
+
+                                <!-- Translator Choose -->
+                           <li class="nav-item nav-icon  ml-3">
+                              <a href="#" class="search-toggle active" data-toggle="search-toggle">
+                                 <?php if(@$translate_checkout == 1){ ?>
+                                    <svg id="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
+                                       <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
+                                       <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
+                                    </svg>
+                                 <?php } ?>
+                                 
+                              </a> 
+                              <div class="iq-sub-dropdown transdropdownlist" style="width:150px">
+                                 <div class="iq-card shadow-none m-0" >
+                                    <div class="iq-card-body " id="languageDropdown" >
+                                          <!-- Add a search input box -->
+                                         <input type="text" id="languageSearch" placeholder="Search languages">
+          
+                                       <?php foreach($TranslationLanguage as $Language): ?>
+                                       <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?>
+                                            <?php if($Language->code == $settings->translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
+                                        </a>
+                                       <?php endforeach; ?>
+    
+                                    </div>
+                                 </div>
+                              </div>
+                           </li>
+
+
+                        <?php } ?>
+
                                     <li class="nav-item nav-icon">
                                         <!--<a href="#" class="search-toggle" data-toggle="search-toggle">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"
@@ -928,8 +981,8 @@
                                                             <img src="assets/images/notify/thumb-1.jpg"
                                                                 class="img-fluid mr-3" alt="streamit" />
                                                             <div class="media-body">
-                                                                <h6 class="mb-0 ">Boot Bitty</h6>
-                                                                <small class="font-size-12"> just now</small>
+                                                                <h6 class="mb-0 "><?= __('Boot Bitty') ?></h6>
+                                                                <small class="font-size-12"><?= __('just now') ?></small>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -938,8 +991,8 @@
                                                             <img src="assets/images/notify/thumb-2.jpg"
                                                                 class="img-fluid mr-3" alt="streamit" />
                                                             <div class="media-body">
-                                                                <h6 class="mb-0 ">The Last Breath</h6>
-                                                                <small class="font-size-12">15 minutes ago</small>
+                                                                <h6 class="mb-0 "><?= __('The Last Breath') ?></h6>
+                                                                <small class="font-size-12"> <?= __('15 minutes ago') ?> </small>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -948,8 +1001,8 @@
                                                             <img src="assets/images/notify/thumb-3.jpg"
                                                                 class="img-fluid mr-3" alt="streamit" />
                                                             <div class="media-body">
-                                                                <h6 class="mb-0 ">The Hero Camp</h6>
-                                                                <small class="font-size-12">1 hour ago</small>
+                                                                <h6 class="mb-0 "><?= __('The Hero Camp') ?></h6>
+                                                                <small class="font-size-12"><?= __('1 hour ago') ?></small>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -974,7 +1027,7 @@
                                                     </svg>
                                                 </div>
                                                 <div class="media-body ">
-                                                    <h6 class="mb-0 ">Signin</h6>
+                                                    <h6 class="mb-0 "><?= __('Signin') ?></h6>
                                                 </div>
                                             </div>
                                         </a>
@@ -994,7 +1047,7 @@
                                                     </svg>
                                                 </div>
                                                 <div class="media-body ">
-                                                    <h6 class="mb-0 ">Signup</h6>
+                                                    <h6 class="mb-0 "><?= __('Signup') ?></h6>
                                                 </div>
                                             </div>
                                         </a>
@@ -1079,7 +1132,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Manage Profile</h6>
+                                                                <h6 class="mb-0 "><?= __('Manage Profile') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1114,7 +1167,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Watch Later</h6>
+                                                                <h6 class="mb-0 "><?= __('Watch Later') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1163,7 +1216,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">My Wishlist</h6>
+                                                                <h6 class="mb-0 "><?= __('My Wishlist') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1202,7 +1255,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Purchased Medias</h6>
+                                                                <h6 class="mb-0 "><?= __('Purchased Medias') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1222,7 +1275,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Logout</h6>
+                                                                <h6 class="mb-0 "><?= __('Logout') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1282,7 +1335,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Manage Profile</h6>
+                                                                <h6 class="mb-0 "><?= __('Manage Profile') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1317,7 +1370,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Watch Later</h6>
+                                                                <h6 class="mb-0 "><?= __('Watch Later') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1366,7 +1419,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">My Wishlist</h6>
+                                                                <h6 class="mb-0 "> <?= __('My Wishlist') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1405,7 +1458,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Purchased Medias</h6>
+                                                                <h6 class="mb-0 "> <?= __('Purchased Medias') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1434,7 +1487,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Pricing Plan</h6>
+                                                                <h6 class="mb-0 "><?= __('Pricing Plan') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1466,7 +1519,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Admin</h6>
+                                                                <h6 class="mb-0 "><?= __('Admin') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1507,7 +1560,7 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <h6 class="mb-0 ">Logout</h6>
+                                                                <h6 class="mb-0 "><?= __('Logout') ?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1640,6 +1693,63 @@
                }
             }
           });
+      </script>
+      <script>
+            document.getElementById('languageSearch').addEventListener('click', function(event) {
+            event.stopPropagation();
+            });
+            document.getElementById('languageSearch').addEventListener('input', function() {
+                var searchValue = this.value.toLowerCase();
+                var languageLinks = document.querySelectorAll('.language-link');
+
+                languageLinks.forEach(function(languageLink) {
+                    var languageName = languageLink.textContent.toLowerCase();
+                    if (languageName.includes(searchValue)) {
+                        languageLink.style.display = 'block';
+                    } else {
+                        languageLink.style.display = 'none';
+                    }
+                });
+            });
+            
+            document.addEventListener("click", function (event) {
+                if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+                    dropdownContent.style.display = "none";
+                }
+            });
+
+
+      // Close the dropdown if the user clicks outside of it
+      document.addEventListener("click", function (event) {
+      if (event.target !== dropdownIcon && !dropdownContent.contains(event.target)) {
+      dropdownContent.style.display = "none";
+      }
+      });
+
+
+      $(".language-link").click(function(){
+
+         event.preventDefault();
+         var languageCode = $(this).data("language-code");
+
+      $.ajax({
+            url: '<?php echo URL::to("admin/translate_language") ;?>',
+            method: 'post',
+            data: 
+               {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  languageCode: languageCode,
+               },
+               success: (response) => {
+                  console.log(response);
+                  alert("Changed The Language !");
+                  location.reload();
+
+               },
+            })
+         });
+         
+
       </script>
     </header>
     <!-- Header End -->

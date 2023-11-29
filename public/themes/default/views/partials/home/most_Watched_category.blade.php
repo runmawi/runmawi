@@ -41,6 +41,7 @@
                          echo (__('Most watched videos from').__($category->name).__('Genre'));?>
             </h4>
         </a>
+        <h4 class="main-title"><a href="<?php echo URL::to('/category/').'/'.$category->slug;?>"><?php echo (__('View All')); ?></a></h4>
     </div>
     <div class="favorites-contens">
         <ul class="favorites-slider list-inline row p-0 mb-0">

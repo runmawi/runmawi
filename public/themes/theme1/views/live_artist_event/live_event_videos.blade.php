@@ -143,15 +143,15 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                     <div class="row justify-content-center pay-live">
                         <div class="col-md-4 col-sm-offset-4">
                             <div class="ppv-block">
-                                <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+                                <h2 class="mb-3">{{ __('Pay now to watch') }} <?php echo $video->title; ?></h2>
 
                                 <div class="clear"></div>
                             <!-- Stripe Button -->
-                                     <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Stripe Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                                     <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">{{ __('Stripe Purchase For') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
 
                             <!-- Razorpay Button -->
                                 <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
-                                        <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >Razorpay Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                                        <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >{{ __('Razorpay Purchase For') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                                 <?php } ?>
                         </div>
                     </div>
@@ -195,12 +195,12 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                     <div class="row justify-content-center pay-live">
                         <div class="col-md-4 col-sm-offset-4">
                             <div class="ppv-block">
-                                <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
+                                <h2 class="mb-3">{{ __('Pay now to watch') }} <?php echo $video->title; ?></h2>
                                 <div class="clear"></div>
                                         <?php if(Auth::guest()){ ?>
-                                <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                                <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >{{ __('Purchase For Pay') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
                                 <?php }else{ ?>
-                                <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                                <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">{{ __('Purchase For Pay') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                                 <?php } ?>
                             </div>
                         </div>
@@ -210,7 +210,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
             }
         } elseif(!empty($new_date)){ ?>
             <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-                <h2> COMING SOON </h2>
+                <h2> {{ __('COMING SOON') }} </h2>
                 <p class="countdown" id="demo"></p>
                 </div>
                <?php }
@@ -247,15 +247,15 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
 
                             @if(  $video->tips == 1 )
                                 <div class="d-flex mt-4">
-                                    <button class="btn btn-primary" id="tips" onclick="tips_hide()" >{{  $video->donations_label ? $video->donations_label : "TIPS" }} TIPS </button>
+                                    <button class="btn btn-primary" id="tips" onclick="tips_hide()" >{{  $video->donations_label ? $video->donations_label : "TIPS" }} {{ __('TIPS') }} </button>
                                 </div>
             
                                 <form action="{{ route('live_event_tips') }}" method="post">
                                     @csrf
                                     <div class="col-xs-12" id="live_event_amount">
                                         <input type="hidden" name="live_event_video_slug" class="form-control" required  value="{{ $video->slug  }}">
-                                        <input type="text" name="live_event_amount" class="form-control" placeholder="Please Enter the Amount" required>
-                                        <button class="btn btn-primary" > Amount Pay </button>
+                                        <input type="text" name="live_event_amount" class="form-control" placeholder="{{ __('Please Enter the Amount') }}" required>
+                                        <button class="btn btn-primary" > {{ __('Amount Pay') }} </button>
                                     </div>
                                 </form>
                             @endif
@@ -278,7 +278,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                 <div class="d-flex align-items-center text-white text-detail">
                 <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-secondary p-2">Published On : <?php  echo $publishdate;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="badge badge-secondary p-2">{{ __('Published On') }} : <?php  echo $publishdate;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
              
                   </div>
@@ -367,7 +367,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                     <div class="col-sm-12 col-md-12 col-xs-12">
                         <div class="video-details-container">
                             <?php if (!empty($video->details)) { ?>
-                                <h6 class="mt-3 mb-1">Live Details</h6>
+                                <h6 class="mt-3 mb-1">{{ __('Live Details') }}</h6>
                                 <p class="trending-dec w-100 mb-3 text-white"><?=$video->details; ?></p>
                             <?php  } ?>
                         </div>
@@ -399,7 +399,7 @@ endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
+            <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">{{ __('Rent Now') }}</h4>
            
           </div>
           <div class="modal-body">

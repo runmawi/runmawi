@@ -19,6 +19,8 @@ Route::get('/video-chat', function () {
 });
 // Route::get('video_chat', 'VideoChatController@index');
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
+Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
+Route::get('/BunnyCDNStream', 'AdminDashboardController@BunnyCDNStream');
 
 $router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
@@ -89,6 +91,7 @@ Route::post('/auto-station/store', 'MusicStationController@AutoStoreStation');
 // Endpoints Playlist Audios.
 
 Route::get('/my-playlist', 'MyPlaylistController@MyPlaylist');
+Route::get('/playlist/create', 'MyPlaylistController@CreatePlaylist');
 Route::post('/playlist/store', 'MyPlaylistController@StorePlaylist');
 Route::get('/playlist/{slug}', 'MyPlaylistController@Audio_Playlist');
 Route::post('/add_audio_playlist', 'MyPlaylistController@Add_Audio_Playlist');
@@ -161,6 +164,8 @@ Route::post('admin/subtitles/store', 'AdminSubtitlesController@store');
 Route::get('admin/subtitles/edit/{id}', 'AdminSubtitlesController@edit');
 Route::post('admin/subtitles/update', 'AdminSubtitlesController@update');
 Route::get('admin/subtitles/delete/{id}', 'AdminSubtitlesController@destroy');
+
+Route::post('admin/footer_menu_active', 'AdminSettingsController@footer_menu_active');
 
 // CPP Video Analytics
 
@@ -271,6 +276,8 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('audios', 'ThemeAudioController@audios');
     //Route::get('audios/category/{slug}', 'ThemeAudioController@category' );
     Route::get('artist/{slug}', 'ThemeAudioController@artist')->name('artist');
+    Route::get('artist/calendar-event-index/{slug}', 'ArtistEventCalendarController@index');
+    Route::get('artist/calendar-event/', 'ArtistEventCalendarController@getEvents')->name('events.get');
 
     Route::post('artist/following', 'ThemeAudioController@ArtistFollow');
     Route::get('audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
@@ -452,6 +459,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/', 'AdminDashboardController@index');
     Route::get('/mobileapp', 'AdminUsersController@mobileapp');
     Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
+    Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
 
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
@@ -738,6 +746,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::post('/settings/store_inapp', 'AdminSettingsController@Store_InApp');
 
+    // Active  - Categories
+    
+        Route::post('/audio_category_active', 'AdminAudioCategoriesController@audio_category_active');
+        Route::post('/livestream_category_active', 'AdminLiveCategoriesController@livestream_category_active');
+        Route::post('/video_category_active', 'AdminVideoCategoriesController@video_category_active');
+        Route::post('/series_category_active', 'AdminSeriesGenreController@series_category_active');
+        Route::post('/menus_active', 'AdminMenuController@menus_active');
+
+        
     // Admin Landing page
 
     Route::get('/landing-page/index', 'AdminLandingpageController@index')->name('landing_page_index');
@@ -1025,6 +1042,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/uploadFile', 'AdminVideosController@uploadFile');
     Route::post('/uploadEditVideo', 'AdminVideosController@uploadEditVideo');
     Route::post('/AWSuploadEditVideo', 'AdminVideosController@AWSuploadEditVideo');
+    Route::post('/upload_bunny_cdn_video', 'AdminVideosController@UploadBunnyCDNVideo');
+    Route::post('/bunnycdn_videolibrary', 'AdminVideosController@BunnycdnVideolibrary');
+    Route::post('/stream_bunny_cdn_video', 'AdminVideosController@StreamBunnyCdnVideo');
 
     Route::post('/AWSUploadFile', 'AdminVideosController@AWSUploadFile');
 
@@ -1261,6 +1281,7 @@ Route::get('admin/CPPModeratorsApproval/{id}', 'ModeratorsUserController@CPPMode
 Route::get('admin/CPPModeratorsReject/{id}', 'ModeratorsUserController@CPPModeratorsReject');
 
 Route::get('device/logout/verify/{userIp}/{id}', 'AdminUsersController@VerifyDevice');
+Route::get('device/logout/{userIp}/{id}', 'AdminUsersController@DeviceLogout');
 Route::get('device/delete/{id}', 'AdminUsersController@logoutDevice');
 
 Route::get('device/login/verify/{ip}/{id}/{device_name}', 'AdminUsersController@ApporeDevice');

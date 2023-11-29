@@ -272,7 +272,7 @@
 }
 
 .proflogbtn a, button{
-  width: auto !important;
+  width: auto ;
 }
 
 @media (min-width:990px){

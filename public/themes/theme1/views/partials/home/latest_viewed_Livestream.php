@@ -26,7 +26,7 @@
         } ?>">
 
             <?php if ($order_settings_list[16]->header_name) {
-                echo $order_settings_list[16]->header_name;
+                echo __($order_settings_list[16]->header_name);
             } else {
                 echo '';
             } ?></a>
@@ -105,7 +105,7 @@
                                   <?php }elseif(!empty($latest_view_livestreams->ppv_price)){?>
                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$latest_view_livestreams->ppv_price; ?></p>
                                 <?php }elseif($latest_view_livestreams->ppv_price == null ){ ?>
-                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                <p class="p-tag"><?php echo __("Free"); ?></p>
                                 <?php } ?>
                         <?php } ?>
 

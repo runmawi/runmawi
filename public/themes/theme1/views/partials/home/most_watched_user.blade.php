@@ -1,5 +1,5 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="">Most Watching Videos - User</a></h4>
+    <h4 class="main-title"><a href=""><?= __('Most Watching Videos - User')  ?></a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -28,7 +28,7 @@
                                 <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
                                 <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>
                                 <?php }elseif($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null ){ ?>
-                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                <p class="p-tag"><?php echo __("Free"); ?></p>
                                 <?php } ?>
                                 <?php } ?>
                           

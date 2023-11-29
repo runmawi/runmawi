@@ -28,7 +28,7 @@ endif;
                 </div>
                 <div class="thriller"> <p><?= $movie->title;?></p></div>
             </div>
-            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$movie->image;  ?>">
+            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$movie->player_image;  ?>">
         </a>
 
         <!-- <div class="flex-icons">

@@ -30,6 +30,11 @@ if (Auth::guest() != true) {
         } ?>
         </a>
     </h4>
+    <h4 class="main-title"><a href="<?php if ($order_settings_list[18]->header_name) {
+            echo URL::to('/') . '/' . $order_settings_list[18]->url;
+        } else {
+            echo '';
+        } ?>"><?php echo (__('View All')); ?></a></h4>
 </div>
 
 <div class="favorites-contens">

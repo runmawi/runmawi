@@ -1,6 +1,10 @@
 <?php
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
 ?>
 <html>
 <head>
@@ -9,7 +13,7 @@ $system_settings = App\SystemSetting::find(1);
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Login | <?php echo $settings->website_name ; ?></title>
+      <title>{{ __('Forgot Password Content Partner') }} | <?php echo $settings->website_name ; ?></title>
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
@@ -17,9 +21,10 @@ $system_settings = App\SystemSetting::find(1);
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css'; ?>" />
       <!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css" /> -->
-      <!-- Typography CSS -->
-      <!-- <link rel="stylesheet" href="assets/css/typography.css" /> -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css'; ?>" />
+        <!-- Typography CSS -->
+        <link rel="stylesheet" href="<?= typography_link()?>" />
+        <!-- Style -->
+        <link rel="stylesheet" href="<?= style_sheet_link() ;?>" />
       <!-- Style -->
       <!-- <link rel="stylesheet" href="assets/css/style.css" /> -->
       <link rel="stylesheet" href="<?= style_sheet_link() ;?>" />
@@ -34,53 +39,16 @@ $system_settings = App\SystemSetting::find(1);
   </script>
 <style>
     h3 {font-size: 30px!important;}
-    .from-control::placeholder{
-        color: #7b7b7b!important;
-    }
-    .links{
-         color: #fff;
-    }
-    .nv{
-        font-size: 14px;
-       color: #fff;
-       
-    }
-    .km{
-       text-align:center;
-         font-size: 75px;
-        font-weight: 900;
-        
-       
-    }
-    .signcont {
- }
-    a.f-link {
-    margin-bottom: 1rem;
-        margin-left: 15vw;
-        font-size: 14px;
-    
-}
-   .d-inline-block {
-    display: block !important;
-}
-i.fa.fa-google-plus {
-    padding: 10px !important;
-}
-
-.sign-in-from{
-  
-    margin: 0 auto;
-    display: block;
-}
-
-
-.reveal{
-        margin-left: 80% !important;
-        margin-top: -26% !important;
-    height: 45px !important;
-    background: transparent !important;
-    color: #fff !important;
-    }
+    .from-control::placeholder{color: #7b7b7b!important;}
+    .links{color: #fff;}
+    .nv{font-size: 14px;color: #fff;}    
+    .sign-info .btn {padding: 10px 15px;font-size: 20px; }
+    .km{text-align:center;font-size: 75px;font-weight: 900;}
+    a.f-link {margin-bottom: 1rem;margin-left: 15vw;font-size: 14px;  }
+   .d-inline-block {display: block !important;}
+    i.fa.fa-google-plus {padding: 10px !important;}
+    .sign-in-from{margin: 0 auto;display: block;}
+    .reveal{margin-left: 80% !important;margin-top: -26% !important;height: 45px !important;background: transparent !important;color: #fff !important;}
 </style>
 
  
@@ -91,7 +59,7 @@ i.fa.fa-google-plus {
          <div class="col-lg-5 col-md-12 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
-                  <div class="sign-in-from  m-auto" align="center">
+                  <div class="sign-in-from  m-auto text-center">
                   <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
                   <div>
 
@@ -120,8 +88,8 @@ i.fa.fa-google-plus {
                         </div>
                         <!-- <div class="form-group" style="  margin-top: 30px;">                                 
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
-                        </div>
-                        <div >
+                        </div> -->
+                        <!-- <div >
                             <span class="input-group-btn" id="eyeSlash">
                                 <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important "><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                             </span>
@@ -129,11 +97,11 @@ i.fa.fa-google-plus {
                                 <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important ;"><i class="fa fa-eye" aria-hidden="true"></i></button>
                             </span>
                         </div>                         -->
-                        <p class="reset-help text-center">We will send you an email with instructions on
-                                            how to reset your password.</p>
+                        <p class="reset-help text-center">
+                        {{ __('We will send you an email with instructions on how to reset your password.') }}</p>
                            <div class="sign-info">
-                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">{{ __('Send Password Reset Link') }}</button>
-                                                                                         
+                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;">{{ __('Send Password Reset Link') }}</button>
+                                                            
                            </div> 
                            <div class="clear"></div>                       
                            </div>
@@ -185,7 +153,7 @@ i.fa.fa-google-plus {
 </script>
                        {{-- Footer --}}
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
 
       <!-- jQuery, Popper JS -->

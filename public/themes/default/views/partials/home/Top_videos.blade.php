@@ -1,5 +1,6 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href=""><?php echo (__('Top Most Watched Videos')); ?> </a></h4>                      
+    <h4 class="main-title"><a href=""><?php echo (__('Top Most Watched Videos')); ?> </a></h4>   
+    <h4 class="main-title"><a href=""><?php echo (__('View All')); ?></a></h4>                   
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline  row p-0 mb-0">

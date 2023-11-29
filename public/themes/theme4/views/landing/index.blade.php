@@ -27,7 +27,7 @@
 
             {{-- Header --}}
         @if ( $header == 1)
-            @php include(public_path('themes/default/views/header.php'))  @endphp 
+            @php include(public_path('themes/theme4/views/header.php'))  @endphp 
         @endif
 
                 {{-- Section 1 --}}
@@ -65,7 +65,7 @@
 
                 {{-- Footer --}}
         @if ( $footer == 1)
-          @php include(public_path('themes/default/views/footer.blade.php')); @endphp 
+          @php include(public_path('themes/theme4/views/footer.blade.php')); @endphp 
         @endif
 
     </body>

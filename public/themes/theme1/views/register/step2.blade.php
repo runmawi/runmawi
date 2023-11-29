@@ -146,7 +146,7 @@
 @php
         <div class="col-md-10 col-sm-offset-1">
 			<div class="login-block">
-                <div class="panel-heading"><h1>Choose Your Plan</h1></div>
+                <div class="panel-heading"><h1>{{ __('Choose Your Plan') }}</h1></div>
                      <div class="panel-body">
                        <!-- <div class="tab">
                           <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
@@ -194,9 +194,9 @@
                                 </h4>
                             </div>
                             <div class="plan-details">
-                                <p class="text-black">Grab this plan for your best Movies to Watch.</p>
+                                <p class="text-black">{{ __('Grab this plan for your best Movies to Watch') }}.</p>
                                 <div class=" mt-4 text-center">
-                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan[0]->plan_id;?>"  >Pay Now</button>
+                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan[0]->plan_id;?>"  >{{ __('Pay Now') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -228,10 +228,10 @@
                                                 </h4>
                                             </div>
                                             <div class="plan-details">
-                                                <p>Grab this plan for your best Movies to Watch.</p>
+                                                <p>{{ __('Grab this plan for your best Movies to Watch') }}.</p>
                                                 <div class=" mt-4 text-center">
                                                     
-                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
+                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">{{ __('Pay Now') }}
                                             </button>
 
                                                 <!-- Launch demo modal
@@ -262,7 +262,7 @@
 			<div class="modal-content">
 				
 				<div class="modal-header">
-                <h4 class="modal-title" style="color: #000">You are one step away from purchasing subscription</h4>
+                <h4 class="modal-title" style="color: #000">{{ __('You are one step away from purchasing subscription') }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					
 				</div>

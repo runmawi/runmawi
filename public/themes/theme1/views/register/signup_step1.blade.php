@@ -12,6 +12,9 @@ $uppercase =  ucfirst($request_url);
 $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 $theme = App\SiteTheme::first();
 
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
 // print_r($uppercase);
 // exit();
       ?>
@@ -222,7 +225,7 @@ i.fa.fa-google-plus {
                             <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                         <?php } ?>
 
-                      <h3 class="mb-3 text-center">Sign Up</h3>
+                      <h3 class="mb-3 text-center"><?php echo __('Sign Up'); ?></h3>
                       </div>
                       <form onsubmit="return ValidationEvent()"action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
@@ -230,7 +233,7 @@ i.fa.fa-google-plus {
                             
                                 @if (!empty($SignupMenu) && $SignupMenu->username == 1)
                                     <div class="col-md-12">
-                                        <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
+                                        <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="{{ __('Username') }}" required autocomplete="off" autofocus>
 
                                         @error('username')
                                             <span class="invalid-feedback" role="alert">
@@ -243,8 +246,8 @@ i.fa.fa-google-plus {
                                 
                                 @if(!empty($SignupMenu) && $SignupMenu->email == 1)
                                     <div class="col-md-12">
-                                    <input id="email" type="email" placeholder="Email Address"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
-                                    <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
+                                    <input id="email" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                    <span class="invalid-feedback" id="email_error" role="alert">{{ __('Email Already Exits') }}
                                     </span>
 
                                     @error('email')
@@ -262,7 +265,7 @@ i.fa.fa-google-plus {
                                
                             <div class="col-md-5 col-sm-12">
                               <select class="phselect form-control" name="ccode" id="ccode" >
-                              <option>Select Country</option>
+                              <option>{{ __('Select Country') }}</option>
                               @foreach($jsondata as $code)
                                 <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 @endforeach
@@ -289,7 +292,7 @@ i.fa.fa-google-plus {
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
                             <div class="col-md-12" style="postion:relative;">
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
-                                <label id="fileLabel">Choose Profile Image</label>
+                                <label id="fileLabel">{{ __('Choose Profile Image') }}</label>
                                  </div>
                                  @endif
                            
@@ -298,7 +301,7 @@ i.fa.fa-google-plus {
                                  <div class="col-md-12">
                                      <div class="row">
                                      <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                <input id="password" type="password" placeholder="{{ __('Password') }}" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
                                          </div>
                                          <div >
                                 <span class="input-group-btn" id="eyeSlash">
@@ -310,7 +313,7 @@ i.fa.fa-google-plus {
                                          </div>
                                          @if ($errors->has('password_confirmation'))
                                         <span class="text-danger" id="successMessage"  style='padding-left: 22px' >
-                                            <strong>Password Not matching.</strong>
+                                            <strong>{{ __('Password Not matching') }}.</strong>
                                         </span>
                                     @endif
                                          </div>
@@ -322,7 +325,7 @@ i.fa.fa-google-plus {
                             <div class="col-md-12">
                                 <div class="row">
                                      <div class="col-md-12">
-                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required autocomplete="new-password">
                                     </div>
                                     <div >
                               <span class="input-group-btn" id="eyeSlash1">
@@ -334,7 +337,7 @@ i.fa.fa-google-plus {
                                     </div>
                                 </div>
     
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
+                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">{{ __('(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)') }}</span>
                             </div>
                                  
                             </div>            
@@ -342,7 +345,7 @@ i.fa.fa-google-plus {
                                 @if(!empty($SignupMenu) && $SignupMenu->country == 1)
                                 <div class="col-md-12" style="postion:relative;">
                                     <select class="phselect form-control" name="country" id="country" >
-                                        <option>Select Country</option>
+                                        <option>{{ __('Select Country') }}</option>
                                             @foreach($jsondata as $code)
                                             <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
                                             @endforeach
@@ -352,7 +355,7 @@ i.fa.fa-google-plus {
                             
                                  @if (!empty($SignupMenu) && $SignupMenu->state == 1)
                                     <div class="col-md-12">
-                                        <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus>
+                                        <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="{{ __('state') }}" required autocomplete="off" autofocus>
 
                                         @error('state')
                                             <span class="invalid-feedback" role="alert">
@@ -365,7 +368,7 @@ i.fa.fa-google-plus {
                                     
                                 @if (!empty($SignupMenu) && $SignupMenu->city == 1)
                                     <div class="col-md-12">
-                                        <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus>
+                                        <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="{{ __('city') }}" required autocomplete="off" autofocus>
 
                                         @error('city')
                                             <span class="invalid-feedback" role="alert">
@@ -379,7 +382,7 @@ i.fa.fa-google-plus {
                                 @if(!empty($SignupMenu) && $SignupMenu->support_username == 1)
                                 <div class="col-md-12" style="postion:relative;">
                                     <select class="phselect form-control" name="support_username" id="support_username" >
-                                        <option>Select Support User</option>
+                                        <option>{{ __('Select Support User') }}</option>
                                             @foreach($Artists as $Artist)
                                             <option value="{{  $Artist['artist_name'] }}">{{ $Artist['artist_name'] }}</option>
                                             @endforeach
@@ -417,9 +420,9 @@ i.fa.fa-google-plus {
                             </div>
 
                             <div class="sign-up-buttons col-md-12" align="right">
-                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
+                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;">{{ ('Verify Profile') }} </button>
                                   <!-- <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button> -->
-                                  <input class="btn btn-hover btn-primary btn-block signup" style="border: #f3ece0 !important;color: white;background-color: #006aff!important;display: block;" type="submit" name="create-account" value="Sign Up Today">
+                                  <input class="btn btn-hover btn-primary btn-block signup" style="border: #f3ece0 !important;color: white;background-color: #006aff!important;display: block;" type="submit" name="create-account" value="{{ __('Sign Up Today') }}">
                                 </div>
                             </div>
                         
@@ -427,7 +430,7 @@ i.fa.fa-google-plus {
                     </form>
                        <div class="mt-3">
                   <div class="d-flex justify-content-center links">
-                     Already have an account? <a href="<?= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
+                  {{ __('Already have an account?') }}<a href="<?= URL::to('/login')?>" class="text-primary ml-2">{{ __('Sign In') }}</a>
                   </div>                        
                </div>
                   </div>
@@ -485,10 +488,10 @@ i.fa.fa-google-plus {
 						<input type="text" class="form-control" maxlength="4" name="otp" id="otp" value="" style="background-color: #000;" />
 						<input type="hidden" class="form-control" name="verify" id="verify_id" value="" />
 						<div class="row timerco" >
-						 	<p> OTP will Expire in <span id="countdowntimer"></span>
+						 	<p> {{ __('OTP will Expire in') }} <span id="countdowntimer"></span>
 					 	</div>
 						<div class="text-center"> 
-							<input type="button" value="{{ __('Verify') }}" id="checkotp"  placeholder="Please Enter OTP" class="btn btn-primary btn-login" style="">
+							<input type="button" value="{{ __('Verify') }}" id="checkotp"  placeholder="{{ __('Please Enter OTP') }}" class="btn btn-primary btn-login" style="">
 						</div>
 					 </div> 
 				</div>

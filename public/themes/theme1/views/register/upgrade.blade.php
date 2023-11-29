@@ -250,18 +250,18 @@ border-radius: 20px;
 
         <div class="container mb-3 ">
             <div class="bl1">
-            <h1 class="text-white text-center mb-4">Choose Your plan</h1>
+            <h1 class="text-white text-center mb-4">{{ __('Choose Your plan') }}</h1>
             <div class="row justify-content-center mt-5 ">
                 
                 <div class="col-md-4 col-lg-4 ak padding-20">
-                    <h2 class="">Plan Details</h2>
-                    <p class="text-white mt-2">Edit your name or change<br>
-your password.</p>
+                    <h2 class="">{{ __('Plan Details') }}</h2>
+                    <p class="text-white mt-2">{{ __('Edit your name or change') }}<br>
+                    {{ __('your password') }}.</p>
                     <ul class="edit">
-                        <li>Edit Profile</li>
-                        <li>Plan</li>
-                        <li>Kids Safemode</li>
-                        <li>video Preferences</li>
+                        <li>{{ __('Edit Profile') }}</li>
+                        <li>{{ __('Plan') }}</li>
+                        <li>{{ __('Kids Safemode') }}</li>
+                        <li>{{ __('video Preferences') }}</li>
                     </ul>
                 </div>
                 <div class="col-md-8 targetDiv" id="div2">
@@ -299,7 +299,7 @@ your password.</p>
 		<div class="modal-dialog ">
 			<div class="modal-content " style=" background:rgb(32, 32, 32);">				
 				<div class="modal-header">
-                    <h4 class="modal-title">You are one step away from purchasing subscription Gate Way</h4>
+                    <h4 class="modal-title">{{ __('You are one step away from purchasing subscription Gate Way') }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
@@ -343,8 +343,8 @@ your password.</p>
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">{{ __('Close') }}</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">{{ __('Continue') }}</button>
 				</div>
 			</div>
 		</div>
@@ -378,7 +378,7 @@ your password.</p>
     <div id="paypal_pg" class="tabcontent" >
         <label for="chkPassports">
                     <input type="checkbox" id="chkPassports" />
-                     Click here for Recurring subscription!
+                    {{ __('Click here for Recurring subscription!') }}
         </label>
         <form action="<?php echo URL::to('/').'/paypal_subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data">
       
@@ -405,10 +405,10 @@ your password.</p>
 						</h4>
 					</div>
 					<div class="plan-details">
-						<p>Grab this plan for your best Movies to Watch.</p>
+						<p>{{ __('Grab this plan for your best Movies to Watch') }}.</p>
                        
                         <div class="mt-4">
-							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >{{ __('Pay Now') }}</button>
 						</div>
 <!--
 						<div class="text-right mt-4">
@@ -454,9 +454,9 @@ your password.</p>
                                                 </h4>
                                             </div>
                                             <div class="plan-details">
-                                                <p>Grab this plan and watch unlimited movies</p>
+                                                <p>{{ __('Grab this plan and watch unlimited movies') }}</p>
                                                 <div class="text-right mt-4">
-                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >{{ __('Pay Now') }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -471,7 +471,7 @@ your password.</p>
                         <div id="paypal-button-container"></div>
                 </div>
                  <div class="col-sm-2 hide-box" style="margin-top: 4%;text-align: center;">
-                      <span class=" text-center">(OR)</span>
+                      <span class=" text-center">{{ __('(OR)') }}</span>
                 </div>
                  <div class="col-sm-4 hide-box" style="margin-top: 2%;">
                         <div class="text-center  pull-left" style="width: 100%;">

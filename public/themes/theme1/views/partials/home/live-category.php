@@ -6,7 +6,7 @@
             <a href="<?php echo URL::to('/live/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration:none;color:#fff">
                <h4 class="movie-title">
                   <?php
-                     if(!empty($category->home_genre)){ echo 'Live'.' '.$category->home_genre ; }else{ echo 'Live'.' '.$category->name ; }  
+                     if(!empty($category->home_genre)){ echo __('Live').' '.__($category->home_genre) ; }else{ echo __('Live').' '.__($category->name) ; }  
                      //   echo __($category->name);
                        ?>
                </h4>
@@ -93,7 +93,7 @@
                               } elseif(!empty($livestream->global_ppv) && $livestream->ppv_price == null) {
                                   echo $currency->symbol .' '.$livestream->global_ppv;
                               } elseif(empty($livestream->global_ppv) && $livestream->ppv_price == null) {
-                                  echo "Free"; 
+                                  echo __("Free"); 
                               }
                               ?>
                         </p>

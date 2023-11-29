@@ -1,6 +1,10 @@
 <?php
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
 ?>
 <html>
 <head>
@@ -129,8 +133,8 @@ i.fa.fa-google-plus {
                                 <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important ;"><i class="fa fa-eye" aria-hidden="true"></i></button>
                             </span>
                         </div>                         -->
-                        <p class="reset-help text-center">We will send you an email with instructions on
-                                            how to reset your password.</p>
+                        <p class="reset-help text-center">{{ __('We will send you an email with instructions on
+                                            how to reset your password') }}.</p>
                            <div class="sign-info">
                               <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">{{ __('Send Password Reset Link') }}</button>
                                                                                      
