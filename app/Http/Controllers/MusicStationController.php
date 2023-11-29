@@ -317,7 +317,8 @@ class MusicStationController extends Controller
             }
             $OtherMusicStation = MusicStation::where('id','!=', $MusicStation_id)->get();
 
-            // dd($merged_audios_lyrics->first());
+            // $test = (count($merged_audios_lyrics) > 0) ?  $merged_audios_lyrics->first()->image : null ;
+            // dd($test);
             // $merged_audios_lyrics[0]->image
             $data = array(
                 'audioppv' => $audioppv,
@@ -342,7 +343,7 @@ class MusicStationController extends Controller
                 'playlist_station' => 1,
                 'OtherMusicStation' => $OtherMusicStation,
                 'show_station_button' => 1,
-                'first_album_image' => $merged_audios_lyrics->first() ? $merged_audios_lyrics->first()->image : null ,
+                'first_album_image' => (count($merged_audios_lyrics) > 0) ?  $merged_audios_lyrics->first()->image : null ,
 
             );
             

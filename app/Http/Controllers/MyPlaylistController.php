@@ -319,7 +319,7 @@ class MyPlaylistController extends Controller
             'songs' => (array("songs" => $merged_audios_lyrics)),
             'playlist_name' => 'Related Songs From PlayList',
             'OtherMusicStation' => [],
-            'first_album_image' => $merged_audios_lyrics->first() ? $merged_audios_lyrics->first()->image : null ,
+            'first_album_image' => (count($merged_audios_lyrics) > 0) ?  $merged_audios_lyrics->first()->image : null ,
         ];
 
         } catch (\Throwable $th) {

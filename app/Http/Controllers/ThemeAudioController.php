@@ -382,7 +382,7 @@ class ThemeAudioController extends Controller{
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Songs',
                 'OtherMusicStation' => [],
-                'first_album_image' => $merged_audios_lyrics->first() ? $merged_audios_lyrics->first()->image : null ,
+                'first_album_image' => (count($merged_audios_lyrics) > 0) ?  $merged_audios_lyrics->first()->image : null ,
 
             );
             } else {
@@ -761,7 +761,7 @@ class ThemeAudioController extends Controller{
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Album Songs',
                 'OtherMusicStation' => [],
-                'first_album_image' => $merged_audios_lyrics->first() ? $merged_audios_lyrics->first()->image : null ,
+                'first_album_image' => (count($merged_audios_lyrics) > 0) ?  $merged_audios_lyrics->first()->image : null ,
             );
             
             // dd( $data);
@@ -1498,8 +1498,8 @@ class ThemeAudioController extends Controller{
             'ThumbnailSetting' => ThumbnailSetting::first(),
             'songs' => (array("songs" => $merged_audios)),
             'OtherMusicStation' => [],
-            'first_album_image' => $merged_audios_lyrics->first() ? $merged_audios_lyrics->first()->image : null ,
-            );
+            // 'first_album_image' => (count($merged_audios_lyrics) > 0) ?  $merged_audios_lyrics->first()->image : null ,
+        );
         } else {
             $data = array(
             'messge' => 'No Audio Found'

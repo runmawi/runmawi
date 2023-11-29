@@ -44,12 +44,11 @@
          if (Auth::guest())
          {
          
-             if ($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' || Auth::guest())
+             if ($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' )
              {
          
-                 if ($episode->access == 'guest' || (($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()
-                     ->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered')):
-         ?>
+                 if ($series->access == 'guest' ): 
+                     ?>
       <?php if ($episode->type == 'embed'): ?>
       <div id="series_container" class="fitvid">
          <?=$episode->embed_code
@@ -161,6 +160,7 @@
          }
          else
          { //dd($season);
+            
           ?>
       <div id="series_container">
          <video id="videoPlayer"  <?= $autoplay ?> class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
