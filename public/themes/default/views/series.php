@@ -235,7 +235,32 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 				</div>
                
 			</div>
-		</div>
+	
+    <h2 class="text"> 
+              <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
+              <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+          <?php elseif($series->access == 'registered'): ?>
+            <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary">
+                    <?php echo __('Become a Registered User to watch this video'); ?></button>
+              </form>
+          <?php elseif($series->ppv_status == 1): ?>
+          <div class="d-flex">
+            <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+
+            <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary">
+                    <?php echo __('Purchase Now'); ?></button>
+              </form>
+          </div>
+            <?php endif; ?></h2>
+            </div>
+
+            
 		<div class="col-md-6 text-center" id="theDiv">
 			<!-- <img id="myImage" src="<? //URL::to('/') . '/public/uploads/images/' . $series->image; ?>" class="w-100"> -->
 			<!--<img id="myImage" class="w-100" >-->
@@ -414,68 +439,61 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
           <!-- <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
 			<div class="col-md-7">
 				<div id="series_title">
-          <?php if(Auth::Guest()){ ?>
             <div class="container">
               <h3><?= $series->title ?></h3>
               <div class="row p-2 text-white">
                 <div class="col-md-7">
                           <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
                               <p  style="color:#fff!important;"><?php echo $series->details;?></p>
-              <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
-                    <div class="row p-0 mt-3 align-items-center">
+                                <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
+                                  <div class="row p-0 mt-3 align-items-center">
                                       <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                                 <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
-                                    <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
-                                      <div class="col-md-1 pls  d-flex text-center mt-2">
-                                          <div></div>
-                                          <ul>
-                                            <li class="share">
-                                              <span><i class="ri-share-fill"></i></span>
-                                                <div class="share-box">
-                                                  <div class="d-flex align-items-center"> 
-                                                  <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
-                                                          class="share-ico"><i class="ri-facebook-fill"></i></a>
-                                                      <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
-                                                          class="share-ico"><i class="ri-twitter-fill"></i></a>
-                                                      <a href="#"onclick="Copy();" class="share-ico"><i
-                                                              class="ri-links-fill"></i></a>
-                                                  </div>
+                                            <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
+                                              <div class="col-md-1 pls  d-flex text-center mt-2">
+                                                  <div></div>
+                                                  <ul>
+                                                    <li class="share">
+                                                      <span><i class="ri-share-fill"></i></span>
+                                                        <div class="share-box">
+                                                          <div class="d-flex align-items-center"> 
+                                                          <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
+                                                                  class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                                              <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
+                                                                  class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                                              <a href="#"onclick="Copy();" class="share-ico"><i
+                                                                      class="ri-links-fill"></i></a>
+                                                          </div>
+                                                        </div>
+                                                    </li>Share                      
+                                                  </ul>
                                                 </div>
-                                            </li>Share                      
-                                          </ul>
-                                        </div>
 
                                         <div class="modal fade modal-xl" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                              <div class="modal-dialog">
-                                  <div class="modal-content">
-                                    <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                      <div class="modal-body">
-                                        <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" >
-                                        </video>
-                                        <video  id="videos" class=""  
-                                          poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>"
-                                                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                                                            type="application/x-mpegURL">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                  <div class="modal-body">
+                                                    <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" >
+                                                    </video>
+                                                    <video  id="videos" class=""  
+                                                      poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>"
+                                                                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                                                                        type="application/x-mpegURL">
 
-                                                            <source id="m3u8urlsource"
-                                                              type="application/x-mpegURL" 
-                                                              src=""
-                                                            >
+                                                                        <source id="m3u8urlsource"
+                                                                          type="application/x-mpegURL" 
+                                                                          src=""
+                                                                        >
 
                                         </video>
                                       </div>
                                   </div>
                                 </div>
                               </div>
-       <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-      
-      <script>  const player = new Plyr('#videoPlayer1'); </script>
-
-
-                                                
-                                                
-                                    
-                                    
+                                  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+                                  
+                                  <script>  const player = new Plyr('#videoPlayer1'); </script>
 
 
                                   </div>
@@ -509,18 +527,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
           </div>
             <?php endif; ?></h2>
 
-            <?php }else { ?>
-              <h2 class="text-center" style="margin-top:80px;"> 
-              <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
-          <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                  <button id="button"><?php echo __('Become a subscriber to watch this video'); ?></button>
-              </form>
-              <?php elseif($series->ppv_status == 1): ?>
-            <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
-                    class="view-count rent-video btn btn-primary">
-                    <?php echo __('Purchase Now'); ?> </button>
-            <?php endif; ?></h2>
-            <?php } ?>
+
 				
 				<div class="clear"></div>
 				</div> 
@@ -545,22 +552,88 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
         </div>
 				<?php elseif($series->ppv_status == 1 || Auth::User()->role == "subscriber"  || Auth::User()->role == "registered" ): ?>
 
-        <h2 class="text-center" style="margin-top:80px;"> 
+          <div class="col-md-7">
+				    <div id="series_title">
+              <div class="container">
+                <h3><?= $series->title ?></h3>
+                  <div class="row p-2 text-white">
+                    <div class="col-md-7">
+                      <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
+                        <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+                        <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
+                        <div class="row p-0 mt-3 align-items-center">
+                                        <div class="col-md-2">
+                                          <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                          </a>
+                                        </div>
+                                            <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
+                                          <div class="col-md-1 pls  d-flex text-center mt-2">
+                                            <div></div>
+                                            <ul>
+                                              <li class="share">
+                                                <span><i class="ri-share-fill"></i></span>
+                                                <div class="share-box">
+                                                  <div class="d-flex align-items-center"> 
+                                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                                    <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                                    <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+                                                  </div>
+                                                </div>
+                                              </li>Share                      
+                                            </ul>
+                                          </div>
+
+                                          <div class="modal fade modal-xl" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                  <div class="modal-body">
+                                                    <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" > </video>
+                                                    <video  id="videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                                                                                        type="application/x-mpegURL">
+
+                                                                                        <source id="m3u8urlsource"
+                                                                                          type="application/x-mpegURL" 
+                                                                                          src=""
+                                                                                        >
+
+                                                    </video>
+                                                  </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+                                          <script>  const player = new Plyr('#videoPlayer1'); </script>
+                        </div>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+
+
+        <h2 class="text" > 
               <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
           <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                  <button id="button"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                  <button id="button" class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
               </form>
               <?php elseif($series->ppv_status == 1 &&  Auth::User()->role == "subscriber" ): ?>
             <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
                     class="view-count rent-video btn btn-primary">
                     <?php echo __('Purchase Now'); ?> </button>
             <?php elseif($series->ppv_status == 1 ): ?>
-              <form style="margin-left: 46%;margin-top: 1%;"method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                  <button id="button"  class="view-count rent-video btn btn-primary"><?php echo __('Become a subscriber to watch this video'); ?></button>
+
+              <div class="d-flex">
+              <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                  <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
               </form>
-                  <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+              <form action="">
+                  <button  data-toggle="modal" data-target="#exampleModalCenter"
                     class="view-count rent-video btn btn-primary">
                     <?php echo __('Purchase Now'); ?> </button>
+                    </form>
+                    </div>
             <?php endif; ?></h2>
           </div>
           </div>
