@@ -4151,6 +4151,10 @@ class ChannelController extends Controller
                     case $item['type'] == " " && !is_null($item->transcoded_url) :
                     $item['videos_url']   = $item->transcoded_url ;
                     break;
+                    
+                    case $item['type'] == null :
+                    $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+                    break;
 
                     default:
                     $item['videos_url']    = null ;
