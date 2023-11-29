@@ -130,10 +130,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
      <div class="row mt-3 align-items-center">
-		<?php if( $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
+		<?php if( Auth::guest() && $series->access == 'guest' || $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
 		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
-		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) || $series->access == 'subscriber' && Auth::user()->role == 'subscriber'):  ?>
+		$settings->free_registration && !Auth::guest() && Auth::user()->role != 'registered' && $series->ppv_status != 1) 
+    || $series->access == 'subscriber' && !Auth::guest() && Auth::user()->role == 'subscriber'):  ?>
 		<div class="col-md-7">
 			<div id="series_title">
 				<div class="container">
