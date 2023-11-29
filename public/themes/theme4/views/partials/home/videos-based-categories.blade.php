@@ -86,7 +86,7 @@
                                 @foreach ($video_category->category_videos as $videos )
                                     <li>
                                         <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover; ">
-                                            <button class="home-page-close-button">×</button>
+                                            <button class="close_btn">×</button>
 
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
@@ -175,14 +175,14 @@
         
         $('.category-videos-slider-nav').click(function() {
 
-            $( ".home-page-close-button" ).trigger( "click" );
+            $( ".close_btn" ).trigger( "click" );
 
              let category_key_id = $(this).attr("data-key-id");
              $('.category-videos-slider').hide();
              $('.category-videos-' + category_key_id).show();
         });
 
-        $('body').on('click', '.home-page-close-button', function() {
+        $('body').on('click', '.close_btn', function() {
             $('.category-videos-slider').hide();
         });
     });
