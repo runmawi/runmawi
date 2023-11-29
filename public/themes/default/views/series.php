@@ -126,7 +126,34 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
  // dd($series);
  ?>
      <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain;padding:0px 0px 20px; ">
-<div class="container-fluid pt-5" >
+     <div class="row">
+        <div class="nav nav-tabs nav-fill container-fluid m-0" id="nav-tab" role="tablist">
+            <div class="bc-icons-2 mt-3">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Series')) ?></a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
+
+                    <?php foreach ($category_name as $key => $series_category_name) { ?>
+                    <?php $category_name_length = count($category_name); ?>
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
+                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                        </a>
+                    </li>
+                    <?php } ?>
+                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title); ?> </a></li>
+                </ol>
+            </div>
+        </div>
+      </div>
+    
+    
+     <div class="container-fluid pt-2" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
 	<div class="row mt-3 align-items-center">
@@ -231,7 +258,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                         <!-- BREADCRUMBS -->
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
                 <ol class="breadcrumb">
@@ -255,7 +282,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                 </ol>
             </div>
         </div>
-                  </div>
+      </div> -->
 
 		<div class="row">
 			<div class="col-md-12 mt-4">
@@ -470,16 +497,16 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                     <?php echo __('Become a Registered User to watch this video'); ?></button>
               </form>
           <?php elseif($series->ppv_status == 1): ?>
-
+          <div class="d-flex">
             <form method="get" action="<?= URL::to('signup') ?>">
-                  <button id="button" class="view-count rent-video btn btn-primary"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                  <button id="button" class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
               </form>
 
             <form method="get" action="<?= URL::to('signup') ?>">
                   <button id="button" class="view-count rent-video btn btn-primary">
                     <?php echo __('Purchase Now'); ?></button>
               </form>
-
+          </div>
             <?php endif; ?></h2>
 
             <?php }else { ?>
