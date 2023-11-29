@@ -108,6 +108,8 @@ i.fa.fa-google-plus {
         <td style="color:white;" valign="bottom"><p>{{ $devices->device_name }}</p></td>
         <td style="color:red;" >
             <div class="d-flex align-items-center list-user-action">
+                <a href="{{ URL::to('/device/logout/').'/'. $userIp . '/' . $devices->id }}" class="iq-bg-danger ml-2"><i
+                onclick="return confirm('Are you sure?')" ></i> Logout</a>
                 <a href="{{ URL::to('/device/logout/verify/').'/'. $userIp . '/' . $devices->id }}" class="iq-bg-danger ml-2"><i
                 onclick="return confirm('Are you sure?')" ></i> Deregister</a>
             </div>

@@ -66,7 +66,7 @@ $data->each(function ($category) {
                                 @foreach ($live_Category->category_livestream as $livestream_videos )
                                     <li>
                                         <div class="tranding-block position-relative home-page-bg-img" style="background-image: url({{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }});">
-                                            <button class="home-page-close-button">×</button>
+                                            <button class="close_btn">×</button>
 
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
@@ -155,14 +155,14 @@ $data->each(function ($category) {
         
         $('.category-live-slider-nav').click(function() {
 
-            $( ".home-page-close-button" ).trigger( "click" );
+            $( ".close_btn" ).trigger( "click" );
 
              let category_key_id = $(this).attr("data-key-id");
              $('.category-live-slider').hide();
              $('.category-live-' + category_key_id).show();
         });
 
-        $('body').on('click', '.home-page-close-button', function() {
+        $('body').on('click', '.close_btn', function() {
             $('.category-live-slider').hide();
         });
     });
