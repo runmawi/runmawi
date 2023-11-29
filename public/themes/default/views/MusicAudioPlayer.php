@@ -66,7 +66,6 @@
   
         <img id="album-art"/>
         <div id="top-bar">
-          <button id="backStationbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
           <div id="station-music">
           <button id="addtoqueuebtn" class="addqubt"><i class="fa fa-plus" aria-hidden="true"></i></button>    
@@ -167,6 +166,7 @@
           </div>
         </div>
         <div id="playlistStation">
+        <button id="backStationbutton"><i class="fas fa-times"></i></button> 
           <div id="label">
             <h1><?php echo __('Other Music Station') ; ?></h1>
             <input id="Stationsearch" type="text" placeholder="&#xF002; Search from all Station"></input>
@@ -959,7 +959,6 @@ $('#backstation').on('click',function(){
 });
 
 $('#backStationbutton').on('click',function(){
-
 var backStationbutton = $('#backStationbutton');
   backStationbutton.hide();
 
@@ -1555,6 +1554,19 @@ html,body{
     padding: 5px 10px;
     left: 5%;
   }
-  
+  #backStationbutton{
+    opacity: 1;
+    margin: 0;
+    position: relative;
+    background: inherit;
+    border: none;
+    color: white;
+    font-size: 100%;
+    vertical-align: middle;
+    transform: translateY(-40%);
+    padding: 5px 10px;
+    left: 5%;
+    top: 15%; 
+  }
 </style>
 <?php include(public_path('themes/default/views/footer.blade.php')); ?>
