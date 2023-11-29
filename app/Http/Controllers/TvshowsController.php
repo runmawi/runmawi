@@ -692,7 +692,7 @@ class TvshowsController extends Controller
         $series = Series::where('slug', '=', $name)->first();
 
 
-        if((Auth::guest() && @$series->access == 'ppv') || (Auth::guest() && @$series->access == 'subscriber') ){
+        if((Auth::guest() && @$series->access == 'ppv') || (Auth::guest() && @$series->access == 'subscriber') || (Auth::guest() && @$series->access == 'registered') ){
             $video_access = 'pay';
         }else if ((!Auth::guest() && @$series->access == 'ppv') || (@$series->access == 'subscriber' && Auth::user()->role != 'admin')) {
             $video_access = 'pay';

@@ -1167,6 +1167,34 @@ class AdminUsersController extends Controller
         // return Redirect::back();
         
     }
+
+
+    public function DeviceLogout($userIp,$id)
+    {
+        $device = LoggedDevice::find($id);
+        $username = @$device
+            ->user_name->username;
+        $email = @$device
+            ->user_name->email;
+        $device_name = @$device->device_name;
+        $user_ip = @$device->user_ip;
+
+        $maildevice = ApprovalMailDevice::orderBy('id', 'DESC')->first();
+        $LoggedDevice = LoggedDevice::get();
+        if (!empty($LoggedDevice))
+        {
+            $user_id = $LoggedDevice[0]->user_id;
+            $user = User::where('id', $user_id)->first();
+            $username = $user->username;
+        }
+        LoggedDevice::destroy($id);
+        $settings = Setting::find(1);
+
+
+        return Redirect::to('home');
+        
+    }
+
     public function ApporeDevice($ip, $id, $device_name)
     {
         // $adddevice = new LoggedDevice;
