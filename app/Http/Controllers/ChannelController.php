@@ -4121,36 +4121,39 @@ class ChannelController extends Controller
 
                 $item['image_url']          = URL::to('public/uploads/images/'.$item->image );
                 $item['player_image_url']   = URL::to('public/uploads/images/'.$item->player_image );
-                $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
-                $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+                $item['pdf_files_url']      = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
+                $item['transcoded_url']     = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
 
                 // Videos URL 
 
                 switch (true) {
 
                     case $item['type'] == "mp4_url":
-                        $item['videos_url']  =  $item->mp4_url ;
-                        $item['video_player_type'] =  'video/mp4' ;
+                    $item['videos_url'] =  $item->mp4_url ;
                     break;
 
                     case $item['type'] == "m3u8_url":
-                        $item['videos_url']  =  $item->m3u8_url ;
-                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                    $item['videos_url'] =  $item->m3u8_url ;
                     break;
 
                     case $item['type'] == "embed":
-                        $item['videos_url']  =  $item->embed_code ;
-                        $item['video_player_type'] =  'video/webm' ;
+                    $item['videos_url'] =  $item->embed_code ;
                     break;
                     
                     case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-                        $item['videos_url']    =   URL::to('/storage/app/public/'.$item->path.'.m3u8');
-                        $item['video_player_type']   =  'application/x-mpegURL' ;
+                    $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                    break;
+                    
+                    case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
+                    $item['videos_url']   = $item->mp4_url ;
+                    break;
+
+                    case $item['type'] == " " && !is_null($item->transcoded_url) :
+                    $item['videos_url']   = $item->transcoded_url ;
                     break;
 
                     default:
-                        $item['videos_url']    = null ;
-                        $item['video_player_type']   =  null ;
+                    $item['videos_url']    = null ;
                     break;
                 }
 
