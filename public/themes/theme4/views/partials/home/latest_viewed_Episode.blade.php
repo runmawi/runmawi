@@ -45,7 +45,7 @@ if (Auth::guest() != true) {
                             @foreach ($data as $key => $latest_view_episode)
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
-                                        <button class="home-page-close-button">×</button>
+                                        <button class="close_btn">×</button>
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
@@ -135,11 +135,11 @@ if (Auth::guest() != true) {
         });
 
         $('.latest-videos-slider-nav').on('click', function() {
-            $( ".home-page-close-button" ).trigger( "click" );
+            $( ".close_btn" ).trigger( "click" );
             $('.latest-videos-slider').show();
         });
 
-        $('body').on('click', '.home-page-close-button', function() {
+        $('body').on('click', '.close_btn', function() {
             $('.latest-videos-slider').hide();
         });
     });
