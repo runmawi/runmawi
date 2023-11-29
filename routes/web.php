@@ -1281,6 +1281,7 @@ Route::get('admin/CPPModeratorsApproval/{id}', 'ModeratorsUserController@CPPMode
 Route::get('admin/CPPModeratorsReject/{id}', 'ModeratorsUserController@CPPModeratorsReject');
 
 Route::get('device/logout/verify/{userIp}/{id}', 'AdminUsersController@VerifyDevice');
+Route::get('device/logout/{userIp}/{id}', 'AdminUsersController@DeviceLogout');
 Route::get('device/delete/{id}', 'AdminUsersController@logoutDevice');
 
 Route::get('device/login/verify/{ip}/{id}/{device_name}', 'AdminUsersController@ApporeDevice');
