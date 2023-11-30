@@ -11,8 +11,8 @@
                      </div>
                      <div class="favorites-contens ml-2">
                         <ul class="favorites-slider list-inline row mb-0">
-                            <?php if(isset($recommended_audios)) :
-                           foreach($recommended_audios as $recommended): ?>
+                            <?php if(isset($OtherMusicStation)) :
+                           foreach($OtherMusicStation as $MusicStation): ?>
 
                            <li class="slide-item">
                              <div class="block-images position-relative">
@@ -20,18 +20,16 @@
                               
                               <div class="border-bg">
                                 <div class="img-box">
-                                  <a href="<?php echo URL::to('audio')?><?='/' .$recommended->slug ?>">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$recommended->image;  ?>" class="img-fluid w-100" alt="recom">
+                                  <a href="<?php echo URL::to('music-station')?><?='/' .$MusicStation->station_slug ?>">
+                                       <img src="<?php echo $MusicStation->image;  ?>" class="img-fluid w-100" alt="recom">
                                   </a>
                                 </div>
                                     <div class="block-description">
-                                       <h6><?php  echo (strlen($recommended->title) > 15) ? substr($recommended->title,0,15).'...' : $recommended->title; ?></h6>
+                                       <h6><?php  echo (strlen($MusicStation->station_name) > 15) ? substr($MusicStation->station_name,0,15).'...' : $MusicStation->station_name; ?></h6>
                                        <div class="movie-time  align-items-center my-2">
-                                          <div class="badge badge-secondary p-1 mr-2"><?php echo $recommended->age_restrict.' '.'+' ?></div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $recommended->duration); ?></span>
                                        </div>
                                        <div class="hover-buttons">
-                                           <a  href="<?php echo URL::to('audio')?><?='/' .$recommended->slug ?>">	
+                                           <a  href="<?php echo URL::to('music-station')?><?='/' .$MusicStation->station_slug ?>">	
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           <?= __('Play Now') ?>

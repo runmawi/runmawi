@@ -322,6 +322,8 @@ class MusicStationController extends Controller
             }else{
                 $first_album_image = null;
             }
+
+            
             // $test = (count($merged_audios_lyrics) > 0) ?  $merged_audios_lyrics->first()->image : null ;
             // dd($test);
             // $merged_audios_lyrics[0]->image
@@ -349,7 +351,10 @@ class MusicStationController extends Controller
                 'OtherMusicStation' => $OtherMusicStation,
                 'show_station_button' => 1,
                 'first_album_image' => $first_album_image ,
-
+                'recommended_audios' => [] ,
+                'OtherMusicStation' => $OtherMusicStation ,
+                'Otheralbum'        => [],
+                'Otherplaylist'        => [],   
             );
             
             // dd( $data);
