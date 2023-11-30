@@ -388,110 +388,145 @@
    .sliderk.round:before {
    border-radius: 50%;
    }
+
    /* Dark mode and light Mode */
+
    body.light-theme {
-   background: <?php echo GetLightBg(); ?>!important;
+      background: <?php echo GetLightBg(); ?>!important;
    }
+
    body.light-theme h4, body.light-theme p {
-   color: <?php echo GetLightText(); ?>;
+      color: <?php echo GetLightText(); ?>;
    }
+
    body.light-theme header#main-header{
-   background-color: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>;
-   box-shadow: 0 0 50px #ccc;
+      background-color: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>;
+      box-shadow: 0 0 50px #ccc;
    }
+
    body.light-theme footer{
-   background: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>;
-   box-shadow: 0 0 50px #ccc;
+      background: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>;
+      box-shadow: 0 0 50px #ccc;
    }
+
    body.light-theme .copyright{
-   background-color: <?php echo GetLightBg(); ?>;
-   color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo GetLightBg(); ?>;
+      color: <?php echo GetLightText(); ?>;
    }
+
    body.light-theme .s-icon{
-   background-color: <?php echo GetLightBg(); ?>; 
-   box-shadow: 0 0 50px #ccc;
+      background-color: <?php echo GetLightBg(); ?>; 
+      box-shadow: 0 0 50px #ccc;
    }
+
    body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
    }
+
    body.light-theme .dropdown-menu.categ-head{
-   background-color: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>!important;
+      background-color: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>!important;
    }
+
    body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
-   color: rgb(0, 82, 204)!important;
-       font-weight: 500;
+      color: rgb(0, 82, 204)!important;
+      font-weight: 500;
    }
+
    body.light-theme .navbar-right .iq-sub-dropdown{
-   background-color: <?php echo GetLightBg(); ?>;  
+      background-color: <?php echo GetLightBg(); ?>;  
    }
+
    body.light-theme .media-body h6{
-   color: <?php echo GetLightText(); ?>;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>;
+      font-weight: 400;
    }
+
    body.light-theme .block-description h6{
-   color: <?php echo GetLightText(); ?>;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>;
+      font-weight: 400;
    }  
+
    body.light-theme .movie-time i{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
    }  
+
    body.light-theme .p-tag1{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   } body.light-theme .p-tag{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
    } 
+   
+   body.light-theme .p-tag{
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
+   } 
+
    body.light-theme .movie-time span{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
    }
+
    body.light-theme .block-description a{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
    } 
-    body.light-theme .block-description{
-  background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
-    backdrop-filter: blur(2px);
+   
+   body.light-theme .block-description{
+      background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
+      backdrop-filter: blur(2px);
    }
+
    body.light-theme  header .navbar ul li{
-   font-weight: 400;
+      font-weight: 400;
    }
+
    body.light-theme .slick-nav i{
-   color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
    }
+
    body.light-theme h2{
-   color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
    }
+
    body.light-theme .filter-option-inner-inner{
-   color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
    } 
+
    body.light-theme .vid-title{
-   color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
    }
+
    body.light-theme .trending-info h1{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .text-detail{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .share-icons.music-play-lists li span i{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .btn1{
-   border: 1px solid <?php echo GetLightText(); ?>!important;
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .trending-dec{
-   color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
    }
+
+   body.light-theme .text-detail{
+      color: <?php echo GetLightText(); ?>!important;
+   }
+
+   body.light-theme .share-icons.music-play-lists li span i{
+      color: <?php echo GetLightText(); ?>!important;
+   }
+   
+   body.light-theme .btn1{
+      border: 1px solid <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
+   }
+   
+   body.light-theme .trending-dec{
+      color: <?php echo GetLightText(); ?>!important;
+   }
+
    body.light-theme h6.trash{
-   color: black;
+      color: black;
    }
+
    .Search_error_class {
       color: red;
    }
 </style>
-
 
 <body>
     <!-- loader Start -->
@@ -1079,9 +1114,10 @@
 
         <!-- Dark Mode & Light Mode  -->
         <script>
-        let theme_modes = $("#toggle").val();
 
         $(document).ready(function() {
+
+           let theme_modes = $("#toggle").val();
 
             if (theme_modes == 'light') {
 
