@@ -1327,3 +1327,30 @@ function settings_enable_rent(){
     return $settings_enable_rent;
 
 }
+
+
+
+//theme settings 
+
+function GetAdminDarkText(){
+    $settings = App\SiteTheme::first();
+    return $settings->admin_dark_text_color;
+}
+
+function GetAdminLightText(){
+    $settings = App\SiteTheme::first();
+     return $settings->admin_light_text_color;
+
+}
+
+function GetAdminDarkBg()
+{
+     $settings = App\SiteTheme::first();
+     return $settings->admin_dark_bg_color;  
+}
+
+function GetAdminLightBg()
+{
+     $settings = App\SiteTheme::first();
+     return $settings->admin_light_bg_color;  
+}
