@@ -60,27 +60,29 @@
     </section>
 @endif
 
+
+
 <script>
     
     $( window ).on("load", function() {
-        $('.videos-category-slider').hide();
+        $('.latest-videos-slider').hide();
     });
 
     $(document).ready(function() {
 
-        $('.videos-category-slider').slick({
+        $('.latest-videos-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: false,
             fade: true,
             draggable: false,
-            asNavFor: '.videos-category-slider-nav',
+            asNavFor: '.latest-videos-slider-nav',
         });
 
-        $('.videos-category-slider-nav').slick({
-            slidesToShow: 6,
+        $('.latest-videos-slider-nav').slick({
+            slidesToShow: 5,
             slidesToScroll: 1,
-            asNavFor: '.videos-category-slider',
+            asNavFor: '.latest-videos-slider',
             dots: false,
             arrows: true,
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
@@ -105,13 +107,13 @@
             ],
         });
 
-        $('.videos-category-slider-nav').on('click', function() {
+        $('.latest-videos-slider-nav').on('click', function() {
             $( ".close_btn" ).trigger( "click" );
-            $('.videos-category-slider').show();
+            $('.latest-videos-slider').show();
         });
 
         $('body').on('click', '.close_btn', function() {
-            $('.videos-category-slider').hide();
+            $('.latest-videos-slider').hide();
         });
     });
 </script>
