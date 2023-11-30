@@ -327,6 +327,10 @@ class MyPlaylistController extends Controller
             'playlist_name' => 'Related Songs From PlayList',
             'OtherMusicStation' => [],
             'first_album_image' => $first_album_image ,
+            'recommended_audios' => [] ,
+            'OtherMusicStation' => [] ,
+            'Otheralbum'        => [],
+            'Otherplaylist'        => MyPlaylist::where('id','!=', $MyPlaylist_id)->get(),
         ];
 
         } catch (\Throwable $th) {

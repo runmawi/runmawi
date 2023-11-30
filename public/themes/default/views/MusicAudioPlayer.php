@@ -126,6 +126,7 @@
             </div>
 
         <?php } ?>
+        <?php if(count(@$recommended_audios) > 0): ?>
         <div class=" container-fluid video-list you-may-like overflow-hidden">
             <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Audios'); ?></h4>
                 <div class="slider"
@@ -133,8 +134,27 @@
                       <?php include 'partials/recommeded_audio.php'; ?>
                 </div>
           </div>
-
+      <?php endif; ?>
           
+      <?php if(count(@$OtherMusicStation) > 0): ?>
+        <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Other MusicStation'); ?></h4>
+                <div class="slider"
+                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
+                      <?php include 'partials/other_music_station.php'; ?>
+                </div>
+          </div>
+      <?php endif; ?>
+
+      <?php if(count(@$Otherplaylist) > 0): ?>
+        <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Other Albums'); ?></h4>
+                <div class="slider"
+                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
+                      <?php include 'partials/other_palylist.php'; ?>
+                </div>
+          </div>
+      <?php endif; ?>
 
         <div id="playlist">
 
