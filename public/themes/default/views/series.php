@@ -1,7 +1,9 @@
 <?php include('header.php'); ?>
 <style type="text/css">
   body{
-    overflow:scroll;
+    height:auto;
+    min-height:700px; 
+    max-height:1000px;
   }
 	.nav-pills li a {color: #fff !important;}
     nav{
@@ -129,7 +131,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
  // dd($series);
  ?>
      <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; ">
-     <div class="container-fluid" >
+     <div class="container-fluid pl-5" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
      <div class="row mt-3 align-items-center">
