@@ -422,6 +422,7 @@
    }
 
    body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+      color: <?php echo GetLightText(); ?>!important;
    }
 
    body.light-theme .dropdown-menu.categ-head{
@@ -556,6 +557,7 @@
    }
 
    body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+      color: <?php echo GetDarkText(); ?>!important;
    }
 
    body.dark-theme .dropdown-menu.categ-head{
