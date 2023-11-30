@@ -402,13 +402,13 @@
    body.light-theme header#main-header{
       background-color: <?php echo GetLightBg(); ?>!important;  
       color: <?php echo GetLightText(); ?>;
-      box-shadow: 0 0 50px #ccc;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.light-theme footer{
       background: <?php echo GetLightBg(); ?>!important;  
       color: <?php echo GetLightText(); ?>;
-      box-shadow: 0 0 50px #ccc;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.light-theme .copyright{
@@ -418,7 +418,7 @@
 
    body.light-theme .s-icon{
       background-color: <?php echo GetLightBg(); ?>; 
-      box-shadow: 0 0 50px #ccc;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
@@ -537,13 +537,13 @@
    body.dark-theme header#main-header{
       background-color: <?php echo GetDarkBg(); ?>!important;  
       color: <?php echo GetDarkText(); ?>;
-      box-shadow: 0 0 50px #ccc;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.dark-theme footer{
       background: <?php echo GetDarkBg(); ?>!important;  
       color: <?php echo GetDarkText(); ?>;
-      box-shadow: 0 0 50px #ccc;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.dark-theme .copyright{
@@ -553,7 +553,7 @@
 
    body.dark-theme .s-icon{
       background-color: <?php echo GetDarkBg(); ?>; 
-      box-shadow: 0 0 50px #ccc;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
    body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
@@ -662,6 +662,11 @@
    .Search_error_class {
       color: red;
    }
+   .channel-logo {
+    border-left: 5px solid  <?php echo GetDarkBg(); ?> !important;
+    background: transparent linear-gradient(270deg, rgba(11, 1, 2, 0) 0%, <?php echo button_bg_color(); ?> 100%);
+   }
+   #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo button_bg_color();?> !important; }
 </style>
 
 <body>
