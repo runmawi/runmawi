@@ -52,10 +52,10 @@
 						</div>
 						<div class="flex">
 							<div>
-								<label class="mb-0">Allow Embed player on specfic domians 
+								<label class="mb-0">Allow Embed player on specfic Domain  
 									</label>
                                 <p class="p1 " style="line-height:16px!important;">
-                                (Note: Saving without a domain name will restrict <br>your embed player for all the domains.)
+                                (Note: Saving without a domain name will restrict <br>your embed player for all the Domain.)
 								</p>
 							</div>
 							<div>
@@ -196,7 +196,7 @@
 
 						<div class="flex">
 							<div>
-								<label>Remeber subtitle preferences</label>
+								<label>Remember subtitle preferences</label>
 							</div>
 							<div>
 								<label class="switch">
