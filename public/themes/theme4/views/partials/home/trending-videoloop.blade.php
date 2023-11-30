@@ -25,7 +25,7 @@
                         <ul id="trending-slider featured-videos-slider" class="list-inline p-0 m-0 align-items-center featured-videos-slider">
                             @foreach ($data as $key => $featured_videos )
                                 <li>
-                                    <div class="tranding-block position-relative" style="background-image: url({{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }});">
+                                    <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
                                         <button class="close_btn">×</button>
 
                                         <div class="trending-custom-tab">
@@ -33,18 +33,22 @@
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <h1 class="trending-text big-title text-uppercase">{{ optional($featured_videos)->title }}</h1>
+                                                        <h2 class="trending-text big-title text-uppercase">{{ optional($featured_videos)->title }}</h2>
 
-                                                        <div class="d-flex align-items-center text-white text-detail">
-                                                            <span class="trending">{{ ($featured_videos->year != null && $featured_videos->year != 0) ? $featured_videos->year : null   }}</span>
-                                                        </div>
+                                                        {{-- @if ( $featured_videos->year != null && $featured_videos->year != 0)
+                                                            <div class="d-flex align-items-center text-white text-detail">
+                                                                <span class="trending">{{ ($featured_videos->year != null && $featured_videos->year != 0) ? $featured_videos->year : null   }}</span>
+                                                            </div>
+                                                        @endif  --}}
 
-                                                        <p class="trending-dec">{!! html_entity_decode( optional($featured_videos)->description) !!}</p>
+                                                        @if (optional($featured_videos)->description)
+                                                            <div class="trending-dec">{!! html_entity_decode( optional($featured_videos)->description) !!}</div>
+                                                        @endif
 
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('category/videos/'.$featured_videos->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                <a href="#" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
+                                                                <a href="{{ URL::to('category/videos/'.$featured_videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -87,9 +91,7 @@
             arrows: true,
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
             prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
-            infinite: true,
-            centerMode: true,
-			centerPadding: 0,
+            infinite: false,
             focusOnSelect: true,
             responsive: [
                 {
