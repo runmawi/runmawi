@@ -352,7 +352,18 @@ class ThemeAudioController extends Controller{
                   });
                   $merged_audios_lyrics = $current_audio_lyrics->merge($all_album_audio_lyrics)->all();
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
-                //   dd($merged_audios_lyrics);
+
+            $category_ids = CategoryAudio::where('audio_id', $source_id)->pluck('category_id')->toArray();
+            
+            $recommended_audios = CategoryAudio::select('category_audios.audio_id', 'category_audios.category_id', 'audio.*')
+                ->join('audio', 'audio.id', '=', 'category_audios.audio_id')
+                ->whereIn('category_audios.category_id', $category_ids)
+                ->where('audio.id', '!=', $source_id)
+                ->groupBy('audio.id')
+                ->limit(30)
+                ->get();
+
+                //   dd($category_ids);
 
                 if(count($merged_audios_lyrics) > 0){
                     $first_album_image = @$merged_audios_lyrics[0]->image;
@@ -390,7 +401,10 @@ class ThemeAudioController extends Controller{
                 'playlist_name' => 'Related Songs',
                 'OtherMusicStation' => [],
                 'first_album_image' => $first_album_image ,
-
+                'recommended_audios' => $recommended_audios ,
+                'OtherMusicStation' => [] ,
+                'Otheralbum'        => [],
+                'Otherplaylist'        => [],
             );
             } else {
                 $data = array(
@@ -776,6 +790,10 @@ class ThemeAudioController extends Controller{
                 'playlist_name' => 'Related Album Songs',
                 'OtherMusicStation' => [],
                 'first_album_image' => $first_album_image ,
+                'recommended_audios' => [] ,
+                'OtherMusicStation' => [] ,
+                'Otheralbum'        => AudioAlbums::where('id','!=', $album_id)->get(),
+                'Otherplaylist'        => [],
             );
             
             // dd( $data);
