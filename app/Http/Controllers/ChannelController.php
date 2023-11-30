@@ -91,6 +91,26 @@ class ChannelController extends Controller
         return view('channels', compact('parentCategories'));
     }
 
+    public function Parent_video_categories($category_slug)
+    {
+        try {
+
+            $VideoCategory           = VideoCategory::where('slug', $category_slug)->first();
+            $Parent_video_categories = VideoCategory::query()->where('parent_id',$VideoCategory->id)->get();
+            
+            $data = [
+                'Parent_videos_categories'  => $Parent_video_categories ,
+                'VideosCategory' => $VideoCategory ,
+            ];
+
+            return Theme::view('videos-Categories', $data);
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
+        }
+    }
+
     public function channelVideos($cid)
     {
         try {
@@ -167,17 +187,73 @@ class ChannelController extends Controller
                 ->latest('episodes.created_at')
                 ->paginate($this->videos_per_page);
 
+                // for Theme4, theme6 , default
+
+                $check_Kidmode = 0 ;
+
+                $video_categories = VideoCategory::query()->whereIn('id',$category_id)->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+                    $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+            
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $query->whereNotIn('videos.id', Block_videos());
+                    }
+            
+                    if ($check_Kidmode == 1) {
+                        $query->whereBetween('videos.age_restrict', [0, 12]);
+                    }
+                })->with(['category_videos' => function ($videos) use ($check_Kidmode) {
+                    $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type')
+                        ->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+
+                            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                                $videos->whereNotIn('videos.id', Block_videos());
+                            }
+
+                            if ($check_Kidmode == 1) {
+                                $videos->whereBetween('videos.age_restrict', [0, 12]);
+                            }
+    
+                    $videos->latest('videos.created_at')->get();
+                }])
+                ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
+                ->where('video_categories.in_home', 1)
+                ->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+                    $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+            
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $query->whereNotIn('videos.id', Block_videos());
+                    }
+            
+                    if ($check_Kidmode == 1) {
+                        $query->whereBetween('videos.age_restrict', [0, 12]);
+                    }
+                })
+                ->orderBy('video_categories.order')
+                ->get()
+                ->map(function ($category) {
+                    $category->category_videos->map(function ($video) {
+                        $video->image_url = URL::to('/public/uploads/images/'.$video->image);
+                        $video->Player_image_url = URL::to('/public/uploads/images/'.$video->player_image);
+                        $video->description  = $video->description ;
+                        $video->source  = "Videos";
+                        return $video;
+                    });
+                    $category->source =  "category_videos" ;
+                    return $category;
+                });
+
             $data = [
-                'currency' => CurrencySetting::first(),
-                'category_title' => $category_title,
-                'categoryVideos' =>  $categoryVideos,
-                'ppv_gobal_price' => $ppv_gobal_price,
-                'ThumbnailSetting' => $ThumbnailSetting,
-                'age_categories' => AgeCategory::get(),
-                'Episode_videos' => $Episode_videos,
+                'currency'          => CurrencySetting::first(),
+                'category_title'    => $category_title,
+                'categoryVideos'    =>  $categoryVideos,
+                'ppv_gobal_price'   => $ppv_gobal_price,
+                'ThumbnailSetting'  => $ThumbnailSetting,
+                'age_categories'    => AgeCategory::get(),
+                'Episode_videos'    => $Episode_videos,
                 'Most_watched_country' => $Most_watched_country ,
                 'top_most_watched'  => $top_most_watched ,
                 'video_banners'     => $video_banners ,
+                'video_categories'  => $video_categories ,
             ];
 
             return Theme::view('categoryvids', ['categoryVideos' => $data]);
