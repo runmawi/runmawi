@@ -204,6 +204,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/category/wishlist/{slug}', 'ChannelController@Watchlist');
     Route::post('favorite', 'ThemeAudioController@add_favorite');
     Route::get('/live/category/{cid}', 'LiveStreamController@channelVideos');
+    Route::get('/videos/categories/{category_slug}', 'ChannelController@Parent_video_categories')->name('Parent_video_categories');
     Route::get('/category/{cid}', 'ChannelController@channelVideos')->name('video_categories');
     Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
 
