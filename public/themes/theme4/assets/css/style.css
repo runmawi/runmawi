@@ -732,6 +732,7 @@ header .navbar ul li.menu-item a:hover {
 }
 li.slick-slide.slick-current.slick-active {
     width: 1330px;
+    display: block !important;
 }
 a.button-groups.btn.btn-hover.mr-2 {
     background-color: rgba(51, 51, 51, 0.4) !important;
@@ -744,11 +745,14 @@ a.button-groups.btn.btn-hover.mr-2:hover {
 }
 
 .trending-thumbnail-image{
-    width: 100% !important;
+    width: 97vw !important;
 }
+
+
 #trending-slider-nav li{
     padding: 2px !important;
 }
+
  .close_btn{
     position: absolute !important;
     right: 2%;

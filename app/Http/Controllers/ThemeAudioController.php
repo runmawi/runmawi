@@ -353,6 +353,13 @@ class ThemeAudioController extends Controller{
                   $merged_audios_lyrics = $current_audio_lyrics->merge($all_album_audio_lyrics)->all();
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
                 //   dd($merged_audios_lyrics);
+
+                if(count($merged_audios_lyrics) > 0){
+                    $first_album_image = @$merged_audios_lyrics[0]->image;
+                }else{
+                    $first_album_image = null;
+                }
+
             $data = array(
                 'audios' => Audio::findOrFail($audio),
                 'json_list' => json_encode($json),
@@ -382,6 +389,8 @@ class ThemeAudioController extends Controller{
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Songs',
                 'OtherMusicStation' => [],
+                'first_album_image' => $first_album_image ,
+
             );
             } else {
                 $data = array(
@@ -737,6 +746,13 @@ class ThemeAudioController extends Controller{
             }else{
                 $ppv_status = 0 ;
             }
+
+            if(count($merged_audios_lyrics) > 0){
+                $first_album_image = @$merged_audios_lyrics[0]->image;
+            }else{
+                $first_album_image = null;
+            }
+
             // dd($ppv_status);
             $data = array(
                 'audioppv' => $audioppv,
@@ -759,6 +775,7 @@ class ThemeAudioController extends Controller{
                 'songs' => (array("songs" => $merged_audios_lyrics)),
                 'playlist_name' => 'Related Album Songs',
                 'OtherMusicStation' => [],
+                'first_album_image' => $first_album_image ,
             );
             
             // dd( $data);
@@ -1495,7 +1512,8 @@ class ThemeAudioController extends Controller{
             'ThumbnailSetting' => ThumbnailSetting::first(),
             'songs' => (array("songs" => $merged_audios)),
             'OtherMusicStation' => [],
-            );
+            // 'first_album_image' => (count($merged_audios_lyrics) > 0) ?  $merged_audios_lyrics->first()->image : null ,
+        );
         } else {
             $data = array(
             'messge' => 'No Audio Found'
