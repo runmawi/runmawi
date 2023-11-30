@@ -712,6 +712,13 @@ header .navbar ul li.menu-item a:hover {
 li.slide-item.slick-slide.slick-active {
     width: 280px !important;
 }
+
+.music-play-lists li span i{
+    color: white !important;
+}
+.music-play-lists li span i:hover{
+    color: blue !important;
+}
 /*  Signup Page*/
 
 /* .img-box {
