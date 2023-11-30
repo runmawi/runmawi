@@ -163,7 +163,7 @@ if (!empty($data['password_hash'])) {
     body.dark .iq-bg-danger{ color: <?php echo GetAdminDarkText(); ?>!important; background:transparent!important;}
     body.dark #progressbar li.active{color: blue!important;}
     body.dark #progressbar li img{filter: invert(1);}
-    body.dark .ply{filter: invert(1);}
+    body.dark .ply{filter: invert(0);}
     body.dark .fs-title{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .panel-body{color: <?php echo GetAdminDarkText(); ?>!important;}
     body.dark .iq-submenu li>a{color: <?php echo GetAdminDarkText(); ?>;}
