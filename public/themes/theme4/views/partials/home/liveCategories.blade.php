@@ -1,49 +1,51 @@
 @if (!empty($data) && $data->isNotEmpty())
-
-    <section id="iq-favorites">
+    <section id="iq-trending" class="s-margin">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
-
-                    {{-- Header --}}
+                                    
+                                    {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title"><a href="{{ $order_settings_list[12]->url ? URL::to($order_settings_list[12]->url) : null }} ">{{ optional($order_settings_list[12])->header_name }}</a></h4>
                     </div>
 
-                    <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline  row p-0 mb-0">
-                            @foreach ( $data as $key => $livecategories)
-                                <li class="slide-item">
-                                    <a href="{{ URL::to('LiveCategory/'.$livecategories->slug) }}">
-                                        <div class="block-images position-relative">
-                                            <div class="img-box">
-                                                <img src="{{  $livecategories->image ? URL::to('public/uploads/livecategory/'.$livecategories->image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                            </div>
-                                            <div class="block-description">
-                                                <h6> {{ strlen($livecategories->name ) > 17 ? substr($livecategories->name , 0, 18) . '...' : $livecategories->name  }}</h6>
-
-                                                <div class="movie-time d-flex align-items-center my-2">
-
-                                                    {{-- <span class="text-white">
-                                                        {{ str_replace('_', ' ', ucwords($livecategories->artist_type))  }}
-                                                    </span> --}}
-                                                    
-                                                </div>
-
-                                                <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                       Visit
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="block-social-info">
-                                                {{-- <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                                                </ul> --}}
-                                            </div>
+                    <div class="trending-contens">
+                        <ul id="trending-slider-nav" class="live-category-slider-nav list-inline p-0 mb-0 row align-items-center">
+                            @foreach ($data as $livecategories)
+                                <li>
+                                    <a href="javascript:void(0);">
+                                        <div class="movie-slick position-relative">
+                                            <img src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_vertical_image_url() }}" class="img-fluid" >
                                         </div>
                                     </a>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        <ul id="trending-slider live-category-slider" class="list-inline p-0 m-0 align-items-center live-category-slider">
+                            @foreach ($data as $key => $livecategories )
+                                <li>
+                                    <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
+                                        <button class="close_btn">×</button>
+
+                                        <div class="trending-custom-tab">
+                                            <div class="trending-content">
+                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+
+                                                        <h2 class="trending-text big-title text-uppercase">{{ optional($livecategories)->name }}</h2>
+
+                                                        <div class="p-btns">
+                                                            <div class="d-flex align-items-center p-0">
+                                                                <a href="{{ URL::to('LiveCategory/'.$livecategories->slug)  }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Visit </a>
+                                                                {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a> --}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>
@@ -53,3 +55,59 @@
         </div>
     </section>
 @endif
+
+<script>
+    
+    $( window ).on("load", function() {
+        $('.live-category-slider').hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.live-category-slider').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            draggable: false,
+            asNavFor: '.live-category-slider-nav',
+        });
+
+        $('.live-category-slider-nav').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            asNavFor: '.live-category-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.live-category-slider-nav').on('click', function() {
+            $( ".close_btn" ).trigger( "click" );
+            $('.live-category-slider').show();
+        });
+
+        $('body').on('click', '.close_btn', function() {
+            $('.live-category-slider').hide();
+        });
+    });
+</script>
