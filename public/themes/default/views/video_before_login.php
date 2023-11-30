@@ -455,25 +455,32 @@
             </div>
             <div class="text-white col-lg-5 p-0">
                
+
+            <div class="d-flex mt-5">
              <?php if(Auth::guest() || $video->access == 'subscriber'): ?>
-                  <button style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+               <form method="get" action="<?= URL::to('signup') ?>">
+                  <button style="color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;"  class="view-count rent-video btn btn-primary">
                         <?php echo __('Become a Subscriber to view this Video!'); ?> 
                   </button>
+                  </form>
                   <?php endif; ?>
 
                <?php if(Auth::guest() && $video->access == 'registered' ): ?>
-                 
-                 <button style="position: absolute;color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;margin-left: 10px;margin-top: -2px;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                  <form method="get" action="<?= URL::to('signup') ?>">
+                 <button style="position: absolute;color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;margin-left: 10px;margin-top: -2px;"  class="view-count rent-video btn btn-primary">
                        <?php echo __('Register Now to view this Video!'); ?> 
                  </button>
+                 </form>
                <?php endif; ?>
                
                <?php if(Auth::guest() && $video->access == 'ppv' ): ?>
-                 
-                     <button style="position: absolute;color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;margin-left: 10px;margin-top: -2px;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                  <form method="get" action="<?= URL::to('signup') ?>">
+                     <button style="position: absolute;color: white;background-color: red !important;padding: 10px;border-radius: 20px !important;margin-left: 10px;margin-top: -2px;"  class="view-count rent-video btn btn-primary">
                            <?php echo __('Rent Now to view this Video!'); ?> 
                      </button>
+                     </form>
                <?php endif; ?>
+               </div>
 
             
             </div>
