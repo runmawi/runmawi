@@ -16,9 +16,9 @@ if(isset($sliders)) :
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">
-                                <h1 class="text-white text-uppercase mb-3" style="color:#fff!important;">
+                                <p class="text-white text-uppercase mb-3" style="color:#fff!important;">
                                     <?php echo strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title; ?>
-                                </h1>
+                                </p>
 
                                 <div class="mb-3">
                                     <span class="fa fa-star checked"></span>
@@ -73,11 +73,11 @@ endif; ?>
                             </div>
                         </a>-->
 
-                        <h1 class="slider-text big-title title text-uppercase text-white">
+                        <p class="slider-text big-title title text-uppercase text-white">
                             <?php
                             echo strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title;
                             ?>
-                        </h1>
+                        </p>
                         <div class="mb-3">
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star checked"></span>
@@ -135,9 +135,9 @@ endif; ?>
                 <div class="row align-items-center bl h-100">
 
                     <div class="col-xl-5 col-lg-12 col-md-12">
-                        <h1 class="slider-text big-title title text-uppercase text-white">
+                        <p class="slider-text big-title title text-uppercase text-white">
                             <?php echo strlen($live_event_banner->title) > 15 ? substr($live_event_banner->title, 0, 80) . '...' : $live_event_banner->title; ?>
-                        </h1>
+                        </p>
 
                         <div class="mb-3">
                             <span class="fa fa-star checked"></span>
@@ -201,9 +201,9 @@ endif; ?>
 
                         <!-- Video Title  -->
                         <?php }else{ ?>
-                        <h1 class="text-white title text-uppercase mb-3">
+                        <p class="text-white title text-uppercase mb-3">
                             <?php echo strlen($videos->title) > 15 ? substr($videos->title, 0, 80) . '...' : $videos->title; ?>
-                        </h1>
+                        </p>
                         <?php } ?>
 
                         <div class="mb-3">
@@ -288,10 +288,10 @@ if(Route::current()->getName() == "home"){
                         </a>
                         <!-- Video Title  -->
                         <?php }else{ ?>
-                        <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft"
+                        <p class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft"
                             data-delay-in="0.6">
                             <?php echo strlen($videos->title) > 15 ? substr($videos->title, 0, 80) . '...' : $videos->title; ?>
-                        </h1>
+                        </p>
                         <?php } ?>
 
                         <div class="mb-3">
@@ -345,12 +345,12 @@ if(Route::current()->getName() == "home"){
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-6 col-lg-12 col-md-12">
-                        <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
+                        <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
                             data-delay-in="0.6">
                             <?php
                             echo strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title;
                             ?>
-                        </h1>
+                        </p>
                         <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                             <span class="badge badge-secondary p-2">
                                 <?php echo __($slider_video->age_restrict); ?>
@@ -419,9 +419,9 @@ endif; ?>
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-5 col-lg-12 col-md-12">
 
-                        <h1 class="slider-text big-title title text-uppercase text-white">
+                        <p class="slider-text big-title title text-uppercase text-white">
                             <?php echo __($series_slider->title); ?>
-                        </h1>
+                        </p>
 
                         <div class="mb-3">
                             <span class="fa fa-star  checked"></span>
