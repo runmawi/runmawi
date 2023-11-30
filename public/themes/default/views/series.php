@@ -2,7 +2,7 @@
 <style type="text/css">
   body{
     height:auto;
-    min-height:700px; 
+    min-height:660px; 
     max-height:1000px;
   }
 	.nav-pills li a {color: #fff !important;}
