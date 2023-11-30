@@ -35,11 +35,11 @@
 
                                                         <h2 class="trending-text big-title text-uppercase">{{ optional($latest_video)->title }}</h2>
 
-                                                        <!-- @if ( $latest_video->year != null && $latest_video->year != 0)
+                                                        {{-- @if ( $latest_video->year != null && $latest_video->year != 0)
                                                             <div class="d-flex align-items-center text-white text-detail">
                                                                 <span class="trending">{{ ($latest_video->year != null && $latest_video->year != 0) ? $latest_video->year : null   }}</span>
                                                             </div>
-                                                        @endif -->
+                                                        @endif  --}}
 
                                                         @if (optional($latest_video)->description)
                                                             <div class="trending-dec">{!! html_entity_decode( optional($latest_video)->description) !!}</div>
@@ -70,7 +70,6 @@
     
     $( window ).on("load", function() {
         $('.latest-videos-slider').hide();
-        // $('.movie-slick').hide();
     });
 
     $(document).ready(function() {
