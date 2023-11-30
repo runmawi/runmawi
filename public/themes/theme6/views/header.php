@@ -256,6 +256,242 @@
       } ?>
 </head>
 
+<style>
+   .fullpage-loader {
+   position: fixed;
+   top: 0;
+   left: 0;
+   height: 100vh;
+   width: 100vw;
+   overflow: hidden;
+   background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+   z-index: 9999;
+   opacity: 1;
+   transition: opacity .5s;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   .fullpage-loader__logo {
+   position: relative;
+   &:after {
+   // this is the sliding white part
+   content: '';
+   height: 100%;
+   width: 100%;
+   position: absolute;
+   top: 0;
+   left: 0;
+   animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
+   // opaque white slide
+   background: rgba(255,255,255,.8);
+   // gradient shine scroll
+   background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+   background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+   background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+   }
+   }
+   }
+   @keyframes shine {
+   0% {
+   transform: translateX(-100%) skew(-30deg);
+   }
+   100% {
+   transform: translateX(200%) skew(-30deg);
+   }
+   }
+   .fullpage-loader--invisible {
+   opacity: 0;
+   }
+   /* END LOADER CSS */
+   svg{
+   height: 30px;
+   widows: 30px;
+   }
+   .mk{
+   display: none;
+   }
+   #main-header{ color: #fff; }
+   .svg{ color: #fff; } 
+   #videoPlayer{
+   width:100%;
+   height: 100%;
+   margin: 20px auto;
+   }
+   i.fas.fa-child{
+   font-size: 35px;
+   color: white;
+   }
+   span.kids {
+   color: #f7dc59;
+   }  
+   span.family{
+   color: #f7dc59;
+   }
+   i.fa.fa-eercast{
+   font-size: 35px;
+   color: white;
+   }
+   a.navbar-brand.iconss {
+   font-size: 19px;
+   font-style: italic;
+   font-family: ui-rounded;
+   }
+   .switch {
+   position: relative;
+   display: inline-block;
+   width: 50px;
+   height: 20px;
+   }
+   .switch input { 
+   opacity: 0;
+   width: 0;
+   height: 0;
+   }
+   .sliderk {
+   position: absolute;
+   cursor: pointer;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: #ddd;
+   -webkit-transition: .4s;
+   transition: .4s;
+   }
+   .sliderk:before {
+   position: absolute;
+   content: "";
+   height: 15px;
+   width: 15px;
+   left: 5px;
+   bottom: 2px;
+   background-color: white;
+   -webkit-transition: .4s;
+   transition: .4s;
+   }
+   input:checked + .sliderk {
+   background-color: #2196F3;
+   }
+   input:focus + .sliderk {
+   box-shadow: 0 0 1px #2196F3;
+   }
+   input:checked + .sliderk:before {
+   -webkit-transform: translateX(26px);
+   -ms-transform: translateX(26px);
+   transform: translateX(26px);
+   }
+   /* Rounded sliders */
+   .sliderk.round {
+   border-radius: 34px;
+   }
+   .sliderk.round:before {
+   border-radius: 50%;
+   }
+   /* Dark mode and light Mode */
+   body.light-theme {
+   background: <?php echo GetLightBg(); ?>!important;
+   }
+   body.light-theme h4, body.light-theme p {
+   color: <?php echo GetLightText(); ?>;
+   }
+   body.light-theme header#main-header{
+   background-color: <?php echo GetLightBg(); ?>!important;  
+   color: <?php echo GetLightText(); ?>;
+   box-shadow: 0 0 50px #ccc;
+   }
+   body.light-theme footer{
+   background: <?php echo GetLightBg(); ?>!important;  
+   color: <?php echo GetLightText(); ?>;
+   box-shadow: 0 0 50px #ccc;
+   }
+   body.light-theme .copyright{
+   background-color: <?php echo GetLightBg(); ?>;
+   color: <?php echo GetLightText(); ?>;
+   }
+   body.light-theme .s-icon{
+   background-color: <?php echo GetLightBg(); ?>; 
+   box-shadow: 0 0 50px #ccc;
+   }
+   body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+   }
+   body.light-theme .dropdown-menu.categ-head{
+   background-color: <?php echo GetLightBg(); ?>!important;  
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
+   color: rgb(0, 82, 204)!important;
+       font-weight: 500;
+   }
+   body.light-theme .navbar-right .iq-sub-dropdown{
+   background-color: <?php echo GetLightBg(); ?>;  
+   }
+   body.light-theme .media-body h6{
+   color: <?php echo GetLightText(); ?>;
+   font-weight: 400;
+   }
+   body.light-theme .block-description h6{
+   color: <?php echo GetLightText(); ?>;
+   font-weight: 400;
+   }  
+   body.light-theme .movie-time i{
+   color: <?php echo GetLightText(); ?>!important;
+   font-weight: 400;
+   }  
+   body.light-theme .p-tag1{
+   color: <?php echo GetLightText(); ?>!important;
+   font-weight: 400;
+   } body.light-theme .p-tag{
+   color: <?php echo GetLightText(); ?>!important;
+   font-weight: 400;
+   } 
+   body.light-theme .movie-time span{
+   color: <?php echo GetLightText(); ?>!important;
+   font-weight: 400;
+   }
+   body.light-theme .block-description a{
+   color: <?php echo GetLightText(); ?>!important;
+   font-weight: 400;
+   } 
+    body.light-theme .block-description{
+  background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
+    backdrop-filter: blur(2px);
+   }
+   body.light-theme  header .navbar ul li{
+   font-weight: 400;
+   }
+   body.light-theme .slick-nav i{
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme h2{
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme .filter-option-inner-inner{
+   color: <?php echo GetLightText(); ?>!important;
+   } 
+   body.light-theme .vid-title{
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme .trending-info h1{
+   color: <?php echo GetLightText(); ?>!important;
+   }body.light-theme .text-detail{
+   color: <?php echo GetLightText(); ?>!important;
+   }body.light-theme .share-icons.music-play-lists li span i{
+   color: <?php echo GetLightText(); ?>!important;
+   }body.light-theme .btn1{
+   border: 1px solid <?php echo GetLightText(); ?>!important;
+   color: <?php echo GetLightText(); ?>!important;
+   }body.light-theme .trending-dec{
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme h6.trash{
+   color: black;
+   }
+   .Search_error_class {
+      color: red;
+   }
+</style>
+
 
 <body>
     <!-- loader Start -->
@@ -573,7 +809,21 @@
 
                                           <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
 
+                                          
+
                                           <div class="iq-card-body p-0 pl-3 pr-3">
+                                       
+                                          <div class="toggle mt-2 text-left">
+                                             <i class="fas fa-moon"></i>
+                                             <label class="switch toggle mt-3">
+                                             <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                                <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                             <span class="sliderk round"></span>
+                                             </label>
+                                             <i class="fas fa-sun"></i>
+                                          </div>
+                                             
+
                                              <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                                 <div class="media align-items-center">
                                                       <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
@@ -583,14 +833,14 @@
                                                 </div>
                                              </a>
                                              
-                                             <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
+                                             <!-- <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
                                                 <div class="media align-items-center">
                                                       <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
                                                       <div class="media-body ml-3">
                                                          <h6 class="mb-0 ">Pricing Plan</h6>
                                                       </div>
                                                 </div>
-                                             </a>
+                                             </a> -->
 
                                              <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                                 <div class="media align-items-center">
@@ -832,6 +1082,41 @@
             }
         });
         </script>
+
+<script>
+         $("#toggle").click(function(){
+         
+            var theme_mode = $("#toggle").prop("checked");
+         
+            $.ajax({
+            url: '<?php echo URL::to("theme-mode") ;?>',
+            method: 'post',
+            data: 
+               {
+                  "_token": "<?php echo csrf_token(); ?>",
+                  mode: theme_mode 
+               },
+               success: (response) => {
+                  console.log(response);
+               },
+            })
+         });
+         
+      </script>
+
+      <!-- Dark Mode & Light Mode  -->
+      <script>
+         let theme_modes = $("#toggle").val();
+         
+         $(document).ready(function(){
+         
+            if( theme_modes == 'light' ){
+         
+               body.classList.add('light-theme');
+         
+            }
+         });
+      </script>
 
         <style>
          .dropdown-toggle::after{

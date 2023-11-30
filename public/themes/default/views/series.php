@@ -1,5 +1,10 @@
 <?php include('header.php'); ?>
 <style type="text/css">
+  body{
+    height:auto;
+    min-height:700px; 
+    max-height:1000px;
+  }
 	.nav-pills li a {color: #fff !important;}
     nav{
        margin: 0 auto;
@@ -125,8 +130,8 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
  $ThumbnailSetting = App\ThumbnailSetting::first();
  // dd($series);
  ?>
-     <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain;padding:0px 0px 20px; ">
-     <div class="container-fluid pt-5" >
+     <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; ">
+     <div class="container-fluid pl-5" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
      <div class="row mt-3 align-items-center">
