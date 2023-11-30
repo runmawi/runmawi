@@ -13,7 +13,6 @@
 
     }
 
-
     /* <!-- BREADCRUMBS  */
     .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
         content: none;
@@ -27,6 +26,11 @@
 
     .nav-div.container-fluid {
         padding: 0;
+    }
+    
+    #category-tab-nav li {
+        display: inline-block;
+        margin-right: 10px; 
     }
 </style>
 
@@ -53,12 +57,9 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
         <div class="container-fluid overflow-hidden">
             <div class="row pageheight">
                 <div class="col-sm-12 ">
-                    <div class="iq-main-header align-items-center d-flex justify-content-between">
-                        <h2 class="ml-3"><?php echo __($categoryVideos['category_title']); ?></h2>
-                    </div>
 
                     <!-- BREADCRUMBS -->
-                    <div class="row d-flex">
+                    <div class="row">
                         <div class="nav nav-tabs nav-fill container-fluid nav-div" id="nav-tab" role="tablist">
                             <div class="bc-icons-2">
                                 <ol class="breadcrumb">
@@ -79,8 +80,9 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                         </div>
                     </div>
 
+                    {{-- Section filter --}}
 
-                    @partial('categoryvids_section_filter')
+                        {{-- @partial('categoryvids_section_filter') --}}
 
                     {{-- Main Content  --}}
 
@@ -93,15 +95,11 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
     </section>
 </div>
 
-@php
-    include public_path('themes/theme4/views/footer.blade.php');
-@endphp
+@php include public_path('themes/theme4/views/footer.blade.php'); @endphp
 
 {{-- Multiple Select  --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" defer>
-</script>
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" defer> </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
 
 <script>
     $(".filter").click(function() {
