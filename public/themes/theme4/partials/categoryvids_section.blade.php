@@ -25,7 +25,7 @@
                         @foreach ($video_categories->category_videos as $key => $videos)
                             <li>
                                 <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $videos->player_image ? URL::to('public/uploads/images/' . $videos->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
-                                    <button class="close_btn">×</button>
+                                    <button class="close_btn btn">×</button>
                                     <div class="trending-custom-tab">
                                         <div class="trending-content">
                                             <div id="" class="overview-tab tab-pane fade active show">
