@@ -30,7 +30,7 @@
 
     @media (min-width: 550px) {
         .card__text {
-            font-size: 16px;
+            font-size: 14px;
             line-height: 19px;
         }
     }
@@ -52,7 +52,7 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 400;
         line-height: 18px;
         text-align: center;
@@ -78,6 +78,7 @@
         pointer-events: none;
         
     }
+    h3.vsub {font-size: 20px;}
 
 </style>
 
@@ -113,8 +114,8 @@
                                                     class="img-fluid">
                                             </div>
                                         </div>
+                                        <!-- <p class="card_text">{{ optional($Parent_videos_category)->name }} </p> -->
                                     </a>
-                                    <p class="card_text">{{ optional($Parent_videos_category)->name }} </p>
                                 </li>
                             @endforeach
                         </ul>
@@ -130,7 +131,7 @@
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                         <div class="caption">
-                            <h3>Videos</h3> 
+                            <h3 class="vsub">Videos</h3> 
                         </div>        
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">

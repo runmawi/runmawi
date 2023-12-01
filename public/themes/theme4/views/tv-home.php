@@ -24,12 +24,12 @@
    <!-- <section id="home" class="iq-main-slider p-0">
       <div id="home-slider" class="slider m-0 p-0">
          <?php
-               if($slider_choosen == 2){
-                  include('partials/home/slider-2.php'); 
-               }
-               else{
-                  include('partials/home/slider-1.php'); 
-               }
+            //    if($slider_choosen == 2){
+            //       include('partials/home/slider-2.php'); 
+            //    }
+            //    else{
+            //       include('partials/home/slider-1.php'); 
+            //    }
          ?>
       </div>
       
