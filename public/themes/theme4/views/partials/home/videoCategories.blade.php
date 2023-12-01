@@ -86,19 +86,19 @@
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
             prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
             infinite: false,
-            focusOnSelect: true,
+            focusOnSelect: false,
             responsive: [
                 {
                     breakpoint: 1024,
                     settings: {
-                        slidesToShow: 2,
+                        slidesToShow: 5,
                         slidesToScroll: 1,
                     },
                 },
                 {
                     breakpoint: 600,
                     settings: {
-                        slidesToShow: 1,
+                        slidesToShow: 2,
                         slidesToScroll: 1,
                     },
                 },
