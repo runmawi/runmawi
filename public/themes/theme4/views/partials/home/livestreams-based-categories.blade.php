@@ -46,6 +46,9 @@ $data->each(function ($category) {
                             <h4 class="main-title"><a
                                 href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ optional($live_Category)->name }}</a>
                             </h4>
+                            <h4 class="main-title"><a
+                                href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ 'view all' }}</a>
+                            </h4>
                         </div>
 
                         <div class="trending-contens">
@@ -137,16 +140,23 @@ $data->each(function ($category) {
             focusOnSelect: true,
             responsive: [
                 {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
                     breakpoint: 1024,
                     settings: {
-                        slidesToShow: 2,
+                        slidesToShow: 5,
                         slidesToScroll: 1,
                     },
                 },
                 {
                     breakpoint: 600,
                     settings: {
-                        slidesToShow: 1,
+                        slidesToShow: 2,
                         slidesToScroll: 1,
                     },
                 },

@@ -7,6 +7,7 @@
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[1])->header_name }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ "view all" }}</a></h4>
                     </div>
 
                     <div class="trending-contens">
@@ -75,7 +76,7 @@
     $(document).ready(function() {
 
         $('.latest-videos-slider').slick({
-            slidesToShow: 1,
+            slidesToShow: 6,
             slidesToScroll: 1,
             arrows: true,
             fade: true,
@@ -92,7 +93,7 @@
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
             prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
             infinite: false,
-            focusOnSelect: true,
+            focusOnSelect: false,
             responsive: [
                 {
                     breakpoint: 1200,

@@ -668,6 +668,22 @@
    }
    #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo button_bg_color();?> !important; }
    #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo button_bg_color(); ?> !important; }
+   .dark-theme header .navbar ul li.menu-item a {color: <?php echo GetDarkText(); ?> !important;}
+   .light-theme header .navbar ul li.menu-item a {color: <?php echo GetLightText(); ?> !important;}
+   .dark-theme ul.f-link li a {color: <?php echo GetDarkText(); ?> !important;}
+   .light-theme ul.f-link li a {color: <?php echo GetLightText(); ?> !important;}
+   .dark-theme .text-body{color: <?php echo GetDarkText(); ?> !important;}
+   .light-theme .text-body{color: <?php echo GetLightText(); ?> !important;}
+   .dark-theme .s-icon {color: <?php echo GetDarkText(); ?> !important;}
+   .light-theme .s-icon{color: <?php echo GetLightText(); ?> !important;}
+   .dark-theme .iq-search-bar .search-input {color: <?php echo GetDarkText(); ?> !important;}
+   .light-theme .iq-search-bar .search-input {color: <?php echo GetLightText(); ?> !important;}
+   .dark-theme ul.list-group.home-search {background: <?php echo GetDarkBg(); ?> !important;}
+   .light-theme ul.list-group.home-search {background: <?php echo GetLightBg(); ?> !important;}
+   .dark-theme .iq-search-bar .search-input {background: <?php echo GetDarkBg(); ?> !important;}
+   .light-theme .iq-search-bar .search-input {background:<?php echo GetLightText(); ?> !important;}
+   .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo GetDarkText(); ?> !important;}
+   .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo GetLightText(); ?> !important;}
 </style>
 
 <body>
@@ -702,6 +718,15 @@
                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
                           <div class="menu-main-menu-container">
                               <ul id="top-menu" class=" mt-2 nav navbar-nav ">
+                                 <div class="toggle mt-2 text-left theme_button_res">
+                                    <i class="fas fa-moon"></i>
+                                    <label class="switch toggle mt-3">
+                                       <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                       <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                       <span class="sliderk round"></span>
+                                    </label>
+                                    <i class="fas fa-sun"></i>
+                                 </div>
 
                                  <?php  
 
@@ -1015,16 +1040,29 @@
 
                                           <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
                                              
-                                             <div class="toggle mt-2 ">
+                                             
+
+                                             <div class="iq-card-body p-0 pl-3 pr-3">
+
+                                             <!-- <div class="toggle mt-2 text-left">
+                                                <i class="fas fa-moon"></i>
+                                                <label class="switch toggle mt-3">
+                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                                   <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                <span class="sliderk round"></span>
+                                                </label>
+                                                <i class="fas fa-sun"></i>
+                                             </div> -->
+
+                                             <div class="toggle mt-2 text-left">
                                                 <i class="fas fa-moon"></i>
                                                    <label class="switch toggle mt-3">
-                                                      <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                      <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                                       <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                                                       <span class="sliderk round"></span>
                                                    </label>
                                                 <i class="fas fa-sun"></i>
                                              </div>
-
-                                             <div class="iq-card-body p-0 pl-3 pr-3">
 
                                                 <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                                    <div class="media align-items-center">
