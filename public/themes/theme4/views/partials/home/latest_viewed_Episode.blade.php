@@ -107,7 +107,7 @@ if (Auth::guest() != true) {
         });
 
         $('.latest-videos-slider-nav').slick({
-            slidesToShow: 5,
+            slidesToShow: 6,
             slidesToScroll: 1,
             asNavFor: '.latest-videos-slider',
             dots: false,
@@ -118,16 +118,23 @@ if (Auth::guest() != true) {
             focusOnSelect: true,
             responsive: [
                 {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
                     breakpoint: 1024,
                     settings: {
-                        slidesToShow: 2,
+                        slidesToShow: 5,
                         slidesToScroll: 1,
                     },
                 },
                 {
                     breakpoint: 600,
                     settings: {
-                        slidesToShow: 1,
+                        slidesToShow: 2,
                         slidesToScroll: 1,
                     },
                 },

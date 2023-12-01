@@ -72,7 +72,7 @@
                             <ul id="trending-slider-nav" class="{{ 'category-videos-slider-nav list-inline p-0 mb-0 row align-items-center' }}" data-key-id="{{$key}}">
 
                                 @foreach ($video_category->category_videos as $videos )
-                                    <li>
+                                    <li style="width:253px">
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
                                                 <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid" >
@@ -194,3 +194,7 @@
         });
     });
 </script>
+
+<style>
+    .
+</style>

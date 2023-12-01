@@ -11,7 +11,7 @@
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mb-0 row align-items-center">
+                        <ul id="trending-slider-nav" class="cnt-videos-slider-nav list-inline p-0 mb-0 row align-items-center">
                             @foreach ($data as $key => $video_details)
                                 <li>
                                     <a href="javascript:void(0);">
@@ -23,7 +23,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
+                        <ul id="trending-slider cnt-videos-slider" class="list-inline p-0 m-0 align-items-center cnt-videos-slider">
                             @foreach ($data as $key => $video_details )
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $video_details->player_image ?  URL::to('public/uploads/images/'.$video_details->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
@@ -74,24 +74,24 @@
 <script>
     
     $( window ).on("load", function() {
-        $('.latest-videos-slider').hide();
+        $('.cnt-videos-slider').hide();
     });
 
     $(document).ready(function() {
 
-        $('.latest-videos-slider').slick({
+        $('.cnt-videos-slider').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: false,
             fade: true,
             draggable: false,
-            asNavFor: '.latest-videos-slider-nav',
+            asNavFor: '.cnt-videos-slider-nav',
         });
 
-        $('.latest-videos-slider-nav').slick({
-            slidesToShow: 5,
+        $('.cnt-videos-slider-nav').slick({
+            slidesToShow: 6,
             slidesToScroll: 1,
-            asNavFor: '.latest-videos-slider',
+            asNavFor: '.cnt-videos-slider',
             dots: false,
             arrows: true,
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
@@ -100,29 +100,36 @@
             focusOnSelect: true,
             responsive: [
                 {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
                     breakpoint: 1024,
                     settings: {
-                        slidesToShow: 2,
+                        slidesToShow: 5,
                         slidesToScroll: 1,
                     },
                 },
                 {
                     breakpoint: 600,
                     settings: {
-                        slidesToShow: 1,
+                        slidesToShow: 2,
                         slidesToScroll: 1,
                     },
                 },
             ],
         });
 
-        $('.latest-videos-slider-nav').on('click', function() {
+        $('.cnt-videos-slider-nav').on('click', function() {
             $( ".close_btn" ).trigger( "click" );
-            $('.latest-videos-slider').show();
+            $('.cnt-videos-slider').show();
         });
 
         $('body').on('click', '.close_btn', function() {
-            $('.latest-videos-slider').hide();
+            $('.cnt-videos-slider').hide();
         });
     });
 </script>
