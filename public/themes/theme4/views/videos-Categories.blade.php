@@ -2,7 +2,6 @@
 
 <style>
     .card-image {
-        background: #1c2933;
         height: 124px;
         width: 124px;
         padding: 24px 8px 16px;
@@ -12,7 +11,7 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        background: #1c2933;
+        background: transparent;
         border-radius: 8px;
         overflow: hidden;
     }
@@ -41,8 +40,6 @@
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        width: 50px;
-        height: 50px;
         flex-shrink: 0;
         border-radius: 8px;
         display: flex;
@@ -84,7 +81,7 @@
 
 </style>
 
-<div class="main-content">
+<div class="main-content p-0">
     <section id="iq-trending">
         <div class="container-fluid">
             <div class="row ">
@@ -132,7 +129,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
-                                        
+                        <div class="caption">
+                            <h3>Videos</h3> 
+                        </div>        
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             {{-- <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[1])->header_name }}</a></h4> --}}
