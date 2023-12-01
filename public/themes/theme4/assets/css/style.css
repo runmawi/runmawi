@@ -742,6 +742,7 @@ a.button-groups.btn.btn-hover.mr-2:hover {
     color: #000;
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
+    transition: 0.5s;
 }
 
 .trending-thumbnail-image{
@@ -751,6 +752,7 @@ a.button-groups.btn.btn-hover.mr-2:hover {
 
 #trending-slider-nav li{
     padding: 2px !important;
+    /* width: 253px !i; */
 }
 
  .close_btn{
@@ -783,6 +785,10 @@ a.button-groups.btn.btn-hover.mr-2:hover {
 .close_btn:hover{
 -webkit-transform: scale(1.3);
 transform: scale(1.3);
+}
+
+#trending-slider li{
+    width:253px !important;
 }
 @media screen and (min-width: 992px) and (max-width: 1399px){
 .trending-custom-tab {

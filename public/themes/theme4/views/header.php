@@ -702,6 +702,15 @@
                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
                           <div class="menu-main-menu-container">
                               <ul id="top-menu" class=" mt-2 nav navbar-nav ">
+                                 <div class="toggle mt-2 text-left theme_button_res">
+                                    <i class="fas fa-moon"></i>
+                                    <label class="switch toggle mt-3">
+                                       <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                       <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                       <span class="sliderk round"></span>
+                                    </label>
+                                    <i class="fas fa-sun"></i>
+                                 </div>
 
                                  <?php  
 
@@ -1015,16 +1024,29 @@
 
                                           <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
                                              
-                                             <div class="toggle mt-2 ">
+                                             
+
+                                             <div class="iq-card-body p-0 pl-3 pr-3">
+
+                                             <!-- <div class="toggle mt-2 text-left">
+                                                <i class="fas fa-moon"></i>
+                                                <label class="switch toggle mt-3">
+                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                                   <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                <span class="sliderk round"></span>
+                                                </label>
+                                                <i class="fas fa-sun"></i>
+                                             </div> -->
+
+                                             <div class="toggle mt-2 text-left">
                                                 <i class="fas fa-moon"></i>
                                                    <label class="switch toggle mt-3">
-                                                      <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                      <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                                       <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                                                       <span class="sliderk round"></span>
                                                    </label>
                                                 <i class="fas fa-sun"></i>
                                              </div>
-
-                                             <div class="iq-card-body p-0 pl-3 pr-3">
 
                                                 <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                                    <div class="media align-items-center">

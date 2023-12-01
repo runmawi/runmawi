@@ -10,7 +10,7 @@ if(isset($sliders)) :
             } ?> header-image">
 
             <div class="slide slick-bg s-bg-1 lazy"
-                style="background:url('<?php echo URL::to('/') . '/public/uploads/videocategory/' . $slider_video->slider; ?>') no-repeat;background-size:contain;background-position:right; ">
+                style="background:url('<?php echo URL::to('/') . '/public/uploads/videocategory/' . $slider_video->slider; ?>');  background-repeat: no-repeat;background-size: cover;">
 
                 <div class="container position-relative h-100">
                     <div class="slider-inner h-100">
@@ -62,7 +62,7 @@ endif; ?>
 } ?> header-image">
 
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>') no-repeat;background-size:cover;background-position:right;  ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>'); background-repeat: no-repeat;background-size: cover;  ">
         <div class="container position-relative h-100">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -129,7 +129,7 @@ endif; ?>
 } ?> header-image">
 
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $live_event_banner->player_image; ?>') no-repeat;background-size:cover;background-position:right;  ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $live_event_banner->player_image; ?>'); background-repeat: no-repeat;background-size: cover;  ">
         <div class="container position-relative h-100">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -185,7 +185,7 @@ endif; ?>
     echo 'active';
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>') no-repeat;background-size:contain;background-position:right; ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>'); background-repeat: no-repeat;background-size: cover;s ">
         <div class="container-fluid position-relative h-100" style="padding:0px 100px;">
             <div class="slider-inner h-100">
 
@@ -274,7 +274,7 @@ if(Route::current()->getName() == "home"){
     echo 'active';
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>') no-repeat;background-size:inherit;background-position:right 10%; ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>'); background-repeat: no-repeat;background-size: cover; ">
         <div class="container position-relative h-100">
             <div class="slider-inner h-100">
 
@@ -340,7 +340,7 @@ if(Route::current()->getName() == "home"){
     echo 'active';
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>') no-repeat;background-size:cover;background-position:center center; ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>');  background-repeat: no-repeat;background-size: cover; ">
         <div class="container position-relative h-100">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -413,7 +413,7 @@ endif; ?>
     echo 'active';
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $series_slider->player_image; ?>') no-repeat;background-size:cover;background-position:right;  ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $series_slider->player_image; ?>'); background-repeat: no-repeat;background-size: cover;  ">
         <div class="container position-relative h-100">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
