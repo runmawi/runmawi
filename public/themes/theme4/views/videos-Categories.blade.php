@@ -66,23 +66,47 @@
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
     }
+    .category-cover {
+        z-index: 0;
+        height: 100%;
+        top: 0;
+        right: 0;
+        overflow: hidden;
+        width: 74%;
+        mask-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(50%, black));
+        mask-image: linear-gradient(to right, transparent 0%, black 50%);
+        -webkit-mask-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(50%, black));
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 50%);
+        position: absolute;
+        pointer-events: none;
+        
+    }
 
 </style>
 
-<div class="main-content" style="background-image:linear-gradient(90deg, black, transparent), url({{ $VideosCategory->image ? URL::to('public/uploads/videocategory/' . $VideosCategory->image) : default_vertical_image_url() }}); background-repeat: no-repeat;background-size: cover;" >
+<div class="main-content">
+    <section id="iq-trending">
+        <div class="container-fluid">
+            <div class="row ">
+            <div class="col-sm-12 iq-main-header d-flex align-items-center justify-content-between h-250" style="height: 250px;">
+                    <div class="caption">
+                        <h2>{{ optional($VideosCategory)->name }}</h2> 
+                    </div>
+                    <div class="category-cover">
+                        <img class="w-100 img-responsive" src="{{ $VideosCategory->image ? URL::to('public/uploads/videocategory/' . $VideosCategory->image) : default_vertical_image_url() }}" />
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </section>
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
 
-                    <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h3 class="main-title">{{ optional($VideosCategory)->name }}</h4>
-                    </div>
-
                     <div class="trending-contens">
 
-                        <ul id="trending-slider-nav"
-                            class="list-inline p-0 mb-0 row align-items-center">
+                        <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
                             @foreach ($Parent_videos_categories as $key => $Parent_videos_category)
                                 <li class="card-image">
                                     <a href="{{ route('video_categories', $Parent_videos_category->slug) }}">
@@ -109,7 +133,7 @@
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                                         
-                                        {{-- Header --}}
+                        {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             {{-- <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[1])->header_name }}</a></h4> --}}
                         </div>
