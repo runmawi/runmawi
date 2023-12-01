@@ -26,21 +26,27 @@
                         <ul id="trending-slider live-category-slider" class="list-inline p-0 m-0 align-items-center live-category-slider">
                             @foreach ($data as $key => $livecategories )
                                 <li>
-                                    <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
-                                        <button class="close_btn">×</button>
+                                    <div class="tranding-block position-relative trending-thumbnail-image" >
+                                        <button class="drp-close">×</button>
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <h2 class="trending-text big-title text-uppercase">{{ optional($livecategories)->name }}</h2>
+                                                        <div class="caption">
+                                                                <h2 class="caption-h2">{{ optional($livecategories)->name }}</h2>
 
-                                                        <div class="p-btns">
-                                                            <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('LiveCategory/'.$livecategories->slug)  }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Visit </a>
-                                                                {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a> --}}
+                                                            <div class="p-btns">
+                                                                <div class="d-flex align-items-center p-0">
+                                                                    <a href="{{ URL::to('LiveCategory/'.$livecategories->slug)  }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Visit </a>
+                                                                    {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a> --}}
+                                                                </div>
                                                             </div>
+                                                        </div>
+
+                                                        <div class="dropdown_thumbnail">
+                                                            <img  src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_horizontal_image_url() }}" alt="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -110,11 +116,11 @@
         });
 
         $('.live-category-slider-nav').on('click', function() {
-            $( ".close_btn" ).trigger( "click" );
+            $( ".drp-close" ).trigger( "click" );
             $('.live-category-slider').show();
         });
 
-        $('body').on('click', '.close_btn', function() {
+        $('body').on('click', '.drp-close', function() {
             $('.live-category-slider').hide();
         });
     });
