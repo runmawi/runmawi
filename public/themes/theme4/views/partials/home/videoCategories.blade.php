@@ -86,7 +86,7 @@
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
             prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
             infinite: false,
-            focusOnSelect: false,
+            focusOnSelect: true,
             responsive: [
                 {
                     breakpoint: 1024,
