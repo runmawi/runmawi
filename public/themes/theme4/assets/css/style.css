@@ -742,6 +742,7 @@ a.button-groups.btn.btn-hover.mr-2:hover {
     color: #000;
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
+    transition: 0.5s;
 }
 
 .trending-thumbnail-image{
