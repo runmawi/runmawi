@@ -718,15 +718,7 @@
                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
                           <div class="menu-main-menu-container">
                               <ul id="top-menu" class=" mt-2 nav navbar-nav ">
-                                 <div class="toggle mt-2 text-left theme_button_res">
-                                    <i class="fas fa-moon"></i>
-                                    <label class="switch toggle mt-3">
-                                       <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
-                                       <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                       <span class="sliderk round"></span>
-                                    </label>
-                                    <i class="fas fa-sun"></i>
-                                 </div>
+                                 
 
                                  <?php  
 
@@ -1044,15 +1036,6 @@
 
                                              <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                             <!-- <div class="toggle mt-2 text-left">
-                                                <i class="fas fa-moon"></i>
-                                                <label class="switch toggle mt-3">
-                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
-                                                   <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                                <span class="sliderk round"></span>
-                                                </label>
-                                                <i class="fas fa-sun"></i>
-                                             </div> -->
 
                                              <div class="toggle mt-2 text-left">
                                                 <i class="fas fa-moon"></i>
@@ -1348,41 +1331,6 @@
         });
         </script>
 
-        
-<script>
-         $("#toggle").click(function(){
-         
-            var theme_mode = $("#toggle").prop("checked");
-         
-            $.ajax({
-            url: '<?php echo URL::to("theme-mode") ;?>',
-            method: 'post',
-            data: 
-               {
-                  "_token": "<?php echo csrf_token(); ?>",
-                  mode: theme_mode 
-               },
-               success: (response) => {
-                  console.log(response);
-               },
-            })
-         });
-         
-      </script>
-
-      <!-- Dark Mode & Light Mode  -->
-      <script>
-         let theme_modes = $("#toggle").val();
-         
-         $(document).ready(function(){
-         
-            if( theme_modes == 'light' ){
-         
-               body.classList.add('light-theme');
-         
-            }
-         });
-      </script>
 
 
         <style>

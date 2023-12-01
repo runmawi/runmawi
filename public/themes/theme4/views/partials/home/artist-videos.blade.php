@@ -26,25 +26,31 @@
                         <ul id="trending-slider artist-slider" class="list-inline p-0 m-0 align-items-center artist-slider">
                             @foreach ($data as $key => $artist_details )
                                 <li>
-                                    <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
-                                        <button class="close_btn">×</button>
+                                    <div class="tranding-block position-relative trending-thumbnail-image" >
+                                        <button class="drp-close">×</button>
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <h2 class="trending-text big-title text-uppercase">{{ optional($artist_details)->artist_name }}</h2>
+                                                        <div class="caption">
+                                                            <h2 class="caption-h2">{{ optional($artist_details)->artist_name }}</h2>
 
-                                                        @if (optional($artist_details)->description)
-                                                            <div class="trending-dec">{!! html_entity_decode( optional($artist_details)->description) !!}</div>
-                                                        @endif
+                                                            @if (optional($artist_details)->description)
+                                                                <div class="trending-dec">{!! html_entity_decode( optional($artist_details)->description) !!}</div>
+                                                            @endif
 
-                                                        <div class="p-btns">
-                                                            <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('artist/'.$artist_details->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a> --}}
+                                                            <div class="p-btns">
+                                                                <div class="d-flex align-items-center p-0">
+                                                                    <a href="{{ URL::to('artist/'.$artist_details->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                    {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a> --}}
+                                                                </div>
                                                             </div>
+                                                        </div>
+
+                                                        <div class="dropdown_thumbnail">
+                                                            <img  src="{{ $artist_details->image ?  URL::to('public/uploads/artists/'.$artist_details->image) : default_horizontal_image_url() }}" alt="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -107,11 +113,11 @@
         });
 
         $('.artist-slider-nav').on('click', function() {
-            $( ".close_btn" ).trigger( "click" );
+            $( ".drp-close" ).trigger( "click" );
             $('.artist-slider').show();
         });
 
-        $('body').on('click', '.close_btn', function() {
+        $('body').on('click', '.drp-close', function() {
             $('.artist-slider').hide();
         });
     });

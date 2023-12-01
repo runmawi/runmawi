@@ -25,22 +25,28 @@
                         <ul id="trending-slider audios-category-slider" class="list-inline p-0 m-0 align-items-center audios-category-slider">
                             @foreach ($data as $key => $audioscategories )
                                 <li>
-                                    <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $audioscategories->image ?  URL::to('public/uploads/audios/'.$audioscategories->image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
-                                        <button class="close_btn">×</button>
+                                    <div class="tranding-block position-relative trending-thumbnail-image">
+                                        <button class="drp-close">×</button>
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <h2 class="trending-text big-title text-uppercase">{{ optional($audioscategories)->name }}</h2>
+                                                        <div class="caption">
+                                                                <h2 class="caption-h2">{{ optional($audioscategories)->name }}</h2>
 
-                                                        <div class="p-btns">
-                                                            <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('audios/category/'. $audioscategories->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Visit </a>
-                                                                {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a> --}}
+                                                            <div class="p-btns">
+                                                                <div class="d-flex align-items-center p-0">
+                                                                    <a href="{{ URL::to('audios/category/'. $audioscategories->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Visit </a>
+                                                                    {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a> --}}
+                                                                </div>
                                                             </div>
                                                         </div>
+
+                                                            <div class="dropdown_thumbnail">
+                                                                <img  src="{{ $audioscategories->image ?  URL::to('public/uploads/audios/'.$audioscategories->image) : default_horizontal_image_url() }}" alt="">
+                                                            </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -109,11 +115,11 @@
         });
 
         $('.audios-category-slider-nav').on('click', function() {
-            $( ".close_btn" ).trigger( "click" );
+            $( ".drp-close" ).trigger( "click" );
             $('.audios-category-slider').show();
         });
 
-        $('body').on('click', '.close_btn', function() {
+        $('body').on('click', '.drp-close', function() {
             $('.audios-category-slider').hide();
         });
     });
