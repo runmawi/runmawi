@@ -9884,13 +9884,20 @@ class AdminVideosController extends Controller
                $videolibrary = [];
 
            }
-        
+
            if(count($videolibrary) > 0){
 
                 foreach($videolibrary as $key => $value){
+
+
+
                     if( $value['Id'] == $request->videolibrary_id){
+
+
+
                         $videolibrary_id = $value['Id'];
                         $videolibrary_ApiKey = $value['ApiKey']; 
+                        break;
                     }else{
                         $videolibrary_id = null;
                         $videolibrary_ApiKey = null; 
@@ -9902,16 +9909,17 @@ class AdminVideosController extends Controller
                 $videolibrary_id = null;
                 $videolibrary_ApiKey = null; 
             }
+
         
             if($videolibrary_id != null && $videolibrary_ApiKey != null){
 
                 $client = new \GuzzleHttp\Client();
 
-                $response = $client->request('GET', 'https://video.bunnycdn.com/library/120702/videos?page=1&itemsPerPage=100&orderBy=date', [
-                    'headers' => [
-                    'AccessKey' => $videolibrary_ApiKey,
-                    'accept' => 'application/json',
-                ],
+                $response = $client->request('GET', 'https://video.bunnycdn.com/library/' . $videolibrary_id . '/videos?page=1&itemsPerPage=100&orderBy=date', [
+                        'headers' => [
+                        'AccessKey' => $videolibrary_ApiKey,
+                        'accept' => 'application/json',
+                    ],
                 ]);
                 $streamvideos = $response->getBody()->getContents();
                 // echo $response->getBody();
@@ -9921,7 +9929,7 @@ class AdminVideosController extends Controller
                 $streamvideos = [];
             }
 
-        // print_r($data);exit;
+        // print_r($response);exit;
             return $streamvideos;
         
     }
