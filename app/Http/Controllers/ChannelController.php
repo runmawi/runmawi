@@ -122,9 +122,9 @@ class ChannelController extends Controller
                                 $videos->whereBetween('videos.age_restrict', [0, 12]);
                             }
                         })->latest()->limit(30)->get()->map(function ($item) {
-                            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  ResponseBuilder::Vertical_Default_Image() ;
-                            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  ResponseBuilder::Horizontal_Default_Image() ;
-                            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  ResponseBuilder::Horizontal_Default_Image() ;
+                            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url();
+                            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url();
                             $item['source_type']        = "Videos" ;
                             return $item;
             });
