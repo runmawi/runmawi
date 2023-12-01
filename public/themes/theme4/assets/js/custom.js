@@ -166,10 +166,27 @@ Index Of Script
 			{
 				breakpoint: 1200,
 				settings: {
-				slidesToShow: 3,
+				slidesToShow: 6,
 				slidesToScroll: 1,
 				infinite: true,
 				dots: true
+				}
+			},
+			{
+				breakpoint: 1024,
+				settings: {
+				slidesToShow: 5,
+				slidesToScroll: 1,
+				infinite: true,
+				arrows: true,
+				}
+			},
+			{
+				breakpoint: 600,
+				settings: {
+				slidesToShow: 3,
+				slidesToScroll: 1,
+				arrows: true,
 				}
 			},
 			{
@@ -182,9 +199,9 @@ Index Of Script
 			{
 				breakpoint: 480,
 				settings: {
-				// arrows: false,
-				slidesToShow: 1,
-				slidesToScroll: 1
+				slidesToShow: 2,
+				slidesToScroll: 1,
+				arrows: true,
 				}
 			}
 			]
@@ -225,13 +242,40 @@ Index Of Script
 				{
 				breakpoint: 1200,
 				settings: {
-					slidesToShow: 2,
+					slidesToShow: 6,
 				}
+				},
+				{
+					breakpoint: 1024,
+					settings: {
+					slidesToShow: 5,
+					slidesToScroll: 1,
+					infinite: true,
+					arrows: true,
+					}
+				},
+				{
+					breakpoint: 768,
+					settings: {
+					slidesToShow: 2,
+					slidesToScroll: 1,
+					arrows: true,
+					}
 				},
 				{
 					breakpoint: 600,
 					settings: {
-						asNavFor: false,
+					slidesToShow: 3,
+					slidesToScroll: 1,
+					arrows: true,
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+					slidesToShow: 2,
+					slidesToScroll: 1,
+					arrows: true,
 					}
 				},
 			]
@@ -246,29 +290,31 @@ Index Of Script
 			slidesToShow: 4,
 			slidesToScroll: 1,
 			responsive: [
-			{
-				breakpoint: 1024,
-				settings: {
-				slidesToShow: 3,
-				slidesToScroll: 1,
-				infinite: true,
-				dots: true,
+				{
+					breakpoint: 1024,
+					settings: {
+					slidesToShow: 5,
+					slidesToScroll: 1,
+					infinite: true,
+					arrows: true,
+					}
+				},
+				{
+					breakpoint: 600,
+					settings: {
+					slidesToShow: 3,
+					slidesToScroll: 1,
+					arrows: true,
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+					slidesToShow: 2,
+					slidesToScroll: 1,
+					arrows: true,
+					}
 				}
-			},
-			{
-				breakpoint: 600,
-				settings: {
-				slidesToShow: 2,
-				slidesToScroll: 1,
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-				slidesToShow: 1,
-				slidesToScroll: 1,
-				}
-			}
 			]
 		});
 
@@ -278,39 +324,41 @@ Index Of Script
 			infinite: true,
 			speed: 300,
 			autoplay: false,
-			slidesToShow: 4,
+			slidesToShow: 5,
 			slidesToScroll: 1,
 			responsive: [
 			{
 				breakpoint: 1024,
 				settings: {
-				slidesToShow: 3,
+				slidesToShow: 5,
 				slidesToScroll: 1,
 				infinite: true,
-				dots: true,
+				arrows: true,
 				}
 			},
 			{
 				breakpoint: 600,
 				settings: {
-				slidesToShow: 2,
+				slidesToShow: 3,
 				slidesToScroll: 1,
+				arrows: true,
 				}
 			},
 			{
 				breakpoint: 480,
 				settings: {
-				slidesToShow: 1,
+				slidesToShow: 2,
 				slidesToScroll: 1,
+				arrows: true,
 				}
 			}
 			]
 		});
 
 		$('.trending-slider').slick({
-			slidesToShow: 1,
+			slidesToShow: 5,
 			slidesToScroll: 1,
-			arrows: false,
+			arrows: true,
 			fade: true,
 			draggable: false,
 			asNavFor: '.trending-slider-nav',
@@ -330,16 +378,22 @@ Index Of Script
 			focusOnSelect: true,
 			responsive: [
 				{
+					breakpoint: 1200,
+					settings: {
+						slidesToShow: 6,
+					}
+				},
+				{
 					breakpoint: 1024,
 					settings: {
-						slidesToShow: 2,
+						slidesToShow: 5,
 						slidesToScroll: 1,
 					},
 				},
 				{
 					breakpoint: 600,
 					settings: {
-						slidesToShow: 1,
+						slidesToShow: 3,
 						slidesToScroll: 1,
 					},
 				},
@@ -356,9 +410,15 @@ Index Of Script
 			dots:false,
 			responsive: [
 				{
+					breakpoint: 1200,
+					settings: {
+						slidesToShow: 6,
+					}
+				},
+				{
 					breakpoint: 991,
 					settings: {
-						arrows: false,
+						arrows: true,
 						centerMode: true,
 						centerPadding: '20px',
 						slidesToShow: 1
@@ -367,7 +427,7 @@ Index Of Script
 				{
 					breakpoint: 480,
 					settings: {
-						arrows: false,
+						arrows: true,
 						centerMode: true,
 						centerPadding: '20px',
 						slidesToShow: 1

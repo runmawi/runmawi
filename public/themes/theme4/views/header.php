@@ -388,110 +388,287 @@
    .sliderk.round:before {
    border-radius: 50%;
    }
+
    /* Dark mode and light Mode */
+
    body.light-theme {
-   background: <?php echo GetLightBg(); ?>!important;
+      background: <?php echo GetLightBg(); ?>!important;
    }
+
    body.light-theme h4, body.light-theme p {
-   color: <?php echo GetLightText(); ?>;
+      color: <?php echo GetLightText(); ?>;
    }
+
    body.light-theme header#main-header{
-   background-color: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>;
-   box-shadow: 0 0 50px #ccc;
+      background-color: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
+
    body.light-theme footer{
-   background: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>;
-   box-shadow: 0 0 50px #ccc;
+      background: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
+
    body.light-theme .copyright{
-   background-color: <?php echo GetLightBg(); ?>;
-   color: <?php echo GetLightText(); ?>;
+      background-color: <?php echo GetLightBg(); ?>;
+      color: <?php echo GetLightText(); ?>;
    }
+
    body.light-theme .s-icon{
-   background-color: <?php echo GetLightBg(); ?>; 
-   box-shadow: 0 0 50px #ccc;
+      background-color: <?php echo GetLightBg(); ?>; 
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
+
    body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+      color: <?php echo GetLightText(); ?>!important;
    }
+
    body.light-theme .dropdown-menu.categ-head{
-   background-color: <?php echo GetLightBg(); ?>!important;  
-   color: <?php echo GetLightText(); ?>!important;
+      background-color: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>!important;
    }
+
    body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
-   color: rgb(0, 82, 204)!important;
-       font-weight: 500;
+      color: rgb(0, 82, 204)!important;
+      font-weight: 500;
    }
+
    body.light-theme .navbar-right .iq-sub-dropdown{
-   background-color: <?php echo GetLightBg(); ?>;  
+      background-color: <?php echo GetLightBg(); ?>;  
    }
+
    body.light-theme .media-body h6{
-   color: <?php echo GetLightText(); ?>;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>;
+      font-weight: 400;
    }
+
    body.light-theme .block-description h6{
-   color: <?php echo GetLightText(); ?>;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>;
+      font-weight: 400;
    }  
+
    body.light-theme .movie-time i{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
    }  
+
    body.light-theme .p-tag1{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
-   } body.light-theme .p-tag{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
    } 
+   
+   body.light-theme .p-tag{
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
+   } 
+
    body.light-theme .movie-time span{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
    }
+
    body.light-theme .block-description a{
-   color: <?php echo GetLightText(); ?>!important;
-   font-weight: 400;
+      color: <?php echo GetLightText(); ?>!important;
+      font-weight: 400;
    } 
-    body.light-theme .block-description{
-  background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
-    backdrop-filter: blur(2px);
+   
+   body.light-theme .block-description{
+      background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
+      backdrop-filter: blur(2px);
    }
+
    body.light-theme  header .navbar ul li{
-   font-weight: 400;
+      font-weight: 400;
    }
+
    body.light-theme .slick-nav i{
-   color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
    }
+
    body.light-theme h2{
-   color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
    }
+
    body.light-theme .filter-option-inner-inner{
-   color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
    } 
+
    body.light-theme .vid-title{
-   color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
    }
+
    body.light-theme .trending-info h1{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .text-detail{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .share-icons.music-play-lists li span i{
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .btn1{
-   border: 1px solid <?php echo GetLightText(); ?>!important;
-   color: <?php echo GetLightText(); ?>!important;
-   }body.light-theme .trending-dec{
-   color: <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
    }
+
+   body.light-theme .text-detail{
+      color: <?php echo GetLightText(); ?>!important;
+   }
+
+   body.light-theme .share-icons.music-play-lists li span i{
+      color: <?php echo GetLightText(); ?>!important;
+   }
+   
+   body.light-theme .btn1{
+      border: 1px solid <?php echo GetLightText(); ?>!important;
+      color: <?php echo GetLightText(); ?>!important;
+   }
+   
+   body.light-theme .trending-dec{
+      color: <?php echo GetLightText(); ?>!important;
+   }
+
    body.light-theme h6.trash{
-   color: black;
+      color: black;
    }
+
+   /* Dark Mode */
+
+   body.dark-theme {
+      background: <?php echo GetDarkBg(); ?>!important;
+   }
+
+   body.dark-theme h4, body.dark-theme p {
+      color: <?php echo GetDarkText(); ?>;
+   }
+
+   body.dark-theme header#main-header{
+      background-color: <?php echo GetDarkBg(); ?>!important;  
+      color: <?php echo GetDarkText(); ?>;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+   }
+
+   body.dark-theme footer{
+      background: <?php echo GetDarkBg(); ?>!important;  
+      color: <?php echo GetDarkText(); ?>;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+   }
+
+   body.dark-theme .copyright{
+      background-color: <?php echo GetDarkBg(); ?>;
+      color: <?php echo GetDarkText(); ?>;
+   }
+
+   body.dark-theme .s-icon{
+      background-color: <?php echo GetDarkBg(); ?>; 
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+   }
+
+   body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+      color: <?php echo GetDarkText(); ?>!important;
+   }
+
+   body.dark-theme .dropdown-menu.categ-head{
+      background-color: <?php echo GetDarkBg(); ?>!important;  
+      color: <?php echo GetDarkText(); ?>!important;
+   }
+
+   body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
+      color: rgb(0, 82, 204)!important;
+      font-weight: 500;
+   }
+
+   body.dark-theme .navbar-right .iq-sub-dropdown{
+      background-color: <?php echo GetDarkBg(); ?>;  
+   }
+
+   body.dark-theme .media-body h6{
+      color: <?php echo GetDarkText(); ?>;
+      font-weight: 400;
+   }
+
+   body.dark-theme .block-description h6{
+      color: <?php echo GetDarkText(); ?>;
+      font-weight: 400;
+   }  
+
+   body.dark-theme .movie-time i{
+      color: <?php echo GetDarkText(); ?>!important;
+      font-weight: 400;
+   }  
+
+   body.dark-theme .p-tag1{
+      color: <?php echo GetDarkText(); ?>!important;
+      font-weight: 400;
+   } 
+   
+   body.dark-theme .p-tag{
+      color: <?php echo GetDarkText(); ?>!important;
+      font-weight: 400;
+   } 
+
+   body.dark-theme .movie-time span{
+      color: <?php echo GetDarkText(); ?>!important;
+      font-weight: 400;
+   }
+
+   body.dark-theme .block-description a{
+      color: <?php echo GetDarkText(); ?>!important;
+      font-weight: 400;
+   } 
+   
+   body.dark-theme .block-description{
+      background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
+      backdrop-filter: blur(2px);
+   }
+
+   body.dark-theme  header .navbar ul li{
+      font-weight: 400;
+   }
+
+   body.dark-theme .slick-nav i{
+      color: <?php echo GetDarkText(); ?>!important;
+   }
+
+   body.dark-theme h2{
+      color: <?php echo GetDarkText(); ?>!important;
+   }
+
+   body.dark-theme .filter-option-inner-inner{
+      color: <?php echo GetDarkText(); ?>!important;
+   } 
+
+   body.dark-theme .vid-title{
+      color: <?php echo GetDarkText(); ?>!important;
+   }
+
+   body.dark-theme .trending-info h1{
+      color: <?php echo GetDarkText(); ?>!important;
+   }
+
+   body.dark-theme .text-detail{
+      color: <?php echo GetDarkText(); ?>!important;
+   }
+
+   body.dark-theme .share-icons.music-play-lists li span i{
+      color: <?php echo GetDarkText(); ?>!important;
+   }
+   
+   body.dark-theme .btn1{
+      border: 1px solid <?php echo GetDarkText(); ?>!important;
+      color: <?php echo GetDarkText(); ?>!important;
+   }
+   
+   body.dark-theme .trending-dec{
+      color: <?php echo GetDarkText(); ?>!important;
+   }
+
+   body.dark-theme h6.trash{
+      color: black;
+   }
+
    .Search_error_class {
       color: red;
    }
+   .channel-logo {
+    border-left: 5px solid  <?php echo GetDarkBg(); ?> !important;
+    background: transparent linear-gradient(270deg, rgba(11, 1, 2, 0) 0%, <?php echo button_bg_color(); ?> 100%);
+   }
+   #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo button_bg_color();?> !important; }
+   #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo button_bg_color(); ?> !important; }
 </style>
-
 
 <body>
     <!-- loader Start -->
@@ -525,15 +702,6 @@
                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
                           <div class="menu-main-menu-container">
                               <ul id="top-menu" class=" mt-2 nav navbar-nav ">
-                              <div class="toggle mt-2 text-left theme_button_res pl-4">
-                                             <i class="fas fa-moon"></i>
-                                             <label class="switch toggle mt-3">
-                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
-                                                   <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                                <span class="sliderk round"></span>
-                                             </label>
-                                             <i class="fas fa-sun"></i>
-                                          </div>
 
                                  <?php  
 
@@ -819,181 +987,198 @@
 
                                        <?php if( Auth::guest() ) : ?>
 
-                                          <div class="iq-card-body p-0 pl-3 pr-3">
+                                             <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                             <li class="nav-item nav-icon">
-                                                <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
-                                                   <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
-                                                      <div class="media-body">
-                                                         <h6 class="mb-0 ">Signin</h6>
+                                                <li class="nav-item nav-icon">
+                                                   <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
+                                                         <div class="media-body">
+                                                            <h6 class="mb-0 ">Signin</h6>
+                                                         </div>
                                                       </div>
-                                                   </div>
-                                                </a>
-                                             </li>
-                                             
-                                             <li class="nav-item nav-icon">
-                                                <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
-                                                   <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                                      <div class="media-body">
-                                                         <h6 class="mb-0 ">Signup</h6>
+                                                   </a>
+                                                </li>
+                                                
+                                                <li class="nav-item nav-icon">
+                                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                                         <div class="media-body">
+                                                            <h6 class="mb-0 ">Signup</h6>
+                                                         </div>
                                                       </div>
-                                                   </div>
-                                                </a>
-                                             </li>
+                                                   </a>
+                                                </li>
 
-                                          </div>
+                                             </div>
 
                                           <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
-
-                                          <div class="iq-card-body p-0 pl-3 pr-3">
-
-                                          <div class="toggle mt-2 text-left ">
-                                             <i class="fas fa-moon"></i>
-                                             <label class="switch toggle mt-3">
-                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
-                                                   <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                                <span class="sliderk round"></span>
-                                             </label>
-                                             <i class="fas fa-sun"></i>
-                                          </div>
-
-                                             <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Manage Profile</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
                                              
-                                             <!-- <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Pricing Plan</h6>
-                                                      </div>
-                                                </div>
-                                             </a> -->
+                                             <div class="toggle mt-2 ">
+                                                <i class="fas fa-moon"></i>
+                                                   <label class="switch toggle mt-3">
+                                                      <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                      <span class="sliderk round"></span>
+                                                   </label>
+                                                <i class="fas fa-sun"></i>
+                                             </div>
 
-                                             <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Wishlist</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
+                                             <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                             <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Watchlater</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
+                                                <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Manage Profile</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
+                                                
+                                                <!-- <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Pricing Plan</h6>
+                                                         </div>
+                                                   </div>
+                                                </a> -->
 
-                                             <a href="<?= URL::to('/admin') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Admin</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
+                                                <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Wishlist</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
 
-                                             <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Logout</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
-                                          </div>
+                                                <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Watchlater</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
+
+                                                <a href="<?= URL::to('/admin') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Admin</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
+
+                                                <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Logout</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
+                                             </div>
 
                                           <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
 
-                                          <div class="iq-card-body p-0 pl-3 pr-3">
-                                             <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Manage Profile</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
+                                             <div class="toggle mt-2 ">
+                                                <i class="fas fa-moon"></i>
+                                                   <label class="switch toggle mt-3">
+                                                      <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                      <span class="sliderk round"></span>
+                                                   </label>
+                                                <i class="fas fa-sun"></i>
+                                             </div>
 
-                                             <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Wishlist</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
+                                             <div class="iq-card-body p-0 pl-3 pr-3">
+                                                <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Manage Profile</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
 
-                                             <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Watchlater</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
+                                                <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Wishlist</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
+
+                                                <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Watchlater</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
+                                                
+                                                <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Logout</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
+                                             </div>
+
+                                          <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
                                              
-                                             <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Logout</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
-                                          </div>
+                                             <div class="toggle mt-2 ">
+                                                <i class="fas fa-moon"></i>
+                                                   <label class="switch toggle mt-3">
+                                                      <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                      <span class="sliderk round"></span>
+                                                   </label>
+                                                <i class="fas fa-sun"></i>
+                                             </div>
 
-                                          <?php elseif( !Auth::guest() && Auth::user()->role == "subs"): ?>
+                                             <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                          <div class="iq-card-body p-0 pl-3 pr-3">
+                                                <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Manage Profile</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
 
-                                             <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Manage Profile</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
+                                                <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Wishlist</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
 
-                                             <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Wishlist</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
-
-                                             <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Watchlater</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
-                                             
-                                             <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Logout</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
-                                          </div>
+                                                <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Watchlater</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
+                                                
+                                                <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                                                   <div class="media align-items-center">
+                                                         <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                                         <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">Logout</h6>
+                                                         </div>
+                                                   </div>
+                                                </a>
+                                             </div>
 
                                           <?php endif; ?>
                                       </div>
@@ -1079,16 +1264,23 @@
 
         <!-- Dark Mode & Light Mode  -->
         <script>
-        let theme_modes = $("#toggle").val();
 
-        $(document).ready(function() {
+            $(document).ready(function() {
 
-            if (theme_modes == 'light') {
+               let theme_modes = $("#toggle").val();
 
-                body.classList.add('light-theme');
+                  if (theme_modes == 'light') {
 
-            }
-        });
+                     body.classList.remove('dark-theme');
+                     body.classList.add('light-theme');
+
+                  }else if( theme_modes == 'dark' ) {
+
+                     body.classList.remove('light-theme');
+                     body.classList.add('dark-theme');
+                  }
+            });
+
         </script>
 
         <script>
