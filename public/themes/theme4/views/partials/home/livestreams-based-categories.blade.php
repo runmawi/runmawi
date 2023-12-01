@@ -46,6 +46,9 @@ $data->each(function ($category) {
                             <h4 class="main-title"><a
                                 href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ optional($live_Category)->name }}</a>
                             </h4>
+                            <h4 class="main-title"><a
+                                href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ 'view all' }}</a>
+                            </h4>
                         </div>
 
                         <div class="trending-contens">
