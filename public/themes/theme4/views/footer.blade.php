@@ -11,7 +11,7 @@
 
 ?>
 
-<footer class="mb-0">
+<footer>
     <div class="container-fluid">
         <div class="block-space">
             <div class="row">

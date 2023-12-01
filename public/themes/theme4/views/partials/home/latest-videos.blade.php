@@ -75,7 +75,7 @@
     $(document).ready(function() {
 
         $('.latest-videos-slider').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
             arrows: true,
             fade: true,
@@ -92,7 +92,7 @@
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
             prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
             infinite: false,
-            focusOnSelect: false,
+            focusOnSelect: true,
             responsive: [
                 {
                     breakpoint: 1200,
