@@ -760,21 +760,25 @@
                                           </a>
                                           
                                           <ul class="dropdown-menu categ-head">
-                                             <?php foreach ( $video_category as $category) : ?>
-                                                <li>
-                                                   <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->Parent_video_category->slug) ?>">
-                                                      <?= $category->Parent_video_category->name ;?>
-                                                   </a>
-                                                </li>
-
+                                          <?php foreach ( $video_category as $category) : ?>
                                                 <?php if( !is_null($category->Parent_video_category) ): ?>
+                                                   
+                                                      <li>
+                                                         <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->Parent_video_category->slug) ?>">
+                                                            <?= '<i class="fa fa-arrow-right" aria-hidden="true"></i> &nbsp &nbsp' . $category->Parent_video_category->name ;?>
+                                                         </a>
+                                                      </li>
+                                                   
+                                                <?php endif; ?>
+                                                
+
+                                                <?php if( is_null($category->Parent_video_category) ): ?>
                                                    <ul>
-                                                   <li>
-                                                      <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->slug)?>">
-                                                         <?= $category->name;?>
-                                                      </a>
-                                                   </li>
-                                                      
+                                                      <li>
+                                                         <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->slug)?>">
+                                                            <?= $category->name;?>
+                                                         </a>
+                                                      </li>
                                                    </ul>
                                                 <?php endif; ?>
 
