@@ -1,5 +1,6 @@
 <?php include('header.php'); ?>
 <style type="text/css">
+  
 	.nav-pills li a {color: #fff !important;}
     nav{
        margin: 0 auto;
@@ -190,7 +191,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                         <!-- BREADCRUMBS -->
 
-    <div class="row">
+    <div class="row mr-2">
         <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
                 <ol class="breadcrumb">
@@ -206,9 +207,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
                             <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                         </a>
+                        
+                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
                     <?php } ?>
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
 
                     <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title); ?> </a></li>
                 </ol>
@@ -216,9 +218,9 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
         </div>
                   </div>
 
-		<div class="row">
-			<div class="col-md-12 mt-4">
-				<nav class="nav-justified">
+		<div class=" ">
+			<div class="col-md-12 mt-4 p-0">
+				<nav class="nav-justified p-0 m-0 w-100">
 					<div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
                         <h4 class="ml-3"><?php echo __('Episode'); ?></h4>
 						<!--<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
