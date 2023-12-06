@@ -119,10 +119,3 @@
     display: none;
 }
 
-#trending-slider li.slick-slide.slick-active{
-    height: auto;
-    max-height: 245px !important;
-}
-#trending-slider li.slick-slide.slick-current.slick-active{
-    max-height: 443px !important;
-}
