@@ -446,6 +446,9 @@
    body.light-theme h2{
    color: <?php echo GetLightText(); ?>!important;
    }
+   body.light-theme h5{
+   color: <?php echo GetLightText(); ?>!important;
+   }
    body.light-theme .filter-option-inner-inner{
    color: <?php echo GetLightText(); ?>!important;
    } 

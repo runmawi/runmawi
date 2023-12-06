@@ -228,9 +228,10 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     body.light .iq-menu li a span{color: <?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
     /*body.light h1,h2,h3,h4,h5,h6{color: <?php echo GetAdminLightText(); ?>;}*/
     body.light label{color: <?php echo GetAdminLightText(); ?>;}
-    body.light .iq-bg-warning{color: <?php echo GetAdminLightText(); ?>!important; background:transparent!important;}
-    body.light .iq-bg-success{color: <?php echo GetAdminLightText(); ?>!important; background:transparent!important;}
-    body.light .iq-bg-danger{ color: <?php echo GetAdminLightText(); ?>!important; background:transparent!important;}
+    body.light .iq-bg-warning{color: <?php echo GetAdminDarkBg(); ?>!important; background:<?php echo GetAdminDarkBg(); ?>!important;}
+    body.light .iq-bg-success{color: <?php echo GetAdminDarkBg(); ?>!important; background:<?php echo GetAdminDarkBg(); ?>!important;}
+    body.light .iq-bg-danger{ color: <?php echo GetAdminDarkBg(); ?>!important; background:<?php echo GetAdminDarkBg(); ?>!important;}
+   
     body.light #progressbar li.active{color: blue!important;}
     body.light #progressbar li img{filter: invert(1);}
     body.light .ply{filter: invert(1);}
