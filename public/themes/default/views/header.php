@@ -738,7 +738,7 @@
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $AudioCategory as $category){ ?>
                                     <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('audio/').'/'.$category->name;?>"> 
+                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('audios/category/').'/'.$category->name;?>"> 
                                        <?php echo (__($category->name));?> 
                                        </a>
                                     </li>
