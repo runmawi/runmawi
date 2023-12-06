@@ -76,7 +76,7 @@
                                     <?php } ?>
                                     
                                 </div>
-                                <div class="block-description">
+                                <div class="block-description pt-3">
                                     <a href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
                                         <?php if($ThumbnailSetting->title == 1) { ?>
                                         <!-- Title -->
@@ -136,7 +136,7 @@
                                             </span>
                                             <?php } ?>
                                         </div>
-                                        <div class="hover-buttons">
+                                        <div class="hover-buttons m-0">
                                             <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
                                                 <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
