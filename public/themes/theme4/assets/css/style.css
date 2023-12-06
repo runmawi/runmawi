@@ -113,7 +113,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 .main-title a:hover, .main-title a:focus {color:var(--iq-primary) !important;}
 :focus{outline: none !important;}
 /*--------------------------*/
-ul#trending-slider-nav { padding: 0 10px !important;}
+/* ul#trending-slider-nav { padding: 0 10px !important;} */
 .favorites-slider .slick-list, #top-ten-slider-nav .slick-list { overflow: visible; padding-bottom: 40px !important; }
 .favorites-slider li.slide-item { float: left; width: 25%; }
 .favorites-slider .slick-list { overflow: visible; }
@@ -748,7 +748,7 @@ a.button-groups.btn.btn-hover.mr-2:hover {
 }
 
 .trending-thumbnail-image{
-    width: 94vw !important;
+    width: 98vw !important;
 }
 
 
