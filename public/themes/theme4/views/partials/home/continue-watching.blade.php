@@ -1,18 +1,18 @@
 @if (!empty($data) && $data->isNotEmpty())
 
     <section id="iq-favorites">
-        <div class="container-fluid">
+        <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="#">{{ ucwords('continue watching') }}</a></h4>
+                        <h4 class="main-title pl-5"><a href="#">{{ ucwords('continue watching') }}</a></h4>
                         <h4 class="main-title"><a href="#">{{ ucwords('view all') }}</a></h4>
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="cnt-videos-slider-nav list-inline p-0 mb-0 row align-items-center">
+                        <ul id="trending-slider-nav" class="cnt-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
                             @foreach ($data as $key => $video_details)
                                 <li>
                                     <a href="javascript:void(0);">
@@ -35,7 +35,7 @@
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <div class="caption">
+                                                        <div class="caption pl-5">
                                                             <h2 class="caption-h2">{{ optional($video_details)->title }}</h2>
 
                                                             <!-- @if ( $video_details->year != null && $video_details->year != 0)
