@@ -132,9 +132,8 @@ if (!empty($data['password_hash'])) {
     body.dark .btn-black{background-color: <?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
     body.dark .bg-white{background-color: transparent!important;} /* #9b59b6 */
     body.dark #video{background-color: transparent!important;} /* #9b59b6 */
-    body.dark .form-control{background: <?php echo GetAdminDarkBg(); ?>!important;color:<?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
+    body.dark .form-control{ ?>!important;color:<?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
     body.dark .form-control option{background: <?php echo GetAdminDarkBg(); ?>!important;color: <?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
-    body.dark .select2-selection__rendered{background: <?php echo GetAdminDarkBg(); ?>!important;} /* #9b59b6 */
     body.dark .r1{background-color:  <?php echo GetAdminDarkBg(); ?>;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
     body.dark .file{background-color: <?php echo GetAdminDarkBg(); ?>;} /* #9b59b6 */
     body.dark #sidebar-wrapper .list-group{background-color: ;} /* #9b59b6 */
@@ -171,7 +170,7 @@ if (!empty($data['password_hash'])) {
     body.dark .dropzone .dz-message .dz-button{color:<?php echo GetAdminDarkText(); ?>;}
     body.dark th{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .table-bordered td, .table-bordered th {color: <?php echo GetAdminDarkText(); ?>;}
-    body.dark .tags-input-wrapper input{color: #000;background: <?php echo GetAdminDarkText(); ?>!important;}
+    body.dark .tags-input-wrapper input{color: #000;}
     body.dark h3{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark h4{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark h5{color: <?php echo GetAdminDarkText(); ?>;}
@@ -202,9 +201,7 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     body.light .btn-black{background-color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
     body.light .bg-white{background-color: transparent!important;} /* #9b59b6 */
     body.light #video{background-color: transparent!important;} /* #9b59b6 */
-    body.light .form-control{background: <?php echo GetAdminLightBg(); ?>!important;color:<?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
     body.light .form-control option{background: <?php echo GetAdminLightBg(); ?>!important;color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
-    body.light .select2-selection__rendered{background: <?php echo GetAdminLightBg(); ?>!important;} /* #9b59b6 */
     body.light .r1{background-color:  <?php echo GetAdminLightBg(); ?>;color: <?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
     body.light .file{background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     body.light #sidebar-wrapper .list-group{background-color: ;} /* #9b59b6 */
@@ -228,10 +225,9 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     body.light .iq-menu li a span{color: <?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
     /*body.light h1,h2,h3,h4,h5,h6{color: <?php echo GetAdminLightText(); ?>;}*/
     body.light label{color: <?php echo GetAdminLightText(); ?>;}
-    body.light .iq-bg-warning{color: <?php echo GetAdminDarkBg(); ?>!important; background:<?php echo GetAdminDarkBg(); ?>!important;}
-    body.light .iq-bg-success{color: <?php echo GetAdminDarkBg(); ?>!important; background:<?php echo GetAdminDarkBg(); ?>!important;}
-    body.light .iq-bg-danger{ color: <?php echo GetAdminDarkBg(); ?>!important; background:<?php echo GetAdminDarkBg(); ?>!important;}
-   
+    body.light .iq-bg-warning{color: <?php echo GetAdminDarkBg(); ?>!important; }
+    body.light .iq-bg-success{color: <?php echo GetAdminDarkBg(); ?>!important; }
+    body.light .iq-bg-danger{ color: <?php echo GetAdminDarkBg(); ?>!important; }
     body.light #progressbar li.active{color: blue!important;}
     body.light #progressbar li img{filter: invert(1);}
     body.light .ply{filter: invert(0);}
@@ -242,7 +238,7 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     body.light .dropzone .dz-message .dz-button{color:<?php echo GetAdminLightText(); ?>;}
     body.light th{color: <?php echo GetAdminLightText(); ?>;}
     body.light .table-bordered td, .table-bordered th {color: <?php echo GetAdminLightText(); ?>;}
-    body.light .tags-input-wrapper input{color: #000;background: <?php echo GetAdminLightText(); ?>!important;}
+    body.light .tags-input-wrapper input{color: #000;}
     body.light h3{color: <?php echo GetAdminLightText(); ?>;}
     body.light h4{color: <?php echo GetAdminLightText(); ?>;}
     body.light h5{color: <?php echo GetAdminLightText(); ?>;}
