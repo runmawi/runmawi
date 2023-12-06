@@ -750,7 +750,7 @@
                               <!-- Tv show dropdown -->
 
                               <?php }elseif ( $menu->in_menu == "tv_show") { 
-                                 $tv_shows_series = App\Series::get();
+                                 $tv_shows_series = App\SeriesGenre::get();
                                  ?>
                               <li class="dropdown menu-item ">
                                  <a class="" id="" href="<?php echo URL::to('/').$menu->url;?>" >  
@@ -762,11 +762,11 @@
                                        <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series){ ?>
                                           <li>
                                              <?php if($key < 5): ?>
-                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series').'/'.$tvshows_series->slug;?>"> 
-                                                   <?php echo $tvshows_series->title;?> 
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/series/category').'/'.$tvshows_series->slug;?>"> 
+                                                   <?php echo $tvshows_series->name;?> 
                                                 </a>
                                              <?php else: ?>
-                                                <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>"> 
+                                                <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/SeriescategoryList');?>"> 
                                                    <?php echo 'More...';?> 
                                                 </a>
                                              <?php endif; ?>
