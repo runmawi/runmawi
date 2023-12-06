@@ -259,11 +259,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                     <div class="block-description" >
                                     
                                  
-                                         <h6><?= $episodes->title; ?></h6>
-                                            <p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
-                                                                <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
-                                            <p class="text-white desc"><?= gmdate("H:i:s", $episodes->duration); ?></p>
-                               
+                                         
                                    
                                        <div class="hover-buttons">
                                             <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
@@ -301,10 +297,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                  
                                     <div class="block-description" >
                                     
-                                         <h6><?= $episodes->title; ?></h6>
-										<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
-                                        <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
-										<p class="text-white desc"><?= gmdate("H:i:s", $episodes->duration); ?></p>
+                                     
                                
 
                                    
