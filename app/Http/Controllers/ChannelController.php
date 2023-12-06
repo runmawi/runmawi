@@ -97,10 +97,43 @@ class ChannelController extends Controller
 
             $VideoCategory           = VideoCategory::where('slug', $category_slug)->first();
             $Parent_video_categories = VideoCategory::query()->where('parent_id',$VideoCategory->id)->get();
-            
+            $Parent_video_categories_id = VideoCategory::query()->where('parent_id',$VideoCategory->id)->pluck('id')->toArray();
+
+            $categories_id = ($Parent_video_categories_id);
+            array_push($categories_id,$VideoCategory->id );
+
+            $check_Kidmode = 0 ; 
+
+            $categoryVideo_id = CategoryVideo::whereIn('category_id',$categories_id)->groupBy('video_id')->pluck('video_id');
+
+            $video_categories_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+                            'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
+
+                        ->whereIn('id',$categoryVideo_id)->where('active',1)->where('status', 1)->where('draft',1)
+                        ->where(function ($query)  {
+                            
+                            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                                $videos->whereNotIn('videos.id', Block_videos());
+                            }
+
+                        })->where(function ($query) use ($check_Kidmode) {
+                           
+                            if ($check_Kidmode == 1) {
+                                $videos->whereBetween('videos.age_restrict', [0, 12]);
+                            }
+                        })->latest()->limit(30)->get()->map(function ($item) {
+                            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url();
+                            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url();
+                            $item['source_type']        = "Videos" ;
+                            return $item;
+            });
+
+
             $data = [
                 'Parent_videos_categories'  => $Parent_video_categories ,
-                'VideosCategory' => $VideoCategory ,
+                'video_categories_videos' => $video_categories_videos ,
+                'VideosCategory' => $VideoCategory
             ];
 
             return Theme::view('videos-Categories', $data);

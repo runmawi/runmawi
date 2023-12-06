@@ -5,7 +5,7 @@
 
 
 
-@if (!empty($latestvideo['latest_videos']) && $latestvideo['latest_videos']->isNotEmpty())
+@if (!empty($lang_videos) && $lang_videos->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid">
             <div class="row">
@@ -13,12 +13,12 @@
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title">{{ "Latest Videos" }}</h4>
+                        <h4 class="main-title">{{ "Movies" }}</h4>
                     </div>
 
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mb-0 row align-items-center">
-                            @foreach ($latestvideo['latest_videos'] as $latest_video)
+                            @foreach ($lang_videos as $latest_video)
                                 <li>
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
@@ -30,7 +30,7 @@
                         </ul>
 
                         <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
-                            @foreach ($latestvideo['latest_videos'] as $key => $latest_video )
+                            @foreach ($lang_videos as $key => $latest_video )
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
                                         <button class="close_btn">×</button>
@@ -73,7 +73,7 @@
     </section>
 @else
    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-        <p ><h3 class="text-center">No video Available</h3>
+        <p ><h3 class="text-center">No audio Available</h3>
     </div>
 @endif
 

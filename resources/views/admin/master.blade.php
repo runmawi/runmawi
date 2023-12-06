@@ -163,7 +163,7 @@ if (!empty($data['password_hash'])) {
     body.dark .iq-bg-danger{ color: <?php echo GetAdminDarkText(); ?>!important; background:transparent!important;}
     body.dark #progressbar li.active{color: blue!important;}
     body.dark #progressbar li img{filter: invert(1);}
-    body.dark .ply{filter: invert(0);}
+    body.dark .ply{filter: invert(1);}
     body.dark .fs-title{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .panel-body{color: <?php echo GetAdminDarkText(); ?>!important;}
     body.dark .iq-submenu li>a{color: <?php echo GetAdminDarkText(); ?>;}
@@ -234,7 +234,7 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
    
     body.light #progressbar li.active{color: blue!important;}
     body.light #progressbar li img{filter: invert(1);}
-    body.light .ply{filter: invert(1);}
+    body.light .ply{filter: invert(0);}
     body.light .fs-title{color: <?php echo GetAdminLightText(); ?>;}
     body.light .panel-body{color: <?php echo GetAdminLightText(); ?>!important;}
     body.light .iq-submenu li>a{color: <?php echo GetAdminLightText(); ?>;}
