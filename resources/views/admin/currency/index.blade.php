@@ -162,7 +162,7 @@ body.dark .table-bordered td, .table-bordered th {
 						<!-- enable_multi_currency -->
 							<div class="mr-2">Disable</div>
 									<label class="switch mt-2">
-									<input  type="checkbox" name="enable_multi_currency" class="enable_multi_currency" id="enable_multi_currency">
+									<input  type="checkbox" @if ($Currency->enable_multi_currency == 1) {{ "checked='checked'" }} @else {{ '' }} @endif name="enable_multi_currency" class="enable_multi_currency" id="enable_multi_currency">
 									<span class="slider round"></span>
 									</label>
 							<div class="ml-2">Enable</div>
