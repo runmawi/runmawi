@@ -142,6 +142,9 @@ li.slide-item:hover .block-images{z-index: 99;transform: scale3d(1, 1, 1) transl
     top: 0px;
     left: 0;
     right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
  }
 /* .block-description {padding: 5px !important; position: absolute; width: 100%; top: 0; bottom: 0;z-index: 999; display: flex; justify-content: center; flex-direction: column; opacity: 0; } */
 .block-description > h6{font-size: 1.5em;}
