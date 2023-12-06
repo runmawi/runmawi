@@ -96,6 +96,10 @@
                {!! Theme::uses('theme6')->load('public/themes/theme4/views/partials/home/SeriesGenre', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
+            @if( $item == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1 ) {{-- series Based on Category  --}}
+               {!! Theme::uses('theme6')->load('public/themes/theme4/views/partials/home/series-based-categories', [ 'order_settings_list' => $order_settings_list ])->content() !!}
+            @endif
+            
             @if( $item == 'Audio_Genre' && $home_settings->AudioGenre == 1 )        {{-- Audios Genre  --}}
                <?php $parentCategories = App\AudioCategory::orderBy('order','ASC')->get(); ?>
                {!! Theme::uses('theme6')->load('public/themes/theme4/views/partials/home/AudioGenre', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ])->content() !!}
