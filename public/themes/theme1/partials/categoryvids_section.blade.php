@@ -39,7 +39,7 @@
                                 <div>
                                     <div class="movie-time d-flex align-items-center justify-content-between my-2">
                                         <?php if($categoryVideos['ThumbnailSetting']->title == 1) { ?>
-                                            <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
+                                            <h6><?php  echo (mb_strlen($category_video->title) > 17) ? mb_substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
                                         <?php } ?>
 
                                         <?php if($categoryVideos['ThumbnailSetting']->age == 1) { ?>
