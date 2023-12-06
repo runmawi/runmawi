@@ -37,13 +37,13 @@ $data->each(function ($category) {
 
     @foreach( $data as $key => $live_Category )
         <section id="iq-trending" class="s-margin">
-            <div class="container-fluid">
+            <div class="container-fluid pl-0">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                                         
                                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title"><a
+                            <h4 class="main-title pl-5"><a
                                 href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ optional($live_Category)->name }}</a>
                             </h4>
                             <h4 class="main-title"><a
@@ -52,7 +52,7 @@ $data->each(function ($category) {
                         </div>
 
                         <div class="trending-contens">
-                            <ul id="trending-slider-nav" class="{{ 'category-live-slider-nav list-inline p-0 mb-0 row align-items-center' }}" data-key-id="{{$key}}">
+                            <ul id="trending-slider-nav" class="{{ 'category-live-slider-nav list-inline p-0 ml-5 row align-items-center' }}" data-key-id="{{$key}}">
 
                                 @foreach ($live_Category->category_livestream as $livestream_videos )
                                     <li>
@@ -76,7 +76,7 @@ $data->each(function ($category) {
                                                     <div id="" class="overview-tab tab-pane fade active show">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                            <div class="caption">
+                                                            <div class="caption pl-5">
                                                                 <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h1>
 
                                                                 @if ( $livestream_videos->year != null && $livestream_videos->year != 0 )
