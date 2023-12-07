@@ -72,6 +72,10 @@
             background-color: transparent !important  ;
             font-size: revert;
       }
+      body.dark-theme .block-description{
+        background-image: none;
+        backdrop-filter:none;
+      }
 </style>
 
 <?php 
@@ -265,13 +269,17 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                                </div></div>
                                  
-                               <div class="block-description" ></div>
+                                  <div class="block-description" >
+                                    <div class="hover-buttons">
+                                      <img class="ply" src="https://fanway.pl/assets/img/default_play_buttons.svg">
+                                    </div>
+                                  </div>
                                     
                                  
-                                         <!-- <p><?= $episodes->title; ?></p> -->
+                                         <p><?= $episodes->title; ?></p>
                                           <!--  <p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>-->
                                                                 <!--<p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>-->
-                                            <!-- <p class="text-white desc mb-0"><?= gmdate("H:i:s", $episodes->duration); ?></p> -->
+                                            <p class="text-white desc mb-0"><?= gmdate("H:i:s", $episodes->duration); ?></p>
                                
                                    
                                        <!-- <div class="hover-buttons">
@@ -298,7 +306,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
                                    
-                                  <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                      <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                    
                                            <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
@@ -310,16 +318,16 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                       <?php } ?>
                                      </div></div>
                                  
-                                  <div class="block-description" >
-                                    <div class="hover-buttons">
-                                      <img class="ply" src="https://fanway.pl/assets/img/default_play_buttons.svg">
-                                    </div>
-                                  </div>
+                                      <div class="block-description" >
+                                        <div class="hover-buttons">
+                                          <img class="ply" src="https://fanway.pl/assets/img/default_play_buttons.svg">
+                                        </div>
+                                      </div>
                                     
-                                         <!-- <h6><?= $episodes->title; ?></h6> -->
+                                         <h6><?= $episodes->title; ?></h6>
 										<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
                                        <!-- <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>-->
-										<!-- <p class="text-white desc mb-0"><?= gmdate("H:i:s", $episodes->duration); ?></p> -->
+										<p class="text-white desc mb-0"><?= gmdate("H:i:s", $episodes->duration); ?></p>
                                
 
                                    
