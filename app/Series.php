@@ -15,12 +15,17 @@ class Series extends Model
                     
     public function Series_depends_episodes()
     {
-        return $this->hasMany(Episode::class, 'series_id');
+        return $this->hasMany(Episode::class, 'series_id')->where('active',1)->where('status',1)->orderBy('episode_order');
     }
 
     public function Series_depends_seasons()
     {
         return $this->hasMany(SeriesSeason::class);   
     }
+    
+	public function SeriesSeason()
+	{
+		return $this->hasMany(SeriesSeason::class, 'series_id', 'id');
 
+	}
 }
