@@ -2015,5 +2015,64 @@ public function UpgadeSubscription(Request $request){
     return $PpvPurchasestatus;
   }
 
+
+  
+  public function upgradepaypalsubscription(Request $request)
+  {
+      try {
+       
+
+          $email = Auth::user()->email;
+          $user_email = User::where('email','=',$email)->count();
+          $user_first = User::where('email','=',$email)->first();
+          $id = $user_first->id;  
+          $plandetail = SubscriptionPlan::where('plan_id','=',$request->plan_id)->first();
+          $payment_type = $plandetail->payment_type;
+          if ( $user_email > 0 ) {
+
+              
+              $current_date = date('Y-m-d h:i:s');
+              $next_date = $plandetail->days;
+          $date = Carbon::parse($current_date)->addDays($next_date);
+
+          $subscription = Subscription::where('user_id',$user_first->id)->first();
+          if(empty($subscription)){
+                  $subscription = new Subscription;
+          }
+          $subscription->price = $plandetail->price;
+          $subscription->name = $user_first->username;
+          $subscription->days = $plandetail->days;
+          $subscription->user_id =  Auth::user()->id;
+          $subscription->stripe_id = $request->plan_id;
+          $subscription->stripe_status  = 'active';
+          $subscription->stripe_plan = $request->plan_id;
+          $subscription->regionname = Region_name();
+          $subscription->countryname = Country_name();
+          $subscription->cityname = city_name();
+          $subscription->PaymentGateway =  'paypal';
+          $subscription->ends_at = $date;
+          $subscription->save();
+
+              $subId = $request->subId;        
+              $new_user = User::find($id);
+              $new_user->role = 'subscriber';
+              $new_user->paypal_id = $subId;
+              $new_user->payment_type ='paypal';
+              $new_user->save();
+              $response = array(
+                  'status' => 'success'
+              );
+          } else {
+              $response = array(
+                  'status' => 'failed'
+              );
+          }
+      return response()->json($response);
+         //code...
+      } catch (\Throwable $th) {
+          throw $th;
+      }
+  }   
+
 }
 
