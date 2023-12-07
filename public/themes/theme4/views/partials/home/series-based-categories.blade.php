@@ -1,6 +1,6 @@
 <?php
 
-    $data = App\SeriesGenre::query()->where('in_home',1)->whereHas('category_series', function ($query) {})
+    $data = App\SeriesGenre::query()->whereHas('category_series', function ($query) {})
         ->with([
             'category_series' => function ($series) {
                 $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
