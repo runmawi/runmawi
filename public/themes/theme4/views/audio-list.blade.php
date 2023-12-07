@@ -7,13 +7,13 @@
 
 @if (!empty($lang_videos) && $lang_videos->isNotEmpty())
     <section id="iq-trending" class="s-margin">
-        <div class="container-fluid">
+        <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title">{{ "Movies" }}</h4>
+                        <h4 class="main-title pl-5">{{ "Movies" }}</h4>
                     </div>
 
                     <div class="trending-contens">
@@ -29,7 +29,7 @@
                             @endforeach
                         </ul>
 
-                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
+                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 ml-5 align-items-center latest-videos-slider">
                             @foreach ($lang_videos as $key => $latest_video )
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">

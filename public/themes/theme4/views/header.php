@@ -248,58 +248,61 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"crossorigin="anonymous"></script>
-    
- <script>
-   
+    <script type="text/javascript">
+//	window.addEventListener("resize", function() {
+//		"use strict"; window.location.reload(); 
+//	});
+
+
 	document.addEventListener("DOMContentLoaded", function(){
         
 
-        /////// Prevent closing from click inside dropdown
-       document.querySelectorAll('.dropdown-menu').forEach(function(element){
-          element.addEventListener('click', function (e) {
-            e.stopPropagation();
-          });
-       })
- 
- 
- 
-       // make it as accordion for smaller screens
-       if (window.innerWidth < 992) {
- 
-          // close all inner dropdowns when parent is closed
-          document.querySelectorAll('.navbar .dropdown').forEach(function(everydropdown){
-             everydropdown.addEventListener('hidden.bs.dropdown', function () {
-                // after dropdown is hidden, then find all submenus
-                  this.querySelectorAll('.submenu').forEach(function(everysubmenu){
-                     // hide every submenu as well
-                     everysubmenu.style.display = 'none';
-                  });
-             })
-          });
-          
-          document.querySelectorAll('.dropdown-menu a').forEach(function(element){
-             element.addEventListener('click', function (e) {
-       
-                  let nextEl = this.nextElementSibling;
-                  if(nextEl && nextEl.classList.contains('submenu')) {	
-                     // prevent opening link if link needs to open dropdown
-                     e.preventDefault();
-                     console.log(nextEl);
-                     if(nextEl.style.display == 'block'){
-                        nextEl.style.display = 'none';
-                     } else {
-                        nextEl.style.display = 'block';
-                     }
- 
-                  }
-             });
-          })
-       }
-       // end if innerWidth
- 
-    }); 
- 
- </script>
+    	/////// Prevent closing from click inside dropdown
+		document.querySelectorAll('.dropdown-menu').forEach(function(element){
+			element.addEventListener('click', function (e) {
+			  e.stopPropagation();
+			});
+		})
+
+
+
+		// make it as accordion for smaller screens
+		if (window.innerWidth < 992) {
+
+			// close all inner dropdowns when parent is closed
+			document.querySelectorAll('.navbar .dropdown').forEach(function(everydropdown){
+				everydropdown.addEventListener('hidden.bs.dropdown', function () {
+					// after dropdown is hidden, then find all submenus
+					  this.querySelectorAll('.submenu').forEach(function(everysubmenu){
+					  	// hide every submenu as well
+					  	everysubmenu.style.display = 'none';
+					  });
+				})
+			});
+			
+			document.querySelectorAll('.dropdown-menu a').forEach(function(element){
+				element.addEventListener('click', function (e) {
+		
+				  	let nextEl = this.nextElementSibling;
+				  	if(nextEl && nextEl.classList.contains('submenu')) {	
+				  		// prevent opening link if link needs to open dropdown
+				  		e.preventDefault();
+				  		console.log(nextEl);
+				  		if(nextEl.style.display == 'block'){
+				  			nextEl.style.display = 'none';
+				  		} else {
+				  			nextEl.style.display = 'block';
+				  		}
+
+				  	}
+				});
+			})
+		}
+		// end if innerWidth
+
+	}); 
+	// DOMContentLoaded  end
+</script>
     <?php 
       if(count($Script) > 0){
       foreach($Script as $Scriptheader){   ?>
@@ -790,6 +793,250 @@
       <div class="container-fluid">
           <div class="row">
               <div class="col-sm-12">
+               <!-- ============= COMPONENT ============== -->
+<nav class="navbar navbar-expand-lg navbar-light p-0">
+   <div class="container-fluid p-0">
+      <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"  aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="main_nav">
+         <ul class="navbar-nav">
+         <?php  
+
+$video_category = App\VideoCategory::orderBy('order', 'asc')->where('in_menu',1)->get()->map(function ($item) {
+
+   $item['Parent_video_category'] = App\VideoCategory::where('id',$item->parent_id)->orderBy('order', 'asc')->where('in_menu',1)->first();
+
+   return $item;
+});
+
+$LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get()->map(function ($item) {
+
+   $item['Parent_live_category'] = App\LiveCategory::where('id',$item->parent_id)->orderBy('order', 'asc')->first();
+
+   return $item;
+});
+
+$AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get()->map(function ($item) {
+
+   $item['Parent_Audios_category'] = App\AudioCategory::where('id',$item->parent_id)->first();
+
+   return $item;
+});
+
+$tv_shows_series = App\Series::where('active',1)->get();
+
+$languages = App\Language::all();
+
+?>
+<li class="nav-item dropdown">
+   <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">  Treeview menu  </a>
+   <ul class="dropdown-menu">
+   <li><a class="dropdown-item" href="#"> Dropdown item 1 </a></li>
+   <li><a class="dropdown-item" href="#"> Dropdown item 2 &raquo; </a>
+      <ul class="submenu dropdown-menu">
+         <li><a class="dropdown-item" href="#">Submenu item 1</a></li>
+         <li><a class="dropdown-item" href="#">Submenu item 2</a></li>
+         <li><a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
+            <ul class="submenu dropdown-menu">
+               <li><a class="dropdown-item" href="#">Multi level 1</a></li>
+               <li><a class="dropdown-item" href="#">Multi level 2</a></li>
+            </ul>
+         </li>
+         <li><a class="dropdown-item" href="#">Submenu item 4</a></li>
+         <li><a class="dropdown-item" href="#">Submenu item 5</a></li>
+      </ul>
+   </li>
+   <li><a class="dropdown-item" href="#"> Dropdown item 3 </a></li>
+   <li><a class="dropdown-item" href="#"> Dropdown item 4 </a>
+   </ul>
+</li>
+<?php foreach ($menus as $menu) {
+
+   if ( $menu->in_menu == "video" ) {  ?>
+
+   <li class="nav-item dropdown menu-item">
+      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+         <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+      </a>
+      <ul class="dropdown-menu">
+         <?php foreach ( $video_category as $category) : ?>
+
+            <?php if( !is_null($category->Parent_video_category) ): ?>
+               
+               <li>
+                  <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->Parent_video_category->slug) ?>">
+                     <?= $category->Parent_video_category->name . ' <i class="fa fa-arrow-right" aria-hidden="true"></i>' ;?>
+                  </a>
+                  <?php if( ( $category->Parent_video_category->id != 0)  ): ?>
+                     <ul class="submenu dropdown-menu">
+                        <li>
+                        <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->slug)?>">
+                           <?= $category->name;?>
+                        </a>
+                        </li>
+                     </ul>
+                  <?php endif; ?>
+               </li>
+            <?php endif; ?>
+         <?php endforeach ; ?>
+      </ul>
+   </li>
+
+<?php } elseif ( $menu->in_menu == "movies") {  ?>
+
+   <li class="nav-item active dskdflex">
+      <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
+         <?= $menu->name ?>
+      </a>
+      <ul class="dropdown-menu categ-head">
+            <?php foreach ( $languages as $language): ?>
+            <li>
+                  <a class="dropdown-item cont-item" href="<?= URL::to('language/'.$language->id.'/'.$language->name);?>">
+                     <?= $language->name;?>
+                  </a>
+            </li>
+            <?php endforeach; ?>
+      </ul>
+   </li>
+
+<?php } elseif ( $menu->in_menu == "live") { ?>
+
+   <li class="nav-item active dskdflex menu-item">
+      <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
+         <?= $menu->name ?> <?php if(count($LiveCategory) < 0 ){ echo '<i class="fa fa-angle-down"></i>'; } ?>
+      </a>
+
+      <?php if(count($LiveCategory) < 0 ): ?>
+         <ul class="dropdown-menu categ-head">
+               <?php foreach ( $LiveCategory as $category): ?>
+               <li>
+                     <a class="dropdown-item cont-item" href="<?= URL::to('/live/category/'.$category->name) ?>">
+                        <?= $category->name ?></a>
+               </li>
+               <?php endforeach; ?>
+         </ul>
+      <?php endif; ?>
+      
+   </li>
+
+<?php } elseif ( $menu->in_menu == "audios") { ?>
+
+   <li class="nav-item active dskdflex menu-item">
+      <a class="nav-link justify-content-between" id="dn" href="<?= URL::to('/').$menu->url;?>">
+         <?= $menu->name ?> <?php if(count($LiveCategory) < 0 ){ echo '<i class="fa fa-angle-down"></i>'; } ?>
+      </a>
+   <a class="dropdown-toggle  justify-content-between " id="dn" href="<?= URL::to('/').$menu->url;?>"
+         data-toggle="dropdown">
+         <?= ($menu->name);?> <i class="fa fa-angle-down"></i>
+   </a>
+   <ul class="dropdown-menu categ-head">
+         <?php foreach ( $AudioCategory as $category): ?>
+         <li>
+               <a class="dropdown-item cont-item" href="<?php echo URL::to('audio/'.$category->name);?>">
+                  <?= $category->name;?>
+               </a>
+         </li>
+         <?php endforeach; ?>
+   </ul>
+</li>
+
+<?php }elseif ( $menu->in_menu == "tv_show") { ?>
+   
+<li class="nav-item active dskdflex menu-item ">
+
+   <a href="<?php echo URL::to('$menu->url')?>">
+         <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
+   </a>
+
+   <?php if(count($tv_shows_series) > 0 ){ ?>
+      <ul class="dropdown-menu categ-head">
+         <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series): ?>
+         <li>
+               <?php if($key < 5): ?>
+               <a class="dropdown-item cont-item" href="<?php echo URL::to('play_series/'.$tvshows_series->slug );?>">
+                     <?= $tvshows_series->title;?>
+               </a>
+               <?php else: ?>
+               <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>">
+                     <?php echo 'More...';?>
+               </a>
+               <?php endif; ?>
+         </li>
+         <?php endforeach; ?>
+      </ul>
+   <?php } ?>
+</li>
+
+<?php } else { ?>
+
+<li class="menu-item">
+   <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to( $menu->url ); }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
+         <?php echo __($menu->name);?>
+   </a>
+</li>
+
+<?php  }  } ?>
+            
+            <!-- <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">  More items  </a>
+               <ul class="dropdown-menu">
+               <li><a class="dropdown-item" href="#"> Dropdown item 1 </a></li>
+               <li><a class="dropdown-item" href="#"> Dropdown item 2 &raquo; </a>
+                  <ul class="submenu dropdown-menu">
+                     <li><a class="dropdown-item" href="#">Submenu item 1</a></li>
+                     <li><a class="dropdown-item" href="#">Submenu item 2</a></li>
+                     <li><a class="dropdown-item" href="#">Submenu item 3</a></li>
+                  </ul>
+               </li>
+               <li><a class="dropdown-item" href="#"> Dropdown item 3 &raquo; </a>
+                  <ul class="submenu dropdown-menu">
+                     <li><a class="dropdown-item" href="#">Another submenu 1</a></li>
+                     <li><a class="dropdown-item" href="#">Another submenu 2</a></li>
+                     <li><a class="dropdown-item" href="#">Another submenu 3</a></li>
+                     <li><a class="dropdown-item" href="#">Another submenu 4</a></li>
+                  </ul>
+               </li>
+               <li><a class="dropdown-item" href="#"> Dropdown item 4 &raquo;</a>
+                  <ul class="submenu dropdown-menu">
+                     <li><a class="dropdown-item" href="#">Another submenu 1</a></li>
+                     <li><a class="dropdown-item" href="#">Another submenu 2</a></li>
+                     <li><a class="dropdown-item" href="#">Another submenu 3</a></li>
+                     <li><a class="dropdown-item" href="#">Another submenu 4</a></li>
+                  </ul>
+               </li>
+               <li><a class="dropdown-item" href="#"> Dropdown item 5 </a></li>
+               <li><a class="dropdown-item" href="#"> Dropdown item 6 </a></li>
+               </ul>
+            </li> -->
+         </ul>
+
+         <!-- <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#"> Menu item </a></li>
+            <li class="nav-item"><a class="nav-link" href="#"> Menu item </a></li>
+            <li class="nav-item dropdown">
+               <a class="nav-link  dropdown-toggle" href="#" data-bs-toggle="dropdown"> Dropdown right </a>
+               <ul class="dropdown-menu dropdown-menu-right">
+               <li><a class="dropdown-item" href="#"> Dropdown item 1</a></li>
+               <li><a class="dropdown-item" href="#"> Dropdown item 2 </a></li>
+               <li><a class="dropdown-item" href="#"> Dropdown item 3 &raquo; </a>
+                  <ul class="submenu submenu-left dropdown-menu">
+                     <li><a class="dropdown-item" href="">Submenu item 1</a></li>
+                     <li><a class="dropdown-item" href="">Submenu item 2</a></li>
+                     <li><a class="dropdown-item" href="">Submenu item 3</a></li>
+                     <li><a class="dropdown-item" href="">Submenu item 4</a></li>
+                  </ul>
+               </li>
+               <li><a class="dropdown-item" href="#"> Dropdown item 4 </a></li>
+               </ul>
+            </li>
+         </ul> -->
+
+      </div> <!-- navbar-collapse.// -->
+   </div> <!-- container-fluid.// -->
+</nav>
                   <nav class="navbar navbar-expand-lg navbar-light p-0">
                     
                       <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
