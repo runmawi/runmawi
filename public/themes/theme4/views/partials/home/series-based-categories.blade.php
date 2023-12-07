@@ -32,7 +32,7 @@
 @if (!empty($data) && $data->isNotEmpty())
 
     @foreach ($data as $key => $series_genre)
-        <section id="iq-favorites">
+        <section id="iq-favorites" class="s-margin">
             <div class="container-fluid pl-0">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
