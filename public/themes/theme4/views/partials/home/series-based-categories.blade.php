@@ -87,25 +87,44 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="trending-contens">
-                                                                <ul id="trending-slider-nav" class= "{{ 'p-0 m-0  series-depends-episode-slider-'.$key }}" >
-                                                                    @foreach ($series->Series_depends_episodes as $episode )
-                                                                        <li>
-                                                                            <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                                <div class="movie-slick position-relative">
-                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" >
-                                                                                </div>
+                                                            <div class="main-content">
+                                                                <section id="iq-favorites">
+                                                                    <div class="container-fluid">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12 overflow-hidden">
+                                                                                <div class="favorites-contens">
+                                                                                    <ul class= "{{ 'p-0 mb-0 series-depends-episode-slider-'.$key }}">
+                                                                                        @foreach ($series->Series_depends_episodes as $episode)
+                                                                                            <li class="slide-item">
+                                                                                                <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
+                                                                                                    <div class="block-images position-relative">
 
-                                                                                {{-- <p>{!! html_entity_decode( optional($episode)->episode_description) !!} </p> --}}
+                                                                                                        <div class="img-box">
+                                                                                                            <img src="{{ $episode->image_url }}" class="img-fluid" >
+                                                                                                        </div>
 
-                                                                                <div class="d-flex align-items-center text-white text-detail">
-                                                                                    <span class="ml-3">{{ "S ".$episode->season_id  }} </span>
-                                                                                    <span class="ml-3">{{ "E ".$episode->episode_order  }} </span>
+                                                                                                        <div class="d-flex align-items-center text-white text-detail">
+                                                                                                            <span class="ml-3">{{ "S ".$episode->season_id  }} </span>
+                                                                                                            <span class="ml-3">{{ "E ".$episode->episode_order  }} </span>
+                                                                                                        </div>
+
+                                                                                                        <p>{!! html_entity_decode( optional($episode)->episode_description) !!} </p>
+
+                                                                                                        <div class="block-description">
+                                                                                                            <div class="hover-buttons">
+                                                                                                                <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>Play Now</span>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </a>
+                                                                                            </li>
+                                                                                        @endforeach
+                                                                                    </ul>
                                                                                 </div>
-                                                                            </a>
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </section>
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
