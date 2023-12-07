@@ -95,6 +95,13 @@
                                                                                 <div class="movie-slick position-relative">
                                                                                     <img src="{{ $episode->image_url }}" class="img-fluid" >
                                                                                 </div>
+
+                                                                                {{-- <p>{!! html_entity_decode( optional($episode)->episode_description) !!} </p> --}}
+
+                                                                                <div class="d-flex align-items-center text-white text-detail">
+                                                                                    <span class="ml-3">{{ "S ".$episode->season_id  }} </span>
+                                                                                    <span class="ml-3">{{ "E ".$episode->episode_order  }} </span>
+                                                                                </div>
                                                                             </a>
                                                                         </li>
                                                                     @endforeach
