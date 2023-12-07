@@ -33,7 +33,7 @@
                             @foreach ($latestvideo['latest_videos'] as $key => $latest_video )
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
-                                        <button class="close_btn">×</button>
+                                        <button class="drp-close">×</button>
 
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
@@ -130,11 +130,11 @@
         });
 
         $('.latest-videos-slider-nav').on('click', function() {
-            $( ".close_btn" ).trigger( "click" );
+            $( ".drp-close" ).trigger( "click" );
             $('.latest-videos-slider').show();
         });
 
-        $('body').on('click', '.close_btn', function() {
+        $('body').on('click', '.drp-close', function() {
             $('.latest-videos-slider').hide();
         });
     });
