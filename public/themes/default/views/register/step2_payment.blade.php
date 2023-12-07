@@ -810,7 +810,6 @@ background-color: #000;padding: 10px!important;}
 
                     <div class="mt-3"></div>
 
-                    <div id="paypal-button-container-P-6XA79361YH9914942MMPN3BQ"></div>
 
                 </div> 
 
