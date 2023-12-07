@@ -35,7 +35,8 @@ header .navbar-light .navbar-brand img.logo { width: 160px; }
 .notify-bg:before { content: ''; display: block; position: absolute; background: rgba(255, 255, 255, 0.5); width: 70px; height: 100%; left: 0; top: 0; opacity: 0.5; filter: blur(30px); transform: translateX(-100px) skewX(-30deg); animation: noti-before-animation 2s infinite 2s; }
 .notify-bg:after { content: ''; display: block; position: absolute; background: rgba(255, 255, 255, 0.2); width: 30px; height: 100%; left: 30px; top: 0; opacity: 0; filter: blur(5px); transform: translateX(-100px) skewX(-30deg); animation: noti-after-animation 2s infinite 2s; }
 .navbar-right .iq-sub-dropdown .iq-card-body div { border-radius: 0; }
-.navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box { opacity: 1; visibility: visible; transform: translate(0, 0); }
+.navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box { display: block !important; opacity: 1; visibility: visible; transform: translate(0, 0); }
+.navbar-right .search-box {display: none }
 .navbar-right .iq-sub-dropdown { width: 300px; opacity: 0; visibility: hidden; position: absolute; top: 100%; right: 15px; background: var(--iq-bg1); transform: translate(0, 70px); -webkit-transform: translate(0, 70px); transition: all 0.3s; padding: 0; -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; z-index: 1; }
 /* .navbar-light .navbar-toggler-icon { background: url(../images/menu.png) no-repeat scroll center center; } */
 .search-toggle:hover, header .navbar ul li.menu-item a:hover { color: var(--iq-primary); }
@@ -843,6 +844,13 @@ transform: scale(1.3);
     max-height: 443px !important;
 }
 
+.navbar-right .iq-show .iq-sub-dropdown{
+    display: block !important;
+}
+
+.block-description .hover_tex{
+    font-size: 16px;
+}
 
 @media screen and (min-width: 992px) and (max-width: 1399px){
 .trending-custom-tab {
