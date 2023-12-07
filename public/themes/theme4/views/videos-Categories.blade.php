@@ -127,7 +127,7 @@
 
     @if (!empty($video_categories_videos) && $video_categories_videos->isNotEmpty())
         <section id="iq-trending" class="s-margin">
-            <div class="container-fluid">
+            <div class="container-fluid pl-0">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                         <div class="caption">
@@ -135,11 +135,11 @@
                         </div>        
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            {{-- <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[1])->header_name }}</a></h4> --}}
+                            {{-- <h4 class="main-title pl-5"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[1])->header_name }}</a></h4> --}}
                         </div>
 
                         <div class="trending-contens">
-                            <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mb-0 row align-items-center">
+                            <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
                                 @foreach ($video_categories_videos as $latest_video)
                                     <li>
                                         <a href="javascript:void(0);">

@@ -132,7 +132,7 @@ if (!empty($data['password_hash'])) {
     body.dark .btn-black{background-color: <?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
     body.dark .bg-white{background-color: transparent!important;} /* #9b59b6 */
     body.dark #video{background-color: transparent!important;} /* #9b59b6 */
-    body.dark .form-control{ ?>!important;color:<?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
+    body.dark .form-control{ color:#646464!important;} /* #9b59b6 */
     body.dark .form-control option{background: <?php echo GetAdminDarkBg(); ?>!important;color: <?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
     body.dark .r1{background-color:  <?php echo GetAdminDarkBg(); ?>;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
     body.dark .file{background-color: <?php echo GetAdminDarkBg(); ?>;} /* #9b59b6 */
@@ -198,7 +198,6 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     color: <?php echo GetAdminLightText(); ?>;
 } /* #9b59b6 */
     body.light .content-page{background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
-    body.light .btn-black{background-color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
     body.light .bg-white{background-color: transparent!important;} /* #9b59b6 */
     body.light #video{background-color: transparent!important;} /* #9b59b6 */
     body.light .form-control option{background: <?php echo GetAdminLightBg(); ?>!important;color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
@@ -229,7 +228,7 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     body.light .iq-bg-success{color: <?php echo GetAdminDarkBg(); ?>!important; }
     body.light .iq-bg-danger{ color: <?php echo GetAdminDarkBg(); ?>!important; }
     body.light #progressbar li.active{color: blue!important;}
-    body.light #progressbar li img{filter: invert(1);}
+    body.light #progressbar li img{filter: invert(0);}
     body.light .ply{filter: invert(0);}
     body.light .fs-title{color: <?php echo GetAdminLightText(); ?>;}
     body.light .panel-body{color: <?php echo GetAdminLightText(); ?>!important;}
