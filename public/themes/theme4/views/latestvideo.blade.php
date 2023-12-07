@@ -7,17 +7,17 @@
 
 @if (!empty($latestvideo['latest_videos']) && $latestvideo['latest_videos']->isNotEmpty())
     <section id="iq-trending" class="s-margin">
-        <div class="container-fluid">
+        <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title">{{ "Latest Videos" }}</h4>
+                        <h4 class="main-title pl-5">{{ "Latest Videos" }}</h4>
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mb-0 row align-items-center">
+                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
                             @foreach ($latestvideo['latest_videos'] as $latest_video)
                                 <li>
                                     <a href="javascript:void(0);">
