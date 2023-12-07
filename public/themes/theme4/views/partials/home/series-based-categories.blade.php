@@ -76,7 +76,7 @@
                                                                 <h2 class="caption-h2">{{ optional($series)->title }}</h2>
                                                                                                                             
                                                                 @if ( optional($series)->description )
-                                                                    <div class="trending-dec">{!! html_entity_decode( optional($series)->description) !!}</div>
+                                                                    <div class="trending-dec">{!! htmlspecialchars(substr(optional($series)->description, 0, 100)) !!}</div>
                                                                 @endif
 
                                                                 <div class="p-btns">
@@ -87,44 +87,42 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="main-content">
-                                                                <section id="iq-favorites">
-                                                                    <div class="container-fluid">
-                                                                        <div class="row">
-                                                                            <div class="col-sm-12 overflow-hidden">
-                                                                                <div class="favorites-contens">
-                                                                                    <ul class= "{{ 'p-0 mb-0 series-depends-episode-slider-'.$key }}">
-                                                                                        @foreach ($series->Series_depends_episodes as $episode)
-                                                                                            <li class="slide-item">
-                                                                                                <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                                                    <div class="block-images position-relative">
-
-                                                                                                        <div class="img-box">
-                                                                                                            <img src="{{ $episode->image_url }}" class="img-fluid" >
-                                                                                                        </div>
-
-                                                                                                        <div class="d-flex align-items-center text-white text-detail">
-                                                                                                            <span class="ml-3">{{ "S ".$episode->season_id  }} </span>
-                                                                                                            <span class="ml-3">{{ "E ".$episode->episode_order  }} </span>
-                                                                                                        </div>
-
-                                                                                                        <p>{!! html_entity_decode( optional($episode)->episode_description) !!} </p>
-
-                                                                                                        <div class="block-description">
-                                                                                                            <div class="hover-buttons">
-                                                                                                                <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>Play Now</span>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </a>
-                                                                                            </li>
-                                                                                        @endforeach
-                                                                                    </ul>
+                                                            <div class="trending-contens sub_dropdown_image mt-3">
+                                                                <ul id="trending-slider-nav" class= "{{ 'pl-5 m-0  series-depends-episode-slider-'.$key }}" >
+                                                                    @foreach ($series->Series_depends_episodes as $episode )
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <div class=" position-relative">
+                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" >
+                                                                                        <div class="controls">
+                                                                                        <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
+                                                                                            <button class="playBTN">
+                                                                                                <i class="fas fa-play"></i>
+                                                                                            </button>
+                                                                                            </a>
+                                                                                            <nav>
+                                                                                                <button class="moreBTN">
+                                                                                                    <i class="fas fa-info-circle"></i>
+                                                                                                    <span>More info</span>
+                                                                                                </button>
+                                                                                            </nav>
+                                                                                            @if ( optional($series)->description )
+                                                                                                <p class="trending-dec">{!! htmlspecialchars(substr(optional($series)->description, 0, 50)) !!}</p>
+                                                                                            @endif
+                                                                                        </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </section>
+                                                                                
+
+                                                                                {{-- <p>{!! html_entity_decode( optional($episode)->episode_description) !!} </p> --}}
+
+                                                                                <!-- <div class="d-flex align-items-center text-white text-detail">
+                                                                                    <span class="ml-3">{{ "S ".$episode->season_id  }} </span>
+                                                                                    <span class="ml-3">{{ "E ".$episode->episode_order  }} </span>
+                                                                                </div> -->
+                                                                                </a>
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
                                                             </div>
 
                                                             <div class="dropdown_thumbnail">
@@ -221,3 +219,140 @@
     });
 
 </script>               
+
+<style>
+
+.controls{
+    opacity: 0;
+}
+
+.sub_dropdown_image li:hover .controls {
+    opacity: 1;
+    background-image: linear-gradient(0deg, black, transparent);
+    border: 2px solid #2578c0 !important;
+    
+}
+
+ .controls{
+    position: absolute;
+    padding: 4px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    width:100%;
+    z-index: 3;
+    opacity: 0;
+    -webkit-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+ .playBTN{
+    font-size: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    line-height: 1;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    border: none;
+    background-color: rgba(51, 51, 51, 0.4);
+    -webkit-transition: background-color 0.15s ease;
+    transition: background-color 0.15s ease;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+  .playBTN:hover{
+    background-color: #fff;
+    color: #000;
+}
+
+  .playBTN i{
+    position: relative;
+    left: 2px;
+    top: 1px;
+}
+.moreBTN:hover span {
+    width: auto;
+    margin-left: 4px;
+}
+
+.controls .trending-dec{
+    margin: auto 0 0;
+    color: #fff;
+    padding: 2px;
+    font-size: calc(12px + 0.15vw);
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 17px;
+}
+.controls nav {
+    position: absolute;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    right: 4px;
+    top: 4px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.moreBTN {
+    color: #fff;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: rgba(51, 51, 51, 0.4);
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-size: calc(12px + 0.25vmin);
+    font-weight: bold;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    outline: none;
+    line-height: 14px;
+}
+.moreBTN:hover {
+    background-color: #fff;
+    color: #000;
+}
+.moreBTN span {
+    width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+</style>
