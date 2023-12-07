@@ -739,6 +739,7 @@
    .light-theme .iq-search-bar .search-input {background:<?php echo GetLightText(); ?> !important;}
    .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo GetDarkText(); ?> !important;}
    .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo GetLightText(); ?> !important;}
+   .navbar-expand-lg .navbar-nav .dropdown-menu {background:  <?php echo GetDarkBg(); ?> !important;}
 </style>
 
 <style type="text/css">
@@ -803,14 +804,21 @@
 
       <div class="collapse navbar-collapse" id="main_nav">
          <ul class="navbar-nav">
-         <?php  
+            
+<?php  
+$video_category = App\VideoCategory::where('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)->get()->map(function ($item) {
 
-$video_category = App\VideoCategory::orderBy('order', 'asc')->where('in_menu',1)->get()->map(function ($item) {
-
-   $item['Parent_video_category'] = App\VideoCategory::where('id',$item->parent_id)->orderBy('order', 'asc')->where('in_menu',1)->first();
+   $item['Parent_video_category'] = App\VideoCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->where('in_menu',1)->get();
 
    return $item;
 });
+
+// $video_category = App\VideoCategory::orderBy('order', 'asc')->where('in_menu',1)->get()->map(function ($item) {
+
+//    $item['Parent_video_category'] = App\VideoCategory::where('id',$item->parent_id)->orderBy('order', 'asc')->where('in_menu',1)->first();
+
+//    return $item;
+// });
 
 $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get()->map(function ($item) {
 
@@ -855,39 +863,38 @@ $languages = App\Language::all();
 </li> -->
 <?php foreach ($menus as $menu) {
 
-   if ( $menu->in_menu == "video" ) {  ?>
-
+if ( $menu->in_menu == "video" ) {  ?>
    <li class="nav-item dropdown menu-item">
-      <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-         <?= $menu->name ?> <i class="fa fa-angle-down"></i>
-      </a>
-      <ul class="dropdown-menu">
-         <?php foreach ( $video_category as $category) : ?>
-
-            <?php if( !is_null($category->Parent_video_category) ): ?>
-               
-               <li>
-                  <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->Parent_video_category->slug) ?>">
-                     <?= $category->Parent_video_category->name . ' <i class="fa fa-arrow-right" aria-hidden="true"></i>' ;?>
-                  </a>
-                  <?php if( ( $category->Parent_video_category->id != 0)  ): ?>
+         <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+            <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+         </a>
+         <ul class="dropdown-menu">
+            <?php foreach ( $video_category as $category) : ?>
+               <?php if( !is_null($category) ): ?>
+                  <li>
+                     <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->slug) ?>">
+                        <?= $category->name;?>
+                     </a>
                      <ul class="submenu dropdown-menu">
+                        <?php foreach ( $category->Parent_video_category as $Parent_video_category) : ?>
+                     <?php if(  !is_null($category->Parent_video_category) ): ?>
                         <li>
-                        <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->slug)?>">
-                           <?= $category->name;?>
-                        </a>
+                           <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$Parent_video_category->slug)?>">
+                              <?= $Parent_video_category->name;?>
+                           </a>
                         </li>
+                     <?php endif; ?>
+                        <?php endforeach ; ?>
                      </ul>
-                  <?php endif; ?>
-               </li>
-            <?php endif; ?>
-         <?php endforeach ; ?>
-      </ul>
-   </li>
+                     
+                  </li>
+               <?php endif; ?>
+            <?php endforeach ; ?>
+         </ul>
+      </li>
+<?php } elseif  ( $menu->in_menu == "movies") {  ?>
 
-<?php } elseif ( $menu->in_menu == "movies") {  ?>
-
-   <li class="nav-item active dskdflex">
+   <li class="nav-item active dskdflex menu-item">
       <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
          <?= $menu->name ?>
       </a>
@@ -1035,830 +1042,336 @@ $languages = App\Language::all();
          </ul> -->
 
       </div> <!-- navbar-collapse.// -->
-   </div> <!-- container-fluid.// -->
-   <!-- Channel and CPP Login -->
-   <div class="d-flex p-2">
-      <?php if (!Auth::guest()) {
-         $userEmail = Auth::user()->email;
-         $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
-         $channel = App\Channel::where('email', $userEmail)->first();
+      <!-- Channel and CPP Login -->
+      <div class="d-flex p-2">
+         <?php if (!Auth::guest()) {
+            $userEmail = Auth::user()->email;
+            $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
+            $channel = App\Channel::where('email', $userEmail)->first();
 
-         if (!empty($moderatorsUser)) { ?>
-               <div class="p-2" >
-                  <form method="POST" action="<?= URL::to('cpp/home') ?>" >
-                     <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
-                     <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
-                     <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
-                     <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
-                  </form>
-               </div>
-         <?php }
-         
-         if (!empty($channel)) { ?>
-               <div class="p-2" >
-                  <form method="POST" action="<?= URL::to('channel/home') ?>" >
-                     <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
-                     <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
-                     <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
-                     <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
-                  </form>
-               </div>
-         <?php }
-      } ?>
-   </div>
-
-   <div class="navbar-right menu-right">
-      <ul class="d-flex align-items-center list-inline m-0">
-
-         <li class="nav-item nav-icon">
-               <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search">
-                  <i class="ri-search-line"></i>
-               </a>
-
-            <div class="search-box iq-search-bar d-search">
-               <form action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" >
-               <input name="_token" type="hidden" value="<?= csrf_token(); ?>" />
-                  <div class="form-group position-relative">
-                     <input type="text" class="text search-input font-size-12 searches"
-                        placeholder="type here to search...">
-                     <i class="search-link ri-search-line"></i>
-                     <?php  include 'public/themes/theme4/partials/Search_content.php'; ?>
+            if (!empty($moderatorsUser)) { ?>
+                  <div class="p-2" >
+                     <form method="POST" action="<?= URL::to('cpp/home') ?>" >
+                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                        <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                        <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
+                        <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
+                     </form>
                   </div>
-               </form>
-            </div>
+            <?php }
+            
+            if (!empty($channel)) { ?>
+                  <div class="p-2" >
+                     <form method="POST" action="<?= URL::to('channel/home') ?>" >
+                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                        <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                        <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
+                        <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                     </form>
+                  </div>
+            <?php }
+         } ?>
+         </div>
 
-            <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
-               <div class="iq-card-body">
-                  <div id="search_list" class="search_list search-toggle device-search" ></div>
-               </div>
-            </div>
-         </li>
+         <div class="navbar-right menu-right">
+            <ul class="d-flex align-items-center list-inline m-0">
 
-         <li class="nav-item nav-icon">
-               <?php if( !Auth::guest() ) : ?>
+               <li class="nav-item nav-icon">
+                     <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search">
+                        <i class="ri-search-line"></i>
+                     </a>
 
-                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
-                     data-toggle="search-toggle">
-                           <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme4/assets/images/user/user.jpg') ?>"
-                           class="img-fluid avatar-40 rounded-circle" alt="user">
-                  </a>
-
-               <?php endif; ?>
-
-               <div class="iq-sub-dropdown iq-user-dropdown">
-                  <div class="iq-card shadow-none m-0">
-
-                  <?php if( Auth::guest() ) : ?>
-
-                        <div class="iq-card-body p-0 pl-3 pr-3">
-
-                           <li class="nav-item nav-icon">
-                              <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
-                                 <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
-                                    <div class="media-body">
-                                       <h6 class="mb-0 ">Signin</h6>
-                                    </div>
-                                 </div>
-                              </a>
-                           </li>
-                           
-                           <li class="nav-item nav-icon">
-                              <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
-                                 <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                    <div class="media-body">
-                                       <h6 class="mb-0 ">Signup</h6>
-                                    </div>
-                                 </div>
-                              </a>
-                           </li>
-
+                  <div class="search-box iq-search-bar d-search">
+                     <form action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" >
+                     <input name="_token" type="hidden" value="<?= csrf_token(); ?>" />
+                        <div class="form-group position-relative">
+                           <input type="text" class="text search-input font-size-12 searches"
+                              placeholder="type here to search...">
+                           <i class="search-link ri-search-line"></i>
+                           <?php  include 'public/themes/theme4/partials/Search_content.php'; ?>
                         </div>
+                     </form>
+                  </div>
 
-                     <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
-                        
-                        
+                  <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+                     <div class="iq-card-body">
+                        <div id="search_list" class="search_list search-toggle device-search" ></div>
+                     </div>
+                  </div>
+               </li>
 
-                        <div class="iq-card-body p-0 pl-3 pr-3">
-
-
-                        <div class="toggle mt-2 text-left">
-                           <i class="fas fa-moon"></i>
-                              <label class="switch toggle mt-3">
-                                 <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
-                                    <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                 <span class="sliderk round"></span>
-                              </label>
-                           <i class="fas fa-sun"></i>
+               <!-- Notification -->
+               
+               <!-- <li class="nav-item nav-icon">
+                     <a href="#" class="search-toggle" data-toggle="search-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22"
+                           height="22" class="noti-svg">
+                           <path fill="none" d="M0 0h24v24H0z" />
+                           <path
+                                 d="M18 10a6 6 0 1 0-12 0v8h12v-8zm2 8.667l.4.533a.5.5 0 0 1-.4.8H4a.5.5 0 0 1-.4-.8l.4-.533V10a8 8 0 1 1 16 0v8.667zM9.5 21h5a2.5 2.5 0 1 1-5 0z" />
+                        </svg>
+                        <span class="bg-danger dots"></span>
+                     </a>
+                     <div class="iq-sub-dropdown">
+                        <div class="iq-card shadow-none m-0">
+                           <div class="iq-card-body">
+                                 <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center">
+                                       <img src="https://localhost/flicknexs/public/themes/theme4/assets/images/notify/thumb-1.jpg"
+                                             class="img-fluid mr-3" alt="" />
+                                       <div class="media-body">
+                                             <h6 class="mb-0 ">Boot Bitty</h6>
+                                             <small class="font-size-12"> just now</small>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center">
+                                       <img src="https://localhost/flicknexs/public/themes/theme4/assets/images/notify/thumb-2.jpg"
+                                             class="img-fluid mr-3" alt="" />
+                                       <div class="media-body">
+                                             <h6 class="mb-0 ">The Last Breath</h6>
+                                             <small class="font-size-12">15 minutes ago</small>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <a href="#" class="iq-sub-card">
+                                    <div class="media align-items-center">
+                                       <img src="https://localhost/flicknexs/public/themes/theme4/assets/images/notify/thumb-3.jpg"
+                                             class="img-fluid mr-3" alt="" />
+                                       <div class="media-body">
+                                             <h6 class="mb-0 ">The Hero Camp</h6>
+                                             <small class="font-size-12">1 hour ago</small>
+                                       </div>
+                                    </div>
+                                 </a>
+                           </div>
                         </div>
+                     </div>
+               </li>
+                  -->
+               <li class="nav-item nav-icon">
+                     <?php if( !Auth::guest() ) : ?>
 
-                           <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Manage Profile</h6>
-                                    </div>
-                              </div>
-                           </a>
-                           
-                           <!-- <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Pricing Plan</h6>
-                                    </div>
-                              </div>
-                           </a> -->
-
-                           <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Wishlist</h6>
-                                    </div>
-                              </div>
-                           </a>
-
-                           <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Watchlater</h6>
-                                    </div>
-                              </div>
-                           </a>
-
-                           <a href="<?= URL::to('/admin') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Admin</h6>
-                                    </div>
-                              </div>
-                           </a>
-
-                           <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Logout</h6>
-                                    </div>
-                              </div>
-                           </a>
-                        </div>
-
-                     <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
-
-                        <div class="toggle mt-2 ">
-                           <i class="fas fa-moon"></i>
-                              <label class="switch toggle mt-3">
-                                 <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                 <span class="sliderk round"></span>
-                              </label>
-                           <i class="fas fa-sun"></i>
-                        </div>
-
-                        <div class="iq-card-body p-0 pl-3 pr-3">
-                           <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Manage Profile</h6>
-                                    </div>
-                              </div>
-                           </a>
-
-                           <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Wishlist</h6>
-                                    </div>
-                              </div>
-                           </a>
-
-                           <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Watchlater</h6>
-                                    </div>
-                              </div>
-                           </a>
-                           
-                           <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Logout</h6>
-                                    </div>
-                              </div>
-                           </a>
-                        </div>
-
-                     <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
-                        
-                        <div class="toggle mt-2 ">
-                           <i class="fas fa-moon"></i>
-                              <label class="switch toggle mt-3">
-                                 <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                 <span class="sliderk round"></span>
-                              </label>
-                           <i class="fas fa-sun"></i>
-                        </div>
-
-                        <div class="iq-card-body p-0 pl-3 pr-3">
-
-                           <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Manage Profile</h6>
-                                    </div>
-                              </div>
-                           </a>
-
-                           <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Wishlist</h6>
-                                    </div>
-                              </div>
-                           </a>
-
-                           <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Watchlater</h6>
-                                    </div>
-                              </div>
-                           </a>
-                           
-                           <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
-                              <div class="media align-items-center">
-                                    <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                    <div class="media-body ml-3">
-                                       <h6 class="mb-0 ">Logout</h6>
-                                    </div>
-                              </div>
-                           </a>
-                        </div>
+                        <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
+                           data-toggle="search-toggle">
+                                 <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme4/assets/images/user/user.jpg') ?>"
+                                 class="img-fluid avatar-40 rounded-circle" alt="user">
+                        </a>
 
                      <?php endif; ?>
-                  </div>
-               </div>
-         </li>
-      </ul>
-   </div>
-</nav>
-                  <nav class="navbar navbar-expand-lg navbar-light p-0">
-                    
-                      <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
-                          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                          aria-expanded="false" aria-label="Toggle navigation">
-                          <div class="navbar-toggler-icon" data-toggle="collapse">
-                              <span class="navbar-menu-icon navbar-menu-icon--top"></span>
-                              <span class="navbar-menu-icon navbar-menu-icon--middle"></span>
-                              <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
-                          </div>
-                      </a>
 
-                      <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
+                     <div class="iq-sub-dropdown iq-user-dropdown">
+                        <div class="iq-card shadow-none m-0">
 
-                      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                          <div class="menu-main-menu-container">
-                              <ul id="top-menu" class=" mt-2 nav navbar-nav ">
-                                 
+                        <?php if( Auth::guest() ) : ?>
 
-                                 <?php  
+                              <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                    $video_category = App\VideoCategory::where('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)->get()->map(function ($item) {
-                               
-                                       $item['Parent_video_category'] = App\VideoCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->where('in_menu',1)->get();
-                               
-                                       return $item;
-                                   });
-
-                                    $LiveCategory = App\LiveCategory::where('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->get()->map(function ($item) {
-                               
-                                       $item['Parent_live_category'] = App\LiveCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->get();
-                               
-                                       return $item;
-                                    });
-
-                                    $AudioCategory = App\AudioCategory::where('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->get()->map(function ($item) {
-                               
-                                       $item['Parent_Audios_category'] = App\AudioCategory::where('parent_id',$item->id)->get();
-                               
-                                       return $item;
-                                    });
-
-
-                                    $SeriesCategory = App\SeriesGenre::where('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->get()->map(function ($item) {
-                               
-                                       $item['Parent_Series_category'] = App\SeriesGenre::where('parent_id',$item->id)->get();
-                               
-                                       return $item;
-                                    });
-
-                                    // dd($SeriesCategory);
-
-                                    $tv_shows_series = App\Series::where('active',1)->get();
-
-                                    $languages = App\Language::all();
-
-                                 ?>
-
-
-                                 <?php foreach ($menus as $menu) { 
-
-                                    if ( $menu->in_menu == "video" ) {  ?>
-                                          <li class="nav-item dropdown menu-item">
-                                                <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                   <?= $menu->name ?> <i class="fa fa-angle-down"></i>
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                   <?php foreach ( $video_category as $category) : ?>
-                                                      <?php if( !is_null($category) ): ?>
-                                                         <li>
-                                                            <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->slug) ?>">
-                                                               <?= $category->name . ' <i class="fa fa-arrow-right" aria-hidden="true"></i>' ;?>
-                                                            </a>
-                                                            <ul class="submenu dropdown-menu">
-                                                               <?php foreach ( $category->Parent_video_category as $Parent_video_category) : ?>
-                                                            <?php if(  !is_null($category->Parent_video_category) ): ?>
-                                                               <li>
-                                                                  <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$Parent_video_category->slug)?>">
-                                                                     <?= $Parent_video_category->name;?>
-                                                                  </a>
-                                                               </li>
-                                                            <?php endif; ?>
-                                                               <?php endforeach ; ?>
-                                                            </ul>
-                                                            
-                                                         </li>
-                                                      <?php endif; ?>
-                                                   <?php endforeach ; ?>
-                                                </ul>
-                                             </li>
-                                    <?php } elseif ( $menu->in_menu == "movies") {  ?>
-
-                                       <li class="dropdown menu-item dskdflex">
-                                          <a class="dropdown-toggle justify-content-between " id="dn" href="<?= URL::to($menu->url) ?>" data-toggle="dropdown">
-                                                <?= ($menu->name);?> <i class="fa fa-angle-down"></i>
-                                          </a>
-
-                                          <ul class="dropdown-menu categ-head">
-                                                <?php foreach ( $languages as $language): ?>
-                                                <li>
-                                                      <a class="dropdown-item cont-item" href="<?= URL::to('language/'.$language->id.'/'.$language->name);?>">
-                                                         <?= $language->name;?>
-                                                      </a>
-                                                </li>
-                                                <?php endforeach; ?>
-                                          </ul>
-                                       </li>
-
-                                    <?php }elseif ( $menu->in_menu == "live") { ?>
-
-                                       <li class="nav-item dropdown menu-item">
-                                                <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                   <?= $menu->name ?> <i class="fa fa-angle-down"></i>
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                   <?php foreach ( $LiveCategory as $category) : ?>
-                                                      <?php if( !is_null($category) ): ?>
-                                                         <li>
-                                                            <a class="dropdown-item cont-item" href="<?= URL::to('/live/category').'/'.$category->slug ?>">
-                                                               <?= $category->name . ' <i class="fa fa-arrow-right" aria-hidden="true"></i>' ;?>
-                                                            </a>
-                                                            <ul class="submenu dropdown-menu">
-                                                               <?php foreach ( $category->Parent_live_category as $Parent_live_category) : ?>
-                                                            <?php if(  !is_null($category->Parent_live_category) ): ?>
-                                                               <li>
-                                                                  <a class="dropdown-item cont-item" href="<?= URL::to('/live/category').'/'.$Parent_live_category->slug ?>">
-                                                                     <?= $Parent_live_category->name;?>
-                                                                  </a>
-                                                               </li>
-                                                            <?php endif; ?>
-                                                               <?php endforeach ; ?>
-                                                            </ul>
-                                                            
-                                                         </li>
-                                                      <?php endif; ?>
-                                                   <?php endforeach ; ?>
-                                                </ul>
-                                             </li>
-
-                                    <?php }elseif ( $menu->in_menu == "audios") { ?>
-
-                                       <li class="nav-item dropdown menu-item">
-                                                <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                   <?= $menu->name ?> <i class="fa fa-angle-down"></i>
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                   <?php foreach ( $AudioCategory as $category) : ?>
-                                                      <?php if( !is_null($category) ): ?>
-                                                         <li>
-                                                            <a class="dropdown-item cont-item" href="<?=  URL::to('/audios/category').'/'.$category->slug ?>">
-                                                               <?= $category->name . ' <i class="fa fa-arrow-right" aria-hidden="true"></i>' ;?>
-                                                            </a>
-                                                            <ul class="submenu dropdown-menu">
-                                                               <?php foreach ( $category->Parent_Audios_category as $Parent_Audios_category) : ?>
-                                                            <?php if(  !is_null($category->Parent_Audios_category) ): ?>
-                                                               <li>
-                                                                  <a class="dropdown-item cont-item" href="<?=  URL::to('/audios/category').'/'.$Parent_Audios_category->slug ?>">
-                                                                     <?= $Parent_Audios_category->name;?>
-                                                                  </a>
-                                                               </li>
-                                                            <?php endif; ?>
-                                                               <?php endforeach ; ?>
-                                                            </ul>
-                                                            
-                                                         </li>
-                                                      <?php endif; ?>
-                                                   <?php endforeach ; ?>
-                                                </ul>
-                                             </li>
-                                    <?php }elseif ( $menu->in_menu == "tv_show") {  ?>
-                                          <li class="nav-item dropdown menu-item">
-                                                <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                   <?= $menu->name ?> <i class="fa fa-angle-down"></i>
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                   <?php foreach ( $SeriesCategory as $category) : ?>
-                                                      <?php if( !is_null($category) ): ?>
-                                                         <li>
-                                                            <a class="dropdown-item cont-item" href="<?=  URL::to('/series/category').'/'.$category->slug ?>">
-                                                               <?= $category->name . ' <i class="fa fa-arrow-right" aria-hidden="true"></i>' ;?>
-                                                            </a>
-                                                            <ul class="submenu dropdown-menu">
-                                                               <?php foreach ( $category->Parent_Series_category as $Parent_Series_category) : ?>
-                                                            <?php if(  !is_null($category->Parent_Series_category) ): ?>
-                                                               <li>
-                                                                  <a class="dropdown-item cont-item" href="<?=  URL::to('/series/category').'/'.$Parent_Series_category->slug ?>">
-                                                                     <?= $Parent_Series_category->name;?>
-                                                                  </a>
-                                                               </li>
-                                                            <?php endif; ?>
-                                                               <?php endforeach ; ?>
-                                                            </ul>
-                                                            
-                                                         </li>
-                                                      <?php endif; ?>
-                                                   <?php endforeach ; ?>
-                                                </ul>
-                                             </li>
-
-                      
-
-                                    <?php } else { ?>
-                                       <li class="menu-item">
-                                          <a
-                                                href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to( $menu->url ); }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
-                                                <?php echo __($menu->name);?>
-                                          </a>
-                                       </li>
-
-                                    <?php  } ?>
-
-                                 <?php } ?>
-                                 
-                              </ul>
-                          </div>
-                      </div>
-
-                      <!-- Channel and CPP Login -->
-                     <div class="d-flex p-2">
-                        <?php if (!Auth::guest()) {
-                           $userEmail = Auth::user()->email;
-                           $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
-                           $channel = App\Channel::where('email', $userEmail)->first();
-
-                           if (!empty($moderatorsUser)) { ?>
-                                 <div class="p-2" >
-                                    <form method="POST" action="<?= URL::to('cpp/home') ?>" >
-                                       <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
-                                       <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
-                                       <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
-                                       <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
-                                    </form>
-                                 </div>
-                           <?php }
-                           
-                           if (!empty($channel)) { ?>
-                                 <div class="p-2" >
-                                    <form method="POST" action="<?= URL::to('channel/home') ?>" >
-                                       <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
-                                       <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
-                                       <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
-                                       <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
-                                    </form>
-                                 </div>
-                           <?php }
-                        } ?>
-                     </div>
-
-                      <div class="navbar-right menu-right">
-                          <ul class="d-flex align-items-center list-inline m-0">
-
-                              <li class="nav-item nav-icon">
-                                  <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search">
-                                      <i class="ri-search-line"></i>
-                                  </a>
-
-                                 <div class="search-box iq-search-bar d-search">
-                                    <form action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" >
-                                    <input name="_token" type="hidden" value="<?= csrf_token(); ?>" />
-                                       <div class="form-group position-relative">
-                                          <input type="text" class="text search-input font-size-12 searches"
-                                             placeholder="type here to search...">
-                                          <i class="search-link ri-search-line"></i>
-                                          <?php  include 'public/themes/theme4/partials/Search_content.php'; ?>
-                                       </div>
-                                    </form>
-                                 </div>
-
-                                 <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
-                                    <div class="iq-card-body">
-                                       <div id="search_list" class="search_list search-toggle device-search" ></div>
-                                    </div>
-                                 </div>
-                              </li>
-
-                              <!-- Notification -->
-                              
-                              <!-- <li class="nav-item nav-icon">
-                                  <a href="#" class="search-toggle" data-toggle="search-toggle">
-                                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22"
-                                          height="22" class="noti-svg">
-                                          <path fill="none" d="M0 0h24v24H0z" />
-                                          <path
-                                              d="M18 10a6 6 0 1 0-12 0v8h12v-8zm2 8.667l.4.533a.5.5 0 0 1-.4.8H4a.5.5 0 0 1-.4-.8l.4-.533V10a8 8 0 1 1 16 0v8.667zM9.5 21h5a2.5 2.5 0 1 1-5 0z" />
-                                      </svg>
-                                      <span class="bg-danger dots"></span>
-                                  </a>
-                                  <div class="iq-sub-dropdown">
-                                      <div class="iq-card shadow-none m-0">
-                                          <div class="iq-card-body">
-                                              <a href="#" class="iq-sub-card">
-                                                  <div class="media align-items-center">
-                                                      <img src="https://localhost/flicknexs/public/themes/theme4/assets/images/notify/thumb-1.jpg"
-                                                          class="img-fluid mr-3" alt="" />
-                                                      <div class="media-body">
-                                                          <h6 class="mb-0 ">Boot Bitty</h6>
-                                                          <small class="font-size-12"> just now</small>
-                                                      </div>
-                                                  </div>
-                                              </a>
-                                              <a href="#" class="iq-sub-card">
-                                                  <div class="media align-items-center">
-                                                      <img src="https://localhost/flicknexs/public/themes/theme4/assets/images/notify/thumb-2.jpg"
-                                                          class="img-fluid mr-3" alt="" />
-                                                      <div class="media-body">
-                                                          <h6 class="mb-0 ">The Last Breath</h6>
-                                                          <small class="font-size-12">15 minutes ago</small>
-                                                      </div>
-                                                  </div>
-                                              </a>
-                                              <a href="#" class="iq-sub-card">
-                                                  <div class="media align-items-center">
-                                                      <img src="https://localhost/flicknexs/public/themes/theme4/assets/images/notify/thumb-3.jpg"
-                                                          class="img-fluid mr-3" alt="" />
-                                                      <div class="media-body">
-                                                          <h6 class="mb-0 ">The Hero Camp</h6>
-                                                          <small class="font-size-12">1 hour ago</small>
-                                                      </div>
-                                                  </div>
-                                              </a>
+                                 <li class="nav-item nav-icon">
+                                    <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                       <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
+                                          <div class="media-body">
+                                             <h6 class="mb-0 ">Signin</h6>
                                           </div>
-                                      </div>
-                                  </div>
-                              </li>
-                               -->
-                              <li class="nav-item nav-icon">
-                                    <?php if( !Auth::guest() ) : ?>
+                                       </div>
+                                    </a>
+                                 </li>
+                                 
+                                 <li class="nav-item nav-icon">
+                                    <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                       <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                          <div class="media-body">
+                                             <h6 class="mb-0 ">Signup</h6>
+                                          </div>
+                                       </div>
+                                    </a>
+                                 </li>
 
-                                       <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
-                                          data-toggle="search-toggle">
-                                              <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme4/assets/images/user/user.jpg') ?>"
-                                                class="img-fluid avatar-40 rounded-circle" alt="user">
-                                       </a>
+                              </div>
 
-                                  <?php endif; ?>
+                           <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
+                              
+                              
 
-                                  <div class="iq-sub-dropdown iq-user-dropdown">
-                                      <div class="iq-card shadow-none m-0">
-
-                                       <?php if( Auth::guest() ) : ?>
-
-                                             <div class="iq-card-body p-0 pl-3 pr-3">
-
-                                                <li class="nav-item nav-icon">
-                                                   <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
-                                                         <div class="media-body">
-                                                            <h6 class="mb-0 ">Signin</h6>
-                                                         </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-                                                
-                                                <li class="nav-item nav-icon">
-                                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                                         <div class="media-body">
-                                                            <h6 class="mb-0 ">Signup</h6>
-                                                         </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-
-                                             </div>
-
-                                          <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
-                                             
-                                             
-
-                                             <div class="iq-card-body p-0 pl-3 pr-3">
+                              <div class="iq-card-body p-0 pl-3 pr-3">
 
 
-                                             <div class="toggle mt-2 text-left">
-                                                <i class="fas fa-moon"></i>
-                                                   <label class="switch toggle mt-3">
-                                                      <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
-                                                       <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                                      <span class="sliderk round"></span>
-                                                   </label>
-                                                <i class="fas fa-sun"></i>
-                                             </div>
+                              <div class="toggle mt-2 text-left">
+                                 <i class="fas fa-moon"></i>
+                                    <label class="switch toggle mt-3">
+                                       <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                          <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                       <span class="sliderk round"></span>
+                                    </label>
+                                 <i class="fas fa-sun"></i>
+                              </div>
 
-                                                <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Manage Profile</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
-                                                
-                                                <!-- <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Pricing Plan</h6>
-                                                         </div>
-                                                   </div>
-                                                </a> -->
+                                 <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Manage Profile</h6>
+                                          </div>
+                                    </div>
+                                 </a>
+                                 
+                                 <!-- <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Pricing Plan</h6>
+                                          </div>
+                                    </div>
+                                 </a> -->
 
-                                                <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Wishlist</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
+                                 <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Wishlist</h6>
+                                          </div>
+                                    </div>
+                                 </a>
 
-                                                <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Watchlater</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
+                                 <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Watchlater</h6>
+                                          </div>
+                                    </div>
+                                 </a>
 
-                                                <a href="<?= URL::to('/admin') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Admin</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
+                                 <a href="<?= URL::to('/admin') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Admin</h6>
+                                          </div>
+                                    </div>
+                                 </a>
 
-                                                <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Logout</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
-                                             </div>
+                                 <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Logout</h6>
+                                          </div>
+                                    </div>
+                                 </a>
+                              </div>
 
-                                          <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
+                           <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
 
-                                             <div class="toggle mt-2 ">
-                                                <i class="fas fa-moon"></i>
-                                                   <label class="switch toggle mt-3">
-                                                      <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                                      <span class="sliderk round"></span>
-                                                   </label>
-                                                <i class="fas fa-sun"></i>
-                                             </div>
+                              <div class="toggle mt-2 ">
+                                 <i class="fas fa-moon"></i>
+                                    <label class="switch toggle mt-3">
+                                       <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                       <span class="sliderk round"></span>
+                                    </label>
+                                 <i class="fas fa-sun"></i>
+                              </div>
 
-                                             <div class="iq-card-body p-0 pl-3 pr-3">
-                                                <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Manage Profile</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
+                              <div class="iq-card-body p-0 pl-3 pr-3">
+                                 <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Manage Profile</h6>
+                                          </div>
+                                    </div>
+                                 </a>
 
-                                                <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Wishlist</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
+                                 <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Wishlist</h6>
+                                          </div>
+                                    </div>
+                                 </a>
 
-                                                <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Watchlater</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
-                                                
-                                                <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Logout</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
-                                             </div>
+                                 <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Watchlater</h6>
+                                          </div>
+                                    </div>
+                                 </a>
+                                 
+                                 <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Logout</h6>
+                                          </div>
+                                    </div>
+                                 </a>
+                              </div>
 
-                                          <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
-                                             
-                                             <div class="toggle mt-2 ">
-                                                <i class="fas fa-moon"></i>
-                                                   <label class="switch toggle mt-3">
-                                                      <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                                      <span class="sliderk round"></span>
-                                                   </label>
-                                                <i class="fas fa-sun"></i>
-                                             </div>
+                           <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
+                              
+                              <div class="toggle mt-2 ">
+                                 <i class="fas fa-moon"></i>
+                                    <label class="switch toggle mt-3">
+                                       <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                       <span class="sliderk round"></span>
+                                    </label>
+                                 <i class="fas fa-sun"></i>
+                              </div>
 
-                                             <div class="iq-card-body p-0 pl-3 pr-3">
+                              <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                                <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Manage Profile</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
+                                 <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Manage Profile</h6>
+                                          </div>
+                                    </div>
+                                 </a>
 
-                                                <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Wishlist</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
+                                 <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Wishlist</h6>
+                                          </div>
+                                    </div>
+                                 </a>
 
-                                                <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Watchlater</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
-                                                
-                                                <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
-                                                   <div class="media align-items-center">
-                                                         <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
-                                                         <div class="media-body ml-3">
-                                                            <h6 class="mb-0 ">Logout</h6>
-                                                         </div>
-                                                   </div>
-                                                </a>
-                                             </div>
+                                 <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Watchlater</h6>
+                                          </div>
+                                    </div>
+                                 </a>
+                                 
+                                 <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                          <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                          <div class="media-body ml-3">
+                                             <h6 class="mb-0 ">Logout</h6>
+                                          </div>
+                                    </div>
+                                 </a>
+                              </div>
 
-                                          <?php endif; ?>
-                                      </div>
-                                  </div>
-                              </li>
-                          </ul>
-                      </div>
-                  </nav>
+                           <?php endif; ?>
+                        </div>
+                     </div>
+               </li>
+            </ul>
+         </div>
+   </div> <!-- container-fluid.// -->
+</nav>
+                  
                   <div class="nav-overlay"></div>
               </div>
           </div>
