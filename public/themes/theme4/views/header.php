@@ -831,7 +831,7 @@ $tv_shows_series = App\Series::where('active',1)->get();
 $languages = App\Language::all();
 
 ?>
-<li class="nav-item dropdown">
+<!-- <li class="nav-item dropdown">
    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">  Treeview menu  </a>
    <ul class="dropdown-menu">
    <li><a class="dropdown-item" href="#"> Dropdown item 1 </a></li>
@@ -852,7 +852,7 @@ $languages = App\Language::all();
    <li><a class="dropdown-item" href="#"> Dropdown item 3 </a></li>
    <li><a class="dropdown-item" href="#"> Dropdown item 4 </a>
    </ul>
-</li>
+</li> -->
 <?php foreach ($menus as $menu) {
 
    if ( $menu->in_menu == "video" ) {  ?>
@@ -1036,6 +1036,283 @@ $languages = App\Language::all();
 
       </div> <!-- navbar-collapse.// -->
    </div> <!-- container-fluid.// -->
+   <!-- Channel and CPP Login -->
+   <div class="d-flex p-2">
+      <?php if (!Auth::guest()) {
+         $userEmail = Auth::user()->email;
+         $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
+         $channel = App\Channel::where('email', $userEmail)->first();
+
+         if (!empty($moderatorsUser)) { ?>
+               <div class="p-2" >
+                  <form method="POST" action="<?= URL::to('cpp/home') ?>" >
+                     <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                     <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                     <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
+                     <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
+                  </form>
+               </div>
+         <?php }
+         
+         if (!empty($channel)) { ?>
+               <div class="p-2" >
+                  <form method="POST" action="<?= URL::to('channel/home') ?>" >
+                     <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                     <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                     <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
+                     <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                  </form>
+               </div>
+         <?php }
+      } ?>
+   </div>
+
+   <div class="navbar-right menu-right">
+      <ul class="d-flex align-items-center list-inline m-0">
+
+         <li class="nav-item nav-icon">
+               <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search">
+                  <i class="ri-search-line"></i>
+               </a>
+
+            <div class="search-box iq-search-bar d-search">
+               <form action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" >
+               <input name="_token" type="hidden" value="<?= csrf_token(); ?>" />
+                  <div class="form-group position-relative">
+                     <input type="text" class="text search-input font-size-12 searches"
+                        placeholder="type here to search...">
+                     <i class="search-link ri-search-line"></i>
+                     <?php  include 'public/themes/theme4/partials/Search_content.php'; ?>
+                  </div>
+               </form>
+            </div>
+
+            <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+               <div class="iq-card-body">
+                  <div id="search_list" class="search_list search-toggle device-search" ></div>
+               </div>
+            </div>
+         </li>
+
+         <li class="nav-item nav-icon">
+               <?php if( !Auth::guest() ) : ?>
+
+                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
+                     data-toggle="search-toggle">
+                           <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme4/assets/images/user/user.jpg') ?>"
+                           class="img-fluid avatar-40 rounded-circle" alt="user">
+                  </a>
+
+               <?php endif; ?>
+
+               <div class="iq-sub-dropdown iq-user-dropdown">
+                  <div class="iq-card shadow-none m-0">
+
+                  <?php if( Auth::guest() ) : ?>
+
+                        <div class="iq-card-body p-0 pl-3 pr-3">
+
+                           <li class="nav-item nav-icon">
+                              <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                 <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
+                                    <div class="media-body">
+                                       <h6 class="mb-0 ">Signin</h6>
+                                    </div>
+                                 </div>
+                              </a>
+                           </li>
+                           
+                           <li class="nav-item nav-icon">
+                              <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                 <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                    <div class="media-body">
+                                       <h6 class="mb-0 ">Signup</h6>
+                                    </div>
+                                 </div>
+                              </a>
+                           </li>
+
+                        </div>
+
+                     <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
+                        
+                        
+
+                        <div class="iq-card-body p-0 pl-3 pr-3">
+
+
+                        <div class="toggle mt-2 text-left">
+                           <i class="fas fa-moon"></i>
+                              <label class="switch toggle mt-3">
+                                 <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                    <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                 <span class="sliderk round"></span>
+                              </label>
+                           <i class="fas fa-sun"></i>
+                        </div>
+
+                           <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Manage Profile</h6>
+                                    </div>
+                              </div>
+                           </a>
+                           
+                           <!-- <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Pricing Plan</h6>
+                                    </div>
+                              </div>
+                           </a> -->
+
+                           <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Wishlist</h6>
+                                    </div>
+                              </div>
+                           </a>
+
+                           <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Watchlater</h6>
+                                    </div>
+                              </div>
+                           </a>
+
+                           <a href="<?= URL::to('/admin') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Admin</h6>
+                                    </div>
+                              </div>
+                           </a>
+
+                           <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Logout</h6>
+                                    </div>
+                              </div>
+                           </a>
+                        </div>
+
+                     <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
+
+                        <div class="toggle mt-2 ">
+                           <i class="fas fa-moon"></i>
+                              <label class="switch toggle mt-3">
+                                 <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                 <span class="sliderk round"></span>
+                              </label>
+                           <i class="fas fa-sun"></i>
+                        </div>
+
+                        <div class="iq-card-body p-0 pl-3 pr-3">
+                           <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Manage Profile</h6>
+                                    </div>
+                              </div>
+                           </a>
+
+                           <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Wishlist</h6>
+                                    </div>
+                              </div>
+                           </a>
+
+                           <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Watchlater</h6>
+                                    </div>
+                              </div>
+                           </a>
+                           
+                           <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Logout</h6>
+                                    </div>
+                              </div>
+                           </a>
+                        </div>
+
+                     <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
+                        
+                        <div class="toggle mt-2 ">
+                           <i class="fas fa-moon"></i>
+                              <label class="switch toggle mt-3">
+                                 <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                 <span class="sliderk round"></span>
+                              </label>
+                           <i class="fas fa-sun"></i>
+                        </div>
+
+                        <div class="iq-card-body p-0 pl-3 pr-3">
+
+                           <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Manage Profile</h6>
+                                    </div>
+                              </div>
+                           </a>
+
+                           <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Wishlist</h6>
+                                    </div>
+                              </div>
+                           </a>
+
+                           <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Watchlater</h6>
+                                    </div>
+                              </div>
+                           </a>
+                           
+                           <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                              <div class="media align-items-center">
+                                    <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                    <div class="media-body ml-3">
+                                       <h6 class="mb-0 ">Logout</h6>
+                                    </div>
+                              </div>
+                           </a>
+                        </div>
+
+                     <?php endif; ?>
+                  </div>
+               </div>
+         </li>
+      </ul>
+   </div>
 </nav>
                   <nav class="navbar navbar-expand-lg navbar-light p-0">
                     
