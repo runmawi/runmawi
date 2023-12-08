@@ -104,7 +104,8 @@
                                                                 @endif -->
                                                                                                                             
                                                                 @if ( optional($videos)->description )
-                                                                    <div class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</div>
+                                                                    <div class="trending-dec">{!! htmlspecialchars(substr(optional($videos)->description, 0, 100)) !!}</div>
+                                                                    
                                                                 @endif
 
                                                                 <div class="p-btns">

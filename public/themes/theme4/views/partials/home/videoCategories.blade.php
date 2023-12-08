@@ -38,7 +38,7 @@
                                                                 <h2 class="caption-h2">{{ optional($videocategories)->name }}</h2>
 
                                                             @if (optional($videocategories)->home_genre)
-                                                                <div class="trending-dec">{!! html_entity_decode( optional($videocategories)->home_genre) !!}</div>
+                                                                <div class="trending-dec">{!! htmlspecialchars(substr(optional($videocategories)->home_genre, 0, 100)) !!}</div>
                                                             @endif
 
                                                             <div class="p-btns">
