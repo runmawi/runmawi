@@ -153,9 +153,9 @@
                                                                     <a href="{{ URL::to('category/videos/' . $videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
                                                                 </div>
                                                             </div>
-                                                            <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $videos->player_image ? URL::to('public/uploads/images/' . $videos->player_image) : default_horizontal_image_url() }}" alt="">
-                                                            </div>
+                                                        </div>
+                                                        <div class="dropdown_thumbnail">
+                                                            <img  src="{{ $videos->player_image ? URL::to('public/uploads/images/' . $videos->player_image) : default_horizontal_image_url() }}" alt="">
                                                         </div>
                                                     </div>
                                                 </div>
