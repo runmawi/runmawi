@@ -76,7 +76,7 @@
                                                                 <h2 class="caption-h2">{{ optional($series)->title }}</h2>
                                                                                                                             
                                                                 @if ( optional($series)->description )
-                                                                    <div class="trending-dec">{!! htmlspecialchars(substr(optional($series)->description, 0, 100)) !!}</div>
+                                                                    <div class="trending-dec">{!! html_entity_decode(substr(optional($series)->description, 0, 100)) !!}</div>
                                                                 @endif
 
                                                                 <div class="p-btns">
@@ -91,35 +91,25 @@
                                                                 <ul id="trending-slider-nav" class= "{{ 'pl-5 m-0  series-depends-episode-slider-'.$key }}" >
                                                                     @foreach ($series->Series_depends_episodes as $episode )
                                                                         <li>
-                                                                            <a href="">
+                                                                            <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                                 <div class=" position-relative">
                                                                                     <img src="{{ $episode->image_url }}" class="img-fluid" >
-                                                                                        <div class="controls">
+                                                                                    <div class="controls">
                                                                                         <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                                            <button class="playBTN">
-                                                                                                <i class="fas fa-play"></i>
-                                                                                            </button>
-                                                                                            </a>
-                                                                                            <nav>
-                                                                                                <button class="moreBTN">
-                                                                                                    <i class="fas fa-info-circle"></i>
-                                                                                                    <span>More info</span>
-                                                                                                </button>
-                                                                                            </nav>
-                                                                                            @if ( optional($series)->description )
-                                                                                                <p class="trending-dec">{!! htmlspecialchars(substr(optional($series)->description, 0, 50)) !!}</p>
-                                                                                            @endif
-                                                                                        </div>
+                                                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                                                        </a>
+
+                                                                                        <nav>
+                                                                                            <button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                                                        </nav>
+                                                                                        
+                                                                                        <p class="trending-dec" >
+                                                                                            {{ " S".$episode->season_id ." E".$episode->episode_order  }} 
+                                                                                            {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
+                                                                                        </p>
+                                                                                    </div>
                                                                                 </div>
-                                                                                
-
-                                                                                {{-- <p>{!! html_entity_decode( optional($episode)->episode_description) !!} </p> --}}
-
-                                                                                <!-- <div class="d-flex align-items-center text-white text-detail">
-                                                                                    <span class="ml-3">{{ "S ".$episode->season_id  }} </span>
-                                                                                    <span class="ml-3">{{ "E ".$episode->episode_order  }} </span>
-                                                                                </div> -->
-                                                                                </a>
+                                                                            </a>
                                                                         </li>
                                                                     @endforeach
                                                                 </ul>
@@ -354,5 +344,4 @@
     white-space: nowrap;
     display: inline-block;
 }
-
 </style>
