@@ -222,8 +222,8 @@
                             <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-                                <span class="ml-3"> {{ $item->season_id   }}  S</span>
-                                <span class="ml-3"> {{ $item->episode_order }} E </span>
+                                <span class="ml-3"> {{ 'S '.$item->season_id   }}  </span>
+                                <span class="ml-3"> {{ 'E '.$item->episode_order }}  </span>
                             </div>
 
                             <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! (html_entity_decode(substr(optional($item)->episode_description, 0, 150))) !!} </p>
