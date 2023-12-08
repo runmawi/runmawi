@@ -314,15 +314,31 @@
                      dataType : 'json',
                      success: function(result){
                         // alert();
-                  var streamUrl = '{{$streamUrl}}' ;
+                  // var streamUrl = '{{$streamUrl}}' ;
+                  var streamvideos = result.streamvideos;
+                  var PullZoneURl = result.PullZoneURl;
+                  var decodedStreamVideos = JSON.parse(streamvideos);
 
-                     $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
-                     $.each(result.items,function(key,value){
+                  console.log(decodedStreamVideos);
+
+
+                  $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
+
+                     $.each(decodedStreamVideos.items, function(key, value) {
                         console.log(value.title);
-                        $("#bunny_cdn_linked_video").append('<option value="'+streamUrl+'/'+value.guid+'/'+'playlist.m3u8'+'">'+value.title+'</option>');
-
-                     // $("#bunny_cdn_linked_video").append('<option value="'+value.title+'">'+value.title+'</option>');
+                        var videoUrl = PullZoneURl + '/' + value.guid + '/playlist.m3u8';
+                        $("#bunny_cdn_linked_video").append('<option value="' + videoUrl + '">' + value.title + '</option>');
+                        // $("#bunny_cdn_linked_video").append('<option value="'+videoUrl+'">'+value.title+'</option>');
                      });
+
+                  // old code 
+                     // $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
+                     // $.each(result.items,function(key,value){
+                     //    console.log(value.title);
+                     //    $("#bunny_cdn_linked_video").append('<option value="'+streamUrl+'/'+value.guid+'/'+'playlist.m3u8'+'">'+value.title+'</option>');
+
+                     // // $("#bunny_cdn_linked_video").append('<option value="'+value.title+'">'+value.title+'</option>');
+                     // });
                      }
                   });
 
