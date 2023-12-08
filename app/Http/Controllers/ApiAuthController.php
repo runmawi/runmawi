@@ -10208,7 +10208,7 @@ $cpanel->end();
           // 'OrderHomeSetting' => $OrderHomeSetting,
           // 'featured_videos' => $featured_videos,
           'latest_videos' => $latest_videos,
-          // 'category_videos' => $myData,
+          'category_videos' => $myData,
           // 'live_videos' => $live_videos,
           'series' => $series,
           // 'audios' => $audios,
