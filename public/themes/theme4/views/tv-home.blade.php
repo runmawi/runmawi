@@ -46,7 +46,7 @@
 
     @foreach ($sections as $section)
         <section id="iq-favorites">
-            <div class="container-fluid overflow-hidden">
+            <div class="container-fluid overflow-hidden pl-0">
                 <div class="row">
                     <div class="col-sm-12">
                         {!! Theme::uses('theme4')->load("public/themes/theme4/views/partials/home/{$section['view']}", [
@@ -62,7 +62,7 @@
     @foreach ($order_settings as $key => $value)
         @if ( ($value->video_name == 'Series_Genre' && $home_settings->SeriesGenre == 1) || ($value->video_name == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1))
             <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden">
+                <div class="container-fluid overflow-hidden pl-0">
                     <div class="row">
                         <div class="col-sm-12">
 
