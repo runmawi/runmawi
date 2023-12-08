@@ -999,7 +999,7 @@ public function PostcreateStep3(Request $request)
     public function submitpaypal(Request $request)
         {
             $register = $request->session()->get('register');
-            $email = $request->email;
+            $email = $request->session()->get('register.email');
             $user_email = User::where('email','=',$email)->count();
             $user_first = User::where('email','=',$email)->first();
             $id = $user_first->id;  
@@ -1018,7 +1018,7 @@ public function PostcreateStep3(Request $request)
             $subscription->price = $plandetail->price;
             $subscription->name = $user_first->username;
             $subscription->days = $plandetail->days;
-            $subscription->user_id =  Auth::user()->id;
+            $subscription->user_id =  $id;
             $subscription->stripe_id = $request->plan_id;
             $subscription->stripe_status  = 'active';
             $subscription->stripe_plan = $request->plan_id;
