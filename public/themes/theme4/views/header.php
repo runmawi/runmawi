@@ -1,3 +1,12 @@
+<?php
+
+
+
+
+// dd($Parent_video_category);
+
+?>
+
 <head>
     <?php
       $Script     = App\Script::pluck('header_script')->toArray();
@@ -803,14 +812,19 @@
                                  <ul class="navbar-nav">
                                     
                                     <?php  
+                                                                           
+                                       $Parent_video_category = App\VideoCategory::whereIn('id', function ($query) {
+                                          
+                                          $query->select('parent_id')->from('video_categories');
 
-                                       $video_category = App\VideoCategory::where('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)->get()->map(function ($item) {
+                                                })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
 
-                                          $item['Parent_video_category'] = App\VideoCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->where('in_menu',1)->get();
+                                             ->get()->map(function ($item) {
 
-                                          return $item;
+                                             $item['sub_video_category'] = App\VideoCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->where('in_menu',1)->get();
+                                          
+                                             return $item;
                                        });
-
 
                                        $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get()->map(function ($item) {
 
@@ -837,29 +851,32 @@
                                                    <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
+
                                                    <ul class="dropdown-menu">
-                                                      <?php foreach ( $video_category as $category) : ?>
+                                                      <?php foreach ( $Parent_video_category as $category) : ?>
                                                          <?php if( !is_null($category) ): ?>
                                                             <li>
                                                                <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->slug) ?>">
                                                                   <?= $category->name;?>
                                                                </a>
-                                                               <ul class="submenu dropdown-menu">
-                                                                  <?php foreach ( $category->Parent_video_category as $Parent_video_category) : ?>
-                                                               <?php if(  !is_null($category->Parent_video_category) ): ?>
-                                                                  <li>
-                                                                     <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$Parent_video_category->slug)?>">
-                                                                        <?= $Parent_video_category->name;?>
-                                                                     </a>
-                                                                  </li>
-                                                               <?php endif; ?>
-                                                                  <?php endforeach ; ?>
-                                                               </ul>
-                                                               
+
+                                                               <?php foreach ( $category->sub_video_category as $sub_video_category) : ?>
+                                                                  <?php if( !is_null($category) ): ?>
+                                                                     <ul class="submenu dropdown-menu">
+                                                                        <?php foreach ( $category->sub_video_category as $sub_video_category) : ?>
+                                                                           <li>
+                                                                              <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$sub_video_category->slug)?>">
+                                                                                 <?= $sub_video_category->name;?>
+                                                                              </a>
+                                                                           </li>
+                                                                        <?php endforeach ; ?>
+                                                                     </ul>
+                                                               <?php endif; endforeach ; ?>
                                                             </li>
                                                          <?php endif; ?>
                                                       <?php endforeach ; ?>
                                                    </ul>
+                                                   
                                                 </li>
                                           <?php } elseif  ( $menu->in_menu == "movies") {  ?>
 
