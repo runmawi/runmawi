@@ -6,7 +6,6 @@
 
 @section('content')
 
-    <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
     </script>
     <style>
 
@@ -751,7 +750,8 @@ background-color: #000;padding: 10px!important;}
                      {{-- <h6 class="text-black text-center font-weight-bold">{{ __('You will be charged $56.99 for an annual membership on 05/18/2022. Cancel anytime') }}.</h6> --}}
                      <p class="text-center mt-3">{{ __('All state sales taxes apply') }}</p>
                  </div>
-
+                 <div class="col-md-12 mt-5" id="paypal_card_payment">
+                </div>
                  <p class="text-white mt-3 dp">
                          {{ $signup_payment_content ? $signup_payment_content : "By Clicking on Paynow & Start" }}
                  </p>
@@ -834,6 +834,7 @@ background-color: #000;padding: 10px!important;}
 
     jQuery(document).ready(function($){
         // Add New Category
+        $('#paypal_card_payment').hide();
         $('#submit-new-cat').click(function(){
             $('#payment-form').submit();
         });
@@ -1019,6 +1020,7 @@ for (var i = 0; i < btns.length; i++) {
             var plan_price  = $(ele).attr('data-plan-price');
             var plan_id_class = $(ele).attr('data-plan-id');
             let currency_symbols  =  document.getElementById("currency_symbol").value ;
+            var selectedOption = $('input[name="payment_gateway"]:checked').val();
 
             $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
             $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
@@ -1032,6 +1034,63 @@ for (var i = 0; i < btns.length; i++) {
             $('.dg' ).removeClass('actives');
             $('#'+plan_id_class ).addClass('actives');
 
+              
+    //   PayPal Payment Gateway
+
+        if (selectedOption == 'paypal') {
+            $('#paypal_card_payment').show();
+
+            var dynamicPlanId = plans_id;
+            var dynamicContainerId = 'paypal-button-container-' + dynamicPlanId;
+            $('#paypal_card_payment').empty();
+            var newContainerDiv = $('<div id="' + dynamicContainerId + '"></div>');
+            // Append the new container to the specified parent container
+            $('#paypal_card_payment').append(newContainerDiv);
+
+            paypal.Buttons({
+                style: {
+                    shape: 'rect',
+                    color: 'gold',
+                    layout: 'vertical',
+                    label: 'subscribe'
+                },
+                createSubscription: function (data, actions) {
+                    return actions.subscription.create({
+                        /* Creates the subscription */
+                        plan_id: dynamicPlanId
+                    });
+                },
+                onApprove: function (data, actions) {
+                    // alert(data.subscriptionID); 
+                    var subId = data.subscriptionID;
+
+                    $.ajax({
+                        url: '{{ URL::to('submitpaypal') }}',
+                        method: 'post',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            plan_id: dynamicPlanId,
+                            subId: subId,
+                        },
+                        success: (response) => {
+                            alert("You have done  Payment !");
+                            console.log("Server response:", response);
+
+                            setTimeout(function() {
+                                window.location.replace(base_url+'/login');
+                        }, 2000);
+
+                        },
+                        error: (error) => {
+                            swal(error);
+                        }
+                    })
+                  
+                }
+            }).render('#' + dynamicContainerId); 
+        }else{
+            $('#paypal_card_payment').hide();
+        }
     }   
     var base_url = $('#base_url').val();
     const stripe = Stripe('{{ env('STRIPE_KEY') }}');
@@ -1239,7 +1298,7 @@ for (var i = 0; i < btns.length; i++) {
 <!-- paypay script -->
 
 
-<script src="https://www.paypal.com/sdk/js?client-id=AVGcAgzu_FN6jiaO8AAqyaXxFPeVfWMBG9OK2CJbnbgqDpnAsNqEpOQ12-Sor5eK0NRduzL4RddazjoV&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AbYa86-3ocJ93QPyd8cPMyrg0VByi0x0wfEvLFrVKW8HML-aszlPlOd5Q0jnVut_-a1yo-4Pt_UGTi74&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 
 <script>
 
