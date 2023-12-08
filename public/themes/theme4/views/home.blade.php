@@ -22,6 +22,7 @@
             'video_banners'   => $video_banners ,
             'series_sliders'  => $series_sliders ,
             'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->get(),
+            'Episode_sliders' => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->get(),
          );    
       ?>
 
@@ -32,8 +33,6 @@
       </section>
 
                <!-- MainContent -->
-               
-               
 
       <div class="main-content">
                                         {{-- continue watching videos --}}
