@@ -128,30 +128,33 @@
                             class='{{"list-inline p-0 m-0 align-items-center category-based-videos-slider-".$key }}'>
                             @foreach ($video_categories->category_videos as $videos)
                                 <li>
-                                    <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $videos->player_image ? URL::to('public/uploads/images/' . $videos->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
+                                    <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="close_btn btn">×</button>
                                         <div class="trending-custom-tab">
                                             <div class="trending-content">
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
+                                                        <div class="caption pl-5">
+                                                            <h2 class="caption-h2">{{ optional($videos)->title }}</h2>
 
-                                                        <h2 class="trending-text big-title text-uppercase">
-                                                            {{ optional($videos)->title }}</h2>
+                                                            @if ($videos->year != null && $videos->year != 0)
+                                                                <div class="d-flex align-items-center text-white text-detail">
+                                                                    <span
+                                                                        class="trending">{{ $videos->year != null && $videos->year != 0 ? $videos->year : null }}</span>
+                                                                </div>
+                                                            @endif
 
-                                                        @if ($videos->year != null && $videos->year != 0)
-                                                            <div class="d-flex align-items-center text-white text-detail">
-                                                                <span
-                                                                    class="trending">{{ $videos->year != null && $videos->year != 0 ? $videos->year : null }}</span>
+                                                            @if (optional($videos)->description)
+                                                                <div class="trending-dec">{!! html_entity_decode(optional($videos)->description) !!}</div>
+                                                            @endif
+
+                                                            <div class="p-btns">
+                                                                <div class="d-flex align-items-center p-0">
+                                                                    <a href="{{ URL::to('category/videos/' . $videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                </div>
                                                             </div>
-                                                        @endif
-
-                                                        @if (optional($videos)->description)
-                                                            <div class="trending-dec">{!! html_entity_decode(optional($videos)->description) !!}</div>
-                                                        @endif
-
-                                                        <div class="p-btns">
-                                                            <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ URL::to('category/videos/' . $videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                            <div class="dropdown_thumbnail">
+                                                                <img  src="{{ $videos->player_image ? URL::to('public/uploads/images/' . $videos->player_image) : default_horizontal_image_url() }}" alt="">
                                                             </div>
                                                         </div>
                                                     </div>
