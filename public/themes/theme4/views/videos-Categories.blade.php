@@ -176,10 +176,9 @@
                                                                         <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                     </div>
                                                                 </div>
-                                                                <div class="dropdown_thumbnail">
-                                                                    <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="">
-                                                                </div>
-
+                                                            </div>
+                                                            <div class="dropdown_thumbnail">
+                                                                <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="">
                                                             </div>
                                                         </div>
                                                     </div>
