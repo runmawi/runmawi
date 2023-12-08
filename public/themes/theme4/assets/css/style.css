@@ -205,7 +205,7 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
 .trending-pills.nav-pills .nav-item a.show:after { opacity: 1; width: 100%; }
 .trending-pills.nav-pills .nav-item a:hover { color: var(--iq-primary); }
 .trending-content {  display: flex; }
-.p-btns { display: flex; align-items: center; }
+.p-btns { display: flex; align-items: center; margin-top: 1.5vw; }
 .trending-info .trending-text { font-size: calc(14px + 2vmin);
     font-weight: 700;
     margin: 0 0 0.2em;
@@ -222,7 +222,15 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
 .slick-bg:before { background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(20, 20, 20, 1) 35%, rgba(83, 100, 141, 0) 100%); width: 100%; z-index: -1; }
 .overlay-tab:before { content: ''; position: absolute; top: 0; left: 0; right: 0; width: 100%; height: 100%; background: rgba(36, 36, 36, 0.8); z-index: 1; }
 .trending-info { position: relative; z-index: 99; }
-.trending-info .trending-dec { margin-bottom: 30px; width: 60%; }
+.trending-info .trending-dec { 
+    margin-bottom: 30px; width: 60%;
+    /* line-height: normal; */
+    font-weight: 400;
+    margin: 0.5vw 0 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical; }
 .trending-info .block-social { height: 45px; width: 45px; line-height: 45px; text-align: center; background: rgba(255, 255, 255, 0.15); border-radius: 50%; margin-left: 15px; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; }
 .trending-info .block-social a { position: relative; display: block; height: 32px; width: 32px; line-height: 26px; font-size: 16px; text-align: center; background: var(--iq-white); color: var(--iq-primary); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -o-border-radius: 50%; margin: 0 auto; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; justify-content: center; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; }
 .trending-info .block-social.social1 a { background: var(--iq-primary); color: var(--iq-white); }
@@ -855,8 +863,8 @@ transform: scale(1.3);
 @media screen and (min-width: 992px) and (max-width: 1399px){
 .trending-custom-tab {
     height: auto !important;
-    max-height: 460px !important;
-    min-height: 15vw !important;
+    max-height: 550px !important;
+    min-height: 460px !important;
 }}
 
 @media screen and (min-width: 1200px){
