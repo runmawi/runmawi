@@ -9,7 +9,7 @@
     $SeriesGenre = App\SeriesGenre::all();
 
     $Slider_array_data = [
-        'series_sliders' => $banner,
+        'Episode_sliders' => $banner,
     ];
 
 @endphp
