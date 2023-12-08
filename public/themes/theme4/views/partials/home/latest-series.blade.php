@@ -1,3 +1,15 @@
+@php
+    $data->map(function($item){
+        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
+                                                    ->map(function ($item) {
+                                                        $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                        return $item;
+                                                });
+
+            return $item;
+    });
+@endphp
+
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
@@ -15,10 +27,10 @@
                      </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 ml-5 row align-items-center">
-                            @foreach ($data as $latest_series)
-                                <li>
-                                    <a href="javascript:void(0);">
+                        <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 ml-5 row align-items-center"  >
+                            @foreach ($data as $series_key => $latest_series)
+                                <li data-series-id={{ $series_key }} onclick="series_slider_nav(this)" >
+                                    <a href="javascript:void(0);" >
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid" >
                                         </div>
@@ -45,12 +57,6 @@
                                                                 <div class="trending-dec">{!! html_entity_decode( optional($latest_series)->description) !!}</div>
                                                             @endif
 
-                                                            <div class="movie-time d-flex align-items-center my-2">
-                                                                <span class="text-white"> 
-    
-                                                                </span>
-                                                            </div>
-
                                                             <div class="d-flex align-items-center text-white text-detail">
                                                                 {{ App\SeriesSeason::where('series_id',$latest_series->id)->count() . " Seasons" }}  
                                                                 {{ App\Episode::where('series_id',$latest_series->id)->count() . " Episodes" }}                 
@@ -63,6 +69,32 @@
                                                                     {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> --}}
                                                                 </div>
                                                             </div>
+                                                        </div>
+
+                                                        <div class="trending-contens sub_dropdown_image mt-3">
+                                                            <ul id="{{ 'trending-slider-nav' }}" value="{{ $key }}" class= "{{ 'latest-series-depends-episode-slider-'.$key .' pl-5 m-0'}}">
+                                                                @foreach ($latest_series->Series_depends_episodes as $episode )
+                                                                    <li>
+                                                                        <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}">
+                                                                            <div class=" position-relative">
+                                                                                <img src="{{ $episode->image_url }}" class="img-fluid" >
+                                                                                <div class="controls">
+                                                                                    <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}">
+                                                                                        <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                                                    </a>
+
+                                                                                    <nav><button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+                                                                                    
+                                                                                    <p class="trending-dec" >
+                                                                                        {{ " S".$episode->season_id ." E".$episode->episode_order  }} 
+                                                                                        {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
                                                         </div>
 
                                                         <div class="dropdown_thumbnail">
@@ -82,6 +114,7 @@
         </div>
     </section>
 @endif
+
 
 <script>
     
@@ -135,13 +168,26 @@
             ],
         });
 
-        $('.series-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.series-slider').show();
-        });
-
         $('body').on('click', '.drp-close', function() {
             $('.series-slider').hide();
         });
     });
+
+    
+    function series_slider_nav(ele){
+
+        $( ".drp-close" ).trigger( "click" );
+        $('.series-slider').show();
+
+        var category_key_id = $(ele).attr('data-series-id');
+
+        $('.latest-series-depends-episode-slider-' + category_key_id).slick({
+            dots: false,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 6,
+            slidesToScroll: 4,
+        });
+    }
+
 </script>
