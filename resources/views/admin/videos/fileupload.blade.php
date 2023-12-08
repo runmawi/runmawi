@@ -319,7 +319,7 @@
                   var PullZoneURl = result.PullZoneURl;
                   var decodedStreamVideos = JSON.parse(streamvideos);
 
-                  console.log(decodedStreamVideos);
+                  // console.log(decodedStreamVideos);
 
 
                   $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
