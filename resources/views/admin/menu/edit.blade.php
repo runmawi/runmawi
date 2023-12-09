@@ -57,6 +57,7 @@
              <input type="radio" name="in_menu" value="audios" <?php if( $menu->in_menu == "audios") { echo "checked";} ?> /><label class="ml-1">Audio Categories</label>
 			 <input type="radio" name="in_menu" value="live" <?php if( $menu->in_menu == "live") { echo "checked";} ?>/><label class="ml-1"> Live Categories</label>
 			 <input type="radio" name="in_menu" value="posts" <?php if( $menu->in_menu == "posts") { echo "checked";} ?>/><label class="ml-1"> Post Categories</label>
+			 <input type="radio" name="in_menu" value="series" <?php if( $menu->in_menu == "series") { echo "checked";} ?>/><label class="ml-1"> Series Categories</label>
 			 <input type="radio" name="in_menu" value="tv_show" <?php if( $menu->in_menu == "tv_show") { echo "checked";} ?>/><label class="ml-1"> Tv Shows</label>
         
         <input type="hidden" name="id" id="id" value="{{ $menu->id }}" />

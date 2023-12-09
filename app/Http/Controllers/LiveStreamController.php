@@ -315,6 +315,7 @@ class LiveStreamController extends Controller
           $countryName = $geoip->getCountry();
           $ThumbnailSetting = ThumbnailSetting::first();
           $parentCategories = LiveCategory::where('slug',$cid)->first();
+
           if(!empty($parentCategories)){
             $parentCategories_id = $parentCategories->id;
             $parentCategories_name = $parentCategories->name;
@@ -337,12 +338,11 @@ class LiveStreamController extends Controller
                     'ThumbnailSetting' => $ThumbnailSetting,
                     'live_videos' => $live_videos,
                     'parentCategories_name' => $parentCategories_name,
+                    'parentCategories'     => $parentCategories ,
                 );
            return Theme::view('livecategoryvids',$data);
             
         } 
-
-
 
 
         public function EmbedLivePlay($vid)
