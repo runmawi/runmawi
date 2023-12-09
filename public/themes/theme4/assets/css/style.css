@@ -921,11 +921,19 @@ height: 100%;
 -o-object-fit: cover;
 object-fit: cover;
 }
+.cate-banner_thumbnail{
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    height: 420px;
+    top: 0;
+    right: 0;
+}
 .dropdown_thumbnail{
     position: absolute;
 pointer-events: none;
 z-index: 0;
-height: 420px;
+height: 100%;
 top: 0;
 right: 0;
 }

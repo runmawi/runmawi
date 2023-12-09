@@ -48,11 +48,11 @@ $data = App\Series::where('active', '=', '1')
                     <div class="trending-contens">
 
                         <ul id="trending-slider-nav" class="trending-nav list-inline p-0 ml-5 row align-items-center">
-                            @foreach ($data as $series_details)
+                            @foreach ($data as $Episode_details)
                                 <li>
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $series_details->image_url }}" class="img-fluid" >
+                                            <img src="{{ $Episode_details->image_url }}" class="img-fluid" >
                                         </div>
                                     </a>
                                 </li>
@@ -61,7 +61,7 @@ $data = App\Series::where('active', '=', '1')
                         
 
                         <ul id="trending-slider trending" class="list-inline p-0 m-0 align-items-center trending">
-                                @foreach ($series_details->Episode_details as $key => $item)
+                                @foreach ($Episode_details->Episode_details as $key => $item)
                                     <li>
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
                                             <button class="drp-close">×</button>
@@ -72,8 +72,11 @@ $data = App\Series::where('active', '=', '1')
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                             <div class="caption pl-5">
-                                                                <h2 class="caption-h2">{{ 'Episodes' }}</h2>
+                                                                <h2 class="caption-h2">{{ optional($Episode_details)->title }}</h2>
 
+                                                                @if (optional($Episode_details)->description)
+                                                                <div class="trending-dec">{!! html_entity_decode( optional($Episode_details)->description) !!}</div>
+                                                            @endif
                                                                 <div class="p-btns">
                                                                     <div class="d-flex align-items-center p-0">
                                                                         <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play </a>
