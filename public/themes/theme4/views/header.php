@@ -481,7 +481,7 @@
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
 
-   body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+   body.light-theme .search-toggle:hover {
       color: <?php echo GetLightText(); ?>!important;
    }
 
@@ -490,7 +490,7 @@
       color: <?php echo GetLightText(); ?>!important;
    }
 
-   body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
+   body.light-theme .search-toggle:hover {
       color: rgb(0, 82, 204)!important;
       font-weight: 500;
    }
@@ -728,7 +728,7 @@
    }
    #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo button_bg_color();?> !important; }
    #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo button_bg_color(); ?> !important; }
-   .dark-theme header .navbar ul li.menu-item a {color: <?php echo GetDarkText(); ?> !important;}
+   .dark-theme header .navbar ul li.menu-item a {color: <?php echo GetDarkText(); ?>;}
    .light-theme header .navbar ul li.menu-item a {color: <?php echo GetLightText(); ?> !important;}
    .dark-theme ul.f-link li a {color: <?php echo GetDarkText(); ?> !important;}
    .light-theme ul.f-link li a {color: <?php echo GetLightText(); ?> !important;}
@@ -782,6 +782,9 @@
 }	
 /* ============ small devices .end// ============ */
 
+.dropdown-menu > li:hover a{
+   color:#2578c0!important;
+}
 </style>
 
 
@@ -909,7 +912,7 @@
 
                                           <?php } elseif  ( $menu->in_menu == "movies") {  ?>
 
-                                             <li class="nav-item active dskdflex menu-item">
+                                             <li class="nav-item  dskdflex menu-item">
                                                 <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
                                                    <?= $menu->name ?>
                                                 </a>
@@ -1537,4 +1540,10 @@
 
       .home-page-close-button:hover { transform: scale(1.2); }
       .home-page-bg-img { width: 1485px; !important }
+      li.nav-item.dropdown.menu-item:hover .dropdown-menu{
+         display:block !important;
+      }
+      ul.dropdown-menu.show li:hover a.dropdown-item.cont-item{
+         color: #2578c0!important;
+      }
    </style>

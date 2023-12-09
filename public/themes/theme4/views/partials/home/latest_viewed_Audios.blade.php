@@ -22,7 +22,7 @@
 
 @if (!empty($data) && $data->isNotEmpty())
 
-    <section id="iq-favorites">
+    <section id="iq-favorites" class="s-margin">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">

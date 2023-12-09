@@ -9,7 +9,7 @@
                 <div class="col-sm-12 overflow-hidden">
 
                     {{-- Header --}}
-                    <div class="iq-main-header d-flex align-items-center justify-content-between">
+                    <div class="iq-main-header text-center align-items-center justify-content-between">
                         <h4 class="main-title pl-5">{{ 'Movies' }}</h4>
                     </div>
 
