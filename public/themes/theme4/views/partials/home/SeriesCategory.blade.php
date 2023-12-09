@@ -14,7 +14,9 @@
         background-color: transparent !important;
         font-size: revert;
     }
-
+    .bc-icons-2 {
+    font-size: 13px;
+}
     
     .card-image {
         height: 124px;
