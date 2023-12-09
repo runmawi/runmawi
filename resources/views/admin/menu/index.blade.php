@@ -87,6 +87,7 @@
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="videos" /> Video Categories 
                         <input type="radio" class="menu-dropdown-radio" name="type" value="audios" /> Audio Categories
                         <input type="radio" class="menu-dropdown-radio" name="type" value="live" /> Live Categories
+				        <input type="radio" class="menu-dropdown-radio" name="type" value="series" /> Series Categories
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="posts" /> Post Categories
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="tv_show" /> Tv Shows
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
