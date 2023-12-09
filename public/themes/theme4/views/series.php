@@ -83,7 +83,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
      
      <div id="myImage" >
                
-     <div class="dropdown_thumbnail" style="height:29.25vw;">
+     <div class="dropdown_thumbnail" >
        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" alt="">
      </div>
      <!-- BREADCRUMBS -->
@@ -136,9 +136,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 					</div>-->
 					<div class="row text-white ">
                         <div class="col-md-7">
-                        <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
-                        <p style="color:#fff!important;"><?php echo substr($series->details, 0, 100);?></p>
-						<b><p style="color:#fff;"><?php echo substr($series->description, 0, 100);?></p></b>
+                          <?php echo __('Season'); ?>
+                            <span class="sea"> 1 </span>
+                             - <?php echo __('U/A English'); ?>
+                            <p style="color:#fff!important;"><?php echo substr($series->details, 0, 100);?></p>
+						                <p class="trending-dec"><?php echo substr($series->description, 0, 100);?></p>
                             <div class="row p-0 mt-3 align-items-center">
                                 <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                 <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /></a></div>
@@ -225,7 +227,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
         
 
 		<div class=" ">
-			<div class="col-md-12 mt-4 p-0">
+			<div class="col-md-12 mt-5 p-0">
 				<nav class="nav-justified p-0 m-0 w-100">
 					<div class="nav pl-5 " id="nav-tab" role="tablist">
                         <h4><?php echo __('Episode'); ?></h4>
