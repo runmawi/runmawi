@@ -766,7 +766,7 @@
 .dropdown-menu > li:hover a{color: rgb(0, 82, 204)!important;
       font-weight: 500;}
 	.dropdown-menu > li:hover{ background-color: #f1f1f1 }
-	.dropdown-menu > li:hover > .dropdown-menu{
+	.dropdown-menu > li:hover > .primary_menu{
 		display: block;
 	}
 }	
@@ -878,7 +878,7 @@
 
                                           if ( $menu->in_menu == "video" ) {  ?>
 
-                                             <li class="nav-item dropdown menu-item">
+                                             <li class="nav-item dropdown menu-item primary_menu">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                    <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                 </a>
@@ -929,7 +929,7 @@
 
                                           <?php } elseif ( $menu->in_menu == "live") { ?>
 
-                                             <li class="nav-item dropdown menu-item">
+                                             <li class="nav-item dropdown menu-item primary_menu">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                    <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                 </a>
@@ -964,7 +964,7 @@
 
                                           <?php } elseif ( $menu->in_menu == "audios") { ?>
 
-                                             <li class="nav-item dropdown menu-item">
+                                             <li class="nav-item dropdown menu-item primary_menu">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                    <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                 </a>
@@ -999,7 +999,7 @@
 
                                           <?php }elseif ( $menu->in_menu == "tv_show") { ?>
                                              
-                                             <li class="nav-item active dskdflex menu-item ">
+                                             <li class="nav-item active dskdflex menu-item primary_menu">
 
                                                 <a href="<?php echo URL::to($menu->url)?>">
                                                       <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
@@ -1026,7 +1026,7 @@
 
                                           <?php }elseif ( $menu->in_menu == "series") { ?>
                                              
-                                             <li class="nav-item dropdown menu-item">
+                                             <li class="nav-item dropdown menu-item primary_menu">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                    <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                 </a>
