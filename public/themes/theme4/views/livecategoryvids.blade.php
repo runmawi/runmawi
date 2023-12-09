@@ -2,18 +2,109 @@
     include(public_path('themes/theme4/views/header.php'));
     $currency = App\CurrencySetting::first();
 @endphp
+<style>
+    .card-image {
+        height: 124px;
+        width: 124px;
+        padding: 24px 8px 16px;
+        -webkit-margin-end: 12px;
+        margin-inline-end: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        background: transparent;
+        border-radius: 8px;
+        overflow: hidden;
+    }
 
-<section id="iq-trending" class="s-margin">
-    <div class="main-content ">
+    @media (min-width: 550px) {
+        .card-image {
+            height: 146px;
+            width: 146px;
+            -webkit-margin-end: 16px;
+            margin-inline-end: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+    }
+
+    @media (min-width: 550px) {
+        .card__text {
+            font-size: 14px;
+            line-height: 19px;
+        }
+    }
+
+    .card_image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card_text {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 18px;
+        text-align: center;
+        max-height: 38px;
+        color: #c6c8cd;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+    .category-cover {
+        z-index: 0;
+        height: 100%;
+        top: 0;
+        right: 0;
+        overflow: hidden;
+        width: 74%;
+        mask-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(50%, black));
+        mask-image: linear-gradient(to right, transparent 0%, black 50%);
+        -webkit-mask-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(50%, black));
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 50%);
+        position: absolute;
+        pointer-events: none;
+        
+    }
+    h3.vsub {font-size: 20px;}
+
+</style>
+
+<div class="main-content ">
+    <section id="iq-trending">
+        <div class="container-fluid">
+            <div class="row ">
+            <div class="col-sm-12 iq-main-header d-flex align-items-center justify-content-between h-250" style="height: 250px;">
+                    <div class="caption">
+                        <h2>{{ optional($parentCategories)->name }}</h2> 
+                    </div>
+                    <div class="category-cover">
+                        <img class="w-100 img-responsive" src="{{ $parentCategories->image ? URL::to('public/uploads/livecategory/' . $parentCategories->image) : default_vertical_image_url() }}" />
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </section>
+
+    <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                                     
-                                    {{-- Header --}}
-                    <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-5">{{ ($parentCategories_name) }}</a></h4>
-                    </div>
-
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
                             @foreach ($live_videos as $livestream_videos)
@@ -74,8 +165,8 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
 
 <script>
     
