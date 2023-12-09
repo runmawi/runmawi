@@ -39,7 +39,7 @@
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                     <div class="caption pl-5">
-                                                            <h2 class="caption-h2" style="text-align: left;"><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h2>
+                                                            <h2 class="caption-h2" style="text-align: left;"><?php  echo $watchlater_video->title ?></h2>
                                                             
                                                        
 
