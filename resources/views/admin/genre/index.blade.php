@@ -34,7 +34,7 @@ border-radius: 0px 4px 4px 0px;
 			<a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
 			<a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a>
 			<a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/Series/Genre') }}">Manage Series Genre</a>
-			<a class="black" href="{{ route('Network_index') }}">Manage Series Network</a>
+			<a class="black" href="{{ route('admin.Network_index') }}">Manage Series Network</a>
 		</div>
 
     <div class="container-fluid p-0">

@@ -5,6 +5,14 @@
     <div id="content-page" class="content-page">
         <div class="container-fluid">
 
+            <div class="row">
+                <div class="col-md-12">
+                    @if (Session::has('message'))
+                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                    @endif
+                </div>
+            </div>
+
             <div class="iq-card">
                 <h4><i class="entypo-archive"></i> Edit TV-Shows Network</h4>
                 <div class="modal-body">
@@ -23,8 +31,8 @@
 
                         <div class="form-group">
                             <label>Display In Menu :</label>
-                            <label><input type="radio" name="in_menu" value="1" {{ ($Series_Network->in_menu == 1) ? 'checked' : '' }} >>Yes</label>
-                            <label><input type="radio" name="in_menu" value="0" {{  $Series_Network->in_menu == 0 ? 'checked' : '' }}>>No</label>
+                            <label><input type="radio" name="in_menu" value="1" {{ ($Series_Network->in_menu == 1) ? 'checked' : '' }} >Yes</label>
+                            <label><input type="radio" name="in_menu" value="0" {{  $Series_Network->in_menu == 0 ? 'checked' : '' }}>No</label>
                         </div>
                         
                         
@@ -100,7 +108,23 @@
                 $('#submit-update-cat').click(function() {
                     $('#update-cat-form').submit();
                 });
+
+                setTimeout(function() {
+                    $('#successMessage').fadeOut('fast');
+                }, 3000);
             });
-        </script>
+                
+            $('form[id="update-cat-form"]').validate({
+                rules: {
+                    name: 'required',
+                },
+                messages: {
+                    title: 'This field is required',
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+    </script>
     @stop
 @stop

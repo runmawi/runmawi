@@ -46,21 +46,16 @@
             <div class="admin-section-title">
                 <div class="iq-card">
                     <div class="row">
-                        <div class="col-md-6">
-                            <h4><i class="entypo-archive"></i> Series Network</h4>
-
+                        <div class="col-md-12">
                             @if (Session::has('message'))
                                 <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                             @endif
+                        </div>
+                    </div>
 
-                            @if (count($errors) > 0)
-                                @foreach ($errors->all() as $message)
-                                    <div class="alert alert-danger display-hide" id="successMessage">
-                                        <button id="successMessage" class="close" data-close="alert"></button>
-                                        <span>{{ $message }}</span>
-                                    </div>
-                                @endforeach
-                            @endif
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4><i class="entypo-archive"></i> Series Network</h4>
                         </div>
 
                         <div class="col-md-6" align="right">
@@ -205,55 +200,24 @@
 
     @section('javascript')
 
-        <script type="text/javascript">
-            jQuery(document).ready(function($) {
-
-                // Add New Category
-                $('#submit-new-cat').click(function() {
-                    $('#new-cat-form').submit();
-                });
-
-                $('.actions .edit').click(function(e) {
-                    $('#update-category').modal('show', {
-                        backdrop: 'static'
-                    });
-                    e.preventDefault();
-                    href = $(this).attr('href');
-                    $.ajax({
-                        url: href,
-                        success: function(response) {
-                            $('#update-category .modal-content').html(response);
-                        }
-                    });
-                });
-
-                $('.actions .delete').click(function(e) {
-                    e.preventDefault();
-                    if (confirm("Are you sure you want to delete this category?")) {
-                        window.location = $(this).attr('href');
-                    }
-                    return false;
-                });
-
-            });
-        </script>
-
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
         <script type="text/javascript">
-            $(function() {
+
+            $(function () {
                 $("#categorytbl").sortable({
                     items: 'tr:not(tr:first-child)',
                     cursor: 'pointer',
                     axis: 'y',
                     dropOnEmpty: false,
-                    start: function(e, ui) {
+                    start: function (e, ui) {
                         ui.item.addClass("selected");
                     },
-                    stop: function(e, ui) {
+                    stop: function (e, ui) {
                         ui.item.removeClass("selected");
                         var selectedData = new Array();
-                        $(this).find("tr").each(function(index) {
+                        $(this).find("tr").each(function (index) {
                             if (index > 0) {
                                 $(this).find("td").eq(2).html(index);
                                 selectedData.push($(this).attr("id"));
@@ -262,12 +226,12 @@
                         updateOrder(selectedData)
                     }
                 });
-            });
+			});
 
             function updateOrder(data) {
 
                 $.ajax({
-                    url: '<?= URL::to('admin/Series_genre_order') ?>',
+					url:'{{ route("admin.Network_order")}}',
                     type: 'post',
                     data: {
                         position: data,
@@ -279,38 +243,29 @@
                     }
                 })
             }
-        </script>
-
-        <script>
+       
             $(document).ready(function() {
+
+                $('#submit-new-cat').click(function() {
+                    $('#new-cat-form').submit();
+                });
+
                 setTimeout(function() {
                     $('#successMessage').fadeOut('fast');
                 }, 3000);
-            })
+            });
+
+            $('form[id="new-cat-form"]').validate({
+                rules: {
+                    name: 'required',
+                },
+                messages: {
+                    title: 'This field is required',
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
         </script>
     @stop
-
-
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-
-    <script>
-        $('form[id="new-cat-form"]').validate({
-            rules: {
-                name: 'required',
-                parent_id: {
-                    required: true
-                }
-            },
-            messages: {
-                title: 'This field is required',
-                parent_id: {
-                    required: 'This field is required',
-                }
-            },
-            submitHandler: function(form) {
-                form.submit();
-            }
-        });
-    </script>
-
 @stop

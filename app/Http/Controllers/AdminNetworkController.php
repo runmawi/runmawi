@@ -85,13 +85,12 @@ class AdminNetworkController extends Controller
     
             $SeriesNetwork = SeriesNetwork::create($inputs);
     
-            return back()->with('message', 'New Network added successfully.');
+            return back()->with('message', 'New TV-Shows Network added successfully.');
         
         } catch (\Throwable $th) {
-            
+
             return abort(404);
         }
-        
     }
 
     public function Network_edit(Request $request)
@@ -177,12 +176,11 @@ class AdminNetworkController extends Controller
     
             $SeriesNetwork = SeriesNetwork::find($id)->update($inputs);
     
-            return back()->with('message', 'New Network added successfully.');
+            return back()->with('message', 'TV-Shows Network Updated successfully.');
         
         } catch (\Throwable $th) {
 
             return abort(404);
-
         }
     }
 
@@ -191,12 +189,26 @@ class AdminNetworkController extends Controller
         try {
             SeriesNetwork::destroy($id);
 
-            return redirect()->route('admin.Network_index');
+            return redirect()->route('admin.Network_index')->with('message', 'TV-Shows Network deleted successfully.');
         
         } catch (\Throwable $th) {
 
             return abort(404);
-
         }
+    }
+
+    public function Network_order(Request $request){
+
+        $input = $request->all();
+        $positions = $_POST['position'];
+
+        $i=1;
+        foreach($positions as $key =>$position){
+          $SeriesNetwork = SeriesNetwork::find($position);
+          $SeriesNetwork->order = $i;
+          $SeriesNetwork->save();
+          $i++;
+        }
+        return 1;
     }
 }
