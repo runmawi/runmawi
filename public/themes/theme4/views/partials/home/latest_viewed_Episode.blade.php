@@ -17,7 +17,7 @@ if (Auth::guest() != true) {
 
 @if (!empty($data) && $data->isNotEmpty())
 
-    <section id="iq-favorites">
+    <section id="iq-favorites iq-trending">
         <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
