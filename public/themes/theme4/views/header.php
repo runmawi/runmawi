@@ -763,7 +763,8 @@
 	.dropdown-menu .submenu-left{ 
 		right:100%; left:auto;
 	}
-
+.dropdown-menu > li:hover a{color: rgb(0, 82, 204)!important;
+      font-weight: 500;}
 	.dropdown-menu > li:hover{ background-color: #f1f1f1 }
 	.dropdown-menu > li:hover > .submenu{
 		display: block;
