@@ -108,7 +108,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 -----------------------------------------------------------------------*/
 .main-content { padding-top: 40px; }
 .block-space { padding: 40px 0; }
-.s-margin { margin-top: 40px; }
+#iq-trending { margin-top: 40px; }
 .iq-main-header { margin-bottom: 20px; }
 .main-title{font-size: 1.4vw;}
 .main-title a:hover, .main-title a:focus {color:var(--iq-primary) !important;}
@@ -862,6 +862,12 @@ transform: scale(1.3);
 
 @media screen and (min-width: 992px) and (max-width: 1399px){
 .trending-custom-tab {
+    height: auto !important;
+    max-height: 550px !important;
+    min-height: 460px !important;
+}}
+@media screen and (min-width: 992px) and (max-width: 1399px){
+    .trending-info.align-items-center.w-100.animated.fadeInUp {
     height: auto !important;
     max-height: 550px !important;
     min-height: 460px !important;
