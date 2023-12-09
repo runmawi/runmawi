@@ -67,11 +67,11 @@ endif; ?>
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-5 col-lg-12 col-md-12">
-                        <!--<a href="javascript:void(0);">
+                        <a href="javascript:void(0);">
                             <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5" background-size:cover; background-position:center>
                             <img src="<?php echo URL::to('/') . '/assets/img/logo.png'; ?>" class="c-logo" alt="Flicknexs">
                             </div>
-                        </a>-->
+                        </a>
 
                         <p class="slider-text big-title title text-uppercase text-white">
                             <?php
@@ -464,7 +464,7 @@ endif; ?>
 <?php endforeach; endif; ?>
 
 
-<!-- <script type="application/javascript">
+<script type="application/javascript">
 
 function trailer_series_slider(ele) 
 	{
@@ -478,9 +478,9 @@ function trailer_series_slider(ele)
         }else if(trailer_type == "mp4_url" || trailer_type == "video_mp4"  ){
             
             $('#videoPlayer').attr('src', trailer_url);
-            // $('#videoPlayer').empty();
+            $('#videoPlayer').empty();
 
-            // $('#videoPlayer').replaceWith('<video id="videoPlayer" controls src="'+ trailer_url +'"  type="application/x-mpegURL" > </video>');
+            $('#videoPlayer').replaceWith('<video id="videoPlayer" controls src="'+ trailer_url +'"  type="application/x-mpegURL" > </video>');
 
         }
 
@@ -496,4 +496,4 @@ function trailer_series_slider(ele)
         }).magnificPopup('open');
 }
 
-</script> -->
+</script>
