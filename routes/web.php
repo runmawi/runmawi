@@ -22,6 +22,11 @@ Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQ
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
 Route::get('/BunnyCDNStream', 'AdminDashboardController@BunnyCDNStream');
 
+Route::get('/paypal/create-payment', 'PayPalController@createPayment');
+Route::get('/paypal/execute-payment', 'PayPalController@executePayment');
+Route::post('paypal-ppv-video', 'PaymentController@paypalppvVideo');
+
+
 $router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
 Route::group(['middleware' => 'auth'], function(){
