@@ -27,6 +27,7 @@ class AdminSeriesGenreController extends Controller
         $data = array (
           'allCategories'=>$genre
         );
+        
 
         return view('admin.genre.index',$data);
 
