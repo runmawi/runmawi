@@ -1392,7 +1392,7 @@ $artists = [];
                 </div>                    
             </div>
 
-            <div class="modal-footer">
+            <div class="modal-footer" style="display:block;">
               <div class="Stripe_button">  <!-- Stripe Button -->
                 <a onclick="pay(<?php echo $video->ppv_price;?>)">
                   <button type="button" class="btn2  btn-outline-primary" >Continue</button>

@@ -2100,7 +2100,7 @@ $artists = [];
                                                 </div>
                                             </div>
 
-                                            <div class="modal-footer">
+                                            <div class="modal-footer" style="display:block;">
                                                 <div class="Stripe_button">
                                                     <!-- Stripe Button -->
                                                     <!-- Currency_Convert(@$video->ppv_price) -->
