@@ -878,12 +878,12 @@
 
                                           if ( $menu->in_menu == "video" ) {  ?>
 
-                                             <li class="nav-item dropdown menu-item primary_menu">
+                                             <li class="nav-item dropdown menu-item ">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                    <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                 </a>
 
-                                                <ul class="dropdown-menu">
+                                                <ul class="dropdown-menu primary_menu">
                                                    <?php foreach ( $Parent_video_category as $category) : ?>
                                                       <?php if( !is_null($category) ): ?>
                                                          <li>
@@ -929,12 +929,12 @@
 
                                           <?php } elseif ( $menu->in_menu == "live") { ?>
 
-                                             <li class="nav-item dropdown menu-item primary_menu">
+                                             <li class="nav-item dropdown menu-item ">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                    <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                 </a>
 
-                                                <ul class="dropdown-menu">
+                                                <ul class="dropdown-menu primary_menu">
                                                    <?php 
                                                       foreach ( $Parent_live_category as $category) :
                                                          if( !is_null($category) ): ?>
@@ -964,12 +964,12 @@
 
                                           <?php } elseif ( $menu->in_menu == "audios") { ?>
 
-                                             <li class="nav-item dropdown menu-item primary_menu">
+                                             <li class="nav-item dropdown menu-item ">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                    <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                 </a>
 
-                                                <ul class="dropdown-menu">
+                                                <ul class="dropdown-menu primary_menu">
                                                    <?php 
                                                       foreach ( $Parent_audios_category as $category) :
                                                          if( !is_null($category) ): ?>
@@ -999,14 +999,14 @@
 
                                           <?php }elseif ( $menu->in_menu == "tv_show") { ?>
                                              
-                                             <li class="nav-item active dskdflex menu-item primary_menu">
+                                             <li class="nav-item active dskdflex menu-item ">
 
                                                 <a href="<?php echo URL::to($menu->url)?>">
                                                       <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
                                                 </a>
 
                                                 <?php if(count($tv_shows_series) > 0 ){ ?>
-                                                   <ul class="dropdown-menu categ-head">
+                                                   <ul class="dropdown-menu categ-head primary_menu">
                                                       <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series): ?>
                                                       <li>
                                                             <?php if($key < 5): ?>
@@ -1026,12 +1026,12 @@
 
                                           <?php }elseif ( $menu->in_menu == "series") { ?>
                                              
-                                             <li class="nav-item dropdown menu-item primary_menu">
+                                             <li class="nav-item dropdown menu-item ">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                    <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                 </a>
 
-                                                <ul class="dropdown-menu">
+                                                <ul class="dropdown-menu primary_menu">
                                                    <?php 
                                                       foreach ( $Parent_series_category as $category) :
                                                          if( !is_null($category) ): ?>
