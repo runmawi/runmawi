@@ -1,24 +1,22 @@
-<?php
-   include(public_path('themes/default/views/header.php'));
-?>
+<?php include public_path('themes/theme4/views/header.php'); ?>
 
 <style>
-/* <!-- BREADCRUMBS  */
-.bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
-    content: none;
-}
+    .main-content{
+        overflow: hidden;
+    }
+    /* <!-- BREADCRUMBS  */
+    .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
 
-ol.breadcrumb {
-    color: white;
-    background-color: transparent !important;
-    font-size: revert;
-}
+    ol.breadcrumb {
+        color: white;
+        background-color: transparent !important;
+        font-size: revert;
+    }
 
-.nav-div.container-fluid {
-    padding: 0;
-}
-
-.card-image {
+    
+    .card-image {
         height: 124px;
         width: 124px;
         padding: 24px 8px 16px;
@@ -96,77 +94,87 @@ ol.breadcrumb {
         
     }
     h3.vsub {font-size: 20px;}
+    .position-rel{
+        position: relative;
+    }
+    .position-absu{
+        position:absolute;
+    }
+   
 </style>
 
 
 <div class="main-content p-0">
-<section id="iq-trending" class="s-margin">
-        <div class="container-fluid">
-            <div class="row ">
-                
-            <div class="col-sm-12 iq-main-header  align-items-center justify-content-between h-250" style="height: 250px;">
-            <!-- BREADCRUMBS -->
-            <div class="row d-flex">
-                    <div class="nav nav-tabs nav-fill container-fluid nav-div m-0" id="nav-tab" role="tablist">
-                        <div class="bc-icons-2 pl-3">
+    <section id="iq-trending">
+        <div class="container-fluid p-0">
+            <div class=" pl-5">
+                 <!-- BREADCRUMBS -->
+                 <div class="position-absu p-0">
+                    <div class="container-fluid nav-div m-0 p-0" id="nav-tab" role="tablist">
+                        <div class="bc-icons-2">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a class="black-text"
-                                        href="<?= route('series.tv-shows') ?>"><?= ucwords('Channel') ?></a>
+                                        href="{{ route('series.tv-shows') }}">{{ ucwords('Channel') }}</a>
                                     <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                 </li>
 
                                 <li class="breadcrumb-item"><a class="black-text"
-                                        href="<?= route('SeriescategoryList') ?>"><?= ucwords('category') ?></a>
+                                        href="{{ route('SeriescategoryList') }}">{{ ucwords('category') }}</a>
                                     <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                 </li>
 
-                                <li class="breadcrumb-item"><a
-                                        class="black-text"><?php echo strlen($CategorySeries->name) > 50 ? ucwords(substr($CategorySeries->name, 0, 120) . '...') : ucwords($CategorySeries->name); ?>
-                                    </a></li>
+                                <li class="breadcrumb-item">
+                                    <a class="black-text">
+                                        {{ strlen($CategorySeries->name) > 50 ? ucwords(substr($CategorySeries->name, 0, 120) . '...') : ucwords($CategorySeries->name) }}
+                                    </a>
+                                </li>
                             </ol>
                         </div>
                     </div>
                 </div>
-                    <div class="caption mt-5">
-                        <h2><?php echo @$CategorySeries->name ?></h2> 
+            <div class="col-sm-12 iq-main-header d-flex align-items-center justify-content-between h-250 position-rel" style="height: 250px;">
+                    <div class="caption">
+                        <h2>{{ optional($CategorySeries)->name }}</h2> 
                     </div>
                     <div class="category-cover">
-                        <img class="w-100 img-responsive" src="{{ $CategorySeries->player_image ? URL::to('public/uploads/videocategory/' . $CategorySeries->player_image) : default_vertical_image_url() }}" />
+                        <img class="w-100 img-responsive" src="{{ $CategorySeries->image ? URL::to('public/uploads/videocategory/' . $CategorySeries->image) : default_vertical_image_url() }}" />
                     </div>
-                    
                 </div> 
             </div>
         </div>
     </section>
 
+    
 
 
+        <section id="iq-favorites ">
+            <div class="container-fluid pl-0">
+                <div class="row">
+                    <div class="col-sm-12 page-height pr-0">
+                        <div class="iq-main-header align-items-center justify-content-between">
+                            <h4 class="movie-title pl-5">{{ @$CategorySeries->name }}</h4>
+                        </div>
 
-<section id="iq-favorites">
-    <div class="container-fluid pl-0">
-        <div class="row">
-            <div class="col-sm-12 page-height">
-                <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="movie-title pl-5"><?php echo @$CategorySeries->name ?></h4>
-                </div>
+                    
 
-                
-
-                <div class="favorites-contens">
-                            <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
-                                @foreach ($SeriesGenre as $Series_Genre)
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="movie-slick position-relative">
-                                                <img src="{{ $Series_Genre->image ?  URL::to('public/uploads/images/'.$Series_Genre->image) : default_vertical_image_url() }}" class="img-fluid" >
-                                            </div>
-                                        </a>
-                                    </li>
-                                @endforeach
+                        <div class="favorites-contens">
+                            <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline pl-5 m-0 row align-items-center">
+                                @if (isset($SeriesGenre))
+                                    @foreach ($SeriesGenre as $Series_Genre)
+                                        <li>
+                                            <a href="javascript:void(0);">
+                                                <div class="movie-slick position-relative">
+                                                    <img src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" class="img-fluid" >
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
                             </ul>
 
                             <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
-                                @foreach ($SeriesGenre as $Series_Genre )
+                            @if (isset($SeriesGenre))
+                                    @foreach ($SeriesGenre as $Series_Genre)
                                     <li>
                                         <div class="tranding-block position-relative trending-thumbnail-image">
                                             <button class="drp-close">×</button>
@@ -176,20 +184,20 @@ ol.breadcrumb {
                                                     <div id="" class="overview-tab tab-pane fade active show">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
                                                             <div class="caption pl-5">
-                                                                <h2 class="caption-h2"><?php  echo (strlen(@$Series_Genre->title) > 17) ? substr(@$Series_Genre->title,0,18).'...' : @$Series_Genre->title; ?></h2>
-
+                                                            <h2 class="caption-h2">{{ strlen(@$Series_Genre->title) > 17 ? substr(@$Series_Genre->title, 0, 18) . '...' : @$Series_Genre->title }}</h2>
                                                                 @if (optional($Series_Genre)->description)
-                                                                    <div class="trending-dec">{!! html_entity_decode( optional($Series_Genre)->description) !!}</div>
-                                                                @endif
+                                                                        <div class="trending-dec">{!! html_entity_decode( optional($Series_Genre)->description) !!}</div>
+                                                                    @endif
 
                                                                 <div class="p-btns">
-                                                                    <div class="d-flex align-items-center p-0">
-                                                                        <a href="{{ URL::to('category/videos/'.$Series_Genre->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    </div>
+                                                                        <div class="d-flex align-items-center p-0">
+                                                                            <a href="{{ URL::to('category/videos/'.$Series_Genre->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                            <a href="{{ URL::to('category/videos/'.$Series_Genre->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                        </div>
                                                                 </div>
                                                             </div>
                                                             <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $Series_Genre->image ?  URL::to('public/uploads/images/'.$Series_Genre->image) : default_horizontal_image_url() }}" alt="">
+                                                                    <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -197,20 +205,18 @@ ol.breadcrumb {
                                             </div>
                                         </div>
                                     </li>
-                                @endforeach
+                                    @endforeach
+                                @endif
                             </ul>
-
-
 
                             
 
-
-                   
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 </div>
 
 
@@ -277,6 +283,7 @@ ol.breadcrumb {
     });
 </script>
 
+
 <?php
-   include(public_path('themes/default/views/footer.blade.php'));
-   ?>
+    include public_path('themes/default/views/footer.blade.php');
+?>
