@@ -2074,5 +2074,95 @@ public function UpgadeSubscription(Request $request){
       }
   }   
 
+
+  public function paypalppvVideo(Request $request)
+  {
+        // dd($request->all());
+
+
+      try {
+
+          $data = $request->all();
+          $video_id = $data['video_id'];
+          $setting = Setting::first();  
+          $ppv_hours = $setting->ppv_hours;
+          // $to_time =  Carbon::now()->addHour($ppv_hours);
+          $d = new \DateTime('now');
+          $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+          $now = $d->format('Y-m-d h:i:s a');
+          // dd($now);
+          $time = date('h:i:s', strtotime($now));
+          $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));                        
+          $user_id = Auth::user()->id;
+          $username = Auth::user()->username;
+          $email = Auth::user()->email;
+
+          $video = Video::where('id','=',$video_id)->where('uploaded_by','CPP')->first();
+
+          $channelvideo = Video::where('id','=',$video_id)->where('uploaded_by','Channel')->first();
+
+          if(!empty($video)){
+          $moderators_id = $video->user_id;
+          }
+
+          if(!empty($moderators_id)){
+          $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+          $total_amount = $video->ppv_price;
+          $title =  $video->title;
+          // $commssion = VideoCommission::first();
+          $commission = VideoCommission::where('type', 'CPP')->first();
+          $percentage = $commssion->percentage; 
+          $ppv_price = $video->ppv_price;
+          // $admin_commssion = ($percentage/100) * $ppv_price ;
+          $moderator_commssion = $ppv_price - $percentage;
+          $admin_commssion =  $ppv_price - $moderator_commssion;
+          $moderator_id = $moderators_id;
+          }elseif(!empty($channelvideo)){
+          if(!empty($channelvideo)){
+              $channelvideo_id = $video->user_id;
+          }
+          $Channel = Channel::where('id','=',$channelvideo_id)->first();  
+          $total_amount = $video->ppv_price;
+          $title =  $video->title;
+          $commssion = VideoCommission::where('type','Channel')->first();;
+          $percentage = $commssion->percentage; 
+          $ppv_price = $video->ppv_price;
+          // $admin_commssion = ($percentage/100) * $ppv_price ;
+          $moderator_commssion = $ppv_price - $percentage;
+          $admin_commssion =  $ppv_price - $moderator_commssion;
+          $channel_id = $channelvideo_id;
+
+          }
+          else{
+          $video = Video::where('id','=',$video_id)->first();
+
+          $total_amount = $video->ppv_price;
+          $title =  $video->title;
+          $commssion = VideoCommission::first();
+          $percentage = null; 
+          $ppv_price = $video->ppv_price;
+          $admin_commssion =  null;
+          $moderator_commssion = null;
+          $moderator_id = null;
+
+          }
+          $purchase = new PpvPurchase;
+          $purchase->user_id = $user_id;
+          $purchase->video_id = $video_id;
+          $purchase->total_amount = $total_amount;
+          $purchase->admin_commssion = $admin_commssion;
+          $purchase->moderator_commssion = $moderator_commssion;
+          $purchase->status = 'active';
+          $purchase->to_time = $to_time;
+          $purchase->moderator_id = $moderator_id;
+      
+          $purchase->save();
+          return 1;
+
+      } catch (\Exception $ex) {
+          return response()->json(['error' => $ex->getMessage()], 500);
+      }
+  }
+  
 }
 
