@@ -230,12 +230,19 @@ h2{
     line-height: 1.5;
       }
       .btn2{
-          padding: 13px 45px!important;
           font-weight: 400;
-    
-  border: 1px solid;
+           border: 1px solid;
+           padding: 13px 45px !important;
+        border: 1px solid;
+        width: 100%;
+        background-color: orange;
+        color: white;
+        font-size: 20px;
    
    
+      }
+      .Stripe_button{
+        width:100%;
       }
       .subsc-video{
          font-size: 18px!important;   
@@ -1385,7 +1392,7 @@ $artists = [];
                 </div>                    
             </div>
 
-            <div class="modal-footer">
+            <div class="modal-footer" style="display:block;">
               <div class="Stripe_button">  <!-- Stripe Button -->
                 <a onclick="pay(<?php echo $video->ppv_price;?>)">
                   <button type="button" class="btn2  btn-outline-primary" >Continue</button>

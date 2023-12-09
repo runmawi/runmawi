@@ -40,7 +40,7 @@
                                                     <div
                                                         class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <div class="caption">
+                                                        <div class="caption pl-5">
                                                             <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
 
                                                             @if (optional($latest_video)->description)
@@ -53,7 +53,7 @@
                                                                         <i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now 
                                                                     </a>
 
-                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
+                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                 </div>
                                                             </div>
                                                         </div>
