@@ -81,8 +81,12 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
  // dd($series);
  ?>
      
-     <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain;padding:0px 0px 20px; ">
-                <!-- BREADCRUMBS -->
+     <div id="myImage" >
+               
+     <div class="dropdown_thumbnail" style="height:29.25vw;">
+       <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" alt="">
+     </div>
+     <!-- BREADCRUMBS -->
 
                 <div class="row mr-2">
         <div class="nav container-fluid " id="nav-tab" role="tablist">

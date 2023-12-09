@@ -302,15 +302,21 @@ hr {
         font-size: 1rem;
         line-height: 1.5;
     }
-
-    .btn2 {
-        padding: 13px 45px !important;
-        font-weight: 400;
-
+    .btn2{
+          font-weight: 400;
+           border: 1px solid;
+           padding: 13px 45px !important;
         border: 1px solid;
-
-
-    }
+        width: 100%;
+        background-color: orange;
+        color: white;
+        font-size: 20px;
+   
+   
+      }
+      .Stripe_button{
+        width:100%;
+      }
 
     .subsc-video {
         font-size: 18px !important;
@@ -2096,7 +2102,7 @@ $artists = [];
                                             <div class="payment_card_payment">
                                                 <div id="paypal-button-container"></div>
                                             </div>
-                                            <div class="modal-footer">
+                                            <div class="modal-footer" style="display:block;">
                                                 <div class="Stripe_button">
                                                     <!-- Stripe Button -->
                                                     <!-- Currency_Convert(@$video->ppv_price) -->
