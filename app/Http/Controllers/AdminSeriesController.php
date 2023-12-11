@@ -1269,6 +1269,8 @@ class AdminSeriesController extends Controller
         $series->ppv_interval = $ppv_interval;
         $series->ios_product_id = $ios_ppv_price;
         $series->landing_mp4_url = $data['landing_mp4_url'];
+        $series->series_seasons_name = $data['series_seasons_name'];
+        $series->series_seasons_slug =  Str::slug($data['series_seasons_name']) ;
         $series->save();
         
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 0) {
@@ -1545,6 +1547,8 @@ class AdminSeriesController extends Controller
         $series_season->ppv_interval = $ppv_interval;
         $series_season->ios_product_id = $ios_ppv_price;
         $series_season->landing_mp4_url = $data['landing_mp4_url'];
+        $series_season->series_seasons_name = $data['series_seasons_name'];
+        $series_season->series_seasons_slug =  Str::slug($data['series_seasons_name']) ;
         $series_season->save();
 
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1  && $StorageSetting->aws_storage == 0) {
@@ -3163,7 +3167,7 @@ class AdminSeriesController extends Controller
 
             );
 
-            return view('admin.series.move_series.move_cpp_series',$data);
+            return view('admin.series.move_series.move_cpp_series',$create_seasondata);
         }
 
         public function MoveCPPPartner(Request $request)

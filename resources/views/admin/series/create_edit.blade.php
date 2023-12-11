@@ -508,7 +508,7 @@ $settings  = App\Setting::first();?>
 
 							<div class="form-group">
 								<label>Season Title:</label>
-								<input type="text" id="season_name" name="season_name" value="" placeholder="Enter the Season Title" class="form-control">
+								<input type="text" id="series_seasons_name" name="series_seasons_name" value="" placeholder="Enter the Season Title" class="form-control">
 							</div>  
 
 							<div class="form-group" >
