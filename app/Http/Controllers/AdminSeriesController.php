@@ -426,7 +426,7 @@ class AdminSeriesController extends Controller
         $series->details =($data['details']);
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
-        $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : [];
+        $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : null;
         $series->save();  
 
 
@@ -533,7 +533,7 @@ class AdminSeriesController extends Controller
             'languages_id' => SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray(),
             'InappPurchase' => InappPurchase::all(),
             'SeriesNetwork' => SeriesNetwork::all(),
-            'series_networks_id' => !empty($series->network_id) ? json_decode($series->network_id): [],
+            'series_networks_id' => !empty($series->network_id) ? json_decode($series->network_id): null,
             'Header_name' => "Edit TV Shows "
             );
 

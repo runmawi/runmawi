@@ -308,31 +308,33 @@ $settings  = App\Setting::first();?>
 			</div>
 
 					{{-- Series Network --}}
-			
-			<div class="row align-items-center mt-3"> 
-			
-				<div class="col-sm-6">
-					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> 
-							<div class="panel-title font-weight-bold"><label class="m-0">TV Shows Network</label></div> 
-							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
-						</div> 
-						<div class="panel-body  p-0" style="display: block;"> 
-							<p class="p1">Select A TV Shows Network Below:</p>
 
-							<select name="network_id[]" id="network_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-                            	@foreach($SeriesNetwork as $category)
-                            		@if(in_array($category->id, $series_networks_id))
-                            			<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
-                            		@else 
-                            			<option value="{{ $category->id }}">{{ $category->name }}</option>
-                            		@endif 
-                            	@endforeach
-                        	</select>
-						</div> 
+			@if (Series_Networks_Status() == 1)
+				<div class="row align-items-center mt-3"> 
+		
+					<div class="col-sm-6">
+						<div class="panel panel-primary" data-collapsed="0"> 
+							<div class="panel-heading"> 
+								<div class="panel-title font-weight-bold"><label class="m-0">TV Shows Network</label></div> 
+								<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+							</div> 
+							<div class="panel-body  p-0" style="display: block;"> 
+								<p class="p1">Select A TV Shows Network Below:</p>
+	
+								<select name="network_id[]" id="network_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+									@foreach($SeriesNetwork as $category)
+										@if(in_array($category->id, $series_networks_id))
+											<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
+										@else 
+											<option value="{{ $category->id }}">{{ $category->name }}</option>
+										@endif 
+									@endforeach
+								</select>
+							</div> 
+						</div>
 					</div>
 				</div>
-			</div>
+			@endif
 
 			<div class="clear"></div>
 

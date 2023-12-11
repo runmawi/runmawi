@@ -132,7 +132,7 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light " id="registration_setting" href="#!">Registration Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light " id="email_setting" href="#!">Email Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light " id="social_setting" href="#!">Social Networks Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light " id="series_setting" href="#!">Series Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="series_setting" href="#!">TV Shows Settings</a>
                     <?php if(Auth::User()->role =="admin" && Auth::User()->package =="Business"){  ?>
                     <a class="list-group-item list-group-item-action list-group-item-light " id="transcoding_setting" href="#!"> Transcoding Settings</a>
                     <?php } ?>
@@ -974,39 +974,62 @@ border-radius: 0px 4px 4px 0px;
 
 
     <!-- Series  Setting-->
-    <div class="container-fluid" id="seasonsetting" style="">
-            <div class="row" data-collapsed="0">
-                <div class="panel-heading">
-                    <div class="panel-title"><label>Series Setting</label></div>
-                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            
-                                <div>
-                                 <div><p class="mt-1">Enable PPV Season</p></div>
-                                 <div class="d-flex align-items-center">
+    <div class="container-fluid" id="seasonsetting">
 
-                        <div class="mr-2">OFF</div>
+        <div class="row d-flex" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title"><label>TV Shows Setting</label></div>
+                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+            </div>
 
+            <div class="panel-body">
+                <div class="row d-flex">
+                    <div class="col-md-6">
+                        <div>
+                            <div class="panel-title"><label>Enable PPV Season</label></div>
+                            <div class="d-flex align-items-center">
+
+                            <div class="mr-2">OFF</div>
                                 <div class="mt-1">
                                     <label class="switch">
-                                    <input type="checkbox" @if(!isset($settings->series_season) ||
-                                    (isset($settings->series_season) && $settings->series_season))checked="checked"
-                                    value="1"@else value="0"@endif name="series_season" id="series_season" />
-                                        <span class="slider round"></span>
+                                        <input type="checkbox" @if(!isset($settings->series_season) ||
+                                            (isset($settings->series_season) && $settings->series_season))checked="checked"
+                                            value="1"@else value="0"@endif name="series_season" id="series_season" />
+                                            <span class="slider round"></span>
                                     </label>
                                 </div>
                                 <div class="ml-2">On</div>
                             </div>                                
-                               
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="panel-body">
+                <div class="row d-flex">
+                    <div class="col-md-6">
+                        <div>
+                            <div class="panel-title"><label> TV Shows Networks</label></div>
+                            <p>Enable & Disable Networks</p>
+                            <div class="d-flex align-items-center">
+                            <div class="mr-2">OFF</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input type="checkbox" @if(!isset($settings->series_networks_status) ||
+                                            (isset($settings->series_networks_status) && $settings->series_networks_status))checked="checked"
+                                            value="1"@else value="0"@endif name="series_networks_status" id="series_networks_status" />
+                                            <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="ml-2">On</div>
+                            </div>                                
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+    </div>
     
     <!-- Transcoding  Setting -->
         <div class="container-fluid" id="transcodingsetting" style="">

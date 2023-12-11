@@ -68,7 +68,11 @@ border-radius: 0px 4px 4px 0px;
 			<th><label>S.No</label></th>
 			<th><label>Image</label></th>
 			<th><label>Title</label></th>
-			<th><label>Networks</label></th>
+
+			@if (Series_Networks_Status() == 1)
+				<th><label>Networks</label></th>
+			@endif
+
 			<th><label>Slider</label></th>
 			<th><label>Operation</label></th>
 			@foreach($series as $key=>$series_value)
@@ -76,7 +80,22 @@ border-radius: 0px 4px 4px 0px;
 				<td>{{$key + 1}}</td>
 				<td><img src="{{ URL::to('/') . '/public/uploads/images/' . $series_value->image }}" width="100"></td>
 				<td valign="bottom"><p>{{ $series_value->title }}</p></td>
-				<td valign="bottom"><p>{{ $series_value->genre_id }}</p></td>
+
+				@if (Series_Networks_Status() == 1)
+					<td valign="bottom">
+						@php  
+							if( !empty($series_value->network_id) && !is_null($series_value->network_id) ):
+								$SeriesNetwork = App\SeriesNetwork::WhereIn('id', json_decode($series_value->network_id))->pluck('name') ;
+								$Series_Network_name = implode(', ', $SeriesNetwork->toArray());
+							else:
+								$Series_Network_name = "-";
+							endif;
+						@endphp
+						{{ $Series_Network_name }}
+					</p>
+					</td>
+				@endif
+
 				<td valign="bottom">
 					<div class="mt-1">
 						<label class="switch">
@@ -86,7 +105,7 @@ border-radius: 0px 4px 4px 0px;
 					</div>
 				</td>
 				<td>
-					<div class=" align-items-center list-user-action">
+					<div class=" align-items-center">
 						<a href="{{ URL::to('play_series') . '/' .$series_value->slug }}" class="iq-bg-warning" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"> <!--Visit Site--></a>
 						<a href="{{ URL::to('admin/series/edit') . '/' . $series_value->id }}" class="iq-bg-success ml-2"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"> <!--Edit--></a>
 						<a href="{{ URL::to('admin/series/delete') . '/' . $series_value->id }}" class="iq-bg-danger ml-2" onclick="return confirm('Are you sure?')"  ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"><i></i> <!--Delete--></a>
