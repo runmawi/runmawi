@@ -925,6 +925,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/Series_genre/delete/{id}', 'AdminSeriesGenreController@Series_genre_delete');
     Route::Post('/Series_genre_order', 'AdminSeriesGenreController@Series_genre_order');
 
+    
+    // Admin Network 
+    Route::get('/Series/Network', 'AdminNetworkController@Network_index')->name('admin.Network_index');
+    Route::Post('/Serie/Network-store', 'AdminNetworkController@Network_store')->name('admin.Network_store');
+    Route::get('/Serie/Network-edit/{id}', 'AdminNetworkController@Network_edit')->name('admin.Network_edit');
+    Route::PATCH('/Serie/Network-update/{id}', 'AdminNetworkController@Network_update')->name('admin.Network_update');
+    Route::get('/Serie/Network-delete/{id}', 'AdminNetworkController@Network_delete')->name('admin.Network_delete');
+    Route::Post('/Serie/Network/order', 'AdminNetworkController@Network_order')->name('admin.Network_order');
+
     //Admin Series Season Manage
     // Route::get('/season/create/{id}', 'AdminSeriesController@create_season');
     Route::post('/season/create/', 'AdminSeriesController@create_season');
