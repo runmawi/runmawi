@@ -1168,7 +1168,7 @@ class TvshowsController extends Controller
 
     public function Specific_Series_Networks(Request $request)
     {
-        # code...
+       
     }
 
 }
