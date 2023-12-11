@@ -322,7 +322,7 @@ $settings  = App\Setting::first();?>
 
 							<select name="network_id[]" id="network_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
                             	@foreach($SeriesNetwork as $category)
-                            		@if(in_array($category->id, json_decode($series->network_id)))
+                            		@if(in_array($category->id, $series_networks_id))
                             			<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
                             		@else 
                             			<option value="{{ $category->id }}">{{ $category->name }}</option>
