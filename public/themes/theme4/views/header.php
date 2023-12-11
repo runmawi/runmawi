@@ -745,6 +745,7 @@
    .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo GetDarkText(); ?> !important;}
    .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo GetLightText(); ?> !important;}
    .navbar-expand-lg .navbar-nav .dropdown-menu {background:  <?php echo GetDarkBg(); ?> !important;}
+   
 </style>
 
 <style type="text/css">
@@ -775,6 +776,8 @@
 	li.nav-item.dropdown.menu-item li:hover ul.submenu.dropdown-menu{
       display:block !important;
    }
+   .submenu a.dropdown-item.cont-item {color: white !important;}
+   .submenu.dropdown-menu a.dropdown-item.cont-item:hover {color: rgb(0, 82, 204)!important;}
    
 }	
 /* ============ desktop view .end// ============ */
