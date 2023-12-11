@@ -108,7 +108,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 -----------------------------------------------------------------------*/
 .main-content { padding-top: 40px; }
 .block-space { padding: 40px 0; }
-#iq-trending { margin-top: 40px; }
+#iq-trending, #iq-favorites { margin-top: 40px; }
 .iq-main-header { margin-bottom: 20px; }
 .main-title{font-size: 1.4vw;}
 .main-title a:hover, .main-title a:focus {color:var(--iq-primary) !important;}
@@ -920,6 +920,14 @@ max-width: 630px;
 height: 100%;
 -o-object-fit: cover;
 object-fit: cover;
+}
+.cate-banner_thumbnail{
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    height: 420px;
+    top: 0;
+    right: 0;
 }
 .dropdown_thumbnail{
     position: absolute;

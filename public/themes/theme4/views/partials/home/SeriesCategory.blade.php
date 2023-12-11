@@ -101,6 +101,7 @@
     }
     .position-absu{
         position:absolute;
+        z-index: 999;
     }
    
 </style>
@@ -138,8 +139,8 @@
                     <div class="caption">
                         <h2>{{ optional($CategorySeries)->name }}</h2> 
                     </div>
-                    <div class="category-cover">
-                        <img class="w-100 img-responsive" src="{{ $CategorySeries->image ? URL::to('public/uploads/videocategory/' . $CategorySeries->image) : default_vertical_image_url() }}" />
+                    <div class="dropdown_thumbnail" >
+                        <img class="w-100 img-responsive" src="{{ $CategorySeries->image ? URL::to('public/uploads/videocategory/' . $CategorySeries->image) : default_vertical_image_url() }}" style="object-fit: cover; height: 350px;" />
                     </div>
                 </div> 
             </div>
@@ -186,8 +187,8 @@
 
                                                                 <div class="p-btns">
                                                                     <div class="d-flex align-items-center p-0">
-                                                                        <a href="{{ URL::to('category/videos/'.$Series_Genre->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a href="{{ URL::to('category/videos/'.$Series_Genre->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                        <a href="{{ URL::to('play_series/'.$Series_Genre->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                        <a href="{{ URL::to('play_series/'.$Series_Genre->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                     </div>
                                                                 </div>
                                                             </div>

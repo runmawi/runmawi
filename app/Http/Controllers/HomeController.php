@@ -1554,10 +1554,19 @@ class HomeController extends Controller
                     Auth::logout();
                     unset($data['password_hash']);
                     \Session::flush();
-                    return Redirect::to('/')->with(array(
-                        'message' => 'Buy Subscriptions Plan!',
+
+                    $url1 = $_SERVER['REQUEST_URI'];
+                    header("Refresh: 120; URL=$url1");
+                    $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
+                    return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
+                        'message' => $message,
                         'note_type' => 'success'
                     ));
+
+                    // return Redirect::to('/')->with(array(
+                    //     'message' => 'Buy Subscriptions Plan!',
+                    //     'note_type' => 'success'
+                    // ));
                 }
 
                 // else if ($user_check >= 1 && $user_check < $device_limit  && $user_role == "subscriber" && Auth::User()->id != 1)
