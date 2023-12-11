@@ -11,7 +11,7 @@
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $slider_video->slider; ?>" style="background-position: right;    ">
         <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
-            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+            <video class="myvideos" controls loop muted src="" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
         </div>
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
@@ -43,7 +43,7 @@ endif; ?>
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>" style="background-position: right;   ">
         <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
-            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+            <video class="myvideos" controls loop muted src="" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
         </div>    
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
@@ -100,7 +100,7 @@ endif; ?>
     <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $live_event_banner->player_image; ?>"
         style="background-position: right;   ">
         <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
-            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+            <video class="myvideos" controls loop muted src="" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
         </div>
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
@@ -147,7 +147,7 @@ endif; ?>
 } ?> header-image">
     <div class="slide  slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>" style="background-position: right;">
         <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
-            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+            <video class="myvideos" controls loop muted src="" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
         </div>    
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
@@ -221,7 +221,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
     <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>"
         style="background-position: right;">
         <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
-            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+            <video class="myvideos" controls loop muted src="" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
         </div>
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
@@ -282,7 +282,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
         style="background-position: right;  ">
         
         <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
-            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+            <video class="myvideos" controls loop muted src="" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
         </div>
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
@@ -376,7 +376,7 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
     id="image-container"
 >
     <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
-        <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+        <video class="myvideos" controls loop muted src="" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
     </div>
                    
 
