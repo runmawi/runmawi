@@ -36,10 +36,10 @@
 @section('content')
     <div id="content-page" class="content-page">
         <div class="mt-5 d-flex">
-            <a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
-            <a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a>
-            <a class="black" href="{{ URL::to('admin/Series/Genre') }}">Manage Series Genre</a>
-            <a class="black"  style="background:#fafafa!important;color: #006AFF!important;" href="{{ route('admin.Network_index') }}">Manage Series Network</a>
+            <a class="black" href="{{ URL::to('admin/series-list') }}"> TV Shows List</a>
+            <a class="black" href="{{ URL::to('admin/series/create') }}"> Add New TV Shows</a>
+            <a class="black" href="{{ URL::to('admin/Series/Genre') }}">Manage TV Shows Genre</a>
+            <a class="black"  style="background:#fafafa!important;color: #006AFF!important;" href="{{ route('admin.Network_index') }}">Manage TV Shows Network</a>
         </div>
 
         <div class="container-fluid p-0">
@@ -55,7 +55,7 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <h4><i class="entypo-archive"></i> Series Network</h4>
+                            <h4><i class="entypo-archive"></i> TV Shows Networks</h4>
                         </div>
 
                         <div class="col-md-6" align="right">
@@ -142,7 +142,7 @@
 
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <p>Organize the Network below: </p>
+                                <p>Organize the Networks below: </p>
                             </div>
                             <div class="panel-options">
                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
@@ -154,9 +154,9 @@
                                 <table class="table table-bordered iq-card text-center" id="categorytbl">
                                     <tr class="table-header r1">
                                         <th><label>S.No</label></th>
-                                        <th><label>Network Name</label></th>
-                                        <th><label>Network Image</label></th>
-                                        <th><label>Network Banner Image</label></th>
+                                        <th><label>Networks Name</label></th>
+                                        <th><label>Networks Image</label></th>
+                                        <th><label>Networks Banner Image</label></th>
                                         <th><label>Operation</label></th>
                                     </tr>
 
@@ -168,7 +168,7 @@
                                             <td valign="bottom"><img src="{{ $network_data->banner_image_url }}" width="50" height="50"></td>
 
                                             <td>
-                                                <div class=" align-items-center list-user-action">
+                                                <div class=" align-items-center list-user-action" style="display: inline !important;">
                                                     <a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
                                                         href="{{ URL::to('/series/category/'. $network_data->slug) }}">
                                                         <img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}">

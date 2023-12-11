@@ -14,7 +14,7 @@
             </div>
 
             <div class="iq-card">
-                <h4><i class="entypo-archive"></i> Edit TV-Shows Network</h4>
+                <h4><i class="entypo-archive"></i> Edit TV-Shows Networks</h4>
                 <div class="modal-body">
                     <form id="update-cat-form" accept-charset="UTF-8" action="{{ route('admin.Network_update',[ 'id' => $Series_Network->id ]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -79,7 +79,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="m-0">Network:</label>
+                            <label class="m-0">Networks:</label>
                             <select id="parent_id" name="parent_id" class="form-control">
                                 <option value=null>Select</option>
                                 @foreach ($All_SeriesNetwork as $rows)

@@ -191,7 +191,7 @@ class AdminSeriesController extends Controller
                 'settings ' => $settings,
                 'headline' => '<i class="fa fa-plus-circle"></i> New Series',
                 'post_route' => URL::to('admin/series/store'),
-                'button_text' => 'Add New Series',
+                'button_text' => 'Add New TV Shows',
                 'admin_user' => Auth::user(),
                 'series_categories' => SeriesGenre::all(),
                 'video_categories' => VideoCategory::all(),
@@ -203,6 +203,7 @@ class AdminSeriesController extends Controller
                 'series_networks_id' => [],
                 'InappPurchase' => InappPurchase::all(),
                 'SeriesNetwork' => SeriesNetwork::all(),
+                'Header_name' => "Edit TV Shows "
             );
 
            return View::make('admin.series.create_edit', $data);
@@ -521,7 +522,7 @@ class AdminSeriesController extends Controller
             'settings' => $settings,
             'seasons' => $seasons,
             'post_route' => URL::to('admin/series/update'),
-            'button_text' => 'Update Series',
+            'button_text' => 'Update TV Shows',
             'admin_user' => Auth::user(),
             'series_categories' => SeriesGenre::all(),
             'videos_categories' => VideoCategory::all(),
@@ -533,6 +534,7 @@ class AdminSeriesController extends Controller
             'InappPurchase' => InappPurchase::all(),
             'SeriesNetwork' => SeriesNetwork::all(),
             'series_networks_id' => !empty($series->network_id) ? json_decode($series->network_id): [],
+            'Header_name' => "Edit TV Shows "
             );
 
         return View::make('admin.series.create_edit', $data);

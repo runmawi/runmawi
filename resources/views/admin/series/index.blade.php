@@ -41,12 +41,12 @@ border-radius: 0px 4px 4px 0px;
     <div class="container-fluid">
 
         <div class="d-flex">
-        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/series-list') }}"> Series List</a>
-        <a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a></div>
+        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/series-list') }}"> TV Shows List</a>
+        <a class="black" href="{{ URL::to('admin/series/create') }}"> Add TV Shows Series</a></div>
          <div class="iq-card">
 		<div class="row align-items-center p-2">
 			<div class="col-md-5">
-				<h4><i class="entypo-movie"></i> Series</h4>
+				<h4><i class="entypo-movie"></i> TV Shows</h4>
 			</div>
 			<div class="col-md-5 mt-3">	
 				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
@@ -67,8 +67,8 @@ border-radius: 0px 4px 4px 0px;
 		<tr class="table-header r1">
 			<th><label>S.No</label></th>
 			<th><label>Image</label></th>
-			<th><label>Series Title</label></th>
-			<th><label>Genre</label></th>
+			<th><label>Title</label></th>
+			<th><label>Networks</label></th>
 			<th><label>Slider</label></th>
 			<th><label>Operation</label></th>
 			@foreach($series as $key=>$series_value)

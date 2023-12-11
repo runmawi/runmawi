@@ -22,9 +22,9 @@ border-radius: 0px 4px 4px 0px;
 
      <div id="content-page" class="content-page">
           <div class="d-flex">
-          <a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
-				<a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a>
-				<a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/Series/Genre') }}">Manage Series Genre</a>
+          <a class="black" href="{{ URL::to('admin/series-list') }}"> TV Shows List</a>
+				<a class="black" href="{{ URL::to('admin/series/create') }}"> Add New TV Shows</a>
+				<a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/Series/Genre') }}">Manage TV Shows Genre</a>
       </div>
 
          <div class="container-fluid p-0">
@@ -34,15 +34,15 @@ border-radius: 0px 4px 4px 0px;
                      <div class="iq-card-header d-flex justify-content-between">
                      <div class="row">
                            <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/CPPSeriesIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Series Videos</button></a>
+                              <a href="{{ URL::to('/admin/CPPSeriesIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded TV Shows Videos</button></a>
                            </div>
                            <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/ChannelSeriesIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Series Videos</button></a>
+                              <a href="{{ URL::to('/admin/ChannelSeriesIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded TV Shows Videos</button></a>
                            </div>
                         <div>
                            <br>
                         <div class="iq-header-title">
-                           <h4 class="card-title">CPP Series Video Lists</h4>
+                           <h4 class="card-title">CPP TV Shows Lists</h4>
                         </div>
 
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
