@@ -2259,6 +2259,10 @@ $artists = [];
                     <script>
 
                             function paypal_checkout() {
+
+
+                                $('.paypal_button').hide();
+
                                 var amount = "<?php echo $ppv_price; ?>";
                                 paypal.Buttons({
                                     createOrder: function (data, actions) {
@@ -2968,6 +2972,7 @@ $artists = [];
                                 $('.Stripe_button,.Razorpay_button,.paystack_button,.cinetpay_button').hide();
                                 $('.paypal_button').show();
                                 $('.payment_card_payment').show();
+                                // $('.paypal_button').hide();
                             }
                         });
                     });
