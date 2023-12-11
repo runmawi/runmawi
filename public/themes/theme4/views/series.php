@@ -1,5 +1,9 @@
 <?php include('header.php'); ?>
 <style type="text/css">
+  .form-control:focus{
+    background-color: transparent !important;
+    box-shadow:none;
+  }
   
 	.nav-pills li a {color: #fff !important;}
     nav{
@@ -15,7 +19,7 @@
         font-weight: 500;
     }
     select:invalid { color:grey!important; }
-    select:valid { color:#808080!important; }
+    select:valid { color:#ffff!important; }
     .plyr__video-wrapper::before{
         display: none;
     }
@@ -83,7 +87,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
      
      <div id="myImage" >
                
-     <div class="dropdown_thumbnail" >
+     <div class="cate-banner_thumbnail" >
        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" alt="">
      </div>
      <!-- BREADCRUMBS -->
@@ -93,7 +97,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
             <div class="bc-icons-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Series')) ?></a>
+                            href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Channels')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
