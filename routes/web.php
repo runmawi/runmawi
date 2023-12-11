@@ -382,7 +382,8 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/latest-videos', 'HomeController@LatestVideos')->name('latest-videos');
     Route::get('/language/{lanid}/{language}', 'HomeController@LanguageVideo');
     Route::get('/language/{slug}', 'HomeController@Language_Video');
-    Route::get('/language-list', 'HomeController@Language_List');
+    Route::get('/My-list', 'HomeController@My_list');
+    Route::post('watchlater', 'WatchLaterController@watchlater');
     
     Route::get('featured-videos', 'HomeController@Featured_videos');
     Route::get('Recommended-videos', 'HomeController@Featured_videos');  // Only For Nemisha 
