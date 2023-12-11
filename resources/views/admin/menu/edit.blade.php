@@ -51,15 +51,19 @@
 			<label for="url">Custom URL (ex. full url)</label>
 			<input name="custom_url" id="custom_url" placeholder="Custom URL" class="form-control" value="{{ $menu->custom_url }}" /><br />
 		</div>
-             <label for="categories" style="font-size:12px;">Categories (Need to Display video categories in this Menu) ? </label><br>
-             <input type="radio" name="in_menu" value="none" <?php if( $menu->in_menu == "none") { echo "checked";} ?>/>  <label class="ml-1">None</label>
-             <input type="radio" name="in_menu" value="video" <?php if( $menu->in_menu == "video") { echo "checked";} ?> /><label class="ml-1">Video Categories</label>
-             <input type="radio" name="in_menu" value="audios" <?php if( $menu->in_menu == "audios") { echo "checked";} ?> /><label class="ml-1">Audio Categories</label>
-			 <input type="radio" name="in_menu" value="live" <?php if( $menu->in_menu == "live") { echo "checked";} ?>/><label class="ml-1"> Live Categories</label>
-			 <input type="radio" name="in_menu" value="posts" <?php if( $menu->in_menu == "posts") { echo "checked";} ?>/><label class="ml-1"> Post Categories</label>
-			 <input type="radio" name="in_menu" value="series" <?php if( $menu->in_menu == "series") { echo "checked";} ?>/><label class="ml-1"> Series Categories</label>
-			 <input type="radio" name="in_menu" value="tv_show" <?php if( $menu->in_menu == "tv_show") { echo "checked";} ?>/><label class="ml-1"> Tv Shows</label>
+			<label for="categories" style="font-size:12px;">Categories (Need to Display video categories in this Menu) ? </label><br>
+			<input type="radio" name="in_menu" value="none" <?php if( $menu->in_menu == "none") { echo "checked";} ?>/>  <label class="ml-1">None</label>
+			<input type="radio" name="in_menu" value="video" <?php if( $menu->in_menu == "video") { echo "checked";} ?> /><label class="ml-1">Video Categories</label>
+			<input type="radio" name="in_menu" value="audios" <?php if( $menu->in_menu == "audios") { echo "checked";} ?> /><label class="ml-1">Audio Categories</label>
+			<input type="radio" name="in_menu" value="live" <?php if( $menu->in_menu == "live") { echo "checked";} ?>/><label class="ml-1"> Live Categories</label>
+			<input type="radio" name="in_menu" value="posts" <?php if( $menu->in_menu == "posts") { echo "checked";} ?>/><label class="ml-1"> Post Categories</label>
+			<input type="radio" name="in_menu" value="series" <?php if( $menu->in_menu == "series") { echo "checked";} ?>/><label class="ml-1">  TV Shows Categories</label>
+			<input type="radio" name="in_menu" value="tv_show" <?php if( $menu->in_menu == "tv_show") { echo "checked";} ?>/><label class="ml-1"> Tv Shows</label>
         
+			@if (Series_Networks_Status() == 1)
+				<input type="radio" name="in_menu" value="networks" <?php if( $menu->in_menu == "networks") { echo "checked";} ?>/><label class="ml-1"> TV Shows Networks</label>
+			@endif
+
         <input type="hidden" name="id" id="id" value="{{ $menu->id }}" />
         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
     </form>

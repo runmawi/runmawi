@@ -173,10 +173,8 @@ class HomeSettingsController extends Controller
         $settings->video_playlist = !empty($request->video_playlist) ?  "1" : "0" ;
         $settings->Today_Top_videos = !empty($request->Today_Top_videos) ?  "1" : "0" ;
         $settings->series_episode_overview = !empty($request->series_episode_overview) ?  "1" : "0" ;
-
-
-
-
+        $settings->Series_Networks = !empty($request->Series_Networks) ?  "1" : "0" ;
+        $settings->Series_based_on_Networks = !empty($request->Series_based_on_Networks) ?  "1" : "0" ;
         $settings->save();
         
         return redirect::to('/admin/home-settings');
@@ -382,12 +380,10 @@ class HomeSettingsController extends Controller
         $settings->video_playlist = !empty($request->video_playlist) ?  "1" : "0" ;
         $settings->Today_Top_videos = !empty($request->Today_Top_videos) ?  "1" : "0" ;
         $settings->series_episode_overview = !empty($request->series_episode_overview) ?  "1" : "0" ;
+        $settings->Series_Networks = !empty($request->Series_Networks) ?  "1" : "0" ;
+        $settings->Series_based_on_Networks = !empty($request->Series_based_on_Networks) ?  "1" : "0" ;
         $settings->save();
 
         return redirect::to('/admin/home-settings');
     }
-
-
-
-    
 }

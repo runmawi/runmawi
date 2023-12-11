@@ -464,7 +464,7 @@ endif; ?>
 <?php endforeach; endif; ?>
 
 
-<script type="application/javascript">
+<!-- <script type="application/javascript">
 
 function trailer_series_slider(ele) 
 	{
@@ -496,4 +496,4 @@ function trailer_series_slider(ele)
         }).magnificPopup('open');
 }
 
-</script>
+</script> -->
