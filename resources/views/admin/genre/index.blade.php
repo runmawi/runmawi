@@ -31,9 +31,10 @@ border-radius: 0px 4px 4px 0px;
 @section('content')
 <div id="content-page" class="content-page">
 		<div class="mt-5 d-flex">
-				<a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
-				<a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a>
-				<a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/Series/Genre') }}">Manage Series Genre</a>
+			<a class="black" href="{{ URL::to('admin/series-list') }}"> TV Shows List</a>
+			<a class="black" href="{{ URL::to('admin/series/create') }}"> Add New TV Shows</a>
+			<a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/Series/Genre') }}">Manage TV Shows Genre</a>
+			<a class="black" href="{{ route('admin.Network_index') }}">Manage TV Shows Network</a>
 		</div>
 
     <div class="container-fluid p-0">
@@ -41,7 +42,7 @@ border-radius: 0px 4px 4px 0px;
             <div class="iq-card">
                 <div class="row">
                     <div class="col-md-6">
-                        <h4><i class="entypo-archive"></i> Series Genre</h4>
+                        <h4><i class="entypo-archive"></i> TV Shows Genre</h4>
 
                         @if (Session::has('message'))
                             <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
@@ -67,7 +68,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title">New Series Genre</h4>
+                                <h4 class="modal-title">New TV Shows Genre</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
 
@@ -143,7 +144,7 @@ border-radius: 0px 4px 4px 0px;
 							
 					<div class="panel-heading">
 						<div class="panel-title">
-							<p>Organize the Categories below: </p>
+							<p>Organize the Genre below: </p>
 						</div>
 						<div class="panel-options">
 							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
@@ -154,14 +155,16 @@ border-radius: 0px 4px 4px 0px;
 						<div id="nestable" class="nested-list dd with-margins">
 							<table class="table table-bordered iq-card text-center" id="categorytbl">
 								<tr class="table-header r1">
-									<th><label>Series Genre Image</label></th>
-									<th><label>Series Genre Name</label></th>
-                                    <th><label>Series Active</label></th>          
+									<th><label>S.No</label></th>
+									<th><label>TV Shows Genre Image</label></th>
+									<th><label>TV Shows Genre Name</label></th>
+                                    <th><label>TV Shows Active</label></th>          
 									<th><label>Operation</label></th>
 								</tr>
 
-								@foreach($allCategories as $category)
+								@foreach($allCategories as $key => $category)
 									<tr id="{{ $category->id }}">
+										<td valign="bottom" class="">{{ $key+1}}</td>
 										<td valign="bottom" class=""><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->image }}" width="50" height="50"></td>
 										<td valign="bottom"><p>{{ $category->name }}</p></td>
 										<td valign="bottom">

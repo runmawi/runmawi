@@ -73,6 +73,7 @@ use App\LanguageVideo;
 use App\CategoryVideo;
 use App\AppSetting as AppSetting;
 use App\TVLoginCode as TVLoginCode;
+use App\Watchlater as Watchlater;
 
 class HomeController extends Controller
 {
@@ -1554,10 +1555,19 @@ class HomeController extends Controller
                     Auth::logout();
                     unset($data['password_hash']);
                     \Session::flush();
-                    return Redirect::to('/')->with(array(
-                        'message' => 'Buy Subscriptions Plan!',
+
+                    $url1 = $_SERVER['REQUEST_URI'];
+                    header("Refresh: 120; URL=$url1");
+                    $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
+                    return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
+                        'message' => $message,
                         'note_type' => 'success'
                     ));
+
+                    // return Redirect::to('/')->with(array(
+                    //     'message' => 'Buy Subscriptions Plan!',
+                    //     'note_type' => 'success'
+                    // ));
                 }
 
                 // else if ($user_check >= 1 && $user_check < $device_limit  && $user_role == "subscriber" && Auth::User()->id != 1)
@@ -4915,5 +4925,71 @@ public function uploadExcel(Request $request)
             }
 
     }
+
+
+    
+    public function My_list()
+    {
+        $settings = Setting::first();
+
+        if($settings->enable_landing_page == 1 && Auth::guest()){
+
+            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+
+            return redirect()->route('landing_page', $landing_page_slug );
+        }
+
+        $multiuser = Session::get('subuser_id');
+
+        if(!Auth::guest()):
+             
+            $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+        else:
+
+            $Mode['user_type'] = null ;
+        endif;
+
+           
+        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
+
+
+        $watchlater_videos_count = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '!=','')->latest()->count();
+        if ($watchlater_videos_count > 0)
+        {
+            $watchlater_videos_array = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '!=','')->pluck('video_id')->toarray();
+            $Watchlater_videos = Watchlater::where('user_id', '=', Auth::user()->id)->latest();
+            $Watchlater_videos = Video::whereIn('id',$watchlater_videos_array);
+
+                if (Geofencing() != null && Geofencing()->geofencing == 'ON')
+                {
+                    $Watchlater_videos = $Watchlater_videos->whereNotIn('videos.id', Block_videos());
+                }
+
+                if( $check_Kidmode == 1 )
+                {
+                    $Watchlater_videos = $Watchlater_videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+                }
+                
+            $Watchlater_videos = $Watchlater_videos->limit(50)->paginate($this->videos_per_page);
+        }
+        else
+        {
+            $Watchlater_videos = array();
+        }
+
+        $settings = Setting::first();
+        $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+        $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
+       
+        $data = array(
+            'Watchlater_videos'    => $Watchlater_videos,
+            'ppv_gobal_price'  => $ppv_gobal_price,
+            'currency'         => CurrencySetting::first(),
+            'ThumbnailSetting' => ThumbnailSetting::first(),
+        );
+
+        return Theme::view('MyList',['MyList'=>$data]);
+    }
+
 
 }
