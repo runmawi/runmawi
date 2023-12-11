@@ -278,19 +278,22 @@ $settings  = App\Setting::first();?>
 
 			<div class="row align-items-center mt-3"> 
 			
-			<div class="col-sm-6">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title font-weight-bold"><label class="m-0">Series Year</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body  p-0" style="display: block;"> 
-                    <p class="p1">Series Created Year</p>
-					<input class="form-control" name="year" id="year" value="@if(!empty($series->year)){{ $series->year }}@endif" >
-				</div> 
-			</div>
-			</div>
+				<div class="col-sm-6">
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> 
+							<div class="panel-title font-weight-bold"><label class="m-0">Series Year</label></div> 
+							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div> 
+						<div class="panel-body  p-0" style="display: block;"> 
+							<p class="p1">Series Created Year</p>
+							<input class="form-control" name="year" id="year" value="@if(!empty($series->year)){{ $series->year }}@endif" >
+						</div> 
+					</div>
+				</div>
 
-            <div class="col-sm-6" data-collapsed="0">
-				<div class="panel-heading"> 
-					<div class="panel-title font-weight-bold"><label class="m-0">Search Tags</label></div>
+				<div class="col-sm-6" data-collapsed="0">
+					<div class="panel-heading"> 
+						<div class="panel-title font-weight-bold"><label class="m-0">Search Tags</label></div>
 						<div class="panel-options"> 
 							<a href="#" data-rel="collapse">
 								<i class="entypo-down-open"></i>
@@ -304,14 +307,43 @@ $settings  = App\Setting::first();?>
 				</div>    
 			</div>
 
-			<div class="clear"></div>
+					{{-- Series Network --}}
+			
+			<div class="row align-items-center mt-3"> 
+			
+				<div class="col-sm-6">
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> 
+							<div class="panel-title font-weight-bold"><label class="m-0">Series Network</label></div> 
+							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div> 
+						<div class="panel-body  p-0" style="display: block;"> 
+							<p class="p1">Select A Series Network Below:</p>
 
+							<select name="network_id[]" id="network_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                            	@foreach($SeriesNetwork as $category)
+                            		@if(in_array($category->id, json_decode($series->network_id)))
+                            			<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
+                            		@else 
+                            			<option value="{{ $category->id }}">{{ $category->name }}</option>
+                            		@endif 
+                            	@endforeach
+                        	</select>
+						</div> 
+					</div>
+				</div>
+			</div>
+
+			<div class="clear"></div>
 
 			<div class="row align-items-center mt-3 p-3"> 
 
 				<div class="col-sm-4 p-0"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading">
+							<div class="panel-title font-weight-bold"> <label class="m-0">Duration</label></div> 
+							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div> 
 						<div class="panel-body"> 
 							<p class="p1">Enter the duration in the (HH: MM : SS) format </p> 
 							<input class="form-control" name="duration" id="duration" value="@if(!empty($series->duration)){{ gmdate('H:i:s', $series->duration) }}@endif" >
@@ -321,7 +353,10 @@ $settings  = App\Setting::first();?>
 
 				<div class="col-sm-4"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading"> 
+							<div class="panel-title font-weight-bold"> <label class="m-0">User Access</label></div>
+						 	<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div> 
 						<div class="panel-body"> 
 							<p class="p1">Who is allowed to view this series?</p>
 							<select class="form-control" id="access" name="access">
@@ -336,7 +371,10 @@ $settings  = App\Setting::first();?>
 
 				<div class="col-sm-4"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">Status Settings</label></div>
+						  <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div>
+
 						<div class="panel-body"> 
 							<div class="d-flex align-items-baseline">
 								<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Is this series Featured:</label>
@@ -369,31 +407,32 @@ $settings  = App\Setting::first();?>
 
 							@elseif($button_text == "Update Series")
 
-							@php
-								$season_id = App\Series::Select('series_seasons.id','series.season_trailer','series.id as series_id')
-											->Join('series_seasons','series_seasons.series_id','=','series.id')
-											->where('series_id',@$series->id)
-											->get();
-							@endphp
+								@php
+									$season_id = App\Series::Select('series_seasons.id','series.season_trailer','series.id as series_id')
+												->Join('series_seasons','series_seasons.series_id','=','series.id')
+												->where('series_id',@$series->id)
+												->get();
+								@endphp	
 
 								<div class="row  season_trailer">
-										@forelse ($season_id as $key => $item)
-                                    <div class="col-md-5"><label class="p2" for="active" style="display:block; margin-right:10px;">Season {{ $key + 1 }} :</label></div>
-                                    <div class="col-md-3 mt-2">	
-											<input type="radio" name="season_trailer" value="{{ $item->id }}" @if( $item->id  == $series->season_trailer ) {{ 'checked' }} @endif  > </div>
+									@forelse ($season_id as $key => $item)
+										<div class="col-md-5"><label class="p2" for="active" style="display:block; margin-right:10px;">Season {{ $key + 1 }} :</label></div>
+										<div class="col-md-3 mt-2">	
+											<input type="radio" name="season_trailer" value="{{ $item->id }}" @if( $item->id  == $series->season_trailer ) {{ 'checked' }} @endif  > 
+										</div>
 										
-										@empty
+									@empty
 											
-										@endforelse
+									@endforelse
 								</div>
 							
 							@endif
-
 						</div> 
 					</div>
 				</div>
-                </div>
-				@if($settings->series_season == 0)
+            </div>
+
+			@if($settings->series_season == 0)
                 <div class="row align-items-center mt-3 p-3"> 
                     <div class="col-sm-3 p-0"> 
                        
@@ -413,9 +452,10 @@ $settings  = App\Setting::first();?>
                         </div>
                     </div>
                 </div>
-				@else
+			@else
 				<input type="hidden" name="ppv_status" value="" id="ppv_status" />
-				@endif
+			@endif
+			
             </div>
             <div class="row mt-3">
                 <div class="col-sm-12 ml-1"> 
