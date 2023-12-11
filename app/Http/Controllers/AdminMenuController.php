@@ -88,7 +88,7 @@ class AdminMenuController extends Controller
     }
 
     public function store(Request $request){
-        
+
         $input = $request->all();
         
         $validatedData = $request->validate([
@@ -129,6 +129,7 @@ class AdminMenuController extends Controller
         }
         $request['order'] = $new_menu_order;
         $input['in_home'] = $request->in_home  == "on"  ? 1 : 0 ;
+        $input['in_menu'] = $request->type  ;
         // dd($input);
         $menu= Menu::create($input);
         if(isset($menu->id)){

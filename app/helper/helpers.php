@@ -1354,3 +1354,9 @@ function GetAdminLightBg()
      $settings = App\SiteTheme::first();
      return $settings->admin_light_bg_color;  
 }
+
+function Series_Networks_Status()
+{
+    $Series_Networks_Status = App\Setting::pluck('series_networks_status')->first();
+    return  $Series_Networks_Status; 
+}
