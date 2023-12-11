@@ -766,9 +766,16 @@
 .dropdown-menu > li:hover a{color: rgb(0, 82, 204)!important;
       font-weight: 500;}
 	.dropdown-menu > li:hover{ background-color: #f1f1f1 }
-	.dropdown-menu > li:hover > .primary_menu{
-		display: block;
-	}
+	li.nav-item.dropdown.menu-item:hover ul.dropdown-menu.primary_menu{
+      display:block;
+   }
+	li.nav-item.dropdown.menu-item:hover ul.submenu.dropdown-menu{
+      display:none;
+   }
+	li.nav-item.dropdown.menu-item li:hover ul.submenu.dropdown-menu{
+      display:block !important;
+   }
+   
 }	
 /* ============ desktop view .end// ============ */
 
@@ -1540,9 +1547,9 @@
 
       .home-page-close-button:hover { transform: scale(1.2); }
       .home-page-bg-img { width: 1485px; !important }
-      li.nav-item.dropdown.menu-item:hover .dropdown-menu{
+      /* li.nav-item.dropdown.menu-item:hover .dropdown-menu{
          display:block !important;
-      }
+      } */
       ul.dropdown-menu.show li:hover a.dropdown-item.cont-item{
          color: #2578c0!important;
       }
