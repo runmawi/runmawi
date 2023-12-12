@@ -167,6 +167,14 @@
                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Today-Top-videos', ['data' => $video_details, 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
             
+            @if( Series_Networks_Status() == 1 && $item == 'Series_Networks' && $home_settings->Series_Networks == 1 )      {{-- Series Networks --}} 
+               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-Networks', ['order_settings_list' => $order_settings_list ])->content() !!}
+            @endif
+            
+            @if(  Series_Networks_Status() == 1 &&  $item == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1 )      {{-- Series based on Networks--}} 
+               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', ['order_settings_list' => $order_settings_list ])->content() !!}
+            @endif
+
          @empty
              
          @endforelse
