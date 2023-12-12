@@ -2215,7 +2215,7 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('SeriescategoryList', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
 
     Route::get('TV-Shows/Networks/{slug}', 'TvshowsController@Specific_Series_Networks')->name('Specific_Series_Networks');
-    Route::get('TV-Shows/Networks/List', 'TvshowsController@Series_Networks_List')->name('Series_Networks_List');
+    Route::get('TV-Shows/Networks-List', 'TvshowsController@Series_Networks_List')->name('Series_Networks_List');
 
     // Filter
     Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
