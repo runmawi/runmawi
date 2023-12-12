@@ -87,9 +87,14 @@
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="videos" /> Video Categories 
                         <input type="radio" class="menu-dropdown-radio" name="type" value="audios" /> Audio Categories
                         <input type="radio" class="menu-dropdown-radio" name="type" value="live" /> Live Categories
-				        <input type="radio" class="menu-dropdown-radio" name="type" value="series" /> Series Categories
+				        <input type="radio" class="menu-dropdown-radio" name="type" value="series" /> Tv Shows Categories
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="posts" /> Post Categories
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="tv_show" /> Tv Shows
+						
+						@if (Series_Networks_Status() == 1)
+							<input type="radio" class="menu-dropdown-radio" name="type" value="networks" />Tv Shows Networks
+						@endif
+
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 				    </form>
 				</div>

@@ -59,6 +59,7 @@ use App\StorageSetting as StorageSetting;
 use App\Advertisement;
 use App\Playerui as Playerui;
 use App\SeriesSubtitle as SeriesSubtitle;
+use App\SeriesNetwork;
 
 
 class AdminSeriesController extends Controller
@@ -185,23 +186,27 @@ class AdminSeriesController extends Controller
 
             return View::make('admin.expired_storage', $data);
         }else{
-        $data = array(
-            'settings ' => $settings,
-            'headline' => '<i class="fa fa-plus-circle"></i> New Series',
-            'post_route' => URL::to('admin/series/store'),
-            'button_text' => 'Add New Series',
-            'admin_user' => Auth::user(),
-            'series_categories' => SeriesGenre::all(),
-            'video_categories' => VideoCategory::all(),
-            'languages' => Language::all(),
-            'artists' => Artist::all(),
-            'series_artist' => [],
-            'category_id' => [],
-            'languages_id' => [],
-            'InappPurchase' => InappPurchase::all(),
-            
+
+            $data = array(
+                'settings ' => $settings,
+                'headline' => '<i class="fa fa-plus-circle"></i> New Series',
+                'post_route' => URL::to('admin/series/store'),
+                'button_text' => 'Add New TV Shows',
+                'admin_user' => Auth::user(),
+                'series_categories' => SeriesGenre::all(),
+                'video_categories' => VideoCategory::all(),
+                'languages' => Language::all(),
+                'artists' => Artist::all(),
+                'series_artist' => [],
+                'category_id' => [],
+                'languages_id' => [],
+                'series_networks_id' => [],
+                'InappPurchase' => InappPurchase::all(),
+                'SeriesNetwork' => SeriesNetwork::all(),
+                'Header_name' => "Edit TV Shows "
             );
-        return View::make('admin.series.create_edit', $data);
+
+           return View::make('admin.series.create_edit', $data);
         }
     }
 
@@ -421,6 +426,7 @@ class AdminSeriesController extends Controller
         $series->details =($data['details']);
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
+        $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : null;
         $series->save();  
 
 
@@ -516,16 +522,19 @@ class AdminSeriesController extends Controller
             'settings' => $settings,
             'seasons' => $seasons,
             'post_route' => URL::to('admin/series/update'),
-            'button_text' => 'Update Series',
+            'button_text' => 'Update TV Shows',
             'admin_user' => Auth::user(),
             'series_categories' => SeriesGenre::all(),
             'videos_categories' => VideoCategory::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
-            'category_id' => SeriesCategory::where('series_id', $id)->pluck('category_id')->toArray(),
+            'category_id'   => SeriesCategory::where('series_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray(),
             'InappPurchase' => InappPurchase::all(),
+            'SeriesNetwork' => SeriesNetwork::all(),
+            'series_networks_id' => !empty($series->network_id) ? json_decode($series->network_id): [],
+            'Header_name' => "Edit TV Shows "
             );
 
         return View::make('admin.series.create_edit', $data);
@@ -542,7 +551,7 @@ class AdminSeriesController extends Controller
         $input = $request->all();
         $id = $input['id'];
         $series = Series::findOrFail($id);
-       
+
         $data = $input;
 
         if(isset($data['duration'])){
@@ -707,6 +716,7 @@ class AdminSeriesController extends Controller
         $series->slug = $data['slug'];
         $series->ppv_status = $ppv_status;
         $series->details =($data['details']);
+        $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : [];
         $series->save();
 
         if(!empty($data['artists'])){
@@ -1259,6 +1269,8 @@ class AdminSeriesController extends Controller
         $series->ppv_interval = $ppv_interval;
         $series->ios_product_id = $ios_ppv_price;
         $series->landing_mp4_url = $data['landing_mp4_url'];
+        $series->series_seasons_name = $data['series_seasons_name'];
+        $series->series_seasons_slug =  Str::slug($data['series_seasons_name']) ;
         $series->save();
         
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 0) {
@@ -1535,6 +1547,8 @@ class AdminSeriesController extends Controller
         $series_season->ppv_interval = $ppv_interval;
         $series_season->ios_product_id = $ios_ppv_price;
         $series_season->landing_mp4_url = $data['landing_mp4_url'];
+        $series_season->series_seasons_name = $data['series_seasons_name'];
+        $series_season->series_seasons_slug =  Str::slug($data['series_seasons_name']) ;
         $series_season->save();
 
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1  && $StorageSetting->aws_storage == 0) {
@@ -3153,7 +3167,7 @@ class AdminSeriesController extends Controller
 
             );
 
-            return view('admin.series.move_series.move_cpp_series',$data);
+            return view('admin.series.move_series.move_cpp_series',$create_seasondata);
         }
 
         public function MoveCPPPartner(Request $request)

@@ -14,7 +14,7 @@
             </div>
 
             <div class="iq-card">
-                <h4><i class="entypo-archive"></i> Edit TV-Shows Network</h4>
+                <h4><i class="entypo-archive"></i> Edit TV-Shows Networks</h4>
                 <div class="modal-body">
                     <form id="update-cat-form" accept-charset="UTF-8" action="{{ route('admin.Network_update',[ 'id' => $Series_Network->id ]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <label>Display In Home :</label>
                             <input type="radio" id="in_home" id="in_home" name="in_home" value="1" {{ ($Series_Network->in_home == 1) ? 'checked' : '' }} >Yes
-                            <input type="radio" id="in_home" name="in_home" value="0" {{ ($Series_Network->in_home == 1) ? 'checked' : '' }}  >No
+                            <input type="radio" id="in_home" name="in_home" value="0" {{ ($Series_Network->in_home == 0) ? 'checked' : '' }}  >No
                         </div>
 
                         <div class="form-group">
@@ -67,7 +67,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="m-0">Banner Image:</label>
-                                    @if (!empty($Series_Network->image))
+                                    @if (!empty($Series_Network->banner_image))
                                         <img src="{{ $Series_Network->banner_image_url }}" class="movie-img" width="200" />
                                     @endif
                                 </div>
@@ -79,7 +79,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="m-0">Network:</label>
+                            <label class="m-0">Networks:</label>
                             <select id="parent_id" name="parent_id" class="form-control">
                                 <option value=null>Select</option>
                                 @foreach ($All_SeriesNetwork as $rows)

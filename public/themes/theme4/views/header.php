@@ -745,6 +745,7 @@
    .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo GetDarkText(); ?> !important;}
    .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo GetLightText(); ?> !important;}
    .navbar-expand-lg .navbar-nav .dropdown-menu {background:  <?php echo GetDarkBg(); ?> !important;}
+   
 </style>
 
 <style type="text/css">
@@ -775,6 +776,8 @@
 	li.nav-item.dropdown.menu-item li:hover ul.submenu.dropdown-menu{
       display:block !important;
    }
+   .submenu a.dropdown-item.cont-item {color: white !important;}
+   .submenu.dropdown-menu a.dropdown-item.cont-item:hover {color: rgb(0, 82, 204)!important;}
    
 }	
 /* ============ desktop view .end// ============ */
@@ -876,6 +879,18 @@
                                              return $item;
                                        });
 
+                                       $Parent_Series_Networks = App\SeriesNetwork::whereIn('id', function ($query) {
+                                          
+                                          $query->select('parent_id')->from('series_networks');
+                                       
+                                                })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
+                                       
+                                             ->get()->map(function ($item) {
+                                       
+                                             $item['Sub_Series_Networks'] = App\SeriesNetwork::where('parent_id',$item->id)->where('in_menu',1)->orderBy('order', 'asc')->get();
+                                          
+                                             return $item;
+                                       });
 
                                        $tv_shows_series = App\Series::where('active',1)->get();
 
@@ -1065,6 +1080,41 @@
                                                 </ul>
                                                    
                                              </li>
+
+                                          <?php }elseif ( $menu->in_menu == "networks") { ?>
+
+                                             <li class="nav-item dropdown menu-item ">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+                                                   </a>
+
+                                                   <ul class="dropdown-menu primary_menu">
+                                                      <?php 
+                                                         foreach ( $Parent_Series_Networks as $category) :
+                                                            if( !is_null($category) ): ?>
+                                                               <li>
+                                                                  <a class="dropdown-item cont-item" href="<?= route('Specific_Series_Networks',$category->slug) ?>">
+                                                                     <?= $category->name;?>
+                                                                  </a>
+
+                                                                  <?php foreach ( $category->Sub_Series_Networks as $Sub_Series_Networks) : ?>
+                                                                     <?php if( !is_null($category) ): ?>
+                                                                        <ul class="submenu dropdown-menu">
+                                                                           <?php foreach ( $category->Sub_Series_Networks as $Sub_Series_Networks) : ?>
+                                                                              <li>
+                                                                                 <a class="dropdown-item cont-item" href="<?= route('Specific_Series_Networks',$category->slug) ?>">
+                                                                                    <?= $Sub_Series_Networks->name;?>
+                                                                                 </a>
+                                                                              </li>
+                                                                           <?php endforeach ; ?>
+                                                                        </ul>
+                                                                  <?php endif; endforeach ; ?>
+                                                               </li> <?php
+                                                            endif; 
+                                                         endforeach ; ?>
+                                                   </ul>
+                                                      
+                                                </li>
 
                                           <?php } else { ?>
 

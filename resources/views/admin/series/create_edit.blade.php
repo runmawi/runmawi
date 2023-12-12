@@ -56,8 +56,8 @@ $settings  = App\Setting::first();?>
 
 <div id="content-page" class="content-page">
     <div class="d-flex">
-    <a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
-        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/series/create') }}"> Add New Series</a></div>
+    <a class="black" href="{{ URL::to('admin/series-list') }}"> TV Shows List</a>
+        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/series/create') }}"> Add New TV Shows </a></div>
     <div class="container-fluid p-0">
 <!-- This is where -->
 	<div class="iq-card" style="padding:20px;">
@@ -72,7 +72,7 @@ $settings  = App\Setting::first();?>
         </div>
         @endif
 	</div>
-        <h4><i class="entypo-plus"></i> Add New Series</h4> 
+        <h4><i class="entypo-plus"></i> {{ $Header_name }}</h4> 
         <hr>
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="series_form">
 
@@ -80,7 +80,7 @@ $settings  = App\Setting::first();?>
 			<div class="row mt-3">
 				<div class="col-sm-6 mb-3">
                     <label class="m-0">Title</label> 
-                    <p class="p1">Add the series title in the textbox below.</p> 
+                    <p class="p1">Add the TV Shows title in the textbox below.</p> 
                     <input type="text" class="form-control" name="title" id="title" placeholder="Series Title" value="@if(!empty($series->title)){{ $series->title }}@endif"  />
                     <span class="invalid-feedback" id="title_error" role="alert">
                         <strong>{{ $message }}</strong>
@@ -116,13 +116,13 @@ $settings  = App\Setting::first();?>
 					<div class="panel panel-primary mt-3" data-collapsed="0"> 
 						<div class="panel-heading"> 
 							<div class="panel-title font-weight-bold">
-								<label class="m-0">Series Image Cover</label>
+								<label class="m-0">TV Shows Image Cover</label>
 							</div> 
 							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
 						</div> 
 
 						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
-							<p class="p1">Select the series image ( 9:16 Ratio or 1080X1920px ):</p> 
+							<p class="p1">Select the TV Shows image ( 9:16 Ratio or 1080X1920px ):</p> 
 
 							<input type="file" multiple="true" class="form-group image series_image" name="image" id="image" />
 
@@ -169,13 +169,13 @@ $settings  = App\Setting::first();?>
 					<div class="panel panel-primary mt-3" data-collapsed="0"> 
 						<div class="panel-heading"> 
 							<div class="panel-title font-weight-bold">
-								<label class="m-0">Series TV Image Cover</label>
+								<label class="m-0">TV Shows TV Image Cover</label>
 							</div> 
 							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
 						</div> 
 
 						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
-							<p class="p1">Select the TV series image ( 16:9 Ratio or 1920 X 1080 px ):</p> 
+							<p class="p1">Select the TV Shows TV image ( 16:9 Ratio or 1920 X 1080 px ):</p> 
 
 							<input type="file" multiple="true" class="form-group image" name="tv_image" id="tv_image" />
 							
@@ -195,7 +195,7 @@ $settings  = App\Setting::first();?>
 
 			<div class="panel panel-primary mt-3" data-collapsed="0"> 
                 <div class="panel-heading"> 
-				<div class="panel-title font-weight-bold"><label class="m-0">Series Details, Links, and Info</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-title font-weight-bold"><label class="m-0">TV Shows Details, Links, and Info</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-12 p-0" style="display: block; padding:0px;">
 					<textarea class="form-control" name="details" id="summary-ckeditor" >@if(!empty($series->details)){{ ($series->details) }}@endif</textarea>
 				</div> 
@@ -204,7 +204,7 @@ $settings  = App\Setting::first();?>
 			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label class="m-0">Short Description</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-12 p-0" style="display: block;"> 
-					<p class="p1">Add a short description of the series below:</p> 
+					<p class="p1">Add a short description of the TV Shows below:</p> 
 					<textarea class="form-control" name="description" id="description" >@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
 				</div> 
 			</div>
@@ -213,7 +213,7 @@ $settings  = App\Setting::first();?>
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<div class="panel-title font-weight-bold"><label class="m-0">Cast and Crew</label> </div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
-							<p class="p1">Add artists for the series below:</p> 
+							<p class="p1">Add artists for the TV Shows below:</p> 
 							<select class="form-control js-example-basic-multiple" name="artists[]"  style="width: 100%;" multiple="multiple">
 								@foreach($artists as $artist)
 								@if(in_array($artist->id, $series_artist))
@@ -232,7 +232,7 @@ $settings  = App\Setting::first();?>
                     <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                         <div class="panel-title font-weight-bold"><label class="m-0">Category</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                         <div class="panel-body" style="display: block;"> 
-                            <p class="p1">Select a Series Category Below:</p>
+                            <p class="p1">Select a TV Shows Category Below:</p>
                             <select name="genre_id[]" id="genre_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
                             	@foreach($series_categories as $category)
                             		@if(in_array($category->id, $category_id))
@@ -250,7 +250,7 @@ $settings  = App\Setting::first();?>
 			<div class="row mt-3"> 
                 <div class="col-sm-6">
                     <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-                        <div class="panel-title font-weight-bold"><label class="m-0">Series Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                        <div class="panel-title font-weight-bold"><label class="m-0">TV Shows Ratings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                         <div class="panel-body p-0 " style="display: block;"> 
                             <p class="p1">IMDb Ratings 10 out of 10</p>
                             <input class="form-control" name="rating" id="rating" value="@if(!empty($series->rating)){{ $series->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);" >
@@ -261,7 +261,7 @@ $settings  = App\Setting::first();?>
                     <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
                         <div class="panel-title font-weight-bold"><label class="m-0">Language</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                         <div class="panel-body" style="display: block;"> 
-                            <p class="p1">Select a Series Language Below:</p>
+                            <p class="p1">Select a TV Shows Language Below:</p>
                             <select class="form-control js-example-basic-multiple" id="language" name="language[]"  style="width: 100%;" multiple="multiple" >
                                 @foreach($languages as $language)
                                 @if(in_array($language->id, $languages_id))
@@ -278,19 +278,22 @@ $settings  = App\Setting::first();?>
 
 			<div class="row align-items-center mt-3"> 
 			
-			<div class="col-sm-6">
-				<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title font-weight-bold"><label class="m-0">Series Year</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body  p-0" style="display: block;"> 
-                    <p class="p1">Series Created Year</p>
-					<input class="form-control" name="year" id="year" value="@if(!empty($series->year)){{ $series->year }}@endif" >
-				</div> 
-			</div>
-			</div>
+				<div class="col-sm-6">
+					<div class="panel panel-primary" data-collapsed="0"> 
+						<div class="panel-heading"> 
+							<div class="panel-title font-weight-bold"><label class="m-0">TV Shows Year</label></div> 
+							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div> 
+						<div class="panel-body  p-0" style="display: block;"> 
+							<p class="p1">TV Shows Created Year</p>
+							<input class="form-control" name="year" id="year" value="@if(!empty($series->year)){{ $series->year }}@endif" >
+						</div> 
+					</div>
+				</div>
 
-            <div class="col-sm-6" data-collapsed="0">
-				<div class="panel-heading"> 
-					<div class="panel-title font-weight-bold"><label class="m-0">Search Tags</label></div>
+				<div class="col-sm-6" data-collapsed="0">
+					<div class="panel-heading"> 
+						<div class="panel-title font-weight-bold"><label class="m-0">TV Shows Tags</label></div>
 						<div class="panel-options"> 
 							<a href="#" data-rel="collapse">
 								<i class="entypo-down-open"></i>
@@ -298,20 +301,51 @@ $settings  = App\Setting::first();?>
 						</div>
 					</div> 
 					<div class="panel-body  p-0" style="display: block;"> 
-						<p class="p1">Add series tags below:</p> 
+						<p class="p1">Add TV Shows tags below:</p> 
 						<input type="text"  class="form-control"  id="tag-input1" name="search_tag" >
 					</div> 
 				</div>    
 			</div>
 
-			<div class="clear"></div>
+					{{-- Series Network --}}
 
+			@if (Series_Networks_Status() == 1)
+				<div class="row align-items-center mt-3"> 
+		
+					<div class="col-sm-6">
+						<div class="panel panel-primary" data-collapsed="0"> 
+							<div class="panel-heading"> 
+								<div class="panel-title font-weight-bold"><label class="m-0">TV Shows Network</label></div> 
+								<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+							</div> 
+							<div class="panel-body  p-0" style="display: block;"> 
+								<p class="p1">Select A TV Shows Network Below:</p>
+	
+								<select name="network_id[]" id="network_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+									@foreach($SeriesNetwork as $category)
+										@if(in_array($category->id, $series_networks_id))
+											<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
+										@else 
+											<option value="{{ $category->id }}">{{ $category->name }}</option>
+										@endif 
+									@endforeach
+								</select>
+							</div> 
+						</div>
+					</div>
+				</div>
+			@endif
+
+			<div class="clear"></div>
 
 			<div class="row align-items-center mt-3 p-3"> 
 
 				<div class="col-sm-4 p-0"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading">
+							<div class="panel-title font-weight-bold"> <label class="m-0">Duration</label></div> 
+							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div> 
 						<div class="panel-body"> 
 							<p class="p1">Enter the duration in the (HH: MM : SS) format </p> 
 							<input class="form-control" name="duration" id="duration" value="@if(!empty($series->duration)){{ gmdate('H:i:s', $series->duration) }}@endif" >
@@ -321,9 +355,12 @@ $settings  = App\Setting::first();?>
 
 				<div class="col-sm-4"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">User Access</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading"> 
+							<div class="panel-title font-weight-bold"> <label class="m-0">User Access</label></div>
+						 	<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div> 
 						<div class="panel-body"> 
-							<p class="p1">Who is allowed to view this series?</p>
+							<p class="p1">Who is allowed to view this TV Shows?</p>
 							<select class="form-control" id="access" name="access">
 								<option value="guest" @if(!empty($series->access) && $series->access == 'guest'){{ 'selected' }} @endif >Guest (everyone)</option>
 								<option value="registered" @if(!empty($series->access) && $series->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
@@ -336,27 +373,30 @@ $settings  = App\Setting::first();?>
 
 				<div class="col-sm-4"> 
 					<div class="panel panel-primary" data-collapsed="0"> 
-						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+						<div class="panel-heading"> <div class="panel-title font-weight-bold"> <label class="m-0">Status Settings</label></div>
+						  <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div>
+
 						<div class="panel-body"> 
 							<div class="d-flex align-items-baseline">
-								<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Is this series Featured:</label>
+								<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Is this TV Shows Featured:</label>
 								<input type="checkbox" @if(!empty($series->featured) && $series->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
 							</div>
 							<div class="clear"></div>
 
 							<div class="d-flex align-items-baseline">
-								<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Is this series Active:</label>
+								<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Is this TV Shows Active:</label>
 								<input type="checkbox" @if(!empty($series->active) && $series->active == 1){{ 'checked="checked"' }}@elseif(!isset($series->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
 							</div>
 
 							<div class="d-flex align-items-baseline">
-								<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Enable this series as Slider:</label>
+								<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Enable this TV Shows as Slider:</label>
 								<input type="checkbox" @if(!empty($series->banner) && $series->banner == 1){{ 'checked="checked"' }}@elseif(!isset($series->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
 							</div>
 
 									{{-- Trailer option --}}
 							<div class="d-flex align-items-baseline">
-								<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Season Trailer:</label>
+								<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">TV Shows Season Trailer:</label>
 								<input type="checkbox" @if(!empty($series->series_trailer) && $series->series_trailer == 1){{ 'checked="checked"' }}@elseif(!isset($series->series_trailer)){{ 'checked="checked"' }}@endif name="series_trailer" value="1" id="series_trailer" />
 							</div>
 
@@ -369,31 +409,32 @@ $settings  = App\Setting::first();?>
 
 							@elseif($button_text == "Update Series")
 
-							@php
-								$season_id = App\Series::Select('series_seasons.id','series.season_trailer','series.id as series_id')
-											->Join('series_seasons','series_seasons.series_id','=','series.id')
-											->where('series_id',@$series->id)
-											->get();
-							@endphp
+								@php
+									$season_id = App\Series::Select('series_seasons.id','series.season_trailer','series.id as series_id')
+												->Join('series_seasons','series_seasons.series_id','=','series.id')
+												->where('series_id',@$series->id)
+												->get();
+								@endphp	
 
 								<div class="row  season_trailer">
-										@forelse ($season_id as $key => $item)
-                                    <div class="col-md-5"><label class="p2" for="active" style="display:block; margin-right:10px;">Season {{ $key + 1 }} :</label></div>
-                                    <div class="col-md-3 mt-2">	
-											<input type="radio" name="season_trailer" value="{{ $item->id }}" @if( $item->id  == $series->season_trailer ) {{ 'checked' }} @endif  > </div>
+									@forelse ($season_id as $key => $item)
+										<div class="col-md-5"><label class="p2" for="active" style="display:block; margin-right:10px;">Season {{ $key + 1 }} :</label></div>
+										<div class="col-md-3 mt-2">	
+											<input type="radio" name="season_trailer" value="{{ $item->id }}" @if( $item->id  == $series->season_trailer ) {{ 'checked' }} @endif  > 
+										</div>
 										
-										@empty
+									@empty
 											
-										@endforelse
+									@endforelse
 								</div>
 							
 							@endif
-
 						</div> 
 					</div>
 				</div>
-                </div>
-				@if($settings->series_season == 0)
+            </div>
+
+			@if($settings->series_season == 0)
                 <div class="row align-items-center mt-3 p-3"> 
                     <div class="col-sm-3 p-0"> 
                        
@@ -413,9 +454,10 @@ $settings  = App\Setting::first();?>
                         </div>
                     </div>
                 </div>
-				@else
+			@else
 				<input type="hidden" name="ppv_status" value="" id="ppv_status" />
-				@endif
+			@endif
+			
             </div>
             <div class="row mt-3">
                 <div class="col-sm-12 ml-1"> 
@@ -466,6 +508,11 @@ $settings  = App\Setting::first();?>
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<input type="hidden" name="series_id" value="<?= $series->id ?>" />
 
+							<div class="form-group">
+								<label>Season Title:</label>
+								<input type="text" id="series_seasons_name" name="series_seasons_name" value="" placeholder="Enter the Season Title" class="form-control">
+							</div>  
+
 							<div class="form-group" >
 								<label> Season Trailer :</label>
 								<div class="new-video-file form_video-upload" style="position: relative;" >
@@ -473,10 +520,7 @@ $settings  = App\Setting::first();?>
 								<p style="font-size: 14px!important;height: 30%!important;">Drop and drag the video file</p>
 								</div>
 							</div>
-							<!-- <div class="form-group">
-								<label>Season Landing Page MP4 URL </label><br>
-								<input type="text" class="form-control" name="landing_mp4_url" id="landing_mp4_url" >
-							</div> -->
+						
 							<div class="form-group">
 								<label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
 								<input type="file" class="season_image" name="image" id="" >
@@ -485,12 +529,11 @@ $settings  = App\Setting::first();?>
 						    <div class="form-group">
 		                        <label> Choose User Access:</label>
 								<select class="form-control" id="ppv_access" name="ppv_access">
-								<option value="free" >Free (everyone)</option>
-								@if($settings->series_season == 1)
-								<option value="ppv" >PPV  (Pay Per Season(Episodes))</option>   
-								@endif
-							</select>
-		                        <!-- <input type="text" id="ppv_price" name="ppv_price" value="" class="form-control" placeholder="Plan Name"> -->
+									<option value="free" >Free (everyone)</option>
+									@if($settings->series_season == 1)
+										<option value="ppv" >PPV  (Pay Per Season(Episodes))</option>   
+									@endif
+								</select>
                             </div>
                       
                             <div class="form-group" id="ppv_price">
@@ -535,7 +578,7 @@ $settings  = App\Setting::first();?>
 			
 			@foreach($seasons as $key=>$seasons_value)
 			<tr>
-				<td valign="bottom"><p>Season {{$key+1}}</p></td>
+				<td valign="bottom"><p> {{ optional($seasons_value)->series_seasons_name }}</p></td>
 				<td valign="bottom"><p>{{count($seasons[$key]['episodes'])}} Episodes</p></td>
 				<td>
 					<p>
@@ -831,9 +874,9 @@ $('#submit-new-cat').click(function(){
 			rules: {
 				title: 'required',
 
-				'language[]': {
-							required: true
-				},
+				// 'language[]': {
+				// 			required: true
+				// },
 
 				image: {
 					required: '#check_image:blank',
@@ -861,7 +904,10 @@ $('form[id="new-cat-form"]').validate({
 				required:true,
 				season_dimention:[1280,720]
 			},
+		series_seasons_name: {
+			required:true,
 		},
+	},
 	messages: {
 		trailer: 'This field is required',
 	},
