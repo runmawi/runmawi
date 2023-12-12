@@ -9903,7 +9903,17 @@ $cpanel->end();
               ->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')
               ->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                $item['video_url'] = URL::to('/').'/storage/app/public/';
+
+                if($item['type'] == 'mp4_url'){
+                  $item['video_url'] = $item['mp4_url'];
+                }elseif($item['type'] == 'm3u8_url'){
+                  $item['video_url'] = $item['m3u8_url'];
+                }elseif($item['type'] == ''){
+                  $item['video_url'] = URL::to('/').'/storage/app/public/'.$item['path'].'.m3u8';
+                }else{
+                  $item['video_url'] = URL::to('/').'/storage/app/public/';
+                }
+
                 $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                 $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
 

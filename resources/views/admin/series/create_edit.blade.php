@@ -578,7 +578,7 @@ $settings  = App\Setting::first();?>
 			
 			@foreach($seasons as $key=>$seasons_value)
 			<tr>
-				<td valign="bottom"><p>Season {{$key+1}}</p></td>
+				<td valign="bottom"><p> {{ optional($seasons_value)->series_seasons_name }}</p></td>
 				<td valign="bottom"><p>{{count($seasons[$key]['episodes'])}} Episodes</p></td>
 				<td>
 					<p>
@@ -904,7 +904,10 @@ $('form[id="new-cat-form"]').validate({
 				required:true,
 				season_dimention:[1280,720]
 			},
+		series_seasons_name: {
+			required:true,
 		},
+	},
 	messages: {
 		trailer: 'This field is required',
 	},
