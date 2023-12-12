@@ -369,9 +369,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/assign_videos/partner') }}" class="iq-waves-effect">Move Videos to Partner</a></li>
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></li>                    
           </ul></li>
-          <!-- <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>TV Shows & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <!-- <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>TV Shows </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>TV Shows List</a></li>
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>List TV Shows </a></li>
               <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add New TV Shows</a></li>
 
             </ul>
@@ -616,13 +616,13 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></li>                    
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>TV Shows & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>TV Shows </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>TV Shows List</a></li>
+              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>List TV Shows </a></li>
               <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New TV Shows</a></li>
-              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage TV Shows Genre</a></li>  
+              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Genre</a></li>  
                @if (Series_Networks_Status() == 1 )
-                  <li><a href="{{ route('admin.Network_index') }}">Manage TV Shows Networks</a></li>
+                  <li><a href="{{ route('admin.Network_index') }}">Manage Networks</a></li>
                @endif              <li><a href="{{ URL::to('admin/assign_Series/partner') }}" class="iq-waves-effect">Move TV Shows to Partner</a></li>
               <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">TV Shows For Approval</a></li>
 
@@ -934,12 +934,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span class="">{{ (__('TV Shows & Episodes')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span class="">{{ (__('TV Shows')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('admin/series-list') }}">{{ (__('TV Shows List')) }}</a></li>
-              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}">{{ (__('Manage TV Shows Genre')) }}</a></li>                    
+              <li><a href="{{ URL::to('admin/series-list') }}">{{ (__('List TV Shows ')) }}</a></li>
+              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}">{{ (__('Manage Genre')) }}</a></li>                    
                @if (Series_Networks_Status() == 1 )
-                  <li><a href="{{ route('admin.Network_index') }}">Manage TV Shows Networks</a></li>
+                  <li><a href="{{ route('admin.Network_index') }}">Manage Networks</a></li>
                @endif              <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">{{ (__('TV Shows For Approval')) }}</a></li>
               <li><a href="{{ URL::to('admin/assign_Series/partner') }}" class="iq-waves-effect">{{ (__('Move TV Shows to Partner')) }}</a></li>
 
@@ -1254,13 +1254,13 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Video Categories</a></li>                    
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>TV Shows & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>TV Shows </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>TV Shows List</a></li>
+              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>List TV Shows </a></li>
               <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New TV Shows</a></li>
-              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage TV Shows Genre</a></li>   
+              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Genre</a></li>   
                @if (Series_Networks_Status() == 1 )
-                  <li><a href="{{ route('admin.Network_index') }}">Manage TV Shows Networks</a></li>
+                  <li><a href="{{ route('admin.Network_index') }}">Manage Networks</a></li>
                @endif
               <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">TV Shows For Approval</a></li>
               <li><a href="{{ URL::to('admin/assign_Series/partner') }}" class="iq-waves-effect">Move TV Shows to Partner</a></li>

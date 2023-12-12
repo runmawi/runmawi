@@ -58,12 +58,12 @@ class AdminSeriesGenreController extends Controller
 
             if(compress_image_enable() == 1){
 
-                $filename   = 'series-Network-'.time().'.'.compress_image_format();
+                $filename   = 'series-Genre-'.time().'.'.compress_image_format();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
 
             }else{
 
-                $filename   = 'series-Network-'.time().'.'.$file->getClientOriginalExtension();
+                $filename   = 'series-Genre-'.time().'.'.$file->getClientOriginalExtension();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
             }
 
@@ -76,12 +76,12 @@ class AdminSeriesGenreController extends Controller
 
             if(compress_image_enable() == 1){
 
-                $filename   = 'series-Network-banner-'.time().'.'.compress_image_format();
+                $filename   = 'series-Genre-banner-'.time().'.'.compress_image_format();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
 
             }else{
 
-                $filename   = 'series-Network-banner-'.time().'.'.$file->getClientOriginalExtension();
+                $filename   = 'series-Genre-banner-'.time().'.'.$file->getClientOriginalExtension();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
             }
 
@@ -164,12 +164,12 @@ class AdminSeriesGenreController extends Controller
 
             if(compress_image_enable() == 1){
 
-                $filename   = 'series-Network-'.time().'.'.compress_image_format();
+                $filename   = 'series-Genre-'.time().'.'.compress_image_format();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
 
             }else{
 
-                $filename   = 'series-Network-'.time().'.'.$file->getClientOriginalExtension();
+                $filename   = 'series-Genre-'.time().'.'.$file->getClientOriginalExtension();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
             }
 
@@ -182,12 +182,12 @@ class AdminSeriesGenreController extends Controller
 
             if(compress_image_enable() == 1){
 
-                $filename   = 'series-Network-banner-'.time().'.'.compress_image_format();
+                $filename   = 'series-Genre-banner-'.time().'.'.compress_image_format();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
 
             }else{
 
-                $filename   = 'series-Network-banner-'.time().'.'.$file->getClientOriginalExtension();
+                $filename   = 'series-Genre-banner-'.time().'.'.$file->getClientOriginalExtension();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
             }
 
