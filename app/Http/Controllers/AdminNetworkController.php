@@ -71,12 +71,12 @@ class AdminNetworkController extends Controller
     
                 if(compress_image_enable() == 1){
     
-                    $filename   = 'series-Network-'.time().'.'.compress_image_format();
+                    $filename   = 'series-Network-banner-'.time().'.'.compress_image_format();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename ,compress_image_resolution() );
     
                 }else{
     
-                    $filename   = 'series-Network-'.time().'.'.$file->getClientOriginalExtension();
+                    $filename   = 'series-Network-banner-'.time().'.'.$file->getClientOriginalExtension();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename );
                 }
     
@@ -174,7 +174,6 @@ class AdminNetworkController extends Controller
                 $inputs +=  ['banner_image' => $filename ];
             }
     
-            dd($inputs);
             $SeriesNetwork = SeriesNetwork::find($id)->update($inputs);
     
             return back()->with('message', 'TV-Shows Network Updated successfully.');
