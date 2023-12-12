@@ -1123,7 +1123,15 @@ class TvshowsController extends Controller
             $CategorySeries =  SeriesGenre::where('slug',$slug)->first();
             $SeriesGenre = $CategorySeries != null ? $CategorySeries->specific_category_series : array();
             
-            $Series_Genre = $SeriesGenre->all();
+            $Series_Genre = $SeriesGenre->map(function($item){
+
+                $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                            ->map(function ($item) {
+                                            $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                            return $item;
+                                        });
+                return $item;
+            });
 
             $data = array( 
                         'SeriesGenre' => $Series_Genre ,

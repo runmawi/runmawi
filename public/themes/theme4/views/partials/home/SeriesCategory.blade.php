@@ -103,6 +103,139 @@
         position:absolute;
         z-index: 999;
     }
+
+    .controls{
+        opacity: 0;
+    }
+    
+    .sub_dropdown_image li:hover .controls {
+        opacity: 1;
+        background-image: linear-gradient(0deg, black, transparent);
+        border: 2px solid #2578c0 !important;
+        
+    }
+    
+     .controls{
+        position: absolute;
+        padding: 4px;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        width:100%;
+        z-index: 3;
+        opacity: 0;
+        -webkit-transition: all 0.15s ease;
+        transition: all 0.15s ease;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+    
+     .playBTN{
+        font-size: 20px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        line-height: 1;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #fff;
+        border: none;
+        background-color: rgba(51, 51, 51, 0.4);
+        -webkit-transition: background-color 0.15s ease;
+        transition: background-color 0.15s ease;
+        cursor: pointer;
+        outline: none;
+        padding: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 50px;
+        height: 50px;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    
+      .playBTN:hover{
+        background-color: #fff;
+        color: #000;
+    }
+    
+      .playBTN i{
+        position: relative;
+        left: 2px;
+        top: 1px;
+    }
+    .moreBTN:hover span {
+        width: auto;
+        margin-left: 4px;
+    }
+    
+    .controls .trending-dec{
+        margin: auto 0 0;
+        color: #fff;
+        padding: 2px;
+        font-size: calc(12px + 0.15vw);
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 17px;
+    }
+    .controls nav {
+        position: absolute;
+        -webkit-box-align: end;
+        -ms-flex-align: end;
+        align-items: flex-end;
+        right: 4px;
+        top: 4px;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .moreBTN {
+        color: #fff;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-items: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        background-color: rgba(51, 51, 51, 0.4);
+        border: none;
+        padding: 8px;
+        border-radius: 4px;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        font-size: calc(12px + 0.25vmin);
+        font-weight: bold;
+        -webkit-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        outline: none;
+        line-height: 14px;
+    }
+    .moreBTN:hover {
+        background-color: #fff;
+        color: #000;
+    }
+    .moreBTN span {
+        width: 0;
+        margin-left: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        display: inline-block;
+    }
    
 </style>
 
@@ -140,7 +273,7 @@
                         <h2>{{ optional($CategorySeries)->name }}</h2> 
                     </div>
                     <div class="dropdown_thumbnail" >
-                        <img class="w-100 img-responsive" src="{{ $CategorySeries->image ? URL::to('public/uploads/videocategory/' . $CategorySeries->image) : default_vertical_image_url() }}" style="object-fit: cover; height: 350px;" />
+                        <img class="w-100 img-responsive" src="{{ $CategorySeries->banner_image ? URL::to('public/uploads/videocategory/' . $CategorySeries->banner_image) : default_vertical_image_url() }}" style="object-fit: cover; height: 350px;" />
                     </div>
                 </div> 
             </div>
@@ -149,10 +282,6 @@
         <div class="container-fluid pl-0">
             <div class="row">
                 <div class="col-sm-12 page-height pr-0">
-                    <div class="iq-main-header align-items-center justify-content-between">
-                        <h4 class="movie-title pl-5">{{ @$CategorySeries->name }}</h4>
-                    </div>
-
                     <div class="favorites-contens">
                         <ul id="trending-slider-nav" class="series-category-slider-nav list-inline pl-5 m-0 row align-items-center">
                             @if (isset($SeriesGenre))
@@ -192,6 +321,35 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="trending-contens sub_dropdown_image mt-3">
+                                                                <ul id="trending-slider-nav" class= "{{ 'pl-5 m-0  series-depends-episode-slider' }}" >
+                                                                    @foreach ($Series_Genre->Series_depends_episodes as $episode )
+                                                                        <li>
+                                                                            <a href="{{ URL::to('episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
+                                                                                <div class=" position-relative">
+                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" >
+                                                                                    <div class="controls">
+                                                                                        <a href="{{ URL::to('episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
+                                                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                                                        </a>
+
+                                                                                        <nav>
+                                                                                            <button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                                                        </nav>
+                                                                                        
+                                                                                        <p class="trending-dec" >
+                                                                                            {{ " S".$episode->season_id ." E".$episode->episode_order  }} 
+                                                                                            {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+
                                                             <div class="dropdown_thumbnail">
                                                                 <img  src="{{ URL::to('/public/uploads/images/' . @$Series_Genre->image) }}" alt="">
                                                             </div>
@@ -266,6 +424,14 @@
         $('.series-category-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
             $('.series-category-slider').show();
+
+            $('.series-depends-episode-slider').slick({
+                dots: false,
+                infinite: false,
+                speed: 300,
+                slidesToShow: 6,
+                slidesToScroll: 4,
+            });
         });
 
         $('body').on('click', '.drp-close', function() {
