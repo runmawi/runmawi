@@ -578,7 +578,7 @@ $settings  = App\Setting::first();?>
 			
 			@foreach($seasons as $key=>$seasons_value)
 			<tr>
-				<td valign="bottom"><p>Season {{ optional($seasons_value)->series_seasons_name }}</p></td>
+				<td valign="bottom"><p> {{ optional($seasons_value)->series_seasons_name }}</p></td>
 				<td valign="bottom"><p>{{count($seasons[$key]['episodes'])}} Episodes</p></td>
 				<td>
 					<p>
