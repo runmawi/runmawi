@@ -261,7 +261,7 @@
 
                                 <li class="breadcrumb-item">
                                     <a class="black-text">
-                                        {{ strlen($CategorySeries->name) > 50 ? ucwords(substr($CategorySeries->name, 0, 120) . '...') : ucwords($CategorySeries->name) }}
+                                        {{ strlen($series_data->name) > 50 ? ucwords(substr($series_data->name, 0, 120) . '...') : ucwords($series_data->name) }}
                                     </a>
                                 </li>
                             </ol>
@@ -270,10 +270,10 @@
                 </div>
             <div class="col-sm-12 iq-main-header d-flex align-items-center justify-content-between h-250 position-rel" style="height: 250px;">
                     <div class="caption">
-                        <h2>{{ optional($CategorySeries)->name }}</h2> 
+                        <h2>{{ optional($series_data)->name }}</h2> 
                     </div>
                     <div class="dropdown_thumbnail" >
-                        <img class="w-100 img-responsive" src="{{ $CategorySeries->banner_image ? URL::to('public/uploads/videocategory/' . $CategorySeries->banner_image) : default_vertical_image_url() }}" style="object-fit: cover; height: 350px;" />
+                        <img class="w-100 img-responsive" src="{{ $series_data->banner_image ? URL::to('public/uploads/seriesNetwork/' . $series_data->banner_image) : default_vertical_image_url() }}" style="object-fit: cover; height: 350px;" />
                     </div>
                 </div> 
             </div>
@@ -283,9 +283,10 @@
             <div class="row">
                 <div class="col-sm-12 page-height pr-0">
                     <div class="favorites-contens">
-                        <ul id="trending-slider-nav" class="series-category-slider-nav list-inline pl-5 m-0 row align-items-center">
-                            @if (isset($SeriesGenre))
-                                @foreach ($SeriesGenre as $Series_Genre)
+                        @if (isset($series_data->Series_depends_Networks))
+
+                            <ul id="trending-slider-nav" class="series-category-slider-nav list-inline pl-5 m-0 row align-items-center">
+                                @foreach ($series_data->Series_depends_Networks as $Series_Genre)
                                     <li>
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
@@ -294,12 +295,10 @@
                                         </a>
                                     </li>
                                 @endforeach
-                            @endif
-                        </ul>
+                            </ul>
 
-                        <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider">
-                            @if (isset($SeriesGenre))
-                                @foreach ($SeriesGenre as $Series_Genre)
+                            <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider">
+                                @foreach ($series_data->Series_depends_Networks as $Series_Genre)
                                     <li>
                                         <div class="tranding-block position-relative trending-thumbnail-image">
                                             <button class="drp-close">×</button>
@@ -360,8 +359,8 @@
                                         </div>
                                     </li>
                                 @endforeach
-                            @endif
-                        </ul>
+                            </ul>
+                        @endif
                     </div>
                 </div>
             </div>
