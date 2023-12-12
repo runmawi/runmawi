@@ -879,6 +879,18 @@
                                              return $item;
                                        });
 
+                                       $Parent_Series_Networks = App\SeriesNetwork::whereIn('id', function ($query) {
+                                          
+                                          $query->select('parent_id')->from('series_networks');
+                                       
+                                                })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
+                                       
+                                             ->get()->map(function ($item) {
+                                       
+                                             $item['Sub_Series_Networks'] = App\SeriesNetwork::where('parent_id',$item->id)->where('in_menu',1)->orderBy('order', 'asc')->get();
+                                          
+                                             return $item;
+                                       });
 
                                        $tv_shows_series = App\Series::where('active',1)->get();
 
@@ -1068,6 +1080,41 @@
                                                 </ul>
                                                    
                                              </li>
+
+                                          <?php }elseif ( $menu->in_menu == "networks") { ?>
+
+                                             <li class="nav-item dropdown menu-item ">
+                                                   <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
+                                                      <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+                                                   </a>
+
+                                                   <ul class="dropdown-menu primary_menu">
+                                                      <?php 
+                                                         foreach ( $Parent_Series_Networks as $category) :
+                                                            if( !is_null($category) ): ?>
+                                                               <li>
+                                                                  <a class="dropdown-item cont-item" href="<?= route('Specific_Series_Networks',$category->slug) ?>">
+                                                                     <?= $category->name;?>
+                                                                  </a>
+
+                                                                  <?php foreach ( $category->Sub_Series_Networks as $Sub_Series_Networks) : ?>
+                                                                     <?php if( !is_null($category) ): ?>
+                                                                        <ul class="submenu dropdown-menu">
+                                                                           <?php foreach ( $category->Sub_Series_Networks as $Sub_Series_Networks) : ?>
+                                                                              <li>
+                                                                                 <a class="dropdown-item cont-item" href="<?= route('Specific_Series_Networks',$category->slug) ?>">
+                                                                                    <?= $Sub_Series_Networks->name;?>
+                                                                                 </a>
+                                                                              </li>
+                                                                           <?php endforeach ; ?>
+                                                                        </ul>
+                                                                  <?php endif; endforeach ; ?>
+                                                               </li> <?php
+                                                            endif; 
+                                                         endforeach ; ?>
+                                                   </ul>
+                                                      
+                                                </li>
 
                                           <?php } else { ?>
 

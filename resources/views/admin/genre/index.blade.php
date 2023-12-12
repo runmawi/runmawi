@@ -76,32 +76,27 @@ border-radius: 0px 4px 4px 0px;
                                 <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/Series_genre_store') }}" method="post" enctype="multipart/form-data">
                                    		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
-										<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+										<div class="form-group">
 											<label>Name:</label>
 											<input type="text" id="name" name="name" value="" class="form-control" placeholder="Enter Name">
-											@if ($errors->has('name'))
-												<span class="text-red" role="alert">
-													<strong>{{ $errors->first('name') }}</strong>
-												</span>
-											@endif
 										</div>
 
-										<div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+										<div class="form-group ">
 											<label>Slug:</label>
 											<input type="text" id="slug" name="slug" value="" class="form-control" placeholder="Enter Slug">
-											@if ($errors->has('slug'))
-												<span class="text-red" role="alert">
-													<strong>{{ $errors->first('slug') }}</strong>
-												</span>
-											@endif
 										</div>  
 								
-										<div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+										<div class="form-group ">
 											<label>Display In Menu :</label>
 											<input type="radio" checked id="in_menu"  id="in_menu" name="in_menu" value="1">Yes
 											<input type="radio" id="in_menu" name="in_menu" value="0">No
 										</div>
 
+										<div class="form-group ">
+											<label>Display In Home :</label>
+											<input type="radio" checked id="in_home"  id="in_home" name="in_home" value="1">Yes
+											<input type="radio" id="in_home" name="in_home" value="0">No
+										</div>
 
 										<div class="form-group ">
 											<label>Display In Category List :</label>
@@ -109,12 +104,17 @@ border-radius: 0px 4px 4px 0px;
 											<input type="radio"  name="category_list_active" value="0" checked >No
 										</div>
 
-										<div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+										<div class="form-group">
 											<label>Image:</label>
 											<input type="file" multiple="true" class="form-control" name="image" id="image" />
 										</div>
+										
+										<div class="form-group ">
+											<label>Banner Image:</label>
+											<input type="file" multiple="true" class="form-control" name="banner_image" id="banner_image" />
+										</div>
 
-										<div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
+										<div class="form-group">
 												<label>{{ ucwords('genre:')  }}</label>
 												<select id="parent_id" name="parent_id" class="form-control">
 													<option value="0">Select</option>
@@ -122,11 +122,6 @@ border-radius: 0px 4px 4px 0px;
 															<option value="{{ $rows->id }}">{{ $rows->name }}</option>
 													@endforeach
 												</select>
-												@if ($errors->has('parent_id'))
-													<span class="text-red" role="alert">
-														<strong>{{ $errors->first('parent_id') }}</strong>
-													</span>
-												@endif
 										</div>
 
                                          <div class="modal-footer form-group">
@@ -165,7 +160,7 @@ border-radius: 0px 4px 4px 0px;
 								@foreach($allCategories as $key => $category)
 									<tr id="{{ $category->id }}">
 										<td valign="bottom" class="">{{ $key+1}}</td>
-										<td valign="bottom" class=""><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->image }}" width="50" height="50"></td>
+										<td valign="bottom" class=""><img src="{{ $category->image_url }}" width="50" height="50"></td>
 										<td valign="bottom"><p>{{ $category->name }}</p></td>
 										<td valign="bottom">
                                             <div class="mt-1">
@@ -178,7 +173,7 @@ border-radius: 0px 4px 4px 0px;
 										<td>
 											<div class=" align-items-center list-user-action">
 											<a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/series/category') . '/' . $category->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
+                                             data-original-title="View" href="{{ URL::to('/series/category/'. $category->slug) }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                      
 											<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
 																	data-original-title="Edit" href="{{ URL::to('admin/Series_genre/edit/') }}/{{$category->id}}" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> 

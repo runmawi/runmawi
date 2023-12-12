@@ -53,12 +53,12 @@ class AdminNetworkController extends Controller
     
                 if(compress_image_enable() == 1){
     
-                    $filename   = 'series-Newwork-'.time().'.'.compress_image_format();
+                    $filename   = 'series-Network-'.time().'.'.compress_image_format();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename ,compress_image_resolution() );
     
                 }else{
     
-                    $filename   = 'series-Newwork-'.time().'.'.$file->getClientOriginalExtension();
+                    $filename   = 'series-Network-'.time().'.'.$file->getClientOriginalExtension();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename );
                 }
     
@@ -71,12 +71,12 @@ class AdminNetworkController extends Controller
     
                 if(compress_image_enable() == 1){
     
-                    $filename   = 'series-Newwork-'.time().'.'.compress_image_format();
+                    $filename   = 'series-Network-'.time().'.'.compress_image_format();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename ,compress_image_resolution() );
     
                 }else{
     
-                    $filename   = 'series-Newwork-'.time().'.'.$file->getClientOriginalExtension();
+                    $filename   = 'series-Network-'.time().'.'.$file->getClientOriginalExtension();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename );
                 }
     
@@ -144,12 +144,12 @@ class AdminNetworkController extends Controller
     
                 if(compress_image_enable() == 1){
     
-                    $filename   = 'series-Newwork-'.time().'.'.compress_image_format();
+                    $filename   = 'series-Network-'.time().'.'.compress_image_format();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename ,compress_image_resolution() );
     
                 }else{
     
-                    $filename   = 'series-Newwork-'.time().'.'.$file->getClientOriginalExtension();
+                    $filename   = 'series-Network-'.time().'.'.$file->getClientOriginalExtension();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename );
                 }
     
@@ -162,12 +162,12 @@ class AdminNetworkController extends Controller
     
                 if(compress_image_enable() == 1){
     
-                    $filename   = 'series-Newwork-'.time().'.'.compress_image_format();
+                    $filename   = 'series-Network-'.time().'.'.compress_image_format();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename ,compress_image_resolution() );
     
                 }else{
     
-                    $filename   = 'series-Newwork-'.time().'.'.$file->getClientOriginalExtension();
+                    $filename   = 'series-Network-'.time().'.'.$file->getClientOriginalExtension();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename );
                 }
     
