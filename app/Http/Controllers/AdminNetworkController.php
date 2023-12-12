@@ -103,7 +103,7 @@ class AdminNetworkController extends Controller
                 return $item;
             });
     
-            $SeriesNetwork =  SeriesNetwork::orderBy('order')->get()->map(function ($item) {
+            $SeriesNetwork =  SeriesNetwork::where('id',$request->id)->orderBy('order')->get()->map(function ($item) {
                 $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : default_vertical_image_url() ;
                 $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : default_horizontal_image_url();
                 return $item;
