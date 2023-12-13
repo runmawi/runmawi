@@ -745,7 +745,41 @@
    .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo GetDarkText(); ?> !important;}
    .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo GetLightText(); ?> !important;}
    .navbar-expand-lg .navbar-nav .dropdown-menu {background:  <?php echo GetDarkBg(); ?> !important;}
+   body.dark-theme .offcanvas-collapse{
+      background-color: <?php echo GetDarkBg(); ?>!important;  
+      color: <?php echo GetDarkText(); ?>;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+   }
+   body.light-theme .offcanvas-collapse{
+      background-color: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+   }
+   .light-theme.onclickbutton_menu{
+      color: <?php echo GetLightText(); ?>;
+   }
+   body.dark-theme .onclickbutton_menu{
+      color: <?php echo GetDarkText(); ?>;
+   }
    
+   @media (min-width: 992px){
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+    position: absolute;
+    left: 100%;
+    top: 20%;
+}}
+@media (min-width: 992px){
+   li.nav-item.dropdown.menu-item li:hover ul.submenu.dropdown-menu {
+      display: block !important;
+      position: absolute;
+      left: 100%;
+      right: 14%;
+      z-index: 999;
+   }}
+   @media (min-width: 992px){
+       .navbar-collapse.offcanvas-collapse.open {
+    width:500px !important;
+}}
 </style>
 
 <style type="text/css">
@@ -795,6 +829,27 @@
 .dropdown-menu > li:hover a{
    color:#2578c0!important;
 }
+
+/* Sidebar */
+body.dark-theme .offcanvas{
+      background-color: <?php echo GetDarkBg(); ?>!important;  
+      color: <?php echo GetDarkText(); ?>;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+   }
+   body.light-theme .offcanvas {
+    background-color: #ffffff!important;
+    color: #000000;
+    box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+}
+header .navbar ul.navbar-nav {
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+}
+.onclickbutton_menu{
+   background: transparent !important;
+    /* color: white !important; */
+}
 </style>
 
 
@@ -810,20 +865,31 @@
 
    <header id="main-header">
       <div class="main-header">
-            <div class="container-fluid">
+            <div class="container-fluid pl-3">
                <div class="row">
                   <div class="col-sm-12">
 
-                                       <!-- ============= COMPONENT ============== -->
+
+                       <!-- ============= COMPONENT ============== -->
                         <nav class="navbar navbar-expand-lg navbar-light p-0">
                            <div class="container-fluid p-0">
+                           <button class="navbar-toggler d-block border-0 mr-3 onclickbutton_menu" type="button" id="navToggle"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+
+
                               <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
-                              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"  aria-expanded="false" aria-label="Toggle navigation">
+                              <!-- <button class="navbar-toggler d-block border-0" type="button" id="navToggle">
                                  <span class="navbar-toggler-icon"></span>
-                              </button>
+                              </button> -->
+
+
+
+
 
                               <div class="collapse navbar-collapse" id="main_nav">
-                                 <ul class="navbar-nav">
+
+
+                              <div class="navbar-collapse offcanvas-collapse">
+                              <ul class="navbar-nav">
                                     
                                     <?php  
                                                                            
@@ -902,7 +968,7 @@
 
                                              <li class="nav-item dropdown menu-item ">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                   <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+                                                   <?= $menu->name ?> <i class="fa fa-angle-right"></i>
                                                 </a>
 
                                                 <ul class="dropdown-menu primary_menu">
@@ -953,7 +1019,7 @@
 
                                              <li class="nav-item dropdown menu-item ">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                   <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+                                                   <?= $menu->name ?> <i class="fa fa-angle-right"></i>
                                                 </a>
 
                                                 <ul class="dropdown-menu primary_menu">
@@ -988,7 +1054,7 @@
 
                                              <li class="nav-item dropdown menu-item ">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                   <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+                                                   <?= $menu->name ?> <i class="fa fa-angle-right"></i>
                                                 </a>
 
                                                 <ul class="dropdown-menu primary_menu">
@@ -1024,7 +1090,7 @@
                                              <li class="nav-item active dskdflex menu-item ">
 
                                                 <a href="<?php echo URL::to($menu->url)?>">
-                                                      <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
+                                                      <?= ($menu->name); ?> <i class="fa fa-angle-right"></i>
                                                 </a>
 
                                                 <?php if(count($tv_shows_series) > 0 ){ ?>
@@ -1050,7 +1116,7 @@
                                              
                                              <li class="nav-item dropdown menu-item ">
                                                 <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                   <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+                                                   <?= $menu->name ?> <i class="fa fa-angle-right"></i>
                                                 </a>
 
                                                 <ul class="dropdown-menu primary_menu">
@@ -1085,7 +1151,7 @@
 
                                              <li class="nav-item dropdown menu-item ">
                                                    <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                      <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+                                                      <?= $menu->name ?> <i class="fa fa-angle-right"></i>
                                                    </a>
 
                                                    <ul class="dropdown-menu primary_menu">
@@ -1127,6 +1193,20 @@
                                           <?php  } 
                                        } ?>
                                  </ul>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+                            
                               </div> 
                               
                               <!-- Channel and CPP Login -->
@@ -1585,6 +1665,9 @@
          }
       });
    </script>
+   
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
    <style>
       .dropdown-toggle::after{
@@ -1604,3 +1687,102 @@
          color: #2578c0!important;
       }
    </style>
+
+   <style>
+      
+.offcanvas-collapse {
+    position: fixed;
+    top: 56px;
+    bottom: 0;
+    right: 100%;
+    left: -300px;
+    width: 300px;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    overflow-y: auto;
+    visibility: hidden;
+    transition-timing-function: ease-in-out;
+    transition-duration: .3s;
+    transition-property: left, visibility;
+}
+
+.offcanvas-collapse {
+    align-items: start;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding;
+    background-clip: padding-box;
+    border-right: 5px solid rgba(0, 0, 0, 0.2);
+
+}
+
+.offcanvas-collapse.open {
+    left: 0;
+    visibility: visible;
+}
+
+.navbar-expand-lg .navbar-nav {
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+}
+.nav-scroller .nav {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    color: rgba(255, 255, 255, .75);
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.nav-underline .nav-link {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: .875rem;
+    color: #6c757d;
+}
+
+.nav-underline .nav-link:hover {
+    color: #007bff;
+}
+
+.nav-underline .active {
+    font-weight: 500;
+    color: #343a40;
+}
+
+   </style>
+   <script>
+      $(document).ready(function () {
+    console.log("document is ready");
+    $('[data-toggle="offcanvas"], #navToggle').on('click', function () {
+        $('.offcanvas-collapse').toggleClass('open')
+    })
+});
+window.onload = function () {
+    console.log("window is loaded");
+};
+   </script>
+   <script>
+  let changeIcon = function(icon) {
+    if (icon.classList.contains('fa-bars')) {
+      // If 'fa-bars' is present, replace it with 'fa-times'
+      icon.classList.remove('fa-bars');
+      icon.classList.add('fa-times');
+    } else {
+      // If 'fa-bars' is not present, replace it with 'fa-bars'
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-bars');
+    }
+  }
+</script>
