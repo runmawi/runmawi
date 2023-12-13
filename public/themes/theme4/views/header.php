@@ -763,7 +763,7 @@
    }
    
    @media (min-width: 992px){
-.navbar-expand-lg .navbar-nav .dropdown-menu {
+   .navbar-collapse.offcanvas-collapse.open ul.dropdown-menu.primary_menu {
     position: absolute;
     left: 100%;
     top: 20%;
@@ -1197,7 +1197,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
 
 <!-- Vertical  -->
-                           <!--   <div class="navbar-collapse offcanvas-collapse">
+                             <!-- <div class="navbar-collapse offcanvas-collapse">
                                     <ul class="navbar-nav">
                                        
                                        <?php  
