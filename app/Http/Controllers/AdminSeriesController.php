@@ -1624,10 +1624,11 @@ class AdminSeriesController extends Controller
                 File::delete($file);
             }
           
-             SeriesSeason::destroy($id);
+            SeriesSeason::destroy($id);
+             
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
 
             return abort (404);
         }

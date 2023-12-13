@@ -1,31 +1,31 @@
 <?php
 
-    $data = App\SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
+$data = App\SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
 
-                    $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
-                                ->whereJsonContains('network_id', [(string)$item->id])
+$item['Series_depends_Networks'] = App\Series::where('series.active', 1)
+            ->whereJsonContains('network_id', [(string)$item->id])
 
-                                ->latest('series.created_at')->get()->map(function ($item) { 
-                        
-                        $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                        $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+            ->latest('series.created_at')->get()->map(function ($item) { 
+    
+    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
 
-                        $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
+    $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
 
-                        $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+    $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
 
-                        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
-                                                                ->map(function ($item) {
-                                                                $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                                                                return $item;
-                                                            });
+    $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
+                                            ->map(function ($item) {
+                                            $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                            return $item;
+                                        });
 
-                        $item['source'] = 'Series';
-                        return $item;
-                                                                            
-                    });
-        return $item;
-    });
+    $item['source'] = 'Series';
+    return $item;
+                                                        
+});
+return $item;
+});
 ?>
 
 @if (!empty($data) && $data->isNotEmpty())
@@ -36,11 +36,13 @@
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                                         
-                                        {{-- Header --}}
-                        <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title pl-5"><a href="{{ route('Specific_Series_Networks',[$series_networks->slug] )}}">{{ optional($series_networks)->name }}</a></h4>
-                            <h4 class="main-title pl-5"><a href="{{ route('Specific_Series_Networks',[$series_networks->slug] )}}">{{ "view all" }}</a></h4>
-                        </div>
+                        @if (!empty($series_networks->Series_depends_Networks))
+                                                                    {{-- Header --}}
+                            <div class="iq-main-header d-flex align-items-center justify-content-between">
+                                <h4 class="main-title pl-5"><a href="{{ route('Specific_Series_Networks',[$series_networks->slug] )}}">{{ optional($series_networks)->name }}</a></h4>
+                                <h4 class="main-title pl-5"><a href="{{ route('Specific_Series_Networks',[$series_networks->slug] )}}">{{ "view all" }}</a></h4>
+                            </div>
+                        @endif
 
                         <div class="trending-contens">
                             <ul id="trending-slider-nav" class="{{ 'series-networks-videos-slider-nav list-inline p-0 ml-5 row align-items-center' }}" data-key-id="{{$key}}">
@@ -82,7 +84,7 @@
                                                             </div>
 
                                                             <div class="trending-contens sub_dropdown_image mt-3">
-                                                                <ul id="trending-slider-nav" class-networks= "{{ 'pl-5 m-0  series-depends-episode-slider-'.$key }}" >
+                                                                <ul id="trending-slider-nav" class= "{{ 'pl-5 m-0  series-depends-episode-slider-'.$key }}" >
                                                                     @foreach ($series->Series_depends_episodes as $episode )
                                                                         <li>
                                                                             <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
@@ -188,7 +190,7 @@
              $('.series-networks-videos-slider').hide();
              $('.category-series-' + category_key_id).show();
 
-            $('.series-networks-depends-episode-slider-'+ category_key_id).slick({
+            $('.series-depends-episode-slider-'+ category_key_id).slick({
                 dots: false,
                 infinite: false,
                 speed: 300,
