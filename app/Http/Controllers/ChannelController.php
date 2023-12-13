@@ -4020,7 +4020,7 @@ class ChannelController extends Controller
     private function videos_details_jsplayer( $slug )
     {
         try {
-           
+
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
@@ -4239,10 +4239,12 @@ class ChannelController extends Controller
 
                     case $item['type'] == "mp4_url":
                     $item['videos_url'] =  $item->mp4_url ;
+                    $item['video_player_type'] =  'video/mp4' ;
                     break;
 
                     case $item['type'] == "m3u8_url":
                     $item['videos_url'] =  $item->m3u8_url ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
                     case $item['type'] == "embed":
@@ -4251,22 +4253,27 @@ class ChannelController extends Controller
                     
                     case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
                     $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
                     
                     case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
                     $item['videos_url']   = $item->mp4_url ;
+                    $item['video_player_type'] =  'video/mp4' ;
                     break;
 
                     case $item['type'] == " " && !is_null($item->transcoded_url) :
                     $item['videos_url']   = $item->transcoded_url ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
                     
                     case $item['type'] == null :
                     $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
                     default:
                     $item['videos_url']    = null ;
+                    $item['video_player_type'] = null ;
                     break;
                 }
 
@@ -4276,6 +4283,8 @@ class ChannelController extends Controller
             $data = array(
                 'videodetail' => $videodetail ,
             );
+
+            // dd($videodetail);
 
             return Theme::view('video-js-Player.video.videos', $data);
 
