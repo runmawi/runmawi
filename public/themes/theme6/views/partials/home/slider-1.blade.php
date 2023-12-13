@@ -9,7 +9,7 @@
                 {{-- Admin Slider  --}}
 @if (!empty($sliders) && $sliders->isNotEmpty())
     @foreach ($sliders as $item)
-        <div class="slide slick-bg s-bg-2" style="background: url('{{ URL::to('public/uploads/videocategory/' . $item->player_image) }}')" >
+        <div class="slide slick-bg s-bg-2" style="background: url('{{ URL::to('public/uploads/videocategory/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
@@ -47,7 +47,7 @@
         {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $item)
-        <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}')">
+        <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
@@ -57,7 +57,7 @@
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                 <span class="badge badge-secondary p-2"> {{ optional($item)->age_restrict.'+' }} </span>
@@ -94,7 +94,7 @@
                 {{-- Series  --}}
 @if (!empty($series_sliders) && $series_sliders->isNotEmpty())
     @foreach ($series_sliders as $item)
-        <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}')" >
+        <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
@@ -139,7 +139,7 @@
                     {{-- Live Stream --}}
 @if (!empty($live_banner) && $live_banner->isNotEmpty())
     @foreach ($live_banner as $item)
-        <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}')" >
+        <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
@@ -173,7 +173,7 @@
                     {{-- Live Event --}}
 @if (!empty($live_event_banners) && $live_event_banners->isNotEmpty())
     @foreach ($live_event_banners as $item)
-        <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}')" >
+        <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">

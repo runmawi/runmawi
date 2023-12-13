@@ -2015,5 +2015,154 @@ public function UpgadeSubscription(Request $request){
     return $PpvPurchasestatus;
   }
 
+
+  
+  public function upgradepaypalsubscription(Request $request)
+  {
+      try {
+       
+
+          $email = Auth::user()->email;
+          $user_email = User::where('email','=',$email)->count();
+          $user_first = User::where('email','=',$email)->first();
+          $id = $user_first->id;  
+          $plandetail = SubscriptionPlan::where('plan_id','=',$request->plan_id)->first();
+          $payment_type = $plandetail->payment_type;
+          if ( $user_email > 0 ) {
+
+              
+              $current_date = date('Y-m-d h:i:s');
+              $next_date = $plandetail->days;
+          $date = Carbon::parse($current_date)->addDays($next_date);
+
+          $subscription = Subscription::where('user_id',$user_first->id)->first();
+          if(empty($subscription)){
+                  $subscription = new Subscription;
+          }
+          $subscription->price = $plandetail->price;
+          $subscription->name = $user_first->username;
+          $subscription->days = $plandetail->days;
+          $subscription->user_id =  Auth::user()->id;
+          $subscription->stripe_id = $request->plan_id;
+          $subscription->stripe_status  = 'active';
+          $subscription->stripe_plan = $request->plan_id;
+          $subscription->regionname = Region_name();
+          $subscription->countryname = Country_name();
+          $subscription->cityname = city_name();
+          $subscription->PaymentGateway =  'paypal';
+          $subscription->ends_at = $date;
+          $subscription->save();
+
+              $subId = $request->subId;        
+              $new_user = User::find($id);
+              $new_user->role = 'subscriber';
+              $new_user->paypal_id = $subId;
+              $new_user->payment_type ='paypal';
+              $new_user->save();
+              $response = array(
+                  'status' => 'success'
+              );
+          } else {
+              $response = array(
+                  'status' => 'failed'
+              );
+          }
+      return response()->json($response);
+         //code...
+      } catch (\Throwable $th) {
+          throw $th;
+      }
+  }   
+
+
+  public function paypalppvVideo(Request $request)
+  {
+        // dd($request->all());
+
+
+      try {
+
+          $data = $request->all();
+          $video_id = $data['video_id'];
+          $setting = Setting::first();  
+          $ppv_hours = $setting->ppv_hours;
+          // $to_time =  Carbon::now()->addHour($ppv_hours);
+          $d = new \DateTime('now');
+          $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+          $now = $d->format('Y-m-d h:i:s a');
+          // dd($now);
+          $time = date('h:i:s', strtotime($now));
+          $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));                        
+          $user_id = Auth::user()->id;
+          $username = Auth::user()->username;
+          $email = Auth::user()->email;
+
+          $video = Video::where('id','=',$video_id)->where('uploaded_by','CPP')->first();
+
+          $channelvideo = Video::where('id','=',$video_id)->where('uploaded_by','Channel')->first();
+
+          if(!empty($video)){
+          $moderators_id = $video->user_id;
+          }
+
+          if(!empty($moderators_id)){
+          $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+          $total_amount = $video->ppv_price;
+          $title =  $video->title;
+          // $commssion = VideoCommission::first();
+          $commission = VideoCommission::where('type', 'CPP')->first();
+          $percentage = $commssion->percentage; 
+          $ppv_price = $video->ppv_price;
+          // $admin_commssion = ($percentage/100) * $ppv_price ;
+          $moderator_commssion = $ppv_price - $percentage;
+          $admin_commssion =  $ppv_price - $moderator_commssion;
+          $moderator_id = $moderators_id;
+          }elseif(!empty($channelvideo)){
+          if(!empty($channelvideo)){
+              $channelvideo_id = $video->user_id;
+          }
+          $Channel = Channel::where('id','=',$channelvideo_id)->first();  
+          $total_amount = $video->ppv_price;
+          $title =  $video->title;
+          $commssion = VideoCommission::where('type','Channel')->first();;
+          $percentage = $commssion->percentage; 
+          $ppv_price = $video->ppv_price;
+          // $admin_commssion = ($percentage/100) * $ppv_price ;
+          $moderator_commssion = $ppv_price - $percentage;
+          $admin_commssion =  $ppv_price - $moderator_commssion;
+          $channel_id = $channelvideo_id;
+
+          }
+          else{
+          $video = Video::where('id','=',$video_id)->first();
+
+          $total_amount = $video->ppv_price;
+          $title =  $video->title;
+          $commssion = VideoCommission::first();
+          $percentage = null; 
+          $ppv_price = $video->ppv_price;
+          $admin_commssion =  null;
+          $moderator_commssion = null;
+          $moderator_id = null;
+
+          }
+          $purchase = new PpvPurchase;
+          $purchase->user_id = $user_id;
+          $purchase->video_id = $video_id;
+          $purchase->total_amount = $total_amount;
+          $purchase->admin_commssion = $admin_commssion;
+          $purchase->moderator_commssion = $moderator_commssion;
+          $purchase->status = 'active';
+          $purchase->to_time = $to_time;
+          $purchase->moderator_id = $moderator_id;
+      
+          $purchase->save();
+          return 1;
+
+      } catch (\Exception $ex) {
+          return response()->json(['error' => $ex->getMessage()], 500);
+      }
+  }
+  
 }
 

@@ -59,17 +59,18 @@
 
     @foreach( $data as $key => $video_category )
         <section id="iq-trending" class="s-margin">
-            <div class="container-fluid">
+            <div class="container-fluid pl-0">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                                         
                                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
+                            <h4 class="main-title pl-5"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
+                            <h4 class="main-title "><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ "view all" }}</a></h4>
                         </div>
 
                         <div class="trending-contens">
-                            <ul id="trending-slider-nav" class="{{ 'category-videos-slider-nav list-inline p-0 mb-0 row align-items-center' }}" data-key-id="{{$key}}">
+                            <ul id="trending-slider-nav" class="{{ 'category-videos-slider-nav list-inline p-0 ml-5 row align-items-center' }}" data-key-id="{{$key}}">
 
                                 @foreach ($video_category->category_videos as $videos )
                                     <li>
@@ -85,31 +86,37 @@
                             <ul id="trending-slider" class= "{{ 'category-videos-slider list-inline p-0 m-0 align-items-center category-videos-'.$key }}" >
                                 @foreach ($video_category->category_videos as $videos )
                                     <li>
-                                        <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover; ">
-                                            <button class="close_btn">×</button>
+                                        <div class="tranding-block position-relative trending-thumbnail-image" >
+                                            <button class="drp-close">×</button>
 
                                             <div class="trending-custom-tab">
                                                 <div class="trending-content">
                                                     <div id="" class="overview-tab tab-pane fade active show">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                            <h1 class="trending-text big-title text-uppercase">{{ optional($videos)->title }}</h1>
+                                                            <div class="caption pl-5">
+                                                                <h2 class="caption-h2">{{ optional($videos)->title }}</h2>
 
-                                                            <!-- @if ( $videos->year != null && $videos->year != 0 )
-                                                                <div class="d-flex align-items-center text-white text-detail">
-                                                                    <span class="trending">{{ ($videos->year != null && $videos->year != 0) ? $videos->year : null   }}</span>
-                                                                </div>
-                                                            @endif -->
-                                                                                                                        
-                                                            @if ( optional($videos)->description )
-                                                                <div class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</div>
-                                                            @endif
+                                                                <!-- @if ( $videos->year != null && $videos->year != 0 )
+                                                                    <div class="d-flex align-items-center text-white text-detail">
+                                                                        <span class="trending">{{ ($videos->year != null && $videos->year != 0) ? $videos->year : null   }}</span>
+                                                                    </div>
+                                                                @endif -->
+                                                                                                                            
+                                                                @if ( optional($videos)->description )
+                                                                    <div class="trending-dec">{!! htmlspecialchars(substr(optional($videos)->description, 0, 100)) !!}</div>
+                                                                    
+                                                                @endif
 
-                                                            <div class="p-btns">
-                                                                <div class="d-flex align-items-center p-0">
-                                                                    <a href="{{ URL::to('category/videos/'.$videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> More Info </a>
+                                                                <div class="p-btns">
+                                                                    <div class="d-flex align-items-center p-0">
+                                                                        <a href="{{ URL::to('category/videos/'.$videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                        <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                    </div>
                                                                 </div>
+                                                            </div>
+                                                            <div class="dropdown_thumbnail">
+                                                                <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -137,9 +144,9 @@
     $(document).ready(function() {
 
         $('.category-videos-slider').slick({
-            slidesToShow: 1,
+            slidesToShow: 6,
             slidesToScroll: 1,
-            arrows: false,
+            arrows: true,
             fade: true,
             draggable: false,
             asNavFor: '.category-videos-slider-nav',
@@ -157,16 +164,23 @@
             focusOnSelect: true,
             responsive: [
                 {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
                     breakpoint: 1024,
                     settings: {
-                        slidesToShow: 2,
+                        slidesToShow: 5,
                         slidesToScroll: 1,
                     },
                 },
                 {
                     breakpoint: 600,
                     settings: {
-                        slidesToShow: 1,
+                        slidesToShow: 2,
                         slidesToScroll: 1,
                     },
                 },
@@ -175,14 +189,14 @@
         
         $('.category-videos-slider-nav').click(function() {
 
-            $( ".close_btn" ).trigger( "click" );
+            $( ".drp-close" ).trigger( "click" );
 
              let category_key_id = $(this).attr("data-key-id");
              $('.category-videos-slider').hide();
              $('.category-videos-' + category_key_id).show();
         });
 
-        $('body').on('click', '.close_btn', function() {
+        $('body').on('click', '.drp-close', function() {
             $('.category-videos-slider').hide();
         });
     });

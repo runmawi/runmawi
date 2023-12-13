@@ -583,14 +583,6 @@
                                                 </div>
                                              </a>
                                              
-                                             <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Pricing Plan</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
 
                                              <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                                 <div class="media align-items-center">

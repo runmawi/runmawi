@@ -91,6 +91,59 @@ class ChannelController extends Controller
         return view('channels', compact('parentCategories'));
     }
 
+    public function Parent_video_categories($category_slug)
+    {
+        try {
+
+            $VideoCategory           = VideoCategory::where('slug', $category_slug)->first();
+            $Parent_video_categories = VideoCategory::query()->where('parent_id',$VideoCategory->id)->get();
+            $Parent_video_categories_id = VideoCategory::query()->where('parent_id',$VideoCategory->id)->pluck('id')->toArray();
+
+            $categories_id = ($Parent_video_categories_id);
+            array_push($categories_id,$VideoCategory->id );
+
+            $check_Kidmode = 0 ; 
+
+            $categoryVideo_id = CategoryVideo::whereIn('category_id',$categories_id)->groupBy('video_id')->pluck('video_id');
+
+            $video_categories_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+                            'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
+
+                        ->whereIn('id',$categoryVideo_id)->where('active',1)->where('status', 1)->where('draft',1)
+                        ->where(function ($query)  {
+                            
+                            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                                $videos->whereNotIn('videos.id', Block_videos());
+                            }
+
+                        })->where(function ($query) use ($check_Kidmode) {
+                           
+                            if ($check_Kidmode == 1) {
+                                $videos->whereBetween('videos.age_restrict', [0, 12]);
+                            }
+                        })->latest()->limit(30)->get()->map(function ($item) {
+                            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url();
+                            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url();
+                            $item['source_type']        = "Videos" ;
+                            return $item;
+            });
+
+
+            $data = [
+                'Parent_videos_categories'  => $Parent_video_categories ,
+                'video_categories_videos' => $video_categories_videos ,
+                'VideosCategory' => $VideoCategory
+            ];
+
+            return Theme::view('videos-Categories', $data);
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
+        }
+    }
+
     public function channelVideos($cid)
     {
         try {
@@ -167,17 +220,73 @@ class ChannelController extends Controller
                 ->latest('episodes.created_at')
                 ->paginate($this->videos_per_page);
 
+                // for Theme4, theme6 , default
+
+                $check_Kidmode = 0 ;
+
+                $video_categories = VideoCategory::query()->whereIn('id',$category_id)->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+                    $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+            
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $query->whereNotIn('videos.id', Block_videos());
+                    }
+            
+                    if ($check_Kidmode == 1) {
+                        $query->whereBetween('videos.age_restrict', [0, 12]);
+                    }
+                })->with(['category_videos' => function ($videos) use ($check_Kidmode) {
+                    $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type')
+                        ->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+
+                            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                                $videos->whereNotIn('videos.id', Block_videos());
+                            }
+
+                            if ($check_Kidmode == 1) {
+                                $videos->whereBetween('videos.age_restrict', [0, 12]);
+                            }
+    
+                    $videos->latest('videos.created_at')->get();
+                }])
+                ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
+                ->where('video_categories.in_home', 1)
+                ->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+                    $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+            
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $query->whereNotIn('videos.id', Block_videos());
+                    }
+            
+                    if ($check_Kidmode == 1) {
+                        $query->whereBetween('videos.age_restrict', [0, 12]);
+                    }
+                })
+                ->orderBy('video_categories.order')
+                ->get()
+                ->map(function ($category) {
+                    $category->category_videos->map(function ($video) {
+                        $video->image_url = URL::to('/public/uploads/images/'.$video->image);
+                        $video->Player_image_url = URL::to('/public/uploads/images/'.$video->player_image);
+                        $video->description  = $video->description ;
+                        $video->source  = "Videos";
+                        return $video;
+                    });
+                    $category->source =  "category_videos" ;
+                    return $category;
+                });
+
             $data = [
-                'currency' => CurrencySetting::first(),
-                'category_title' => $category_title,
-                'categoryVideos' =>  $categoryVideos,
-                'ppv_gobal_price' => $ppv_gobal_price,
-                'ThumbnailSetting' => $ThumbnailSetting,
-                'age_categories' => AgeCategory::get(),
-                'Episode_videos' => $Episode_videos,
+                'currency'          => CurrencySetting::first(),
+                'category_title'    => $category_title,
+                'categoryVideos'    =>  $categoryVideos,
+                'ppv_gobal_price'   => $ppv_gobal_price,
+                'ThumbnailSetting'  => $ThumbnailSetting,
+                'age_categories'    => AgeCategory::get(),
+                'Episode_videos'    => $Episode_videos,
                 'Most_watched_country' => $Most_watched_country ,
                 'top_most_watched'  => $top_most_watched ,
                 'video_banners'     => $video_banners ,
+                'video_categories'  => $video_categories ,
             ];
 
             return Theme::view('categoryvids', ['categoryVideos' => $data]);
@@ -3911,7 +4020,7 @@ class ChannelController extends Controller
     private function videos_details_jsplayer( $slug )
     {
         try {
-           
+
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
@@ -4130,10 +4239,12 @@ class ChannelController extends Controller
 
                     case $item['type'] == "mp4_url":
                     $item['videos_url'] =  $item->mp4_url ;
+                    $item['video_player_type'] =  'video/mp4' ;
                     break;
 
                     case $item['type'] == "m3u8_url":
                     $item['videos_url'] =  $item->m3u8_url ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
                     case $item['type'] == "embed":
@@ -4142,22 +4253,27 @@ class ChannelController extends Controller
                     
                     case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
                     $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
                     
                     case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
                     $item['videos_url']   = $item->mp4_url ;
+                    $item['video_player_type'] =  'video/mp4' ;
                     break;
 
                     case $item['type'] == " " && !is_null($item->transcoded_url) :
                     $item['videos_url']   = $item->transcoded_url ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
                     
                     case $item['type'] == null :
                     $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
                     default:
                     $item['videos_url']    = null ;
+                    $item['video_player_type'] = null ;
                     break;
                 }
 
@@ -4167,6 +4283,8 @@ class ChannelController extends Controller
             $data = array(
                 'videodetail' => $videodetail ,
             );
+
+            // dd($videodetail);
 
             return Theme::view('video-js-Player.video.videos', $data);
 

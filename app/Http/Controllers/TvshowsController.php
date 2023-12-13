@@ -51,6 +51,7 @@ use App\Channel;
 use App\ModeratorsUser;
 use App\SeriesGenre;
 use App\SeriesSubtitle as SeriesSubtitle;
+use App\SeriesNetwork;
 
 class TvshowsController extends Controller
 {
@@ -1123,7 +1124,15 @@ class TvshowsController extends Controller
             $CategorySeries =  SeriesGenre::where('slug',$slug)->first();
             $SeriesGenre = $CategorySeries != null ? $CategorySeries->specific_category_series : array();
             
-            $Series_Genre = $SeriesGenre->all();
+            $Series_Genre = $SeriesGenre->map(function($item){
+
+                $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                            ->map(function ($item) {
+                                            $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                            return $item;
+                                        });
+                return $item;
+            });
 
             $data = array( 
                         'SeriesGenre' => $Series_Genre ,
@@ -1161,9 +1170,68 @@ class TvshowsController extends Controller
             ];
 
             return Theme::view('SeriescategoryList', $data);
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
+        }
+    }
+
+    public function Specific_Series_Networks(Request $request,$slug)
+    {
+        try {
+         
+            $Theme = HomeSetting::pluck('theme_choosen')->first();
+            Theme::uses($Theme);
+
+            $series_data = SeriesNetwork::where('slug',$slug)->orderBy('order')->get()->map(function ($item) {
+
+                $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                            ->whereJsonContains('network_id', [(string)$item->id])
+
+                            ->latest('series.created_at')->get()->map(function ($item) { 
+                    
+                    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+
+                    $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                                                            ->map(function ($item) {
+                                                            $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                            return $item;
+                                                        });
+
+                    $item['source'] = 'Series';
+                    return $item;
+                                                                        
+                });
+
+                return $item;
+            })->first();
+            
+            $data = array( 'series_data' => $series_data );
+
+            return Theme::view('partials.home.SeriesNetworks',$data);
+
         } catch (\Throwable $th) {
             return abort(404);
         }
     }
 
+    public function Series_Networks_List()
+    {
+        
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses($Theme);
+
+        $series_data = SeriesNetwork::orderBy('order')->get()->map(function ($item) {
+            $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : default_vertical_image_url() ;
+            $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : default_horizontal_image_url();
+            return $item;
+        });
+
+        $data = array( 'series_data' => $series_data );
+
+        return Theme::view('partials.home.Series-Networks-List',$data);
+
+    }
 }

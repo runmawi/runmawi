@@ -470,10 +470,11 @@ Your browser does not support the audio element.
                               <a class="black-text" href="<?= route('AudioCategory',[ $audio_category_name->categories_slug ])?>">
                                   <?= ucwords($audio_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                               </a>
+                              <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                           </li>
                         <?php } ?>
 
-                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                       
 
                         <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($audio->title) > 50) ? ucwords(substr($audio->title,0,120).'...') : ucwords($audio->title); ?> </a></li>
                       </ol>

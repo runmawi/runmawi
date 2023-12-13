@@ -136,6 +136,7 @@
 
 .music-play-lists {
   display: flex !important;
+  gap: 2px;
 }
 .share-icons.music-play-lists li {
   display: inline-flex;

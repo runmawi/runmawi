@@ -120,74 +120,143 @@ if (!empty($data['password_hash'])) {
     table.dataTable thead .sorting_asc{
         background-image: none!important;
     }
-    body.dark {background-color: #1d1d1d;} /* #9b59b6 */
-    body.dark .list-group-item-action:active{background-color: #1d1d1d!important;} /* #9b59b6 */
-    body.dark #progressbar li{background-color: transparent;color: #fff;} /* #9b59b6 */
-    body.dark .modal-content{background-color: #1d1d1d!important;} /* #9b59b6 */
+    body.dark {background-color: <?php echo GetAdminDarkBg(); ?>;} /* #9b59b6 */
+    body.dark .list-group-item-action:active{background-color: <?php echo GetAdminDarkBg(); ?>!important;} /* #9b59b6 */
+    body.dark #progressbar li{background-color: transparent;color:<?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
+    body.dark .modal-content{background-color: <?php echo GetAdminDarkBg(); ?>!important;} /* #9b59b6 */
     body.dark .iq-sidebar-menu .iq-menu li ul li a:hover {
-    background-color: #222428;
-    color: #ffffffe6;
+    background-color: <?php echo GetAdminDarkBg(); ?>;
+    color: <?php echo GetAdminDarkText(); ?>;
 } /* #9b59b6 */
-    body.dark .content-page{background-color: #1d1d1d;} /* #9b59b6 */
-    body.dark .btn-black{background-color: #fff!important;} /* #9b59b6 */
+    body.dark .content-page{background-color: <?php echo GetAdminDarkBg(); ?>;} /* #9b59b6 */
+    body.dark .btn-black{background-color: <?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
     body.dark .bg-white{background-color: transparent!important;} /* #9b59b6 */
     body.dark #video{background-color: transparent!important;} /* #9b59b6 */
-    body.dark .form-control{background: #3e3e3e!important;color: #fff!important;} /* #9b59b6 */
-    body.dark .form-control option{background: #3e3e3e!important;color: #fff!important;} /* #9b59b6 */
-    body.dark .select2-selection__rendered{background: #3e3e3e!important;} /* #9b59b6 */
-    body.dark .r1{background-color:  #222428;color: #ffffffe6;} /* #9b59b6 */
-    body.dark .file{background-color: #292c35;} /* #9b59b6 */
+    body.dark .form-control{ color:#646464!important;} /* #9b59b6 */
+    body.dark .form-control option{background: <?php echo GetAdminDarkBg(); ?>!important;color: <?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
+    body.dark .r1{background-color:  <?php echo GetAdminDarkBg(); ?>;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
+    body.dark .file{background-color: <?php echo GetAdminDarkBg(); ?>;} /* #9b59b6 */
     body.dark #sidebar-wrapper .list-group{background-color: ;} /* #9b59b6 */
-    body.dark .card-title.upload-ui{background-color: transparent;color: #ffffffe6;} /* #9b59b6 */
-    body.dark .dropzone{background-color: transparent;color: #ffffffe6;} /* #9b59b6 */
-    body.dark .list-group-flush .list-group-item{background-color: #292c35;color: #fff;box-shadow: 0px 0px 1px #3e3e3e;} /* #9b59b6 */
-    body.dark .black{background-color: #222428!important;color: #ffffffe6!important;} /* #9b59b6 */
-    body.dark .movie_table tbody td{background-color: #222428;color: #ffffffe6;} /* #9b59b6 */
-    body.dark .table-striped tbody tr:nth-of-type(odd){background-color:  #222428;color: #fff;} /* #9b59b6 */
-    body.dark .movie_table thead th{background-color: #292c35;color: #ffffffe6!important;} /* #9b59b6 */
+    body.dark .card-title.upload-ui{background-color: transparent;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
+    body.dark .dropzone{background-color: transparent;color:<?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
+    body.dark .list-group-flush .list-group-item{background-color: <?php echo GetAdminDarkBg(); ?>;color: <?php echo GetAdminDarkText(); ?>;box-shadow: 0px 0px 1px #3e3e3e;} /* #9b59b6 */
+    body.dark .black{background-color: <?php echo GetAdminDarkBg(); ?>!important;color:<?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
+    body.dark .movie_table tbody td{background-color: <?php echo GetAdminDarkBg(); ?>;color:<?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
+    body.dark .table-striped tbody tr:nth-of-type(odd){background-color:  <?php echo GetAdminDarkBg(); ?>;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
+    body.dark .movie_table thead th{background-color: <?php echo GetAdminDarkBg(); ?>;color:<?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
     body.dark #msform fieldset{background-color: transparent;padding: 10px;} /* #9b59b6 */
-    body.dark .iq-footer{background-color: #1d1d1d;border-top: 1px solid #000;} /* #9b59b6 */
+    body.dark .iq-footer{background-color: <?php echo GetAdminDarkBg(); ?>;border-top: 1px solid #000;} /* #9b59b6 */
    /* #9b59b6 */
    
-    body.dark table.dataTable tbody tr{background-color: #222428;color: #ffffffe6;} /* #9b59b6 */
-    body.dark .tab-content{background-color:  #222428;} /* #9b59b6 */
-    body.dark .iq-card{background-color: #222428;} /* #9b59b6 */
-    body.dark .iq-top-navbar {background-color: #1d1d1d;border-bottom: 1px solid #000;} /* #9b59b6 */
-    body.dark .iq-sidebar {background-color: #1d1d1d;border-right: 1px solid #000;} /* #9b59b6 */
-    body.dark .iq-menu li a span{color: #ffffffe6;} /* #9b59b6 */
-    /*body.dark h1,h2,h3,h4,h5,h6{color: #fff;}*/
-    body.dark label{color: #ffffffe6;}
-    body.dark .iq-bg-warning{color: #fff!importan; background:transparent!important;}
-    body.dark .iq-bg-success{color: #fff!important; background:transparent!important;}
-    body.dark .iq-bg-danger{ color: #fff!important; background:transparent!important;}
+    body.dark table.dataTable tbody tr{background-color: <?php echo GetAdminDarkBg(); ?>;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
+    body.dark .tab-content{background-color:  <?php echo GetAdminDarkBg(); ?>;} /* #9b59b6 */
+    body.dark .iq-card{background-color: <?php echo GetAdminDarkBg(); ?>;} /* #9b59b6 */
+    body.dark .iq-card{background-color:<?php echo GetAdminDarkBg(); ?>;} /* #9b59b6 */
+    body.dark .iq-top-navbar {background-color: <?php echo GetAdminDarkBg(); ?>;border-bottom: 1px solid #000;} /* #9b59b6 */
+    body.dark .iq-sidebar {background-color: <?php echo GetAdminDarkBg(); ?>;border-right: 1px solid #000;} /* #9b59b6 */
+    body.dark .iq-menu li a span{color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
+    /*body.dark h1,h2,h3,h4,h5,h6{color: <?php echo GetAdminDarkText(); ?>;}*/
+    body.dark label{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .iq-bg-warning{color: <?php echo GetAdminDarkText(); ?>!important; background:transparent!important;}
+    body.dark .iq-bg-success{color: <?php echo GetAdminDarkText(); ?>!important; background:transparent!important;}
+    body.dark .iq-bg-danger{ color: <?php echo GetAdminDarkText(); ?>!important; background:transparent!important;}
     body.dark #progressbar li.active{color: blue!important;}
     body.dark #progressbar li img{filter: invert(1);}
     body.dark .ply{filter: invert(1);}
-    body.dark .fs-title{color: #ffffffe6;}
-    body.dark .panel-body{color: #ffffffe6!important;}
-    body.dark .iq-submenu li>a{color: #ffffffe6;}
-    body.dark #optionradio{color: #fff;}
-    body.dark .dropzone .dz-message .dz-button{color: #fff;}
-    body.dark th{color: #ffffffe6;}
-    body.dark .table-bordered td, .table-bordered th {color: #ffffffe6;}
-    body.dark .tags-input-wrapper input{color: #000;background: #fff!important;}
-    body.dark h3{color: #ffffffe6;}
-    body.dark h4{color: #ffffffe6;}
-    body.dark h5{color: #ffffffe6;}
-    body.dark .theme_name{color: #ffffffe6;}
-    body.dark h6{color: #ffffffe6;}
+    body.dark .fs-title{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .panel-body{color: <?php echo GetAdminDarkText(); ?>!important;}
+    body.dark .iq-submenu li>a{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark #optionradio{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .dropzone .dz-message .dz-button{color:<?php echo GetAdminDarkText(); ?>;}
+    body.dark th{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .table-bordered td, .table-bordered th {color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .tags-input-wrapper input{color: #000;}
+    body.dark h3{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark h4{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark h5{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .theme_name{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark h6{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .upload-ui{color: #000;}
-    body.dark div.dataTables_wrapper div.dataTables_info{color: #ffffffe6!important;}
-    body.dark .line{color: #fff;}
-    body.dark .dataTables_info{color: #ffffffe6;}
-    body.dark .list-inline-item a{color: #ffffffe6;}
-    body.dark .val{color: #fff;}
-    body.dark .main-circle i{color: #ffffffe6;}
-    body.dark .text-right{color: #ffffffe6;}
-    body.dark .iq-arrow-right{color: #ffffffe6;}
-    body.dark .form-group{color: #ffffffe6;}
-    body.dark p{color: #ffffffe6!important;}
-body.dark h1, body.dark .support a {color: #ffffffe6;}
+    body.dark div.dataTables_wrapper div.dataTables_info{color: <?php echo GetAdminDarkText(); ?>!important;}
+    body.dark .line{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .dataTables_info{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .list-inline-item a{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .val{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .main-circle i{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .text-right{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .iq-arrow-right{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark .form-group{color: <?php echo GetAdminDarkText(); ?>;}
+    body.dark p{color: <?php echo GetAdminDarkText(); ?>!important;}
+body.dark h1, body.dark .support a {color: <?php echo GetAdminDarkText(); ?>;}
+
+body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
+    body.light .list-group-item-action:active{background-color: <?php echo GetAdminLightBg(); ?>!important;} /* #9b59b6 */
+    body.light #progressbar li{background-color: transparent;color:<?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
+    body.light .modal-content{background-color: <?php echo GetAdminLightBg(); ?>!important;} /* #9b59b6 */
+    body.light .iq-sidebar-menu .iq-menu li ul li a:hover {
+    background-color: <?php echo GetAdminLightBg(); ?>;
+    color: <?php echo GetAdminLightText(); ?>;
+} /* #9b59b6 */
+    body.light .content-page{background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
+    body.light .bg-white{background-color: transparent!important;} /* #9b59b6 */
+    body.light #video{background-color: transparent!important;} /* #9b59b6 */
+    body.light .form-control option{background: <?php echo GetAdminLightBg(); ?>!important;color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
+    body.light .r1{background-color:  <?php echo GetAdminLightBg(); ?>;color: <?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
+    body.light .file{background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
+    body.light #sidebar-wrapper .list-group{background-color: ;} /* #9b59b6 */
+    body.light .card-title.upload-ui{background-color: transparent;color: <?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
+    body.light .dropzone{background-color: transparent;color:<?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
+    body.light .list-group-flush .list-group-item{background-color: <?php echo GetAdminLightBg(); ?>;color: <?php echo GetAdminLightText(); ?>;box-shadow: 0px 0px 1px #3e3e3e;} /* #9b59b6 */
+    body.light .black{background-color: <?php echo GetAdminLightBg(); ?>!important;color:<?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
+    body.light .movie_table tbody td{background-color: <?php echo GetAdminLightBg(); ?>;color:<?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
+    body.light .table-striped tbody tr:nth-of-type(odd){background-color:  <?php echo GetAdminLightBg(); ?>;color: <?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
+    body.light .movie_table thead th{background-color: <?php echo GetAdminLightBg(); ?>;color:<?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
+    body.light #msform fieldset{background-color: transparent;padding: 10px;} /* #9b59b6 */
+    body.light .iq-footer{background-color: <?php echo GetAdminLightBg(); ?>;border-top: 1px solid #000;} /* #9b59b6 */
+   /* #9b59b6 */
+   
+    body.light table.dataTable tbody tr{background-color: <?php echo GetAdminLightBg(); ?>;color: <?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
+    body.light .tab-content{background-color:  <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
+    body.light .iq-card{background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
+    body.light .iq-card{background-color:<?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
+    body.light .iq-top-navbar {background-color: <?php echo GetAdminLightBg(); ?>;border-bottom: 1px solid #000;} /* #9b59b6 */
+    body.light .iq-sidebar {background-color: <?php echo GetAdminLightBg(); ?>;border-right: 1px solid #000;} /* #9b59b6 */
+    body.light .iq-menu li a span{color: <?php echo GetAdminLightText(); ?>;} /* #9b59b6 */
+    /*body.light h1,h2,h3,h4,h5,h6{color: <?php echo GetAdminLightText(); ?>;}*/
+    body.light label{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .iq-bg-warning{color: <?php echo GetAdminDarkBg(); ?>!important; }
+    body.light .iq-bg-success{color: <?php echo GetAdminDarkBg(); ?>!important; }
+    body.light .iq-bg-danger{ color: <?php echo GetAdminDarkBg(); ?>!important; }
+    body.light #progressbar li.active{color: blue!important;}
+    body.light #progressbar li img{filter: invert(0);}
+    body.light .ply{filter: invert(0);}
+    body.light .fs-title{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .panel-body{color: <?php echo GetAdminLightText(); ?>!important;}
+    body.light .iq-submenu li>a{color: <?php echo GetAdminLightText(); ?>;}
+    body.light #optionradio{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .dropzone .dz-message .dz-button{color:<?php echo GetAdminLightText(); ?>;}
+    body.light th{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .table-bordered td, .table-bordered th {color: <?php echo GetAdminLightText(); ?>;}
+    body.light .tags-input-wrapper input{color: #000;}
+    body.light h3{color: <?php echo GetAdminLightText(); ?>;}
+    body.light h4{color: <?php echo GetAdminLightText(); ?>;}
+    body.light h5{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .theme_name{color: <?php echo GetAdminLightText(); ?>;}
+    body.light h6{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .upload-ui{color: #000;}
+    body.light div.dataTables_wrapper div.dataTables_info{color: <?php echo GetAdminLightText(); ?>!important;}
+    body.light .line{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .dataTables_info{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .list-inline-item a{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .val{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .main-circle i{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .text-right{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .iq-arrow-right{color: <?php echo GetAdminLightText(); ?>;}
+    body.light .form-group{color: <?php echo GetAdminLightText(); ?>;}
+    body.light p{color: <?php echo GetAdminLightText(); ?>!important;}
+body.light h1, body.light .support a {color: <?php echo GetAdminLightText(); ?>;}
+
+
 
 .checkbox {
   opacity: 0;
@@ -300,10 +369,10 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/assign_videos/partner') }}" class="iq-waves-effect">Move Videos to Partner</a></li>
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></li>                    
           </ul></li>
-          <!-- <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <!-- <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-tv"></i><span>TV Shows </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>Series List</a></li>
-              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add New Series</a></li>
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-user-plus"></i>List TV Shows </a></li>
+              <li><a href="{{ URL::to('admin/restrict') }}"><i class="las la-eye"></i>Add New TV Shows</a></li>
 
             </ul>
           </li> -->
@@ -547,13 +616,15 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></li>                    
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>TV Shows </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
-              <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
-              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Series Genre</a></li>                    
-              <li><a href="{{ URL::to('admin/assign_Series/partner') }}" class="iq-waves-effect">Move Series to Partner</a></li>
-              <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">Series For Approval</a></li>
+              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>List TV Shows </a></li>
+              <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New TV Shows</a></li>
+              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Genre</a></li>  
+               @if (Series_Networks_Status() == 1 )
+                  <li><a href="{{ route('admin.Network_index') }}">Manage Networks</a></li>
+               @endif              <li><a href="{{ URL::to('admin/assign_Series/partner') }}" class="iq-waves-effect">Move TV Shows to Partner</a></li>
+              <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">TV Shows For Approval</a></li>
 
 
 
@@ -863,12 +934,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span class="">{{ (__('Series & Episodes')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span class="">{{ (__('TV Shows')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('admin/series-list') }}">{{ (__('Series List')) }}</a></li>
-              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}">{{ (__('Manage Series Genre')) }}</a></li>                    
-              <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">{{ (__('Series For Approval')) }}</a></li>
-              <li><a href="{{ URL::to('admin/assign_Series/partner') }}" class="iq-waves-effect">{{ (__('Move Series to Partner')) }}</a></li>
+              <li><a href="{{ URL::to('admin/series-list') }}">{{ (__('List TV Shows ')) }}</a></li>
+              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}">{{ (__('Manage Genre')) }}</a></li>                    
+               @if (Series_Networks_Status() == 1 )
+                  <li><a href="{{ route('admin.Network_index') }}">Manage Networks</a></li>
+               @endif              <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">{{ (__('TV Shows For Approval')) }}</a></li>
+              <li><a href="{{ URL::to('admin/assign_Series/partner') }}" class="iq-waves-effect">{{ (__('Move TV Shows to Partner')) }}</a></li>
 
             </ul>
           </li>
@@ -1181,13 +1254,16 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Video Categories</a></li>                    
                     
           </ul></li>
-          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>TV Shows </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
-              <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
-              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Series Genre</a></li>                    
-              <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">Series For Approval</a></li>
-              <li><a href="{{ URL::to('admin/assign_Series/partner') }}" class="iq-waves-effect">Move Series to Partner</a></li>
+              <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>List TV Shows </a></li>
+              <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New TV Shows</a></li>
+              <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Genre</a></li>   
+               @if (Series_Networks_Status() == 1 )
+                  <li><a href="{{ route('admin.Network_index') }}">Manage Networks</a></li>
+               @endif
+              <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">TV Shows For Approval</a></li>
+              <li><a href="{{ URL::to('admin/assign_Series/partner') }}" class="iq-waves-effect">Move TV Shows to Partner</a></li>
 
 
             </ul>
@@ -1774,6 +1850,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                //    checkbox.addEventListener("change", () => {
                //    document.body.classList.toggle("dark")
                // })
+            }else{
+               document.body.classList.toggle("light")
             }
          });
       </script>
@@ -2169,7 +2247,9 @@ if(jQuery('#view-chart-13').length){
 <script>
     const checkbox = document.getElementById("checkbox")
 checkbox.addEventListener("change", () => {
-  document.body.classList.toggle("dark")
+   console.log(checkbox);
+   thememode = $('#checkbox').val();
+   location.reload();
 })
           </script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  

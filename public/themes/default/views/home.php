@@ -390,6 +390,60 @@
       </div>
    </section>
    <?php } } ?>
+
+   <?php
+   if($value->video_name == 'Series_Genre'){
+    
+    if($home_settings->SeriesGenre == 1){ ?>
+            <section id="iq-favorites">
+                    <div class="container-fluid overflow-hidden">
+                        <div class="row">
+                            <div class="col-sm-12 ">
+                                <?php include 'partials/home/SeriesGenre.php'; ?>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            <?php } } ?>
+            <?php
+            if($value->video_name == 'Series_Genre_videos'){
+
+            if($home_settings->SeriesGenre_videos == 1){ ?>
+                <section id="iq-tvthrillers" class="s-margin">
+
+            <?php
+               $parentCategories = App\SeriesGenre::all();
+               foreach($parentCategories as $category) {
+
+                $Episode_videos =  App\Series::select('episodes.*','series.title as series_name','series.slug as series_slug')
+                ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                ->where('series_categories.category_id','=',$category->id)
+                ->where('episodes.active', '=', '1')
+                ->where('series.active', '=', '1')
+                ->groupBy('episodes.id')
+                ->latest('episodes.created_at')
+                ->get();
+                
+               $series = App\Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                                 ->where('category_id','=',$category->id)->where('active', '=', '1')
+                                 ->where('active', '=', '1');
+                $series = $series->latest('series.created_at')->get();
+                // dd($series);
+            ?>
+
+            <?php 
+               if (count($series) > 0) { 
+                  include('partials/home/seriescategoryloop.php');
+               } 
+               else { 
+            ?>
+               <p class="no_video"></p>
+            <?php } }?>
+    </section>
+            <?php } } ?>
+
+
    <?php 
       if($value->video_name == 'albums'){
       

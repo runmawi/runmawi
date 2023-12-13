@@ -503,12 +503,11 @@ class AdminSettingsController extends Controller
             $settings->default_horizontal_image = $default_horizontal_image_filename;
 
         }
-
-
+        
         $settings->default_ads_url = $request['default_ads_url'];
         $settings->video_clip_enable = !empty($request->video_clip_enable) ?  "1" : "0" ;
         $settings->enable_ppv_rent = !empty($request->enable_ppv_rent) ?  "1" : "0" ;
-
+        $settings->series_networks_status = !empty($request->series_networks_status) ?  "1" : "0" ;
         $settings->save();
 
         return Redirect::to('admin/settings')->with(['message' => 'Successfully Updated Site Settings!', 'note_type' => 'success']);

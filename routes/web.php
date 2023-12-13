@@ -22,6 +22,11 @@ Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQ
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
 Route::get('/BunnyCDNStream', 'AdminDashboardController@BunnyCDNStream');
 
+Route::get('/paypal/create-payment', 'PayPalController@createPayment');
+Route::get('/paypal/execute-payment', 'PayPalController@executePayment');
+Route::post('paypal-ppv-video', 'PaymentController@paypalppvVideo');
+
+
 $router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
 Route::group(['middleware' => 'auth'], function(){
@@ -204,6 +209,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/category/wishlist/{slug}', 'ChannelController@Watchlist');
     Route::post('favorite', 'ThemeAudioController@add_favorite');
     Route::get('/live/category/{cid}', 'LiveStreamController@channelVideos');
+    Route::get('/videos-categories/{category_slug}', 'ChannelController@Parent_video_categories')->name('Parent_video_categories');
     Route::get('/category/{cid}', 'ChannelController@channelVideos')->name('video_categories');
     Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
 
@@ -310,6 +316,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::post('/submitpaypal', 'SignupController@submitpaypal');
     Route::post('/subscribepaypal', 'SignupController@subscribepaypal');
+    Route::post('/upgradepaypalsubscription', 'PaymentController@upgradepaypalsubscription');
 
     Route::post('/remove-image', 'SignupController@removeImage');
     Route::post('/store', 'SignupController@store');
@@ -375,7 +382,8 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/latest-videos', 'HomeController@LatestVideos')->name('latest-videos');
     Route::get('/language/{lanid}/{language}', 'HomeController@LanguageVideo');
     Route::get('/language/{slug}', 'HomeController@Language_Video');
-    Route::get('/language-list', 'HomeController@Language_List');
+    Route::get('/My-list', 'HomeController@My_list');
+    Route::post('watchlater', 'WatchLaterController@watchlater');
     
     Route::get('featured-videos', 'HomeController@Featured_videos');
     Route::get('Recommended-videos', 'HomeController@Featured_videos');  // Only For Nemisha 
@@ -917,6 +925,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/Series_genre/update', 'AdminSeriesGenreController@Series_genre_update');
     Route::get('/Series_genre/delete/{id}', 'AdminSeriesGenreController@Series_genre_delete');
     Route::Post('/Series_genre_order', 'AdminSeriesGenreController@Series_genre_order');
+
+    
+    // Admin Network 
+    Route::get('/Series/Network', 'AdminNetworkController@Network_index')->name('admin.Network_index');
+    Route::Post('/Serie/Network-store', 'AdminNetworkController@Network_store')->name('admin.Network_store');
+    Route::get('/Serie/Network-edit/{id}', 'AdminNetworkController@Network_edit')->name('admin.Network_edit');
+    Route::PATCH('/Serie/Network-update/{id}', 'AdminNetworkController@Network_update')->name('admin.Network_update');
+    Route::get('/Serie/Network-delete/{id}', 'AdminNetworkController@Network_delete')->name('admin.Network_delete');
+    Route::Post('/Serie/Network/order', 'AdminNetworkController@Network_order')->name('admin.Network_order');
 
     //Admin Series Season Manage
     // Route::get('/season/create/{id}', 'AdminSeriesController@create_season');
@@ -2196,6 +2213,9 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
 
     Route::get('series/category/{slug}', 'TvshowsController@SeriesCategory')->name('SeriesCategory');
     Route::get('SeriescategoryList', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
+
+    Route::get('TV-Shows/Networks/{slug}', 'TvshowsController@Specific_Series_Networks')->name('Specific_Series_Networks');
+    Route::get('TV-Shows/Networks-List', 'TvshowsController@Series_Networks_List')->name('Series_Networks_List');
 
     // Filter
     Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');

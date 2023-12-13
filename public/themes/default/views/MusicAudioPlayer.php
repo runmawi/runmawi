@@ -126,14 +126,35 @@
             </div>
 
         <?php } ?>
-        <div class="container-fluid video-list you-may-like overflow-hidden ">
-            <h4 class="Continue Watching pl-3" style="color:#fffff;">Recomended Audios</h4>
-            <div class="col-md-12 mt-4 mb-5">
-            <img id="audio_img" src="<?php echo URL::to('/').'/public/uploads/images/' .@$first_album_image ;?>">          
-
-            </div>
-
+        <?php if(count(@$recommended_audios) > 0): ?>
+        <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Audios'); ?></h4>
+                <div class="slider"
+                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
+                      <?php include 'partials/recommeded_audio.php'; ?>
+                </div>
+          </div>
+      <?php endif; ?>
           
+      <?php if(count(@$OtherMusicStation) > 0): ?>
+        <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Other MusicStation'); ?></h4>
+                <div class="slider"
+                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
+                      <?php include 'partials/other_music_station.php'; ?>
+                </div>
+          </div>
+      <?php endif; ?>
+
+      <?php if(count(@$Otherplaylist) > 0): ?>
+        <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Other Albums'); ?></h4>
+                <div class="slider"
+                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
+                      <?php include 'partials/other_palylist.php'; ?>
+                </div>
+          </div>
+      <?php endif; ?>
 
         <div id="playlist">
 

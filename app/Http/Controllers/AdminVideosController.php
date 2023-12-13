@@ -780,11 +780,7 @@ class AdminVideosController extends Controller
                     $videolibrary = [];
 
                 }
-                
-
-
-                    // dd($storage_settings->bunny_cdn_access_key);
-            
+          
                 // $response->getBody();
 
                 if(!empty($storage_settings) && !empty($storage_settings->bunny_cdn_file_linkend_hostname) ){
@@ -9884,16 +9880,25 @@ class AdminVideosController extends Controller
                $videolibrary = [];
 
            }
-        
+
            if(count($videolibrary) > 0){
 
                 foreach($videolibrary as $key => $value){
+
+
+
                     if( $value['Id'] == $request->videolibrary_id){
+
+
+
                         $videolibrary_id = $value['Id'];
                         $videolibrary_ApiKey = $value['ApiKey']; 
+                        $videolibrary_PullZoneId = $value['PullZoneId']; 
+                        break;
                     }else{
                         $videolibrary_id = null;
                         $videolibrary_ApiKey = null; 
+                        $videolibrary_PullZoneId = null; 
                     }
                 }
          
@@ -9901,17 +9906,38 @@ class AdminVideosController extends Controller
            }else{
                 $videolibrary_id = null;
                 $videolibrary_ApiKey = null; 
+                $videolibrary_PullZoneId = null; 
             }
+
         
             if($videolibrary_id != null && $videolibrary_ApiKey != null){
 
                 $client = new \GuzzleHttp\Client();
-
-                $response = $client->request('GET', 'https://video.bunnycdn.com/library/120702/videos?page=1&itemsPerPage=100&orderBy=date', [
+                // $videolibrary_PullZoneId
+                $client = new \GuzzleHttp\Client();
+                
+                $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $videolibrary_PullZoneId . '?includeCertificate=false', [
                     'headers' => [
-                    'AccessKey' => $videolibrary_ApiKey,
-                    'accept' => 'application/json',
-                ],
+                        'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                        'accept' => 'application/json',
+                    ],
+                ]);
+
+                $PullZoneData = json_decode($PullZone->getBody()->getContents());
+
+                    if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
+                        // vz-2117a0a6-f55  https://vz-5c4af3d1-257.b-cdn.net
+                        $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
+                    }else{
+                        $PullZoneURl = null;
+                    }
+                    // dd($PullZoneURl);
+
+                $response = $client->request('GET', 'https://video.bunnycdn.com/library/' . $videolibrary_id . '/videos?page=1&itemsPerPage=100&orderBy=date', [
+                        'headers' => [
+                        'AccessKey' => $videolibrary_ApiKey,
+                        'accept' => 'application/json',
+                    ],
                 ]);
                 $streamvideos = $response->getBody()->getContents();
                 // echo $response->getBody();
@@ -9921,8 +9947,14 @@ class AdminVideosController extends Controller
                 $streamvideos = [];
             }
 
-        // print_r($data);exit;
-            return $streamvideos;
+        // print_r($response);exit;
+            // return $streamvideos;
+            $responseData = [
+                'streamvideos' => $streamvideos,
+                'PullZoneURl' => $PullZoneURl,
+            ];
+        
+            return $responseData;
         
     }
 

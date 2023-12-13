@@ -302,15 +302,21 @@ hr {
         font-size: 1rem;
         line-height: 1.5;
     }
-
-    .btn2 {
-        padding: 13px 45px !important;
-        font-weight: 400;
-
+    .btn2{
+          font-weight: 400;
+           border: 1px solid;
+           padding: 13px 45px !important;
         border: 1px solid;
-
-
-    }
+        width: 100%;
+        background-color: orange;
+        color: white;
+        font-size: 20px;
+   
+   
+      }
+      .Stripe_button{
+        width:100%;
+      }
 
     .subsc-video {
         font-size: 18px !important;
@@ -449,9 +455,9 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                     <div class=" page-height">
                         <?php $paypal_id = Auth::user()->paypal_id;
 
-                        $paypal_subscription = !empty($paypal_id) && !empty(PaypalSubscriptionStatus() ) ? PaypalSubscriptionStatus() : " ";
+                        // $paypal_subscription = !empty($paypal_id) && !empty(PaypalSubscriptionStatus() ) ? PaypalSubscriptionStatus() : " ";  || $paypal_subscription =='CANCE'
 
-                        if($ppv_exist > 0  || settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $video->access == 'ppv' || $video_access == 'free' || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
+                        if($ppv_exist > 0  || settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $video->access == 'ppv' || $video_access == 'free' || Auth::user()->subscribed()  || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
                             
                             <?php if($video->type == 'embed'): ?>
                                 <div id="video_container" class="fitvid">
@@ -1966,7 +1972,7 @@ $artists = [];
                                                         <a type="button" class="mb-3 mt-3" data-dismiss="modal"
                                                             style="font-weight:400;"><?php echo __('Amount'); ?>: <span class="pl-2"
                                                                 style="font-size:20px;font-weight:700;">
-                                                                <?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$video->ppv_price)); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo __(@$video->ppv_price) .' '.$currency->symbol ; } ?></span></a><br>
+                                                                <?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$video->ppv_price)); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo $currency->symbol .' '.__(@$video->ppv_price) ; } ?></span></a><br>
                                                         <label class="mb-0 mt-3 p-0" for="method">
                                                             <h5 style="font-size:20px;line-height: 23px;"
                                                                 class="font-weight-bold text-black mb-2"><?php echo __('Payment Method'); ?>
@@ -2093,8 +2099,10 @@ $artists = [];
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="modal-footer">
+                                            <div class="payment_card_payment">
+                                                <div id="paypal-button-container"></div>
+                                            </div>
+                                            <div class="modal-footer" style="display:block;">
                                                 <div class="Stripe_button">
                                                     <!-- Stripe Button -->
                                                     <!-- Currency_Convert(@$video->ppv_price) -->
@@ -2103,6 +2111,14 @@ $artists = [];
                                                             class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button>
                                                     </a>
                                                 </div>
+                                                    <!-- PayPal Button -->
+
+                                                <?php if( $video->ppv_price !=null &&  $video->ppv_price != " " || $video->ppv_price !=null  || $video->global_ppv == 1){ ?>
+                                    
+                                                <div class="paypal_button">
+                                                    <button onclick="paypal_checkout()" class="btn2 btn-outline-primary"><?php echo __('Continue'); ?></button>
+                                                </div>
+                                                <?php }?>
 
                                                 <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
                                                 <div class="Razorpay_button">
@@ -2208,15 +2224,96 @@ $artists = [];
 
 
                     </div>
+                    <?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1)
+                    { 
+                        $ppv_price =  PPV_CurrencyConvert($video->ppv_price); 
+                    }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0)
+                    { $ppv_price = (@$video->ppv_price) ; 
+                    }else{
+                        $ppv_price = @$video->ppv_price;
+                    } 
+                    ?>
+
+                    <?php 
+                            if(!empty($PayPalpayment) && $PayPalpayment->live_mode == 0 )
+                            { 
+                                $client_id =  $PayPalpayment->test_paypal_signature; 
+                            }
+                            else if(!empty($PayPalpayment) && $PayPalpayment->live_mode == 1)
+                            {
+                                $client_id = $PayPalpayment->live_paypal_signature ; 
+                            }else{
+                                $client_id = '';
+                            } 
+                    ?>
 
                     <input type="hidden" id="publishable_key" name="publishable_key"
                         value="<?php echo $publishable_key; ?>">
-
                     <script type="text/javascript">
                         // videojs('videoPlayer').videoJsResolutionSwitcher(); 
                     </script>
                     <script src="https://checkout.stripe.com/checkout.js"></script>
                     <div class="clear"></div>
+                    <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $client_id; ?>"></script>
+
+                    <script>
+
+                            function paypal_checkout() {
+
+
+                                $('.paypal_button').hide();
+
+                                var amount = "<?php echo $ppv_price; ?>";
+                                paypal.Buttons({
+                                    createOrder: function (data, actions) {
+                                        // Set up the transaction
+                                        return actions.order.create({
+                                            purchase_units: [{
+                                                amount: {
+                                                    value: amount, // Replace with the amount you want to charge
+                                                    // currency_code: 'USD'
+                                                }
+                                            }]
+                                        });
+                                    },
+                                    onApprove: function (data, actions) {
+                                        // alert("You have done  Payment !");
+                                        return actions.order.capture().then(function (details) {
+                                            // Handle the successful payment
+                                            console.log(details);
+                                            // You can redirect or perform other actions here
+                                            $.ajax({
+                                                url: '<?php echo URL::to('paypal-ppv-video') ?>',
+                                                method: 'post',
+                                                data: {
+                                                    _token: '<?= csrf_token() ?>',
+                                                    amount: amount,
+                                                    video_id: '<?= @$video->id ?>',
+                                                },
+                                                success: (response) => {
+                                                    console.log("Server response:", response);
+
+                                                    setTimeout(function() {
+                                                        location.reload();
+                                                    }, 2000);
+
+
+                                                },
+                                                error: (error) => {
+                                                    swal('error');
+                                                }
+                                            });
+
+                                        });
+                                        
+                                    },
+                                    onError: function (err) {
+                                        // Handle errors
+                                        console.error(err);
+                                    }
+                                }).render('#paypal-button-container');
+                            }
+                        </script>
 
 
                     <script>
@@ -2838,35 +2935,44 @@ $artists = [];
 
                 <script>
                     window.onload = function() {
-                        $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button').hide();
+                        $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.paypal_button').hide();
                     }
+                    $('.payment_card_payment').hide();
 
                     $(document).ready(function() {
 
                         $(".payment_btn").click(function() {
 
-                            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
+                            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
 
                             let payment_gateway = $('input[name="payment_method"]:checked').val();
-                            // alert(payment_gateway);
                             if (payment_gateway == "Stripe") {
 
                                 $('.Stripe_button').show();
-                                $('.Razorpay_button,.paystack_button,.cinetpay_button').hide();
+                                $('.Razorpay_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
+                                $('.payment_card_payment').hide();
 
                             } else if (payment_gateway == "Razorpay") {
 
-                                $('.paystack_button,.Stripe_button,.cinetpay_button').hide();
+                                $('.paystack_button,.Stripe_button,.cinetpay_button,.paypal_button').hide();
                                 $('.Razorpay_button').show();
+                                $('.payment_card_payment').hide();
 
                             } else if (payment_gateway == "Paystack") {
 
-                                $('.Stripe_button,.Razorpay_button,.cinetpay_button').hide();
+                                $('.Stripe_button,.Razorpay_button,.cinetpay_button,.paypal_button').hide();
                                 $('.paystack_button').show();
+                                $('.payment_card_payment').hide();
                             } else if (payment_gateway == "CinetPay") {
 
-                                $('.Stripe_button,.Razorpay_button,.paystack_button').hide();
+                                $('.Stripe_button,.Razorpay_button,.paystack_button,.paypal_button').hide();
                                 $('.cinetpay_button').show();
+                                $('.payment_card_payment').hide();
+                            }else if (payment_gateway == "PayPal") {
+                                $('.Stripe_button,.Razorpay_button,.paystack_button,.cinetpay_button').hide();
+                                $('.paypal_button').show();
+                                $('.payment_card_payment').show();
+                                // $('.paypal_button').hide();
                             }
                         });
                     });
