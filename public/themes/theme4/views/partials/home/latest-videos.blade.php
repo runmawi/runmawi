@@ -74,32 +74,38 @@
     
 
 <!-- Modal -->
-<div class="modal fade info_model" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade info_model" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
     <div class="container">
         <div class="modal-content">
-        <div class="modal-body">
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="">
-                    </div>
-                    <div class="col-lg-6">
-                        <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
-                        <button class="drp-close model_close-button" data-bs-dismiss="modal">×</button>
-                        @if (optional($latest_video)->description)
-                            <div class="trending-dec mt-4">{!! html_entity_decode( optional($latest_video)->description) !!}</div>
-                        @endif
-                        <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+            <ul>
+                @foreach ($data as $key => $latest_video )
+                    <li>
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
+                                        <button class="drp-close model_close-button" data-bs-dismiss="modal">×</button>
+                                        @if (optional($latest_video)->description)
+                                            <div class="trending-dec mt-4">{!! html_entity_decode( optional($latest_video)->description) !!}</div>
+                                        @endif
+                                        <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
 
-                    </div>
-                </div>
-            </div>
-        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li> 
+                @endforeach
+            </ul>
         </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 
