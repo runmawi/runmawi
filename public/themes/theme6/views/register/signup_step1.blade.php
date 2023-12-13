@@ -432,9 +432,9 @@ i.fa.fa-google-plus {
                                 @endif
                             </div>
 
-							<div class="col-md-12 d-flex custom-control custom-checkbox mb-3" id="mob">
-                                <input id="password-confirm" type="checkbox" class="custom-control-input" name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right custom-control-label" style="display: inline-block;
+							<div class="col-md-12 d-flex custom-control custom-checkbox mb-3 pl-3" id="mob">
+                                <input id="password-confirm" type="checkbox"  name="terms" value="1" required>
+								<label for="password-confirm" class="col-form-label text-md-right pl-2" style="display: inline-block;
     cursor: pointer;">{{ __('I accept') }} <a class="text-primary" data-toggle="modal" data-target="#terms" style="text-decoration:none;"> {{ __('Terms and  Conditions' ) }}</a></label>
                             </div>
 
