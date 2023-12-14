@@ -34,7 +34,7 @@
                             <div class="row">
                                     <div class="col-md-9">
                                         <div class="form-group">
-                                             <h5 style="text-align: left"> {{ __('kid's profile ?') }}</h5>
+                                             <h5 style="text-align: left"> {{ __("kid's profile ?") }}</h5>
                                         </div>
                                     </div>
 
