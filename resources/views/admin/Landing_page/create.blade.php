@@ -236,7 +236,7 @@
            $("#Section_3").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_3[]" class="form-control mt-2" id= '+ 'ck_editor_section3-' + i  +' /> </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
         //    CKEDITOR.replace( 'ck_editor_section3-'+ i );
             CKEDITOR.replace('ck_editor_section3-'+ i, {
-                filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadUrl: "{{ route('ckeditor.x', ['_token' => csrf_token()]) }}",
                 filebrowserUploadMethod: 'form'
 
             });
