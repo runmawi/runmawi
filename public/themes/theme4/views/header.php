@@ -1408,7 +1408,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                 <?php }elseif ( $menu->in_menu == "tv_show") { ?>
                                                    
-                                                   <li class="nav-item active dskdflex menu-item ">
+                                                   <li class="nav-item active dskdflex menu-item  d-flex align-items-center">
                                                    <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
                                                       <a href="<?php echo URL::to($menu->url)?>">
                                                             <?= ($menu->name); ?> <i class="fa fa-angle-right"></i>
@@ -1471,7 +1471,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                 <?php }elseif ( $menu->in_menu == "networks") { ?>
 
-                                                   <li class="nav-item dropdown menu-item ">
+                                                   <li class="nav-item dropdown menu-item d-flex align-items-center">
                                                    <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
                                                          <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                             <?= $menu->name ?> <i class="fa fa-angle-right"></i>
@@ -1507,7 +1507,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                 <?php } else { ?>
 
-                                                   <li class="menu-item">
+                                                   <li class="menu-item d-flex align-items-center">
                                                    <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
                                                       <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to( $menu->url ); }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
                                                         <?php echo __($menu->name);?>
