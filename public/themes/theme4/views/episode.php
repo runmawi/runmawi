@@ -253,14 +253,18 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                             href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
                             <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                         </a>
+                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
                     </li>
                     <?php } ?>
 
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
 
-                    <li class="breadcrumb-item"><a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> </a></li>
+                    <li class="breadcrumb-item">
+                        <a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> 
+                        </a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
 
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
 
                     <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? ucwords(substr(@$episode->title, 0, 120) . '...') : ucwords($episode->title); ?> </a></li>
                 </ol>
@@ -331,41 +335,13 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
                         <p class="" style=";font-size: 100%;color: white;font-weight: 700;">
                             <?= $episode->title ?></p>
-                        <p class="desc"><?php echo $series->details; ?></p>
-                    </div>
-
-                    <!-- <div class="col-md-2 text-center text-white">
-   <span class="view-count  " style="float:right;">
-   <i class="fa fa-eye"></i>
-               <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?>
-               <?php else: ?><?= $episode->views ?><?php endif; ?> Views
-   </span>
-   </div> -->
-
-                    <!-- <div>
-   <?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") {
-   ?>
-   <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
-   <?php // echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;
-   ?> </button>
-   <?php //}
-   ?>
-            <br>
-   </div> -->
-
-                </div>
-                <!-- <div class="clear" style="display:flex;justify-content: space-between; align-items: center;"> <div> -->
-
-
-                <!-- Watchlater & Wishlist -->
-
-                <?php
+                            <?php
                 $media_url = URL::to('/episode/') . '/' . $series->slug . '/' . $episode->slug;
                 $embed_media_url = URL::to('/episode/embed') . '/' . $series->slug . '/' . $episode->slug;
                 $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '"  allowfullscreen></iframe>';
                 ?>
 
-                <div class="col-md-12">
+                <div class="col-md-12 pl-0">
                     <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                         <li>
                             <?php if($episode_watchlater == null){ ?>
@@ -443,6 +419,40 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                         </li>
                     </ul>
                 </div>
+
+
+
+
+                            
+                        <p class="desc"><?php echo $series->details; ?></p>
+                    </div>
+
+                    <!-- <div class="col-md-2 text-center text-white">
+   <span class="view-count  " style="float:right;">
+   <i class="fa fa-eye"></i>
+               <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?>
+               <?php else: ?><?= $episode->views ?><?php endif; ?> Views
+   </span>
+   </div> -->
+
+                    <!-- <div>
+   <?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") {
+   ?>
+   <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
+   <?php // echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;
+   ?> </button>
+   <?php //}
+   ?>
+            <br>
+   </div> -->
+
+                </div>
+                <!-- <div class="clear" style="display:flex;justify-content: space-between; align-items: center;"> <div> -->
+
+
+                <!-- Watchlater & Wishlist -->
+
+               
 
             </div>
             <div></div>
@@ -649,6 +659,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             </div>
         </div>
     </div>
+
     <div class="clear"></div>
     <input type="hidden" id="episode_id" value="<?php echo $episode->id; ?>">
     <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key; ?>">
