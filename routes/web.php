@@ -2214,8 +2214,8 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('series/category/{slug}', 'TvshowsController@SeriesCategory')->name('SeriesCategory');
     Route::get('SeriescategoryList', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
 
-    Route::get('TV-Shows/Networks/{slug}', 'TvshowsController@Specific_Series_Networks')->name('Specific_Series_Networks');
-    Route::get('TV-Shows/Networks-List', 'TvshowsController@Series_Networks_List')->name('Series_Networks_List');
+    Route::get('tv-shows/networks/{slug}', 'TvshowsController@Specific_Series_Networks')->name('Specific_Series_Networks');
+    Route::get('tv-shows/networks-list', 'TvshowsController@Series_Networks_List')->name('Series_Networks_List');
 
     // Filter
     Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
@@ -2401,3 +2401,5 @@ Route::post('video_js_wishlist', 'ChannelController@video_js_wishlist')->name('v
 Route::post('video_js_Like', 'ChannelController@video_js_Like')->name('video-js.like');
 
 Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('video-js.dislike');
+
+Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
