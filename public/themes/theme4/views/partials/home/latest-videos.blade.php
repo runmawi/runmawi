@@ -50,8 +50,8 @@
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
                                                                 <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                                <!-- <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> -->
+                                                                <!-- <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0" ><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> -->
+                                                                <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                             </div>
                                                         </div>
                                                         </div>
@@ -71,17 +71,11 @@
                 </div>
             </div>
         </div>
-    </section>
-    
-
-<!-- Modal -->
-<!-- <div class="modal fade info_model" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- Modal -->
+<div class="modal fade info_model" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
     <div class="container">
-        <div class="modal-content">
-            <ul>
-                @foreach ($data as $key => $latest_video )
-                    <li>
+        <div class="modal-content" style="border:none;">
                         <div class="modal-body">
                             <div class="col-lg-12">
                                 <div class="row">
@@ -100,13 +94,14 @@
                                 </div>
                             </div>
                         </div>
-                    </li> 
-                @endforeach
-            </ul>
         </div>
     </div>
   </div>
-</div> -->
+</div>
+    </section>
+    
+
+
 
 
 

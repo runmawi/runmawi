@@ -77,6 +77,41 @@
             font-size: 14px;
       }
 </style>
+<!-- Model style -->
+
+<style>
+
+.info_model.modal-dialog{
+    width:auto;
+        max-width:1000px !important;
+    }
+    .modal-dialog-centered .modal-content{
+        background:transparent;
+    }
+    .modal-dialog-centered .col-lg-6{
+        width:100%;
+        overflow: hidden;
+    }
+    .model_close-button{
+        border: 2px solid;
+    width: 30px;
+    height: 30px;
+    font-size: 27px;
+    }
+    .model_close-button:hover{
+        background:white;
+        color:black;
+
+    }
+    .drp-close.model_close-button:hover {
+    transform: none;
+}
+.modal-body.trending-dec {
+    margin-top:4%;
+    line-height: 1.5;
+    font-size: calc(14px + 0.5vmin);
+}
+</style>
 
 <?php 
 $series = $series_data ;
@@ -87,8 +122,8 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
      
      <div id="myImage" >
                
-     <div class="cate-banner_thumbnail" >
-       <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" alt="">
+     <div class="dropdown_thumbnail" >
+       <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" alt="" style="height:450px;">
      </div>
      <!-- BREADCRUMBS -->
 
@@ -143,8 +178,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                           <?php echo __('Season'); ?>
                             <span class="sea"> 1 </span>
                              - <?php echo __('U/A English'); ?>
-                            <p style="color:#fff!important;"><?php echo substr($series->details, 0, 100);?></p>
-						                <p class="trending-dec"><?php echo substr($series->description, 0, 100);?></p>
+                            <!-- <p style="color:#fff!important;"><?php echo substr($series->details, 0, 100);?></p> -->
+						                <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><?php echo substr($series->description, 0, 200);?>...</p>
+
+
                             <div class="row p-0 mt-3 align-items-center">
                                 <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                 <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /></a></div>
@@ -362,6 +399,32 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 		
 				<?php endif;?>
 				<?php $payment_type = App\PaymentSetting::get(); ?>
+
+<!-- Model -->
+<div class="modal fade info_model" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+    <div class="container">
+        <div class="modal-content" style="border:none;">
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" width="100%" alt="">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h2 class="caption-h2"><?= $series->title ?></h2>
+                                        <button class="drp-close model_close-button" data-bs-dismiss="modal">×</button>
+                                            <div class="trending-dec mt-4"><?= $series->description ?></div>
+                                        <!-- <a href="{{ URL::to('category/videos/'.$latest_video->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a> -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        </div>
+    </div>
+  </div>
+</div>
 
 <?php include('footer.blade.php');?>
 
