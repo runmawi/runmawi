@@ -1360,3 +1360,9 @@ function Series_Networks_Status()
     $Series_Networks_Status = App\Setting::pluck('series_networks_status')->first();
     return  $Series_Networks_Status; 
 }
+
+function Enable_Extract_Image()
+{
+    $enable_extract_image = App\SiteTheme::pluck('enable_extract_image')->first();
+    return  $enable_extract_image; 
+}

@@ -229,6 +229,8 @@ class AdminThemeSettingsController extends Controller
         $theme_settings->translate_checkout       = !empty($data['translate_checkout']) ? '1' : '0';
 
         $theme_settings->header_position       = !empty($data['header_position']) ? '1' : '0';
+        
+        $theme_settings->enable_extract_image       = !empty($data['enable_extract_image']) ? '1' : '0';
 
         $theme_settings->save();
 
