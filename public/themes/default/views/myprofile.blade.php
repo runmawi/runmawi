@@ -611,10 +611,10 @@ $settings = App\Setting::first();
 
                                <table class="table  artists-table iq-card text-center p-0">
                                           <tr class="r1 text-white">
-                                             <th><label> {{ __('S.No') }} </label></th>
-                                             <th><label> {{ __('Email') }} </label></th>
-                                             <th><label> {{ __('TV Code') }} </label></th>
-                                             <th><label> {{ __('Action') }} </label></th>
+                                             <th class="text-white"><label> {{ __('S.No') }} </label></th>
+                                             <th class="text-white"><label> {{ __('Email') }} </label></th>
+                                             <th class="text-white"><label> {{ __('TV Code') }} </label></th>
+                                             <th class="text-white"><label> {{ __('Action') }} </label></th>
                                              
                                              @foreach($LoggedusersCode as $key=>$Logged_usersCode)
                                              <tr>
