@@ -407,7 +407,7 @@ $settings = App\Setting::first();
                          
                          <!-- -->
                   <div class="row align-items-center justify-content-center mb-3 mt-3">
-                     <div class=" text-center col-sm-4 ">
+                     <div class=" text-center col-sm-12 ">
                         <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('View Transaction Details') }}</a>
                      </div>
 
@@ -607,10 +607,10 @@ $settings = App\Setting::first();
                   
                   <p class="text-white">{{ __('Tv Logged User List') }}</p>
        
-                               <div class="col-md-4">
+                               <div class="col-md-8 pl-0">
 
                                <table class="table  artists-table iq-card text-center p-0">
-                                          <tr class="r1">
+                                          <tr class="r1 text-white">
                                              <th><label> {{ __('S.No') }} </label></th>
                                              <th><label> {{ __('Email') }} </label></th>
                                              <th><label> {{ __('TV Code') }} </label></th>
