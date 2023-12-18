@@ -179,6 +179,19 @@
                                                 <span class="text pr-2"> {{ __('Subscribe Now') }} </span>
                                             </div>
                                     </a>
+
+                            @elseif(  Auth::guest() && $videodetail->access == 'guest')
+
+                                    <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
+                                            <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                </svg>
+                                                <span class="text pr-2"> {{ __('Watch Now') }} </span>
+                                            </div>
+                                    </a>
+
                             @else
 
                                 <a class="btn"  href="{{ URL::to('/login') }}" >
@@ -226,26 +239,6 @@
                                 <text class="CircularProgressbar-text" x="50" y="50"> {{ optional($videodetail)->rating }}  </text>
                             </svg>
                         </div>
-
-
-                        {{-- <?php   $user = Auth::user(); 
-                                if (  ($user->role!="subscriber" && $videodetail->access != 'guest' && $user->role!="admin") ) { ?>
-                                <a href="<?php echo URL::to('/becomesubscriber'); ?>">
-                                    <span class="view-count btn btn-primary subsc-video">
-                                        <?php echo __('Subscribe'); ?>
-                                    </span>
-                                </a>
-                        <?php } ?>
-
-                        <?php if (  $videodetail->global_ppv != null && $user->role!="admin" && $videodetail->ppv_price != null  && $user->role!="admin") { ?>
-                            <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
-                                <?php echo __('Purchase Now'); ?> 
-                            </button>
-                        <?php } else { ?>
-                            <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login'); ?>">
-                                <?php echo __('Rent'); ?>
-                            </a>
-                        <?php } ?> --}}
                     </div>
 
                     @if( $setting->show_description == 1 && optional($videodetail)->description )   {{-- Description --}}
