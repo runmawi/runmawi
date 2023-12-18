@@ -762,34 +762,36 @@
       color: <?php echo GetDarkText(); ?>;
    }
    
-   @media (min-width: 992px){
-   .navbar-collapse.offcanvas-collapse.open ul.dropdown-menu.primary_menu {
-    position: absolute;
-    left: 100%;
-    top: 20%;
-}}
-@media (min-width: 992px){
-   li.nav-item.dropdown.menu-item li:hover ul.submenu.dropdown-menu {
-      display: block !important;
-      position: absolute;
-      left: 100%;
-      right: 14%;
-      z-index: 999;
-   }}
-   @media (min-width: 992px){
-       .navbar-collapse.offcanvas-collapse.open {
-    width:500px !important;
-}}
+.side-colps:not(.show){
+   display:block;
+}
+li.menu-item.d-flex.align-items-center {
+    border: none !important;
+}
 </style>
 
 <style type="text/css">
 
 /* ============ desktop view ============ */
+@media(min-width: 991px) {
+      .offcanvas-collapse{
+         top:66px !important;
+   }}
+   @media(max-width: 991px) {
+      header .navbar-collapse .offcanvas-collapse ul.navbar-nav{
+        gap:10px;
+   }}
+   @media(max-width: 1024px) {
+      ul.submenu.dropdown-menu{
+       left:50%;
+       top:86px;
+   }}
 @media all and (min-width: 992px) {
 
 	.dropdown-menu li{
 		position: relative;
 	}
+   
 	.dropdown-menu .submenu{ 
 		display: none;
 		position: absolute;
@@ -803,6 +805,7 @@
 	.dropdown-menu > li:hover{ background-color: #f1f1f1 }
 	li.nav-item.dropdown.menu-item:hover ul.dropdown-menu.primary_menu{
       display:block;
+      top:84%;
    }
 	li.nav-item.dropdown.menu-item:hover ul.submenu.dropdown-menu{
       display:none;
@@ -829,6 +832,7 @@
 .dropdown-menu > li:hover a{
    color:#2578c0!important;
 }
+
 
 /* Sidebar */
 body.dark-theme .offcanvas{
@@ -886,11 +890,11 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                       <!-- Vertical Button -->
                               <?php if($theme->header_position == 1): ?>
-                                 <button class="navbar-toggler d-block border-0 mr-3 onclickbutton_menu" type="button" id="navToggle"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+                                 <button class="navbar-toggler d-block border-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
                               <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
-                              <div class="collapse navbar-collapse" id="main_nav">
+                              <div class="collapse navbar-collapse side-colps" id="main_nav">
 
                                                       <!-- Horizontal  -->
                                  <?php if($theme->header_position == 0): ?>
@@ -1202,7 +1206,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                  <?php elseif( $theme->header_position == 1 ) :?>
                                                       <!-- Vertical  -->
-                                    <div class="navbar-collapse offcanvas-collapse">
+                                    <div class="navbar-collapse offcanvas-collapse pt-2 ">
                                        <ul class="navbar-nav">
                                           
                                           <?php  
@@ -1284,7 +1288,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
 
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                         <?= $menu->name ?> <i class="fa fa-angle-right"></i>
+                                                         <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
                                                       <ul class="dropdown-menu primary_menu">
@@ -1339,7 +1343,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
 
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                         <?= $menu->name ?> <i class="fa fa-angle-right"></i>
+                                                         <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
                                                       <ul class="dropdown-menu primary_menu">
@@ -1375,7 +1379,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
                                                    <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                         <?= $menu->name ?> <i class="fa fa-angle-right"></i>
+                                                         <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
                                                       <ul class="dropdown-menu primary_menu">
@@ -1411,7 +1415,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <li class="nav-item active dskdflex menu-item  d-flex align-items-center">
                                                    <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
                                                       <a href="<?php echo URL::to($menu->url)?>">
-                                                            <?= ($menu->name); ?> <i class="fa fa-angle-right"></i>
+                                                            <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
                                                       <?php if(count($tv_shows_series) > 0 ){ ?>
@@ -1438,7 +1442,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
                                                    <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                         <?= $menu->name ?> <i class="fa fa-angle-right"></i>
+                                                         <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
 
                                                       <ul class="dropdown-menu primary_menu">
@@ -1474,7 +1478,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
                                                    <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
                                                          <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                            <?= $menu->name ?> <i class="fa fa-angle-right"></i>
+                                                            <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                          </a>
 
                                                          <ul class="dropdown-menu primary_menu">
@@ -2004,7 +2008,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
       
 .offcanvas-collapse {
     position: fixed;
-    top: 56px;
+    top: 89px;
     bottom: 0;
     right: 100%;
     left: -300px;
@@ -2085,6 +2089,7 @@ window.onload = function () {
     console.log("window is loaded");
 };
    </script>
+   
    <script>
   let changeIcon = function(icon) {
     if (icon.classList.contains('fa-bars')) {
@@ -2098,3 +2103,4 @@ window.onload = function () {
     }
   }
 </script>
+
