@@ -2401,3 +2401,5 @@ Route::post('video_js_wishlist', 'ChannelController@video_js_wishlist')->name('v
 Route::post('video_js_Like', 'ChannelController@video_js_Like')->name('video-js.like');
 
 Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('video-js.dislike');
+
+Route::get('Movies-Home-Page', 'MoviesHomePageController@index')->name('videos.Movies-Page');
