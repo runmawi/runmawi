@@ -432,8 +432,21 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;">Side Position</div>
                             </div>
                         </div>
-                    </div>
+            
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Enable Extract Images')) }} </label>
 
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:blue;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_extract_image"  type="checkbox" @if( $settings->enable_extract_image == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
