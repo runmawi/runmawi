@@ -1360,3 +1360,9 @@ function Series_Networks_Status()
     $Series_Networks_Status = App\Setting::pluck('series_networks_status')->first();
     return  $Series_Networks_Status; 
 }
+
+function videos_expiry_date_status()
+{
+    $videos_expiry_date_status = App\Setting::pluck('videos_expiry_status')->first();
+    return  $videos_expiry_date_status; 
+}

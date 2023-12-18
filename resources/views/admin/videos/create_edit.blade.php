@@ -537,6 +537,16 @@ border-radius: 0px 4px 4px 0px;
                         <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" >
                     </div>
                 </div>
+
+               @if (videos_expiry_date_status() == 1)
+                  <div class="row">
+                     <div class="col-sm-6 form-group mt-3" id="">
+                        <label class="">Expiry Date & Time</label>
+                        <input type="datetime-local" class="form-control" id="expiry_date" name="expiry_date" value="@if(!empty($video->expiry_date)){{ $video->expiry_date }}@endif" >
+                     </div>
+                  </div>     
+               @endif
+
                </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                <button type="submit" style = "float: right;
     margin: 10px 5px 10px 0px;
