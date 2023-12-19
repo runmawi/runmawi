@@ -585,26 +585,40 @@ class AdminVideosController extends Controller
                 if(Enable_Extract_Image() == 1){
                 // extractImageFromVideo
 
-                    $ffmpeg = \FFMpeg\FFMpeg::create();
-                    $videoFrame = $ffmpeg->open($Video_storepath);
-
-                    // Define the dimensions for the frame (16:9 aspect ratio)
-                    $frameWidth = 1920; 
-                    $frameHeight = 1080; 
-
-                    for ($i = 1; $i <= 5; $i++) {
-                        $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
-
-                        try {
-                            $videoFrame
-                                ->frame(TimeCode::fromSeconds($i * 5)) // Change the timecode as needed
-                                ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
-                                
-                                $VideoExtractedImage = new VideoExtractedImages();
-                                $VideoExtractedImage->user_id = Auth::user()->id;
-                                $VideoExtractedImage->video_id = $video->id;
-                                $VideoExtractedImage->image_path = URL::to("/storage/app/public/frames/" . $video->id.'_'.$rand.'_'.$i.'.jpg');
-                                $VideoExtractedImage->save();
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                for ($i = 1; $i <= 5; $i++) {
+                    $imagePortraitPath = storage_path("app/public/frames/{$video->id}_{$randportrait}_{$i}.jpg");
+                    $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
+                
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->video_id = $video->id;
+                        $VideoExtractedImage->image_path = URL::to("/storage/app/public/frames/" . $video->id . '_' . $rand . '_' . $i . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/storage/app/public/frames/" . $video->id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->save();
+             
+                
                         } catch (\Exception $e) {
                             dd($e->getMessage());
                         }
