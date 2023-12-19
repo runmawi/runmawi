@@ -894,7 +894,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                               <?php endif ;?>
 
                               <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
-                              <a class="navbar-ad" href="#"> <img class="img-fluid logo" src="public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png" /> </a>
+                              <?php if($theme->header_position == 1): ?>
+                                 <a class="navbar-ad" href="#"> <img class="img-fluid logo" src="public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png" /> </a>
+                              <?php endif ;?>
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
 
                                                       <!-- Horizontal  -->
