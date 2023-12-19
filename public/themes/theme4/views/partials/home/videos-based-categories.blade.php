@@ -65,12 +65,12 @@
                                         
                                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title pl-5"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
+                            <h4 class="main-title pl-4"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
                             <h4 class="main-title "><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ "view all" }}</a></h4>
                         </div>
 
                         <div class="trending-contens">
-                            <ul id="trending-slider-nav" class="{{ 'category-videos-slider-nav list-inline p-0 ml-5 row align-items-center' }}" data-key-id="{{$key}}">
+                            <ul id="trending-slider-nav" class="{{ 'category-videos-slider-nav list-inline p-0 ml-4 row align-items-center' }}" data-key-id="{{$key}}">
 
                                 @foreach ($video_category->category_videos as $videos )
                                     <li>
@@ -94,7 +94,7 @@
                                                     <div id="" class="overview-tab tab-pane fade active show">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                            <div class="caption pl-5">
+                                                            <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ optional($videos)->title }}</h2>
 
                                                                 <!-- @if ( $videos->year != null && $videos->year != 0 )

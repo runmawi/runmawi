@@ -6,7 +6,7 @@
 
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-5"><a
+                        <h4 class="main-title pl-4"><a
                                 href="{{ $order_settings_list[26]->url ? URL::to($order_settings_list[26]->url) : null }} ">{{ optional($order_settings_list[26])->header_name }}</a>
                         </h4>
                         <h4 class="main-title"><a
@@ -15,7 +15,7 @@
                     </div>
 
                     <div class="tvthrillers-contens">
-                            <ul id="trending-slider-nav" class="my-playlist-nav list-inline p-0 ml-5 row align-items-center">
+                            <ul id="trending-slider-nav" class="my-playlist-nav list-inline p-0 ml-4 row align-items-center">
                                 @foreach ($data as $My_Playlist)
                                     <li>
                                         <a href="javascript:void(0);">
@@ -38,7 +38,7 @@
                                                     <div id="" class="overview-tab tab-pane fade active show">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                            <div class="caption pl-5">
+                                                            <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ strlen($My_Playlist->title) > 17 ? substr($My_Playlist->title, 0, 18) . '...' : $My_Playlist->title }}</h2>
 
                                                                 <div class="p-btns">
