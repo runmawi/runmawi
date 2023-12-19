@@ -20,7 +20,7 @@
                                         </div>
                                     </a>
                                     @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
-                                        <div ><img class="blob" src="public\themes\theme4\views\img\instagram-live.png" alt="" width="100%"></div>
+                                        <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="100%"></div>
                                     @endif
                                 </li>
                             @endforeach
@@ -140,16 +140,15 @@
     });
 </script>
 
+
+<!-- /* pulsing animation */ -->
 <style>
-    .blob {
-	/* background: red; */
-	border-radius: 50%;
+
+.blob {
 	margin: 10px;
-	height: 50px;
-	width: 50px;
-
+	height: 22px;
+	width: 59px;
 	box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
-
 	transform: scale(1);
 	animation: pulse 2s infinite;
     position:absolute;

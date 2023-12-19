@@ -727,6 +727,9 @@ header .navbar ul li.menu-item a:hover {
     font-weight: 400 !important;
     background-color: transparent !important;
 }
+#search_list li.list-group-item{
+    background-color: transparent !important;
+}
 
 /*  Signup Page*/
 
@@ -1145,3 +1148,4 @@ mask-image: linear-gradient(to right, transparent 0%, black 50%);
     white-space: nowrap;
     display: inline-block;
 }
+

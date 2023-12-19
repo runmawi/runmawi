@@ -1579,7 +1579,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              </form>
                                           </div>
 
-                                          <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+                                          <div class="iq-sub-dropdown search_content overflow-auto mt-3" id="sidebar-scrollbar" style="width:146px;">
                                              <div class="iq-card-body">
                                                 <div id="search_list" class="search_list search-toggle device-search" ></div>
                                              </div>
