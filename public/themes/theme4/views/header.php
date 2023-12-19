@@ -854,6 +854,16 @@ header#main-header.menu-sticky{
    color:#2578c0!important;
 }
 
+@media (min-width:769px){
+   .navbar-ad{
+      display:block;
+   }
+}
+@media (max-width:768px){
+   .navbar-ad{
+      display:none;
+   }
+}
 
 /* Sidebar */
 body.dark-theme .offcanvas{

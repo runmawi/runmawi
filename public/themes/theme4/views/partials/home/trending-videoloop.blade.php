@@ -6,12 +6,12 @@
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-5"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[0]->url) : null }} ">{{ optional($order_settings_list[0])->header_name }}</a></h4>
+                        <h4 class="main-title pl-4"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[0]->url) : null }} ">{{ optional($order_settings_list[0])->header_name }}</a></h4>
                         <h4 class="main-title"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[0]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="featured-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
+                        <ul id="trending-slider-nav" class="featured-videos-slider-nav list-inline p-0 ml-4 row align-items-center">
                             @foreach ($data as $featured_videos)
                                 <li>
                                     <a href="javascript:void(0);">
@@ -34,7 +34,7 @@
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <div class="caption pl-5">
+                                                        <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ optional($featured_videos)->title }}</h2>
 
                                                             {{-- @if ( $featured_videos->year != null && $featured_videos->year != 0)
