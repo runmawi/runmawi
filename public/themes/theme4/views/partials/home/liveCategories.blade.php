@@ -45,6 +45,56 @@
                                                             </div>
                                                         </div>
 
+                                                        <div class="trending-contens sub_dropdown_image mt-3">
+                                                            <ul id='trending-slider-nav'  class= "Category-depends-live-stream pl-5 m-0">
+
+                                                                <?php
+                                                                    
+                                                                    $liveCategory = App\CategoryLive::where('category_id',$livecategories->id)->groupBy('live_id')->pluck('live_id'); 
+
+                                                                    $live_stream_videos = App\LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','player_image','Tv_live_image','featured','details','description')
+                                                                                            ->limit(30)->where('active',1)->where('status', 1)->whereIn('id',$liveCategory)->latest()->limit(30)
+                                                                                            ->get();
+                                                                            
+                                                                ?>
+
+                                                                @foreach ($live_stream_videos as $livestream_details )
+                                                                    <li>
+                                                                        <a href="{{ URL::to('live/'.$livestream_details->slug) }}">
+                                                                            <div class=" position-relative">
+
+                                                                                <img src="{{ $livestream_details->image ?  URL::to('public/uploads/images/'.$livestream_details->image) : default_vertical_image_url() }}" class="img-fluid" >                                                                                <div class="controls">
+                                                                                   
+                                                                                    <a href="{{ URL::to('live/'.$livestream_details->slug) }}">
+                                                                                        <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                                                    </a>
+
+                                                                                    <nav><button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+                                                                                    
+                                                                                    @if ($livestream_details->publish_type == "publish_now" || ($livestream_details->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_details->publish_time))) 
+                                                                                        <p class="vod-info">
+                                                                                            <img src="{{ URL::to('public\themes\theme4\views\img\Live-Icon.png') }}" alt="" width="25%">
+                                                                                        </p>
+                                                                                    @endif
+
+                                                                                    <p class="trending-dec" style="position: absolute ;bottom: 2px">
+                                                                                        
+                                                                                        @if ($livestream_details->publish_type == "publish_later")
+                                                                                            {{ 'Live Start On '. Carbon\Carbon::parse($livestream_details->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }}  <br>   
+                                                                                        @endif
+
+                                                                                        {{ optional($livestream_details)->title   }} 
+                                                                                        {!! (strip_tags(substr(optional($livestream_details)->description, 0, 50))) !!}
+                                                                                    </p>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+
                                                         <div class="dropdown_thumbnail">
                                                             <img  src="{{ $livecategories->image ?  URL::to('public/uploads/livecategory/'.$livecategories->image) : default_horizontal_image_url() }}" alt="">
                                                         </div>
@@ -66,7 +116,7 @@
 <script>
     
     $( window ).on("load", function() {
-        $('.live-category-slider').hide();
+        $('.live-category-slider').fadeOut();
     });
 
     $(document).ready(function() {
@@ -115,9 +165,44 @@
             ],
         });
 
+        $('.Category-depends-live-stream').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            asNavFor: '.live-category-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
         $('.live-category-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
-            $('.live-category-slider').show();
+            $('.live-category-slider').fadeIn();
         });
 
         $('body').on('click', '.drp-close', function() {

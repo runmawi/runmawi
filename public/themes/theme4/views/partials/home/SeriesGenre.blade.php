@@ -45,6 +45,55 @@
                                                             </div>
                                                         </div>
 
+                                                        
+                                                        <div class="trending-contens sub_dropdown_image mt-3">
+                                                            <ul id="{{ 'trending-slider-nav' }}"  class= "Category-depends-series pl-5 m-0">
+
+                                                                <?php
+
+                                                                    $SeriesCategory = App\SeriesCategory::where('category_id',$seriesGenre->id)->groupBy('series_id')->pluck('series_id'); 
+
+                                                                    $series = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
+                                                                                                    'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
+                                                                                                    ->where('active', '1')->whereIn('id',$SeriesCategory);
+
+                                                                    $series = $series->latest()->limit(30)->get()->map(function ($item) {
+                                                                                $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : Vertical_Default_Image() ;
+                                                                                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : Horizontal_Default_Image() ;
+                                                                                $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : Horizontal_Default_Image() ;       
+                                                                                $item['season_count'] =  App\SeriesSeason::where('series_id',$item->id)->count();
+                                                                                $item['episode_count'] =  App\Episode::where('series_id',$item->id)->count();
+                                                                                return $item;
+                                                                            });  
+                                                                    
+                                                                ?>
+
+                                                                @foreach ($series as $series_details )
+                                                                    <li>
+                                                                        <a href="{{ URL::to('play_series/'.$series_details->slug) }}">
+                                                                            <div class=" position-relative">
+                                                                                <img src="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : default_vertical_image_url() }}" class="img-fluid" >                                                                                <div class="controls">
+                                                                                   
+                                                                                    <a href="{{ URL::to('play_series/'.$series_details->slug) }}">
+                                                                                        <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                                                    </a>
+
+                                                                                    <nav><button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+                                                                                    
+                                                                                    <p class="trending-dec" >
+                                                                                        {{ $series_details->season_count ." S ".$series_details->episode_count .' E' }} <br>
+                                                                                        {{ optional($series_details)->title   }} <br>
+                                                                                        {!! (strip_tags(substr(optional($series_details)->description, 0, 50))) !!}
+                                                                                    </p>
+                                                                                   
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+
                                                         <div class="dropdown_thumbnail">
                                                             <img  src="{{ $seriesGenre->banner_image ?  URL::to('public/uploads/videocategory/'.$seriesGenre->banner_image) : default_horizontal_image_url() }}" alt="">
                                                         </div>
@@ -66,7 +115,7 @@
 <script>
     
     $( window ).on("load", function() {
-        $('.series-category-slider').hide();
+        $('.series-category-slider').fadeOut();
     });
 
     $(document).ready(function() {
@@ -115,9 +164,44 @@
             ],
         });
 
+        $('.Category-depends-series').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            asNavFor: '.series-category-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
         $('.series-category-slider-nav').on('click', function() {
             $( ".drp-close" ).trigger( "click" );
-            $('.series-category-slider').show();
+            $('.series-category-slider').fadeIn();
         });
 
         $('body').on('click', '.drp-close', function() {
