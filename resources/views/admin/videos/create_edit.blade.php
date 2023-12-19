@@ -540,7 +540,7 @@ border-radius: 0px 4px 4px 0px;
 
                @if (videos_expiry_date_status() == 1)
                   <div class="row">
-                     <div class="col-sm-6 form-group mt-3" id="">
+                     <div class="col-sm-4 form-group mt-3" id="">
                         <label class="">Expiry Date & Time</label>
                         <input type="datetime-local" class="form-control" id="expiry_date" name="expiry_date" value="@if(!empty($video->expiry_date)){{ $video->expiry_date }}@endif" >
                      </div>
