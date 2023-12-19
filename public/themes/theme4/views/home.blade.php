@@ -188,4 +188,44 @@
 <?php
    include(public_path('themes/theme4/views/partials/home/home_pop_up.php'));
    include(public_path('themes/theme4/views/footer.blade.php')) ;
-?>
+?> 
+
+<style>
+
+   .info_model.modal-dialog{
+      width:auto;
+      max-width:1000px !important;
+   }
+
+   .modal-dialog-centered .modal-content{
+      background:transparent;
+   }
+
+   .modal-dialog-centered .col-lg-6{
+      width:100%;
+      overflow: hidden;
+   }
+
+   .model_close-button{
+      border: 2px solid;
+      width: 30px;
+      height: 30px;
+      font-size: 27px;
+   }
+
+   .model_close-button:hover{
+      background:white;
+      color:black;
+
+   }
+
+   .drp-close.model_close-button:hover {
+      transform: none;
+   }
+
+   .modal-body.trending-dec {
+      margin-top:4%;
+      line-height: 1.5;
+      font-size: calc(14px + 0.5vmin);
+   }
+</style>
