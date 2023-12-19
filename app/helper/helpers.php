@@ -1361,6 +1361,12 @@ function Series_Networks_Status()
     return  $Series_Networks_Status; 
 }
 
+function videos_expiry_date_status()
+{
+    $videos_expiry_date_status = App\Setting::pluck('videos_expiry_status')->first();
+    return  $videos_expiry_date_status; 
+}
+
 function Enable_Extract_Image()
 {
     $enable_extract_image = App\SiteTheme::pluck('enable_extract_image')->first();
