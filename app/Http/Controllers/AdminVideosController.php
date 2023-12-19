@@ -1046,6 +1046,7 @@ class AdminVideosController extends Controller
         $data['video_js_post_position_ads'] = $request->video_js_post_position_ads ;
         $data['video_js_mid_position_ads_category'] = $request->video_js_mid_position_ads_category ;
         $data['video_js_mid_advertisement_sequence_time'] = $request->video_js_mid_advertisement_sequence_time ;
+        $data['expiry_date'] = $request->expiry_date ;
 
         if (!empty($data["embed_code"])) {
             $video = new Video();
@@ -2285,6 +2286,7 @@ class AdminVideosController extends Controller
         $video->video_js_post_position_ads = $request->video_js_post_position_ads;
         $video->video_js_mid_position_ads_category = $request->video_js_mid_position_ads_category;
         $video->video_js_mid_advertisement_sequence_time = $request->video_js_mid_advertisement_sequence_time;
+        $video->expiry_date = $request->expiry_date;
         $video->save();
 
         if (

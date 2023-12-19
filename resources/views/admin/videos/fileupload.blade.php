@@ -751,6 +751,16 @@ border-radius: 0px 4px 4px 0px;
                                  <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" >
                               </div>
                            </div>
+
+                           @if (videos_expiry_date_status() == 1)
+                              <div class="row">
+                                 <div class="col-sm-4 form-group mt-3" id="">
+                                    <label class="">Expiry Date & Time</label>
+                                    <input type="datetime-local" class="form-control" id="expiry_date" name="expiry_date" >
+                                 </div>
+                              </div>
+                           @endif
+
                         </div>
                         <input type="button" name="next" class="next action-button" id="next2" value="Next" />
                      </fieldset>
