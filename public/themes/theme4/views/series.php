@@ -179,7 +179,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             <span class="sea"> 1 </span>
                              - <?php echo __('U/A English'); ?>
                             <!-- <p style="color:#fff!important;"><?php echo substr($series->details, 0, 100);?></p> -->
-						                <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><?php echo substr($series->description, 0, 200);?>...</p>
+						                <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><?php echo substr($series->description, 0, 200);?>... <span class="text-primary" style="cursor:pointer;">See more</span> </p>
 
 
                             <div class="row p-0 mt-3 align-items-center">
@@ -291,7 +291,92 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
            
 
-                <div class="trending-contens mt-4">
+            <div class="trending-contens sub_dropdown_image mt-3">
+                <ul id="trending-slider-nav" class= "cnt-videos-slider-nav list-inline pl-5 m-0 row align-items-center" >
+                  <?php 
+                      foreach($season as $key => $seasons):  
+                        foreach($seasons->episodes as $key => $episodes):
+                          if($seasons->ppv_interval > $key):
+                  ?>
+                        <li>
+                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
+                               <div class=" position-relative">
+                                  <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
+                                      <div class="controls">
+                                        <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
+                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                        </a>
+
+                                        <nav>
+                                          <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                        </nav>
+                                                                                        
+                                        <p class="trending-dec" >
+                                        <?= $episodes->description; ?>
+                                         </p>
+                                      </div>
+                                </div>
+                            </a>
+                        </li>
+                      <?php else : ?>
+                        <li>
+                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
+                               <div class=" position-relative">
+                                  <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
+                                      <div class="controls">
+                                        <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
+                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                        </a>
+
+                                        <nav>
+                                         
+                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fas fa-info-circle"  ></i><span>More info</span></button>
+                                       
+                                          </nav>
+                                                                                        
+                                        <p class="trending-dec" >
+                                        <?= $episodes->description; ?>
+                                         </p>
+                                      </div>
+                                </div>
+                            </a>
+                        </li>
+                    <?php endif;	endforeach; 
+						                      endforeach; ?>
+                </ul>
+            </div>
+    <!-- Modal -->
+    <div class="modal fade info_model" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+        <div class="container">
+          <div class="modal-content" style="border:none;">
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <img  src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="100%" alt="">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h2 class="caption-h2"><?= $episodes->title; ?></h2>
+                                        <button class="drp-close model_close-button" data-bs-dismiss="modal">×</button>
+                                        
+                                        <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+                <!-- <div class="trending-contens sub_dropdown_image mt-3">
                     <ul id="trending-slider-nav" class="cnt-videos-slider-nav list-inline pl-5 m-0 row align-items-center" >
               <?php 
                     foreach($season as $key => $seasons):  
@@ -359,7 +444,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                         </ul>
 
 
-                        </div>
+                        </div> -->
 
 
 
