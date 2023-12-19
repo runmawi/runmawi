@@ -64,7 +64,7 @@
                                 <span class="ml-3">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
 
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
+                            <p data-animation-in="fadeInUp" data-delay-in="1.2" > {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 205)) . '...'. "  See more" : html_entity_decode($item->description) !!} </p>
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
