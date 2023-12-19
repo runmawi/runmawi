@@ -24,7 +24,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
     return $item;
                                                         
 });
-return $item;
+    return $item;
 });
 ?>
 
