@@ -755,6 +755,16 @@
       color: <?php echo GetLightText(); ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
+   body.dark-theme ul.navbar-nav{
+      background-color: <?php echo GetDarkBg(); ?>!important;  
+      color: <?php echo GetDarkText(); ?>;
+      /* box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px; */
+   }
+   body.light-theme ul.navbar-nav{
+      background-color: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+   }
    .light-theme.onclickbutton_menu{
       color: <?php echo GetLightText(); ?>;
    }
@@ -844,6 +854,16 @@ header#main-header.menu-sticky{
    color:#2578c0!important;
 }
 
+@media (min-width:769px){
+   .navbar-ad{
+      display:block;
+   }
+}
+@media (max-width:768px){
+   .navbar-ad{
+      display:none;
+   }
+}
 
 /* Sidebar */
 body.dark-theme .offcanvas{
@@ -2036,6 +2056,13 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
    <style>
       
+
+      ul.navbar-nav {
+    width: 300px;
+    left: 0;
+    /* margin-left: -18px; */
+    padding: 0px 0px 0 15px;
+}
 .offcanvas-collapse {
     position: fixed;
     top: 89px;
@@ -2044,8 +2071,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
     left: -300px;
     width: 300px;
     padding-right: 1rem;
-    padding-left: 1rem;
-    overflow-y: auto;
+    /* padding-left: 1rem; */
+    /* overflow-y: auto; */
     visibility: hidden;
     transition-timing-function: ease-in-out;
     transition-duration: .3s;
@@ -2056,8 +2083,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
     align-items: start;
     -moz-background-clip: padding;
     -webkit-background-clip: padding;
-    background-clip: padding-box;
-    border-right: 5px solid rgba(0, 0, 0, 0.2);
+    /* background-clip: padding-box; */
+    /* border-right: 5px solid rgba(0, 0, 0, 0.2); */
 
 }
 
