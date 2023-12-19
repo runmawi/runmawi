@@ -87,6 +87,7 @@ use App\AdminVideoPlaylist as AdminVideoPlaylist;
 use App\VideoPlaylist as VideoPlaylist;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\VideoExtractedImages;
 
 class AdminVideosController extends Controller
 {
@@ -436,7 +437,21 @@ class AdminVideosController extends Controller
             }
         }
     }
+    // Image extraction function
+        private function extractImageFromVideo($videoPath, $outputPath, $timeInSeconds = 5)
+        {
+            // Open the video file
+            $video = \FFMpeg\FFMpeg::fromDisk('local')->open($videoPath);
 
+            // Set the time to capture the frame (in seconds)
+            // $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($timeInSeconds))
+            $video->filters()->clip(TimeCode::fromSeconds($timeInSeconds))
+            // $video->frame(TimeCode::fromSeconds($timeInSeconds))
+            ->export()
+            ->toDisk('local')
+            ->inFormat(new X264)
+            ->save($outputPath);
+        }
     public function uploadFile(Request $request)
     {
         $value = [];
@@ -541,6 +556,12 @@ class AdminVideosController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
 
+                $outputFolder = storage_path('app/public/frames');
+
+                if (!is_dir($outputFolder)) {
+                    mkdir($outputFolder, 0755, true);
+                }
+                                    
                 $video = new Video();
                 $video->disk = "public";
                 $video->status = 0;
@@ -561,6 +582,34 @@ class AdminVideosController extends Controller
                 $video->user_id = Auth::user()->id;
                 $video->save();
 
+                if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+
+                    $ffmpeg = \FFMpeg\FFMpeg::create();
+                    $videoFrame = $ffmpeg->open($Video_storepath);
+
+                    // Define the dimensions for the frame (16:9 aspect ratio)
+                    $frameWidth = 1920; 
+                    $frameHeight = 1080; 
+
+                    for ($i = 1; $i <= 5; $i++) {
+                        $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
+
+                        try {
+                            $videoFrame
+                                ->frame(TimeCode::fromSeconds($i * 5)) // Change the timecode as needed
+                                ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                                
+                                $VideoExtractedImage = new VideoExtractedImages();
+                                $VideoExtractedImage->user_id = Auth::user()->id;
+                                $VideoExtractedImage->video_id = $video->id;
+                                $VideoExtractedImage->image_path = URL::to("/storage/app/public/frames/" . $video->id.'_'.$rand.'_'.$i.'.jpg');
+                                $VideoExtractedImage->save();
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                }
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                     TranscodeVideo::dispatch($video);

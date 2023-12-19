@@ -4939,6 +4939,14 @@ public function uploadExcel(Request $request)
             return redirect()->route('landing_page', $landing_page_slug );
         }
 
+        $system_settings = SystemSetting::first();
+        $user = User::where('id', '=', 1)->first();
+        
+        if (Auth::guest())
+        {
+            return view('auth.login', compact('system_settings', 'user'));
+            
+        }
         $multiuser = Session::get('subuser_id');
 
         if(!Auth::guest()):

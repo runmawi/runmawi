@@ -1412,10 +1412,11 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                         <a class="black-text" href="<?= route('video_categories',[ $video_category_name->categories_slug ])?>">
                                                             <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                                                         </a>
+                                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
                                                     </li>
                                                     <?php } ?>
 
-                                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
 
                                                     <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
                                                 </ol>
