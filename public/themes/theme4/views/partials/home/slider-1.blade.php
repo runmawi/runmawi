@@ -63,9 +63,9 @@
                                 <span class="badge badge-secondary p-2"> {{ optional($item)->age_restrict.'+' }} </span>
                                 <span class="ml-3">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
-                            <span data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <p data-animation-in="fadeInUp" data-delay-in="1.2" > {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 205)) . '...'. "  See more" : html_entity_decode($item->description) !!} </p>
-                            </span>
+
+                            <p data-animation-in="fadeInUp" data-delay-in="1.2" > {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 205)) . '...'. "  See more" : html_entity_decode($item->description) !!} </p>
+
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
                                 aria-hidden="true"></i>Play Now</a>
@@ -73,7 +73,6 @@
                             </div>
                         </div>
                     </div>
-
 
                         {{-- Trailer --}}
                     {{-- @if ( optional($item)->trailer)
@@ -90,7 +89,6 @@
         </div>
     @endforeach
 @endif
-
 
 
                 {{-- Series  --}}
@@ -243,28 +241,3 @@
         </div>
     @endforeach
 @endif
-
-<!-- Model -->
-<div class="modal fade info_model" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-        <div class="container">
-            <div class="modal-content" style="border:none;">
-                <div class="modal-body">
-                    <div class="col-lg-12">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <img  src="{{ URL::to('public/uploads/images/' . $item->player_image) }}" width="100%" alt="">
-                            </div>
-                            <div class="col-lg-6">
-                                <h2 class="caption-h2">{{ strlen($item->title) > 25 ? substr($item->title, 0, 18) . '...' : $item->title }}</h2>
-                                <button class="drp-close model_close-button" data-bs-dismiss="modal">×</button>
-                                    <div class="trending-dec mt-4">{!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 205)) . '...'. "  See more" : html_entity_decode($item->description) !!}</div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
