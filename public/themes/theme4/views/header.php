@@ -893,7 +893,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <button class="navbar-toggler d-block border-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
+                              <?php if($theme->header_position == 1): ?>
+                                 <a class="navbar-ad" href="#"> <img class="img-fluid logo" src="public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png" /> </a>
+                              <?php endif ;?>
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
 
                                                       <!-- Horizontal  -->
@@ -2104,3 +2107,25 @@ window.onload = function () {
   }
 </script>
 
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Set a timeout to gradually hide the navbar brand after 5 seconds
+            setTimeout(function() {
+                var navbarBrand = document.querySelector(".navbar-ad");
+                if (navbarBrand) {
+                    navbarBrand.classList.add("hidden");
+                }
+            }, 5000); // 5000 milliseconds = 5 seconds
+        });
+    </script>
+    <style>
+      .navbar-ad {
+            opacity: 1;
+            transition: opacity 2s ease-in-out; /* Adjust the duration as needed */
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
