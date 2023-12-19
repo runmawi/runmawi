@@ -53,7 +53,8 @@
                                                             <ul id="{{ 'trending-slider-nav' }}"  class= "Category-depends-videos pl-5 m-0">
 
                                                                 <?php
-                                                                    
+                                                                    $check_Kidmode = 0;
+
                                                                     $VideoCategory = App\CategoryVideo::where('category_id',$videocategories->id)->groupBy('video_id')->pluck('video_id'); 
 
                                                                     $videos = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','player_image')
@@ -63,6 +64,10 @@
                                                                                             if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
                                                                                             {
                                                                                                 $videos = $videos->whereNotIn('videos.id',Block_videos());
+                                                                                            }
+                                                                                            
+                                                                                            if ($check_Kidmode == 1) {
+                                                                                                $query->whereBetween('videos.age_restrict', [0, 12]);
                                                                                             }
 
                                                                     $videos = $videos->latest()->limit(30)->get();
@@ -167,7 +172,6 @@
         $('.Category-depends-videos').slick({
             slidesToShow: 6,
             slidesToScroll: 1,
-            asNavFor: '.videos-category-slider',
             dots: false,
             arrows: true,
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',

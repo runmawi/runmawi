@@ -65,7 +65,7 @@
             @endif
 
             @if( $item == 'artist' && $home_settings->artist == 1 )        {{-- Artist --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/artist-videos', ['data' => $artist, 'order_settings_list' => $order_settings_list ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/artist-videos', ['order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
             @if( $item == 'albums' && $home_settings->albums == 1 )        {{-- Albums --}}
