@@ -1,12 +1,3 @@
-<?php
-
-
-
-
-// dd($Parent_video_category);
-
-?>
-
 <head>
     <?php
       $Script     = App\Script::pluck('header_script')->toArray();
@@ -58,12 +49,14 @@
 
       $SiteMeta_image = App\SiteMeta::where('page_slug', '=', $request_url)->pluck('meta_image')->first();
 
-      if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
-         $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
-      }else{
-         $menus = App\Menu::orderBy('order', 'asc')->get();
-      }
+      if($theme->header_position == 0){
 
+         $menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
+
+      }elseif ($theme->header_position == 1)
+      {
+         $menus = App\Menu::orderBy('order', 'asc')->where('in_side_menu',1)->get();
+      }
    ?>
 
    <meta charset="UTF-8">

@@ -67,6 +67,17 @@
 					</div>
 										   <br />
 
+						<label for="name">Show In-Side Menu</label>
+							<div class="mt-1 d-flex align-items-center justify-content-around">
+								<div class="mr-2">OFF</div>
+								<label class="switch mt-2">
+									<input  type="checkbox"  name="in_side_menu">
+									<span class="slider round"></span>
+								</label>
+							<div class="ml-2">ON</div>
+						</div>
+										   <br />
+
 						<label for="name">Menu Item URL</label>
 						<select name="select_url" id="select_url" class="form-control">
 							<option value="">Select URL</option>
