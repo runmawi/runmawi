@@ -167,7 +167,6 @@
         $('.Category-depends-series').slick({
             slidesToShow: 6,
             slidesToScroll: 1,
-            asNavFor: '.series-category-slider',
             dots: false,
             arrows: true,
             nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
