@@ -1,12 +1,3 @@
-<?php
-
-
-
-
-// dd($Parent_video_category);
-
-?>
-
 <head>
     <?php
       $Script     = App\Script::pluck('header_script')->toArray();
@@ -58,12 +49,14 @@
 
       $SiteMeta_image = App\SiteMeta::where('page_slug', '=', $request_url)->pluck('meta_image')->first();
 
-      if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
-         $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
-      }else{
-         $menus = App\Menu::orderBy('order', 'asc')->get();
-      }
+      if($theme->header_position == 0){
 
+         $menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
+
+      }elseif ($theme->header_position == 1)
+      {
+         $menus = App\Menu::orderBy('order', 'asc')->where('in_side_menu',1)->get();
+      }
    ?>
 
    <meta charset="UTF-8">
@@ -755,6 +748,16 @@
       color: <?php echo GetLightText(); ?>;
       box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
+   body.dark-theme ul.navbar-nav{
+      background-color: <?php echo GetDarkBg(); ?>!important;  
+      color: <?php echo GetDarkText(); ?>;
+      /* box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px; */
+   }
+   body.light-theme ul.navbar-nav{
+      background-color: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+   }
    .light-theme.onclickbutton_menu{
       color: <?php echo GetLightText(); ?>;
    }
@@ -766,7 +769,22 @@
    display:block;
 }
 li.menu-item.d-flex.align-items-center {
-    border: none !important;
+    border-bottom: 1px solid rgba(85, 85, 85, 0.3) !important;
+    margin-right:0;
+}
+
+header#main-header.menu-sticky{
+   position: fixed !important;
+    top: 0;
+    width: 100%;
+    /* background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%) !important; */
+    -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
+    z-index: 999;
+}
+.navbar-collapse.offcanvas-collapse.pt-2.open{
+   height:100vh;
 }
 </style>
 
@@ -833,6 +851,60 @@ li.menu-item.d-flex.align-items-center {
    color:#2578c0!important;
 }
 
+@media (min-width:769px){
+   .navbar-ad{
+      display:block;
+   }
+}
+@media (max-width:768px){
+   .navbar-ad{
+      display:none;
+   }
+}
+@media (max-width:425px){
+   .d-flex button.btn.btn-hover{
+      font-size:12px;
+   }
+}
+@media (max-width:768px){
+   ul.dropdown-menu.primary_menu.show{
+      top:100%;
+      left:59px;
+   }
+}
+@media (min-width:770px){
+   ul.dropdown-menu.primary_menu.show{
+      top:70%;
+      left:41px;
+   }
+}
+@media (max-width:1024px){
+   ul.submenu.dropdown-menu{
+      top:67px;
+      left:93%;
+   }
+}
+@media only screen and (max-width: 801px) {
+   .navbar-collapse.offcanvas-collapse.pt-2.open{
+      top:85px;
+   }
+}
+@media only screen and (max-width: 600px) {
+   .navbar-collapse.offcanvas-collapse.pt-2.open{
+      top:85px;
+   }
+}
+@media only screen and (max-width: 480px) {
+   .navbar-collapse.offcanvas-collapse.pt-2.open{
+      top:80px;
+   }
+}
+@media only screen and (min-width: 1024px) {
+   li.menu-item.d-flex.align-items-center {
+    padding-left:6px;
+}
+}
+
 
 /* Sidebar */
 body.dark-theme .offcanvas{
@@ -864,6 +936,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    background: transparent !important;
     /* color: white !important; */
 }
+
 </style>
 
 
@@ -890,10 +963,13 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                       <!-- Vertical Button -->
                               <?php if($theme->header_position == 1): ?>
-                                 <button class="navbar-toggler d-block border-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+                                 <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
+                              <?php if($theme->header_position == 1): ?>
+                                 <a class="navbar-ad" href="#"> <img class="img-fluid logo" src="public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png" /> </a>
+                              <?php endif ;?>
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
 
                                                       <!-- Horizontal  -->
@@ -1206,7 +1282,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                  <?php elseif( $theme->header_position == 1 ) :?>
                                                       <!-- Vertical  -->
-                                    <div class="navbar-collapse offcanvas-collapse pt-2 ">
+                                    <div class="navbar-collapse offcanvas-collapse pt-2">
                                        <ul class="navbar-nav">
                                           
                                           <?php  
@@ -1285,7 +1361,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 if ( $menu->in_menu == "video" ) {  ?>
 
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                      <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                      <?php if(!is_null($menu->image)): ?>
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
+                                                      <?php endif; ?>
 
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
@@ -1321,7 +1399,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <?php } elseif  ( $menu->in_menu == "movies") {  ?>
 
                                                    <li class="nav-item  dskdflex menu-item d-flex align-items-center">
-                                                      <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                      <?php if(!is_null($menu->image)): ?>
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
+                                                      <?php endif; ?>
 
                                                       <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
                                                          <?= $menu->name ?>
@@ -1340,7 +1420,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <?php } elseif ( $menu->in_menu == "live") { ?>
 
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                      <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                      <?php if(!is_null($menu->image)): ?>
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
+                                                      <?php endif; ?>
 
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
@@ -1377,7 +1459,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <?php } elseif ( $menu->in_menu == "audios") { ?>
 
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                   <?php if(!is_null($menu->image)): ?>
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
+                                                      <?php endif; ?>
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
@@ -1413,7 +1497,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <?php }elseif ( $menu->in_menu == "tv_show") { ?>
                                                    
                                                    <li class="nav-item active dskdflex menu-item  d-flex align-items-center">
-                                                   <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                   <?php if(!is_null($menu->image)): ?>
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
+                                                      <?php endif; ?>
                                                       <a href="<?php echo URL::to($menu->url)?>">
                                                             <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
                                                       </a>
@@ -1440,7 +1526,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <?php }elseif ( $menu->in_menu == "series") { ?>
                                                    
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                   <?php if(!is_null($menu->image)): ?>
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
+                                                      <?php endif; ?>
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
@@ -1476,7 +1564,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <?php }elseif ( $menu->in_menu == "networks") { ?>
 
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                   <?php if(!is_null($menu->image)): ?>
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
+                                                      <?php endif; ?>
                                                          <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                             <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                          </a>
@@ -1512,7 +1602,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <?php } else { ?>
 
                                                    <li class="menu-item d-flex align-items-center">
-                                                   <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                   <?php if(!is_null($menu->image)): ?>
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
+                                                      <?php endif; ?>
                                                       <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to( $menu->url ); }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
                                                         <?php echo __($menu->name);?>
                                                       </a>
@@ -1576,7 +1668,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              </form>
                                           </div>
 
-                                          <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+                                          <div class="iq-sub-dropdown search_content overflow-auto mt-3" id="sidebar-scrollbar" style="width:146px;">
                                              <div class="iq-card-body">
                                                 <div id="search_list" class="search_list search-toggle device-search" ></div>
                                              </div>
@@ -2006,6 +2098,11 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
    <style>
       
+
+.offcanvas-collapse.open  ul.navbar-nav {
+    width: 300px;
+    left: 0;
+}
 .offcanvas-collapse {
     position: fixed;
     top: 89px;
@@ -2014,8 +2111,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
     left: -300px;
     width: 300px;
     padding-right: 1rem;
-    padding-left: 1rem;
-    overflow-y: auto;
+    /* padding-left: 1rem; */
+    /* overflow-y: auto; */
     visibility: hidden;
     transition-timing-function: ease-in-out;
     transition-duration: .3s;
@@ -2026,8 +2123,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
     align-items: start;
     -moz-background-clip: padding;
     -webkit-background-clip: padding;
-    background-clip: padding-box;
-    border-right: 5px solid rgba(0, 0, 0, 0.2);
+    /* background-clip: padding-box; */
+    /* border-right: 5px solid rgba(0, 0, 0, 0.2); */
 
 }
 
@@ -2104,3 +2201,26 @@ window.onload = function () {
   }
 </script>
 
+<script>
+   document.addEventListener("DOMContentLoaded", function() {
+         // Set a timeout to gradually hide the navbar brand after 5 seconds
+         setTimeout(function() {
+            var navbarBrand = document.querySelector(".navbar-ad");
+            if (navbarBrand) {
+               navbarBrand.classList.add("hidden");
+            }
+         }, 5000); // 5000 milliseconds = 5 seconds
+   });
+</script>
+    
+    <style>
+      .navbar-ad {
+            opacity: 1;
+            transition: opacity 2s ease-in-out; /* Adjust the duration as needed */
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>

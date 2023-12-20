@@ -6,12 +6,12 @@
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-5"><a href="{{ $order_settings_list[3]->url ? URL::to($order_settings_list[3]->url) : null }} ">{{ optional($order_settings_list[3])->header_name }}</a></h4>
+                        <h4 class="main-title pl-4"><a href="{{ $order_settings_list[3]->url ? URL::to($order_settings_list[3]->url) : null }} ">{{ optional($order_settings_list[3])->header_name }}</a></h4>
                         <h4 class="main-title"><a href="{{ $order_settings_list[3]->url ? URL::to($order_settings_list[3]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
+                        <ul id="trending-slider-nav" class="livestream-videos-slider-nav list-inline p-0 ml-4 row align-items-center">
                             @foreach ($data as $livestream_videos)
                                 <li>
                                     <a href="javascript:void(0);">
@@ -19,6 +19,9 @@
                                             <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" >
                                         </div>
                                     </a>
+                                    @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                        <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="100%"></div>
+                                    @endif
                                 </li>
                             @endforeach
                         </ul>
@@ -34,7 +37,7 @@
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <div class="caption pl-5">
+                                                        <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
 
                                                             @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
@@ -136,3 +139,37 @@
         });
     });
 </script>
+
+
+<!-- /* pulsing animation */ -->
+<style>
+
+.blob {
+	margin: 10px;
+	height: 22px;
+	width: 59px;
+    border-radius:25px;
+	box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
+	transform: scale(1);
+	animation: pulse 2s infinite;
+    position:absolute;
+    top:0;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+	}
+}
+</style>

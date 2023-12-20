@@ -10508,6 +10508,7 @@ $cpanel->end();
           $LiveStream = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            $item['source'] = 'livestream';
             return $item;
           });
 
@@ -10518,6 +10519,7 @@ $cpanel->end();
           $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            $item['source'] = 'audios';
             return $item;
           });
 
@@ -10528,6 +10530,7 @@ $cpanel->end();
         if ($albums_count > 0) {
           $albums = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
+        $item['source'] = 'audios_album';
         return $item;
         });
 
@@ -10539,6 +10542,7 @@ $cpanel->end();
               $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+          $item['source'] = 'videos';
           return $item;
         });
 
@@ -10550,7 +10554,7 @@ $cpanel->end();
           $series = Series::where('title', 'LIKE', '%'.$search_value.'%')->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-
+          $item['source'] = 'series';
           return $item;
         });
 
@@ -10575,6 +10579,7 @@ $cpanel->end();
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['video_url'] = URL::to('/').'/storage/app/public/';
             $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+            $item['source'] = 'videos';
             return $item;
           });
           $videoData[] = array(
@@ -10592,6 +10597,7 @@ $cpanel->end();
           ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['video_url'] = URL::to('/').'/storage/app/public/';
+            $item['source'] = 'videos';
             return $item;
           });
           $videoData[] = array(
@@ -10608,7 +10614,8 @@ $cpanel->end();
           ->where('video_artists.artist_id',$videoartistid)
           ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-            $item['video_url'] = URL::to('/').'/storage/app/public/';
+            $item['video_url'] = URL::to('/').'/storage/app/public/'; 
+            $item['source'] = 'videos';
             return $item;
           });
           $videoData[] = array(
@@ -10641,7 +10648,7 @@ $cpanel->end();
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             // $item['auido_url'] = URL::to('/').'/storage/app/public/';
             $item['category_name'] = AudioCategory::where('id',$item->category_id)->pluck('slug')->first();
-
+            $item['source'] = 'audios';
             return $item;
           });
         $audioData[] = array(
@@ -10657,6 +10664,7 @@ $cpanel->end();
         ->where('audio_languages.language_id',$audiolanguageid)
         ->where('active','=',1)->where('status','=',1)->orderBy('audio.created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['source'] = 'audios';
           return $item;
         });
         $audioData[] = array(
@@ -10673,6 +10681,7 @@ $cpanel->end();
         ->where('audio_artists.artist_id',$audioartistid)
         ->where('active','=',1)->where('status','=',1)->orderBy('audio.created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['source'] = 'audios';
           return $item;
         });
         $audioData[] = array(
@@ -10708,7 +10717,7 @@ $cpanel->end();
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         // $item['auido_url'] = URL::to('/').'/storage/app/public/';
         $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
-
+        $item['source'] = 'series';
         return $item;
       });
     $seriesData[] = array(
@@ -10724,6 +10733,7 @@ $cpanel->end();
     ->where('series_languages.language_id',$serieslanguageid)
     ->where('active','=',1)->orderBy('series.created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['source'] = 'series';
       return $item;
     });
     $seriesData[] = array(
@@ -10740,6 +10750,7 @@ $cpanel->end();
     ->where('series_artists.artist_id',$seriesartistid)
     ->where('active','=',1)->orderBy('series.created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['source'] = 'series';
       return $item;
     });
     $seriesData[] = array(
@@ -10775,6 +10786,7 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
 
         $item['category_name'] = LiveCategory::where('id',$item->category_id)->pluck('slug')->first();
         $item['category_order'] = LiveCategory::where('id',$item->category_id)->pluck('order')->first();
+        $item['source'] = 'livestream';
 
         return $item;
       });
@@ -10792,6 +10804,8 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
       ->where('live_languages.language_id',$livelanguageid)
       ->where('active','=',1)->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['source'] = 'livestream';
+
         return $item;
       });
       $liveData[] = array(

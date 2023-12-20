@@ -539,7 +539,7 @@ border-radius: 0px 4px 4px 0px;
                                             <label class="switch">
                                                 <input type="checkbox" @if(!isset($settings->videos_expiry_status) || (isset($settings->videos_expiry_status) &&
                                                 $settings->videos_expiry_status))checked="checked" value="1"@else value="0"@endif
-                                                name="show_views" id="" />
+                                                name="videos_expiry_status" id="" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </div>

@@ -18,7 +18,7 @@
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-5">
+                        <h4 class="main-title pl-4">
                             <a href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ optional($order_settings_list[4])->header_name }}</a>
                         </h4>                   
                         <h4 class="main-title">
@@ -27,9 +27,9 @@
                      </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 ml-5 row align-items-center"  >
+                        <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 ml-4 row align-items-center"  >
                             @foreach ($data as $series_key => $latest_series)
-                                <li data-series-id={{ $series_key }} onclick="series_slider_nav(this)" >
+                                <li  onclick="series_slider_nav(this)" >
                                     <a href="javascript:void(0);" >
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid" >
@@ -40,7 +40,7 @@
                         </ul>
 
                         <ul id="trending-slider series-slider" class="list-inline p-0 m-0 align-items-center series-slider">
-                            @foreach ($data as $key => $latest_series )
+                            @forelse ($data as $key => $latest_series )
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image">
                                         <button class="drp-close">×</button>
@@ -50,7 +50,7 @@
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <div class="caption pl-5">
+                                                        <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ optional($latest_series)->title }}</h2>
 
                                                             @if (optional($latest_series)->description)
@@ -72,7 +72,7 @@
                                                         </div>
 
                                                         <div class="trending-contens sub_dropdown_image mt-3">
-                                                            <ul id="{{ 'trending-slider-nav' }}" value="{{ $key }}" class= "{{ 'latest-series-depends-episode-slider-'.$key .' pl-5 m-0'}}">
+                                                            <ul id="{{ 'trending-slider-nav' }}"  class= "latest-series-depends-episode-slider pl-4 m-0">
                                                                 @foreach ($latest_series->Series_depends_episodes as $episode )
                                                                     <li>
                                                                         <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}">
@@ -106,7 +106,9 @@
                                         </div>
                                     </div>
                                 </li>
-                            @endforeach
+                            @empty
+
+                            @endforelse
                         </ul>
                     </div>
                 </div>
@@ -119,7 +121,7 @@
 <script>
     
     $( window ).on("load", function() {
-        $('.series-slider').hide();
+        $('.series-slider').fadeOut();
     });
 
     $(document).ready(function() {
@@ -168,26 +170,48 @@
             ],
         });
 
+        
+        $('.latest-series-depends-episode-slider').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.series-slider-nav').on('click', function() {
+            $( ".drp-close" ).trigger( "click" );
+            $('.series-slider').fadeIn();
+        });
+
         $('body').on('click', '.drp-close', function() {
             $('.series-slider').hide();
         });
     });
-
-    
-    function series_slider_nav(ele){
-
-        $( ".drp-close" ).trigger( "click" );
-        $('.series-slider').show();
-
-        var category_key_id = $(ele).attr('data-series-id');
-
-        $('.latest-series-depends-episode-slider-' + category_key_id).slick({
-            dots: false,
-            infinite: false,
-            speed: 300,
-            slidesToShow: 6,
-            slidesToScroll: 4,
-        });
-    }
-
 </script>
