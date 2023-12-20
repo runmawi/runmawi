@@ -963,7 +963,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                       <!-- Vertical Button -->
                               <?php if($theme->header_position == 1): ?>
-                                 <button class="navbar-toggler d-block border-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+                                 <button class="navbar-toggler d-block border-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
                               <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
@@ -2204,16 +2204,32 @@ window.onload = function () {
 </script>
 
 <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Set a timeout to gradually hide the navbar brand after 5 seconds
-            setTimeout(function() {
-                var navbarBrand = document.querySelector(".navbar-ad");
-                if (navbarBrand) {
-                    navbarBrand.classList.add("hidden");
-                }
-            }, 5000); // 5000 milliseconds = 5 seconds
-        });
-    </script>
+   document.addEventListener("DOMContentLoaded", function() {
+         // Set a timeout to gradually hide the navbar brand after 5 seconds
+         setTimeout(function() {
+            var navbarBrand = document.querySelector(".navbar-ad");
+            if (navbarBrand) {
+               navbarBrand.classList.add("hidden");
+            }
+         }, 5000); // 5000 milliseconds = 5 seconds
+   });
+</script>
+<script>
+  $(document).ready(function () {
+    // Remove 'open' class when offcanvas is hidden
+    $('#sidebar').on('hide.bs.offcanvas', function () {
+      $(this).removeClass('open');
+    });
+
+    // Close the offcanvas when clicking outside
+    $(document).on('click', function (e) {
+      if (!$(e.target).closest('#sidebar, #navToggle').length) {
+        $('#sidebar').offcanvas('hide');
+      }
+    });
+  });
+</script>
+    
     <style>
       .navbar-ad {
             opacity: 1;
