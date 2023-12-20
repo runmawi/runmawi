@@ -148,7 +148,7 @@
 	margin: 10px;
 	height: 22px;
 	width: 59px;
-    border-radius:50%;
+    border-radius:25px;
 	box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
 	transform: scale(1);
 	animation: pulse 2s infinite;

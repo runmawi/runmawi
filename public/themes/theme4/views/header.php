@@ -769,7 +769,8 @@
    display:block;
 }
 li.menu-item.d-flex.align-items-center {
-    border: none !important;
+    border-bottom: 1px solid rgba(85, 85, 85, 0.3) !important;
+    margin-right:0;
 }
 
 header#main-header.menu-sticky{
@@ -898,6 +899,11 @@ header#main-header.menu-sticky{
       top:80px;
    }
 }
+@media only screen and (min-width: 1024px) {
+   li.menu-item.d-flex.align-items-center {
+    padding-left:6px;
+}
+}
 
 
 /* Sidebar */
@@ -930,6 +936,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    background: transparent !important;
     /* color: white !important; */
 }
+
 </style>
 
 
@@ -956,7 +963,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                       <!-- Vertical Button -->
                               <?php if($theme->header_position == 1): ?>
-                                 <button class="navbar-toggler d-block border-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+                                 <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
                               <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
@@ -1355,7 +1362,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
                                                       <?php if(!is_null($menu->image)): ?>
-                                                         <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
 
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
@@ -1393,7 +1400,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                    <li class="nav-item  dskdflex menu-item d-flex align-items-center">
                                                       <?php if(!is_null($menu->image)): ?>
-                                                         <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
 
                                                       <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
@@ -1414,7 +1421,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
                                                       <?php if(!is_null($menu->image)): ?>
-                                                         <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
 
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
@@ -1453,7 +1460,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
                                                    <?php if(!is_null($menu->image)): ?>
-                                                         <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
@@ -1491,7 +1498,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    
                                                    <li class="nav-item active dskdflex menu-item  d-flex align-items-center">
                                                    <?php if(!is_null($menu->image)): ?>
-                                                         <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
                                                       <a href="<?php echo URL::to($menu->url)?>">
                                                             <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
@@ -1520,7 +1527,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
                                                    <?php if(!is_null($menu->image)): ?>
-                                                         <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
@@ -1558,7 +1565,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                    <li class="nav-item dropdown menu-item d-flex align-items-center">
                                                    <?php if(!is_null($menu->image)): ?>
-                                                         <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
                                                          <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                             <?= $menu->name ?> <i class="fa fa-angle-down"></i>
@@ -1596,7 +1603,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                    <li class="menu-item d-flex align-items-center">
                                                    <?php if(!is_null($menu->image)): ?>
-                                                         <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" />
+                                                         <!-- <img  height="30" width="30" class="" src="<?php echo $menu->image; ?>" /> -->
                                                       <?php endif; ?>
                                                       <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to( $menu->url ); }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
                                                         <?php echo __($menu->name);?>
@@ -2092,11 +2099,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    <style>
       
 
-    .offcanvas-collapse.open  ul.navbar-nav {
+.offcanvas-collapse.open  ul.navbar-nav {
     width: 300px;
     left: 0;
-    /* margin-left: -18px; */
-    padding: 0px 0px 0 15px;
 }
 .offcanvas-collapse {
     position: fixed;
@@ -2206,21 +2211,6 @@ window.onload = function () {
             }
          }, 5000); // 5000 milliseconds = 5 seconds
    });
-</script>
-<script>
-  $(document).ready(function () {
-    // Remove 'open' class when offcanvas is hidden
-    $('#sidebar').on('hide.bs.offcanvas', function () {
-      $(this).removeClass('open');
-    });
-
-    // Close the offcanvas when clicking outside
-    $(document).on('click', function (e) {
-      if (!$(e.target).closest('#sidebar, #navToggle').length) {
-        $('#sidebar').offcanvas('hide');
-      }
-    });
-  });
 </script>
     
     <style>
