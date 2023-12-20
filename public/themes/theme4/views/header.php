@@ -789,6 +789,9 @@ header#main-header.menu-sticky{
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
     z-index: 999;
 }
+.navbar-collapse.offcanvas-collapse.pt-2.open{
+   height:100vh;
+}
 </style>
 
 <style type="text/css">
@@ -887,12 +890,22 @@ header#main-header.menu-sticky{
       left:93%;
    }
 }
-/* @media (max-width:1024px){
-   ul.submenu.dropdown-menu{
-      top:64px;
-      left:100%;
+@media only screen and (max-width: 801px) {
+   .navbar-collapse.offcanvas-collapse.pt-2.open{
+      top:85px;
    }
-} */
+}
+@media only screen and (max-width: 600px) {
+   .navbar-collapse.offcanvas-collapse.pt-2.open{
+      top:85px;
+   }
+}
+@media only screen and (max-width: 480px) {
+   .navbar-collapse.offcanvas-collapse.pt-2.open{
+      top:80px;
+   }
+}
+
 
 /* Sidebar */
 body.dark-theme .offcanvas{
