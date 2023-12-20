@@ -768,7 +768,7 @@
 .side-colps:not(.show){
    display:block;
 }
-li.menu-item.d-flex.align-items-center {
+.navbar-collapse.offcanvas-collapse.pt-2.open li.menu-item.d-flex.align-items-center {
     border-bottom: 1px solid rgba(85, 85, 85, 0.3) !important;
     margin-right:0;
 }
@@ -850,6 +850,18 @@ header#main-header.menu-sticky{
 .dropdown-menu > li:hover a{
    color:#2578c0!important;
 }
+@media (max-width:1170px){
+   .d-flex button.btn.btn-hover{
+      font-size:10px;
+   }
+   ul.top-colps li.menu-item a{
+      padding:10px 10px !important;
+      font-size:10px !important;
+   }
+   ul.top-colps{
+      align-items:center;
+   }
+}
 
 @media (max-width:425px){
    .d-flex button.btn.btn-hover{
@@ -894,6 +906,11 @@ header#main-header.menu-sticky{
     padding-left:6px;
 }
 }
+@media (max-width: 768px) {
+   ul.navbar-nav.top-colps {
+    display:none !important;
+}
+}
 
 
 /* Sidebar */
@@ -911,6 +928,12 @@ header .navbar ul.navbar-nav {
     display: flex;
     text-align: left;
     flex-direction: row;
+}
+.top-colps ul.navbar-nav {
+    display: flex;
+    text-align: left;
+    flex-direction: row;
+    align-items:center;
 }
 header .navbar-collapse .offcanvas-collapse {
     display: flex;
@@ -964,7 +987,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="50%"/> </a>
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
@@ -972,7 +995,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <!-- Header Top Position  -->
                                  <?php if($theme->header_top_position == 1): ?>
 
-                                    <ul class="navbar-nav">
+                                    <ul class="navbar-nav top-colps">
 
                                        <?php  
                                                                               
