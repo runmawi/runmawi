@@ -585,26 +585,40 @@ class AdminVideosController extends Controller
                 if(Enable_Extract_Image() == 1){
                 // extractImageFromVideo
 
-                    $ffmpeg = \FFMpeg\FFMpeg::create();
-                    $videoFrame = $ffmpeg->open($Video_storepath);
-
-                    // Define the dimensions for the frame (16:9 aspect ratio)
-                    $frameWidth = 1920; 
-                    $frameHeight = 1080; 
-
-                    for ($i = 1; $i <= 5; $i++) {
-                        $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
-
-                        try {
-                            $videoFrame
-                                ->frame(TimeCode::fromSeconds($i * 5)) // Change the timecode as needed
-                                ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
-                                
-                                $VideoExtractedImage = new VideoExtractedImages();
-                                $VideoExtractedImage->user_id = Auth::user()->id;
-                                $VideoExtractedImage->video_id = $video->id;
-                                $VideoExtractedImage->image_path = URL::to("/storage/app/public/frames/" . $video->id.'_'.$rand.'_'.$i.'.jpg');
-                                $VideoExtractedImage->save();
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                for ($i = 1; $i <= 5; $i++) {
+                    $imagePortraitPath = storage_path("app/public/frames/{$video->id}_{$randportrait}_{$i}.jpg");
+                    $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
+                
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->video_id = $video->id;
+                        $VideoExtractedImage->image_path = URL::to("/storage/app/public/frames/" . $video->id . '_' . $rand . '_' . $i . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/storage/app/public/frames/" . $video->id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->save();
+             
+                
                         } catch (\Exception $e) {
                             dd($e->getMessage());
                         }
@@ -680,6 +694,55 @@ class AdminVideosController extends Controller
 
             $video->duration = $Video_duration;
             $video->save();
+
+            if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                for ($i = 1; $i <= 5; $i++) {
+                    // $imagePortraitPath = storage_path("app/public/frames/{$video->id}_{$randportrait}_{$i}.jpg");
+                    // $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
+                
+                    
+                    $imagePortraitPath = public_path("uploads/images/{$video->id}_{$randportrait}_{$i}.jpg");
+                    $imagePath = public_path("uploads/images/{$video->id}_{$rand}_{$i}.jpg");
+
+                    
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->video_id = $video->id;
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video->id . '_' . $rand . '_' . $i . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video->id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->image_original_name = $video->id . '_' . $rand . '_' . $i . '.jpg';
+                        $VideoExtractedImage->save();
+             
+                
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                }
 
             $video_id = $video->id;
             $video_title = Video::find($video_id);
@@ -2639,7 +2702,7 @@ class AdminVideosController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|max:255',
         ]);
-
+        
         $id = $data['video_id'];
         $video = Video::findOrFail($id);
 
@@ -2721,7 +2784,7 @@ class AdminVideosController extends Controller
         }
 
         // Player Image
-
+        // $request->selected_image_url = '';
         if ($request->hasFile('player_image')) {
             $player_image = $request->player_image;
 
@@ -2737,10 +2800,12 @@ class AdminVideosController extends Controller
 
             $data["player_image"] = $players_image;
 
+        }else if (!empty($request->selected_image_url)) {
+            $data["player_image"] = $request->selected_image_url;
         } else {
             $data["player_image"] = default_horizontal_image();
         }
-
+        // dd($data["player_image"]);
         // Tv video Image
 
         if ($request->hasFile('video_tv_image')) {
@@ -10043,6 +10108,31 @@ class AdminVideosController extends Controller
             return $value;
         }
     }
+
+    
+    
+    public function ExtractedImage(Request $request)
+    {
+        try {
+            // print_r($request->all());exit;
+            $value = [];
+
+            $ExtractedImage =  VideoExtractedImages::where('video_id',$request->video_id)->get();
+           
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $request->video_id;
+            $value["ExtractedImage"] = $ExtractedImage;
+
+
+            return $value;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+    }
+
 
 }
     
