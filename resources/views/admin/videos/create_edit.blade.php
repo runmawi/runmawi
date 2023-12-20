@@ -1074,30 +1074,15 @@ border-radius: 0px 4px 4px 0px;
                            <div class="col-7"> <h2 class="fs-title">ADS Management:</h2> </div>
 
                            <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
-                              <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                              <label> {{ ucwords( 'Choose the Pre & post Position Advertisement' ) }}  </label>
                               <select class="form-control" name="video_js_pre_position_ads" >
 
-                                 <option value=" " > Select the Pre-Position Advertisement </option>
+                                 <option value=" " > Select the Pre & Post Position Advertisement </option>
 
                                  <option value="random_ads" {{  ( $video->video_js_pre_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
 
                                  @foreach ($video_js_Advertisements as $video_js_Advertisement)
                                     <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->video_js_pre_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                                 @endforeach
-                              
-                              </select>
-                           </div>
-
-                           <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
-                              <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                              <select class="form-control" name="video_js_post_position_ads" >
-
-                                 <option value=" " > Select the Post-Position Advertisement </option>
-
-                                 <option value="random_ads" {{  ( $video->video_js_post_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
-
-                                 @foreach ($video_js_Advertisements as $video_js_Advertisement)
-                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->video_js_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                                  @endforeach
                               
                               </select>
