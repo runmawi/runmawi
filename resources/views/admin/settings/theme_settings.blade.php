@@ -416,23 +416,42 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
                     </div>
+
                     
                     <div class="row d-flex"> 
                         <div class="col-md-6">
-                            <label>{{ ucfirst(('Header Position')) }} </label>
+                            <label>{{ ucfirst(('Header Top Position')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-                                <div style="color:blue;">Top Position</div>
+                                <div style="color:red;">Disable</div>
                                 <div class="mt-1">
                                     <label class="switch">
-                                        <input name="header_position"  type="checkbox" @if( $settings->header_position == "1") checked  @endif >
+                                        <input name="header_top_position"  type="checkbox" @if( $settings->header_top_position == "1") checked  @endif >
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
-                                <div style="color:green;">Side Position</div>
+                                <div style="color:green;">Enable (Only for theme-4)</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Header Side Position')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Disable</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="header_side_position"  type="checkbox" @if( $settings->header_side_position == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Enable (Only for theme-4)</div>
                             </div>
                         </div>
             
+                    </div>
+                    
+                    <div class="row d-flex"> 
                         <div class="col-md-6">
                             <label>{{ ucfirst(('Enable Extract Images')) }} </label>
 
