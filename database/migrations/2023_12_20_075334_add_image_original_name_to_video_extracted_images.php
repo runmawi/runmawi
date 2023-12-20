@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddHeaderPositionToSiteThemesTable extends Migration
+class AddImageOriginalNameToVideoExtractedImages extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddHeaderPositionToSiteThemesTable extends Migration
      */
     public function up()
     {
-        Schema::table('site_themes', function (Blueprint $table) {
-            $table->tinyInteger('header_position')->default(0);
+        Schema::table('video_extracted_images', function (Blueprint $table) {
+            $table->string('image_original_name')->nullable()->after('image_path');
         });
     }
 
@@ -25,8 +25,8 @@ class AddHeaderPositionToSiteThemesTable extends Migration
      */
     public function down()
     {
-        Schema::table('site_themes', function (Blueprint $table) {
-            Schema::dropIfExists('header_position');
+        Schema::table('video_extracted_images', function (Blueprint $table) {
+            Schema::dropIfExists('image_original_name');
         });
     }
 }
