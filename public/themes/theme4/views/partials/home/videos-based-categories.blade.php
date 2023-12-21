@@ -84,7 +84,7 @@
                             </ul>
 
                             <ul id="trending-slider" class= "{{ 'category-videos-slider list-inline p-0 m-0 align-items-center category-videos-'.$key }}" >
-                                @foreach ($video_category->category_videos as $videos )
+                                @foreach ($video_category->category_videos as $key => $videos )
                                     <li>
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
                                             <button class="drp-close">×</button>
@@ -97,21 +97,14 @@
                                                             <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ optional($videos)->title }}</h2>
 
-                                                                <!-- @if ( $videos->year != null && $videos->year != 0 )
-                                                                    <div class="d-flex align-items-center text-white text-detail">
-                                                                        <span class="trending">{{ ($videos->year != null && $videos->year != 0) ? $videos->year : null   }}</span>
-                                                                    </div>
-                                                                @endif -->
-                                                                                                                            
                                                                 @if ( optional($videos)->description )
                                                                     <div class="trending-dec">{!! htmlspecialchars(substr(optional($videos)->description, 0, 100)) !!}</div>
-                                                                    
                                                                 @endif
 
                                                                 <div class="p-btns">
                                                                     <div class="d-flex align-items-center p-0">
                                                                         <a href="{{ URL::to('category/videos/'.$videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                        <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-videos-based-category-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -130,9 +123,10 @@
                     </div>
                 </div>
             </div>
-
-            @foreach ($data as $key => $videos )
-            <div class="modal fade info_model" id="{{ "Home-Latest-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+        </section>
+            
+        @foreach ($video_category->category_videos as $key => $videos )
+            <div class="modal fade info_model" id="{{ "Home-videos-based-category-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
                         <div class="modal-content" style="border:none;">
@@ -154,7 +148,6 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            
 
                                             @if (optional($videos)->description)
                                                 <div class="trending-dec mt-4">{!! html_entity_decode( optional($videos)->description) !!}</div>
@@ -170,12 +163,7 @@
                 </div>
             </div>
         @endforeach
-
-
-
-        </section>
     @endforeach
-    
 @endif
 
 <script>
