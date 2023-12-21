@@ -913,7 +913,9 @@ header#main-header.menu-sticky{
 }
 
 @media (min-width:992px){
-   
+   .mob_res{
+      display:none !important;
+   }
 }
 
 
@@ -1638,7 +1640,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                 <?php  } 
                                              } ?>
-                                             <ul class="d-flex justify-content-around p-0 mt-3">
+                                             <ul class="d-flex justify-content-around p-0 mt-3 mob_res">
                                                 <?php if( Auth::guest() ) : ?>
                                                    <li class="nav-item nav-icon btn">
                                                       <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
@@ -1724,6 +1726,29 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <?php endif; ?>
 
 
+                                             </ul>
+
+                                             <ul class="d-flex justify-content-around p-0 mob_res">
+                                                <div class="d-flex p-2">
+                                                   <?php if (!Auth::guest()) {
+                                                      $userEmail = Auth::user()->email;
+                                                      $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
+                                                      $channel = App\Channel::where('email', $userEmail)->first();
+
+                                                      
+                                                      
+                                                      if (!empty($channel)) { ?>
+                                                            <div class="p-2" >
+                                                               <form method="POST" action="<?= URL::to('channel/home') ?>" >
+                                                                  <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                                                  <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                                                                  <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
+                                                                  <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                                               </form>
+                                                            </div>
+                                                      <?php }
+                                                   } ?>
+                                                </div>
                                              </ul>
                                                 
                                        </ul>
