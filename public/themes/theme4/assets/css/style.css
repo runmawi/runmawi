@@ -1124,3 +1124,9 @@ mask-image: linear-gradient(to right, transparent 0%, black 50%);
     padding-left: 11px;
     margin-bottom:15px;
 }
+
+/* slider margin-right */
+
+.mar-left{
+    margin: 0 10px;
+}

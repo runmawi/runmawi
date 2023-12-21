@@ -44,12 +44,12 @@
                                         
                                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title pl-4"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ optional($series_genre)->name }}</a></h4>
+                            <h4 class="main-title mar-left"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ optional($series_genre)->name }}</a></h4>
                             <h4 class="main-title"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ "view all" }}</a></h4>
                         </div>
 
                         <div class="trending-contens">
-                            <ul id="trending-slider-nav" class="{{ 'series-genre-videos-slider-nav list-inline p-0 ml-4 row align-items-center' }}" data-key-id="{{$key}}">
+                            <ul id="trending-slider-nav" class="{{ 'series-genre-videos-slider-nav list-inline p-0 mar-left row align-items-center' }}" data-key-id="{{$key}}">
 
                                 @foreach ($series_genre->category_series as $series )
                                     <li>

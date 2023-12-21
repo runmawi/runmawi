@@ -243,7 +243,7 @@
 <div class="main-content p-0">
     <section id="iq-favorites ">
         <div class="container-fluid p-0">
-            <div class=" pl-4">
+            <div class=" mar-left">
                  <!-- BREADCRUMBS -->
                  <div class="position-absu p-0">
                     <div class="container-fluid nav-div m-0 p-0" id="nav-tab" role="tablist">
@@ -283,7 +283,7 @@
             <div class="row">
                 <div class="col-sm-12 page-height pr-0">
                     <div class="favorites-contens">
-                        <ul id="trending-slider-nav" class="series-category-slider-nav list-inline pl-4 m-0 row align-items-center">
+                        <ul id="trending-slider-nav" class="series-category-slider-nav list-inline mar-left m-0 row align-items-center">
                             @if (isset($SeriesGenre))
                                 @foreach ($SeriesGenre as $Series_Genre)
                                     <li>

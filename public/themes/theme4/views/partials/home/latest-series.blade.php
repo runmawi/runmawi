@@ -18,7 +18,7 @@
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-4">
+                        <h4 class="main-title mar-left">
                             <a href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ optional($order_settings_list[4])->header_name }}</a>
                         </h4>                   
                         <h4 class="main-title">
@@ -27,7 +27,7 @@
                      </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 ml-4 row align-items-center"  >
+                        <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 mar-left row align-items-center"  >
                             @foreach ($data as $series_key => $latest_series)
                                 <li  onclick="series_slider_nav(this)" >
                                     <a href="javascript:void(0);" >
