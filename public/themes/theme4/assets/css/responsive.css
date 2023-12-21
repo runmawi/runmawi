@@ -46,7 +46,7 @@
   .container-fluid { padding-left: 30px; padding-right: 30px; }
   .main-header { padding: 10px 0; }
   .vertical_s { display: none; }
-  .r-mt-15 { margin-top: 15px; }
+  .r-mt-15 { margin-top: 15px; margin-bottom:15px; }
   .block-space { padding: 25px 0; }
   .banner-wrapper .trending-info .trending-dec { width: 100%; }
   .banner-caption, .overlay-s-name { left: 30px; }
