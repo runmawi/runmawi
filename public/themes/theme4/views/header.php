@@ -793,12 +793,12 @@ header#main-header.menu-sticky{
 /* ============ desktop view ============ */
 @media(min-width: 991px) {
       .offcanvas-collapse{
-         top:66px !important;
-   }}
-   @media(max-width: 991px) {
+         top:59px !important;
+      }
       header .navbar-collapse .offcanvas-collapse ul.navbar-nav{
         gap:10px;
-   }}
+   }
+      }
    @media(max-width: 1024px) {
       ul.submenu.dropdown-menu{
        left:50%;
@@ -886,19 +886,19 @@ header#main-header.menu-sticky{
       left:93%;
    }
 }
-@media only screen and (max-width: 801px) {
+@media only screen and (max-width: 991px) {
    .navbar-collapse.offcanvas-collapse.pt-2.open{
-      top:85px;
+      top:55px;
    }
 }
 @media only screen and (max-width: 600px) {
    .navbar-collapse.offcanvas-collapse.pt-2.open{
-      top:85px;
+      top:68px;
    }
 }
 @media only screen and (max-width: 480px) {
    .navbar-collapse.offcanvas-collapse.pt-2.open{
-      top:80px;
+      top:65px;
    }
 }
 @media only screen and (min-width: 1024px) {
