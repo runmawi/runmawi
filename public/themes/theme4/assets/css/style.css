@@ -1128,5 +1128,24 @@ mask-image: linear-gradient(to right, transparent 0%, black 50%);
 /* slider margin-right */
 
 .mar-left{
-    margin: 0 10px;
+    margin: 0 14px;
+}
+
+.btn-close-white{
+    position: sticky;
+    right: 0;
+    color: white;
+    background: black;
+    padding: 0;
+    border: 2px solid white;
+    border-radius: 50%;
+    line-height: 1;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    outline: none;
+}
+.btn-close-white:hover{
+    background-color: white;
+    color: black;
 }

@@ -50,7 +50,7 @@
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
                                                                     <a href="{{ URL::to('category/videos/'.$featured_videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -70,6 +70,48 @@
                 </div>
             </div>
         </div>
+
+        @foreach ($data as $key => $featured_videos )
+            <div class="modal fade info_model" id="{{ "Home-Latest-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                    <div class="container">
+                        <div class="modal-content" style="border:none;">
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                                    <h2 class="caption-h2">{{ optional($featured_videos)->title }}</h2>
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+
+                                            @if (optional($featured_videos)->description)
+                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($featured_videos)->description) !!}</div>
+                                            @endif
+
+                                            <a href="{{ URL::to('category/videos/'.$featured_videos->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+
     </section>
 @endif
 
