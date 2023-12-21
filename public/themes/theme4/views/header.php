@@ -723,7 +723,7 @@
    #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo button_bg_color(); ?> !important; }
    .dark-theme header .navbar ul li.menu-item a {color: <?php echo GetDarkText(); ?>;}
    .light-theme header .navbar ul li.menu-item a {color: <?php echo GetLightText(); ?> !important;}
-   .dark-theme ul.f-link li a {color: <?php echo GetDarkText(); ?> !important;}
+   .dark-theme ul.f-link li a {color: <?php echo GetDarkText(); ?>;}
    .light-theme ul.f-link li a {color: <?php echo GetLightText(); ?> !important;}
    .dark-theme .text-body{color: <?php echo GetDarkText(); ?> !important;}
    .light-theme .text-body{color: <?php echo GetLightText(); ?> !important;}
@@ -910,6 +910,12 @@ header#main-header.menu-sticky{
    ul.navbar-nav.top-colps {
     display:none !important;
 }
+}
+
+@media (min-width:992px){
+   .mob_res{
+      display:none !important;
+   }
 }
 
 
@@ -1634,6 +1640,117 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                 <?php  } 
                                              } ?>
+                                             <ul class="d-flex justify-content-around p-0 mt-3 mob_res">
+                                                <?php if( Auth::guest() ) : ?>
+                                                   <li class="nav-item nav-icon btn">
+                                                      <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                                         <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Signin</h6>
+                                                            </div>
+                                                         </div>
+                                                      </a>
+                                                   </li>
+                                                   
+                                                   <li class="nav-item nav-icon btn">
+                                                      <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                                         <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                               <h6 class="mb-0 ">Signup</h6>
+                                                            </div>
+                                                         </div>
+                                                      </a>
+                                                   </li>
+
+                                                <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
+                                                   <li class="nav-item nav-icon btn">
+                                                      <a href="<?= URL::to('/admin') ?>" class="iq-sub-card">
+                                                         <div class="media align-items-center">
+                                                               <div class="media-body">
+                                                                  <h6 class="mb-0 ">Admin</h6>
+                                                               </div>
+                                                         </div>
+                                                      </a>
+                                                   </li>
+
+                                                   <li class="nav-item nav-icon btn">
+                                                      <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
+                                                         <div class="media align-items-center">
+                                                               <div class="media-body">
+                                                                  <h6 class="mb-0 ">Logout</h6>
+                                                               </div>
+                                                         </div>
+                                                      </a>
+                                                   </li>
+                                                   
+                                                <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
+                                                   <li class="nav-item nav-icon btn">
+                                                      <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card">
+                                                         <div class="media align-items-center">
+                                                               <div class="media-body">
+                                                                  <h6 class="mb-0 ">Manage Profile</h6>
+                                                               </div>
+                                                         </div>
+                                                      </a>
+                                                   </li>
+                                                   <li class="nav-item nav-icon btn">
+                                                      <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
+                                                         <div class="media align-items-center">
+                                                               <div class="media-body">
+                                                                  <h6 class="mb-0 ">Logout</h6>
+                                                               </div>
+                                                         </div>
+                                                      </a>
+                                                   </li>
+
+                                                <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
+                                                   <li class="nav-item nav-icon btn">
+                                                      <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card">
+                                                         <div class="media align-items-center">
+                                                               <div class="media-body">
+                                                                  <h6 class="mb-0 ">Manage Profile</h6>
+                                                               </div>
+                                                         </div>
+                                                      </a>
+                                                   </li>
+                                                   <li class="nav-item nav-icon btn">
+                                                      <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
+                                                         <div class="media align-items-center">
+                                                               <div class="media-body">
+                                                                  <h6 class="mb-0 ">Logout</h6>
+                                                               </div>
+                                                         </div>
+                                                      </a>
+                                                   </li>
+                                                   
+                                                <?php endif; ?>
+
+
+                                             </ul>
+
+                                             <ul class="d-flex justify-content-around p-0 mob_res">
+                                                <div class="d-flex p-2">
+                                                   <?php if (!Auth::guest()) {
+                                                      $userEmail = Auth::user()->email;
+                                                      $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
+                                                      $channel = App\Channel::where('email', $userEmail)->first();
+
+                                                      
+                                                      
+                                                      if (!empty($channel)) { ?>
+                                                            <div class="p-2" >
+                                                               <form method="POST" action="<?= URL::to('channel/home') ?>" >
+                                                                  <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                                                  <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                                                                  <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
+                                                                  <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                                               </form>
+                                                            </div>
+                                                      <?php }
+                                                   } ?>
+                                                </div>
+                                             </ul>
+                                                
                                        </ul>
                                     </div>
                                  <?php endif; ?>
