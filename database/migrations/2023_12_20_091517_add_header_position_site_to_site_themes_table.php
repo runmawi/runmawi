@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddHeaderPositionToSiteThemesTable extends Migration
+class AddHeaderPositionSiteToSiteThemesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddHeaderPositionToSiteThemesTable extends Migration
     public function up()
     {
         Schema::table('site_themes', function (Blueprint $table) {
-            $table->tinyInteger('header_position')->default(0);
+            $table->tinyInteger('header_top_position')->default(1);
+            $table->tinyInteger('header_side_position')->default(0);
         });
     }
 
@@ -26,7 +27,8 @@ class AddHeaderPositionToSiteThemesTable extends Migration
     public function down()
     {
         Schema::table('site_themes', function (Blueprint $table) {
-            Schema::dropIfExists('header_position');
+            Schema::dropIfExists('header_top_position');
+            Schema::dropIfExists('header_side_position');
         });
     }
 }

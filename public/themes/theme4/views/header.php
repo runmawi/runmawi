@@ -768,7 +768,7 @@
 .side-colps:not(.show){
    display:block;
 }
-li.menu-item.d-flex.align-items-center {
+.navbar-collapse.offcanvas-collapse.pt-2.open li.menu-item.d-flex.align-items-center {
     border-bottom: 1px solid rgba(85, 85, 85, 0.3) !important;
     margin-right:0;
 }
@@ -850,17 +850,19 @@ header#main-header.menu-sticky{
 .dropdown-menu > li:hover a{
    color:#2578c0!important;
 }
+@media (max-width:1170px){
+   .d-flex button.btn.btn-hover{
+      font-size:10px;
+   }
+   ul.top-colps li.menu-item a{
+      padding:10px 10px !important;
+      font-size:10px !important;
+   }
+   ul.top-colps{
+      align-items:center;
+   }
+}
 
-@media (min-width:769px){
-   .navbar-ad{
-      display:block;
-   }
-}
-@media (max-width:768px){
-   .navbar-ad{
-      display:none;
-   }
-}
 @media (max-width:425px){
    .d-flex button.btn.btn-hover{
       font-size:12px;
@@ -904,6 +906,11 @@ header#main-header.menu-sticky{
     padding-left:6px;
 }
 }
+@media (max-width: 768px) {
+   ul.navbar-nav.top-colps {
+    display:none !important;
+}
+}
 
 
 /* Sidebar */
@@ -921,6 +928,12 @@ header .navbar ul.navbar-nav {
     display: flex;
     text-align: left;
     flex-direction: row;
+}
+.top-colps ul.navbar-nav {
+    display: flex;
+    text-align: left;
+    flex-direction: row;
+    align-items:center;
 }
 header .navbar-collapse .offcanvas-collapse {
     display: flex;
@@ -954,29 +967,36 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
       <div class="main-header">
             <div class="container-fluid pl-3">
                <div class="row">
+                        
+                  <?php if($theme->header_top_position == 1): ?>
+                     <div class="col-sm-9 mx-auto header_top_position_img">
+                        <img class="img-fluid logo" src=<?= URL::to('public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png') ?> /> 
+                     </div>
+                  <?php endif ;?>
+
                   <div class="col-sm-12">
 
 
                        <!-- ============= COMPONENT ============== -->
                         <nav class="navbar navbar-expand-lg navbar-light p-0">
+                           
                            <div class="container-fluid p-0">
 
-                                                      <!-- Vertical Button -->
-                              <?php if($theme->header_position == 1): ?>
+                                                      <!-- Header Side Position  -->
+                              <?php if($theme->header_side_position == 1): ?>
                                  <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
-                              <?php if($theme->header_position == 1): ?>
-                                 <a class="navbar-ad" href="#"> <img class="img-fluid logo" src="public\themes\theme4\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png" /> </a>
-                              <?php endif ;?>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="50%"/> </a>
+
+
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
 
-                                                      <!-- Horizontal  -->
-                                 <?php if($theme->header_position == 0): ?>
+                                                      <!-- Header Top Position  -->
+                                 <?php if($theme->header_top_position == 1): ?>
 
-                                    <ul class="navbar-nav">
-                                       
+                                    <ul class="navbar-nav top-colps">
+
                                        <?php  
                                                                               
                                           $Parent_video_category = App\VideoCategory::whereIn('id', function ($query) {
@@ -1280,8 +1300,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                           } ?>
                                     </ul>
 
-                                 <?php elseif( $theme->header_position == 1 ) :?>
-                                                      <!-- Vertical  -->
+                                 <?php endif;
+
+                                 if( $theme->header_side_position == 1 ) :?>
+                                                      <!-- Header Side Position  -->
                                     <div class="navbar-collapse offcanvas-collapse pt-2">
                                        <ul class="navbar-nav">
                                           
@@ -2199,28 +2221,12 @@ window.onload = function () {
       icon.classList.add('fa-bars');
     }
   }
-</script>
 
-<script>
-   document.addEventListener("DOMContentLoaded", function() {
-         // Set a timeout to gradually hide the navbar brand after 5 seconds
-         setTimeout(function() {
-            var navbarBrand = document.querySelector(".navbar-ad");
-            if (navbarBrand) {
-               navbarBrand.classList.add("hidden");
-            }
-         }, 5000); // 5000 milliseconds = 5 seconds
-   });
+  window.onload = function () {
+      setTimeout(function () {
+         $(".header_top_position_img").fadeOut('fast');
+      }, 4000);
+   };
+
 </script>
     
-    <style>
-      .navbar-ad {
-            opacity: 1;
-            transition: opacity 2s ease-in-out; /* Adjust the duration as needed */
-        }
-
-        .hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-    </style>
