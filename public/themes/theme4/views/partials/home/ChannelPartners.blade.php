@@ -6,7 +6,7 @@
 
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-4"><a
+                        <h4 class="main-title mar-left"><a
                                 href="{{ $order_settings_list[13]->url ? URL::to($order_settings_list[13]->url) : null }} ">{{ optional($order_settings_list[13])->header_name }}</a>
                         </h4>
                         <h4 class="main-title"><a
@@ -15,7 +15,7 @@
                     </div>
 
                     <div class="tvthrillers-contens">
-                            <ul id="trending-slider-nav" class="content-portal-nav list-inline p-0 ml-4 row align-items-center">
+                            <ul id="trending-slider-nav" class="content-portal-nav list-inline p-0 mar-left row align-items-center">
                                 @foreach ($data as $channel)
                                     <li>
                                         <a href="javascript:void(0);">

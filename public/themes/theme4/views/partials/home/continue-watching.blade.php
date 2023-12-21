@@ -7,12 +7,12 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-4"><a href="#">{{ ucwords('continue watching') }}</a></h4>
+                        <h4 class="main-title mar-left"><a href="#">{{ ucwords('continue watching') }}</a></h4>
                         <h4 class="main-title"><a href="#">{{ ucwords('view all') }}</a></h4>
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="cnt-videos-slider-nav list-inline p-0 ml-4 row align-items-center">
+                        <ul id="trending-slider-nav" class="cnt-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $video_details)
                                 <li>
                                     <a href="javascript:void(0);">

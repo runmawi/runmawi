@@ -898,7 +898,7 @@ header#main-header.menu-sticky{
 }
 @media only screen and (max-width: 480px) {
    .navbar-collapse.offcanvas-collapse.pt-2.open{
-      top:80px;
+      top:77px;
    }
 }
 @media only screen and (min-width: 1024px) {
