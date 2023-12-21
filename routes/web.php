@@ -2405,4 +2405,4 @@ Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('vid
 
 Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
 
-Route::post('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
+Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
