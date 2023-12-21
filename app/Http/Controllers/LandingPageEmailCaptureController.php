@@ -11,33 +11,34 @@ class LandingPageEmailCaptureController extends Controller
 {
     public function store(Request $request)
     {
+        $request->validate([ 'email' => 'required|email',],
+        [
+            'email.required' => 'Email is required',
+            'email.email' => 'Invalid email format',
+        ]);
+
         try {
 
-            $request->validate([
-                'email' => 'required|email',
-            ], [
-                'email.required' => 'Email is required',
-                'email.email' => 'Invalid email format',
-            ]);
+            $inputs = array('email' => $request->email );
     
-            $inputs = ['email'=> $request->email];
-    
-            LandingPageEmailCapture::create($inputs);
+            LandingPageEmailCapture::create( $inputs );
 
-            // try {
+            try {
 
-            //     Mail::send('admin.Email.TestingEmail', array('email' => $request->email ), 
-            //     function($message) use ($data) {
-            //         $message->from(AdminMail(),GetWebsiteName());
-            //         $message->to($data['email'], $data['email'])->subject('New Email the Email');
-            //     });
-            // } catch (\Throwable $th) {
-            //     //throw $th;
-            // }
+                Mail::send('admin.Email.email_capture', $inputs, function($message) {
+                        $message->to(AdminMail(), GetWebsiteName())->subject('New Email Capture on the Teefatv Site');
+                        $message->from(AdminMail(),GetWebsiteName());
+                    });
+          
+                
+            } catch (\Throwable $th) {
+                // return $th->getMessage();
+            }
 
-            return response()->json(['message' => 'Form submitted successfully']);
+            return response()->json(['message' => 'Your request has been received. Nofity will get the site online']);
 
         } catch (\Throwable $th) {
+
             return response()->json(['message' => $th->getMessage() ]);
         }
     }
