@@ -80,14 +80,21 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="">
+                                            <img  src="{{ $latest_video->player_image ?  URL::to('public/uploads/images/'.$latest_video->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
                                         </div>
                                         <div class="col-lg-6">
-                                            <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                                    <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
 
-                                            <button type="button" class="close btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
 
                                             @if (optional($latest_video)->description)
                                                 <div class="trending-dec mt-4">{!! html_entity_decode( optional($latest_video)->description) !!}</div>
