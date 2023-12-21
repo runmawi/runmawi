@@ -1,11 +1,11 @@
 <html>
 <head>
-    <title>Email Capture Details</title>
+    <title>New Email Capture on the Teefatv Site</title>
 </head>
 <body>
 
-    <h1>{{ 'Email Capture Details' }}</h1>
-    <p>{{ $Email_ }}</p>
+    <h1>{{ 'New Email Capture on the Teefatv Site' }}</h1>
+    <p>{{ "Email - ". $email }}</p>
    
     <p>Thank you</p>
     <p> {!! html_entity_decode (MailSignature()) !!}</p>
