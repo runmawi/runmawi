@@ -741,7 +741,7 @@
    body.dark-theme .offcanvas-collapse{
       background-color: <?php echo GetDarkBg(); ?>!important;  
       color: <?php echo GetDarkText(); ?>;
-      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+      /* box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px; */
    }
    body.light-theme .offcanvas-collapse{
       background-color: <?php echo GetLightBg(); ?>!important;  
@@ -888,7 +888,7 @@ header#main-header.menu-sticky{
 }
 @media only screen and (max-width: 991px) {
    .navbar-collapse.offcanvas-collapse.pt-2.open{
-      top:55px;
+      top:77px;
    }
 }
 @media only screen and (max-width: 600px) {
@@ -898,7 +898,7 @@ header#main-header.menu-sticky{
 }
 @media only screen and (max-width: 480px) {
    .navbar-collapse.offcanvas-collapse.pt-2.open{
-      top:65px;
+      top:80px;
    }
 }
 @media only screen and (min-width: 1024px) {
