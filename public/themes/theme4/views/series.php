@@ -128,7 +128,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
      <!-- BREADCRUMBS -->
 
                 <div class="row mr-2">
-        <div class="nav container-fluid " id="nav-tab" role="tablist">
+        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
@@ -153,7 +153,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
             </div>
         </div>
                   </div>
-     <div class="container-fluid" >
+     <div class="container-fluid pl-0 mar-left" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
 	<div class="row mt-3 align-items-center">
@@ -263,14 +263,14 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 </div>
 </div>
 <section id="tabs" class="project-tab">
-	<div class="container-fluid p-0">
+	<div class="container-fluid mar-left p-0">
 
         
 
 		<div class=" ">
 			<div class="col-md-12 mt-5 p-0">
 				<nav class="nav-justified p-0 m-0 w-100">
-					<div class="nav pl-5 " id="nav-tab" role="tablist">
+					<div class="nav" id="nav-tab" role="tablist">
                         <h4><?php echo __('Episode'); ?></h4>
 						<!--<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
 						<!--<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Related</a>
@@ -281,7 +281,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 <!-- $series->title -->
 						<div class="container-fluid pl-0">
 				<div class="favorites-contens">
-                    <div class="col-md-3 pl-5 mt-4">
+                    <div class="col-md-3 pl-0 mt-4">
                     <select class="form-control" id="season_id" name="season_id">
 							<?php foreach($season as $key => $seasons): ?>
 								<option data-key="<?= $key+1 ;?>" value="season_<?= $seasons->id;?>" ><?php echo __('Season'); ?> <?= $key+1; ?></option>
@@ -292,7 +292,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
            
 
             <div class="trending-contens sub_dropdown_image mt-3">
-                <ul id="trending-slider-nav" class= "cnt-videos-slider-nav list-inline pl-5 m-0 row align-items-center" >
+                <ul id="trending-slider-nav" class= "cnt-videos-slider-nav list-inline m-0 row align-items-center" >
                   <?php 
                       foreach($season as $key => $seasons):  
                         foreach($seasons->episodes as $key => $episodes):
