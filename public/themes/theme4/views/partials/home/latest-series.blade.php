@@ -83,7 +83,7 @@
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                                     </a>
 
-                                                                                    <nav><button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+                                                                                    <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-series-Modal-'.$key }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                                                     
                                                                                     <p class="trending-dec" >
                                                                                         {{ " S".$episode->season_id ." E".$episode->episode_order  }} 
@@ -117,8 +117,8 @@
 
 
 
-        @foreach ($data as $key => $episode )
-            <div class="modal fade info_model" id="{{ "Home-Latest-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+        @foreach ($latest_series->Series_depends_episodes as $episode )
+            <div class="modal fade info_model" id="{{ "Home-Latest-series-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
                         <div class="modal-content" style="border:none;">
