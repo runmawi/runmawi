@@ -183,7 +183,7 @@ hr {
         font-weight: 400;
         font-size: 20px;
         line-height: 30px;
-        color: #000 !important;
+        color: #000;
     }
 
     .movie {
@@ -402,6 +402,16 @@ hr {
         /* margin: 0 auto !important;  */
         object-fit: contain;
     }
+    .btn-hover{
+        color: var(--iq-white) !important;
+    }
+    a.button-groups.btn.btn-hover.mr-2:hover {
+    background-color: #fff !important;
+    color: #000 !important;
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: 0.5s;
+}
 
 </style>
 
@@ -1388,7 +1398,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                             <input type="hidden" class="videocategoryid"
                                 data-videocategoryid="<?= $video->video_category_id ?>"
                                 value="<?= $video->video_category_id ?>">
-                            <div class="container-fluid video-details">
+                            <div class="container-fluid video-details pl-0 mar-left">
 
                                                       <!-- BREADCRUMBS -->
                                 <div class="col-sm-12 col-md-12 col-xs-12 pl-0">
@@ -2179,15 +2189,15 @@ $artists = [];
 
                         <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('videos')->first() == 1 ): ?>
                         <div class="row m-0 p-0">
-                            <div class=" container-fluid video-list you-may-like overflow-hidden">
+                            <div class=" container-fluid video-list you-may-like overflow-hidden pl-0 mar-left">
                                 <h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>
                                 <?php include 'comments/index.blade.php'; ?>
                             </div>
                         </div>
                         <?php endif; ?>
 
-                        <div class=" container-fluid video-list you-may-like overflow-hidden pl-0">
-                            <h4 class="Continue Watching pl-5" style="color:#fffff;"><?php echo __('Recomended Videos'); ?></h4>
+                        <div class=" container-fluid video-list you-may-like overflow-hidden mar-left pl-0">
+                            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos'); ?></h4>
                             <div class="slider"
                                 data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
                                 <?php include 'partials/video-loop.php'; ?>

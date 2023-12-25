@@ -39,7 +39,7 @@
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
                                                                     <a href="{{ URL::to('audios/category/'. $audioscategories->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Visit </a>
-                                                                    {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> --}}
+                                                                    {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Audio-genre-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> --}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -62,7 +62,7 @@
 
 
         @foreach ($data as $key => $audioscategories )
-            <div class="modal fade info_model" id="{{ "Home-Latest-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+            <div class="modal fade info_model" id="{{ "Home-Audio-genre-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
                         <div class="modal-content" style="border:none;">
