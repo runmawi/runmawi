@@ -68,7 +68,7 @@ if (Auth::guest() != true) {
 
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
-                                                                    <a href="{{ URL::to('category/videos/'.$latest_view_episode->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                    <a href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
                                                                     <a class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-viewed_episode-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                 </div>
                                                             </div>
@@ -121,7 +121,7 @@ if (Auth::guest() != true) {
                                                 <div class="trending-dec mt-4">{!! html_entity_decode( optional($latest_view_episode)->description) !!}</div>
                                             @endif
 
-                                            <a href="{{ URL::to('category/videos/'.$latest_view_episode->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                            <a href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
                                         </div>
                                     </div>
                                 </div>
