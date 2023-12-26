@@ -76,42 +76,47 @@
 
                         <div class="panel-body">
                             <div id="nestable" class="nested-list dd with-margins">
-                                <table class="table table-bordered iq-card text-center" id="categorytbl">
-                                    <tr class="table-header r1">
-                                        <th><label>S.No</label></th>
-                                        <th><label>EGP Channel Logo</label></th>
-                                        <th><label>EGP Channel Name</label></th>
-                                        <th><label>EGP Channel Image</label></th>
-                                        <th><label>Operation</label></th>
-                                    </tr>
 
-                                    @foreach ($Admin_EGP_Channel as $key => $Admin_EGP_Channel_data )
-                                        <tr id="{{ $Admin_EGP_Channel_data->id }}">
-                                            <td>{{ $key+1 }}</td>
-                                            <td valign="bottom"><img src="{{ $Admin_EGP_Channel_data->Logo_url }}" width="50" height="50"></td>
-                                            <td>{{ $Admin_EGP_Channel_data->name }}</td>
-                                            <td valign="bottom"><img src="{{ $Admin_EGP_Channel_data->image_url }}" width="50" height="50"></td>
-                                            <td>
-                                                <div class=" align-items-center list-user-action" style="display: inline !important;">
-                                                    <a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                                        href="#">
-                                                        <img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}">
-                                                    </a>
-
-                                                    <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit"
-                                                            href="{{ route('admin.EGP-Channel.edit',$Admin_EGP_Channel_data->id) }}">
-                                                        <img class="ply" src="{{ URL::to('/assets/img/icon/edit.svg') }}">
-                                                    </a>
-
-                                                    <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top"
-                                                        title="" onclick="return confirm('Are you sure?')" data-original-title="Delete"
-                                                        href="{{ route('admin.EGP-Channel.destroy',$Admin_EGP_Channel_data->id ) }}">
-                                                        <img class="ply" src="{{ URL::to('assets/img/icon/delete.svg') }}">
-                                                    </a>
-                                                </div>
-                                            </td>
+                                <table class="table text-center" id="sitemeta_table" style="width:100%">
+                                    <thead>
+                                        <tr class="table-header r1">
+                                            <th><label>S.No</label></th>
+                                            <th><label>EGP Channel Logo</label></th>
+                                            <th><label>EGP Channel Name</label></th>
+                                            <th><label>EGP Channel Image</label></th>
+                                            <th><label>Operation</label></th>
                                         </tr>
-                                    @endforeach
+                                    </thead>
+    
+                                    <tbody>
+                                        @foreach ($Admin_EGP_Channel as $key => $Admin_EGP_Channel_data )
+                                            <tr>
+                                                <td>{{ $key+1 }}</td>
+                                                <td valign="bottom"><img src="{{ $Admin_EGP_Channel_data->Logo_url }}" width="50" height="50"></td>
+                                                <td>{{ $Admin_EGP_Channel_data->name }}</td>
+                                                <td valign="bottom"><img src="{{ $Admin_EGP_Channel_data->image_url }}" width="50" height="50"></td>
+                                                <td>
+                                                    <div class=" align-items-center list-user-action" style="display: inline !important;">
+                                                        <a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
+                                                            href="#">
+                                                            <img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}">
+                                                        </a>
+
+                                                        <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit"
+                                                                href="{{ route('admin.EGP-Channel.edit',$Admin_EGP_Channel_data->id) }}">
+                                                            <img class="ply" src="{{ URL::to('/assets/img/icon/edit.svg') }}">
+                                                        </a>
+
+                                                        <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top"
+                                                            title="" onclick="return confirm('Are you sure?')" data-original-title="Delete"
+                                                            href="{{ route('admin.EGP-Channel.destroy',$Admin_EGP_Channel_data->id ) }}">
+                                                            <img class="ply" src="{{ URL::to('assets/img/icon/delete.svg') }}">
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -123,9 +128,18 @@
     @section('javascript')
 
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
         <script type="text/javascript">
+
+            $('#sitemeta_table').DataTable();
+
+             $(document).ready(function() {
+                setTimeout(function() {
+                    $("#successMessage").fadeOut("fast");
+                }, 3000);
+            });
 
         </script>
     @stop
