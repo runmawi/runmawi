@@ -37,9 +37,9 @@
                                             </div>
                                                  
                                             </div>
-                                              <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $artist_lists->artist_slug  ;?>">
+                                              <!-- <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $artist_lists->artist_slug  ;?>">
                                                     <span class="text-center thumbarrow-sec"></span>
-                                                </button>
+                                                </button> -->
                                         </a>
                                     </li>
                                 @endforeach

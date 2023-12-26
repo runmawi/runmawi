@@ -101,7 +101,7 @@
     }
     .position-absu{
         position:absolute;
-        z-index: 999;
+        z-index: 9;
     }
 
     .controls{

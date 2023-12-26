@@ -663,7 +663,7 @@
    } 
    
    body.dark-theme .block-description{
-      background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
+      /* background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%)); */
       backdrop-filter: blur(2px);
    }
 
@@ -785,6 +785,7 @@ header#main-header.menu-sticky{
 }
 .navbar-collapse.offcanvas-collapse.pt-2.open{
    height:100vh;
+   position:absolute;
 }
 </style>
 
@@ -2268,7 +2269,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 }
 
 .offcanvas-collapse.open {
-    left: 0;
+    left: -19px;
     visibility: visible;
 }
 
