@@ -28,7 +28,7 @@
 
                         <?php if (!empty($settings->twitter_page_id)) { ?>
                             <a href="https://twitter.com/<?php echo TwiterId(); ?>" target="_blank" class="s-icon">
-                                <i class="ri-threads-fill"></i>
+                                <i class="ri-twitter-fill"></i>
                             </a>
                         <?php } ?>
 

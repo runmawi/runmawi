@@ -106,7 +106,7 @@ header .navbar-light .navbar-brand img.logo {
   .trending-info { padding: 60px 15px; }
   #home-slider p { margin: 22px 0; }
   .r-mt-20 { margin-top: 20px; }
-  .p-btns { flex-direction: column; }
+  /* .p-btns { flex-direction: column; } */
   .main-title { font-size: 1em; }
   .sign-info { flex-direction: column; }
   .sign-info .btn { margin-bottom: 15px; }
