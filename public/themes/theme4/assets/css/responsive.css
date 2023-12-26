@@ -154,6 +154,15 @@ header .navbar-light .navbar-brand img.logo {
   .theme_button_res { display: none; }
 }
 
+@media (max-width:991px){
+  .overview-tab.tab-pane.fade.active.show{
+    height: 100% !important;
+  }
+  /* ul#trending-slider\ latest-videos-slider.slick-list{
+    height: 74vh !important;
+  } */
+}
+
 /* Video page */
 
 .music-play-lists {
