@@ -101,7 +101,7 @@
     }
     .position-absu{
         position:absolute;
-        z-index: 999;
+        z-index: 9;
     }
 
     .controls{
@@ -243,7 +243,7 @@
 <div class="main-content p-0">
     <section id="iq-favorites ">
         <div class="container-fluid p-0">
-            <div class=" pl-4">
+            <div class=" mar-left">
                  <!-- BREADCRUMBS -->
                  <div class="position-absu p-0">
                     <div class="container-fluid nav-div m-0 p-0" id="nav-tab" role="tablist">
@@ -285,7 +285,7 @@
                     <div class="favorites-contens">
                         @if (isset($series_data->Series_depends_Networks))
 
-                            <ul id="trending-slider-nav" class="series-category-slider-nav list-inline pl-4 m-0 row align-items-center">
+                            <ul id="trending-slider-nav" class="series-category-slider-nav list-inline mar-left m-0 row align-items-center">
                                 @foreach ($series_data->Series_depends_Networks as $Series_Genre)
                                     <li>
                                         <a href="javascript:void(0);">

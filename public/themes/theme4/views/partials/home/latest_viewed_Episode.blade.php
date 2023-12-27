@@ -24,12 +24,12 @@ if (Auth::guest() != true) {
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-4"><a href="{{ $order_settings_list[18]->url ? URL::to($order_settings_list[18]->url) : null }} ">{{ optional($order_settings_list[18])->header_name }}</a></h4>
+                        <h4 class="main-title mar-left"><a href="{{ $order_settings_list[18]->url ? URL::to($order_settings_list[18]->url) : null }} ">{{ optional($order_settings_list[18])->header_name }}</a></h4>
                         <h4 class="main-title"><a href="{{ $order_settings_list[18]->url ? URL::to($order_settings_list[18]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 ml-4 row align-items-center">
+                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $key => $latest_view_episode)
                                 <li >
                                     <a href="javascript:void(0);">
@@ -68,8 +68,8 @@ if (Auth::guest() != true) {
 
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
-                                                                    <a href="{{ URL::to('category/videos/'.$latest_view_episode->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a href="{{ URL::to('category/videos/'.$latest_view_episode->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                    <a href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                    <a class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-viewed_episode-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -91,6 +91,48 @@ if (Auth::guest() != true) {
                 </div>
             </div>
         </div>
+
+        @foreach ($data as $key => $latest_view_episode )
+            <div class="modal fade info_model" id="{{ "Home-Latest-viewed_episode-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                    <div class="container">
+                        <div class="modal-content" style="border:none;">
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <img  src="{{ $latest_view_episode->player_image ?  URL::to('public/uploads/images/'.$latest_view_episode->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                                    <h2 class="caption-h2">{{ optional($latest_view_episode)->title }}</h2>
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+
+                                            @if (optional($latest_view_episode)->description)
+                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($latest_view_episode)->description) !!}</div>
+                                            @endif
+
+                                            <a href="{{ URL::to('episode/'. $latest_view_episode->series_slug.'/'.$latest_view_episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+
     </section>
 @endif
 

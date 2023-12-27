@@ -42,12 +42,12 @@ $data = App\Series::where('active', '=', '1')
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-4"><a href="#">Trending</a></h4>
+                        <h4 class="main-title mar-left"><a href="#">Trending</a></h4>
                     </div>
 
                     <div class="trending-contens">
 
-                        <ul id="trending-slider-nav" class="trending-nav list-inline p-0 ml-4 row align-items-center">
+                        <ul id="trending-slider-nav" class="trending-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $Episode_details)
                                 <li>
                                     <a href="javascript:void(0);">

@@ -39,13 +39,13 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                         @if (!empty($series_networks->Series_depends_Networks))
                                                                     {{-- Header --}}
                             <div class="iq-main-header d-flex align-items-center justify-content-between">
-                                <h4 class="main-title pl-4"><a href="{{ route('Specific_Series_Networks',[$series_networks->slug] )}}">{{ optional($series_networks)->name }}</a></h4>
+                                <h4 class="main-title mar-left"><a href="{{ route('Specific_Series_Networks',[$series_networks->slug] )}}">{{ optional($series_networks)->name }}</a></h4>
                                 <h4 class="main-title"><a href="{{ route('Specific_Series_Networks',[$series_networks->slug] )}}">{{ "view all" }}</a></h4>
                             </div>
                         @endif
 
                         <div class="trending-contens">
-                            <ul id="trending-slider-nav" class="{{ 'series-networks-videos-slider-nav list-inline p-0 ml-4 row align-items-center' }}" data-key-id="{{$key}}">
+                            <ul id="trending-slider-nav" class="{{ 'series-networks-videos-slider-nav list-inline p-0 mar-left row align-items-center' }}" data-key-id="{{$key}}">
 
                                 @foreach ($series_networks->Series_depends_Networks as $series )
                                     <li>

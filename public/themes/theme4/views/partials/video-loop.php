@@ -5,14 +5,14 @@
 <section id="">
             <div class="">
                <div class="row">
-                  <div class="col-sm-12 ">
+                  <div class="col-sm-12 pl-0">
                      <div class="iq-main-header align-items-center justify-content-between">
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
-                     <div class="favorites-contens ml-2">
+                     <div class="favorites-contens">
 
                       <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
+                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                           <?php if(isset($recomended)) :
                             foreach($recomended as $watchlater_video): ?>
                                 <li>
@@ -47,7 +47,7 @@
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
                                                                 <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="<?php echo '#watchlater_video-videoloop-Modal-'.$key ?>"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                             </div>
                                                         </div>
                                                         </div>
@@ -65,6 +65,49 @@
 		                      endif; ?>
                         </ul>
                       </div>
+
+                      <?php if(isset($recomended)) :
+                              foreach($recomended as $watchlater_video): ?>
+                        <div class="modal fade info_model" id="<?php echo "watchlater_video-videoloop-Modal-".$key ?>" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                                <div class="container">
+                                    <div class="modal-content" style="border:none; background-color: transparent;">
+                                        <div class="modal-body">
+                                            <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <img  src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" alt="" width="100%">
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                                <p class="caption-h2"><?php  echo $watchlater_video->title ?></p>
+
+                                                            </div>
+                                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                                <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        
+
+                                                          <div class="trending-dec mt-4"><?php  echo $watchlater_video->description ?></div>
+
+                                                        <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      <?php endforeach; 
+                        endif; ?>
+
+
+
 
 
                         

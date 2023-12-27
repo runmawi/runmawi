@@ -101,7 +101,7 @@
     }
     .position-absu{
         position:absolute;
-        z-index: 999;
+        z-index: 9;
     }
 
     .controls{
@@ -243,12 +243,12 @@
 <div class="main-content p-0">
     <section id="iq-favorites ">
         <div class="container-fluid p-0">
-            <div class=" pl-4">
+            <div class=" mar-left">
                  <!-- BREADCRUMBS -->
                  <div class="position-absu p-0">
                     <div class="container-fluid nav-div m-0 p-0" id="nav-tab" role="tablist">
                         <div class="bc-icons-2">
-                            <ol class="breadcrumb">
+                            <ol class="breadcrumb pl-0">
                                 <li class="breadcrumb-item"><a class="black-text"
                                         href="{{ route('series.tv-shows') }}">{{ ucwords('Channel') }}</a>
                                     <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
@@ -268,7 +268,7 @@
                         </div>
                     </div>
                 </div>
-            <div class="col-sm-12 iq-main-header d-flex align-items-center justify-content-between h-250 position-rel" style="height: 250px;">
+            <div class="col-sm-12 iq-main-header d-flex align-items-center justify-content-between h-250 position-rel pl-0" style="height: 250px;">
                     <div class="caption">
                         <h2>{{ optional($CategorySeries)->name }}</h2> 
                     </div>
@@ -279,11 +279,11 @@
             </div>
         </div>
 
-        <div class="container-fluid pl-0">
+        <div class="container-fluid pl-0 mar-left">
             <div class="row">
                 <div class="col-sm-12 page-height pr-0">
                     <div class="favorites-contens">
-                        <ul id="trending-slider-nav" class="series-category-slider-nav list-inline pl-4 m-0 row align-items-center">
+                        <ul id="trending-slider-nav" class="series-category-slider-nav list-inline mar-left m-0 row align-items-center">
                             @if (isset($SeriesGenre))
                                 @foreach ($SeriesGenre as $Series_Genre)
                                     <li>

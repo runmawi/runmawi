@@ -15,25 +15,10 @@
     <div class="container-fluid">
         <div class="block-space">
             <div class="row">
-                <?php
-                for ($i = 1; $i <= 3; $i++) {
 
-                    $footerLinks = App\FooterLink::where('column_position', $i)
-                        ->orderBy('order')
-                        ->get();
-                ?>
-
-                    <div class="col-lg-3 col-md-4">
-                        <ul class="f-link list-unstyled mb-0">
-                            <?php foreach ($footerLinks as $key => $footerLink) { ?>
-                                <li><a href="<?= URL::to('/' . $footerLink->link) ?>"><?= $footerLink->name ?></a></li>
-                            <?php } ?>
-                        </ul>
-                    </div>
-                <?php } ?>
-
-                <div class="col-lg-3 col-md-12 r-mt-15 p-1">
-                    <div class="d-flex">
+            <div class="col-lg-3 col-md-12 r-mt-15 p-1">
+                    <p class="footer-title">Contact with us:</p>
+                    <div class="d-flex footer-title">
 
                         <?php if (!empty($settings->instagram_page_id)) { ?>
                             <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon">
@@ -43,7 +28,7 @@
 
                         <?php if (!empty($settings->twitter_page_id)) { ?>
                             <a href="https://twitter.com/<?php echo TwiterId(); ?>" target="_blank" class="s-icon">
-                                <i class="ri-threads-fill"></i>
+                                <i class="ri-twitter-fill"></i>
                             </a>
                         <?php } ?>
 
@@ -105,17 +90,38 @@
                     </div>
                 </div>
 
+
+                <?php
+                for ($i = 1; $i <= 3; $i++) {
+
+                    $footerLinks = App\FooterLink::where('column_position', $i)
+                        ->orderBy('order')
+                        ->get();
+                ?>
+
+                    <div class="col-lg-3 col-md-4 col-sm-12">
+                        <ul class="f-link list-unstyled mb-0">
+                            <?php foreach ($footerLinks as $key => $footerLink) { ?>
+                                <li><a href="<?= URL::to('/' . $footerLink->link) ?>"><?= $footerLink->name ?></a></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                <?php } ?>
+
+                
+
                 
             </div>
         </div>
-    </div>
-    <div class="copyright py-2">
-        <div class="container-fluid">
-            <p class="mb-0 text-center font-size-14 text-body">
-                <?= $settings->website_name . ' - ' . Carbon::now()->year ?> All Rights Reserved
-            </p>
+        <div class="copyright py-2">
+            <div class="container-fluid">
+                <p class="mb-0 text-center font-size-14 text-body">
+                    <?= $settings->website_name . ' <i class="ri-copyright-line"></i> ' . Carbon::now()->year ?> All Rights Reserved
+                </p>
+            </div>
         </div>
     </div>
+    
 </footer>
 
    <!-- jQuery, Popper JS -->
