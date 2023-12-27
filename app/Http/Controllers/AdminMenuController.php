@@ -129,6 +129,7 @@ class AdminMenuController extends Controller
         }
         $request['order'] = $new_menu_order;
         $input['in_home'] = $request->in_home  == "on"  ? 1 : 0 ;
+        $input['in_side_menu'] = $request->in_side_menu  == "on"  ? 1 : 0 ;
         $input['in_menu'] = $request->type  ;
         // dd($input);
         $menu= Menu::create($input);
@@ -222,6 +223,8 @@ class AdminMenuController extends Controller
         }
 
         $input['in_home'] = $request->in_home  == "on"  ? 1 : 0 ;
+        $input['in_side_menu'] = $request->in_side_menu  == "on"  ? 1 : 0 ;
+
         $menu = Menu::find($input['id'])->update($input);
         if(isset($menu)){
             return Redirect::to('admin/menu')->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );

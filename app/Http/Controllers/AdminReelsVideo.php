@@ -80,7 +80,11 @@ class AdminReelsVideo extends Controller
 
       public function index()
       {
-        
+
+        if(Auth::guest()){
+            return redirect('/login');
+        }
+
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
             return redirect('/admin/restrict');
         }

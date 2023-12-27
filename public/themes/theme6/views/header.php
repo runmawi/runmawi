@@ -661,7 +661,7 @@
                                              </a>
                                           </div>
 
-                                          <?php elseif( !Auth::guest() && Auth::user()->role == "subs"): ?>
+                                          <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
 
                                           <div class="iq-card-body p-0 pl-3 pr-3">
 

@@ -99,6 +99,7 @@ class AdminLiveCategoriesController extends Controller
     
     
      public function store(Request $request){
+
       $data = Session::all();
       if (!Auth::guest()) {
       $package_id = auth()->user()->id;
@@ -148,7 +149,7 @@ class AdminLiveCategoriesController extends Controller
 
               $file->move($path, $input['image']);
          } else {
-               $input['image']  = 'default.jpg';
+               $input['image']  = null ;
            }
             $order = LiveCategory::orderBy('id', 'DESC')->first();
             // $last2 = DB::table('items')->orderBy('id', 'DESC')->first();

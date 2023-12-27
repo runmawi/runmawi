@@ -87,6 +87,7 @@ use App\AdminVideoPlaylist as AdminVideoPlaylist;
 use App\VideoPlaylist as VideoPlaylist;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\VideoExtractedImages;
 
 class AdminVideosController extends Controller
 {
@@ -436,7 +437,21 @@ class AdminVideosController extends Controller
             }
         }
     }
+    // Image extraction function
+        private function extractImageFromVideo($videoPath, $outputPath, $timeInSeconds = 5)
+        {
+            // Open the video file
+            $video = \FFMpeg\FFMpeg::fromDisk('local')->open($videoPath);
 
+            // Set the time to capture the frame (in seconds)
+            // $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($timeInSeconds))
+            $video->filters()->clip(TimeCode::fromSeconds($timeInSeconds))
+            // $video->frame(TimeCode::fromSeconds($timeInSeconds))
+            ->export()
+            ->toDisk('local')
+            ->inFormat(new X264)
+            ->save($outputPath);
+        }
     public function uploadFile(Request $request)
     {
         $value = [];
@@ -541,6 +556,12 @@ class AdminVideosController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
 
+                $outputFolder = storage_path('app/public/frames');
+
+                if (!is_dir($outputFolder)) {
+                    mkdir($outputFolder, 0755, true);
+                }
+                                    
                 $video = new Video();
                 $video->disk = "public";
                 $video->status = 0;
@@ -561,6 +582,48 @@ class AdminVideosController extends Controller
                 $video->user_id = Auth::user()->id;
                 $video->save();
 
+                if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                for ($i = 1; $i <= 5; $i++) {
+                    $imagePortraitPath = storage_path("app/public/frames/{$video->id}_{$randportrait}_{$i}.jpg");
+                    $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
+                
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->video_id = $video->id;
+                        $VideoExtractedImage->image_path = URL::to("/storage/app/public/frames/" . $video->id . '_' . $rand . '_' . $i . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/storage/app/public/frames/" . $video->id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->save();
+             
+                
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                }
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                     TranscodeVideo::dispatch($video);
@@ -631,6 +694,55 @@ class AdminVideosController extends Controller
 
             $video->duration = $Video_duration;
             $video->save();
+
+            if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                for ($i = 1; $i <= 5; $i++) {
+                    // $imagePortraitPath = storage_path("app/public/frames/{$video->id}_{$randportrait}_{$i}.jpg");
+                    // $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
+                
+                    
+                    $imagePortraitPath = public_path("uploads/images/{$video->id}_{$randportrait}_{$i}.jpg");
+                    $imagePath = public_path("uploads/images/{$video->id}_{$rand}_{$i}.jpg");
+
+                    
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->video_id = $video->id;
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video->id . '_' . $rand . '_' . $i . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video->id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->image_original_name = $video->id . '_' . $rand . '_' . $i . '.jpg';
+                        $VideoExtractedImage->save();
+             
+                
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                }
 
             $video_id = $video->id;
             $video_title = Video::find($video_id);
@@ -997,6 +1109,7 @@ class AdminVideosController extends Controller
         $data['video_js_post_position_ads'] = $request->video_js_post_position_ads ;
         $data['video_js_mid_position_ads_category'] = $request->video_js_mid_position_ads_category ;
         $data['video_js_mid_advertisement_sequence_time'] = $request->video_js_mid_advertisement_sequence_time ;
+        $data['expiry_date'] = $request->expiry_date ;
 
         if (!empty($data["embed_code"])) {
             $video = new Video();
@@ -2236,6 +2349,7 @@ class AdminVideosController extends Controller
         $video->video_js_post_position_ads = $request->video_js_post_position_ads;
         $video->video_js_mid_position_ads_category = $request->video_js_mid_position_ads_category;
         $video->video_js_mid_advertisement_sequence_time = $request->video_js_mid_advertisement_sequence_time;
+        $video->expiry_date = $request->expiry_date;
         $video->save();
 
         if (
@@ -2588,7 +2702,7 @@ class AdminVideosController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|max:255',
         ]);
-
+        
         $id = $data['video_id'];
         $video = Video::findOrFail($id);
 
@@ -2670,7 +2784,7 @@ class AdminVideosController extends Controller
         }
 
         // Player Image
-
+        // $request->selected_image_url = '';
         if ($request->hasFile('player_image')) {
             $player_image = $request->player_image;
 
@@ -2686,10 +2800,12 @@ class AdminVideosController extends Controller
 
             $data["player_image"] = $players_image;
 
+        }else if (!empty($request->selected_image_url)) {
+            $data["player_image"] = $request->selected_image_url;
         } else {
             $data["player_image"] = default_horizontal_image();
         }
-
+        // dd($data["player_image"]);
         // Tv video Image
 
         if ($request->hasFile('video_tv_image')) {
@@ -9992,6 +10108,31 @@ class AdminVideosController extends Controller
             return $value;
         }
     }
+
+    
+    
+    public function ExtractedImage(Request $request)
+    {
+        try {
+            // print_r($request->all());exit;
+            $value = [];
+
+            $ExtractedImage =  VideoExtractedImages::where('video_id',$request->video_id)->get();
+           
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $request->video_id;
+            $value["ExtractedImage"] = $ExtractedImage;
+
+
+            return $value;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+    }
+
 
 }
     

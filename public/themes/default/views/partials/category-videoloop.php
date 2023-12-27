@@ -114,9 +114,9 @@
                                        ?>
                                     </p>
                                     <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
                                 </div>
                                 </div>
 
@@ -142,9 +142,9 @@
                                        ?>
                                     </p>
                                     <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
                                     </a>
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
@@ -163,9 +163,9 @@
                                        ?>
                                     </p>
                                     <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
 
 
                                     <div class="hover-buttons text-white">

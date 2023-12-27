@@ -528,6 +528,27 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1">  Admin Video Expiry   </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->videos_expiry_status) || (isset($settings->videos_expiry_status) &&
+                                                $settings->videos_expiry_status))checked="checked" value="1"@else value="0"@endif
+                                                name="videos_expiry_status" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
@@ -564,7 +585,9 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
-
+                    </div>
+                    
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Enable Show Genre </label></div>
@@ -600,7 +623,9 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
-
+                    </div>
+                    
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> {{ ucwords('Enable show subtitle') }} </label></div>
@@ -619,7 +644,6 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
-
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1">  Show Artist </label></div>
@@ -637,7 +661,9 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
-
+                    </div>
+                    
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1">  Show Recommended Videos </label></div>
@@ -673,7 +699,6 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

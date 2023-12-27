@@ -12,6 +12,16 @@ use App\SeriesNetwork;
 
 class AdminNetworkController extends Controller
 {
+    public function __construct()
+    {
+        if(Series_Networks_Status() == 0 ){
+
+            $Error_msg = "Series Network Restricted";
+            $url = URL::to('/admin');
+            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+        }
+    }
+
     public function Network_index()
     {
         try {

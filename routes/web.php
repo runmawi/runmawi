@@ -469,6 +469,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
 
+    // EPG
+    Route::get('/epg-channel/index', 'AdminEPGChannelController@index')->name('admin.EPG-Channel.index');
+    Route::get('/epg-channel/create', 'AdminEPGChannelController@create')->name('admin.EPG-Channel.create');
+    Route::post('/epg-channel/store', 'AdminEPGChannelController@store')->name('admin.EPG-Channel.store');
+    Route::get('/epg-channel/edit/{id}', 'AdminEPGChannelController@edit')->name('admin.EPG-Channel.edit');
+    Route::post('/epg-channel/update/{id}', 'AdminEPGChannelController@update')->name('admin.EPG-Channel.update');
+    Route::get('/epg-channel/destroy/{id}', 'AdminEPGChannelController@destroy')->name('admin.EPG-Channel.destroy');
+    Route::get('/epg-channel/validation', 'AdminEPGChannelController@slug_validation')->name('admin.EPG-Channel.slug_validation');
+
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
     Route::get('/mobile_app/Splash_destroy/{source}/{id}', 'AdminUsersController@Splash_destroy')->name('Splash_destroy');
@@ -577,6 +586,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/videos/categories/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideoCategoriesController@destroy']);
     Route::get('/videos/aws_editvideo/{id}', 'AdminVideosController@AWSEditvideo');
     Route::get('/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy']);
+    Route::post('/videos/extractedimage', 'AdminVideosController@ExtractedImage');
 
     // Admin PPV Functionality
     Route::get('/ppv', 'AdminPpvController@index');
@@ -2213,9 +2223,10 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
 
     Route::get('series/category/{slug}', 'TvshowsController@SeriesCategory')->name('SeriesCategory');
     Route::get('SeriescategoryList', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
+    Route::get('Series/category/list', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
 
-    Route::get('TV-Shows/Networks/{slug}', 'TvshowsController@Specific_Series_Networks')->name('Specific_Series_Networks');
-    Route::get('TV-Shows/Networks-List', 'TvshowsController@Series_Networks_List')->name('Series_Networks_List');
+    Route::get('tv-shows/networks/{slug}', 'TvshowsController@Specific_Series_Networks')->name('Specific_Series_Networks');
+    Route::get('tv-shows/networks-list', 'TvshowsController@Series_Networks_List')->name('Series_Networks_List');
 
     // Filter
     Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
@@ -2392,7 +2403,7 @@ Route::get('exchangeCurrency','AdminCurrencyConvert@Index');
 
 Route::get('PPV-Free-Duration-Logs', 'AdminLiveStreamController@PPV_Free_Duration_Logs')->name('PPV_Free_Duration_Logs');
 
-Route::get('video-fullplayer/{slug}', 'ChannelController@video_js_fullplayer')->name('video-js-fullplayer');
+Route::get('video-player/{slug}', 'ChannelController@video_js_fullplayer')->name('video-js-fullplayer');
 
 Route::post('video_js_watchlater', 'ChannelController@video_js_watchlater')->name('video-js.watchlater');
 
@@ -2401,3 +2412,9 @@ Route::post('video_js_wishlist', 'ChannelController@video_js_wishlist')->name('v
 Route::post('video_js_Like', 'ChannelController@video_js_Like')->name('video-js.like');
 
 Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('video-js.dislike');
+
+Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
+
+Route::get('epg/Channels/{slug}', 'EPGChannelController@index')->name('Front-End.EPG');
+
+Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');

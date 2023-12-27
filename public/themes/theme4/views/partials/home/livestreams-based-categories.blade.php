@@ -43,7 +43,7 @@ $data->each(function ($category) {
                                         
                                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title pl-5"><a
+                            <h4 class="main-title mar-left"><a
                                 href="{{ URL::to('live/category/' . $live_Category->slug) }}">{{ optional($live_Category)->name }}</a>
                             </h4>
                             <h4 class="main-title"><a
@@ -52,7 +52,7 @@ $data->each(function ($category) {
                         </div>
 
                         <div class="trending-contens">
-                            <ul id="trending-slider-nav" class="{{ 'category-live-slider-nav list-inline p-0 ml-5 row align-items-center' }}" data-key-id="{{$key}}">
+                            <ul id="trending-slider-nav" class="{{ 'category-live-slider-nav list-inline p-0 mar-left row align-items-center' }}" data-key-id="{{$key}}">
 
                                 @foreach ($live_Category->category_livestream as $livestream_videos )
                                     <li>
@@ -60,8 +60,14 @@ $data->each(function ($category) {
                                             <div class="movie-slick position-relative">
                                                 <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" >
                                             </div>
+                                            
+                                            @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                                <div ><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="100%"></div>
+                                            @endif
                                         </a>
                                     </li>
+
+
                                 @endforeach
                             </ul>
 
@@ -76,8 +82,16 @@ $data->each(function ($category) {
                                                     <div id="" class="overview-tab tab-pane fade active show">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                            <div class="caption pl-5">
+                                                            <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h1>
+
+                                                                @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                                                    <ul class="vod-info">
+                                                                        <li><span></span> LIVE NOW</li>
+                                                                    </ul>
+                                                                @elseif ($livestream_videos->publish_type == "publish_later")
+                                                                    <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($livestream_videos->publish_time)->isoFormat('YYYY-MM-DD h:mm A') }} </span>
+                                                                @endif
 
                                                                 @if ( $livestream_videos->year != null && $livestream_videos->year != 0 )
                                                                     <div class="d-flex align-items-center text-white text-detail">
@@ -91,8 +105,8 @@ $data->each(function ($category) {
 
                                                                 <div class="p-btns">
                                                                     <div class="d-flex align-items-center p-0">
-                                                                        <a href="{{ URL::to('live/' . $livestream_videos->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a href="#" class="btn btn-hover mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                        <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                        <a class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Livestream-basedcategory-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -112,6 +126,48 @@ $data->each(function ($category) {
                     </div>
                 </div>
             </div>
+
+
+            @foreach ($data as $key => $livestream_videos )
+            <div class="modal fade info_model" id="{{ "Home-Livestream-basedcategory-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                    <div class="container">
+                        <div class="modal-content" style="border:none;">
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                                    <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+
+                                            @if (optional($livestream_videos)->description)
+                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($livestream_videos)->description) !!}</div>
+                                            @endif
+
+                                            <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
         </section>
     @endforeach
 @endif
@@ -183,3 +239,34 @@ $data->each(function ($category) {
         });
     });
 </script>
+
+<style>
+
+    .blob {
+        margin: 10px;
+        height: 22px;
+        width: 59px;
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
+        transform: scale(1);
+        animation: pulse 2s infinite;
+        position:absolute;
+        top:0;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+        }
+    
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+        }
+    
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        }
+    }
+    </style>
