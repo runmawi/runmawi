@@ -28,7 +28,7 @@
 
                         <?php if (!empty($settings->twitter_page_id)) { ?>
                             <a href="https://twitter.com/<?php echo TwiterId(); ?>" target="_blank" class="s-icon">
-                                <i class="ri-threads-fill"></i>
+                                <i class="ri-twitter-fill"></i>
                             </a>
                         <?php } ?>
 
@@ -116,7 +116,7 @@
         <div class="copyright py-2">
             <div class="container-fluid">
                 <p class="mb-0 text-center font-size-14 text-body">
-                    <?= $settings->website_name . ' @ ' . Carbon::now()->year ?> All Rights Reserved
+                    <?= $settings->website_name . ' <i class="ri-copyright-line"></i> ' . Carbon::now()->year ?> All Rights Reserved
                 </p>
             </div>
         </div>

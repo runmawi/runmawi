@@ -273,7 +273,16 @@
             <div class="col-md-6">
                <span class="text-white" style="font-size: 120%;font-weight: 700;"><?php echo __("You're watching"); ?>:</span> 
                <p class="mb-0" style=";font-size: 80%;color: white;"><?php 
-                  if(!empty($SeriesSeason)){ echo __('Season').' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo __('Episode').' '.$episode->id;} ?>
+                $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
+                foreach($seasons as $key=>$seasons_value){ ?>
+                               <?php
+                if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo 'Season'.' '. ($key+1)   .' ';}  }
+                $Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
+                foreach($Episode as $key=>$Episode_value){  ?>
+                  <?php if (!empty($episode) && $episode->id == $Episode_value->id) {
+                     echo 'Episode' . ' ' . $episode->episode_order . ' ';
+                  } ?>
+                  <?php } ?>
                </p>
                <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
                   ?></p>

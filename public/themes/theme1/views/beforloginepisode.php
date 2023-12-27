@@ -286,9 +286,16 @@ else
 	<br>
                 <div class="col-md-5">
 			<span class="text-white" style="font-size: 129%;font-weight: 700;"><?= __("You're watching") ?>:</span>
-      <p style=";font-size: 130%;color: white;"><?php if(!empty($series)){ echo 'Series'.' '.$series->id.' ';}
-			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} 
-			if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
+      <p style=";font-size: 130%;color: white;"><?php $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
+			foreach($seasons as $key=>$seasons_value){ ?>
+                        <?php
+			if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo 'Season'.' '. ($key+1)   .' ';}  }
+			$Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
+			foreach($Episode as $key=>$Episode_value){  ?>
+                        <?php if (!empty($episode) && $episode->id == $Episode_value->id) {
+                            echo 'Episode' . ' ' . $episode->episode_order . ' ';
+                        } ?>
+                        <?php } ?>
        <p style=";font-size: 130%;color: white;"><?=$episode->title
 ?></p>
 		
@@ -370,7 +377,7 @@ elseif (isset($episodeprev))
                         <!-- Comment Section -->
                
                         <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
-       <div class="row">
+       <div class="">
            <div class=" container-fluid video-list you-may-like overflow-hidden">
                <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                <?php include('comments/index.blade.php');?>
@@ -378,7 +385,7 @@ elseif (isset($episodeprev))
        </div>
       <?php endif; ?>
 
-		<div class="iq-main-header container d-flex align-items-center justify-content-between">
+		<div class="iq-main-header container-fluid d-flex align-items-center justify-content-between">
   <h4 class="main-title">Season</h4>                      
 </div>
 <div class="favorites-contens">
