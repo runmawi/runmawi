@@ -469,6 +469,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
 
+    // EGP 
+    Route::get('/EGP-Channel/index', 'AdminEGPChannelController@index')->name('admin.EGP-Channel.index');
+    Route::get('/EGP-Channel/create', 'AdminEGPChannelController@create')->name('admin.EGP-Channel.create');
+    Route::post('/EGP-Channel/store', 'AdminEGPChannelController@store')->name('admin.EGP-Channel.store');
+    Route::get('/EGP-Channel/edit/{id}', 'AdminEGPChannelController@edit')->name('admin.EGP-Channel.edit');
+    Route::post('/EGP-Channel/update/{id}', 'AdminEGPChannelController@update')->name('admin.EGP-Channel.update');
+    Route::get('/EGP-Channel/destroy/{id}', 'AdminEGPChannelController@destroy')->name('admin.EGP-Channel.destroy');
+    Route::get('/EGP-Channel/validation', 'AdminEGPChannelController@slug_validation')->name('admin.EGP-Channel.slug_validation');
+
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
     Route::get('/mobile_app/Splash_destroy/{source}/{id}', 'AdminUsersController@Splash_destroy')->name('Splash_destroy');
