@@ -713,7 +713,7 @@
                                                             <?php echo $tvshows_series->title; ?>
                                                         </a>
                                                     <?php else: ?>
-                                                        <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>"> 
+                                                        <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/Series/category/list');?>"> 
                                                             <?php echo 'More...';?> 
                                                         </a>
                                                     <?php endif; ?>
