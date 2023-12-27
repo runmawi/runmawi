@@ -10,13 +10,12 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
-use App\AdminEGPChannel;
+use App\AdminEPGChannel;
 use App\User;
 use View;
 
-class AdminEGPChannelController extends Controller
+class AdminEPGChannelController extends Controller
 {
-
     public function index()
     {
         $user =  User::where('id',1)->first();
@@ -63,16 +62,16 @@ class AdminEGPChannelController extends Controller
 
         }else{
 
-            $Admin_EGP_Channel =  AdminEGPChannel::get()->map(function ($item) {
-                $item['image_url'] = $item->image != null ? URL::to('public/uploads/EGP-Channel/'.$item->image ) : default_vertical_image_url() ;
-                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EGP-Channel/'.$item->player_image ) : default_horizontal_image_url();
-                $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EGP-Channel/'.$item->logo ) : default_vertical_image_url();
+            $Admin_EPG_Channel =  AdminEPGChannel::get()->map(function ($item) {
+                $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+                $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+                $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
                 return $item;
             });
     
-            $data = array ( 'Admin_EGP_Channel'=> $Admin_EGP_Channel );
-    
-            return View::make('admin.EGP_Channels.index',$data);
+            $data = array ( 'Admin_EPG_Channel'=> $Admin_EPG_Channel );
+
+            return View::make('admin.EPG_Channels.index',$data);
         }
     }
 
@@ -128,7 +127,7 @@ class AdminEGPChannelController extends Controller
                     'button_text' => 'Add New' ,
                 );
 
-                return View::make('admin.EGP_Channels.create',$data);
+                return View::make('admin.EPG_Channels.create',$data);
             }
 
         } catch (\Throwable $th) {
@@ -153,13 +152,13 @@ class AdminEGPChannelController extends Controller
 
                 if(compress_image_enable() == 1){
 
-                    $filename   = 'EGP-Channel-Image-'.time().'.'. compress_image_format();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename , compress_image_resolution() );
+                    $filename   = 'EPG-Channel-Image-'.time().'.'. compress_image_format();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename , compress_image_resolution() );
 
                 }else{
 
-                    $filename   = 'EGP-Channel-Image-'.time().'.'.$file->getClientOriginalExtension();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename );
+                    $filename   = 'EPG-Channel-Image-'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename );
                 }
 
                 $inputs +=  ['image' => $filename ];
@@ -171,13 +170,13 @@ class AdminEGPChannelController extends Controller
 
                 if(compress_image_enable() == 1){
 
-                    $filename   = 'EGP-Channel-Player-Image-'.time().'.'. compress_image_format();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename , compress_image_resolution() );
+                    $filename   = 'EPG-Channel-Player-Image-'.time().'.'. compress_image_format();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename , compress_image_resolution() );
 
                 }else{
 
-                    $filename   = 'EGP-Channel-Player-Image-'.time().'.'.$file->getClientOriginalExtension();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename );
+                    $filename   = 'EPG-Channel-Player-Image-'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename );
                 }
 
                 $inputs +=  ['player_image' => $filename ];
@@ -189,13 +188,13 @@ class AdminEGPChannelController extends Controller
 
                 if(compress_image_enable() == 1){
 
-                    $filename   = 'EGP-Channel-logo-'.time().'.'. compress_image_format();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename , compress_image_resolution() );
+                    $filename   = 'EPG-Channel-logo-'.time().'.'. compress_image_format();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename , compress_image_resolution() );
 
                 }else{
 
-                    $filename   = 'EGP-Channel-logo-'.time().'.'.$file->getClientOriginalExtension();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename );
+                    $filename   = 'EPG-Channel-logo-'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename );
                 }
 
                 $inputs +=  ['logo' => $filename ];
@@ -205,17 +204,17 @@ class AdminEGPChannelController extends Controller
 
                 $file = $request->intro_video;
 
-                $filename = 'EGP-Channel-intro-video-'.time().'.'. $file->getClientOriginalName();
-                $path = public_path().'/uploads/EGP-Channel/';
+                $filename = 'EPG-Channel-intro-video-'.time().'.'. $file->getClientOriginalName();
+                $path = public_path().'/uploads/EPG-Channel/';
 
                 $file->move($path, $filename);
 
                 $inputs +=  ['intro_video' => $filename ];
             }
 
-            AdminEGPChannel::create($inputs) ;
+            AdminEPGChannel::create($inputs) ;
 
-            return redirect()->route('admin.EGP-Channel.index')->with('message', 'New  EGP Channel successfully.');
+            return redirect()->route('admin.EPG-Channel.index')->with('message', 'New  EPG Channel successfully.');
        
         } catch (\Throwable $th) {
             return abort(404);
@@ -270,20 +269,20 @@ class AdminEGPChannelController extends Controller
 
             }else{
 
-                $Admin_EGP_Channel =  AdminEGPChannel::where('id',$id)->get()->map(function ($item) {
-                    $item['image_url'] = $item->image != null ? URL::to('public/uploads/EGP-Channel/'.$item->image ) : default_vertical_image_url() ;
-                    $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EGP-Channel/'.$item->player_image ) : default_horizontal_image_url();
-                    $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EGP-Channel/'.$item->logo ) : default_vertical_image_url();
-                    $item['Intro_videos_url'] = $item->logo != null ?  URL::to('public/uploads/EGP-Channel/'.$item->intro_video ) : null ;
+                $Admin_EPG_Channel =  AdminEPGChannel::where('id',$id)->get()->map(function ($item) {
+                    $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+                    $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+                    $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+                    $item['Intro_videos_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->intro_video ) : null ;
                     return $item;
                 })->first();
 
                 $data = array(
                     'button_text' => 'Update' ,
-                    'Admin_EGP_Channel' => $Admin_EGP_Channel ,
+                    'Admin_EPG_Channel' => $Admin_EPG_Channel ,
                 );
 
-                return View::make('admin.EGP_Channels.edit',$data);
+                return View::make('admin.EPG_Channels.edit',$data);
             }
 
         } catch (\Throwable $th) {
@@ -308,13 +307,13 @@ class AdminEGPChannelController extends Controller
 
                 if(compress_image_enable() == 1){
 
-                    $filename   = 'EGP-Channel-Image-'.time().'.'. compress_image_format();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename , compress_image_resolution() );
+                    $filename   = 'EPG-Channel-Image-'.time().'.'. compress_image_format();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename , compress_image_resolution() );
 
                 }else{
 
-                    $filename   = 'EGP-Channel-Image-'.time().'.'.$file->getClientOriginalExtension();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename );
+                    $filename   = 'EPG-Channel-Image-'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename );
                 }
 
                 $inputs +=  ['image' => $filename ];
@@ -326,13 +325,13 @@ class AdminEGPChannelController extends Controller
 
                 if(compress_image_enable() == 1){
 
-                    $filename   = 'EGP-Channel-Player-Image-'.time().'.'. compress_image_format();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename , compress_image_resolution() );
+                    $filename   = 'EPG-Channel-Player-Image-'.time().'.'. compress_image_format();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename , compress_image_resolution() );
 
                 }else{
 
-                    $filename   = 'EGP-Channel-Player-Image-'.time().'.'.$file->getClientOriginalExtension();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename );
+                    $filename   = 'EPG-Channel-Player-Image-'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename );
                 }
 
                 $inputs +=  ['player_image' => $filename ];
@@ -344,13 +343,13 @@ class AdminEGPChannelController extends Controller
 
                 if(compress_image_enable() == 1){
 
-                    $filename   = 'EGP-Channel-logo-'.time().'.'. compress_image_format();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename , compress_image_resolution() );
+                    $filename   = 'EPG-Channel-logo-'.time().'.'. compress_image_format();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename , compress_image_resolution() );
 
                 }else{
 
-                    $filename   = 'EGP-Channel-logo-'.time().'.'.$file->getClientOriginalExtension();
-                    Image::make($file)->save(base_path().'/public/uploads/EGP-Channel/'.$filename );
+                    $filename   = 'EPG-Channel-logo-'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($file)->save(base_path().'/public/uploads/EPG-Channel/'.$filename );
                 }
 
                 $inputs +=  ['logo' => $filename ];
@@ -360,16 +359,16 @@ class AdminEGPChannelController extends Controller
 
                 $file = $request->intro_video;
 
-                $filename = 'EGP-Channel-intro-video-'.time().'.'. $file->getClientOriginalName();
-                $path     = public_path().'/uploads/EGP-Channel/';
+                $filename = 'EPG-Channel-intro-video-'.time().'.'. $file->getClientOriginalName();
+                $path     = public_path().'/uploads/EPG-Channel/';
                 $file->move($path, $filename);
 
                 $inputs +=  ['intro_video' => $filename ];
             }
 
-            AdminEGPChannel::find($id)->update($inputs) ;
+            AdminEPGChannel::find($id)->update($inputs) ;
             
-            return back()->with('message', 'Updated EGP Channel successfully.');
+            return back()->with('message', 'Updated EPG Channel successfully.');
 
         } catch (\Throwable $th) {
             return abort(404);
@@ -381,29 +380,29 @@ class AdminEGPChannelController extends Controller
     {
         try {
 
-            $Admin_EGP_Channel = AdminEGPChannel::find($id);
+            $Admin_EPG_Channel = AdminEPGChannel::find($id);
 
-            if (File::exists(base_path('public/uploads/EGP-Channel/'.$Admin_EGP_Channel->image))) {
-                File::delete(base_path('public/uploads/EGP-Channel/'.$Admin_EGP_Channel->image));
+            if (File::exists(base_path('public/uploads/EPG-Channel/'.$Admin_EPG_Channel->image))) {
+                File::delete(base_path('public/uploads/EPG-Channel/'.$Admin_EPG_Channel->image));
             }
 
             
-            if (File::exists(base_path('public/uploads/EGP-Channel/'.$Admin_EGP_Channel->player_image))) {
-                File::delete(base_path('public/uploads/EGP-Channel/'.$Admin_EGP_Channel->player_image));
+            if (File::exists(base_path('public/uploads/EPG-Channel/'.$Admin_EPG_Channel->player_image))) {
+                File::delete(base_path('public/uploads/EPG-Channel/'.$Admin_EPG_Channel->player_image));
             }
 
             
-            if (File::exists(base_path('public/uploads/EGP-Channel/'.$Admin_EGP_Channel->logo))) {
-                File::delete(base_path('public/uploads/EGP-Channel/'.$Admin_EGP_Channel->logo));
+            if (File::exists(base_path('public/uploads/EPG-Channel/'.$Admin_EPG_Channel->logo))) {
+                File::delete(base_path('public/uploads/EPG-Channel/'.$Admin_EPG_Channel->logo));
             }
             
-            if (File::exists(base_path('public/uploads/EGP-Channel/'.$Admin_EGP_Channel->intro_video))) {
-                File::delete(base_path('public/uploads/EGP-Channel/'.$Admin_EGP_Channel->intro_video));
+            if (File::exists(base_path('public/uploads/EPG-Channel/'.$Admin_EPG_Channel->intro_video))) {
+                File::delete(base_path('public/uploads/EPG-Channel/'.$Admin_EPG_Channel->intro_video));
             }
 
-            AdminEGPChannel::destroy($id);
+            AdminEPGChannel::destroy($id);
 
-            return redirect()->route('admin.EGP-Channel.index')->with('message', 'EGP Channel has been deleted successfully.');
+            return redirect()->route('admin.EPG-Channel.index')->with('message', 'EPG Channel has been deleted successfully.');
             
         } catch (\Throwable $th) {
 
@@ -421,13 +420,13 @@ class AdminEGPChannelController extends Controller
 
             if($button_type == "Update"){
 
-                $slug = AdminEGPChannel::where('slug',$slug)->get();
+                $slug = AdminEPGChannel::where('slug',$slug)->get();
 
                 $message = (count($slug) < 2) ?  "true" : "false";
 
             }elseif($button_type == "Add New"){
 
-                $slug = AdminEGPChannel::where('slug',$slug)->first();
+                $slug = AdminEPGChannel::where('slug',$slug)->first();
                 $message = ($slug == null) ?  "true" : "false";
             }
             

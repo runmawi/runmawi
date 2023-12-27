@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdminEgpChannelsTable extends Migration
+class CreateAdminEpgChannelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAdminEgpChannelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('admin_egp_channels', function (Blueprint $table) {
+        Schema::create('admin_epg_channels', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
@@ -22,6 +22,7 @@ class CreateAdminEgpChannelsTable extends Migration
             $table->string('player_image')->nullable();
             $table->string('logo')->nullable();
             $table->string('intro_video')->nullable();
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }
@@ -33,6 +34,6 @@ class CreateAdminEgpChannelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_egp_channels');
+        Schema::dropIfExists('admin_epg_channels');
     }
 }
