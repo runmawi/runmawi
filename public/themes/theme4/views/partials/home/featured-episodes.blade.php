@@ -37,11 +37,20 @@
 
                                                         <div class="caption pl-4">
                                                             <h2 class="caption-h2">{{ optional($episode_details)->title }}</h2>
+                                                            
+                                                            @php
+                                                                $series_seasons_name = App\SeriesSeason::where('id',$episode_details->season_id)->pluck('series_seasons_name')->first() ;
+                                                            @endphp
+
+                                                            @if (!is_null($series_seasons_name))
+                                                                <div class="d-flex align-items-center text-white text-detail">
+                                                                    {{ "Season - ". $series_seasons_name  }}  
+                                                                </div>
+                                                            @endif
 
                                                             @if (optional($episode_details)->episode_description)
                                                                 <div class="trending-dec">{!! html_entity_decode( optional($episode_details)->episode_description) !!}</div>
                                                             @endif
-
 
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
