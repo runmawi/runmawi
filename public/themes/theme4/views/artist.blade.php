@@ -7,13 +7,13 @@
         padding-bottom: 0px !important;
     }
 
-    #removefollow {
+    /* #removefollow {
         color: #ff4444;
-    }
+    } */
 
-    #follow {
+    /* #follow {
         color: #007E33;
-    }
+    } */
 
     .abu h2 {
         color: #fff !important;
@@ -46,7 +46,7 @@
             <img src="{{ URL::to('public/uploads/artists/' . $artist->image) }}" alt="" class="w-100">
         </div>
 
-        <div class=" col-md-9 abu p-0">
+        <div class=" col-md-9 abu">
             <h2> {{ 'About' }} </h2>
             <p> {!! html_entity_decode(optional($artist)->description) !!} </p>
 
@@ -59,7 +59,7 @@
                         @if ($artist_following == 0)
                             <div class="flw mt-2" id="followingone">
                                 <span>
-                                    <i class="fa fa-user-plus" id="follow" aria-hidden="true"></i>
+                                    <i class="fa fa-user" id="follow" aria-hidden="true"></i>
                                 </span>
                             </div>
                         @endif
@@ -74,7 +74,7 @@
 
                         <div class="flw mt-2" id="following">
                             <span>
-                                <i class="fa fa-user-plus" id="follow" aria-hidden="true"></i>
+                                <i class="fa fa-user" id="follow" aria-hidden="true"></i>
                             </span>
                         </div>
 
@@ -86,7 +86,7 @@
                     @else
                         <div class="flw mt-2" id="beforesigninfollowing">
                             <span>
-                                <i class="fa fa-user-plus" id="sign_in_follow" aria-hidden="true"></i>
+                                <i class="fa fa-user" id="sign_in_follow" aria-hidden="true"></i>
                             </span>
                         </div>
                     @endif

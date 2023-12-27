@@ -253,7 +253,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                             href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
                             <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                         </a>
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
 
                     </li>
                     <?php } ?>
