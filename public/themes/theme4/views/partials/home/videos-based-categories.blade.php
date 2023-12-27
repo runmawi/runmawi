@@ -98,7 +98,7 @@
                                                                 <h2 class="caption-h2">{{ optional($videos)->title }}</h2>
 
                                                                 @if ( optional($videos)->description )
-                                                                    <div class="trending-dec">{!! htmlspecialchars(substr(optional($videos)->description, 0, 100)) !!}</div>
+                                                                    <p class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</p>
                                                                 @endif
 
                                                                 <div class="p-btns">
