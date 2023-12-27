@@ -15,7 +15,7 @@ class AddEnableExtractImageToSiteThemes extends Migration
     {
         Schema::table('site_themes', function (Blueprint $table) {
             //
-            $table->tinyInteger('enable_extract_image')->default(0)->after('header_position');
+            $table->tinyInteger('enable_extract_image')->default(0);
         });
     }
 
