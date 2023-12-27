@@ -26,7 +26,7 @@
     }
 
     select:valid {
-        color: #808080 !important;
+        color: #fff !important;
     }
 
     .plyr__video-wrapper::before {
@@ -77,11 +77,28 @@
     }
 
     .modal {
-        top: 40px;
-    }
+            top: 40px;
+        }
 
     .ply {
         width: 40px;
+    }
+    .model_close-button{
+        border: 2px solid;
+        width: 30px;
+        height: 30px;
+        font-size: 27px;
+    }
+    .model_close-button:hover{
+        background:white;
+        color:black;
+
+    }
+    .drp-close.model_close-button:hover {
+        transform: none;
+    }
+    .trending-dec.mt-2 span.text-primary{
+        cursor: pointer;
     }
 
     /* <!-- BREADCRUMBS  */
@@ -100,6 +117,7 @@
         background-image: none;
         backdrop-filter: none;
     }
+   
 </style>
 
 <?php
@@ -108,9 +126,40 @@
     $ThumbnailSetting = App\ThumbnailSetting::first();
 ?>
 
-<div id="myImage"
-    style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain;padding:0px 0px 20px; ">
-    <div class="container-fluid pt-5">
+<div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:cover;padding:0px 0px 20px; ">
+    <!-- <div class="dropdown_thumbnail" >
+        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" alt="" style="height:450px;">
+    </div> -->
+    <!-- BREADCRUMBS -->
+
+    <div class="row mr-2">
+        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Channels')) ?></a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
+
+                    <?php foreach ($category_name as $key => $series_category_name) { ?>
+                    <?php $category_name_length = count($category_name); ?>
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
+                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                        </a>
+                        
+                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
+                    <?php } ?>
+
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title); ?> </a></li>
+                </ol>
+            </div>
+        </div>
+     </div>
+
+    <div class="container-fluid pl-0 mar-left">
         <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker" <?php endif; ?>></div>
 
         <div class="row mt-3 align-items-center">
@@ -119,22 +168,54 @@
                 Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
                 $settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) )
 
-            <div class="col-md-7">
+            <div class="col-md-7 pl-0">
                 <div id="series_title">
-                    <div class="container">
+                    <div class="container-fluid pl-0 mar-left">
                         <h3> {{ $series->title }} </h3>
 
-                        <div class="row p-2 text-white">
+                        <div class="row text-white">
 
-                            <div class="col-md-7">
+                            <div class="col-md-7 pl-0 mar-left">
 
-                                <?php echo __('Season'); ?> <span class="sea"> 1 </span> -
+                                <?php echo __('Season'); ?> <span class="sea"> 1 </span> 
+                                - <?php echo __('U/A English'); ?>
 
-                                <p style="color:#fff!important;">{!! html_entity_decode(optional($series)->details) !!} </p>
+                                <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 180)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p>
+                                
+                                    <!-- Model for banner discription -->
+                                        <div class="modal fade info_model" id='discription-Modal' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                                                <div class="container">
+                                                    <div class="modal-content" style="border:none;">
+                                                        <div class="modal-body">
+                                                            <div class="col-lg-12">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6">
+                                                                        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" width="100%" alt="">
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                                                <h2 class="caption-h2">{{ $series->title }}</h2>
 
-                                <b>
-                                    <p style="color:#fff;">{!! html_entity_decode(optional($series)->description) !!}</p>
-                                </b>
+                                                                            </div>
+                                                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                                                <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="trending-dec mt-4">{{ html_entity_decode($series->description ) }}</div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
 
                                 <div class="row p-0 mt-3 align-items-center">
 
@@ -214,52 +295,20 @@
 <section id="tabs" class="project-tab">
     <div class="container-fluid p-0">
 
-        <!-- BREADCRUMBS -->
-
-        <div class="row mr-2">
-            <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
-                <div class="bc-icons-2">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="black-text" href="{{ route('series.tv-shows') }}"> {{ ucwords(__('Series')) }}</a>
-                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                        </li>
-
-                        @foreach ($category_name as $key => $series_category_name)
-                            <?php $category_name_length = count($category_name); ?>
-
-                            <li class="breadcrumb-item">
-
-                                <a class="black-text"
-                                    href="{{ route('SeriesCategory', [$series_category_name->categories_slug]) }}">
-                                    {{ ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') }}
-                                </a>
-
-                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                            </li>
-                        @endforeach
-
-                        <li class="breadcrumb-item">
-                            <a class="black-text">
-                                {{ strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title) }}
-                            </a>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
+        
 
         <div class=" ">
             <div class="col-md-12 mt-4 p-0">
                 <nav class="nav-justified p-0 m-0 w-100">
-                    <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+                    <div class="nav" id="nav-tab" role="tablist">
                         <h4 class="ml-3"> {{ 'Episode' }} </h4>
                     </div>
                 </nav>
             </div>
 
-            <div class="container-fluid">
+            <div class="container-fluid pl-0 mar-left">
                 <div class="favorites-contens">
-                    <div class="col-md-3 p-0">
+                    <div class="col-md-3 p-0 mt-4">
                         <select class="form-control" id="season_id" name="season_id">
                             @foreach ($season as $key => $seasons)
                                 <option data-key="{{ $key + 1 }}" value={{ 'season_' . $seasons->id }}>
@@ -268,7 +317,65 @@
                         </select>
                     </div>
 
-                    <ul class="category-page list-inline row p-3 mb-0">
+                    <div class="trending-contens sub_dropdown_image mt-3">
+                        <ul id="trending-slider-nav" class= "cnt-videos-slider-nav list-inline m-0 row align-items-center" >
+                            @foreach ($season as $key => $seasons)
+                                @foreach ($seasons->episodes as $key => $episodes)
+                                    @if ($seasons->ppv_interval > $key)
+                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                                            <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
+                                            <div class=" position-relative">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
+                                                    <div class="controls">
+                                                        <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
+                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                        </a>
+
+                                                        <nav>
+                                                        <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                        </nav>
+                                                                                                        
+                                                        <p class="trending-dec" >
+                                                            {{ $episodes->description}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @else
+                                        <li>
+                                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
+                                                <div class=" position-relative">
+                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="img-fluid w-100" >
+                                                    <div class="controls">
+                                                        <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
+                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                        </a>
+
+                                                        <nav>
+                                                        
+                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fas fa-info-circle"  ></i><span>More info</span></button>
+                                                    
+                                                        </nav>
+                                                                                                        
+                                                        <p class="trending-dec" >
+                                                            {{ $episodes->description}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @endforeach
+                        </ul>
+                    </div>
+
+
+
+
+
+                    <!-- <ul class="category-page list-inline row p-3 mb-0">
                         @foreach ($season as $key => $seasons)
                             @foreach ($seasons->episodes as $key => $episodes)
                                 @if ($seasons->ppv_interval > $key)
@@ -343,7 +450,7 @@
                                 @endif
                             @endforeach
                         @endforeach
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
         @elseif(Auth::guest() && $series->access == 'subscriber')
@@ -376,12 +483,15 @@
     </div>
 </section>
 
+
+
 @endif
 <?php $payment_type = App\PaymentSetting::get(); ?>
 
 @php
     include public_path('themes/theme4/views/footer.blade.php');
 @endphp
+
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -803,4 +913,67 @@
             $('.add_watch').slideUp('fast');
         }, 3000);
     }
+</script>
+
+<script>
+    
+    $( window ).on("load", function() {
+        $('.cnt-videos-slider').hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.cnt-videos-slider').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            draggable: false,
+            asNavFor: '.cnt-videos-slider-nav',
+        });
+
+        $('.cnt-videos-slider-nav').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            asNavFor: '.cnt-videos-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.cnt-videos-slider-nav').on('click', function() {
+            $( ".drp-close" ).trigger( "click" );
+            $('.cnt-videos-slider').show();
+        });
+
+        $('body').on('click', '.drp-close', function() {
+            $('.cnt-videos-slider').hide();
+        });
+    });
 </script>
