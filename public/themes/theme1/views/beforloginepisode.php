@@ -378,7 +378,7 @@ elseif (isset($episodeprev))
        </div>
       <?php endif; ?>
 
-		<div class="iq-main-header container d-flex align-items-center justify-content-between">
+		<div class="iq-main-header container-fluid d-flex align-items-center justify-content-between">
   <h4 class="main-title">Season</h4>                      
 </div>
 <div class="favorites-contens">
