@@ -18,7 +18,7 @@
     .abu h2 {
         color: #fff !important;
     }
-    #followingone, #removefollowingone, #following, #removefollowing{
+    #followingone, #removefollowingone, #following, #removefollowing, #beforesigninfollowing{
         display: inline-flex;
         margin: 0 15px 0 0;
         width: 40px;
@@ -26,7 +26,7 @@
         background: #5c5c5c54;
         border-radius: 3px;
     }
-    #followingone span, #removefollowingone span, #following span, #removefollowing span{
+    #followingone span, #removefollowingone span, #following span, #removefollowing span, #beforesigninfollowing span{
         height:40px;
         width:40px;
         display: flex;
@@ -84,7 +84,7 @@
                             </span>
                         </div>
                     @else
-                        <div class="flw mt-2" id="">
+                        <div class="flw mt-2" id="beforesigninfollowing">
                             <span>
                                 <i class="fa fa-user-plus" id="sign_in_follow" aria-hidden="true"></i>
                             </span>
@@ -393,7 +393,7 @@
                                         </div>
 
                                         <div class="dropdown_thumbnail">
-                                            <img  src="{{ URL::to('public/uploads/images/' . $artist_video->player_image) }}" alt="">
+                                            <img  src="{{ URL::to('public/uploads/images/' . $artist_video->image) }}" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -414,7 +414,7 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <img  src="{{ URL::to('public/uploads/images/' . $artist_video->player_image) }}" alt="" width="100%">
+                                        <img  src="{{ URL::to('public/uploads/images/' . $artist_video->image) }}" alt="" width="100%">
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="row">
