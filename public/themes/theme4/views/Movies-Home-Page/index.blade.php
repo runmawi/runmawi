@@ -19,7 +19,10 @@
                <!-- MainContent -->
 
       <div class="main-content">
-        
+
+                    {{-- Go to expiry videos --}}
+            {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos')->content() !!}
+
                 {{-- latest videos --}}
             {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', ['data' => $latest_video, 'order_settings_list' => $order_settings_list ])->content() !!}
 

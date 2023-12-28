@@ -262,6 +262,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('channel-theme-mode', 'HomeController@ChannelThemeModeSave');
     Route::post('ads-theme-mode', 'HomeController@AdsThemeModeSave');
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('change-profile', 'HomeController@Multipleprofile');
 
     // Reels
     Route::get('/reels', 'AdminReelsVideo@index');

@@ -55,7 +55,7 @@
                                 <input type="text" name="value" class="form-control" placeholder="Enter Value...">
                             </div>
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-success">Add</button>
+                                <button type="submit" class="btn btn-success mt-5">Add</button>
                             </div>
                         </div>
                     </form>

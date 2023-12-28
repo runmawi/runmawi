@@ -57,7 +57,7 @@
 
                                                                     $VideoCategory = App\CategoryVideo::where('category_id',$videocategories->id)->groupBy('video_id')->pluck('video_id'); 
 
-                                                                    $videos = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','player_image')
+                                                                    $videos = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','player_image','expiry_date')
 
                                                                                             ->where('active',1)->where('status', 1)->where('draft',1)->whereIn('id',$VideoCategory);
 
@@ -65,9 +65,13 @@
                                                                                             {
                                                                                                 $videos = $videos->whereNotIn('videos.id',Block_videos());
                                                                                             }
+
+                                                                                            if (videos_expiry_date_status() == 1 ) {
+                                                                                                $videos = $videos->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                                                                                            }
                                                                                             
                                                                                             if ($check_Kidmode == 1) {
-                                                                                                $query->whereBetween('videos.age_restrict', [0, 12]);
+                                                                                                $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
                                                                                             }
 
                                                                     $videos = $videos->latest()->limit(30)->get();
@@ -85,13 +89,18 @@
                                                                                     </a>
 
                                                                                     <nav tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-videos-Modal-'.$key }}"><button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
-                                                                                    
+
                                                                                     <p class="trending-dec" >
                                                                                         {{ optional($video_details)->title   }} 
                                                                                         {!! (strip_tags(substr(optional($video_details)->description, 0, 50))) !!}
                                                                                     </p>
-                                                                                   
+
                                                                                 </div>
+
+                                                                                @if (videos_expiry_date_status() == 1 && optional($video_details)->expiry_date)
+                                                                                    <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
+                                                                                @endif
+                                                                                
                                                                             </div>
                                                                         </a>
                                                                     </li>
