@@ -1,5 +1,7 @@
 @php
 
+    $order_settings_list = App\OrderHomeSetting::get();  
+
     $check_Kidmode = 0 ;
 
     $data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
