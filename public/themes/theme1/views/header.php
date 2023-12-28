@@ -615,7 +615,7 @@
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                           ?>
                                         <li class="dropdown menu-item dskdflex">
-                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/categoryList'); ?>" data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/categoryList'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
@@ -639,7 +639,7 @@
                                         $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                         ?>
                                         <li class="dropdown menu-item dskdflex">
-                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/Movie-list'); ?>" data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Movie-list'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
@@ -660,7 +660,7 @@
                                        $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                         ?>
                                         <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"  data-toggle="dropdown">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/Live-list'); ?>"  data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Live-list'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>

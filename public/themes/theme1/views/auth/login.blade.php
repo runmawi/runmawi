@@ -100,7 +100,7 @@
             width: 100%;
             padding: 10px;
             height: 59px;
-            padding-left: 55px;
+            padding-left: 77px;
         }
 
 
