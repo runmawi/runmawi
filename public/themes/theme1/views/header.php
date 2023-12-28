@@ -615,7 +615,7 @@
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                           ?>
                                         <li class="dropdown menu-item dskdflex">
-                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/categoryList'); ?>" data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/categoryList'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
@@ -639,7 +639,7 @@
                                         $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                         ?>
                                         <li class="dropdown menu-item dskdflex">
-                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/Movie-list'); ?>" data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Movie-list'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
@@ -660,7 +660,7 @@
                                        $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                         ?>
                                         <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"  data-toggle="dropdown">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/Live-list'); ?>"  data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Live-list'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
@@ -669,7 +669,7 @@
                                             <ul class="dropdown-menu categ-head">
                                                 <?php foreach ( $LiveCategory as $category){ ?>
                                                 <li>
-                                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->name; ?>">
+                                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->slug; ?>">
                                                         <?php echo $category->name; ?>
                                                     </a>
                                                 </li>
@@ -1082,14 +1082,15 @@
                                                    
                                                                      <!-- Light Mode & Dark Mode -->
                                                    <a class="p-0">
-                                                      <div class=" mt-3 text-right">
+                                                      <div class="text-left">
+                                                      <i class="fas fa-moon"></i>
                                                          <label class="switch toggle mt-3">
                                                             <input type="checkbox" id="toggle"
                                                                value=<?php echo $theme_mode; ?> <?php if ($theme_mode == 'light') {
                                                                      echo 'checked';
                                                                } ?> />
                                                             <span class="sliderk round"></span>
-                                                         </label>
+                                                         </label><i class="fas fa-sun pl-1"></i>
                                                       </div>
                                                    </a>                                             
 
@@ -1287,14 +1288,15 @@
                                             <div class="iq-card shadow-none m-0">
                                                 <div class="iq-card-body p-0 pl-3 pr-3">
                                                       <a class="p-0">
-                                                         <div class=" mt-3 text-right">
+                                                         <div class=" text-left">
+                                                         <i class="fas fa-moon"></i>
                                                             <label class="switch toggle mt-3">
                                                                 <input type="checkbox" id="toggle"
                                                                     value=<?php echo $theme_mode; ?> <?php if ($theme_mode == 'light') {
                                                                         echo 'checked';
                                                                     } ?> />
                                                                 <span class="sliderk round"></span>
-                                                            </label>
+                                                            </label><i class="fas fa-sun pl-1"></i>
                                                          </div>
                                                       </a>
                                                     <a href="<?php echo URL::to('myprofile'); ?>"
