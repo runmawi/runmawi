@@ -326,6 +326,17 @@ class OrderHomeSettingSeeder extends Seeder
                     'created_at' => Carbon::now(),
                     'updated_at' => null,
                 ],
+
+                [   
+                    'user_id' => 1, 
+                    'order_id' => 33,
+                    'video_name' => 'Leaving_soon_videos' ,
+                    'header_name' => 'Leaving soon videos', 
+                    'url' => '',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => null,
+                ],
+
             ];
 
             OrderHomeSetting::insert($Menu);
