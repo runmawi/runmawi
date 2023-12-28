@@ -310,13 +310,13 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
   </h3>-->
 
-                <div class="col-md-2 text-center text-white">
+                <!-- <div class="col-md-2 text-center text-white">
                     <span class="view-count " style="float:right;">
                         <i class="fa fa-eye"></i>
                         <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?>
                         <?php else: ?><?= $episode->views ?><?php endif; ?><?= __('Views') ?> 
                     </span>
-                </div>
+                </div> -->
 
 
                 <!-- <div>
