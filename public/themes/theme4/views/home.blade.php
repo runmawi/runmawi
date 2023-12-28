@@ -4,7 +4,6 @@
       $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
       $order_settings_list = App\OrderHomeSetting::get();  
       $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(); 
-
 ?>
 
    <!-- loader Start -->
@@ -195,6 +194,10 @@
             
             @if(  Series_Networks_Status() == 1 &&  $item == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1 )      {{-- Series based on Networks--}} 
                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', ['order_settings_list' => $order_settings_list ])->content() !!}
+            @endif
+            
+            @if(  $item == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     
+               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Going-to-expiry-videos', ['order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
          @empty
