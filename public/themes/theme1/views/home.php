@@ -1267,6 +1267,7 @@ endif; ?>
                                        ->groupBy('episodes.id')
                                        ->latest('episodes.created_at')
                                        ->get();
+                  $Episode_videos = [];
                                        
                 ?>
                          <?php if (count($videos) > 0 || count($Episode_videos) > 0) { 

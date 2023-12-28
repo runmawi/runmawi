@@ -669,7 +669,7 @@
                                             <ul class="dropdown-menu categ-head">
                                                 <?php foreach ( $LiveCategory as $category){ ?>
                                                 <li>
-                                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->name; ?>">
+                                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->slug; ?>">
                                                         <?php echo $category->name; ?>
                                                     </a>
                                                 </li>
