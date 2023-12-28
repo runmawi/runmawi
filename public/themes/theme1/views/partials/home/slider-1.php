@@ -9,9 +9,9 @@
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:contain;background-position:right; ">
-            <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+                <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
                     <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
-                </div>
+                </div> -->
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
 
@@ -62,9 +62,9 @@ endif; ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right;  ">
-            <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+                <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
                     <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
-                </div>
+                </div> -->
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -142,9 +142,9 @@ endif; ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
                 style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$live_event_banner->player_image;?>') no-repeat;background-size:cover;background-position:right;  ">
-                <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+                <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
                     <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
-                </div>
+                </div> -->
                 <div class="container position-relative h-100">
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
@@ -196,9 +196,9 @@ endif; ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>') no-repeat;background-size:contain;background-position:right; ">
-                <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+                <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
                     <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
-                </div>
+                </div> -->
             <div class="container-fluid position-relative h-100" style="padding:0px 100px;">
                 <div class="slider-inner h-100">
 
@@ -288,9 +288,9 @@ if(Route::current()->getName() == "home"){
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
                      style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>') no-repeat;background-size:inherit;background-position:right 10%; ">
-                     <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+                     <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
                         <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
-                    </div>
+                    </div> -->
                      <div class="container position-relative h-100">
                     <div class="slider-inner h-100">
 
@@ -362,9 +362,9 @@ if(Route::current()->getName() == "home"){
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:center center; ">
             
-            <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+            <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
                 <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
-            </div>
+            </div> -->
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -443,9 +443,9 @@ endif; ?>
             <div class="slide slick-bg s-bg-1 lazy"
                  style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$series_slider->player_image;?>') no-repeat;background-size:cover;background-position:right;  ">
                 
-                 <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+                 <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
                     <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
-                </div>
+                </div> -->
                  <div class="container position-relative h-100">
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
@@ -496,7 +496,7 @@ endif; ?>
 <?php endforeach; endif; ?>
 
 
-<script>
+<!-- <script>
         $(document).ready(function () {
             const imageContainer = document.getElementById("image-container");
             const video = document.querySelector(".myvideos");
@@ -513,7 +513,7 @@ endif; ?>
             // Call the function to play the video after a delay
             playVideoAfterDelay();
         });
-    </script>
+    </script> -->
 
 
 <!-- <script type="application/javascript">
