@@ -212,7 +212,7 @@ $uppercase =  ucfirst($request_url);
                                                 <input type="text"  name="user_name" class="form-control">
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_username">{{ __('Update') }}</a></div>
+                                             <a type="button" class="btn text-light round update_username">{{ __('Update') }}</a></div>
                                        </div>
                               </span>
                            </form>
@@ -244,8 +244,8 @@ $uppercase =  ucfirst($request_url);
                                           <div class="col-md-8">
                                                 <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" required/>
                                           </div>
-                                       <div class="col-md-4">
-                                             <a type="button" class="btn round update_userimg">{{ __('Update') }}</a></div>
+                                       <div class="col-md-4 d-flex align-items-center">
+                                             <a type="button" class="btn text-white round update_userimg">{{ __('Update') }}</a></div>
                                        </div>
                               </span>
                            </form>
@@ -309,14 +309,14 @@ $uppercase =  ucfirst($request_url);
                                     @elseif( (Auth::user()->role == "admin" ) )
 
                                     @else
-                                       <a href="<?=URL::to('/becomesubscriber');?>"  class="text-white font-size-13"> {{ __('Subscriber Payment') }}</a>
+                                       <a href="<?=URL::to('/becomesubscriber');?>"  class="text-white font-size-13"> {{ __('Purchase Subscription') }}</a>
                                     @endif
                               </div>
                         </div>
                          <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <a  href="{{ URL::to('logout') }}" type="button" class="btn round">{{ __('Logout') }}</a>
+                                <a  href="{{ URL::to('logout') }}" type="button" class="btn text-light round">{{ __('Logout') }}</a>
                             </div>
 
                             @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")

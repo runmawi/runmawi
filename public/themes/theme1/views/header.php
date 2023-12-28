@@ -518,6 +518,12 @@
         right: 5px;
         position: relative;
     }
+    .navbar-right .search-box{
+    display:none;
+}
+.navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box{
+    display:block !important;
+}
 </style>
 
 <body>
