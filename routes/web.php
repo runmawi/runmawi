@@ -470,13 +470,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
 
     // EPG
-    Route::get('/EPG-Channel/index', 'AdminEPGChannelController@index')->name('admin.EPG-Channel.index');
-    Route::get('/EPG-Channel/create', 'AdminEPGChannelController@create')->name('admin.EPG-Channel.create');
-    Route::post('/EPG-Channel/store', 'AdminEPGChannelController@store')->name('admin.EPG-Channel.store');
-    Route::get('/EPG-Channel/edit/{id}', 'AdminEPGChannelController@edit')->name('admin.EPG-Channel.edit');
-    Route::post('/EPG-Channel/update/{id}', 'AdminEPGChannelController@update')->name('admin.EPG-Channel.update');
-    Route::get('/EPG-Channel/destroy/{id}', 'AdminEPGChannelController@destroy')->name('admin.EPG-Channel.destroy');
-    Route::get('/EPG-Channel/validation', 'AdminEPGChannelController@slug_validation')->name('admin.EPG-Channel.slug_validation');
+    Route::get('/epg-channel/index', 'AdminEPGChannelController@index')->name('admin.EPG-Channel.index');
+    Route::get('/epg-channel/create', 'AdminEPGChannelController@create')->name('admin.EPG-Channel.create');
+    Route::post('/epg-channel/store', 'AdminEPGChannelController@store')->name('admin.EPG-Channel.store');
+    Route::get('/epg-channel/edit/{id}', 'AdminEPGChannelController@edit')->name('admin.EPG-Channel.edit');
+    Route::post('/epg-channel/update/{id}', 'AdminEPGChannelController@update')->name('admin.EPG-Channel.update');
+    Route::get('/epg-channel/destroy/{id}', 'AdminEPGChannelController@destroy')->name('admin.EPG-Channel.destroy');
+    Route::get('/epg-channel/validation', 'AdminEPGChannelController@slug_validation')->name('admin.EPG-Channel.slug_validation');
 
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
@@ -2403,7 +2403,7 @@ Route::get('exchangeCurrency','AdminCurrencyConvert@Index');
 
 Route::get('PPV-Free-Duration-Logs', 'AdminLiveStreamController@PPV_Free_Duration_Logs')->name('PPV_Free_Duration_Logs');
 
-Route::get('video-fullplayer/{slug}', 'ChannelController@video_js_fullplayer')->name('video-js-fullplayer');
+Route::get('video-player/{slug}', 'ChannelController@video_js_fullplayer')->name('video-js-fullplayer');
 
 Route::post('video_js_watchlater', 'ChannelController@video_js_watchlater')->name('video-js.watchlater');
 
@@ -2414,5 +2414,7 @@ Route::post('video_js_Like', 'ChannelController@video_js_Like')->name('video-js.
 Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('video-js.dislike');
 
 Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
+
+Route::get('epg/Channels/{slug}', 'EPGChannelController@index')->name('Front-End.EPG');
 
 Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
