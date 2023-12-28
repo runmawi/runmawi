@@ -52,14 +52,14 @@
                             <div class="row">
                                 <div class="col-md-9">
                                          <p align="left" class="kid">{{ __('TV shows and movies for ages 12 and under') }} <br>
-                                             <a class="learn_more" href="">{{ __('Learn More') }} </a> 
+                                             <!-- <a class="learn_more" href="">{{ __('Learn More') }} </a>  -->
                                          </p>
                                 </div>
                             </div>   
                         </div>
 
                         <div class="row sumbit_btn">
-                            <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('Choose-profile')}}'" >{{ __('Cancel') }}</button>
+                            <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('choose-profile')}}'" >{{ __('Cancel') }}</button>
                             <button type="submit" class="btn btn-hover ab" >{{ __('Save Changes') }}</button>
                         </div>
 

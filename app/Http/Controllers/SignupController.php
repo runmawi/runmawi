@@ -384,9 +384,9 @@ else {
               $password2 = $user->password;
         
                 if (Auth::attempt(['email' => $email, 'password' => $password2])) {
-                    return redirect('/');
+                    return redirect('/login');
                 }
-                return redirect('/');
+                return redirect('/login');
             }
 
 
