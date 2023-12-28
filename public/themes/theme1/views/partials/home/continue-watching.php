@@ -15,7 +15,14 @@
                     <!-- block-images -->
                     <div class="img-box">
                         <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazyload w-100" alt="">
-                       <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" data-play="hover">
+                    </div>
+                        <div class="block-description">
+                            <div class="hover-buttons text-white">
+                                <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                            
+                            </div>
+                        </div>
+                        <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" data-play="hover">
                             <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4" />
                         </video>
                         
@@ -33,16 +40,11 @@
                                     <?php } ?>
                                     <?php } ?>
                              
-                    </div>
+                    
                 </div>
 
                 
-                <div class="block-description">
-                    <div class="hover-buttons text-white">
-                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
-                       
-                    </div>
-                </div>
+                
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>

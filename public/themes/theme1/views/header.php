@@ -1082,14 +1082,15 @@
                                                    
                                                                      <!-- Light Mode & Dark Mode -->
                                                    <a class="p-0">
-                                                      <div class=" mt-3 text-right">
+                                                      <div class="text-left">
+                                                      <i class="fas fa-moon"></i>
                                                          <label class="switch toggle mt-3">
                                                             <input type="checkbox" id="toggle"
                                                                value=<?php echo $theme_mode; ?> <?php if ($theme_mode == 'light') {
                                                                      echo 'checked';
                                                                } ?> />
                                                             <span class="sliderk round"></span>
-                                                         </label>
+                                                         </label><i class="fas fa-sun pl-1"></i>
                                                       </div>
                                                    </a>                                             
 
@@ -1287,14 +1288,15 @@
                                             <div class="iq-card shadow-none m-0">
                                                 <div class="iq-card-body p-0 pl-3 pr-3">
                                                       <a class="p-0">
-                                                         <div class=" mt-3 text-right">
+                                                         <div class=" text-left">
+                                                         <i class="fas fa-moon"></i>
                                                             <label class="switch toggle mt-3">
                                                                 <input type="checkbox" id="toggle"
                                                                     value=<?php echo $theme_mode; ?> <?php if ($theme_mode == 'light') {
                                                                         echo 'checked';
                                                                     } ?> />
                                                                 <span class="sliderk round"></span>
-                                                            </label>
+                                                            </label><i class="fas fa-sun pl-1"></i>
                                                          </div>
                                                       </a>
                                                     <a href="<?php echo URL::to('myprofile'); ?>"
