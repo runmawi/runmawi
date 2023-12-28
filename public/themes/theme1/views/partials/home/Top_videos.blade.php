@@ -17,6 +17,14 @@
                                 <source src="<?php echo $most_watched_video->trailer;  ?>" type="video/mp4" />
                             </video>-->
                         </a>
+                    </div>
+                    <div class="block-description">
+                        <div class="hover-buttons">
+                            <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
+                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                            </a>
+                        </div>
+                    </div>
 
                         <!-- PPV price -->
                         
@@ -31,18 +39,12 @@
                                 <p class="p-tag"><?php echo __("Free"); ?></p>
                                 <?php } ?>
                                 <?php } ?>
-                            </div>
+                            
                         </div>
 
                   
 
-                <div class="block-description">
-                    <div class="hover-buttons">
-                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                        </a>
-                    </div>
-                </div>
+               
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>

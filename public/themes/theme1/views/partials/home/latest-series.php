@@ -23,16 +23,18 @@
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100" alt="">
               </div> 
-               </div>
               <div class="block-description">
                
-                <div class="hover-buttons d-flex">
-                  <a class="text-white " href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
-                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                  
-                  </a>
-                </div>
-              </div>
+               <div class="hover-buttons d-flex">
+                 <a class="text-white " href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
+                   <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                 
+                 </a>
+               </div>
+             </div>
+
+               </div>
+              
               
               <div class="mt-2">
                   
