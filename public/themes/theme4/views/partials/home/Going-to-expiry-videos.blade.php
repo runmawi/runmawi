@@ -6,7 +6,11 @@
                                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
                                         'expiry_date')
 
-        ->where('active',1)->where('status', 1)->where('draft',1)->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+        ->where('active',1)->where('status', 1)->where('draft',1);
+
+        if( videos_expiry_date_status() == 1 ){
+            $data = $data->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+        }
 
         if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
         {
@@ -69,7 +73,7 @@
 
                                                         <h2 class="caption-h2">{{ optional($Going_to_expiry_videos)->title }}</h2>
                                                         
-                                                        @if (optional($Going_to_expiry_videos)->expiry_date)
+                                                        @if ( videos_expiry_date_status() == 1 && optional($Going_to_expiry_videos)->expiry_date)
                                                             <ul class="vod-info">
                                                                 <li>{{ "Expiry In ". Carbon\Carbon::parse($Going_to_expiry_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
                                                             </ul>

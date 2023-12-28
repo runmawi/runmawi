@@ -16,13 +16,35 @@
 
                <!-- Slider  -->
       <?php 
+      
+         $check_Kidmode = 0;
+         
+         $video_banner = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image',
+                                          'player_image','expiry_date')
+         
+                                 ->where('active',1)->where('status', 1)->where('draft',1);
+         
+                                 if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                    $video_banner = $video_banner->whereNotIn('videos.id',Block_videos());
+                                 }
+         
+                                 if (videos_expiry_date_status() == 1 ) {
+                                    $video_banner = $video_banner->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                                 }
+                                 
+                                 if ($check_Kidmode == 1) {
+                                    $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
+                                 }
+         
+         $video_banner = $video_banner->latest()->limit(30)->get();
+
          $Slider_array_data = array(
-            'sliders'         => $sliders, 
-            'live_banner'  => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->get() , 
-            'video_banners'   => $video_banners ,
-            'series_sliders'  => $series_sliders ,
+            'sliders'            => $sliders, 
+            'live_banner'        => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->get() , 
+            'video_banners'      => $video_banner ,
+            'series_sliders'     => $series_sliders ,
             'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->get(),
-            'Episode_sliders' => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->get(),
+            'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->get(),
          );    
       ?>
 
@@ -43,11 +65,11 @@
          @forelse ($order_settings as $key => $item) 
          
             @if( $item == 'latest_videos' && $home_settings->latest_videos == 1 )         {{-- latest videos --}}
-               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', ['data' => $latest_video, 'order_settings_list' => $order_settings_list ])->content() !!}
+               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', [ 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
             @if( $item == 'featured_videos' && $home_settings->featured_videos == 1 )     {{-- featured videos --}}
-               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/trending-videoloop', ['data' => $featured_videos, 'order_settings_list' => $order_settings_list ])->content() !!}
+               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/trending-videoloop', [ 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
             @if( $item == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live videos --}}

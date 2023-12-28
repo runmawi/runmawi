@@ -164,6 +164,10 @@ class ChannelController extends Controller
                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
                     $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
                 }
+                
+                if (videos_expiry_date_status() == 1 ) {
+                    $categoryVideos = $categoryVideos->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                }
 
             $categoryVideos = $categoryVideos->latest('videos.created_at')->paginate($this->videos_per_page);
           
@@ -178,6 +182,10 @@ class ChannelController extends Controller
                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
                     $Most_watched_country = $Most_watched_country->whereNotIn('videos.id', Block_videos());
                 }
+
+                if (videos_expiry_date_status() == 1 ) {
+                    $Most_watched_country = $Most_watched_country->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                }
             
             $Most_watched_country = $Most_watched_country->where('recent_views.country_name', Country_name())
                             ->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$categoryVideo)->get()
@@ -190,20 +198,35 @@ class ChannelController extends Controller
                                                             ->implode(' , ');
     
                                 return $item;
-                });
+            });
 
+            // top_most_watched
 
             $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
-                            ->join('videos', 'videos.id', '=', 'recent_views.video_id')->where('videos.status', '=', '1')
-                            ->where('videos.draft', '=', '1')->where('videos.active', '=', '1')
-                            ->whereIn('videos.id',$categoryVideo)
-                            ->groupBy('video_id');
+                        ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')->groupBy('video_id')
+                        ->orderByRaw('count DESC');
 
-                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
-                                $top_most_watched = $Most_watched_country->whereNotIn('videos.id', Block_videos());
-                            }
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
+                    $top_most_watched = $top_most_watched->whereNotIn('videos.id', Block_videos());
+                }
 
-            $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(20)->get();
+                if (videos_expiry_date_status() == 1 ) {
+                    $top_most_watched = $top_most_watched->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                }
+            
+            $top_most_watched = $top_most_watched->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$categoryVideo)->get()
+                            ->map(function ($item) {
+
+                                $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
+                                                            ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                            ->where('video_id', $item->video_id )
+                                                            ->pluck('name') 
+                                                            ->implode(' , ');
+    
+                                return $item;
+            });
 
             $video_banners = Video::where('active', '=', '1')->whereIn('videos.id',$categoryVideo)
                                         ->where('draft', '1')->where('status', '1')
@@ -230,6 +253,10 @@ class ChannelController extends Controller
                     if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
                         $query->whereNotIn('videos.id', Block_videos());
                     }
+
+                    if (videos_expiry_date_status() == 1 ) {
+                        $query->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                    }
             
                     if ($check_Kidmode == 1) {
                         $query->whereBetween('videos.age_restrict', [0, 12]);
@@ -240,6 +267,10 @@ class ChannelController extends Controller
 
                             if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
                                 $videos->whereNotIn('videos.id', Block_videos());
+                            }
+
+                            if (videos_expiry_date_status() == 1 ) {
+                                $videos->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                             }
 
                             if ($check_Kidmode == 1) {
@@ -255,6 +286,10 @@ class ChannelController extends Controller
             
                     if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
                         $query->whereNotIn('videos.id', Block_videos());
+                    }
+
+                    if (videos_expiry_date_status() == 1 ) {
+                        $query->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                     }
             
                     if ($check_Kidmode == 1) {
