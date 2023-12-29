@@ -1135,12 +1135,13 @@ function myFunction() {
 </script>-->
 
 </body>
-</html>
-	
 @php
   include(public_path('themes/theme1/views/footer.blade.php'));
 @endphp
-</div>
+</html>
+	
+
+
 
 
 	
