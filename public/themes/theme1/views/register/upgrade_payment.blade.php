@@ -719,6 +719,7 @@ i.fa.fa-google-plus {
                         <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
                         {{ __('Pay Now') }} 
                         </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
                   
                                             {{-- Paystack --}}
@@ -726,6 +727,7 @@ i.fa.fa-google-plus {
                             <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert" >
                             {{ __('Pay Now') }} 
                             </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
 
                                             {{-- Razorpay --}}
@@ -733,6 +735,7 @@ i.fa.fa-google-plus {
                         <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert" >
                         {{ __('Pay Now') }} 
                         </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
                     
                     
@@ -742,6 +745,7 @@ i.fa.fa-google-plus {
                         <button  onclick="cinetpay_checkout()" data-subscription-price='100' type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button" >
                         {{ __('Pay Now') }}
                         </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
 
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Start Your Free Trial') }}</button> --}}

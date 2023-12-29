@@ -307,7 +307,7 @@ else
 
 		</h3>-->
 		
-			<div class="col-md-2 text-center text-white">
+			<!-- <div class="col-md-2 text-center text-white">
 			<span class="view-count " style="float:right;">
 			<i class="fa fa-eye"></i> 
 			<?php if (isset($view_increment) && $view_increment == true): ?><?=$episode->views + 1 ?>
@@ -315,7 +315,7 @@ else
 else: ?><?=$episode->views ?><?php
 endif; ?><?= __('Views') ?>  
 			</span>
-			</div>
+			</div> -->
 
       <div class="col-md-5 text-right">
         <div class="watchlater btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" ><?= __('Watch Later') ?>   </div>

@@ -1,3 +1,30 @@
+
+@php
+
+$check_Kidmode = 0;
+    
+$data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image',
+                                'player_image','expiry_date')
+
+                        ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
+
+                        if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                            $data = $data->whereNotIn('videos.id',Block_videos());
+                        }
+
+                        if (videos_expiry_date_status() == 1 ) {
+                            $data = $data->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                        }
+                        
+                        if ($check_Kidmode == 1) {
+                            $data = $data->whereBetween('videos.age_restrict', [0, 12]);
+                        }
+
+$data = $data->latest()->limit(30)->get();
+                                                                    
+@endphp
+
+
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
@@ -17,6 +44,11 @@
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                        
+                                            @if (videos_expiry_date_status() == 1 && optional($featured_videos)->expiry_date)
+                                                <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
+                                            @endif
+
                                         </div>
                                     </a>
                                 </li>
@@ -35,13 +67,14 @@
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
-                                                                <h2 class="caption-h2">{{ optional($featured_videos)->title }}</h2>
 
-                                                            {{-- @if ( $featured_videos->year != null && $featured_videos->year != 0)
-                                                                <div class="d-flex align-items-center text-white text-detail">
-                                                                    <span class="trending">{{ ($featured_videos->year != null && $featured_videos->year != 0) ? $featured_videos->year : null   }}</span>
-                                                                </div>
-                                                            @endif  --}}
+                                                            <h2 class="caption-h2">{{ optional($featured_videos)->title }}</h2>
+                                                                
+                                                            @if (videos_expiry_date_status() == 1 && optional($featured_videos)->expiry_date)
+                                                                <ul class="vod-info">
+                                                                    <li>{{ "Expiry In ". Carbon\Carbon::parse($featured_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                                                </ul>
+                                                            @endif
 
                                                             @if (optional($featured_videos)->description)
                                                                 <div class="trending-dec">{!! html_entity_decode( optional($featured_videos)->description) !!}</div>

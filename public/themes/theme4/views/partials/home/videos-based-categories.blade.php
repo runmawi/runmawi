@@ -7,6 +7,10 @@
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
             $query->whereNotIn('videos.id', Block_videos());
         }
+        
+        if (videos_expiry_date_status() == 1 ) {
+            $query->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+        }
 
         if ($check_Kidmode == 1) {
             $query->whereBetween('videos.age_restrict', [0, 12]);
@@ -14,13 +18,17 @@
     })
 
     ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
-        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type')
+        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type','videos.expiry_date')
             ->where('videos.active', 1)
             ->where('videos.status', 1)
             ->where('videos.draft', 1);
 
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
             $videos->whereNotIn('videos.id', Block_videos());
+        }
+
+        if (videos_expiry_date_status() == 1 ) {
+            $videos->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
         if ($check_Kidmode == 1) {
@@ -36,6 +44,10 @@
 
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
             $query->whereNotIn('videos.id', Block_videos());
+        }
+
+        if (videos_expiry_date_status() == 1 ) {
+            $query->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
         if ($check_Kidmode == 1) {
@@ -77,6 +89,11 @@
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
                                                 <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                                
+                                                @if (videos_expiry_date_status() == 1 && optional($videos)->expiry_date)
+                                                    <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
+                                                @endif
+                                            
                                             </div>
                                         </a>
                                     </li>
@@ -96,6 +113,12 @@
 
                                                             <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ optional($videos)->title }}</h2>
+
+                                                                @if (videos_expiry_date_status() == 1 && optional($videos)->expiry_date)
+                                                                    <ul class="vod-info">
+                                                                        <li>{{ "Expiry In ". Carbon\Carbon::parse($videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                                                    </ul>
+                                                                @endif
 
                                                                 @if ( optional($videos)->description )
                                                                     <p class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</p>

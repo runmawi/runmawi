@@ -54,13 +54,12 @@ if (Auth::guest() != true) {
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                         <div class="caption pl-4">
-                                                                <h2 class="caption-h2">{{ optional($latest_view_episode)->title }}</h2>
 
-                                                            <!-- @if ( $latest_view_episode->year != null && $latest_view_episode->year != 0)
-                                                                <div class="d-flex align-items-center text-white text-detail">
-                                                                    <span class="trending">{{ ($latest_view_episode->year != null && $latest_view_episode->year != 0) ? $latest_view_episode->year : null   }}</span>
-                                                                </div>
-                                                            @endif -->
+                                                            <h2 class="caption-h2">{{ optional($latest_view_episode)->title }}</h2>
+
+                                                            <div class="d-flex align-items-center text-white text-detail">
+                                                                {{ App\SeriesSeason::where('id',$latest_view_episode->season_id)->pluck('series_seasons_name')->first() . " - Season" }}  
+                                                            </div>
 
                                                             @if (optional($latest_view_episode)->description)
                                                                 <div class="trending-dec">{!! html_entity_decode( optional($latest_view_episode)->description) !!}</div>

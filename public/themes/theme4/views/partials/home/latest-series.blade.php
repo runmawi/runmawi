@@ -85,10 +85,21 @@
 
                                                                                     <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-series-Modal-'.$key }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                                                     
+                                                                                    @php
+                                                                                        $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first() ;
+                                                                                    @endphp
+                                                                                    
                                                                                     <p class="trending-dec" >
-                                                                                        {{ " S".$episode->season_id ." E".$episode->episode_order  }} 
+
+                                                                                        @if ( !is_null($series_seasons_name) )
+                                                                                            {{ "Season - ". $series_seasons_name  }}  <br>
+                                                                                        @endif
+
+                                                                                        {{ "Episode - " . optional($episode)->title  }} <br>
+
                                                                                         {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
                                                                                     </p>
+
                                                                                 </div>
                                                                             </div>
                                                                         </a>

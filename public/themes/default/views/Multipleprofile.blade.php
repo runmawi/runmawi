@@ -28,7 +28,13 @@
             <div class="col-md-6 align-items-center" style=" padding-top: 140px;">
                 <div class="col-md-4">
                     <div class="row1">
-                        <h1 class="mt-5">{{ __("Who's Watching") }} ?</h1>
+                        <h1 class="mt-5">
+                        {{ 
+                            request()->segment(count(request()->segments())) === 'change-profile' ? __("Change Profile") :
+                            (request()->segment(count(request()->segments())) === 'choose-profile' ? __("Who's Watching") . '?' :
+                             __("Who's Watching") . '?') 
+                        }}  
+                       </h1>
                         <div class="row-data" style="display:flex; ">
 
                             <div class="member ">
