@@ -162,7 +162,7 @@
 </style>
 
 <body>
-    <section style="background:url('<?php echo URL::to('/public/uploads/settings/' . $settings->login_content); ?>') no-repeat scroll 0 0;;background-size: cover;">
+    <section /*style="background:url('<?php echo URL::to('/public/uploads/settings/' . $settings->login_content); ?>') no-repeat scroll 0 0;;background-size: cover;"*/>
         <div class="container">
             <div class="row justify-content-center align-items-center height-self-center">
                 <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
