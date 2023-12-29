@@ -99,10 +99,21 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                                                                             <button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button>
                                                                                         </nav>
                                                                                         
+                                                                                        @php
+                                                                                            $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first() ;
+                                                                                        @endphp
+                                                                                        
                                                                                         <p class="trending-dec" >
-                                                                                            {{ " S".$episode->season_id ." E".$episode->episode_order  }} 
+
+                                                                                            @if ( !is_null($series_seasons_name) )
+                                                                                                {{ "Season - ". $series_seasons_name  }}  <br>
+                                                                                            @endif
+
+                                                                                            {{ "Episode - " . optional($episode)->title  }} <br>
+
                                                                                             {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
                                                                                         </p>
+
                                                                                     </div>
                                                                                 </div>
                                                                             </a>

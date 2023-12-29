@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use App\OrderHomeSetting;
 use App\VideoCategory;
 use App\Multiprofile;
@@ -43,7 +44,7 @@ class MoviesHomePageController extends Controller
 
     public function index()
     {
-        try {
+        // try {
 
             $data = array(
                 'latest_video'      => $this->latest_videos(),
@@ -58,16 +59,18 @@ class MoviesHomePageController extends Controller
 
             return Theme::view('Movies-Home-Page.index', $data);
 
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
 
-            return abort(404);
-        }
+        //     return $th->getMessage();
+
+        //     return abort(404);
+        // }
     }
 
     Private function latest_videos(){
         
         $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','expiry_date')
 
         ->where('active',1)->where('status', 1)->where('draft',1);
 
@@ -93,7 +96,7 @@ class MoviesHomePageController extends Controller
 
     }
 
-    public function VideoCategory()
+    Private function VideoCategory()
     {
         
         $VideoCategory = VideoCategory::query()->where('in_home', 1)->orderBy('order')
@@ -106,7 +109,7 @@ class MoviesHomePageController extends Controller
                             });
     }
     
-    public function category_videos()
+    Private function category_videos()
     {
         
         $VideoCategory = VideoCategory::query()->whereHas('category_videos', function ($query)  {
@@ -125,7 +128,7 @@ class MoviesHomePageController extends Controller
         })
         ->with(['category_videos' => function ($videos) {
                 $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv','publish_time',
-                                    'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','video_tv_image','details','description')
+                                    'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','video_tv_image','details','description','expiry_date')
                     
                     ->where('videos.active', 1)
                     ->where('videos.status', 1)
@@ -173,10 +176,10 @@ class MoviesHomePageController extends Controller
         return $VideoCategory ;
     }
 
-    public function Featured_videos()
+    Private function Featured_videos()
     {
         $Featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
+                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','expiry_date')
 
         ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
 
@@ -200,5 +203,4 @@ class MoviesHomePageController extends Controller
 
         return  $Featured_videos;
     }
-
 }
