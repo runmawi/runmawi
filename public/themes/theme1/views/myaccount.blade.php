@@ -15,6 +15,7 @@ $uppercase =  ucfirst($request_url);
    $settings = App\Setting::first(); 
 @endphp
 
+
    <body>
       <!-- loader Start -->
      <!-- <div id="loading">
@@ -212,7 +213,7 @@ $uppercase =  ucfirst($request_url);
                                                 <input type="text"  name="user_name" class="form-control">
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn text-light round update_username">{{ __('Update') }}</a></div>
+                                             <a type="button" class="btn btn-primary text-light round update_username">{{ __('Update') }}</a></div>
                                        </div>
                               </span>
                            </form>
@@ -245,7 +246,7 @@ $uppercase =  ucfirst($request_url);
                                                 <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" required/>
                                           </div>
                                        <div class="col-md-4 d-flex align-items-center">
-                                             <a type="button" class="btn text-white round update_userimg">{{ __('Update') }}</a></div>
+                                             <a type="button" class="btn btn-primary text-white round update_userimg">{{ __('Update') }}</a></div>
                                        </div>
                               </span>
                            </form>
@@ -316,7 +317,7 @@ $uppercase =  ucfirst($request_url);
                          <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <a  href="{{ URL::to('logout') }}" type="button" class="btn text-light round">{{ __('Logout') }}</a>
+                                <a  href="{{ URL::to('logout') }}" type="button" class="btn btn-primary text-light round">{{ __('Logout') }}</a>
                             </div>
 
                             @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
