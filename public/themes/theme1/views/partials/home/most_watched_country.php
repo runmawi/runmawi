@@ -53,7 +53,7 @@
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($Most_watched_countries->title) > 17) ? substr($Most_watched_countries->title,0,18).'...' : $Most_watched_countries->title; ?></h6>
+                    <h6><?php  echo (mb_strlen($Most_watched_countries->title) > 17) ? mb_substr($Most_watched_countries->title,0,18).'...' : $Most_watched_countries->title; ?></h6>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>
