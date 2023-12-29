@@ -167,7 +167,7 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-        margin-left: -92px;
+        margin-left: -59px;
     height: 45px !important;
     background: transparent !important;
     color: #fff !important;
