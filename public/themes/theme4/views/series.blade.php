@@ -117,6 +117,10 @@
         background-image: none;
         backdrop-filter: none;
     }
+    .form-control:focus{
+        background-color: transparent;
+        box-shadow:none;
+    }
    
 </style>
 
@@ -159,10 +163,10 @@
         </div>
      </div>
 
-    <div class="container-fluid pl-0 mar-left">
+    <div class="container-fluid pl-0">
         <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker" <?php endif; ?>></div>
 
-        <div class="row mt-3 align-items-center">
+        <div class="container-fluid pl-3">
             @if( $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
                 && !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
                 Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
@@ -170,17 +174,17 @@
 
             <div class="col-md-7 pl-0">
                 <div id="series_title">
-                    <div class="container-fluid pl-0 mar-left">
+                    <div class="container-fluid pl-0">
                         <h3> {{ $series->title }} </h3>
 
                         <div class="row text-white">
 
-                            <div class="col-md-7 pl-0 mar-left">
+                            <div class="col-lg-8 col-md-8 pl-3">
 
                                 <?php echo __('Season'); ?> <span class="sea"> 1 </span> 
                                 - <?php echo __('U/A English'); ?>
 
-                                <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 180)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p>
+                                <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p>
                                 
                                     <!-- Model for banner discription -->
                                         <div class="modal fade info_model" id='discription-Modal' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -306,7 +310,7 @@
                 </nav>
             </div>
 
-            <div class="container-fluid pl-0 mar-left">
+            <div class="container-fluid pl-3">
                 <div class="favorites-contens">
                     <div class="col-md-3 p-0 mt-4">
                         <select class="form-control" id="season_id" name="season_id">

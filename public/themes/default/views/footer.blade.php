@@ -129,16 +129,17 @@ $settings = App\Setting::first();
 
     <div class="container-fluid">
         <p class="mb-0 text-center font-size-14 text-body" >
-          <?php
+          <?php 
                     // CMS Pages
             $cmspages = App\Page::where('footer_active', 1)->get();
 
             foreach($cmspages as $key => $page) {?>
               <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a> 
             <?php } ?>
-
-          <?php echo $settings->website_name .' - '. Carbon::now()->year ; ?> <?php echo (__('All Rights Reserved')); ?> 
-        </p>
+          </p>
+          <p class="text-center">
+            <?php echo $settings->website_name . ' ' . '<i class="ri-copyright-line"></i>' . ' ' . Carbon::now()->year ; ?> <?php echo (__('All Rights Reserved')); ?> 
+          </p>
     </div>
 
 </footer>
