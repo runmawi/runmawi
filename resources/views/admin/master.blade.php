@@ -178,6 +178,9 @@ if (!empty($data['password_hash'])) {
     body.dark h6{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .upload-ui{color: #000;}
     body.dark div.dataTables_wrapper div.dataTables_info{color: <?php echo GetAdminDarkText(); ?>!important;}
+    body.dark div#users_table_paginate a#users_table_previous{color: <?php echo GetAdminDarkText(); ?>!important;}
+    body.dark div#users_table_paginate a#users_table_next{color: <?php echo GetAdminDarkText(); ?>!important;}
+    body.dark div#users_table_paginate a.paginate_button{color: <?php echo GetAdminDarkText(); ?>!important;}
     body.dark .line{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .dataTables_info{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .list-inline-item a{color: <?php echo GetAdminDarkText(); ?>;}

@@ -719,7 +719,7 @@ i.fa.fa-google-plus {
                         <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
                         {{ __('Pay Now') }} 
                         </button>
-                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
+                        <!-- <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a> -->
                     </div>
                   
                                             {{-- Paystack --}}

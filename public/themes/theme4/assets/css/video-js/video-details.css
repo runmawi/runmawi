@@ -355,6 +355,12 @@
 ul.breadcrumb.breadcrumb-csp{
     background-color: transparent !important;
 }
+.breadcrumb{
+    background-color: transparent;
+}
+li.breadcrumb-item a{
+    color: #fff;
+}
 
 @media only screen and (min-width: 768px) {
     .vpageBanner {
