@@ -214,7 +214,7 @@ class AdminEPGChannelController extends Controller
 
             AdminEPGChannel::create($inputs) ;
 
-            return redirect()->route('admin.EPG-Channel.index')->with('message', 'New  EPG Channel successfully.');
+            return redirect()->route('admin.Channel.index')->with('message', 'New Channel successfully.');
        
         } catch (\Throwable $th) {
             return abort(404);
@@ -368,7 +368,7 @@ class AdminEPGChannelController extends Controller
 
             AdminEPGChannel::find($id)->update($inputs) ;
             
-            return back()->with('message', 'Updated EPG Channel successfully.');
+            return back()->with('message', 'Updated Channel successfully.');
 
         } catch (\Throwable $th) {
             return abort(404);
@@ -402,7 +402,7 @@ class AdminEPGChannelController extends Controller
 
             AdminEPGChannel::destroy($id);
 
-            return redirect()->route('admin.EPG-Channel.index')->with('message', 'EPG Channel has been deleted successfully.');
+            return redirect()->route('admin.Channel.index')->with('message', 'Channel has been deleted successfully.');
             
         } catch (\Throwable $th) {
 
