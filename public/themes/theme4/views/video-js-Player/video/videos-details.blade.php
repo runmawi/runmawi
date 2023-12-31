@@ -34,11 +34,11 @@
                 {{-- Message Note --}}
         <div id="message-note" ></div>
 
-        <div class="pageWrapper">
+        <div class="pageWrapper m-0">
                 
                             {{-- Breadcrumbs  --}}
             <div class="scp-breadcrumb">
-                <ul class="breadcrumb">
+                <ul class="breadcrumb p-0">
                 
                     <li><a href="{{ route('latest-videos') }}">{{ ucwords(__('videos')) }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
                 
