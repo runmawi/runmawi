@@ -8,3 +8,4 @@
 /.htaccess
 /pma/*
 /public/multiprofile/*
+/resources/lang/*
