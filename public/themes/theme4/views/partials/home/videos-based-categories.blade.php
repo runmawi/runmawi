@@ -88,10 +88,10 @@
                                     <li>
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                                <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" >
                                                 
                                                 @if (videos_expiry_date_status() == 1 && optional($videos)->expiry_date)
-                                                    <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
+                                                    <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
                                                 @endif
                                             
                                             </div>
