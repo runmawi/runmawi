@@ -991,6 +991,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/schedule/delete/{id}', 'AdminVideosController@ScheduledVideoDelete');
 
+    /*  Channel Videos Setting  */
+
+    Route::get('/video-scheduler', 'AdminChannelVideoController@ChannelVideoScheduler')->name('VideoScheduler');
+        
     /*  Videos Setting  */
 
     Route::get('/video-schedule', 'AdminVideosController@ScheduleVideo');

@@ -5261,7 +5261,7 @@ return response()->json($response, 200);
     $response = array(
       'status' => 'true',
       'access' => $free_episode,
-      'episode' => $episode,
+      'episode' => Episode::where('id','=',$episode_id)->get(),
       'season' => $season,
     );
 
