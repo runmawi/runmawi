@@ -22,9 +22,9 @@
                   
               </div>
               <div class="block-description">
-              <a href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
+              <!-- <a href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
                   <h6><?php echo __($Series_Genre->name); ?></h6>
-                </a>
+                </a> -->
                 <div class="movie-time d-flex align-items-center my-2">
                   
                   
@@ -32,7 +32,7 @@
                 <div class="hover-buttons d-flex">
                 <a class="text-white" href="<?php echo URL::to('/series/category'.'/'.$Series_Genre->slug  ) ?> ">
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                    <?= __('Visit Series Category Video')  ?>
+                    <?= __('Watch now')  ?>
                   </a>
                 </div>
               </div>

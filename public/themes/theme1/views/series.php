@@ -1,4 +1,4 @@
-<?php include('header.php'); ?>
+<?php include(public_path('themes/theme1/views/header.php')); ?>
 <style type="text/css">
 	.nav-pills li a {color: #fff !important;}
     nav{
