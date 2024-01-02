@@ -50,7 +50,7 @@
                                                         </div>
 
                                                         <div class="trending-contens sub_dropdown_image mt-3">
-                                                            <ul id="{{ 'trending-slider-nav' }}"  class= "Category-depends-videos pl-5 m-0">
+                                                            <ul id="{{ 'trending-slider-nav' }}"  class= "Category-depends-videos pl-4 m-0">
 
                                                                 <?php
                                                                     $check_Kidmode = 0;
