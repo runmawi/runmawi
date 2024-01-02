@@ -41,8 +41,8 @@
     <div id="content-page" class="content-page">
 
         <div class="d-flex">
-            <a class="black" href="{{ route('admin.EPG-Channel.index') }}"> {{ ucwords('All EPG Channel') }} </a>
-            <a class="black" style="background:#fafafa!important;color: #006AFF!important;"  href="{{ route('admin.EPG-Channel.create') }}"> {{ ucwords('Create EPG Channel') }} </a>
+            <a class="black" href="{{ route('admin.Channel.index') }}"> {{ ucwords('All Channel') }} </a>
+            <a class="black" style="background:#fafafa!important;color: #006AFF!important;"  href="{{ route('admin.Channel.create') }}"> {{ ucwords('Create Channel') }} </a>
         </div>
 
         <div class="iq-card">
@@ -52,13 +52,13 @@
             @endif
 
             <div class="admin-section-title">
-                <h4 class="fs-title">Create EPG Channel</h4>
+                <h4 class="fs-title">Create Channel</h4>
             </div>
             <hr />
 
             <div class="clear"></div>
 
-            <form id="EPG_Channels_form" method="POST" action="{{ route('admin.EPG-Channel.store') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+            <form id="Channels_form" method="POST" action="{{ route('admin.Channel.store') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row mt-3 p-3 align-items-center">
@@ -66,14 +66,14 @@
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0"> Name </label>
                         <div class="panel-body">
-                            <input type="text" placeholder="Enter EPG Channel Name" class="form-control" name="name" id="name" value="" />
+                            <input type="text" placeholder="Enter Channel Name" class="form-control" name="name" id="name" value="" />
                         </div>
                     </div>
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0">  Slug </label>
                         <div class="panel-body">
-                            <input type="text" placeholder="Enter EPG Channel Slug" class="form-control" name="slug" id="slug" value="" />
+                            <input type="text" placeholder="Enter Channel Slug" class="form-control" name="slug" id="slug" value="" />
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                     <div class="col-sm-12 mt-3" data-collapsed="0">
                         <label class="m-0"> {{ ucwords('Description') }}</label>
                         <div class="panel-body">
-                            <textarea class="form-control" placeholder="Enter EPG Channel Description" name="description" id="summary-ckeditor"> </textarea>
+                            <textarea class="form-control" placeholder="Enter Channel Description" name="description" id="summary-ckeditor"> </textarea>
                         </div>
                     </div>
                 </div>
@@ -90,16 +90,16 @@
                 <div class="row mt-3 p-3 align-items-center">
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> {{ ucwords('EPG Channel Logo') }}</label>
-                        <p class="p1">Select the EPG Channel image Logo :</p>
+                        <label class="m-0"> {{ ucwords('Channel Logo') }}</label>
+                        <p class="p1">Select the Channel image Logo :</p>
                         <div class="panel-body">
                             <input type="file" multiple="true" class="form-control" name="logo" id="logo" accept="image/*"  />
                         </div>
                     </div>
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> {{ ucwords('EPG channel image') }}</label>
-                        <p class="p1">Select the EPG Channel image :</p>
+                        <label class="m-0"> {{ ucwords('channel image') }}</label>
+                        <p class="p1">Select the Channel image :</p>
                         <div class="panel-body">
                             <input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/*" />
                         </div>
@@ -109,16 +109,16 @@
                 <div class="row mt-3 p-3 align-items-center">
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> {{ ucwords('EPG Channel player image') }}</label>
-                        <p class="p1">Select the EPG Channel Player image :</p>
+                        <label class="m-0"> {{ ucwords('Channel player image') }}</label>
+                        <p class="p1">Select the Channel Player image :</p>
                         <div class="panel-body">
                             <input type="file" multiple="true" class="form-control" name="player_image" id="player_image"  accept="image/*" />
                         </div>
                     </div>
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> {{ ucwords('EPG Channel intro video') }}</label>
-                        <p class="p1">Select the EPG Channel intro video :</p>
+                        <label class="m-0"> {{ ucwords('Channel intro video') }}</label>
+                        <p class="p1">Select the Channel intro video :</p>
                         <div class="panel-body">
                             <input type="file" multiple="true" class="form-control" name="intro_video" id="intro_video"  accept="video/mp4,video/x-m4v,video/*" />
                         </div>
@@ -158,12 +158,12 @@
                 filebrowserUploadMethod: 'form'
             });
 
-            $('form[id="EPG_Channels_form"]').validate({
+            $('form[id="Channels_form"]').validate({
                 rules: {
                     name: "required",
                     slug: {
                         remote: {
-                            url: "{{ route('admin.EPG-Channel.slug_validation') }}",
+                            url: "{{ route('admin.Channel.slug_validation') }}",
                             type: "get",
                             data: {
                                 _token: "{{ csrf_token() }}",
@@ -178,8 +178,8 @@
                 messages: {
                     title: "This field is required",
                     slug: {
-                        required: "Please Enter the EPG Channel Slug",
-                        remote: "Name already in taken ! Please try another EPG Channel Slug"
+                        required: "Please Enter the Channel Slug",
+                        remote: "Name already in taken ! Please try another Channel Slug"
                     },
                 },
                 submitHandler: function(form) {

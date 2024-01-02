@@ -470,14 +470,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
 
-    // EPG
-    Route::get('/epg-channel/index', 'AdminEPGChannelController@index')->name('admin.EPG-Channel.index');
-    Route::get('/epg-channel/create', 'AdminEPGChannelController@create')->name('admin.EPG-Channel.create');
-    Route::post('/epg-channel/store', 'AdminEPGChannelController@store')->name('admin.EPG-Channel.store');
-    Route::get('/epg-channel/edit/{id}', 'AdminEPGChannelController@edit')->name('admin.EPG-Channel.edit');
-    Route::post('/epg-channel/update/{id}', 'AdminEPGChannelController@update')->name('admin.EPG-Channel.update');
-    Route::get('/epg-channel/destroy/{id}', 'AdminEPGChannelController@destroy')->name('admin.EPG-Channel.destroy');
-    Route::get('/epg-channel/validation', 'AdminEPGChannelController@slug_validation')->name('admin.EPG-Channel.slug_validation');
+    // Channel Schedule
+    Route::get('/channel/index', 'AdminEPGChannelController@index')->name('admin.Channel.index');
+    Route::get('/channel/create', 'AdminEPGChannelController@create')->name('admin.Channel.create');
+    Route::post('/channel/store', 'AdminEPGChannelController@store')->name('admin.Channel.store');
+    Route::get('/channel/edit/{id}', 'AdminEPGChannelController@edit')->name('admin.Channel.edit');
+    Route::post('/channel/update/{id}', 'AdminEPGChannelController@update')->name('admin.Channel.update');
+    Route::get('/channel/destroy/{id}', 'AdminEPGChannelController@destroy')->name('admin.Channel.destroy');
+    Route::get('/channel/validation', 'AdminEPGChannelController@slug_validation')->name('admin.Channel.slug_validation');
 
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
