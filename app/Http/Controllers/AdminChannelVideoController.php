@@ -70,7 +70,7 @@ class AdminChannelVideoController extends Controller
             $TimeZone = TimeZone::get();
             $default_time_zone = Setting::pluck('default_time_zone')->first();
             $Video = Video::where('active',1)->where('status',1)->get();
-            // dd($Setting);
+            // dd($TimeZone);
             
             $data = array(
             

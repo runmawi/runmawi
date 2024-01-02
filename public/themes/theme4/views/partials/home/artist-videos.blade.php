@@ -138,7 +138,7 @@
 
                                                         
                                                         <div class="trending-contens sub_dropdown_image mt-3">
-                                                            <ul id="{{ 'trending-slider-nav' }}"  class= "artist-depends-content pl-5 m-0">
+                                                            <ul id="{{ 'trending-slider-nav' }}"  class= "artist-depends-content pl-4 m-0">
 
                                                                 @foreach ($artist_details->artist_depends_videos as $artist_content )
                                                                     <li>

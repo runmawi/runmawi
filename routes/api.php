@@ -296,6 +296,9 @@ Route::group(
         Route::post('Paystack-become-subscriber', 'ApiAuthController@Paystack_become_subscriber');
         Route::post('Paystack-liveRent-Paymentverify', 'ApiAuthController@Paystack_liveRent_Paymentverify')->name('Paystack_liveRent_Paymentverify');
         Route::post('Paystack-VideoRent-Paymentverify', 'ApiAuthController@Paystack_VideoRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
+        Route::post('Paystack-SeriesRent-Paymentverify', 'ApiAuthController@Paystack_SeriesRentRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
+        Route::post('Paystack-SerieSeasonRent-Paymentverify', 'ApiAuthController@Paystack_SerieSeasonRentRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
+        Route::post('Paystack-AudioRent-Paymentverify', 'ApiAuthController@Paystack_AudioRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
 
         // Ads
         Route::post('AdsView', 'ApiAuthController@AdsView');
