@@ -55,9 +55,38 @@ use App\ModeratorsUser as ModeratorsUser;
 use File;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Channel;
+use App\TimeZone;
+use App\AdminEPGChannel;
 
 
-class AdminChannelScheduleController extends Controller
+class AdminChannelVideoController extends Controller
 {
+ 
+    public function ChannelVideoScheduler(Request $request){
+
+        try {
+           
+            $Channels =  AdminEPGChannel::Select('id','name','slug','status')->get();
+            $TimeZone = TimeZone::get();
+            $default_time_zone = Setting::pluck('default_time_zone')->first();
+            $Video = Video::where('active',1)->where('status',1)->get();
+            // dd($Setting);
+            
+            $data = array(
+            
+                'Channels' => $Channels  ,
+                'TimeZone' => $TimeZone  ,
+                'default_time_zone' => $default_time_zone  ,
+                'Video' => $Video  ,
+            
+            );
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
+        return view('admin.scheduler.VideoScheduler',$data);
+    }
+
 
 }
