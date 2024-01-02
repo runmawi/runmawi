@@ -1,28 +1,25 @@
+
 <script>
-    let video_url =
-        "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8";
+    const videoData = [
+        { url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', startTime: 0, endTime: 10 },
+        { url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', startTime: 10, endTime: 20 },
+        // Add more video entries as needed
+    ];
 
-    var player = videojs('my-video');
+    const video = document.getElementById('dynamicVideo');
 
-    player.concat({
-        manifests: [{
-            url: 'https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8',
-            mimeType: 'application/x-mpegURL'
-        }, {
-            url: 'https://s3.amazonaws.com/_bc_dml/example-content/bipbop-advanced/bipbop_16x9_variant.m3u8',
-            mimeType: 'application/x-mpegURL'
-        }],
-        targetVerticalResolution: 720,
-        callback: (err, result) => {
-            if (err) {
-                console.error(err);
-                return;
+    function changeVideoSource() {
+        const currentTime = video.currentTime;
+
+        for (const entry of videoData) {
+            if (currentTime >= entry.startTime && currentTime < entry.endTime && video.src !== entry.url) {
+                video.src = entry.url;
+                video.load(); // Load the new video source
+                video.play(); // Play the new video
+                break; // Exit the loop after changing the source
             }
-            console.log(result);
-            player.src({
-                src: `data:application/vnd.videojs.vhs+json,${JSON.stringify(result.manifestObject)}`,
-                type: 'application/vnd.videojs.vhs+json'
-            });
         }
-    });
+    }
+
+    video.addEventListener('timeupdate', changeVideoSource);
 </script>

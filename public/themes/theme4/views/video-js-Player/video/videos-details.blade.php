@@ -247,47 +247,9 @@
                     @if( $setting->show_description == 1 && optional($videodetail)->description )   {{-- Description --}}
                         <div class="overview">
                             <div class="heading">{{ __('Description') }}</div>
-                            <div class="description" data-bs-toggle="modal" data-bs-target="#discription-Modal">
-                                {!! substr($videodetail->description, 0, 200) ? html_entity_decode($videodetail->description ) : html_entity_decode(substr($videodetail->description, 0, 50)) . "..." . " <span class='text-primary'> See More </span>"  !!}
-                                <!-- {!!  html_entity_decode( optional($videodetail)->description ) !!} -->
+                            <div class="description">
+                                {!! strlen($videodetail->description) > 200 ?  html_entity_decode(substr($videodetail->description, 0, 200 )) . "..." . " <span class='text-primary' data-bs-toggle='modal' data-bs-target='#video-details-description'>See More</span>" :  html_entity_decode($videodetail->description)  !!}
                             </div>
-                             <!-- Model for banner discription -->
-                            <div class="modal fade info_model" id='discription-Modal' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                                    <div class="container">
-                                        <div class="modal-content" style="border:none;">
-                                            <div class="modal-body">
-                                                <div class="col-lg-12">
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <img  src="{{ $videodetail->image_url }}" width="100%" alt="">
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="row">
-                                                                <div class="col-lg-10 col-md-10 col-sm-10">
-                                                                    <h2 class="caption-h2">{{ $videodetail->title }}</h2>
-
-                                                                </div>
-                                                                <div class="col-lg-2 col-md-2 col-sm-2">
-                                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
-                                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            <div class="trending-dec mt-4">{!! html_entity_decode( optional($videodetail)->description ) !!}</div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
                         </div>
                     @endif
 
@@ -567,6 +529,41 @@
                 <span class="closeBtn">{{ __('Close') }}</span>
                 <div style="width: 100%; height: 100%;">
                     <!-- Placeholder for video player -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- Model for banner description -->
+
+    <div class="modal fade info_model" id='video-details-description' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+            <div class="container">
+                <div class="modal-content" style="border:none;">
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <img  src="{{ $videodetail->image_url }}" width="100%" alt="">
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <h2 class="caption-h2">{{ $videodetail->title }}</h2>
+
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-2">
+                                            <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="trending-dec mt-4">{!! html_entity_decode( optional($videodetail)->description ) !!}</div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
