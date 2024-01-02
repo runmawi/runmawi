@@ -166,7 +166,7 @@ class ChannelController extends Controller
                 }
                 
                 if (videos_expiry_date_status() == 1 ) {
-                    $categoryVideos = $categoryVideos->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                    $categoryVideos = $categoryVideos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                 }
 
             $categoryVideos = $categoryVideos->latest('videos.created_at')->paginate($this->videos_per_page);
@@ -184,7 +184,7 @@ class ChannelController extends Controller
                 }
 
                 if (videos_expiry_date_status() == 1 ) {
-                    $Most_watched_country = $Most_watched_country->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                    $Most_watched_country = $Most_watched_country->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                 }
             
             $Most_watched_country = $Most_watched_country->where('recent_views.country_name', Country_name())
@@ -213,7 +213,7 @@ class ChannelController extends Controller
                 }
 
                 if (videos_expiry_date_status() == 1 ) {
-                    $top_most_watched = $top_most_watched->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                    $top_most_watched = $top_most_watched->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                 }
             
             $top_most_watched = $top_most_watched->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$categoryVideo)->get()
@@ -255,7 +255,7 @@ class ChannelController extends Controller
                     }
 
                     if (videos_expiry_date_status() == 1 ) {
-                        $query->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                        $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                     }
             
                     if ($check_Kidmode == 1) {
@@ -270,7 +270,7 @@ class ChannelController extends Controller
                             }
 
                             if (videos_expiry_date_status() == 1 ) {
-                                $videos->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                                $videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                             }
 
                             if ($check_Kidmode == 1) {
@@ -289,7 +289,7 @@ class ChannelController extends Controller
                     }
 
                     if (videos_expiry_date_status() == 1 ) {
-                        $query->where('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                        $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                     }
             
                     if ($check_Kidmode == 1) {
@@ -4250,7 +4250,7 @@ class ChannelController extends Controller
 
         } catch (\Throwable $th) {
             
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
