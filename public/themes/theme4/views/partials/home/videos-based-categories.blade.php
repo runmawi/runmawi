@@ -9,7 +9,7 @@
         }
         
         if (videos_expiry_date_status() == 1 ) {
-            $query->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+            $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
         if ($check_Kidmode == 1) {
@@ -28,7 +28,7 @@
         }
 
         if (videos_expiry_date_status() == 1 ) {
-            $videos->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+            $videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
         if ($check_Kidmode == 1) {
@@ -47,7 +47,7 @@
         }
 
         if (videos_expiry_date_status() == 1 ) {
-            $query->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+            $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
         if ($check_Kidmode == 1) {

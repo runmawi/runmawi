@@ -3049,7 +3049,7 @@ class HomeController extends Controller
                 }
 
                 if (videos_expiry_date_status() == 1 ) {
-                    $featured_videos = $featured_videos->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                    $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                 }
 
                 $featured_videos = $featured_videos->orderBy('videos.created_at','desc')->limit(50)->paginate($this->videos_per_page);
@@ -3114,7 +3114,7 @@ class HomeController extends Controller
                 }
 
                 if (videos_expiry_date_status() == 1 ) {
-                    $latest_videos = $latest_videos->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                    $latest_videos = $latest_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                 }
                 
             $latest_videos = $latest_videos->limit(50)->paginate($this->videos_per_page);

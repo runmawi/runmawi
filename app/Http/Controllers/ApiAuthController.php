@@ -5234,8 +5234,9 @@ return response()->json($response, 200);
   // echo "<pre>";
   // print_r($season);exit;
   // Free Interval Episodes
+  $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('id','=',$season_id)->count();
 
-  if(!empty($ppv_price) && !empty($ppv_interval)){
+  if(!empty($ppv_price) && !empty($ppv_interval) &&  $PpvPurchaseCount != 0){
       foreach($season as $key => $seasons):
           foreach($seasons->episodes as $key => $episodes):
                   if($seasons->ppv_interval > $key):
@@ -5261,7 +5262,7 @@ return response()->json($response, 200);
     $response = array(
       'status' => 'true',
       'access' => $free_episode,
-      'episode' => $episode,
+      'episode' => Episode::where('id','=',$episode_id)->get(),
       'season' => $season,
     );
 
@@ -22601,5 +22602,296 @@ public function TV_login(Request $request)
 
     }
 
+
+    public function Paystack_SeriesRentRent_Paymentverify( Request $request )
+    {
+        try {
+  
+            $setting = Setting::first();
+            $ppv_hours = $setting->ppv_hours;
+  
+            $to_time = ppv_expirytime_started();
+  
+                 // Verify Payment
+  
+            $reference_code = $request->reference_id;
+  
+            $curl = curl_init();
+  
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+  
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+  
+            $Series = Series::where('id','=',$request->series_id)->first();
+  
+            if(!empty($Series)){
+            $moderators_id = $Series->user_id;
+            }
+  
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();
+                $total_amount     = $setting->ppv_price;
+                $title            =  $Series->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage;
+                $ppv_price        = $setting->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $setting->ppv_price;
+                $title          =  $Series->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null;
+                $ppv_price       = $setting->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+  
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  $request->user_id ;
+            $purchase->series_id       =  $request->series_id ;
+            $purchase->total_amount  =  $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+  
+            if ($err) {                 // Error
+                $response = array(
+                    "status"  => 'false' ,
+                    "message" => $err
+                );
+            }
+            else {                      // Success
+                $response = array(
+                    "status"  => 'true' ,
+                    "message" => "Payment done! Successfully for PPV Live-id = " .$request->series_id ,
+                );
+            }
+  
+        } catch (\Exception $e) {
+  
+            $response = array(
+                "status"  => 'false' ,
+                "message" => $e->getMessage(),
+           );
+        }
+        return response()->json($response, 200);
+    }
+
+    public function Paystack_SerieSeasonRentRent_Paymentverify( Request $request )
+    {
+        try {
+  
+            $setting = Setting::first();
+            $ppv_hours = $setting->ppv_hours;
+  
+            $to_time = ppv_expirytime_started();
+  
+                 // Verify Payment
+  
+            $reference_code = $request->reference_id;
+  
+            $curl = curl_init();
+  
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+  
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+  
+            $SeriesSeason = SeriesSeason::where('id','=',$request->season_id)->first();
+  
+            if(!empty($SeriesSeason)){
+            $moderators_id = $video->user_id;
+            }
+  
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();
+                $total_amount     = $SeriesSeason->ppv_price;
+                $title            =  $SeriesSeason->series_seasons_name;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage;
+                $ppv_price        = $SeriesSeason->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $SeriesSeason->ppv_price;
+                $title          =  $SeriesSeason->series_seasons_name;
+                $commssion      = VideoCommission::first();
+                $percentage     = null;
+                $ppv_price       = $SeriesSeason->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+  
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  $request->user_id ;
+            $purchase->series_id       =  $request->series_id ;
+            $purchase->season_id       =  $request->season_id ;
+            $purchase->total_amount  =  $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+  
+            if ($err) {                 // Error
+                $response = array(
+                    "status"  => 'false' ,
+                    "message" => $err
+                );
+            }
+            else {                      // Success
+                $response = array(
+                    "status"  => 'true' ,
+                    "message" => "Payment done! Successfully for PPV Live-id = " .$request->season_id ,
+                );
+            }
+  
+        } catch (\Exception $e) {
+  
+            $response = array(
+                "status"  => 'false' ,
+                "message" => $e->getMessage(),
+           );
+        }
+        return response()->json($response, 200);
+    }
+  
+    
+    public function Paystack_AudioRent_Paymentverify( Request $request )
+    {
+        try {
+  
+            $setting = Setting::first();
+            $ppv_hours = $setting->ppv_hours;
+  
+            $to_time = ppv_expirytime_started();
+  
+                 // Verify Payment
+  
+            $reference_code = $request->reference_id;
+  
+            $curl = curl_init();
+  
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+  
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+  
+            $Audio = Audio::where('id','=',$request->audio_id)->first();
+  
+            if(!empty($Audio)){
+            $moderators_id = $video->user_id;
+            }
+  
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();
+                $total_amount     = $Audio->ppv_price;
+                $title            =  $Audio->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage;
+                $ppv_price        = $Audio->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $Audio->ppv_price;
+                $title          =  $Audio->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null;
+                $ppv_price       = $Audio->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+  
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  $request->user_id ;
+            $purchase->audio_id       =  $request->audio_id ;
+            $purchase->total_amount  =  $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+            if ($err) {                 // Error
+                $response = array(
+                    "status"  => 'false' ,
+                    "message" => $err
+                );
+            }
+            else {                      // Success
+                $response = array(
+                    "status"  => 'true' ,
+                    "message" => "Payment done! Successfully for PPV Live-id = " .$request->audio_id ,
+                );
+            }
+  
+        } catch (\Exception $e) {
+  
+            $response = array(
+                "status"  => 'false' ,
+                "message" => $e->getMessage(),
+           );
+        }
+        return response()->json($response, 200);
+    }
 
 }

@@ -67,7 +67,7 @@
                                                                                             }
 
                                                                                             if (videos_expiry_date_status() == 1 ) {
-                                                                                                $videos = $videos->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                                                                                                $videos = $videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                                                                                             }
                                                                                             
                                                                                             if ($check_Kidmode == 1) {
