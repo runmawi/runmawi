@@ -248,7 +248,7 @@
                         <div class="overview">
                             <div class="heading">{{ __('Description') }}</div>
                             <div class="description" data-bs-toggle="modal" data-bs-target="#discription-Modal">
-                                {!! substr($videodetail->description, 0, 200) ? html_entity_decode(substr($videodetail->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($videodetail->description ) !!}
+                                {!! substr($videodetail->description, 0, 200) ? html_entity_decode($videodetail->description ) : html_entity_decode(substr($videodetail->description, 0, 50)) . "..." . " <span class='text-primary'> See More </span>"  !!}
                                 <!-- {!!  html_entity_decode( optional($videodetail)->description ) !!} -->
                             </div>
                              <!-- Model for banner discription -->

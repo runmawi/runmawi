@@ -46,9 +46,7 @@ $data = $data->latest()->limit(30)->get();
                                             
                                             @if (videos_expiry_date_status() == 1 && optional($latest_video)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
-                                            @endif
-
-                                            
+                                            @endif 
                                         </div>
                                     </a>
                                 </li>
