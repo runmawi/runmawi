@@ -274,7 +274,7 @@
                                                                     </button>
                                                                 </div>
                                                             </div>
-                                                            <div class="trending-dec mt-4">{{ html_entity_decode($videodetail->description ) }}</div>
+                                                            <div class="trending-dec mt-4">{!! html_entity_decode( optional($videodetail)->description ) !!}</div>
 
                                                         </div>
                                                     </div>
