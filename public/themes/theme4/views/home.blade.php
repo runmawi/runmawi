@@ -28,7 +28,7 @@
                                  }
          
                                  if (videos_expiry_date_status() == 1 ) {
-                                    $video_banner = $video_banner->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                                    $video_banner = $video_banner->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                                  }
                                  
                                  if ($check_Kidmode == 1) {
