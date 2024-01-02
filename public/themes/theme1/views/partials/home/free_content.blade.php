@@ -13,7 +13,7 @@
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->image;  ?>" class="img-fluid w-100" alt="">
                 
-              </div></div>
+              </div>
               <div class="block-description">
               
                 <div class="hover-buttons d-flex">
@@ -23,6 +23,8 @@
                   </a>
                 </div>
               </div>
+            </div>
+              
               <div>
                   
                 <div class="movie-time d-flex align-items-center justify-content-between my-2">
