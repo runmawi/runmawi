@@ -57,6 +57,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Channel;
 use App\TimeZone;
 use App\AdminEPGChannel;
+use App\Episode as Episode;
+use App\LiveStream as LiveStream;
 
 
 class AdminChannelVideoController extends Controller
@@ -69,8 +71,26 @@ class AdminChannelVideoController extends Controller
             $Channels =  AdminEPGChannel::Select('id','name','slug','status')->get();
             $TimeZone = TimeZone::get();
             $default_time_zone = Setting::pluck('default_time_zone')->first();
-            $Video = Video::where('active',1)->where('status',1)->get();
-            // dd($TimeZone);
+            $Video = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                $item['socure_type'] = 'Video';
+                return $item;
+              });
+            $audio = Audio::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                $item['socure_type'] = 'Audio';
+                return $item;
+              });
+            $episode = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                $item['socure_type'] = 'Episode';
+                return $item;
+              });
+            $livestream = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                $item['socure_type'] = 'LiveStream';
+                return $item;
+              });
+
+              $mergedCollection = $videos->merge($audios)->merge($episodes)->merge($livestreams);
+
+            dd($mergedCollection);
             
             $data = array(
             
