@@ -22853,7 +22853,7 @@ public function TV_login(Request $request)
             $Audio = Audio::where('id','=',$request->audio_id)->first();
   
             if(!empty($Audio)){
-            $moderators_id = $video->user_id;
+            $moderators_id = $Audio->user_id;
             }
   
             if(!empty($moderators_id)){
