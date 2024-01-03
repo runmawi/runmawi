@@ -547,7 +547,26 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> {{ ucwords('EPG status') }}  </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->epg_status) || (isset($settings->epg_status) &&
+                                                $settings->epg_status))checked="checked" value="1"@else value="0"@endif
+                                                name="epg_status" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    
 
                     <div class="row">
                         <div class="col-sm-6">
