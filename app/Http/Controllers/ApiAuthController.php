@@ -22754,7 +22754,7 @@ public function TV_login(Request $request)
             $SeriesSeason = SeriesSeason::where('id','=',$request->season_id)->first();
   
             if(!empty($SeriesSeason)){
-            $moderators_id = $video->user_id;
+            $moderators_id = $SeriesSeason->user_id;
             }
   
             if(!empty($moderators_id)){
