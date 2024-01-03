@@ -5254,9 +5254,8 @@ return response()->json($response, 200);
   // echo "<pre>";
   // print_r($season);exit;
   // Free Interval Episodes
-  $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('id','=',$season_id)->count();
 
-  if(!empty($ppv_price) && !empty($ppv_interval) &&  $PpvPurchaseCount != 0){
+  if(!empty($ppv_price) && !empty($ppv_interval) ){
       foreach($season as $key => $seasons):
           foreach($seasons->episodes as $key => $episodes):
                   if($seasons->ppv_interval > $key):
