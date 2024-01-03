@@ -5241,6 +5241,7 @@ return response()->json($response, 200);
   {
     $season_id = $request->season_id;
     $episode_id = $request->episode_id;
+    $user_id = $request->user_id;
 
     $episode = Episode::where('id','=',$episode_id)->first();
     // $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
@@ -5254,8 +5255,10 @@ return response()->json($response, 200);
   // echo "<pre>";
   // print_r($season);exit;
   // Free Interval Episodes
+  $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('season_id','=',$season_id)
+  ->where('user_id','=',$user_id)->count();
 
-  if(!empty($ppv_price) && !empty($ppv_interval) ){
+  if(!empty($ppv_price) && !empty($ppv_interval)){
       foreach($season as $key => $seasons):
           foreach($seasons->episodes as $key => $episodes):
                   if($seasons->ppv_interval > $key):
@@ -5265,7 +5268,9 @@ return response()->json($response, 200);
                   endif;
           endforeach;
       endforeach;
-      if (array_key_exists($episode_id,$free_episode)){
+      if($PpvPurchaseCount > 0){
+        $free_episode = 'guest';
+      }else if (array_key_exists($episode_id,$free_episode)){
         $free_episode = 'guest';
       }else{
         $free_episode = 'PPV';
@@ -6035,9 +6040,20 @@ return response()->json($response, 200);
         }else{
           $main_genre = '';
         }
+        
+        $user_id = $request->user_id;
+
+        $PpvPurchaseCount = PpvPurchase::where('audio_id','=',$audio_id)->where('user_id','=',$user_id)->count();
+      
+        if(count($PpvPurchaseCount) > 0){
+          $access = 'guest';
+         }else{
+           $access = 'rent';
+         }
 
         $response = array(
             'status' => $status,
+            'access' => $access,
             'wishlist' => $wishliststatus,
             'main_genre' => $main_genre,
             'watchlater' => $watchlaterstatus,
@@ -6047,6 +6063,7 @@ return response()->json($response, 200);
             'dislike' => $dislike,
             'shareurl' => URL::to('channelVideos/play_videos').'/'.$audio_id,
             'audiodetail' => $audiodetail,
+            'PpvPurchaseCount' => $PpvPurchaseCount,
         );
         return response()->json($response, 200);
 
