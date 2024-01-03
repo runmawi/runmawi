@@ -71,33 +71,37 @@ class AdminChannelVideoController extends Controller
             $Channels =  AdminEPGChannel::Select('id','name','slug','status')->get();
             $TimeZone = TimeZone::get();
             $default_time_zone = Setting::pluck('default_time_zone')->first();
-            $Video = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+            $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
                 $item['socure_type'] = 'Video';
                 return $item;
               });
-            $audio = Audio::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+            $audios = Audio::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
                 $item['socure_type'] = 'Audio';
                 return $item;
               });
-            $episode = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+            $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
                 $item['socure_type'] = 'Episode';
                 return $item;
               });
-            $livestream = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+            $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
                 $item['socure_type'] = 'LiveStream';
                 return $item;
               });
 
-              $mergedCollection = $videos->merge($audios)->merge($episodes)->merge($livestreams);
+            $mergedCollection = $videos
+              ->concat($audios)
+              ->concat($episodes)
+              ->concat($livestreams)
+              ->values();
+            //   dd($mergedCollection);
+              
 
-            dd($mergedCollection);
-            
             $data = array(
             
                 'Channels' => $Channels  ,
                 'TimeZone' => $TimeZone  ,
                 'default_time_zone' => $default_time_zone  ,
-                'Video' => $Video  ,
+                'VideoCollection' => $mergedCollection  ,
             
             );
 
@@ -108,5 +112,44 @@ class AdminChannelVideoController extends Controller
         return view('admin.scheduler.VideoScheduler',$data);
     }
 
+
+    public function FilterVideoScheduler(Request $request){
+
+        try {
+                // print_r();exit;
+            $Channels =  AdminEPGChannel::Select('id','name','slug','status')->get();
+            $TimeZone = TimeZone::get();
+            $default_time_zone = Setting::pluck('default_time_zone')->first();
+            if($request->filter == "Video"){
+                $data = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Video';
+                    return $item;
+                });
+            }else if($request->filter == "Audio"){ 
+                $data = Audio::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Audio';
+                    return $item;
+                });
+            }else if($request->filter == "Episode"){ 
+                $data = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Episode';
+                    return $item;
+                });
+            }else if($request->filter == "LiveStream"){ 
+                $data = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'LiveStream';
+                    return $item;
+                });
+            }else{
+
+            }
+
+            return  $data ;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
+    }
 
 }
