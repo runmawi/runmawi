@@ -74,21 +74,31 @@
                 <!-- <div class="row"> -->
                     <h4 class="container-fluid mt-3">Drag Video and Drop for Scheduling:</h4>
                 <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="search-container">
+                                    <input type="text" class="form-control" id="searchInput" placeholder="Search...">
+                            </div>
+                        </div>
+                            <div class="col-md-2 filterButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                                <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+                                </svg>
+                            </div>
+                        <!-- </div> -->
+                            <div class="filter-container">
+                                <select id="filterDropdown" class="form-control">
+                                    <option value="all">All</option>
+                                    <option value="Video">Video</option>
+                                    <option value="LiveStream">LiveStream</option>
+                                    <option value="Episode">Episode</option>
+                                    <option value="Audio">Audio</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                      <div class="row">
                      <div class="col-md-6 p-0">
-                        <div class="search-container">
-                            <input type="text" class="form-control" id="searchInput" placeholder="Search...">
-                        </div>
-                        <div class="filter-container">
-                            <button id="filterButton" class="btn btn-primary">Filter</button>
-                            <select id="filterDropdown" class="form-control">
-                                <option value="all">All</option>
-                                <option value="Video">Video</option>
-                                <option value="LiveStream">LiveStream</option>
-                                <option value="Episode">Episode</option>
-                                <option value="Audio">Audio</option>
-                            </select>
-                        </div>
                         <div class="drop-zone ScrollStyle MainData">
                                         @foreach(@$VideoCollection as $value)
                                         <div class="draggable">
@@ -158,6 +168,13 @@
 
 
 $(document).ready(function () {
+
+        $('#filterDropdown').hide();
+        $('.filterButton').click(function(){ 
+            // alert();
+            $('#filterDropdown').toggle();
+        });
+
         // Function to filter items based on the selected filter option
         function filterItems(filterValue) {
 

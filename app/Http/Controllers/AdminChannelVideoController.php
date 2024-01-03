@@ -141,7 +141,24 @@ class AdminChannelVideoController extends Controller
                     return $item;
                 });
             }else{
-
+                $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Video';
+                    return $item;
+                  });
+                $audios = Audio::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Audio';
+                    return $item;
+                  });
+                $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Episode';
+                    return $item;
+                  });
+                $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'LiveStream';
+                    return $item;
+                  });
+    
+                $data = $videos->concat($audios)->concat($episodes)->concat($livestreams)->values();
             }
 
             return  $data ;
