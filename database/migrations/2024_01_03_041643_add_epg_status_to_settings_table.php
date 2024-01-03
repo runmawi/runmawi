@@ -14,7 +14,7 @@ class AddEpgStatusToSettingsTable extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->tinyInteger('epg_status')->default(1);
+            $table->tinyInteger('epg_status')->default(0);
         });
     }
 
