@@ -3129,6 +3129,7 @@ public function verifyandupdatepassword(Request $request)
     $episode_id = $request->episode_id;
     $season_id = $request->season_id;
     $series_id = $request->series_id;
+    $audio_id = $request->audio_id;
     $user_id = $request->user_id;
     $daten = date('Y-m-d h:i:s a', time());
     $setting = Setting::first();
@@ -3147,8 +3148,9 @@ public function verifyandupdatepassword(Request $request)
     if($charge != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
       // print_r($live_ppv_count);exit;
-      if ( $ppv_count == 0 || $live_ppv_count == 0 ) {
+      if ( $ppv_count == 0 || $live_ppv_count == 0 || $audio_ppv_count == 0) {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->insert(
             ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $request->amount, ]
@@ -3161,10 +3163,19 @@ public function verifyandupdatepassword(Request $request)
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
+        }else if(!empty($audio_id) && $audio_id != ''){
+          DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'audio_id' => $audio_id,'to_time' => $date, ]
+          );
+          send_password_notification('Notification From '. GetWebsiteName(),'You have rented a Audio','You have rented a Audio','',$user_id);
+  
         }
       } else {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+
+        }else if(!empty($audio_id) && $audio_id != ''){
+          DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
@@ -3187,6 +3198,7 @@ public function verifyandupdatepassword(Request $request)
       $serie_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
@@ -3230,6 +3242,14 @@ public function verifyandupdatepassword(Request $request)
         );
       }
   
+      if ( $audio_ppv_count == 0 ) {
+        DB::table('ppv_purchases')->insert(
+          ['user_id' => $user_id ,'audio_id' => $audio_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
+        );
+      } else {
+        DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+      }
+      
       $response = array(
         'status' => 'true',
         'message' => "video has been added"
