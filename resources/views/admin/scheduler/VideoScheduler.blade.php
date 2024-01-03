@@ -76,12 +76,24 @@
                 <div class="col-md-12">
                      <div class="row">
                      <div class="col-md-6 p-0">
-
+                        <div class="search-container">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search...">
+                        </div>
+                        <div class="filter-container">
+                            <button id="filterButton" class="btn btn-primary">Filter</button>
+                            <select id="filterDropdown" class="form-control">
+                                <option value="all">All</option>
+                                <option value="Video">Video</option>
+                                <option value="LiveStream">LiveStream</option>
+                                <option value="Episode">Episode</option>
+                                <option value="Audio">Audio</option>
+                            </select>
+                        </div>
                         <div class="drop-zone ScrollStyle MainData">
-                                        @foreach(@$Video as $value)
+                                        @foreach(@$VideoCollection as $value)
                                         <div class="draggable">
                                             <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="50" height="50">
-                                            <input type="text" data-class="{{ $value->id }}" id="video_id" draggable="true" ondragstart="drag(this)" class=" form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
+                                            <input type="text" data-class="{{ $value->id }}" id="source_id" draggable="true" ondragstart="drag(this)" class=" form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
                                             <!-- <div class="video_id{{ $value->id }}" data-toggle="modal" data-target="#video" data-name="{{ $value->id }}"  onclick="dropZoneDropHandler(this)"  >{{ $value->title }}</div> -->
                                         </div>
                                         @endforeach
@@ -143,6 +155,81 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
     <script type="text/javascript">
+
+
+$(document).ready(function () {
+        // Function to filter items based on the selected filter option
+        function filterItems(filterValue) {
+
+            $.ajax({
+                url:"{{ URL::to('admin/filter-scheduler') }}",
+                type: 'GET',
+                data: { filter: filterValue },
+                dataType: 'json',
+                success: function (data)
+                {
+
+                    $('.MainData').empty();
+                    var imageURL = "{{ URL::to('/public/uploads/images/') }} ";
+                    // Append new items based on the returned data
+                    $.each(data, function (index, value) {
+                    console.log(value);
+                        var newItem = $('<div class="draggable">' +
+                            '<img src="' + imageURL +'/'+ value.image + '" alt="" width="50" height="50">' +
+                            '<input type="text" data-class="' + value.id + '" id="source_id" draggable="true" ondragstart="drag(this)" class="form-control video_' + value.id + '" value="' + value.title + '" readonly>' +
+                            '</div>');
+                        $('.MainData').append(newItem); // Append to .MainData
+                    });
+                },
+                error: function (xhr, status, error) {
+                console.error('Error fetching data:', error);
+                }
+            });
+
+
+            // $('.draggable').each(function () {
+            //     var itemCategory = $(this).find('input[type="text"]').data('category');
+            //     if (filterValue === 'all' || itemCategory === filterValue) {
+            //         $(this).show();
+            //     } else {
+            //         $(this).hide();
+            //     }
+            // });
+        }
+
+        // Event listener for the dropdown change
+        $('#filterDropdown').on('change', function () {
+            var filterValue = $(this).val();
+            filterItems(filterValue);
+        });
+
+        // Initial filtering based on the default selected option
+        filterItems($('#filterDropdown').val());
+    });
+
+
+    // Search Data 
+    
+    $(document).ready(function () {
+        // Function to filter items based on the search input
+        function filterItems(searchTerm) {
+            searchTerm = searchTerm.toLowerCase();
+            $('.draggable').each(function () {
+                var itemText = $(this).find('input[type="text"]').val().toLowerCase();
+                if (itemText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+
+        // Event listener for the search input
+        $('#searchInput').on('input', function () {
+            var searchTerm = $(this).val();
+            filterItems(searchTerm);
+        });
+    });
 
     $('.date').datepicker({  
        format: 'mm-dd-yyyy'
@@ -417,14 +504,6 @@ function drop(video_id) {
            type: "post",
             data: {
                   _token: '{{ csrf_token() }}',
-                    video_id: video_id,
-                    month: month,
-                    year: year,
-                    date: date,
-                    schedule_id: schedule_id,
-                    schedule_time: time,
-                    time_zone: time_zone
-
             },        
             success: function(value){
    			console.log(value);

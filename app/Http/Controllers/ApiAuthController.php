@@ -5980,8 +5980,9 @@ return response()->json($response, 200);
     {
 
         $audio_id = $request->audio_id;
+        $user_id = $request->user_id;
         $current_date = date('Y-m-d h:i:s a', time());
-        $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item)  use ($user_id)  {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['audio_duration'] = $item->duration >= "3600" ?  gmdate('H:i:s', $item->duration  ) :  gmdate('i:s', $item->duration  ) ;
@@ -5991,6 +5992,21 @@ return response()->json($response, 200);
               $item['lyrics_json'] = null  ;
             }
 
+            $PpvPurchaseCount = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',$user_id)->count();
+      
+            if($item->access == 'ppv' && ($PpvPurchaseCount > 0)){
+              $item->access = 'guest';
+            }else if($item->access == 'ppv' && ($PpvPurchaseCount == 0)){
+              $item->access = 'ppv';
+            }else{
+              $item->access = $item->access;
+            }
+            
+            if($item->lyrics_json != null){
+              $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+            }else{
+              $item['lyrics_json'] = null  ;
+            }
             return $item;
         });
 
@@ -6039,21 +6055,10 @@ return response()->json($response, 200);
          $main_genre = $audio_cat[0]->name;
         }else{
           $main_genre = '';
-        }
-        
-        $user_id = $request->user_id;
-
-        $PpvPurchaseCount = PpvPurchase::where('audio_id','=',$audio_id)->where('user_id','=',$user_id)->count();
-      
-        if(count($PpvPurchaseCount) > 0){
-          $access = 'guest';
-         }else{
-           $access = 'rent';
-         }
+        }        
 
         $response = array(
             'status' => $status,
-            'access' => $access,
             'wishlist' => $wishliststatus,
             'main_genre' => $main_genre,
             'watchlater' => $watchlaterstatus,
@@ -6063,7 +6068,6 @@ return response()->json($response, 200);
             'dislike' => $dislike,
             'shareurl' => URL::to('channelVideos/play_videos').'/'.$audio_id,
             'audiodetail' => $audiodetail,
-            'PpvPurchaseCount' => $PpvPurchaseCount,
         );
         return response()->json($response, 200);
 
