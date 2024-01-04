@@ -3129,6 +3129,7 @@ public function verifyandupdatepassword(Request $request)
     $episode_id = $request->episode_id;
     $season_id = $request->season_id;
     $series_id = $request->series_id;
+    $audio_id = $request->audio_id;
     $user_id = $request->user_id;
     $daten = date('Y-m-d h:i:s a', time());
     $setting = Setting::first();
@@ -3147,8 +3148,9 @@ public function verifyandupdatepassword(Request $request)
     if($charge != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
       // print_r($live_ppv_count);exit;
-      if ( $ppv_count == 0 || $live_ppv_count == 0 ) {
+      if ( $ppv_count == 0 || $live_ppv_count == 0 || $audio_ppv_count == 0) {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->insert(
             ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $request->amount, ]
@@ -3161,10 +3163,19 @@ public function verifyandupdatepassword(Request $request)
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
+        }else if(!empty($audio_id) && $audio_id != ''){
+          DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'audio_id' => $audio_id,'to_time' => $date, ]
+          );
+          send_password_notification('Notification From '. GetWebsiteName(),'You have rented a Audio','You have rented a Audio','',$user_id);
+  
         }
       } else {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+
+        }else if(!empty($audio_id) && $audio_id != ''){
+          DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
@@ -3187,6 +3198,7 @@ public function verifyandupdatepassword(Request $request)
       $serie_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
@@ -3230,6 +3242,14 @@ public function verifyandupdatepassword(Request $request)
         );
       }
   
+      if ( $audio_ppv_count == 0 ) {
+        DB::table('ppv_purchases')->insert(
+          ['user_id' => $user_id ,'audio_id' => $audio_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
+        );
+      } else {
+        DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+      }
+      
       $response = array(
         'status' => 'true',
         'message' => "video has been added"
@@ -5221,6 +5241,7 @@ return response()->json($response, 200);
   {
     $season_id = $request->season_id;
     $episode_id = $request->episode_id;
+    $user_id = $request->user_id;
 
     $episode = Episode::where('id','=',$episode_id)->first();
     // $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
@@ -5234,9 +5255,10 @@ return response()->json($response, 200);
   // echo "<pre>";
   // print_r($season);exit;
   // Free Interval Episodes
-  $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('id','=',$season_id)->count();
+  $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('season_id','=',$season_id)
+  ->where('user_id','=',$user_id)->count();
 
-  if(!empty($ppv_price) && !empty($ppv_interval) &&  $PpvPurchaseCount != 0){
+  if(!empty($ppv_price) && !empty($ppv_interval)){
       foreach($season as $key => $seasons):
           foreach($seasons->episodes as $key => $episodes):
                   if($seasons->ppv_interval > $key):
@@ -5246,7 +5268,9 @@ return response()->json($response, 200);
                   endif;
           endforeach;
       endforeach;
-      if (array_key_exists($episode_id,$free_episode)){
+      if($PpvPurchaseCount > 0){
+        $free_episode = 'guest';
+      }else if (array_key_exists($episode_id,$free_episode)){
         $free_episode = 'guest';
       }else{
         $free_episode = 'PPV';
@@ -5956,8 +5980,9 @@ return response()->json($response, 200);
     {
 
         $audio_id = $request->audio_id;
+        $user_id = $request->user_id;
         $current_date = date('Y-m-d h:i:s a', time());
-        $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item)  use ($user_id)  {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['audio_duration'] = $item->duration >= "3600" ?  gmdate('H:i:s', $item->duration  ) :  gmdate('i:s', $item->duration  ) ;
@@ -5967,6 +5992,21 @@ return response()->json($response, 200);
               $item['lyrics_json'] = null  ;
             }
 
+            $PpvPurchaseCount = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',$user_id)->count();
+      
+            if($item->access == 'ppv' && ($PpvPurchaseCount > 0)){
+              $item->access = 'guest';
+            }else if($item->access == 'ppv' && ($PpvPurchaseCount == 0)){
+              $item->access = 'ppv';
+            }else{
+              $item->access = $item->access;
+            }
+            
+            if($item->lyrics_json != null){
+              $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+            }else{
+              $item['lyrics_json'] = null  ;
+            }
             return $item;
         });
 
@@ -6015,7 +6055,7 @@ return response()->json($response, 200);
          $main_genre = $audio_cat[0]->name;
         }else{
           $main_genre = '';
-        }
+        }        
 
         $response = array(
             'status' => $status,
@@ -22735,7 +22775,7 @@ public function TV_login(Request $request)
             $SeriesSeason = SeriesSeason::where('id','=',$request->season_id)->first();
   
             if(!empty($SeriesSeason)){
-            $moderators_id = $video->user_id;
+            $moderators_id = $SeriesSeason->user_id;
             }
   
             if(!empty($moderators_id)){
@@ -22834,7 +22874,7 @@ public function TV_login(Request $request)
             $Audio = Audio::where('id','=',$request->audio_id)->first();
   
             if(!empty($Audio)){
-            $moderators_id = $video->user_id;
+            $moderators_id = $Audio->user_id;
             }
   
             if(!empty($moderators_id)){

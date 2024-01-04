@@ -479,6 +479,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/channel/destroy/{id}', 'AdminEPGChannelController@destroy')->name('admin.Channel.destroy');
     Route::get('/channel/validation', 'AdminEPGChannelController@slug_validation')->name('admin.Channel.slug_validation');
 
+    // EPG Schedule
+    Route::get('/egp/index', 'AdminEPGController@index')->name('admin.epg.index');
+    Route::get('/epg/generate', 'AdminEPGController@generate')->name('admin.epg.generate');
+    
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
     Route::get('/mobile_app/Splash_destroy/{source}/{id}', 'AdminUsersController@Splash_destroy')->name('Splash_destroy');
@@ -994,6 +998,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     /*  Channel Videos Setting  */
 
     Route::get('/video-scheduler', 'AdminChannelVideoController@ChannelVideoScheduler')->name('VideoScheduler');
+    Route::get('/filter-scheduler', 'AdminChannelVideoController@FilterVideoScheduler')->name('VideoScheduler');
         
     /*  Videos Setting  */
 
@@ -2421,5 +2426,7 @@ Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('vid
 Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
 
 Route::get('epg/Channels/{slug}', 'EPGChannelController@index')->name('Front-End.EPG');
+
+Route::get('epg/channel-List', 'EPGChannelController@EPG_Channel_List')->name('Front-End.EPG_Channel_List');
 
 Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
