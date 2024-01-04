@@ -2199,12 +2199,20 @@ public function verifyandupdatepassword(Request $request)
               return $item;
         });
 
+        $audio_banner = Audio::where('active','=',1)->where('banner',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+          $item['source'] = "audio_slider";
+          return $item;
+        });
+
         $slider_array  =  array ( 'sliders'       => $sliders);
         $videos_array  =  array ( 'video_banners' => $video_banners);
         $live_array    =  array ( 'live_banner'   => $live_banner);
         $series_array  =  array ( 'series_banner' => $series_banner);
+        $audio_array   =  array ( 'audio_banner' => $audio_banner );
 
-        $combine_sliders[] =  array_merge($slider_array,$videos_array,$live_array,$series_array);
+        $combine_sliders[] =  array_merge($slider_array,$videos_array,$live_array,$series_array,$audio_array);
 
         $response = array(
           'status' => 'true',
@@ -8510,14 +8518,14 @@ public function Adstatus_upate(Request $request)
       return $item;
     });
     
-    $series_banner = Series::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    $series_banner = Series::where('active','=',1)->where('banner',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       $item['source'] = "series_slider";
       return $item;
     });
 
-    $audio_banner = Audio::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    $audio_banner = Audio::where('active','=',1)->where('banner',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       $item['source'] = "audio_slider";
@@ -11237,7 +11245,7 @@ public function Paystack_VideoRent_Paymentverify ( Request $request )
           else {                      // Success
               $response = array(
                   "status"  => 'true' ,
-                  "message" => "Payment done! Successfully for PPV video-id = " .$request->video_id ,
+                  "message" => "Payment done! Successfully" ,
               );
           }
 
@@ -22725,7 +22733,7 @@ public function TV_login(Request $request)
             else {                      // Success
                 $response = array(
                     "status"  => 'true' ,
-                    "message" => "Payment done! Successfully for PPV Live-id = " .$request->series_id ,
+                    "message" => "Payment done! Successfully" ,
                 );
             }
   
@@ -22823,7 +22831,7 @@ public function TV_login(Request $request)
             else {                      // Success
                 $response = array(
                     "status"  => 'true' ,
-                    "message" => "Payment done! Successfully for PPV Live-id = " .$request->season_id ,
+                    "message" => "Payment done! Successfully" ,
                 );
             }
   
@@ -22920,7 +22928,7 @@ public function TV_login(Request $request)
             else {                      // Success
                 $response = array(
                     "status"  => 'true' ,
-                    "message" => "Payment done! Successfully for PPV Live-id = " .$request->audio_id ,
+                    "message" => "Payment done! Successfully" ,
                 );
             }
   

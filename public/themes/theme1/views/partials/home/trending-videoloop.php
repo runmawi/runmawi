@@ -100,7 +100,7 @@
                     </div></div>
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
+                    <h6><?php  echo (mb_strlen($watchlater_video->title) > 17) ? mb_substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>
