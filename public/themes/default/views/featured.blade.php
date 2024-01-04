@@ -24,13 +24,13 @@
 
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$featured_video->image;  ?>" class="img-fluid" alt="">
-                                        <?php  if(!empty($featured_video->ppv_price)){?>
+                                        <!-- <?php  if(!empty($featured_video->ppv_price)){?>
                                           <p class="p-tag1" ><?php echo $currency->symbol.' '.$featured_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($featured_video->global_ppv || !empty($featured_video->global_ppv) && $featured_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $featured_video->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($featured_video->global_ppv == null && $featured_video->ppv_price == null ){ ?>
                                             <p class="p-tag" ><?php echo __("Free"); ?></p>
-                                        <?php } ?>
+                                        <?php } ?> -->
                                     </div>
                                  
                                     <div class="block-description" >
