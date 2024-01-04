@@ -145,7 +145,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="row">  
+                        <div class="row pl-3">  
                                 @if ( $videodetail->PPV_Exits == 1 && $videodetail->access == 'ppv' ||  !Auth::guest() && Auth::user()->role =="admin" 
                                 || !Auth::guest() &&  settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' 
                                 || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'subscriber' )  
