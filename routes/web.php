@@ -710,6 +710,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     /* theme settings*/
 
+    Route::get('/access-premission', 'AdminAccessPermissionController@Index');
+    Route::post('/access_premission/save', 'AdminAccessPermissionController@Store');
+
+
+    /* theme settings*/
+
     Route::get('/theme_settings_form', 'AdminThemeSettingsController@theme_settings_form');
     Route::get('/theme_settings', 'AdminThemeSettingsController@theme_settings');
 
