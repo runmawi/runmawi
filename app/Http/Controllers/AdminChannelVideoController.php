@@ -116,7 +116,7 @@ class AdminChannelVideoController extends Controller
     public function FilterVideoScheduler(Request $request){
 
         try {
-                // print_r();exit;
+          
             $Channels =  AdminEPGChannel::Select('id','name','slug','status')->get();
             $TimeZone = TimeZone::get();
             $default_time_zone = Setting::pluck('default_time_zone')->first();
