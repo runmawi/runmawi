@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddEpgStatusToSettingsTable extends Migration
+class AddAdsMakerStatusToPlayeruiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddEpgStatusToSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::table('settings', function (Blueprint $table) {
-            $table->tinyInteger('epg_status')->default(0);
+        Schema::table('Playerui', function (Blueprint $table) {
+            $table->tinyInteger('ads_maker_status')->default(1);
         });
     }
 
@@ -25,8 +25,8 @@ class AddEpgStatusToSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::table('settings', function (Blueprint $table) {
-            Schema::dropIfExists('epg_status');
+        Schema::table('Playerui', function (Blueprint $table) {
+            Schema::dropIfExists('ads_maker_status');
         });
     }
 }
