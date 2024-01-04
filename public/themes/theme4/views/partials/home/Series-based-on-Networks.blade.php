@@ -91,7 +91,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                                                                 <div class=" position-relative">
                                                                                     <img src="{{ $episode->image_url }}" class="img-fluid" >
                                                                                     <div class="controls">
-                                                                                        <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
+                                                                                        <a href="{{ URL::to('network/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                                         </a>
 
