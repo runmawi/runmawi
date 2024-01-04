@@ -57,6 +57,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Channel;
 use App\TimeZone;
 use App\AdminEPGChannel;
+use App\Episode as Episode;
+use App\LiveStream as LiveStream;
 
 
 class AdminChannelVideoController extends Controller
@@ -69,15 +71,37 @@ class AdminChannelVideoController extends Controller
             $Channels =  AdminEPGChannel::Select('id','name','slug','status')->get();
             $TimeZone = TimeZone::get();
             $default_time_zone = Setting::pluck('default_time_zone')->first();
-            $Video = Video::where('active',1)->where('status',1)->get();
-            // dd($TimeZone);
-            
+            $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                $item['socure_type'] = 'Video';
+                return $item;
+              });
+            $audios = Audio::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                $item['socure_type'] = 'Audio';
+                return $item;
+              });
+            $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                $item['socure_type'] = 'Episode';
+                return $item;
+              });
+            $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                $item['socure_type'] = 'LiveStream';
+                return $item;
+              });
+
+            $mergedCollection = $videos
+              ->concat($audios)
+              ->concat($episodes)
+              ->concat($livestreams)
+              ->values();
+            //   dd($mergedCollection);
+              
+
             $data = array(
             
                 'Channels' => $Channels  ,
                 'TimeZone' => $TimeZone  ,
                 'default_time_zone' => $default_time_zone  ,
-                'Video' => $Video  ,
+                'VideoCollection' => $mergedCollection  ,
             
             );
 
@@ -88,5 +112,61 @@ class AdminChannelVideoController extends Controller
         return view('admin.scheduler.VideoScheduler',$data);
     }
 
+
+    public function FilterVideoScheduler(Request $request){
+
+        try {
+          
+            $Channels =  AdminEPGChannel::Select('id','name','slug','status')->get();
+            $TimeZone = TimeZone::get();
+            $default_time_zone = Setting::pluck('default_time_zone')->first();
+            if($request->filter == "Video"){
+                $data = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Video';
+                    return $item;
+                });
+            }else if($request->filter == "Audio"){ 
+                $data = Audio::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Audio';
+                    return $item;
+                });
+            }else if($request->filter == "Episode"){ 
+                $data = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Episode';
+                    return $item;
+                });
+            }else if($request->filter == "LiveStream"){ 
+                $data = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'LiveStream';
+                    return $item;
+                });
+            }else{
+                $videos = Video::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Video';
+                    return $item;
+                  });
+                $audios = Audio::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Audio';
+                    return $item;
+                  });
+                $episodes = Episode::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'Episode';
+                    return $item;
+                  });
+                $livestreams = LiveStream::where('active',1)->where('status',1)->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                    $item['socure_type'] = 'LiveStream';
+                    return $item;
+                  });
+    
+                $data = $videos->concat($audios)->concat($episodes)->concat($livestreams)->values();
+            }
+
+            return  $data ;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
+    }
 
 }
