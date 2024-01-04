@@ -237,10 +237,10 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
         value="<?= $episode->genre_id ?>">
     <br>
 
-    <div class="row">
-        <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+    <div class="">
+        <div class="nav-fill mar-left " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb pl-0">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('series.tv-shows') ?>"><?= ucwords( __('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
@@ -272,7 +272,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
         </div>
     <div>
 
-    <div class="container-fluid series-details">
+    <div class="mar-left series-details">
         <div id="series_title">
             <div class="">
             <?php if($free_episode > 0 && Auth::user()->role != 'admin' || $checkseasonppv_exits > 0 && Auth::user()->role != 'admin' ||  $ppv_exits > 0 && Auth::user()->role != 'admin' ||  Auth::guest()){
@@ -314,7 +314,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     <?php	} } ?>
 
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 pl-0">
                         <span class="text-white" style="font-size: 120%;font-weight: 700;"><?php echo __("You're watching"); ?>:</span>
                         <p class="mb-0" style=";font-size: 80%;color: white;">
                             <?php 
@@ -462,7 +462,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $episode->genre_id ?>"
         value="<?= $episode->genre_id ?>">
     <br>
-    <div class="container-fluid series-details">
+    <div class="mar-left series-details">
         <div id="series_title">
             <div class="">
                 <div class="row align-items-center justify-content-between">
@@ -531,8 +531,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             <!-- Comment Section -->
 
             <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
-            <div class="row">
-                <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <div class="">
+                <div class="  video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>
                     <?php include 'comments/index.blade.php'; ?>
                 </div>
