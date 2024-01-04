@@ -325,11 +325,11 @@
                                                                 <ul id="trending-slider-nav" class= "{{ 'pl-4 m-0  series-depends-episode-slider' }}" >
                                                                     @foreach ($Series_Genre->Series_depends_episodes as $episode )
                                                                         <li>
-                                                                            <a href="{{ URL::to('episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
+                                                                            <a href="{{ URL::to('networks/episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
                                                                                 <div class=" position-relative">
                                                                                     <img src="{{ $episode->image_url }}" class="img-fluid" >
                                                                                     <div class="controls">
-                                                                                        <a href="{{ URL::to('episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
+                                                                                        <a href="{{ URL::to('networks/episode/'.$Series_Genre->slug.'/'.$episode->slug ) }}">
                                                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                                         </a>
 
