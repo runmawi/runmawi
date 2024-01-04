@@ -424,7 +424,63 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
 
                             
-                        <p class="desc"><?php echo $series->details; ?></p>
+                        <!-- <p class="desc"><?php echo $series->details; ?></p> -->
+                        <div class="desc">
+                            <?php
+                                if (strlen($series->description) > 500) {
+                                    $shortDescription = html_entity_decode(substr($series->description, 0, 500)) . "...";
+                                    $fullDescription = html_entity_decode($series->description);
+                                    echo $shortDescription . " <span class='text-primary' data-bs-toggle='modal' data-bs-target='#video-details-description'>See More</span>";
+                                } else {
+                                    echo html_entity_decode($series->description);
+                                }
+                                ?>
+
+                        </div>
+                          <!-- Model for banner description -->
+
+                            <div class="modal fade info_model" id='video-details-description' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                                    <div class="container">
+                                        <div class="modal-content" style="border:none;background:#0f3b5d;">
+                                            <div class="modal-body">
+                                                <div class="col-lg-12">
+                                                    <div class="row justify-content-end">
+                                                        <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                            <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                        </button>
+                                                        <div class="trending-dec mt-4"> <?= $series->description ?> </div>
+
+                                                        <!-- <div class="col-lg-6">
+                                                            <img  src="{{ $videodetail->image_url }}" width="100%" alt="">
+                                                        </div> -->
+                                                        <!-- <div class="col-lg-6">
+                                                            <div class="row">
+                                                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                                                    <h2 class="caption-h2">{{ $videodetail->title }}</h2>
+
+                                                                </div>
+                                                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="trending-dec mt-4">{!! html_entity_decode( optional($videodetail)->description ) !!}</div>
+
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
                     </div>
 
                     <!-- <div class="col-md-2 text-center text-white">
