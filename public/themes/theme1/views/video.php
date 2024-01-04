@@ -818,9 +818,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
    <div class="container-fluid video-details" >
 
                                                          <!-- BREADCRUMBS -->
-        <div class="col-sm-12 col-md-12 col-xs-12">
+        <div class="col-sm-12 col-md-12 col-xs-12 pl-0">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 pl-0">
                     <div class="bc-icons-2">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
@@ -1089,7 +1089,7 @@ $artists = [];
          <div class="row">
                 <div class="favorites-contens">
                     
-                    <ul class="category-page list-inline row p-0 mb-0 m-3">
+                    <ul class="category-page list-inline">
                        <?php foreach($artists as $key => $artist){  ?>
                        <li class="slide-item ">
                         <a  href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_slug); ?>"  >
@@ -1278,8 +1278,8 @@ $artists = [];
 <?php } ?>
 
         <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('videos')->first() == 1 ): ?>
-            <div class="row">
-                <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <div class="">
+                <div class="video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                     <?php include('comments/index.blade.php');?>
                 </div>
@@ -1288,7 +1288,7 @@ $artists = [];
 
 
   <?php if( $settings->show_recommended_videos == 1 ): ?>
-    <div class="container-fluid video-list you-may-like  overflow-hidden">
+    <div class="video-list you-may-like  overflow-hidden">
         <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
             <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "<?= $autoplay ?>": false}'>   
                 <?php include('partials/video-loop.php');?>
