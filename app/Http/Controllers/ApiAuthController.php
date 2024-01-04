@@ -22802,7 +22802,7 @@ public function TV_login(Request $request)
             else {                      // Success
                 $response = array(
                     "status"  => 'true' ,
-                    "message" => "Payment done! Successfully for PPV Live-id = " .$request->season_id ,
+                    "message" => "Payment done! Successfully for PPV Season-id = " .$request->season_id ,
                 );
             }
   
@@ -22899,7 +22899,7 @@ public function TV_login(Request $request)
             else {                      // Success
                 $response = array(
                     "status"  => 'true' ,
-                    "message" => "Payment done! Successfully for PPV Live-id = " .$request->audio_id ,
+                    "message" => "Payment done! Successfully for PPV Audio-id = " .$request->audio_id ,
                 );
             }
   
