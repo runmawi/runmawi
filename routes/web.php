@@ -708,7 +708,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('menu/update-order', 'AdminMenuController@updateOrder');
     Route::get('/menu/delete/{id}', ['before' => 'demo', 'uses' => 'AdminMenuController@destroy']);
 
-    /* theme settings*/
+    /* Page Premission settings*/
 
     Route::get('/access-premission', 'AdminAccessPermissionController@Index');
     Route::post('/access_premission/save', 'AdminAccessPermissionController@Store');
