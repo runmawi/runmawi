@@ -5,7 +5,7 @@
 
 
 
-            <div class="col-sm-12 overflow-hidden">
+            <div class="col-sm-12 overflow-hidden pl-0">
                 <div class="favorites-contens ml-2">
                     <div class="trending-contens sub_dropdown_image mt-3">
                         <ul class="favorites-slider list-inline row mb-0">
