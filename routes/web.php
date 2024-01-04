@@ -269,7 +269,10 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
+
     Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
+    Route::get('network/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('network_play_episode');
+
     Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
@@ -998,7 +1001,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     /*  Channel Videos Setting  */
 
     Route::get('/video-scheduler', 'AdminChannelVideoController@ChannelVideoScheduler')->name('VideoScheduler');
-    Route::get('/filter-scheduler', 'AdminChannelVideoController@FilterVideoScheduler')->name('VideoScheduler');
+    Route::get('/filter-scheduler', 'AdminChannelVideoController@FilterVideoScheduler')->name('FilterScheduler');
         
     /*  Videos Setting  */
 
