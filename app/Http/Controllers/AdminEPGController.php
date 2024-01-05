@@ -187,7 +187,7 @@ class AdminEPGController extends Controller
         $dom = dom_import_simplexml($xml)->ownerDocument;
         $dom->formatOutput = true;
 
-        $filename = $unique_channel_id.'xml';
+        $filename = $unique_channel_id.'.xml';
         $xmlFilePath = public_path('uploads/EPG-Channel/' . $filename );
 
         $dom->save($xmlFilePath);
@@ -206,5 +206,25 @@ class AdminEPGController extends Controller
         ]);
         
         return redirect()->route('admin.epg.index')->with('message', 'EPG Generated successfully.');
+    }
+
+    public function delete($id)
+    {
+
+        try {
+            $AdminEPG = AdminEPG::find($id);
+
+            if (File::exists(base_path('public/uploads/EPG-Channel/'.$AdminEPG->xml_file_name))) {
+                File::delete(base_path('public/uploads/EPG-Channel/'.$AdminEPG->xml_file_name));
+            }
+            
+            $AdminEPG->delete();
+    
+            return redirect()->back()->with('message', 'EPG deleted successfully.');
+
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+        
     }
 }
