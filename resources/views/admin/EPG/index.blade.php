@@ -98,12 +98,12 @@
                                                     
                                                     <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit"
                                                             href="{{ URL::to('public/uploads/EPG-Channel'.$epg_data->xml_file_name) }}" download >
-                                                        <img class="ply" src="{{ URL::to('/assets/img/icon/edit.svg') }}">
+                                                        <img class="ply" src="{{ URL::to('/assets/img/icon/download-line.svg') }}">
                                                     </a>
 
                                                     <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top"
                                                         title="" onclick="return confirm('Are you sure?')" data-original-title="Delete"
-                                                        href="#">
+                                                        href="{{ route('admin.epg.delete',[$epg_data->id] ) }}">
                                                         <img class="ply" src="{{ URL::to('assets/img/icon/delete.svg') }}">
                                                     </a>
                                                 </div>
