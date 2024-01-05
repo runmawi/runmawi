@@ -219,16 +219,17 @@ border-radius: 0px 4px 4px 0px;
 
                             </div>
                         </div>
-
-                        <div class="col-sm-6">
-                            <label>{{ ucfirst(trans('Enable Audio page theme')) }}</label>
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input name="audio_page_checkout" class="audio_page_checkout" id="audio_page_checkout" type="checkbox" @if( $settings->audio_page_checkout == "1") checked  @endif >
-                                    <span class="slider round"></span>
-                                </label>
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Audio_Page_checkout == 1)
+                            <div class="col-sm-6">
+                                <label>{{ ucfirst(trans('Enable Audio page theme')) }}</label>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="audio_page_checkout" class="audio_page_checkout" id="audio_page_checkout" type="checkbox" @if( $settings->audio_page_checkout == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
+                        @endif 
                     </div>
 
                     <br>
@@ -385,6 +386,7 @@ border-radius: 0px 4px 4px 0px;
                     </div> 
 
                     <div class="row d-flex"> 
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Content_Partner_Page_checkout == 1)
                         <div class="col-md-6">
                             <label>{{ ucfirst(('Enable Content Partner Page')) }} </label>
 
@@ -399,7 +401,7 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;">Aod</div>
                             </div>
                         </div>
-
+                        @endif 
                         <div class="col-md-6">
                             <label>{{ (__('Enable Translate Option')) }} </label>
 
@@ -419,6 +421,8 @@ border-radius: 0px 4px 4px 0px;
 
                     
                     <div class="row d-flex"> 
+                    @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Header_Top_Position_checkout == 1)
+
                         <div class="col-md-6">
                             <label>{{ ucfirst(('Header Top Position')) }} </label>
 
@@ -433,6 +437,9 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;">Enable (Only for theme-4)</div>
                             </div>
                         </div>
+                        @endif 
+
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Header_Side_Position_checkout == 1)
 
                         <div class="col-md-6">
                             <label>{{ ucfirst(('Header Side Position')) }} </label>
@@ -448,10 +455,12 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;">Enable (Only for theme-4)</div>
                             </div>
                         </div>
+                        @endif 
             
                     </div>
                     
                     <div class="row d-flex"> 
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Extract_Images_checkout == 1)
                         <div class="col-md-6">
                             <label>{{ ucfirst(('Enable Extract Images')) }} </label>
 
@@ -467,6 +476,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
+                    @endif 
                 </div>
                 
                 <div class="panel-body mt-4" style="display: flex; justify-content: flex-end;">

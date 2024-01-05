@@ -26,6 +26,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Illuminate\Support\Facades\File;
 use Str;
+use App\AdminAccessPermission as AdminAccessPermission;
 
 class AdminThemeSettingsController extends Controller
 {
@@ -74,7 +75,8 @@ class AdminThemeSettingsController extends Controller
             $data = [
                 'settings' => $settings,
                 'admin_user' => $user,
-            ];
+                'AdminAccessPermission' => AdminAccessPermission::first(),
+        ];
             return View::make('admin.settings.theme_settings', $data);
         }
     }

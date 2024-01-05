@@ -726,7 +726,7 @@ class AdminSettingsController extends Controller
         $playerui->watermar_link = $request['watermar_link'];
         $playerui->watermar_width = $request['watermar_width'];
         $playerui->video_watermark_enable = $request['video_watermark_enable'];
-        $playerui->ads_maker_status = $request['ads_maker_status'];
+        $playerui->ads_marker_status = $request['ads_marker_status'];
 
         // dd($request['video_watermark_enable']);
         $logopath = URL::to('/public/uploads/settings/');

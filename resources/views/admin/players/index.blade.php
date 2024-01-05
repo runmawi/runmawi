@@ -93,9 +93,9 @@
 							</div>
 							<div>
 								<label class="switch">
-								<input type="hidden" value="0" name="ads_maker_status">    
+								<input type="hidden" value="0" name="ads_marker_status">    
 
-								<input type="checkbox" name="ads_maker_status" @if(!isset($playerui->ads_maker_status) || (isset($playerui->ads_maker_status) && $playerui->ads_maker_status))checked="checked" value="1"@else value="1"@endif>
+								<input type="checkbox" name="ads_marker_status" @if(!isset($playerui->ads_marker_status) || (isset($playerui->ads_marker_status) && $playerui->ads_marker_status))checked="checked" value="1"@else value="1"@endif>
 									<span class="slider round"></span>
 
 								</label>
