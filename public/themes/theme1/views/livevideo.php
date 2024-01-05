@@ -35,7 +35,7 @@
 }
 
 .vjs-theme-fantasy .vjs-control-bar {
-    top: 91%;
+    top: 85%;
     height: 64px;
 }
 
@@ -403,33 +403,35 @@ else{
                         value="<?=$video->video_category_id; ?>">
 
                     <!-- BREADCRUMBS -->
-                    <div class="col-sm-12 col-md-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="bc-icons-2">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a class="black-text"
-                                                href="<?= route('liveList') ?>"><?= ucwords('Livestreams') ?></a>
-                                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                        </li>
+                    <div class="container-fluid">
+                        <div class="col-sm-12 col-md-12 col-xs-12 p-0">
+                            <div class="row">
+                                <div class="col-md-12 p-0">
+                                    <div class="bc-icons-2">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a class="black-text"
+                                                    href="<?= route('liveList') ?>"><?= ucwords('Livestreams') ?></a>
+                                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                            </li>
 
-                                        <?php foreach ($category_name as $key => $video_category_name) { ?>
-                                        <?php $category_name_length = count($category_name); ?>
-                                        <li class="breadcrumb-item">
-                                            <a class="black-text"
-                                                href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
-                                                <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
-                                            </a>
-                                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                        </li>
-                                        <?php } ?>
+                                            <?php foreach ($category_name as $key => $video_category_name) { ?>
+                                            <?php $category_name_length = count($category_name); ?>
+                                            <li class="breadcrumb-item">
+                                                <a class="black-text"
+                                                    href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
+                                                    <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                                                </a>
+                                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                            </li>
+                                            <?php } ?>
 
 
 
-                                        <li class="breadcrumb-item"><a
-                                                class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?>
-                                            </a></li>
-                                    </ol>
+                                            <li class="breadcrumb-item"><a
+                                                    class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?>
+                                                </a></li>
+                                        </ol>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -478,7 +480,7 @@ else{
 
                         <?php if(!Auth::guest()) { ?>
                         <div class="row">
-                            <div class="col-sm-6 col-md-6 col-xs-12">
+                            <div class="col-sm-6 col-md-6 col-xs-12 pl-0">
                                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                                     <!-- Social Share, Like Dislike -->
                                     <?php  include('partials/live-social-share.php'); ?>
@@ -571,7 +573,7 @@ else{
                 </div>
 
                 <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
-                <div class="row">
+                <div class="">
                     <div class=" container-fluid video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                         <?php include('comments/index.blade.php');?>
@@ -579,7 +581,7 @@ else{
                 </div>
                 <?php endif; ?>
 
-                <div class="row">
+                <div class="">
                     <div class=" container-fluid video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
                         <div class="slider">
