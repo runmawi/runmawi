@@ -75,7 +75,7 @@ class AdminEPGController extends Controller
 
         }else{
 
-            $data = array( 'EPG'  => AdminEPG::where('status',1)->get() );
+            $data = array( 'EPG'  => AdminEPG::where('status',1)->latest()->get() );
     
             return View::make('admin.EPG.index',$data);
         }

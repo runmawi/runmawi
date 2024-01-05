@@ -80,10 +80,10 @@
                                 <table class="table table-bordered iq-card text-center" id="categorytbl">
                                     <tr class="table-header r1">
                                         <th><label>S.No</label></th>
-                                        <th><label>EGP Name </label></th>
+                                        <th><label>EPG Name </label></th>
                                         <th><label>Start Date </label></th>
                                         <th><label>End Date </label></th>
-                                        <th><label>Operation</label></th>
+                                        <th><label>Operation</</label></th>
                                     </tr>
 
                                     @foreach ($EPG as $key => $epg_data )
