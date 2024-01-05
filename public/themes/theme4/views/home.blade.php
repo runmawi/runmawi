@@ -201,7 +201,7 @@
             @endif
 
             @if(  $item == 'EPG' && $home_settings->epg == 1 )     
-               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/epg', ['order_settings_list' => $order_settings_list ])->content() !!}
+               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg', ['order_settings_list' => $order_settings_list ])->content() !!}
             @endif
 
          @empty
