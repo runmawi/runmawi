@@ -102,7 +102,7 @@
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0"> {{ ucwords('Start Date') }}</label>
                         <div class="panel-body">
-                            <input type="date" class="form-control"  name="epg_start_date"  >
+                            <input type="date" class="form-control"  name="epg_start_date"  max="{{ date('Y-m-d') }}">
                         </div>
                     </div>
 

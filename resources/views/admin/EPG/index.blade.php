@@ -97,7 +97,7 @@
                                                 <div class=" align-items-center list-user-action" style="display: inline !important;">
                                                     
                                                     <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit"
-                                                            href="{{ URL::to('public/uploads/EPG-Channel'.$epg_data->xml_file_name) }}" download >
+                                                            href="{{ URL::to('public/uploads/EPG-Channel/'.$epg_data->xml_file_name) }}" download >
                                                         <img class="ply" src="{{ URL::to('/assets/img/icon/download-line.svg') }}">
                                                     </a>
 
