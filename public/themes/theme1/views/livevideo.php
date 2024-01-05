@@ -46,6 +46,9 @@
 .vjs-poster {
     height: 425px !important;
 }
+.vjs-icon-hd:before{
+    display: none;
+}
 
 
 .close {
