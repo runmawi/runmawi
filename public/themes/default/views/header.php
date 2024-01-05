@@ -785,70 +785,111 @@
 
                               <?php  } } ?>
 
+
+
                               
-                              
+                              <?php if(Auth::guest()):  ?>
+                                       <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
+                                          <!-- <div class="row "> -->
+                                          <li class="logout_mobile_view col-sm-6 myp">
+                                                <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                                   <div class="media align-items-center">
+                                                      <div class="right-icon">
+                                                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                            <path class="st5" d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z"/>
+                                                            <path class="st5" d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z"/>
+                                                         </svg>
+                                                      </div>
+                                                      <div class="media-body">
+                                                         <h6 class="mb-0 "><?php echo (__('Signin'));?></h6>
+                                                      </div>
+                                                   </div>
+                                                </a>
+                                          </li> 
+                                          <li class="logout_mobile_view col-sm-6 myp">
+                                             <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                                <div class="media align-items-center">
+                                                   <div class="right-icon">
+                                                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                         <path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/>
+                                                         <path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/>
+                                                      </svg>
+                                                   </div>
+                                                   <div class="media-body">
+                                                      <h6 class="mb-0 "><?php echo (__('Signup'));?></h6>
+                                                   </div>
+                                                </div>
+                                             </a>
+                                          </li>      
+                                       </div>
+                                 <?php endif; ?>
+
                      <?php if(!Auth::guest()){ ?>
                              
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
-                           <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
-                           <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                           <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>      
-                        </form>
-                           <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
-                              <?php echo __('Logout');?>
-                                       </a> </li>      
-                           </div>
+                                       <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                                       <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="">
+                                       <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                       <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                       <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
+                                       <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
+                                       <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>      
+                                    </form>
+                                       <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
+                                          <?php echo __('Logout');?>
+                                                   </a> </li>      
+                                 </div>
 
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
-                           <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
-                           <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                           <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>      
-                        </form>
-                           <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
-                                          <?php echo __('My Profile');?>
-                                       </a> </li>      
-                           </div>
+                                    <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                                    <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="">
+                                    <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                    <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
+                                    <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
+                                    <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>      
+                                 </form>
+                                    <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
+                                                   <?php echo __('My Profile');?>
+                                                </a> </li>      
+                                 </div>
+
+                                 
+
+                                 
                            
                            
                            <!-- Mobile responsive buttons -->
-                           <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
+                           <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn">
                               <div class="row ">
-                              <div class="col-sm-6  menu-item pt-3">
-                              <li class="menu-item dk" style="display:none;">
-                                       <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             
-                                             <div class="media-body">
-                                                <h6 class="mb-0 " style="font-weight: 500;">Signin</h6>
+                                 <div class="col-sm-6  menu-item pt-3">
+                                       <li class="logout_mobile_view menu-item col-sm-6 myp" style="display:none;">
+                                          <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                             <div class="media align-items-center">
+                                                
+                                                <div class="media-body">
+                                                   <h6 class="mb-0 " style="font-weight: 500;">Signin</h6>
+                                                </div>
                                              </div>
-                                          </div>
-                                       </a>
-                                    </li>
-                              </div>
-                              <div class="col-sm-6 menu-item pt-3">
-                              <li class="menu-item dk" style="display:none">
-                                       <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
-                                          <div class="media align-items-center">
-                                             
-                                             <div class="media-body">
-                                                <h6 class="mb-0 " style="font-weight: 500;">Signup</h6>
+                                          </a>
+                                       </li>
+                                 </div>
+                                 <div class="col-sm-6 menu-item pt-3">
+                                       <li class="logout_mobile_view menu-item col-sm-6 myp" style="display:none">
+                                          <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                             <div class="media align-items-center">
+                                                
+                                                <div class="media-body">
+                                                   <h6 class="mb-0 " style="font-weight: 500;">Signup</h6>
+                                                </div>
                                              </div>
-                                          </div>
-                                       </a>
-                                    </li>
+                                          </a>
+                                       </li>
+                                 </div>
+                                 
                               </div>
-                              
-                           </div>
                            </div> 
 
                               <!-- </div> -->
