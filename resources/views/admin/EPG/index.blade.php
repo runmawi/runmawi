@@ -96,6 +96,10 @@
                                             <td>
                                                 <div class=" align-items-center list-user-action" style="display: inline !important;">
                                                     
+                                                    <a class="iq-bg-success" data-epg-url={{ URL::to('public/uploads/EPG-Channel/'.$epg_data->xml_file_name) }} onclick="Copy(this)"  >
+                                                        <img class="ply" src="{{ URL::to('/assets/img/icon/links-line.svg') }}">
+                                                    </a>
+
                                                     <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit"
                                                             href="{{ URL::to('public/uploads/EPG-Channel/'.$epg_data->xml_file_name) }}" download >
                                                         <img class="ply" src="{{ URL::to('/assets/img/icon/download-line.svg') }}">
@@ -106,6 +110,7 @@
                                                         href="{{ route('admin.epg.delete',[$epg_data->id] ) }}">
                                                         <img class="ply" src="{{ URL::to('assets/img/icon/delete.svg') }}">
                                                     </a>
+                                                    
                                                 </div>
                                             </td>
                                         </tr>
@@ -138,6 +143,19 @@
                     $('#successMessage').fadeOut('fast');
                 }, 3000);
             });
+
+            function Copy(ele) {
+
+                const url  = $(ele).attr('data-epg-url');
+                navigator.clipboard.writeText(url);
+
+            $("body").append(
+                '<div class="add_watch" style="z-index: 100; position: fixed; top: 33%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 16%; padding: 11px; background: #38742f; color: white;">Copied URL</div>'
+                );
+            setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+            }, 3000);
+        }
 
         </script>
     @stop
