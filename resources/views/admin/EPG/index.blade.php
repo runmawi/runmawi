@@ -2,7 +2,7 @@
 
 <style type="text/css">
     .has-switch .switch-on label {
-        background-color: #fff;
+        background-color: #FFF;
         color: #000;
     }
 
@@ -12,10 +12,6 @@
 
     .iq-card {
         padding: 15px;
-    }
-
-    .p1 {
-        font-size: 12px;
     }
 
     .black {
@@ -34,148 +30,115 @@
 </style>
 
 @section('css')
-@stop
+    <link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
+@endsection
 
 @section('content')
-
     <div id="content-page" class="content-page">
+        <div class="mt-5 d-flex">
+            <a class="black" style="background:#fafafa!important;color: #006AFF!important;"> EPG List</a>
+            <a class="black" href="{{ route('admin.epg.create') }}"> Generate New EPG </a>
+            <a class="black"  href="{{ route('admin.Channel.index') }}">EPG Channels List</a>
+        </div>
 
-        <div class="iq-card">
-
-            @if (Session::has('message'))
-                <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-            @endif
-
+        <div class="container-fluid p-0">
             <div class="admin-section-title">
-                <h4 class="fs-title">Generate EPG </h4>
-            </div>
-            <hr />
-
-            <div class="clear"></div>
-
-            <form id="Channels_form" method="get" action="{{ route('admin.epg.generate') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-                @csrf
-
-                <div class="row mt-3 p-3 align-items-center">
-
-                    <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> Channel </label>
-                        <div class="panel-body">
-                            <select class="form-control m-bot15" name="epg_channel_id">
-                                <option value="" >{{ "Select the Channel" }}</option>
-                                @foreach($EPG_channels as $key => $EPG_channel)
-                                    <option value="{{$EPG_channel->id}}">{{ $EPG_channel->name }}</option>
-                                @endforeach
-                            </select>
+                <div class="iq-card">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if (Session::has('message'))
+                                <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                            @endif
                         </div>
                     </div>
 
-                    <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0">  EPG Format   </label>
-                        <div class="panel-body">
-                            <select class="form-control m-bot15" name="epg_format">
-                                <option value="{{ "XML-FILE"}}" selected> {{ 'XML FILE' }}  </option>
-                            </select>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4><i class="entypo-archive"></i> {{ __('EPG') }}</h4>
                         </div>
-                    </div>
-                </div>
 
-                <div class="row mt-3 p-3 align-items-center">
-
-                    <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> {{ ucwords('Start Date') }}</label>
-                        <div class="panel-body">
-                            <input type="date" class="form-control"  name="epg_start_date"  >
+                        <div class="col-md-6" align="right">
+                            <a href="{{ route('admin.epg.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Generate New EPG </a>
                         </div>
                     </div>
 
-                    <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> {{ ucwords('End Date') }}</label>
-                        <div class="panel-body">
-                            <input type="date" class="form-control"  name="epg_end_date" >
+                    <div class="clear"></div>
+
+                    <div class="panel panel-primary category-panel" data-collapsed="0">
+
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <p> Organize the EPG below: </p>
+                            </div>
+                            <div class="panel-options">
+                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="row mt-3 p-3 align-items-center">
-                    <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                    <div><label class="mt-1">  {{ ucwords('Exclude Content ') }}   </label></div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="mt-2">
-                                            <input type="checkbox" checked="checked"  name="epg_exclude content_status" />
-                                            <label class="m-0">Gaps</label>
-                                        </div>
-                                    </div>
-                                </div>
+
+                        <div class="panel-body">
+                            <div id="nestable" class="nested-list dd with-margins">
+                                <table class="table table-bordered iq-card text-center" id="categorytbl">
+                                    <tr class="table-header r1">
+                                        <th><label>S.No</label></th>
+                                        <th><label>EGP Name </label></th>
+                                        <th><label>Start Date </label></th>
+                                        <th><label>End Date </label></th>
+                                        <th><label>Operation</label></th>
+                                    </tr>
+
+                                    @foreach ($EPG as $key => $epg_data )
+                                        <tr id="{{ $epg_data->id }}">
+                                            <td>{{ $key+1 }}</td>
+                                            <td>{{ $epg_data->name }}</td>
+                                            <td>{{ ($epg_data->epg_start_date) ? $epg_data->epg_start_date : '-' }}</td>
+                                            <td>{{ $epg_data->epg_end_date ? $epg_data->epg_end_date : "-" }}</td>
+
+                                            <td>
+                                                <div class=" align-items-center list-user-action" style="display: inline !important;">
+                                                    
+                                                    <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit"
+                                                            href="{{ URL::to('public/uploads/EPG-Channel'.$epg_data->xml_file_name) }}" download >
+                                                        <img class="ply" src="{{ URL::to('/assets/img/icon/edit.svg') }}">
+                                                    </a>
+
+                                                    <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top"
+                                                        title="" onclick="return confirm('Are you sure?')" data-original-title="Delete"
+                                                        href="#">
+                                                        <img class="ply" src="{{ URL::to('assets/img/icon/delete.svg') }}">
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row mt-3 p-3 align-items-center" align="left">
-                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary mr-2" />
-                </div>
-            </form>
+            <input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
         </div>
-
-        <div class="clear"></div>
-    </div>
-    </div>
 
     @section('javascript')
 
-        <script>
-            $(document).ready(function() {
-                setTimeout(function() {
-                    $("#successMessage").fadeOut("fast");
-                }, 3000);
-            });
-        </script>
-
-        {{-- validation --}}
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
-        <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+        <script type="text/javascript">
+            
+       
+            $(document).ready(function() {
 
-        <script>
+                $('#submit-new-cat').click(function() {
+                    $('#new-cat-form').submit();
+                });
 
-            CKEDITOR.replace( 'summary-ckeditor', {
-                filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-                filebrowserUploadMethod: 'form'
+                setTimeout(function() {
+                    $('#successMessage').fadeOut('fast');
+                }, 3000);
             });
 
-            $('form[id="Channels_form"]').validate({
-                rules: {
-                    name: "required",
-                    slug: {
-                        remote: {
-                            url: "{{ route('admin.Channel.slug_validation') }}",
-                            type: "get",
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                button_type: "{{ $button_text }}",
-                                success: function() {
-                                    return $('#slug').val();
-                                }
-                            }
-                        }
-                    },
-                },
-                messages: {
-                    title: "This field is required",
-                    slug: {
-                        required: "Please Enter the Channel Slug",
-                        remote: "Name already in taken ! Please try another Channel Slug"
-                    },
-                },
-                submitHandler: function(form) {
-                    form.submit();
-                },
-            });
         </script>
     @stop
 @stop
