@@ -1,4 +1,7 @@
-<?php include ('header.php');  ?>
+
+@php
+    include(public_path('themes/theme4/views/header.php'));
+@endphp
 
 <!-- video-js Style  -->
 
@@ -220,33 +223,11 @@
     <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  echo Session::get('message') ?></div>
 <?php endif ;?>
 
+@php
+    include(public_path('themes/theme4/views/livevideo_ads.blade.php'));
+@endphp
+
 <?php
-
-include('livevideo_ads.blade.php');  
-
-
-    if( $live_ads == null ){
-
-        $autoplay = " "  ;  
-
-    }elseif( $video->free_duration_status == 1 && $video->free_duration != null ){
-        $autoplay = " "  ;  
-
-    }else{
-        $autoplay = "autoplay"  ;  
-    }
-
-$str = $video->mp4_url;
-
-if(!empty($str)){
-    $uri_parts = explode('.', $video->mp4_url);
-    $request_url = end($uri_parts);
-}
-
-$rtmp_url = $video->rtmp_url;
-
-
-$Rtmp_url = str_replace ('rtmp', 'http', $rtmp_url);
 
 if(empty($new_date)){
 
@@ -481,8 +462,8 @@ if(!Auth::guest()){
         <div class="row">
             <div class="col-sm-6 col-md-6 col-xs-12">
                  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                      <!-- Social Share, Like Dislike -->
-                         <?php  include('partials/live-social-share.php'); ?>                     
+                        <!-- Social Share, Like Dislike -->
+                        <?php include(public_path('themes/theme4/views/partials/live-social-share.php')) ; ?>                   
                   </ul>
             </div>
 
@@ -497,8 +478,8 @@ if(!Auth::guest()){
         <div class="row">
             <div class="col-sm-6 col-md-6 col-xs-12">
                  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                      <!-- Social Share, Like Dislike -->
-                         <?php include('partials/live-social-share.php'); ?>                     
+                        <!-- Social Share, Like Dislike -->
+                        <?php include(public_path('themes/theme4/views/partials/live-social-share.php')) ; ?>                   
                   </ul>
             </div>
 
@@ -553,7 +534,7 @@ if(!Auth::guest()){
                 <div class="row">
                     <div class=" container-fluid video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
-                        <?php include('comments/index.blade.php');?>
+                        <?php include(public_path('themes/theme4/views/comments/index.blade.php')) ; ?>                   
                     </div>
                 </div>
             <?php endif; ?>
@@ -562,7 +543,7 @@ if(!Auth::guest()){
                 <div class=" container-fluid video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
                     <div class="slider">   
-                        <?php include('partials/live_related_video.blade.php');?>
+                        <?php include(public_path('themes/theme4/views/partials/live_related_video.blade.php')) ; ?>                   
                     </div>
                 </div>
             </div>
@@ -1105,8 +1086,6 @@ document.getElementById("demo").innerHTML = "EXPIRED";
                 });
             }
         </script>
-
-<?php  
-    include('m3u_file_live.blade.php');  
-    include ('footer.blade.php');
-?>
+@php
+    include(public_path('themes/theme4/views/footer.blade.php'));
+@endphp
