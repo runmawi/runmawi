@@ -484,6 +484,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     // EPG Schedule
     Route::get('/egp/index', 'AdminEPGController@index')->name('admin.epg.index');
+    Route::get('/egp/create', 'AdminEPGController@create')->name('admin.epg.create');
     Route::get('/epg/generate', 'AdminEPGController@generate')->name('admin.epg.generate');
     
     // Splash Screen
