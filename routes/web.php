@@ -485,7 +485,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     // EPG Schedule
     Route::get('/egp/index', 'AdminEPGController@index')->name('admin.epg.index');
     Route::get('/egp/create', 'AdminEPGController@create')->name('admin.epg.create');
-    Route::get('/epg/generate', 'AdminEPGController@generate')->name('admin.epg.generate');
+    Route::post('/epg/generate', 'AdminEPGController@generate')->name('admin.epg.generate');
+    Route::get('/epg/delete/{id}', 'AdminEPGController@delete')->name('admin.epg.delete');
     
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');

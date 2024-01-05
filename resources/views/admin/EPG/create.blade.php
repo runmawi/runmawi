@@ -53,7 +53,7 @@
 
             <div class="clear"></div>
 
-            <form id="Channels_form" method="get" action="{{ route('admin.epg.generate') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+            <form id="EPG_form" method="post" action="{{ route('admin.epg.generate') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row mt-3 p-3 align-items-center">
@@ -109,7 +109,7 @@
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0"> {{ ucwords('End Date') }}</label>
                         <div class="panel-body">
-                            <input type="date" class="form-control"  name="epg_end_date" >
+                            <input type="date" class="form-control"  name="epg_end_date" max="{{ date('Y-m-d') }}">
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                                     <div><label class="mt-1">  {{ ucwords('Exclude Content ') }}   </label></div>
                                     <div class="d-flex justify-content-between">
                                         <div class="mt-2">
-                                            <input type="checkbox" checked="checked"  name="include_gaps_status" />
+                                            <input type="checkbox" checked  name="include_gaps_status" />
                                             <label class="m-0">Gaps</label>
                                         </div>
                                     </div>
@@ -160,34 +160,16 @@
 
         <script>
 
-            CKEDITOR.replace( 'summary-ckeditor', {
-                filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-                filebrowserUploadMethod: 'form'
-            });
-
-            $('form[id="Channels_form"]').validate({
+            $('form[id="EPG_form"]').validate({
                 rules: {
                     name: "required",
-                    slug: {
-                        remote: {
-                            url: "{{ route('admin.Channel.slug_validation') }}",
-                            type: "get",
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                button_type: "{{ $button_text }}",
-                                success: function() {
-                                    return $('#slug').val();
-                                }
-                            }
-                        }
-                    },
+                    epg_channel_id : "required",
+                    epg_start_date : "required",
+                    epg_end_date : "required",
+                    
                 },
                 messages: {
                     title: "This field is required",
-                    slug: {
-                        required: "Please Enter the Channel Slug",
-                        remote: "Name already in taken ! Please try another Channel Slug"
-                    },
                 },
                 submitHandler: function(form) {
                     form.submit();
