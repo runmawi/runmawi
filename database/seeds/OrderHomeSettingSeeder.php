@@ -339,7 +339,7 @@ class OrderHomeSettingSeeder extends Seeder
 
                 [   
                     'user_id' => 1, 
-                    'order_id' => 33,
+                    'order_id' => 34,
                     'video_name' => 'EPG' ,
                     'header_name' => 'EPG', 
                     'url' => '',

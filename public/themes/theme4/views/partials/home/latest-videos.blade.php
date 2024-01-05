@@ -2,7 +2,7 @@
 
 $check_Kidmode = 0;
     
-$data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image',
+$data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
                                 'player_image','expiry_date')
 
                         ->where('active',1)->where('status', 1)->where('draft',1);
@@ -94,7 +94,7 @@ $data = $data->latest()->limit(30)->get();
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </li>   
                             @endforeach
                         </ul>
                     </div>
