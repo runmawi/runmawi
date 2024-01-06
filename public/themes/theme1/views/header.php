@@ -428,6 +428,9 @@
    body.light-theme h4, body.light-theme p {
    color: <?php echo GetLightText(); ?>;
    }
+   body.light-theme h1, body.light-theme a {
+   color: <?php echo GetLightText(); ?>;
+   }
    body.light-theme ul.d-flex.align-items-center.list-inline.m-0 a {
    color: #fff;
    }

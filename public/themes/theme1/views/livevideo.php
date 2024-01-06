@@ -560,7 +560,7 @@ else{
                         </div>
                     </div>
                     <?php   }?>
-                    <div class="text-white col-md-6 p-0">
+                    <div class="container-fluid">
                         <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
                     </div>
                     <div class="row">
@@ -586,10 +586,15 @@ else{
 
                 <div class="">
                     <div class=" container-fluid video-list you-may-like overflow-hidden">
-                        <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
-                        <div class="slider">
-                            <?php include('partials/live_related_video.blade.php');?>
-                        </div>
+                        <?php 
+                            if(isset($Related_videos)) :
+                                foreach($Related_videos as $related_video): ?>
+                                    <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
+                                    <div class="slider">
+                                        <?php include('partials/live_related_video.blade.php');?>
+                                    </div>
+                                <?php endforeach;
+                            endif; ?>
                     </div>
                 </div>
             </div>
