@@ -89,10 +89,20 @@
                         ?>
                         <li class="slide-item">
                             <div class="block-images position-relative">  <!-- block-images -->
-                                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                            class="img-fluid w-100" alt=""> 
-                                </a>
+                                <div class="img-box">
+                                    <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
+                                                class="img-fluid w-100" alt=""> 
+                                    </a>
+                                </div>
+
+                                    <div class="block-description">
+                                        <div class="hover-buttons">
+                                            <a type="button" class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                            </a>
+                                        </div>
+                                    </div>
 
                                 <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  <!-- PPV price -->
                                     <?php  if($category_video->access == 'subscriber' ){ ?>
@@ -112,13 +122,7 @@
 
                             </div>
 
-                            <div class="block-description">
-                                <div class="hover-buttons">
-                                    <a type="button" class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                                    </a>
-                                </div>
-                            </div>
+                            
 
                             <div class="mt-2 d-flex justify-content-between p-0">
                                 <?php if($ThumbnailSetting->title == 1) { ?>
