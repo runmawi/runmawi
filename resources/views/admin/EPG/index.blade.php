@@ -80,10 +80,10 @@
                                 <table class="table table-bordered iq-card text-center" id="categorytbl">
                                     <tr class="table-header r1">
                                         <th><label>S.No</label></th>
-                                        <th><label>EGP Name </label></th>
+                                        <th><label>EPG Name </label></th>
                                         <th><label>Start Date </label></th>
                                         <th><label>End Date </label></th>
-                                        <th><label>Operation</label></th>
+                                        <th><label>Operation</</label></th>
                                     </tr>
 
                                     @foreach ($EPG as $key => $epg_data )
@@ -97,7 +97,7 @@
                                                 <div class=" align-items-center list-user-action" style="display: inline !important;">
                                                     
                                                     <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit"
-                                                            href="{{ URL::to('public/uploads/EPG-Channel'.$epg_data->xml_file_name) }}" download >
+                                                            href="{{ URL::to('public/uploads/EPG-Channel/'.$epg_data->xml_file_name) }}" download >
                                                         <img class="ply" src="{{ URL::to('/assets/img/icon/download-line.svg') }}">
                                                     </a>
 

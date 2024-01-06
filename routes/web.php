@@ -483,8 +483,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/channel/validation', 'AdminEPGChannelController@slug_validation')->name('admin.Channel.slug_validation');
 
     // EPG Schedule
-    Route::get('/egp/index', 'AdminEPGController@index')->name('admin.epg.index');
-    Route::get('/egp/create', 'AdminEPGController@create')->name('admin.epg.create');
+    Route::get('/epg/index', 'AdminEPGController@index')->name('admin.epg.index');
+    Route::get('/epg/create', 'AdminEPGController@create')->name('admin.epg.create');
     Route::post('/epg/generate', 'AdminEPGController@generate')->name('admin.epg.generate');
     Route::get('/epg/delete/{id}', 'AdminEPGController@delete')->name('admin.epg.delete');
     
