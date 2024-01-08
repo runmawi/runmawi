@@ -245,21 +245,17 @@
                                     <div class="row">
                                         <div class="container m-0">
 
-
-
-                                        <div class="row" style="margin-bottom:4%;">
+                                            <div class="row" style="margin-bottom:4%;">
                                                 <div class="col-lg-10 col-md-10 col-sm-10">
                                                     <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
-
                                                 </div>
+
                                                 <div class="col-lg-2 col-md-2 col-sm-2"  style="display:flex;align-items:center;justify-content:end;">
                                                     <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
                                                         <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
                                                     </button>
                                                 </div>
                                             </div>
-
-                                            <!-- <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2> -->
 
                                             <div class="panel panel-default">
                                                 <div class="panel-heading panel-heading-nav d-flex position-relative">
@@ -270,18 +266,6 @@
                                                             <a href="{{ '#one' . $key }}" aria-controls="one" role="tab" data-toggle="tab">Monday</a>
                                                         </li>
 
-                                                        <li role="presentation">
-                                                            <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
-                                                        </li>
-                                                        <li role="presentation">
-                                                            <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
-                                                        </li>
-                                                        <li role="presentation">
-                                                            <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
-                                                        </li>
-                                                        <li role="presentation">
-                                                            <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
-                                                        </li>
                                                         <li role="presentation">
                                                             <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
                                                         </li>
