@@ -509,6 +509,7 @@ class AdminSettingsController extends Controller
         $settings->enable_ppv_rent = !empty($request->enable_ppv_rent) ?  "1" : "0" ;
         $settings->series_networks_status = !empty($request->series_networks_status) ?  "1" : "0" ;
         $settings->videos_expiry_status = !empty($request->videos_expiry_status) ?  "1" : "0" ;
+        $settings->epg_status           = !empty($request->epg_status) ?  "1" : "0" ;
 
         $settings->save();
 
@@ -725,6 +726,8 @@ class AdminSettingsController extends Controller
         $playerui->watermar_link = $request['watermar_link'];
         $playerui->watermar_width = $request['watermar_width'];
         $playerui->video_watermark_enable = $request['video_watermark_enable'];
+        $playerui->ads_marker_status = $request['ads_marker_status'];
+
         // dd($request['video_watermark_enable']);
         $logopath = URL::to('/public/uploads/settings/');
         $path = public_path() . '/uploads/settings/';

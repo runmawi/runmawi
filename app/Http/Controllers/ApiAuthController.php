@@ -2199,12 +2199,20 @@ public function verifyandupdatepassword(Request $request)
               return $item;
         });
 
+        $audio_banner = Audio::where('active','=',1)->where('banner',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+          $item['source'] = "audio_slider";
+          return $item;
+        });
+
         $slider_array  =  array ( 'sliders'       => $sliders);
         $videos_array  =  array ( 'video_banners' => $video_banners);
         $live_array    =  array ( 'live_banner'   => $live_banner);
         $series_array  =  array ( 'series_banner' => $series_banner);
+        $audio_array   =  array ( 'audio_banner' => $audio_banner );
 
-        $combine_sliders[] =  array_merge($slider_array,$videos_array,$live_array,$series_array);
+        $combine_sliders[] =  array_merge($slider_array,$videos_array,$live_array,$series_array,$audio_array);
 
         $response = array(
           'status' => 'true',
@@ -3129,6 +3137,7 @@ public function verifyandupdatepassword(Request $request)
     $episode_id = $request->episode_id;
     $season_id = $request->season_id;
     $series_id = $request->series_id;
+    $audio_id = $request->audio_id;
     $user_id = $request->user_id;
     $daten = date('Y-m-d h:i:s a', time());
     $setting = Setting::first();
@@ -3147,8 +3156,9 @@ public function verifyandupdatepassword(Request $request)
     if($charge != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
       // print_r($live_ppv_count);exit;
-      if ( $ppv_count == 0 || $live_ppv_count == 0 ) {
+      if ( $ppv_count == 0 || $live_ppv_count == 0 || $audio_ppv_count == 0) {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->insert(
             ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $request->amount, ]
@@ -3161,10 +3171,19 @@ public function verifyandupdatepassword(Request $request)
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
+        }else if(!empty($audio_id) && $audio_id != ''){
+          DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'audio_id' => $audio_id,'to_time' => $date, ]
+          );
+          send_password_notification('Notification From '. GetWebsiteName(),'You have rented a Audio','You have rented a Audio','',$user_id);
+  
         }
       } else {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+
+        }else if(!empty($audio_id) && $audio_id != ''){
+          DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
@@ -3187,6 +3206,7 @@ public function verifyandupdatepassword(Request $request)
       $serie_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
@@ -3230,6 +3250,14 @@ public function verifyandupdatepassword(Request $request)
         );
       }
   
+      if ( $audio_ppv_count == 0 ) {
+        DB::table('ppv_purchases')->insert(
+          ['user_id' => $user_id ,'audio_id' => $audio_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
+        );
+      } else {
+        DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+      }
+      
       $response = array(
         'status' => 'true',
         'message' => "video has been added"
@@ -5221,6 +5249,7 @@ return response()->json($response, 200);
   {
     $season_id = $request->season_id;
     $episode_id = $request->episode_id;
+    $user_id = $request->user_id;
 
     $episode = Episode::where('id','=',$episode_id)->first();
     // $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
@@ -5234,6 +5263,8 @@ return response()->json($response, 200);
   // echo "<pre>";
   // print_r($season);exit;
   // Free Interval Episodes
+  $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('season_id','=',$season_id)
+  ->where('user_id','=',$user_id)->count();
 
   if(!empty($ppv_price) && !empty($ppv_interval)){
       foreach($season as $key => $seasons):
@@ -5245,7 +5276,9 @@ return response()->json($response, 200);
                   endif;
           endforeach;
       endforeach;
-      if (array_key_exists($episode_id,$free_episode)){
+      if($PpvPurchaseCount > 0){
+        $free_episode = 'guest';
+      }else if (array_key_exists($episode_id,$free_episode)){
         $free_episode = 'guest';
       }else{
         $free_episode = 'PPV';
@@ -5261,7 +5294,7 @@ return response()->json($response, 200);
     $response = array(
       'status' => 'true',
       'access' => $free_episode,
-      'episode' => $episode,
+      'episode' => Episode::where('id','=',$episode_id)->get(),
       'season' => $season,
     );
 
@@ -5955,8 +5988,9 @@ return response()->json($response, 200);
     {
 
         $audio_id = $request->audio_id;
+        $user_id = $request->user_id;
         $current_date = date('Y-m-d h:i:s a', time());
-        $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item)  use ($user_id)  {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['audio_duration'] = $item->duration >= "3600" ?  gmdate('H:i:s', $item->duration  ) :  gmdate('i:s', $item->duration  ) ;
@@ -5966,6 +6000,21 @@ return response()->json($response, 200);
               $item['lyrics_json'] = null  ;
             }
 
+            $PpvPurchaseCount = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',$user_id)->count();
+      
+            if($item->access == 'ppv' && ($PpvPurchaseCount > 0)){
+              $item->access = 'guest';
+            }else if($item->access == 'ppv' && ($PpvPurchaseCount == 0)){
+              $item->access = 'ppv';
+            }else{
+              $item->access = $item->access;
+            }
+            
+            if($item->lyrics_json != null){
+              $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+            }else{
+              $item['lyrics_json'] = null  ;
+            }
             return $item;
         });
 
@@ -6014,7 +6063,7 @@ return response()->json($response, 200);
          $main_genre = $audio_cat[0]->name;
         }else{
           $main_genre = '';
-        }
+        }        
 
         $response = array(
             'status' => $status,
@@ -6325,6 +6374,11 @@ return response()->json($response, 200);
           ->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            if($item->lyrics_json != null){
+              $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+            }else{
+              $item['lyrics_json'] = null  ;
+            }
             return $item;
           });
 
@@ -8469,14 +8523,14 @@ public function Adstatus_upate(Request $request)
       return $item;
     });
     
-    $series_banner = Series::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    $series_banner = Series::where('active','=',1)->where('banner',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       $item['source'] = "series_slider";
       return $item;
     });
 
-    $audio_banner = Audio::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    $audio_banner = Audio::where('active','=',1)->where('banner',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       $item['source'] = "audio_slider";
@@ -11196,7 +11250,7 @@ public function Paystack_VideoRent_Paymentverify ( Request $request )
           else {                      // Success
               $response = array(
                   "status"  => 'true' ,
-                  "message" => "Payment done! Successfully for PPV video-id = " .$request->video_id ,
+                  "message" => "Payment done! Successfully" ,
               );
           }
 
@@ -22601,5 +22655,296 @@ public function TV_login(Request $request)
 
     }
 
+
+    public function Paystack_SeriesRentRent_Paymentverify( Request $request )
+    {
+        try {
+  
+            $setting = Setting::first();
+            $ppv_hours = $setting->ppv_hours;
+  
+            $to_time = ppv_expirytime_started();
+  
+                 // Verify Payment
+  
+            $reference_code = $request->reference_id;
+  
+            $curl = curl_init();
+  
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+  
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+  
+            $Series = Series::where('id','=',$request->series_id)->first();
+  
+            if(!empty($Series)){
+            $moderators_id = $Series->user_id;
+            }
+  
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();
+                $total_amount     = $setting->ppv_price;
+                $title            =  $Series->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage;
+                $ppv_price        = $setting->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $setting->ppv_price;
+                $title          =  $Series->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null;
+                $ppv_price       = $setting->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+  
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  $request->user_id ;
+            $purchase->series_id       =  $request->series_id ;
+            $purchase->total_amount  =  $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+  
+            if ($err) {                 // Error
+                $response = array(
+                    "status"  => 'false' ,
+                    "message" => $err
+                );
+            }
+            else {                      // Success
+                $response = array(
+                    "status"  => 'true' ,
+                    "message" => "Payment done! Successfully" ,
+                );
+            }
+  
+        } catch (\Exception $e) {
+  
+            $response = array(
+                "status"  => 'false' ,
+                "message" => $e->getMessage(),
+           );
+        }
+        return response()->json($response, 200);
+    }
+
+    public function Paystack_SerieSeasonRentRent_Paymentverify( Request $request )
+    {
+        try {
+  
+            $setting = Setting::first();
+            $ppv_hours = $setting->ppv_hours;
+  
+            $to_time = ppv_expirytime_started();
+  
+                 // Verify Payment
+  
+            $reference_code = $request->reference_id;
+  
+            $curl = curl_init();
+  
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+  
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+  
+            $SeriesSeason = SeriesSeason::where('id','=',$request->season_id)->first();
+  
+            if(!empty($SeriesSeason)){
+            $moderators_id = $SeriesSeason->user_id;
+            }
+  
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();
+                $total_amount     = $SeriesSeason->ppv_price;
+                $title            =  $SeriesSeason->series_seasons_name;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage;
+                $ppv_price        = $SeriesSeason->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $SeriesSeason->ppv_price;
+                $title          =  $SeriesSeason->series_seasons_name;
+                $commssion      = VideoCommission::first();
+                $percentage     = null;
+                $ppv_price       = $SeriesSeason->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+  
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  $request->user_id ;
+            $purchase->series_id       =  $request->series_id ;
+            $purchase->season_id       =  $request->season_id ;
+            $purchase->total_amount  =  $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+  
+            if ($err) {                 // Error
+                $response = array(
+                    "status"  => 'false' ,
+                    "message" => $err
+                );
+            }
+            else {                      // Success
+                $response = array(
+                    "status"  => 'true' ,
+                    "message" => "Payment done! Successfully" ,
+                );
+            }
+  
+        } catch (\Exception $e) {
+  
+            $response = array(
+                "status"  => 'false' ,
+                "message" => $e->getMessage(),
+           );
+        }
+        return response()->json($response, 200);
+    }
+  
+    
+    public function Paystack_AudioRent_Paymentverify( Request $request )
+    {
+        try {
+  
+            $setting = Setting::first();
+            $ppv_hours = $setting->ppv_hours;
+  
+            $to_time = ppv_expirytime_started();
+  
+                 // Verify Payment
+  
+            $reference_code = $request->reference_id;
+  
+            $curl = curl_init();
+  
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+  
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+  
+            $Audio = Audio::where('id','=',$request->audio_id)->first();
+  
+            if(!empty($Audio)){
+            $moderators_id = $Audio->user_id;
+            }
+  
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();
+                $total_amount     = $Audio->ppv_price;
+                $title            =  $Audio->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage;
+                $ppv_price        = $Audio->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $Audio->ppv_price;
+                $title          =  $Audio->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null;
+                $ppv_price       = $Audio->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+  
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  $request->user_id ;
+            $purchase->audio_id       =  $request->audio_id ;
+            $purchase->total_amount  =  $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+            if ($err) {                 // Error
+                $response = array(
+                    "status"  => 'false' ,
+                    "message" => $err
+                );
+            }
+            else {                      // Success
+                $response = array(
+                    "status"  => 'true' ,
+                    "message" => "Payment done! Successfully" ,
+                );
+            }
+  
+        } catch (\Exception $e) {
+  
+            $response = array(
+                "status"  => 'false' ,
+                "message" => $e->getMessage(),
+           );
+        }
+        return response()->json($response, 200);
+    }
 
 }

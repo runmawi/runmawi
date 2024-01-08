@@ -1,3 +1,29 @@
+@php
+
+$check_Kidmode = 0;
+    
+$data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
+                                'player_image','expiry_date')
+
+                        ->where('active',1)->where('status', 1)->where('draft',1);
+
+                        if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                            $data = $data->whereNotIn('videos.id',Block_videos());
+                        }
+
+                        if (videos_expiry_date_status() == 1 ) {
+                            $data = $data->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                        }
+                        
+                        if ($check_Kidmode == 1) {
+                            $data = $data->whereBetween('videos.age_restrict', [0, 12]);
+                        }
+
+$data = $data->latest()->limit(30)->get();
+                                                                    
+@endphp
+                                                                    
+
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
@@ -16,7 +42,11 @@
                                 <li>
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                            <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid position-relative" >
+                                            
+                                            @if (videos_expiry_date_status() == 1 && optional($latest_video)->expiry_date)
+                                                <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
+                                            @endif 
                                         </div>
                                     </a>
                                 </li>
@@ -35,13 +65,14 @@
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                     <div class="caption pl-4">
-                                                            <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
 
-                                                        {{-- @if ( $latest_video->year != null && $latest_video->year != 0)
-                                                            <div class="d-flex align-items-center text-white text-detail">
-                                                                <span class="trending">{{ ($latest_video->year != null && $latest_video->year != 0) ? $latest_video->year : null   }}</span>
-                                                            </div>
-                                                        @endif  --}}
+                                                        <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
+
+                                                        @if (videos_expiry_date_status() == 1 && optional($latest_video)->expiry_date)
+                                                            <ul class="vod-info">
+                                                                <li>{{ "Expiry In ". Carbon\Carbon::parse($latest_video->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                                            </ul>
+                                                        @endif
 
                                                         @if (optional($latest_video)->description)
                                                             <div class="trending-dec">{!! html_entity_decode( optional($latest_video)->description) !!}</div>
@@ -63,7 +94,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </li>   
                             @endforeach
                         </ul>
                     </div>

@@ -23,6 +23,11 @@
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                        
+                                            @if (videos_expiry_date_status() == 1 && optional($latest_video)->expiry_date)
+                                                <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
+                                            @endif
+
                                         </div>
                                     </a>
                                 </li>
@@ -42,11 +47,11 @@
                                                         <div class="caption pl-5">
                                                             <h2 class="caption-h2">{{ optional($latest_video)->title }}</h2>
 
-                                                            {{-- @if ( $latest_video->year != null && $latest_video->year != 0)
-                                                                <div class="d-flex align-items-center text-white text-detail">
-                                                                    <span class="trending">{{ ($latest_video->year != null && $latest_video->year != 0) ? $latest_video->year : null   }}</span>
-                                                                </div>
-                                                            @endif  --}}
+                                                            @if (videos_expiry_date_status() == 1 && optional($latest_video)->expiry_date)
+                                                                <ul class="vod-info">
+                                                                    <li>{{ "Expiry In ". Carbon\Carbon::parse($latest_video->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                                                </ul>
+                                                            @endif
 
                                                             @if (optional($latest_video)->description)
                                                                 <div class="trending-dec">{!! html_entity_decode( optional($latest_video)->description) !!}</div>

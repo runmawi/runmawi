@@ -36,8 +36,8 @@
 @section('content')
     <div id="content-page" class="content-page">
         <div class="mt-5 d-flex">
-            <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ route('admin.EPG-Channel.index') }}"> {{ ucwords('All EPG Channel') }} </a>
-            <a class="black"   href="{{ route('admin.EPG-Channel.create') }}"> {{ ucwords('Create EPG Channel') }} </a>
+            <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ route('admin.Channel.index') }}"> {{ ucwords('All Channel') }} </a>
+            <a class="black"   href="{{ route('admin.Channel.create') }}"> {{ ucwords('Create Channel') }} </a>
         </div>
 
         <div class="container-fluid p-0">
@@ -53,11 +53,11 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <h4><i class="entypo-archive"></i> EPG Channel Manage </h4>
+                            <h4><i class="entypo-archive"></i> Channel Manage </h4>
                         </div>
 
                         <div class="col-md-6" align="right">
-                            <a href="{{ route('admin.EPG-Channel.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+                            <a href="{{ route('admin.Channel.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
                         </div>
                     </div>
 
@@ -67,7 +67,7 @@
 
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <p>Organize the EPG Channel below: </p>
+                                <p>Organize the Channel below: </p>
                             </div>
                             <div class="panel-options">
                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
@@ -81,9 +81,9 @@
                                     <thead>
                                         <tr class="table-header r1">
                                             <th><label>S.No</label></th>
-                                            <th><label>EPG Channel Logo</label></th>
-                                            <th><label>EPG Channel Name</label></th>
-                                            <th><label>EPG Channel Image</label></th>
+                                            <th><label>Channel Logo</label></th>
+                                            <th><label>Channel Name</label></th>
+                                            <th><label>Channel Image</label></th>
                                             <th><label>Operation</label></th>
                                         </tr>
                                     </thead>
@@ -103,13 +103,13 @@
                                                         </a>
 
                                                         <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit"
-                                                                href="{{ route('admin.EPG-Channel.edit',$Admin_EPG_Channel_data->id) }}">
+                                                                href="{{ route('admin.Channel.edit',$Admin_EPG_Channel_data->id) }}">
                                                             <img class="ply" src="{{ URL::to('/assets/img/icon/edit.svg') }}">
                                                         </a>
 
                                                         <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top"
                                                             title="" onclick="return confirm('Are you sure?')" data-original-title="Delete"
-                                                            href="{{ route('admin.EPG-Channel.destroy',$Admin_EPG_Channel_data->id ) }}">
+                                                            href="{{ route('admin.Channel.destroy',$Admin_EPG_Channel_data->id ) }}">
                                                             <img class="ply" src="{{ URL::to('assets/img/icon/delete.svg') }}">
                                                         </a>
                                                     </div>

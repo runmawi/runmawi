@@ -12,5 +12,5 @@ class Playerui extends Model
 	
 	public static $rules = array();
 
-    protected $fillable = ['show_logo','skip_intro','embed_player','watermark','thumbnail','advance_player','speed_control','video_card','subtitle','subtitle_preference','font','size','font_color','background_color','opacity'];
+    protected $fillable = ['show_logo','skip_intro','embed_player','watermark','thumbnail','advance_player','speed_control','video_card','subtitle','subtitle_preference','font','size','font_color','background_color','opacity','ads_marker_status'];
 }

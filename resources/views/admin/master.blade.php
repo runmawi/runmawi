@@ -3,6 +3,7 @@
 
 @php
    $favicon_icon = App\Setting::pluck('favicon')->first();
+   $AdminAccessPermission = App\AdminAccessPermission::first();
 @endphp
 
 <head>
@@ -178,6 +179,9 @@ if (!empty($data['password_hash'])) {
     body.dark h6{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .upload-ui{color: #000;}
     body.dark div.dataTables_wrapper div.dataTables_info{color: <?php echo GetAdminDarkText(); ?>!important;}
+    body.dark div#users_table_paginate a#users_table_previous{color: <?php echo GetAdminDarkText(); ?>!important;}
+    body.dark div#users_table_paginate a#users_table_next{color: <?php echo GetAdminDarkText(); ?>!important;}
+    body.dark div#users_table_paginate a.paginate_button{color: <?php echo GetAdminDarkText(); ?>!important;}
     body.dark .line{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .dataTables_info{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .list-inline-item a{color: <?php echo GetAdminDarkText(); ?>;}
@@ -364,9 +368,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/videos/create') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/add-new-video.svg')?>">Add New Video</a></li>
                         <li><a href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a></li>
                         <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><span> Master Video List</span></a></li>
-                        <li><a href="{{ route('admin.EPG-Channel.index') }}" class="iq-waves-effect">Channel EPG </a></li>
+                        <li><a href="{{ route('admin.Channel.index') }}" class="iq-waves-effect">Channel</a></li>
                         <li><a href="{{ URL::to('admin/video-schedule') }}" class="iq-waves-effect">Video Schedule</a></li>
-                        <!-- <li><a href="{{ URL::to('admin/test/videoupload') }}" class="iq-waves-effect">Test Server Video Upload</a></li> -->
+                        @if (EPG_Status() == 1)
+                           <li><a href="{{ route('admin.epg.index') }}" class="iq-waves-effect"> EPG </a></li>
+                        @endif                        <!-- <li><a href="{{ URL::to('admin/test/videoupload') }}" class="iq-waves-effect">Test Server Video Upload</a></li> -->
                         <li><a href="{{ URL::to('admin/assign_videos/partner') }}" class="iq-waves-effect">Move Videos to Partner</a></li>
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></li>                    
           </ul></li>
@@ -612,7 +618,10 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a></li>
                         <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><span> Master Video List</span></a></li>
                         <li><a href="{{ URL::to('admin/video-schedule') }}" class="iq-waves-effect">Video Schedule</a></li>
-                        <li><a href="{{ route('admin.EPG-Channel.index') }}" class="iq-waves-effect">Channel EPG </a></li>
+                        <li><a href="{{ route('admin.Channel.index') }}" class="iq-waves-effect">Channel </a></li>
+                        @if (EPG_Status() == 1)
+                           <li><a href="{{ route('admin.epg.index') }}" class="iq-waves-effect"> EPG </a></li>
+                        @endif
                         <!-- <li><a href="{{ URL::to('admin/test/videoupload') }}" class="iq-waves-effect">Test Server Video Upload</a></li> -->
                         <li><a href="{{ URL::to('admin/assign_videos/partner') }}" class="iq-waves-effect">Move Videos to Partner</a></li>
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a></li>                    
@@ -928,12 +937,21 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/videos/create') }}">{{ (__('Add New Video')) }}</a></li>
                         <li><a href="{{ URL::to('admin/CPPVideosIndex') }}">{{ (__('Videos For Approval')) }}</a></li>
                         <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect">{{ (__('Master Video List')) }}</a></li>
-                        <li><a href="{{ route('admin.EPG-Channel.index') }}" class="iq-waves-effect">Channel EPG </a></li>
-                        <li><a href="{{ URL::to('admin/video-schedule') }}" class="iq-waves-effect">{{ (__('Video Schedule')) }}</a></li>
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Channel_checkout == 1)
+                           <li><a href="{{ route('admin.Channel.index') }}" class="iq-waves-effect">Channel </a></li> 
+                        @endif      
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Channel_Video_Scheduler_checkout == 1)
+                           <li><a href="{{ route('VideoScheduler') }}" class="iq-waves-effect">Channel Video Scheduler </a></li>
+                        @endif   
+                        @if (EPG_Status() == 1)
+                           <li><a href="{{ route('admin.epg.index') }}" class="iq-waves-effect"> EPG </a></li>
+                        @endif                        <li><a href="{{ URL::to('admin/video-schedule') }}" class="iq-waves-effect">{{ (__('Video Schedule')) }}</a></li>
                         <!-- <li><a href="{{ URL::to('admin/test/videoupload') }}" class="iq-waves-effect">Test Server Video Upload</a></li> -->
                         <li><a href="{{ URL::to('admin/assign_videos/partner') }}" class="iq-waves-effect">Move Videos to Partner</a></li>
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}">{{ (__('Manage Video Categories')) }}</a></li>                    
-                        <li><a href="{{ URL::to('admin/videos/playlist') }}" class="iq-waves-effect">{{ (__('Manage Video Playlist')) }}</a></li>
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Manage_Video_Playlist_checkout == 1)
+                           <li><a href="{{ URL::to('admin/videos/playlist') }}" class="iq-waves-effect">{{ (__('Manage Video Playlist')) }}</a></li>
+                        @endif 
 
                     
           </ul></li>
@@ -1011,8 +1029,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}">{{ (__('Video Languages')) }}</a></li>
                         <li><a href="{{ URL::to('admin/subtitles/create') }}">{{ (__('Add Subtitle Languages')) }}</a></li>
-                        <li><a href="{{ URL::to('admin/translate-languages-index') }}">{{ (__('Manage Translate Languages')) }}</a></li> 
-                        <li><a href="{{ URL::to('admin/languages') }}">{{ (__('Manage Translations')) }}</a></li>
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Manage_Translate_Languages_checkout == 1)
+                           <li><a href="{{ URL::to('admin/translate-languages-index') }}">{{ (__('Manage Translate Languages')) }}</a></li> 
+                        @endif 
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Manage_Translations_checkout == 1)
+                           <li><a href="{{ URL::to('admin/languages') }}">{{ (__('Manage Translations')) }}</a></li>
+                        @endif 
                      </ul>
                   </li>
                    
@@ -1251,9 +1273,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/videos/create') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/add-new-video.svg')?>">{{ __('Add New Video') }}</a></li>
                         <li><a href="{{ URL::to('admin/CPPVideosIndex') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Videos For Approval</a></li>
                         <li><a href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/manage-video-list.svg')?>"><span> Master Video List</span></a></li>
-                        <li><a href="{{ route('admin.EPG-Channel.index') }}" class="iq-waves-effect">Channel EPG </a></li>
+                        <li><a href="{{ route('admin.Channel.index') }}" class="iq-waves-effect">Channel </a></li>
                         <li><a href="{{ URL::to('admin/video-schedule') }}" class="iq-waves-effect">Video Schedule</a></li>
-                        <!-- <li><a href="{{ URL::to('admin/test/videoupload') }}" class="iq-waves-effect">Test Server Video Upload</a></li> -->
+                        @if (EPG_Status() == 1)
+                           <li><a href="{{ route('admin.epg.index') }}" class="iq-waves-effect"> EPG </a></li>
+                        @endif                        <!-- <li><a href="{{ URL::to('admin/test/videoupload') }}" class="iq-waves-effect">Test Server Video Upload</a></li> -->
                         <li><a href="{{ URL::to('admin/assign_videos/partner') }}" class="iq-waves-effect">Move Videos to Partner</a></li>
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Video Categories</a></li>                    
                     
@@ -1454,6 +1478,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
                             <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> {{ ucwords('Home page Pop Up settings') }} </a></li>
                             <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> Comment Section Settings </a></li>
+                            @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Page_Permission_checkout == 1)
+                              <li><a href="{{ URL::to('admin/access-premission') }}" class="iq-waves-effect">{{ (__('Page Permission Settings')) }}</a></li>
+                            @endif 
                            </ul>
                     </li>
                     <!-- Ads Menu starts class="iq-waves-effect"-->

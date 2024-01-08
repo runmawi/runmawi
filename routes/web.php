@@ -262,17 +262,24 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('channel-theme-mode', 'HomeController@ChannelThemeModeSave');
     Route::post('ads-theme-mode', 'HomeController@AdsThemeModeSave');
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('change-profile', 'HomeController@Multipleprofile');
 
     // Reels
     Route::get('/reels', 'AdminReelsVideo@index');
 
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
+
     Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
+    Route::get('networks/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('network_play_episode');
+
     Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
+
     Route::get('play_series/{name}/', 'TvshowsController@play_series')->name('play_series');
+    Route::get('networks/play_series/{name}/', 'TvshowsController@play_series')->name('network.play_series');
+
     Route::get('datafree/play_series/{name}/', 'TvshowsController@play_series');
 
     // Route::get('play_series/{name}/{id}', 'TvshowsController@play_series');
@@ -469,15 +476,21 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
 
-    // EPG
-    Route::get('/epg-channel/index', 'AdminEPGChannelController@index')->name('admin.EPG-Channel.index');
-    Route::get('/epg-channel/create', 'AdminEPGChannelController@create')->name('admin.EPG-Channel.create');
-    Route::post('/epg-channel/store', 'AdminEPGChannelController@store')->name('admin.EPG-Channel.store');
-    Route::get('/epg-channel/edit/{id}', 'AdminEPGChannelController@edit')->name('admin.EPG-Channel.edit');
-    Route::post('/epg-channel/update/{id}', 'AdminEPGChannelController@update')->name('admin.EPG-Channel.update');
-    Route::get('/epg-channel/destroy/{id}', 'AdminEPGChannelController@destroy')->name('admin.EPG-Channel.destroy');
-    Route::get('/epg-channel/validation', 'AdminEPGChannelController@slug_validation')->name('admin.EPG-Channel.slug_validation');
+    // Channel Schedule
+    Route::get('/channel/index', 'AdminEPGChannelController@index')->name('admin.Channel.index');
+    Route::get('/channel/create', 'AdminEPGChannelController@create')->name('admin.Channel.create');
+    Route::post('/channel/store', 'AdminEPGChannelController@store')->name('admin.Channel.store');
+    Route::get('/channel/edit/{id}', 'AdminEPGChannelController@edit')->name('admin.Channel.edit');
+    Route::post('/channel/update/{id}', 'AdminEPGChannelController@update')->name('admin.Channel.update');
+    Route::get('/channel/destroy/{id}', 'AdminEPGChannelController@destroy')->name('admin.Channel.destroy');
+    Route::get('/channel/validation', 'AdminEPGChannelController@slug_validation')->name('admin.Channel.slug_validation');
 
+    // EPG Schedule
+    Route::get('/epg/index', 'AdminEPGController@index')->name('admin.epg.index');
+    Route::get('/epg/create', 'AdminEPGController@create')->name('admin.epg.create');
+    Route::post('/epg/generate', 'AdminEPGController@generate')->name('admin.epg.generate');
+    Route::get('/epg/delete/{id}', 'AdminEPGController@delete')->name('admin.epg.delete');
+    
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
     Route::get('/mobile_app/Splash_destroy/{source}/{id}', 'AdminUsersController@Splash_destroy')->name('Splash_destroy');
@@ -699,6 +712,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/menu/order', ['before' => 'demo', 'uses' => 'AdminMenuController@order']);
     Route::post('menu/update-order', 'AdminMenuController@updateOrder');
     Route::get('/menu/delete/{id}', ['before' => 'demo', 'uses' => 'AdminMenuController@destroy']);
+
+    /* Page Premission settings*/
+
+    Route::get('/access-premission', 'AdminAccessPermissionController@Index');
+    Route::post('/access_premission/save', 'AdminAccessPermissionController@Store');
+
 
     /* theme settings*/
 
@@ -990,6 +1009,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/schedule/delete/{id}', 'AdminVideosController@ScheduledVideoDelete');
 
+    /*  Channel Videos Setting  */
+
+    Route::get('/video-scheduler', 'AdminChannelVideoController@ChannelVideoScheduler')->name('VideoScheduler');
+    Route::get('/filter-scheduler', 'AdminChannelVideoController@FilterVideoScheduler')->name('FilterScheduler');
+        
     /*  Videos Setting  */
 
     Route::get('/video-schedule', 'AdminVideosController@ScheduleVideo');
@@ -2225,8 +2249,8 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('SeriescategoryList', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
     Route::get('Series/category/list', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
 
-    Route::get('tv-shows/networks/{slug}', 'TvshowsController@Specific_Series_Networks')->name('Specific_Series_Networks');
-    Route::get('tv-shows/networks-list', 'TvshowsController@Series_Networks_List')->name('Series_Networks_List');
+    Route::get('networks/tv-shows/{slug}', 'TvshowsController@Specific_Series_Networks')->name('Specific_Series_Networks');
+    Route::get('networks/tv-shows', 'TvshowsController@Series_Networks_List')->name('Series_Networks_List');
 
     // Filter
     Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
@@ -2415,6 +2439,10 @@ Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('vid
 
 Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
 
-Route::get('epg/Channels/{slug}', 'EPGChannelController@index')->name('Front-End.EPG');
+Route::get('/Channels/{slug}', 'EPGChannelController@index')->name('Front-End.Channel-EPG');
+
+Route::get('/channel-List', 'EPGChannelController@EPG_Channel_List')->name('Front-End.EPG_Channel_List');
 
 Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
+
+Route::get('activationcode', 'AdminUsersController@myprofile');

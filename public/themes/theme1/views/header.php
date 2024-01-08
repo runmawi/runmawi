@@ -421,89 +421,122 @@
     .sliderk.round:before {
         border-radius: 50%;
     }
+     /* Dark mode and light Mode */
+   body.light-theme {
+   background: <?php echo GetLightBg(); ?>!important;
+   }
+   body.light-theme h4, body.light-theme p {
+   color: <?php echo GetLightText(); ?>;
+   }
+   body.light-theme h1, body.light-theme a {
+   color: <?php echo GetLightText(); ?>;
+   }
+   body.light-theme ul.d-flex.align-items-center.list-inline.m-0 a {
+   color: #fff;
+   }
+   body.light-theme ul.d-flex.align-items-center.list-inline.m-0 a p.mt-3 {
+   color: #fff;
+   }
+   body.light-theme .search-box.iq-search-bar.d-search a {
+    color: #fff !important;
+   }
+   body.light-theme header#main-header{
+   background-color: <?php echo GetLightBg(); ?>!important;  
+   color: <?php echo GetLightText(); ?>;
+   box-shadow: 0 0 50px #ccc;
+   }
+   body.light-theme footer{
+   background: <?php echo GetLightBg(); ?>!important;  
+   color: <?php echo GetLightText(); ?>;
+   box-shadow: 0 0 50px #ccc;
+   }
+   body.light-theme .copyright{
+   background-color: <?php echo GetLightBg(); ?>;
+   color: <?php echo GetLightText(); ?>;
+   }
+   body.light-theme .s-icon{
+   background-color: <?php echo GetLightBg(); ?>; 
+   box-shadow: 0 0 50px #ccc;
+   }
+   body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+   }
+   body.light-theme .dropdown-menu.categ-head{
+   background-color: <?php echo GetLightBg(); ?>!important;  
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
+   color: rgb(0, 82, 204)!important;
+       font-weight: 500;
+   }
+   body.light-theme .navbar-right .iq-sub-dropdown{
+   background-color: <?php echo GetLightBg(); ?>;  
+   }
+   body.light-theme .media-body h6{
+   color: <?php echo GetLightText(); ?>;
+   font-weight: 400;
+   }
+   body.light-theme .block-description h6{
+   color: <?php echo GetLightText(); ?>;
+   font-weight: 400;
+   }  
+   body.light-theme .movie-time i{
+   color: <?php echo GetLightText(); ?>!important;
+   font-weight: 400;
+   }  
+   body.light-theme .p-tag1{
+   color: <?php echo GetLightText(); ?>!important;
+   font-weight: 400;
+   } body.light-theme .p-tag{
+   color: <?php echo GetLightText(); ?>!important;
+   font-weight: 400;
+   } 
+   body.light-theme .movie-time span{
+   color: <?php echo GetLightText(); ?>!important;
+   font-weight: 400;
+   }
+   body.light-theme .block-description a{
+   color: <?php echo GetLightText(); ?>!important;
+   font-weight: 400;
+   } 
+    body.light-theme .block-description{
+  background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
+    backdrop-filter: blur(2px);
+   }
+   body.light-theme  header .navbar ul li{
+   font-weight: 400;
+   }
+   body.light-theme .slick-nav i{
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme h2{
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme h5{
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme .filter-option-inner-inner{
+   color: <?php echo GetLightText(); ?>!important;
+   } 
+   body.light-theme .vid-title{
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme .trending-info h1{
+   color: <?php echo GetLightText(); ?>!important;
+   }body.light-theme .text-detail{
+   color: <?php echo GetLightText(); ?>!important;
+   }body.light-theme .share-icons.music-play-lists li span i{
+   color: <?php echo GetLightText(); ?>!important;
+   }body.light-theme .btn1{
+   border: 1px solid <?php echo GetLightText(); ?>!important;
+   color: <?php echo GetLightText(); ?>!important;
+   }body.light-theme .trending-dec{
+   color: <?php echo GetLightText(); ?>!important;
+   }
+   body.light-theme h6.trash{
+   color: black;
+   }
 
-    /* Dark mode and light Mode */
-    body.light-theme {
-        background-color: <?php echo GetLightBg(); ?>;
-    }
-
-    body.light-theme h4,
-    body.light-theme p {
-        color: <?php echo GetLightText(); ?>;
-    }
-
-    body.light-theme header#main-header {
-        background-color: <?php echo GetLightBg(); ?> !important;
-        color: <?php echo GetLightText(); ?>;
-        box-shadow: 0 0 50px #ccc;
-    }
-
-    body.light-theme footer {
-        background-color: <?php echo GetLightBg(); ?> !important;
-        color: <?php echo GetLightText(); ?>;
-        box-shadow: 0 0 50px #ccc;
-
-    }
-
-    body.light-theme .copyright {
-        background-color: <?php echo GetLightBg(); ?>;
-        color: <?php echo GetLightText(); ?>;
-    }
-
-    body.light-theme .dropdown-item.cont-item {
-        color: <?php echo GetLightText(); ?> !important;
-    }
-
-    body.light-theme .s-icon {
-        background-color: <?php echo GetLightBg(); ?>;
-        box-shadow: 0 0 50px #ccc;
-    }
-
-    body.light-theme .search-toggle:hover,
-    header .navbar ul li.menu-item a:hover {
-        color: cornflowerblue !important;
-    }
-
-    body.light-theme .dropdown-menu.categ-head {
-        background-color: <?php echo GetLightBg(); ?> !important;
-        color: <?php echo GetLightText(); ?> !important;
-    }
-
-    body.light-theme .navbar-right .iq-sub-dropdown {
-        background-color: <?php echo GetLightBg(); ?>;
-    }
-
-    body.light-theme .media-body h6 {
-        color: <?php echo GetLightText(); ?>;
-    }
-
-    body.light-theme header .navbar ul li {
-        font-weight: 400;
-    }
-
-    body.light-theme .slick-nav i {
-        color: <?php echo GetLightText(); ?> !important;
-    }
-
-    body.light-theme .block-description h6 {
-        color: <?php echo GetLightText(); ?> !important;
-    }
-
-    body.light-theme footer ul li {
-        color: <?php echo GetLightText(); ?> !important;
-    }
-
-    body.light-theme h6 {
-        color: <?php echo GetLightText(); ?> !important;
-    }
-
-    body.light-theme .movie-time i {
-        color: <?php echo GetLightText(); ?> !important;
-    }
-
-    body.light-theme span {
-        color: <?php echo GetLightText(); ?> !important;
-    }
+    
 
     .Search_error_class {
       color: red;
@@ -518,6 +551,12 @@
         right: 5px;
         position: relative;
     }
+    .navbar-right .search-box{
+    display:none;
+}
+.navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box{
+    display:block !important;
+}
 </style>
 
 <body>
@@ -615,7 +654,7 @@
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                           ?>
                                         <li class="dropdown menu-item dskdflex">
-                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/categoryList'); ?>" data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/categoryList'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
@@ -639,7 +678,7 @@
                                         $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                         ?>
                                         <li class="dropdown menu-item dskdflex">
-                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/Movie-list'); ?>" data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Movie-list'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
@@ -660,7 +699,7 @@
                                        $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                         ?>
                                         <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"  data-toggle="dropdown">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/Live-list'); ?>"  data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Live-list'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
@@ -669,7 +708,7 @@
                                             <ul class="dropdown-menu categ-head">
                                                 <?php foreach ( $LiveCategory as $category){ ?>
                                                 <li>
-                                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->name; ?>">
+                                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->slug; ?>">
                                                         <?php echo $category->name; ?>
                                                     </a>
                                                 </li>
@@ -734,6 +773,44 @@
                                             </a>
                                         </li>
                                         <?php } } ?>
+
+                                        <!-- Mobile responsive buttons -->
+                           <?php if(Auth::guest()): ?>
+                              <div class="col-sm-12 d-flex justify-content-between proflogbtn" style="color:white">
+                                 <li class="nav-item nav-icon logout_mobile_view channel_contentpr">
+                                    <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
+                                    <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                       <div class="media align-items-center">
+                                          <div class="right-icon">
+                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                <path class="st5" d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z"/>
+                                                <path class="st5" d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z"/>
+                                             </svg>
+                                          </div>
+                                          <div class="media-body">
+                                             <h6 class="mb-0 "><?php echo (__('Signin'));?></h6>
+                                          </div>
+                                       </div>
+                                    </a>
+                                 </li>
+                                 
+                                 <li class="nav-item nav-icon logout_mobile_view channel_contentpr">
+                                    <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                       <div class="media align-items-center">
+                                          <div class="right-icon">
+                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                <path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/>
+                                                <path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/>
+                                             </svg>
+                                          </div>
+                                          <div class="media-body">
+                                             <h6 class="mb-0 "><?php echo (__('Signup'));?></h6>
+                                          </div>
+                                       </div>
+                                    </a>
+                                 </li>
+                              </div>
+                              <?php endif ; ?>
 
                                         <!-- Screen responsive buttons -->
                                         <?php                         
@@ -1082,14 +1159,15 @@
                                                    
                                                                      <!-- Light Mode & Dark Mode -->
                                                    <a class="p-0">
-                                                      <div class=" mt-3 text-right">
+                                                      <div class="text-left">
+                                                      <i class="fas fa-moon"></i>
                                                          <label class="switch toggle mt-3">
                                                             <input type="checkbox" id="toggle"
                                                                value=<?php echo $theme_mode; ?> <?php if ($theme_mode == 'light') {
                                                                      echo 'checked';
                                                                } ?> />
                                                             <span class="sliderk round"></span>
-                                                         </label>
+                                                         </label><i class="fas fa-sun pl-1"></i>
                                                       </div>
                                                    </a>                                             
 
@@ -1133,6 +1211,37 @@
                                                             </div>
                                                             <div class="media-body ml-3">
                                                                 <h6 class="mb-0 "><?= __('Manage Profile') ?></h6>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                    <a href="<?php echo  URL::to('change-profile') ?>" class="iq-sub-card setting-dropdown">
+                                                        <div class="media align-items-center">
+                                                            <div class="right-icon">
+                                                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                                viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
+                                                                <style type="text/css">
+                                                                </style>
+                                                                <path class="st0" d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
+                                                                    c-5.6,0-10.1,4.5-10.1,10.1S26.4,30.7,32,30.7s10.1-4.5,10.1-10.1S37.6,10.5,32,10.5z"/>
+                                                                <path class="st0" d="M38.5,54.2H15.3l0,0v-2.8c0-9,6.8-16.7,15.8-17.2c4.3-0.3,8.4,1.1,11.5,3.6c0.1,0.1,0.3,0.1,0.4,0l1.8-1.8
+                                                                    c0.3-0.3,0.3-0.5,0.1-0.6c-3.8-3.1-8.6-4.8-13.9-4.5c-10.7,0.6-19,9.9-19,20.6v5.1c0,0.6,0.5,1.1,1.1,1.1h28.8c0.5,0,0.8-0.6,0.4-1
+                                                                    l-1.4-1.4C40.2,54.5,39.3,54.2,38.5,54.2z"/>
+                                                                <path class="st0" d="M62.2,48.6v-2.4c0-0.3-0.2-0.5-0.5-0.5H59c-0.2,0-0.4-0.1-0.5-0.4c-0.1-0.4-0.3-0.7-0.4-1.1
+                                                                    C58,44,58,43.8,58.2,43.6l1.9-1.9c0.2-0.2,0.2-0.5,0-0.7l-1.7-1.7c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.4,0.2-0.6,0.1
+                                                                    c-0.3-0.2-0.7-0.3-1-0.4c-0.2-0.1-0.4-0.3-0.4-0.5v-2.8c0-0.3-0.2-0.5-0.5-0.5h-2.4c-0.3,0-0.5,0.2-0.5,0.5v2.8
+                                                                    c0,0.2-0.1,0.4-0.4,0.5c-0.4,0.1-0.7,0.2-1,0.4c-0.2,0.1-0.4,0.1-0.6-0.1l-2-2c-0.2-0.2-0.5-0.2-0.7,0L43.9,41
+                                                                    c-0.2,0.2-0.2,0.5,0,0.7l1.9,1.9c0.2,0.2,0.2,0.4,0.1,0.6c-0.2,0.3-0.3,0.7-0.4,1.1c-0.1,0.2-0.3,0.4-0.5,0.4h-2.7
+                                                                    c-0.3,0-0.5,0.2-0.5,0.5v2.4c0,0.3,0.2,0.5,0.5,0.5H45c0.2,0,0.4,0.1,0.5,0.4c0.1,0.4,0.3,0.7,0.4,1c0.1,0.2,0.1,0.4-0.1,0.6
+                                                                    L44.1,53c-0.2,0.2-0.2,0.5,0,0.7l1.7,1.7c0.2,0.2,0.5,0.2,0.7,0l1.9-1.9c0.2-0.2,0.4-0.2,0.6-0.1c0.3,0.2,0.7,0.3,1.1,0.4
+                                                                    c0.2,0.1,0.4,0.3,0.4,0.5V57c0,0.3,0.2,0.5,0.5,0.5h2.4c0.3,0,0.5-0.2,0.5-0.5v-2.7c0-0.2,0.1-0.4,0.4-0.5c0.4-0.1,0.7-0.3,1-0.4
+                                                                    c0.2-0.1,0.4-0.1,0.6,0.1l1.9,1.9c0.2,0.2,0.5,0.2,0.7,0l1.7-1.7c0.2-0.2,0.2-0.5,0-0.7l-1.9-1.9c-0.2-0.2-0.2-0.4-0.1-0.6
+                                                                    c0.2-0.3,0.3-0.7,0.4-1c0.1-0.2,0.3-0.4,0.5-0.4h2.7C62,49.1,62.2,48.9,62.2,48.6z M48.7,47.4c0-0.9,0.4-1.7,1-2.4
+                                                                    c0.6-0.6,1.5-1,2.4-1s1.7,0.4,2.4,1c0.6,0.6,1,1.5,1,2.4c0,1.7-1.2,3.2-3.3,3.5c-0.1,0-0.1,0-0.2,0C50,50.6,48.7,49.1,48.7,47.4
+                                                                    L48.7,47.4z"/>
+                                                                </svg>
+                                                            </div>
+                                                            <div class="media-body ml-3">
+                                                                <h6 class="mb-0 "><?php echo (__('Change Profile'));?></h6>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -1287,14 +1396,15 @@
                                             <div class="iq-card shadow-none m-0">
                                                 <div class="iq-card-body p-0 pl-3 pr-3">
                                                       <a class="p-0">
-                                                         <div class=" mt-3 text-right">
+                                                         <div class=" text-left">
+                                                         <i class="fas fa-moon"></i>
                                                             <label class="switch toggle mt-3">
                                                                 <input type="checkbox" id="toggle"
                                                                     value=<?php echo $theme_mode; ?> <?php if ($theme_mode == 'light') {
                                                                         echo 'checked';
                                                                     } ?> />
                                                                 <span class="sliderk round"></span>
-                                                            </label>
+                                                            </label><i class="fas fa-sun pl-1"></i>
                                                          </div>
                                                       </a>
                                                     <a href="<?php echo URL::to('myprofile'); ?>"
@@ -1336,6 +1446,37 @@
                                                             </div>
                                                             <div class="media-body ml-3">
                                                                 <h6 class="mb-0 "><?= __('Manage Profile') ?></h6>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                    <a href="<?php echo  URL::to('change-profile') ?>" class="iq-sub-card setting-dropdown">
+                                                        <div class="media align-items-center">
+                                                            <div class="right-icon">
+                                                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                                viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
+                                                                <style type="text/css">
+                                                                </style>
+                                                                <path class="st0" d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
+                                                                    c-5.6,0-10.1,4.5-10.1,10.1S26.4,30.7,32,30.7s10.1-4.5,10.1-10.1S37.6,10.5,32,10.5z"/>
+                                                                <path class="st0" d="M38.5,54.2H15.3l0,0v-2.8c0-9,6.8-16.7,15.8-17.2c4.3-0.3,8.4,1.1,11.5,3.6c0.1,0.1,0.3,0.1,0.4,0l1.8-1.8
+                                                                    c0.3-0.3,0.3-0.5,0.1-0.6c-3.8-3.1-8.6-4.8-13.9-4.5c-10.7,0.6-19,9.9-19,20.6v5.1c0,0.6,0.5,1.1,1.1,1.1h28.8c0.5,0,0.8-0.6,0.4-1
+                                                                    l-1.4-1.4C40.2,54.5,39.3,54.2,38.5,54.2z"/>
+                                                                <path class="st0" d="M62.2,48.6v-2.4c0-0.3-0.2-0.5-0.5-0.5H59c-0.2,0-0.4-0.1-0.5-0.4c-0.1-0.4-0.3-0.7-0.4-1.1
+                                                                    C58,44,58,43.8,58.2,43.6l1.9-1.9c0.2-0.2,0.2-0.5,0-0.7l-1.7-1.7c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.4,0.2-0.6,0.1
+                                                                    c-0.3-0.2-0.7-0.3-1-0.4c-0.2-0.1-0.4-0.3-0.4-0.5v-2.8c0-0.3-0.2-0.5-0.5-0.5h-2.4c-0.3,0-0.5,0.2-0.5,0.5v2.8
+                                                                    c0,0.2-0.1,0.4-0.4,0.5c-0.4,0.1-0.7,0.2-1,0.4c-0.2,0.1-0.4,0.1-0.6-0.1l-2-2c-0.2-0.2-0.5-0.2-0.7,0L43.9,41
+                                                                    c-0.2,0.2-0.2,0.5,0,0.7l1.9,1.9c0.2,0.2,0.2,0.4,0.1,0.6c-0.2,0.3-0.3,0.7-0.4,1.1c-0.1,0.2-0.3,0.4-0.5,0.4h-2.7
+                                                                    c-0.3,0-0.5,0.2-0.5,0.5v2.4c0,0.3,0.2,0.5,0.5,0.5H45c0.2,0,0.4,0.1,0.5,0.4c0.1,0.4,0.3,0.7,0.4,1c0.1,0.2,0.1,0.4-0.1,0.6
+                                                                    L44.1,53c-0.2,0.2-0.2,0.5,0,0.7l1.7,1.7c0.2,0.2,0.5,0.2,0.7,0l1.9-1.9c0.2-0.2,0.4-0.2,0.6-0.1c0.3,0.2,0.7,0.3,1.1,0.4
+                                                                    c0.2,0.1,0.4,0.3,0.4,0.5V57c0,0.3,0.2,0.5,0.5,0.5h2.4c0.3,0,0.5-0.2,0.5-0.5v-2.7c0-0.2,0.1-0.4,0.4-0.5c0.4-0.1,0.7-0.3,1-0.4
+                                                                    c0.2-0.1,0.4-0.1,0.6,0.1l1.9,1.9c0.2,0.2,0.5,0.2,0.7,0l1.7-1.7c0.2-0.2,0.2-0.5,0-0.7l-1.9-1.9c-0.2-0.2-0.2-0.4-0.1-0.6
+                                                                    c0.2-0.3,0.3-0.7,0.4-1c0.1-0.2,0.3-0.4,0.5-0.4h2.7C62,49.1,62.2,48.9,62.2,48.6z M48.7,47.4c0-0.9,0.4-1.7,1-2.4
+                                                                    c0.6-0.6,1.5-1,2.4-1s1.7,0.4,2.4,1c0.6,0.6,1,1.5,1,2.4c0,1.7-1.2,3.2-3.3,3.5c-0.1,0-0.1,0-0.2,0C50,50.6,48.7,49.1,48.7,47.4
+                                                                    L48.7,47.4z"/>
+                                                                </svg>
+                                                            </div>
+                                                            <div class="media-body ml-3">
+                                                                <h6 class="mb-0 "><?php echo (__('Change Profile'));?></h6>
                                                             </div>
                                                         </div>
                                                     </a>

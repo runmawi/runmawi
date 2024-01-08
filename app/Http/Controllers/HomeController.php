@@ -3048,6 +3048,10 @@ class HomeController extends Controller
                     $featured_videos = $featured_videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
                 }
 
+                if (videos_expiry_date_status() == 1 ) {
+                    $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                }
+
                 $featured_videos = $featured_videos->orderBy('videos.created_at','desc')->limit(50)->paginate($this->videos_per_page);
 
             $data = array(
@@ -3107,6 +3111,10 @@ class HomeController extends Controller
                 if( $check_Kidmode == 1 )
                 {
                     $latest_videos = $latest_videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+                }
+
+                if (videos_expiry_date_status() == 1 ) {
+                    $latest_videos = $latest_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
                 }
                 
             $latest_videos = $latest_videos->limit(50)->paginate($this->videos_per_page);

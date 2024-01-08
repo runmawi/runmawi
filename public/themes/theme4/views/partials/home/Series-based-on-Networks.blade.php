@@ -77,8 +77,8 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
 
                                                                 <div class="p-btns">
                                                                     <div class="d-flex align-items-center p-0">
-                                                                        <a href="{{ URL::to('play_series/' . $series->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a href="{{ URL::to('play_series/' . $series->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                        <a href="{{ route('network.play_series',$series->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                        <a href="{{ route('network.play_series',$series->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -87,11 +87,11 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                                                 <ul id="trending-slider-nav" class= "{{ 'pl-4 m-0  series-depends-episode-slider-'.$key }}" >
                                                                     @foreach ($series->Series_depends_episodes as $episode )
                                                                         <li>
-                                                                            <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
+                                                                            <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}">
                                                                                 <div class=" position-relative">
                                                                                     <img src="{{ $episode->image_url }}" class="img-fluid" >
                                                                                     <div class="controls">
-                                                                                        <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
+                                                                                        <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}                                                                                            ">
                                                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                                         </a>
 
@@ -99,10 +99,21 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                                                                             <button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button>
                                                                                         </nav>
                                                                                         
+                                                                                        @php
+                                                                                            $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first() ;
+                                                                                        @endphp
+                                                                                        
                                                                                         <p class="trending-dec" >
-                                                                                            {{ " S".$episode->season_id ." E".$episode->episode_order  }} 
+
+                                                                                            @if ( !is_null($series_seasons_name) )
+                                                                                                {{ "Season - ". $series_seasons_name  }}  <br>
+                                                                                            @endif
+
+                                                                                            {{ "Episode - " . optional($episode)->title  }} <br>
+
                                                                                             {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
                                                                                         </p>
+
                                                                                     </div>
                                                                                 </div>
                                                                             </a>

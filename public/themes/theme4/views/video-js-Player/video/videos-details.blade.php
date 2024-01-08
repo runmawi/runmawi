@@ -34,11 +34,11 @@
                 {{-- Message Note --}}
         <div id="message-note" ></div>
 
-        <div class="pageWrapper">
+        <div class="pageWrapper m-0">
                 
                             {{-- Breadcrumbs  --}}
             <div class="scp-breadcrumb">
-                <ul class="breadcrumb">
+                <ul class="breadcrumb p-0">
                 
                     <li><a href="{{ route('latest-videos') }}">{{ ucwords(__('videos')) }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
                 
@@ -100,67 +100,104 @@
                         </div>
                     @endif
 
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6 col-xs-12">
-                            <ul class="list-inline p-0 share-icons music-play-lists">
-                                        <!-- Watchlater -->
-                                <li class="share">
-                                    <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
-                                        <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
-                                    </span>
-                                    <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
-                                        <div class="playbtn"  data-toggle="modal">  
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Watchlist') }}</span>
-                                        </div>
-                                    </div>
-                                </li>
 
-                                        <!-- Wishlist -->
-                                <li class="share">
-                                    <span data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
-                                        <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'fa fa-heart' : 'fa fa-heart-o'  }}"></i>
-                                    </span>
-                                    <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
-                                        <div class="playbtn"  data-toggle="modal">  
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Wishlist') }}</span>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <!-- Like -->
-                                <li>
-                                    <span data-video-id={{ $videodetail->id }}  onclick="video_like(this)" >
-                                        <i class="video-like {{ !is_null( $videodetail->Like_exist ) ? 'ri-thumb-up-fill' : 'ri-thumb-up-line'  }}"></i>
-                                    </span>
-                                </li>
-
-                                <!-- Dislike -->
-                                <li>
-                                    <span data-video-id={{ $videodetail->id }}  onclick="video_dislike(this)" >
-                                        <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">  
-                            @if ( $videodetail->PPV_Exits == 1 && $videodetail->access == 'ppv' ||  !Auth::guest() && Auth::user()->role =="admin" 
-                            || !Auth::guest() &&  settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' 
-                            || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'subscriber' )  
-                                <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
-                                            <div class="playbtn" style="gap:5px">    {{-- Play --}}
-                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                                </svg>
-                                                <span class="text pr-2"> {{ __('Watch Now') }} </span>
+                    <div class="watch_buttons">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-xs-12">
+                                <ul class="list-inline p-0 share-icons music-play-lists">
+                                            <!-- Watchlater -->
+                                    <li class="share">
+                                        <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
+                                            <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
+                                        </span>
+                                        <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
+                                            <div class="playbtn"  data-toggle="modal">  
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Watchlist') }}</span>
                                             </div>
-                                    </a>
-                            @elseif(  !Auth::guest() &&  Auth::user()->role == 'subscriber' &&  settings_enable_rent() == 0  && $videodetail->access == 'ppv' 
-                                || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' || !Auth::guest() &&  Auth::user()->role == 'registered' && $videodetail->access == 'ppv')
+                                        </div>
+                                    </li>
 
-                                    <a class="btn" onclick="pay(<?php if($videodetail->access == 'ppv' && $videodetail->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($videodetail->ppv_price); }else if($videodetail->access == 'ppv' && $videodetail->ppv_price != null && $CurrencySetting == 0){ echo __(@$videodetail->ppv_price) ; } ?>)">
-                                            <div class="playbtn" style="gap:5px">    {{-- Rent Play --}}
+                                            <!-- Wishlist -->
+                                    <li class="share">
+                                        <span data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
+                                            <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'fa fa-heart' : 'fa fa-heart-o'  }}"></i>
+                                        </span>
+                                        <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
+                                            <div class="playbtn"  data-toggle="modal">  
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Wishlist') }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <!-- Like -->
+                                    <li>
+                                        <span data-video-id={{ $videodetail->id }}  onclick="video_like(this)" >
+                                            <i class="video-like {{ !is_null( $videodetail->Like_exist ) ? 'ri-thumb-up-fill' : 'ri-thumb-up-line'  }}"></i>
+                                        </span>
+                                    </li>
+
+                                    <!-- Dislike -->
+                                    <li>
+                                        <span data-video-id={{ $videodetail->id }}  onclick="video_dislike(this)" >
+                                            <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row pl-3">  
+                                @if ( $videodetail->PPV_Exits == 1 && $videodetail->access == 'ppv' ||  !Auth::guest() && Auth::user()->role =="admin" 
+                                || !Auth::guest() &&  settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' 
+                                || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'subscriber' )  
+                                    <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
+                                                <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                    </svg>
+                                                    <span class="text pr-2"> {{ __('Watch Now') }} </span>
+                                                </div>
+                                        </a>
+                                @elseif(  !Auth::guest() &&  Auth::user()->role == 'subscriber' &&  settings_enable_rent() == 0  && $videodetail->access == 'ppv' 
+                                    || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' || !Auth::guest() &&  Auth::user()->role == 'registered' && $videodetail->access == 'ppv')
+
+                                        <a class="btn" onclick="pay(<?php if($videodetail->access == 'ppv' && $videodetail->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($videodetail->ppv_price); }else if($videodetail->access == 'ppv' && $videodetail->ppv_price != null && $CurrencySetting == 0){ echo __(@$videodetail->ppv_price) ; } ?>)">
+                                                <div class="playbtn" style="gap:5px">    {{-- Rent Play --}}
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                    </svg>
+                                                    <span class="text pr-2"> {{ __('Purchase Now') }} </span>
+                                                </div>
+                                        </a>
+                                @elseif(  !Auth::guest() && Auth::user()->role != 'subscriber' && $videodetail->access == 'subscriber')
+
+                                        <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                                <div class="playbtn" style="gap:5px">    {{-- Rent Play --}}
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                    </svg>
+                                                    <span class="text pr-2"> {{ __('Subscribe Now') }} </span>
+                                                </div>
+                                        </a>
+
+                                @elseif(  Auth::guest() && $videodetail->access == 'guest')
+
+                                        <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
+                                                <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                    </svg>
+                                                    <span class="text pr-2"> {{ __('Watch Now') }} </span>
+                                                </div>
+                                        </a>
+
+                                @else
+
+                                    <a class="btn"  href="{{ URL::to('/login') }}" >
+                                            <div class="playbtn" style="gap:5px">    
                                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                                     <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                                     <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
@@ -168,76 +205,42 @@
                                                 <span class="text pr-2"> {{ __('Purchase Now') }} </span>
                                             </div>
                                     </a>
-                            @elseif(  !Auth::guest() && Auth::user()->role != 'subscriber' && $videodetail->access == 'subscriber')
 
-                                    <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
-                                            <div class="playbtn" style="gap:5px">    {{-- Rent Play --}}
-                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                                </svg>
-                                                <span class="text pr-2"> {{ __('Subscribe Now') }} </span>
+                                @endif
+
+
+                            @php include public_path('themes/theme4/views/partials/social-share.php'); @endphp 
+                            
+                            
+                        
+                            @if( optional($videodetail)->trailer_videos_url )
+
+                                <ul class="list-inline p-0 m-0 share-icons music-play-lists">
+                                    <li class="share sharemobres">
+                                        <span  data-toggle="modal" data-target="#video-js-trailer-modal">   {{-- Trailer --}}
+                                            <i class="fal fa-play"></i>
+                                        </span>
+
+                                        <div class="share-box box-watchtrailer">
+                                            <div class="playbtn"  data-toggle="modal" data-target="#video-js-trailer-modal">     {{-- Trailer --}}
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:84px">{{ __('Watch Trailer') }}</span>
                                             </div>
-                                    </a>
-
-                            @elseif(  Auth::guest() && $videodetail->access == 'guest')
-
-                                    <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
-                                            <div class="playbtn" style="gap:5px">    {{-- Play --}}
-                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                                </svg>
-                                                <span class="text pr-2"> {{ __('Watch Now') }} </span>
-                                            </div>
-                                    </a>
-
-                            @else
-
-                                <a class="btn"  href="{{ URL::to('/login') }}" >
-                                        <div class="playbtn" style="gap:5px">    
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                                <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                                <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                            </svg>
-                                            <span class="text pr-2"> {{ __('Purchase Now') }} </span>
                                         </div>
-                                </a>
+                                    </li>
+                                </ul>
+
+                                @php include public_path('themes/theme4/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
 
                             @endif
-
-
-                        @php include public_path('themes/theme4/views/partials/social-share.php'); @endphp 
-                         
-                        
-                       
-                        @if( optional($videodetail)->trailer_videos_url )
-
-                            <ul class="list-inline p-0 m-0 share-icons music-play-lists">
-                                <li class="share sharemobres">
-                                    <span  data-toggle="modal" data-target="#video-js-trailer-modal">   {{-- Trailer --}}
-                                        <i class="fal fa-play"></i>
-                                    </span>
-
-                                    <div class="share-box box-watchtrailer">
-                                        <div class="playbtn"  data-toggle="modal" data-target="#video-js-trailer-modal">     {{-- Trailer --}}
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:84px">{{ __('Watch Trailer') }}</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-
-                            @php include public_path('themes/theme4/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
-
-                        @endif
-                        
-                        
-                        <div class="circleRating">  {{-- Rating --}}
-                            <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar" >
-                                <path class="CircularProgressbar-trail" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 0px;"></path>
-                                <path class="CircularProgressbar-path" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke: orange; stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 101.159px;"></path>
-                                <text class="CircularProgressbar-text" x="50" y="50"> {{ optional($videodetail)->rating }}  </text>
-                            </svg>
+                            
+                            
+                            <div class="circleRating">  {{-- Rating --}}
+                                <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar" >
+                                    <path class="CircularProgressbar-trail" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 0px;"></path>
+                                    <path class="CircularProgressbar-path" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke: orange; stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 101.159px;"></path>
+                                    <text class="CircularProgressbar-text" x="50" y="50"> {{ optional($videodetail)->rating }}  </text>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
@@ -245,7 +248,7 @@
                         <div class="overview">
                             <div class="heading">{{ __('Description') }}</div>
                             <div class="description">
-                                {!!  html_entity_decode( optional($videodetail)->description ) !!}
+                                {!! strlen($videodetail->description) > 200 ?  html_entity_decode(substr($videodetail->description, 0, 200 )) . "..." . " <span class='text-primary' data-bs-toggle='modal' data-bs-target='#video-details-description'>See More</span>" :  html_entity_decode($videodetail->description)  !!}
                             </div>
                         </div>
                     @endif
@@ -526,6 +529,41 @@
                 <span class="closeBtn">{{ __('Close') }}</span>
                 <div style="width: 100%; height: 100%;">
                     <!-- Placeholder for video player -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- Model for banner description -->
+
+    <div class="modal fade info_model" id='video-details-description' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+            <div class="container">
+                <div class="modal-content" style="border:none;">
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <img  src="{{ $videodetail->image_url }}" width="100%" alt="">
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <h2 class="caption-h2">{{ $videodetail->title }}</h2>
+
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-2">
+                                            <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="trending-dec mt-4">{!! html_entity_decode( optional($videodetail)->description ) !!}</div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

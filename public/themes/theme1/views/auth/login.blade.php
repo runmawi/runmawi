@@ -100,7 +100,7 @@
             width: 100%;
             padding: 10px;
             height: 59px;
-            padding-left: 55px;
+            padding-left: 77px;
         }
 
 
@@ -147,6 +147,16 @@
             padding: 40px;
             padding-top: 100px;
             border-radius: 20px;
+        }
+        .reveal {
+            margin-left: -57px;
+            height: 45px !important;
+            background: transparent !important;
+            color: #fff !important;
+            position: absolute;
+            right: 0px;
+            border-radius: 0!important;
+            top: -61px;
         }
     </style>
 </head>
@@ -233,6 +243,14 @@
                                                 placeholder="{{ __('PASSWORD') }}" name="password" required
                                                 autocomplete="current-password">
                                         </div>
+                                        <div class="position-relative">
+                                            <span class="input-group-btn" id="eyeSlash">
+                                                <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                            </span>
+                                            <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                                <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                            </span>
+                                        </div>
                                     </div>
 
                                     <div class="links text-right">
@@ -276,6 +294,36 @@
             }, 3000);
         })
     </script>
+      <script>
+    function visibility1() {
+  var x = document.getElementById('password');
+  if (x.type === 'password') {
+    x.type = "text";
+    $('#eyeShow').show();
+    $('#eyeSlash').hide();
+  }else {
+    x.type = "password";
+    $('#eyeShow').hide();
+    $('#eyeSlash').show();
+  }
+}
+</script>
+    <script>
+           $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
+       </script>
 </body>
 
 @php

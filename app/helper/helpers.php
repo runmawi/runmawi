@@ -1367,6 +1367,12 @@ function videos_expiry_date_status()
     return  $videos_expiry_date_status; 
 }
 
+function EPG_Status()
+{
+    $EPG_Status = App\Setting::pluck('EPG_Status')->first();
+    return  $EPG_Status; 
+}
+
 function Enable_Extract_Image()
 {
     $enable_extract_image = App\SiteTheme::pluck('enable_extract_image')->first();

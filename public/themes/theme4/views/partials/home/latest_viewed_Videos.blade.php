@@ -2,6 +2,8 @@
 
    // latest viewed Videos
 
+   $check_Kidmode = 0 ;
+
    if(Auth::guest() != true ){
 
         $data =  App\RecentView::join('videos', 'videos.id', '=', 'recent_views.video_id')
@@ -10,6 +12,15 @@
 
             if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
                 $data = $data  ->whereNotIn('videos.id',Block_videos());
+            }
+            
+            if( videos_expiry_date_status() == 1 ){
+                $data = $data->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+            }
+
+            if( !Auth::guest() && $check_Kidmode == 1 )
+            {
+                $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
             }
             
             $data = $data->get();
@@ -41,6 +52,11 @@
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $latest_view_video->image ? URL::to('public/uploads/images/'.$latest_view_video->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                        
+                                            @if (videos_expiry_date_status() == 1 && optional($latest_view_video)->expiry_date)
+                                                <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
+                                            @endif
+
                                         </div>
                                     </a>
                                 </li>
@@ -59,13 +75,14 @@
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
                                                     <div class="caption pl-4">
-                                                            <h2 class="caption-h2"> {{ strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title }}</h2>
 
-                                                        {{-- @if ( $latest_view_video->year != null && $latest_view_video->year != 0)
-                                                            <div class="d-flex align-items-center text-white text-detail">
-                                                                <span class="trending">{{ ($latest_view_video->year != null && $latest_view_video->year != 0) ? $latest_video->year : null   }}</span>
-                                                            </div>
-                                                        @endif  --}}
+                                                        <h2 class="caption-h2"> {{ strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title }}</h2>
+
+                                                        @if (videos_expiry_date_status() == 1 && optional($latest_view_video)->expiry_date)
+                                                            <ul class="vod-info">
+                                                                <li>{{ "Expiry In ". Carbon\Carbon::parse($latest_view_video->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                                            </ul>
+                                                        @endif
 
                                                         @if (optional($latest_view_video)->description)
                                                             <div class="trending-dec">{!! html_entity_decode( optional($latest_view_video)->description) !!}</div>

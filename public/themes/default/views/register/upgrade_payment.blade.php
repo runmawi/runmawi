@@ -739,6 +739,7 @@ background-color: #000;padding: 10px!important;}
                         <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
                             {{ __('Pay Now') }}
                         </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
                   
                                             {{-- Paystack --}}
@@ -746,6 +747,7 @@ background-color: #000;padding: 10px!important;}
                             <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert" >
                                 {{ __('Pay Now') }}
                             </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
 
                                             {{-- Razorpay --}}
@@ -753,6 +755,7 @@ background-color: #000;padding: 10px!important;}
                         <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert" >
                             {{ __('Pay Now') }}
                         </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
                     
                     
@@ -762,6 +765,7 @@ background-color: #000;padding: 10px!important;}
                         <button  onclick="cinetpay_checkout()" data-subscription-price='100' type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button" >
                         {{ __('Pay Now') }}
                         </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
 
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('plan') }}Start Your Free Trial</button> --}}
