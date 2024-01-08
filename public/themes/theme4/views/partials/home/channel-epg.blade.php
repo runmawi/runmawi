@@ -8,7 +8,103 @@
                     return $item;
                 });
 
-@endphp                                                          
+@endphp    
+              
+
+<style>
+    .time{
+        width: 105px;
+        font-size: 18px;
+        height: 100%;
+        background-color: rgba(129, 128, 128, 0.1);
+
+    }
+    table.table tr{
+        border-bottom: 1px solid rgba(255,255,255,0.5);
+        border-left: 1px solid rgba(255,255,255,0.5);
+        border-right: 1px solid rgba(255,255,255,0.5);
+
+    }
+    .table td, .table th{
+        border-top:none;
+    }
+    .nav-tabs{
+        border-right: 1px solid;
+        border-top: 1px solid;
+        border-left: 1px solid;
+    }
+    ul.nav.nav-tabs li{
+        white-space: nowrap;
+        background-color: rgba(0, 0, 0, 0.75);
+        border: 1px solid rgba(255,255,255,0.5);
+        padding: 8px 12px;
+        color: #fff;
+        outline: none;
+        line-height: 1;
+        font-weight: bold;
+        font-size: calc(12px + 0.5vmin);
+        cursor: pointer;
+        -webkit-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+        height: 48px;
+        display:flex;
+        align-items:center;
+    }
+    .scroller {
+        text-align:center;
+        cursor:pointer;
+        display:none;
+        padding:7px;
+        padding-top:11px;
+        white-space:no-wrap;
+        vertical-align:middle;
+        background-color:#fff;
+    }
+
+    .scroller-right{
+        float:right;
+    }
+
+    .scroller-left {
+        float:left;
+    }
+    ul.nav.nav-tabs.m-0 li a{
+        color: white;
+    }
+    .tabs__scroller {
+        background: #0195e7;
+        border: 0 none;
+        color: #fff;
+        font-size: 1em;
+        padding: 0 0.75em;
+        .fa {
+            position: relative;
+        }
+        &--left .fa {
+            left: -1px;
+        }
+        &--right .fa {
+            right: -2px;
+        }
+        &[disabled] {
+            opacity: 0.5;
+        }
+        &:focus {
+            outline: none;
+        }
+    }
+    button.tabs__scroller.tabs__scroller--right.js-action--scroll-right{
+        position: absolute;
+        right: 0;
+        height: 100%;
+    }
+    .panel-heading.panel-heading-nav.d-flex {
+        border: 1px solid;
+    }
+    .fade:not(.show){
+        opacity:1;
+    }
+</style>
 
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
@@ -144,16 +240,31 @@
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
                         <div class="modal-content" style="border:none;">
-                            <div class="modal-body">
+                            <div class="modal-body" style="padding: 0 14rem;">
                                 <div class="col-lg-12">
                                     <div class="row">
-                                        <div class="container">
+                                        <div class="container m-0">
 
-                                            <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
+
+
+                                        <div class="row" style="margin-bottom:4%;">
+                                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                                    <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-2"  style="display:flex;align-items:center;justify-content:end;">
+                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2> -->
 
                                             <div class="panel panel-default">
-                                                <div class="panel-heading panel-heading-nav">
-                                                    <ul class="nav nav-tabs">
+                                                <div class="panel-heading panel-heading-nav d-flex position-relative">
+                                                    <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
+                                                    <ul class="nav nav-tabs m-0">
                                                         
                                                         <li role="presentation" class="active">
                                                             <a href="{{ '#one' . $key }}" aria-controls="one" role="tab" data-toggle="tab">Monday</a>
@@ -162,8 +273,21 @@
                                                         <li role="presentation">
                                                             <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
                                                         </li>
+                                                        <li role="presentation">
+                                                            <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
+                                                        </li>
+                                                        <li role="presentation">
+                                                            <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
+                                                        </li>
+                                                        <li role="presentation">
+                                                            <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
+                                                        </li>
+                                                        <li role="presentation">
+                                                            <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
+                                                        </li>
 
                                                     </ul>
+                                                    <button class="tabs__scroller tabs__scroller--right js-action--scroll-right "><i class="fa fa-chevron-right"></i></button>
                                                 </div>
                                                 <div class="panel-body">
                                                     <div class="tab-content">
@@ -173,16 +297,16 @@
 
                                                                 <tbody>
                                                                     <tr>
-                                                                        <th scope="row">12.30 <small>PM</small></th>
-                                                                        <td>Mark</td>
+                                                                        <th scope="row" class="time">12.30 <small>PM</small></th>
+                                                                        <td><h6>Mark</h6></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th scope="row">1.00 <small>PM</small></th>
-                                                                        <td>Jacob</td>
+                                                                        <th scope="row" class="time">1.00 <small>PM</small></th>
+                                                                        <td><h6>Jacob</h6></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th scope="row">2.00 <small>PM</small></th>
-                                                                        <td>Larry</td>
+                                                                        <th scope="row" class="time">2.00 <small>PM</small></th>
+                                                                        <td><h6>Larry</h6></td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -191,16 +315,16 @@
                                                             <table class="table">
                                                                 <tbody>
                                                                     <tr>
-                                                                        <th scope="row">12.30 <small>AM</small></th>
-                                                                        <td>Mark 1</td>
+                                                                        <th scope="row" class="time">12.30 <small>AM</small></th>
+                                                                        <td><h6>Mark 1</h6></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th scope="row">1.00 <small>AM</small></th>
-                                                                        <td>Jacob 2</td>
+                                                                        <th scope="row" class="time">1.00 <small>AM</small></th>
+                                                                        <td><h6>Jacob 2</h6></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th scope="row">2.00 <small>AM</small></th>
-                                                                        <td>Larry 3 </td>
+                                                                        <th scope="row" class="time">2.00 <small>AM</small></th>
+                                                                        <td><h6>Larry 3</h6> </td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -282,4 +406,69 @@
             $('.epg-channel-slider').hide();
         });
     });
+</script>
+
+<script>
+    var hidWidth;
+        var scrollBarWidths = 40;
+
+        var widthOfList = function(){
+        var itemsWidth = 0;
+        $('.list li').each(function(){
+            var itemWidth = $(this).outerWidth();
+            itemsWidth+=itemWidth;
+        });
+        return itemsWidth;
+        };
+
+        var widthOfHidden = function(){
+        return (($('.wrapper').outerWidth())-widthOfList()-getLeftPosi())-scrollBarWidths;
+        };
+
+        var getLeftPosi = function(){
+        return $('.list').position().left;
+        };
+
+        var reAdjust = function(){
+        if (($('.wrapper').outerWidth()) < widthOfList()) {
+            $('.scroller-right').show();
+        }
+        else {
+            $('.scroller-right').hide();
+        }
+        
+        if (getLeftPosi()<0) {
+            $('.scroller-left').show();
+        }
+        else {
+            $('.item').animate({left:"-="+getLeftPosi()+"px"},'slow');
+            $('.scroller-left').hide();
+        }
+        }
+
+        reAdjust();
+
+        $(window).on('resize',function(e){  
+            reAdjust();
+        });
+
+        $('.scroller-right').click(function() {
+        
+        $('.scroller-left').fadeIn('slow');
+        $('.scroller-right').fadeOut('slow');
+        
+        $('.list').animate({left:"+="+widthOfHidden()+"px"},'slow',function(){
+
+        });
+        });
+
+        $('.scroller-left').click(function() {
+        
+            $('.scroller-right').fadeIn('slow');
+            $('.scroller-left').fadeOut('slow');
+        
+            $('.list').animate({left:"-="+getLeftPosi()+"px"},'slow',function(){
+            
+            });
+        });    
 </script>
