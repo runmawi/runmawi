@@ -330,7 +330,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
                         <p class="" style=";font-size: 100%;color: white;font-weight: 700;">
                             <?= $episode->title ?></p>
-                        <p class="desc"><?php echo $series->details; ?></p>
+                        <p class="desc"><?php echo $episode->episode_description; ?></p>
                     </div>
 
                     <!-- <div class="col-md-2 text-center text-white">

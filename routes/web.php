@@ -26,6 +26,7 @@ Route::get('/paypal/create-payment', 'PayPalController@createPayment');
 Route::get('/paypal/execute-payment', 'PayPalController@executePayment');
 Route::post('paypal-ppv-video', 'PaymentController@paypalppvVideo');
 
+Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
 
 $router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
@@ -473,7 +474,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/', 'AdminDashboardController@index');
     Route::get('/mobileapp', 'AdminUsersController@mobileapp');
-    Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
 
     // Channel Schedule

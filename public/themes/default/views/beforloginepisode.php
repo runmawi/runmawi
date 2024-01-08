@@ -286,7 +286,7 @@
                </p>
                <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
                   ?></p>
-               <p class="desc"><?php echo $series->details;?></p>
+               <p class="desc"><?php echo $episode->episode_description;?></p>
             </div>
             <!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
                ?>

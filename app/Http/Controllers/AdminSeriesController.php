@@ -3168,7 +3168,7 @@ class AdminSeriesController extends Controller
 
             );
 
-            return view('admin.series.move_series.move_cpp_series',$create_seasondata);
+            return view('admin.series.move_series.move_cpp_series',$data);
         }
 
         public function MoveCPPPartner(Request $request)

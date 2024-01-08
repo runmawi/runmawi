@@ -38,6 +38,8 @@ use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
 use Illuminate\Support\Facades\Storage;
+use App\UserTranslation;
+use Session;
 
 class AdminDashboardController extends Controller
 {
@@ -449,8 +451,58 @@ class AdminDashboardController extends Controller
     public function TranslateLanguage(Request $request){
 
         try {
+            
 
-            $Setting = Setting::first();
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+
+            if(!Auth::guest()){
+
+                $Setting =  Setting::first();
+                $data = Session::all();
+                $subuser_id = (!empty($data['subuser_id'])) ? $data['subuser_id'] : null ;
+                $Subuserranslation = UserTranslation::where('multiuser_id',$subuser_id)->first();
+                $UserTranslation = UserTranslation::where('user_id',Auth::user()->id)->first();
+
+                if($subuser_id != null){
+                    $Subuserranslation = UserTranslation::where('multiuser_id',$subuser_id)->first();
+                    if(!empty($Subuserranslation)){
+                        UserTranslation::where('multiuser_id',$subuser_id)->first()->update([
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                    }else{
+                        UserTranslation::create([
+                            'multiuser_id'        =>  $subuser_id,
+                            'translate_language'  => $request->languageCode ,
+                        ]);
+                    }
+                }else if(!empty($UserTranslation)){
+                    UserTranslation::where('user_id',Auth::user()->id)->first()->update([
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                }else{
+                    UserTranslation::create([
+                        'user_id'               =>  Auth::user()->id,
+                        'translate_language'    => $request->languageCode ,
+                    ]);
+                }
+            }else{
+
+                $UserTranslation = UserTranslation::where('ip_address',$userIp)->first();
+
+                if(!empty($UserTranslation)){
+                    UserTranslation::where('ip_address',$userIp)->first()->update([
+                    'translate_language'  => $request->languageCode ,
+                ]);
+                }else{
+                    UserTranslation::create([
+                        'ip_address'        =>  $userIp,
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                }
+
+            }
+
             Setting::first()
             ->update([
                     'translate_language'  => $request->languageCode ,
