@@ -490,6 +490,9 @@
    background-color: <?php echo GetLightBg(); ?>;
    color: <?php echo GetLightText(); ?>;
    }
+   body.light-theme #translator-table_filter input[type="search"]{
+   color: <?php echo GetLightText(); ?>;
+   }
    body.light-theme .s-icon{
    background-color: <?php echo GetLightBg(); ?>; 
    box-shadow: 0 0 50px #ccc;
@@ -1928,6 +1931,28 @@
          
 
       </script>
+
+
+
+<!-- slider video trailer script  -->
+      <script>
+        $(document).ready(function () {
+            const imageContainer = document.getElementById("image-container");
+            const video = document.querySelector(".myvideos");
+            video.style.opacity = 0;
+
+            // Function to play the video after 5 seconds
+            function playVideoAfterDelay() {
+                setTimeout(function () {
+                    video.play();
+                    video.style.opacity = 1;
+                }, 5000); // 5000 milliseconds (5 seconds)
+            }
+
+            // Call the function to play the video after a delay
+            playVideoAfterDelay();
+        });
+    </script>
     </header>
     <!-- Header End -->
 

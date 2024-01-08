@@ -413,6 +413,9 @@
         background: #000 !important;
 
     }
+    body.light-theme #translator-table_filter input[type="search"]{
+        color: <?php echo GetLightText(); ?>;
+    }
 
     body.light-theme #menuToggle span {
         background: #000 !important;

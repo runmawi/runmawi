@@ -161,6 +161,7 @@ if (!empty($data['password_hash'])) {
     body.dark .iq-bg-warning{color: <?php echo GetAdminDarkText(); ?>!important; background:transparent!important;}
     body.dark .iq-bg-success{color: <?php echo GetAdminDarkText(); ?>!important; background:transparent!important;}
     body.dark .iq-bg-danger{ color: <?php echo GetAdminDarkText(); ?>!important; background:transparent!important;}
+    body.dark input[type="search"]{ color: <?php echo GetAdminDarkText(); ?>!important; }
     body.dark #progressbar li.active{color: blue!important;}
     body.dark #progressbar li img{filter: invert(1);}
     body.dark .ply{filter: invert(1);}
