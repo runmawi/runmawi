@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAdsMakerStatusToPlayeruiTable extends Migration
+class AddAdsMarkerStatusToPlayeruiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddAdsMakerStatusToPlayeruiTable extends Migration
      */
     public function up()
     {
-        Schema::table('Playerui', function (Blueprint $table) {
-            $table->tinyInteger('ads_maker_status')->default(1);
+        Schema::table('playerui', function (Blueprint $table) {
+            $table->tinyInteger('ads_marker_status')->default(1);
         });
     }
 
@@ -25,8 +25,8 @@ class AddAdsMakerStatusToPlayeruiTable extends Migration
      */
     public function down()
     {
-        Schema::table('Playerui', function (Blueprint $table) {
-            Schema::dropIfExists('ads_maker_status');
+        Schema::table('playerui', function (Blueprint $table) {
+            Schema::dropIfExists('ads_marker_status');
         });
     }
 }

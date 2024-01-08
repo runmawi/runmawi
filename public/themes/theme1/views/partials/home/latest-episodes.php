@@ -21,7 +21,7 @@
               
                 <div class="hover-buttons d-flex">
                 <a class="text-white " href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
-                     <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                    <i class="fa fa-play mr-1"></i> <?= ('Watch now') ?> 
                   
                   </a>
                 </div>

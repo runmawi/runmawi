@@ -1009,6 +1009,30 @@ $('#submit-new-cat').click(function(){
     input.attr('type') === 'password' ? input.attr('type','text') : input.attr('type','password')
 });
 </script>
+
+<?php 
+$lastSegment = request()->segment(count(request()->segments()));
+?>
+<script>
+        var lastSegment =  <?php  echo json_encode( $lastSegment); ?>; 
+      // alert(lastSegment);
+      if(lastSegment == 'activationcode'){
+
+         $(".targetDiv").hide(); 
+        $(".targetDiv#div8").show();
+        $(".showSingle .dimg").hide();
+
+      }else{
+
+        $(".targetDiv").hide(); 
+        $(".targetDiv#div1").show();
+        $(".showSingle .dimg").hide();
+        
+      }
+</script>
+
+
+
 @php
 include(public_path('themes/default/views/footer.blade.php'));
 @endphp
