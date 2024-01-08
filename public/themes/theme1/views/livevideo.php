@@ -586,15 +586,10 @@ else{
 
                 <div class="">
                     <div class=" container-fluid video-list you-may-like overflow-hidden">
-                        <?php 
-                            if(isset($Related_videos)) :
-                                foreach($Related_videos as $related_video): ?>
-                                    <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
-                                    <div class="slider">
-                                        <?php include('partials/live_related_video.blade.php');?>
-                                    </div>
-                                <?php endforeach;
-                            endif; ?>
+                        <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
+                        <div class="slider">
+                            <?php include('partials/live_related_video.blade.php');?>
+                        </div>
                     </div>
                 </div>
             </div>
