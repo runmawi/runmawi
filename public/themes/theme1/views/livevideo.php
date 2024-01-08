@@ -30,14 +30,14 @@
     top: 0px;
     left: 0;
     width: 100%;
-    height: 425px !important;
+    /* height: 425px !important; */
     height: 100%;
 }
 
-.vjs-theme-fantasy .vjs-control-bar {
+/* .vjs-theme-fantasy .vjs-control-bar {
     top: 85%;
     height: 64px;
-}
+} */
 
 .live-stream-player-dimensions.vjs-fluid {
     padding-top: 31.25% !important;
