@@ -65,7 +65,7 @@
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
                                                                 <a href="{{ route('Front-End.Channel-EPG',$epg_channel_data->slug )}}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-details-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
+                                                                <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
                                                                 <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-channel-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                             </div>
                                                         </div>
@@ -138,36 +138,76 @@
         @endforeach
 
         {{-- Events Modal --}}
-        
-        @foreach ($data as $key => $epg_channel_data )
-            <div class="modal fade info_model" id="{{ "Home-epg-channel-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+
+        @foreach ($data as $key => $epg_channel_data)
+            <div class="modal fade info_model" id="{{ 'Home-epg-events-Modal-' . $key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
                         <div class="modal-content" style="border:none;">
                             <div class="modal-body">
                                 <div class="col-lg-12">
                                     <div class="row">
-                                        <div class="col-lg-6">
-                                            <img  src="{{ $epg_channel_data->Player_image_url }}" alt="" width="100%">
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="col-lg-10 col-md-10 col-sm-10">
-                                                    <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
+                                        <div class="container">
 
+                                            <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
+
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading panel-heading-nav">
+                                                    <ul class="nav nav-tabs">
+                                                        
+                                                        <li role="presentation" class="active">
+                                                            <a href="{{ '#one' . $key }}" aria-controls="one" role="tab" data-toggle="tab">Monday</a>
+                                                        </li>
+
+                                                        <li role="presentation">
+                                                            <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
+                                                        </li>
+
+                                                    </ul>
                                                 </div>
-                                                <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
-                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                    </button>
+                                                <div class="panel-body">
+                                                    <div class="tab-content">
+                                                        <div role="tabpanel" class="tab-pane fade in active"
+                                                            id="{{ 'one' . $key }}">
+                                                            <table class="table table-striped">
+
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">12.30 <small>PM</small></th>
+                                                                        <td>Mark</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="row">1.00 <small>PM</small></th>
+                                                                        <td>Jacob</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="row">2.00 <small>PM</small></th>
+                                                                        <td>Larry</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="{{ 'two' . $key }}">
+                                                            <table class="table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">12.30 <small>AM</small></th>
+                                                                        <td>Mark 1</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="row">1.00 <small>AM</small></th>
+                                                                        <td>Jacob 2</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="row">2.00 <small>AM</small></th>
+                                                                        <td>Larry 3 </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            @if (optional($epg_channel_data)->description)
-                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($epg_channel_data)->description) !!}</div>
-                                            @endif
-
-                                            <a href="#" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
                                         </div>
                                     </div>
                                 </div>
