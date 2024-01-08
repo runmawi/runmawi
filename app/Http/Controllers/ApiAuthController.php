@@ -8964,7 +8964,7 @@ public function Adstatus_upate(Request $request)
     ->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['video_url'] = URL::to('/').'/storage/app/public/';
-      $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/'.$item->reelvideo;
+      $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/shorts/'.$item->reelvideo;
       $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
       $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
       $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
