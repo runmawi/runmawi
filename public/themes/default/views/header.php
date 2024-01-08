@@ -455,6 +455,9 @@
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
    }  
+   body.light-theme #translator-table_filter input[type="search"]{
+   color: <?php echo GetLightText(); ?>;
+   }
    body.light-theme .p-tag1{
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;

@@ -470,6 +470,9 @@
     body.light-theme .media-body h6 {
         color: <?php echo GetLightText(); ?>;
     }
+    body.light-theme #translator-table_filter input[type="search"]{
+        color: <?php echo GetLightText(); ?>;
+    }
 
     body.light-theme header .navbar ul li {
         font-weight: 400;
