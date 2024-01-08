@@ -1043,7 +1043,7 @@
                                     </li>
 
                                     
-                        <?php if(!Auth::guest()){ ?>
+                        <?php // if(!Auth::guest()){ ?>
 
                                 <!-- Translator Choose -->
                            <li class="nav-item nav-icon  ml-3">
@@ -1074,7 +1074,7 @@
                            </li>
 
 
-                        <?php } ?>
+                        <?php // } ?>
 
                                     <li class="nav-item nav-icon">
                                         <!--<a href="#" class="search-toggle" data-toggle="search-toggle">

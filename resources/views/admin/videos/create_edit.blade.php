@@ -651,7 +651,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="d-flex">
                               @foreach($Reels_videos as $reelsVideo)
                                  <video width="200" height="200" controls style="padding: 6px;">
-                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $reelsVideo->reels_videos }}" type="video/mp4">
+                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/shorts/' . $reelsVideo->reels_videos }}" type="video/mp4">
                                  </video>
                               @endforeach
                            </div>

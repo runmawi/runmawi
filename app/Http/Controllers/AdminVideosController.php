@@ -88,6 +88,10 @@ use App\VideoPlaylist as VideoPlaylist;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\VideoExtractedImages;
+use FFMpeg\Filters\Video\VideoResizeFilter;
+use FFMpeg\Filters\Video\Resizer;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class AdminVideosController extends Controller
 {
@@ -2167,24 +2171,77 @@ class AdminVideosController extends Controller
                     public_path("uploads/reelsVideos"),
                     $reelvideo_name
                 );
+                $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+                $shorts_name = 'shorts_'.$reelvideo_name; 
+                $videoPath = str_replace('\\', '/', $videoPath);
+                $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
 
-                $ffmpeg = \FFMpeg\FFMpeg::create();
-                $videos = $ffmpeg->open(
-                    "public/uploads/reelsVideos" . "/" . $reelvideo_name
-                );
-                $videos
-                    ->filters()
-                    ->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-                $videos->save(
-                    new \FFMpeg\Format\Video\X264("libmp3lame"),
-                    "public/uploads/reelsVideos" . "/" . $reelvideo_names
-                );
+                // Ensure the output directory exists
+                File::ensureDirectoryExists(dirname($outputPath));
 
+                // FFmpeg command to resize to 9:16 aspect ratio
+                $command = [
+                    'ffmpeg',
+                    '-y', // Add this option to force overwrite
+                    '-i', $videoPath,
+                    '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+                    '-c:a', 'copy',
+                    $outputPath,
+                ];
+
+
+
+                $process = new Process($command);
+
+                try {
+                    $process->mustRun();
+                    // return 'Video resized successfully!';
+                } catch (ProcessFailedException $exception) {
+                    // Error message
+                    throw new \Exception('Error resizing video: ' . $exception->getMessage());
+                }
+
+            // dd('done');
+
+                // try {
+                //     $outputPath = public_path('uploads/reelsVideos/shorts/output.mp4');
+                //     if (!file_exists(dirname($outputPath))) {
+                //         mkdir(dirname($outputPath), 0755, true);
+                //     }
+                
+                //     $ffmpeg = \FFMpeg\FFMpeg::create();
+                //     $video = $ffmpeg->open(public_path('uploads/reelsVideos'.'/'.$reelvideo_name));
+                
+                //     $dimension = new Dimension(400, 720); // Adjust dimensions as needed
+                
+                //     $video->filters()->resize($dimension)->synchronize();
+                
+                //     $format = new X264('libmp3lame', 'libx264');
+                //     $format->setKiloBitrate(1000);
+                //     $video->save($format, $outputPath);
+                // } catch (\Exception $e) {
+                //     \Illuminate\Support\Facades\Log::error($e->getMessage());
+                //     dd($e->getMessage());
+                // }
+
+                // $ffmpeg = \FFMpeg\FFMpeg::create();
+                // $videos = $ffmpeg->open(
+                //     "public/uploads/reelsVideos" . "/" . $reelvideo_name
+                // );
+                // $videos
+                //     ->filters()
+                //     ->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+                // $videos->save(
+                //     new \FFMpeg\Format\Video\X264("libmp3lame"),
+                //     "public/uploads/reelsVideos" . "/" . $reelvideo_names
+                // );
+
+                // dd('done');
                 unlink($reelvideo);
 
                 $Reels_videos = new ReelsVideo();
                 $Reels_videos->video_id = $video->id;
-                $Reels_videos->reels_videos = $reelvideo_names;
+                $Reels_videos->reels_videos = $shorts_name;
                 $Reels_videos->reels_videos_slug = $reel_videos_slug;
                 $Reels_videos->save();
 
@@ -3177,6 +3234,31 @@ class AdminVideosController extends Controller
 
                 $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
 
+                $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+                $shorts_name = 'shorts_'.$reelvideo_name; 
+                $videoPath = str_replace('\\', '/', $videoPath);
+                $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+                // Ensure the output directory exists
+                File::ensureDirectoryExists(dirname($outputPath));
+                // FFmpeg command to resize to 9:16 aspect ratio
+                $command = [
+                    'ffmpeg',
+                    '-y', // Add this option to force overwrite
+                    '-i', $videoPath,
+                    '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+                    '-c:a', 'copy',
+                    $outputPath,
+                ];
+                $process = new Process($command);
+
+                try {
+                    $process->mustRun();
+                    // return 'Video resized successfully!';
+                } catch (ProcessFailedException $exception) {
+                    throw new \Exception('Error resizing video: ' . $exception->getMessage());
+                }
+
+
                 $ffmpeg = \FFMpeg\FFMpeg::create();
                 $videos = $ffmpeg->open('public/uploads/reelsVideos' . '/' . $reelvideo_name);
                 $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
@@ -3186,7 +3268,7 @@ class AdminVideosController extends Controller
 
                 $Reels_videos = new ReelsVideo();
                 $Reels_videos->video_id = $video->id;
-                $Reels_videos->reels_videos = $reelvideo_names;
+                $Reels_videos->reels_videos = $shorts_name;
                 $Reels_videos->reels_videos_slug = $reel_videos_slug;
                 $Reels_videos->save();
 
