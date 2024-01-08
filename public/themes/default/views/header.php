@@ -10,6 +10,43 @@
       $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
 
       @$translate_language = App\Setting::pluck('translate_language')->first();
+
+
+
+      if(Auth::guest()){
+         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+         $userIp = $geoip->getip();
+         $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+         if(!empty($UserTranslation)){
+            $translate_language = $UserTranslation->translate_language;
+         }else{
+            $translate_language = 'en';
+         }
+     }else if(!Auth::guest()){
+
+         $subuser_id=Session::get('subuser_id');
+         if($subuser_id != ''){
+            $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+            if(!empty($Subuserranslation)){
+               $translate_language = $Subuserranslation->translate_language;
+            }else{
+               $translate_language = 'en';
+            }
+         }else if(Auth::user()->id != ''){
+            $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+            if(!empty($UserTranslation)){
+               $translate_language = $UserTranslation->translate_language;
+            }else{
+               $translate_language = 'en';
+            }
+         }else{
+            $translate_language = 'en';
+         }
+
+     }else{
+         $translate_language = 'en';
+     }
       \App::setLocale(@$translate_language);
 
 
@@ -1061,7 +1098,7 @@
                               
                            </li>
                            
-                           <?php if(!Auth::guest()){ ?>
+                           <?php //if(!Auth::guest()){ ?>
 
                            <!-- Translator Choose -->
                            <li class="nav-item nav-icon  ml-3">
@@ -1089,7 +1126,7 @@
 
                                        <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?>
-                                          <?php if($Language->code == $settings->translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
+                                          <?php if($Language->code == $translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
                                        </a>
                                        <?php endforeach; ?>
                                        <!-- <a href="#" class="iq-sub-card">
@@ -1106,7 +1143,7 @@
                               </div>
                            </li>
    
-                           <?php } ?>
+                           <?php // } ?>
 
                            <li class="nav-item nav-icon">
 
@@ -1894,7 +1931,7 @@
          var languageCode = $(this).data("language-code");
 
       $.ajax({
-            url: '<?php echo URL::to("admin/translate_language") ;?>',
+            url: '<?php echo URL::to("/translate_language") ;?>',
             method: 'post',
             data: 
                {
