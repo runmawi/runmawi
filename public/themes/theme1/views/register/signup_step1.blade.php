@@ -216,14 +216,17 @@ i.fa.fa-google-plus {
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                        
-                        <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                            <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
-                        <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                            <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
-                        <?php }else { ?> 
-                            <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
-                        <?php } ?>
+
+                        <a href="{{ URL::to('home') }}">
+                            
+                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
+                            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                                <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
+                            <?php }else { ?> 
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                            <?php } ?>
+                        </a>
 
                       <h3 class="mb-3 text-center"><?php echo __('Sign Up'); ?></h3>
                       </div>

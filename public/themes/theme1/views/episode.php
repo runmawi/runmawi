@@ -229,9 +229,9 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     value="<?= $episode->genre_id ?>">
 <br>
 
-    <div class="row-flex">
+    <div class="container-fluid">
         <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb p-0">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>

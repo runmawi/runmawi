@@ -168,15 +168,16 @@
             <div class="row  align-items-center justify-content-center height-self-center">
                 <div class="col-lg-6 col-12 col-md-12 align-self-center">
                     <div class="text-center">
+                        <a href="{{ URL::to('home') }}">
 
-                        <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                            <img  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;">
-                        <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                            <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;">
-                        <?php }else { ?> 
-                            <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
-                        <?php } ?>
-
+                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                <img  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;">
+                            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                                <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;">
+                            <?php }else { ?> 
+                                <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
+                            <?php } ?>
+                        </a>
                     </div>
                     <div class="sign-user_card "
                         style=" background: linear-gradient(rgba(136, 136, 136, 0.1) , rgba(64, 32, 32, 0.13), rgba(81, 57, 57, 0.12));!important;">
