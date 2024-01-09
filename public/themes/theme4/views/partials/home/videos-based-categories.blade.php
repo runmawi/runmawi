@@ -155,7 +155,7 @@
             <div class="modal fade info_model" id="{{ "Home-videos-based-category-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
-                        <div class="modal-content" style="border:none;">
+                        <div class="modal-content" style="border:none; background:transparent;">
                             <div class="modal-body">
                                 <div class="col-lg-12">
                                     <div class="row">

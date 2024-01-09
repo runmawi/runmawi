@@ -140,7 +140,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
 		$settings->free_registration && !Auth::guest() && Auth::user()->role != 'registered' && $series->ppv_status != 1) 
     || $series->access == 'subscriber' && !Auth::guest() && Auth::user()->role == 'subscriber'):  ?>
-		<div class="col-md-7">
+		<div class="col-md-7 p-0">
 			<div id="series_title">
 				<div class="container">
 					 <h1><?= $series->title ?></h1>
@@ -433,7 +433,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 				</div> 
 
           <!-- <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
-			<div class="col-md-7">
+			<div class="col-md-7 p-0">
 				<div id="series_title">
             <div class="container">
               <h3><?= $series->title ?></h3>
@@ -584,7 +584,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
         </div>
 				<?php elseif(!Auth::guest() && $series->ppv_status == 1 ||!Auth::guest() && Auth::User()->role == "subscriber"  || !Auth::guest() && Auth::User()->role == "registered" ):  ?>
 
-          <div class="col-md-7">
+          <div class="col-md-7 p-0">
 				    <div id="series_title">
               <div class="container">
                 <h3><?= $series->title ?></h3>
@@ -705,7 +705,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
          
           <?php elseif(Auth::guest() && $series->ppv_status == 1  || Auth::guest() && $series->access == "registered" ):  ?>
 
-              <div class="col-md-7">
+              <div class="col-md-7 p-0">
                 <div id="series_title">
                   <div class="container">
                     <h3><?= $series->title ?></h3>
