@@ -159,64 +159,37 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             <!-- <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p> -->
                               
 
-                            <!-- <?php
-                                $description = $series->description;
-
-                                if (strlen($description) > 200) {
-                                    $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription(this)'> See More </span>";
-                                } else {
-                                    $shortDescription = html_entity_decode($description);
-                                }
-                                ?>
-
-                                <div id="descriptionContainer">
-                                    <?php echo $shortDescription; ?>
-                                </div>
-
-                                <script>
-                                    function toggleDescription(element) {
-                                        var descriptionContainer = document.getElementById('descriptionContainer');
-                                        var moreText = descriptionContainer.querySelector('.more-text');
-
-                                        if (moreText.style.display === 'none' || moreText.style.display === '') {
-                                            moreText.style.display = 'inline';
-                                            element.innerText = ' See Less ';
-                                        } else {
-                                            moreText.style.display = 'none';
-                                            element.innerText = ' See More ';
-                                        }
-                                    }
-                                </script> -->
+                           
 
                                 <?php
-$description = $series->description;
+                                  $description = $series->description;
 
-if (strlen($description) > 200) {
-    $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
-} else {
-    $shortDescription = html_entity_decode($description);
-}
-?>
+                                  if (strlen($description) > 200) {
+                                      $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                                  } else {
+                                      $shortDescription = html_entity_decode($description);
+                                  }
+                                  ?>
 
-<div id="descriptionContainer" class="description-container" style="cursor:pointer;">
-    <?php echo $shortDescription; ?>
-</div>
+                                  <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                      <?php echo $shortDescription; ?>
+                                  </div>
 
-<script>
-    function toggleDescription() {
-        var descriptionContainer = document.querySelector('.description-container');
-        var moreText = descriptionContainer.querySelector('.more-text');
-        var seeMoreButton = descriptionContainer.querySelector('.see-more');
+                                    <script>
+                                        function toggleDescription() {
+                                            var descriptionContainer = document.querySelector('.description-container');
+                                            var moreText = descriptionContainer.querySelector('.more-text');
+                                            var seeMoreButton = descriptionContainer.querySelector('.see-more');
 
-        if (moreText.style.display === 'none' || moreText.style.display === '') {
-            moreText.style.display = 'inline';
-            seeMoreButton.innerText = ' See Less ';
-        } else {
-            moreText.style.display = 'none';
-            seeMoreButton.innerText = ' See More ';
-        }
-    }
-</script>
+                                            if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                                moreText.style.display = 'inline';
+                                                seeMoreButton.innerText = ' See Less ';
+                                            } else {
+                                                moreText.style.display = 'none';
+                                                seeMoreButton.innerText = ' See More ';
+                                            }
+                                        }
+                                    </script>
 
                                 
 
@@ -467,8 +440,43 @@ if (strlen($description) > 200) {
               <div class="row p-2 text-white">
                 <div class="col-md-7">
                           <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
-                              <p  style="color:#fff!important;"><?php echo $series->details;?></p>
-                                <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
+
+
+                          <?php
+                            $description = $series->description;
+
+                            if (strlen($description) > 200) {
+                                $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                            } else {
+                                $shortDescription = html_entity_decode($description);
+                            }
+                            ?>
+
+                            <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                <?php echo $shortDescription; ?>
+                            </div>
+
+                              <script>
+                                  function toggleDescription() {
+                                      var descriptionContainer = document.querySelector('.description-container');
+                                      var moreText = descriptionContainer.querySelector('.more-text');
+                                      var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                      if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                          moreText.style.display = 'inline';
+                                          seeMoreButton.innerText = ' See Less ';
+                                      } else {
+                                          moreText.style.display = 'none';
+                                          seeMoreButton.innerText = ' See More ';
+                                      }
+                                  }
+                              </script>
+
+
+
+
+                              <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+                                <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
                                   <div class="row p-0 mt-3 align-items-center">
                                       <!-- <div class="col-md-2"> 
                                          <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
@@ -583,8 +591,41 @@ if (strlen($description) > 200) {
                   <div class="row p-2 text-white">
                     <div class="col-md-7">
                       <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
-                        <p  style="color:#fff!important;"><?php echo $series->details;?></p>
-                        <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
+
+                      <?php
+                        $description = $series->description;
+
+                        if (strlen($description) > 200) {
+                            $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                        } else {
+                            $shortDescription = html_entity_decode($description);
+                        }
+                        ?>
+
+                        <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                            <?php echo $shortDescription; ?>
+                        </div>
+
+                          <script>
+                              function toggleDescription() {
+                                  var descriptionContainer = document.querySelector('.description-container');
+                                  var moreText = descriptionContainer.querySelector('.more-text');
+                                  var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                  if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                      moreText.style.display = 'inline';
+                                      seeMoreButton.innerText = ' See Less ';
+                                  } else {
+                                      moreText.style.display = 'none';
+                                      seeMoreButton.innerText = ' See More ';
+                                  }
+                              }
+                          </script>
+
+
+
+                        <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+                        <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
                         <div class="row p-0 mt-3 align-items-center">
                                         <!-- <div class="col-md-2">
                                           <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
@@ -671,8 +712,39 @@ if (strlen($description) > 200) {
                       <div class="row p-2 text-white">
                         <div class="col-md-7">
                           <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
-                            <p  style="color:#fff!important;"><?php echo $series->details;?></p>
-                            <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
+
+                          <?php
+                            $description = $series->description;
+
+                            if (strlen($description) > 200) {
+                                $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                            } else {
+                                $shortDescription = html_entity_decode($description);
+                            }
+                            ?>
+
+                            <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                <?php echo $shortDescription; ?>
+                            </div>
+
+                              <script>
+                                  function toggleDescription() {
+                                      var descriptionContainer = document.querySelector('.description-container');
+                                      var moreText = descriptionContainer.querySelector('.more-text');
+                                      var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                      if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                          moreText.style.display = 'inline';
+                                          seeMoreButton.innerText = ' See Less ';
+                                      } else {
+                                          moreText.style.display = 'none';
+                                          seeMoreButton.innerText = ' See More ';
+                                      }
+                                  }
+                              </script>
+
+                            <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+                            <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
                             <div class="row p-0 mt-3 align-items-center">
                                             <!-- <div class="col-md-2">
                                               <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
