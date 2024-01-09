@@ -938,6 +938,7 @@ header .navbar ul.navbar-nav {
     display: flex;
     text-align: left;
     flex-direction: row;
+    justify-content:space-around;
 }
 .top-colps ul.navbar-nav {
     display: flex;
@@ -960,6 +961,28 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
     /* color: white !important; */
 }
 
+div#main_nav {
+   display: block !important;
+}
+.search-box {
+    position: absolute;
+    left: 25px !important;
+    right: 0;
+    top: 72px;
+    min-width: 25rem;
+    width: 100%;
+    z-index: 99;
+    opacity: 0;
+    transform: translate(0, 70px);
+    -webkit-transform: translate(0, 70px);
+    -webkit-transition: all 0.3s ease-out 0s;
+    -moz-transition: all 0.3s ease-out 0s;
+    -ms-transition: all 0.3s ease-out 0s;
+    -o-transition: all 0.3s ease-out 0s;
+    transition: all 0.3s ease-out 0s;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
+}
+
 </style>
 
 
@@ -969,20 +992,287 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
       <div class="fullpage-loader">
          <div class="fullpage-loader__logo">
                <img src="<?= front_end_logo() ?>" class="c-logo" alt="<?=  $settings->website_name ; ?>">
+               
          </div>
       </div>
     <?php } ?>
 
    <header id="main-header">
       <div class="main-header">
+         <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="row">
+               <div class="col-lg-3 col-md-3 col-sm-3 d-flex align-items-center justify-content-center">
+                  <div class="navbar-right menu-right">
+                     <ul class="d-flex align-items-center list-inline m-0">
+                        <li class="nav-item nav-icon" style="border: 1px solid;border-radius: 25px;padding: 0px 16px;">
+                              <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search" style="font-size:11px;">
+                                 <i class="ri-search-line"></i>
+                                 <?= 'Search' ?>
+                              </a>
+
+                           <div class="search-box iq-search-bar d-search">
+                              <form action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" >
+                              <input name="_token" type="hidden" value="<?= csrf_token(); ?>" />
+                                 <div class="form-group position-relative">
+                                    <input type="text" class="text search-input font-size-12 searches"
+                                       placeholder="type here to search...">
+                                    <i class="search-link ri-search-line"></i>
+                                    <?php  include 'public/themes/theme3/partials/Search_content.php'; ?>
+                                 </div>
+                              </form>
+                           </div>
+
+                           <div class="iq-sub-dropdown search_content overflow-auto mt-3" id="sidebar-scrollbar" style="width:146px;">
+                              <div class="iq-card-body">
+                                 <div id="search_list" class="search_list search-toggle device-search" ></div>
+                              </div>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+
+               <div class="col-lg-6 col-md-6 col-sm-6">
+                  <div class="text-center">
+                     <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
+                     <p style="font-size:11px;"> <?= 'Created by Music Fans for Music Fans' ?></p>
+                  </div>
+               </div>
+
+               <div class="col-lg-3 col-md-3 col-sm-3 d-flex align-items-center justify-content-center">
+                  <div class="navbar-right menu-right">
+                     <ul class="d-flex align-items-center list-inline m-0">
+                        <li class="nav-item nav-icon" style="border: 1px solid;border-radius: 25px;padding: 0px 16px;">
+                              <?php if( !Auth::guest() ) : ?>
+
+                                 <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center" style="font-size:11px;"
+                                    data-toggle="search-toggle">
+                                          <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme3/assets/images/user/user.jpg') ?>"
+                                          class="img-fluid avatar-40 rounded-circle mr-2" alt="user">
+                                          <?= "My Account" ?>
+                                 </a>
+
+                              <?php endif; ?>
+
+                              <div class="iq-sub-dropdown iq-user-dropdown">
+                                 <div class="iq-card shadow-none m-0">
+
+                                    <?php if( Auth::guest() ) : ?>
+
+                                       <div class="iq-card-body p-0 pl-3 pr-3">
+
+                                          <li class="nav-item nav-icon">
+                                             <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                                <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-login-circle-line text-primary"></i></div>
+                                                   <div class="media-body">
+                                                      <h6 class="mb-0 ">Signin</h6>
+                                                   </div>
+                                                </div>
+                                             </a>
+                                          </li>
+                                          
+                                          <li class="nav-item nav-icon">
+                                             <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                                <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                                   <div class="media-body">
+                                                      <h6 class="mb-0 ">Signup</h6>
+                                                   </div>
+                                                </div>
+                                             </a>
+                                          </li>
+
+                                       </div>
+
+                                    <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
+                                       
+                                       
+
+                                       <div class="iq-card-body p-0 pl-3 pr-3">
+
+
+                                       <div class="toggle mt-2 text-left">
+                                          <i class="fas fa-moon"></i>
+                                             <label class="switch toggle mt-3">
+                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                                   <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                <span class="sliderk round"></span>
+                                             </label>
+                                          <i class="fas fa-sun"></i>
+                                       </div>
+
+                                          <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Manage Profile</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+                                          
+                                          <!-- <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Pricing Plan</h6>
+                                                   </div>
+                                             </div>
+                                          </a> -->
+
+                                          <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Wishlist</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+
+                                          <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Watchlater</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+
+                                          <a href="<?= URL::to('/admin') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Admin</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+
+                                          <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Logout</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+                                       </div>
+
+                                    <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
+
+                                       <div class="toggle mt-2 ">
+                                          <i class="fas fa-moon"></i>
+                                             <label class="switch toggle mt-3">
+                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                <span class="sliderk round"></span>
+                                             </label>
+                                          <i class="fas fa-sun"></i>
+                                       </div>
+
+                                       <div class="iq-card-body p-0 pl-3 pr-3">
+                                          <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Manage Profile</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+
+                                          <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Wishlist</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+
+                                          <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Watchlater</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+                                          
+                                          <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Logout</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+                                       </div>
+
+                                    <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
+                                       
+                                       <div class="toggle mt-2 ">
+                                          <i class="fas fa-moon"></i>
+                                             <label class="switch toggle mt-3">
+                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                <span class="sliderk round"></span>
+                                             </label>
+                                          <i class="fas fa-sun"></i>
+                                       </div>
+
+                                       <div class="iq-card-body p-0 pl-3 pr-3">
+
+                                          <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Manage Profile</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+
+                                          <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Wishlist</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+
+                                          <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Watchlater</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+                                          
+                                          <a href="<?= URL::to('/logout') ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                   <div class="right-icon"><i class="ri-logout-circle-line text-primary"></i></div>
+                                                   <div class="media-body ml-3">
+                                                      <h6 class="mb-0 ">Logout</h6>
+                                                   </div>
+                                             </div>
+                                          </a>
+                                       </div>
+
+                                    <?php endif; ?>
+                                 </div>
+                              </div>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
             <div class="container-fluid pl-3">
                <div class="row">
                         
-                  <?php if($theme->header_top_position == 1): ?>
+                  <!-- <?php if($theme->header_top_position == 1): ?>
                      <div class="col-sm-9 mx-auto header_top_position_img">
                         <img class="img-fluid logo" src=<?= URL::to('public\themes\theme3\views\img\DOWNLOAD-TAPP-TODAY-new-1536x58.png') ?> /> 
                      </div>
-                  <?php endif ;?>
+                  <?php endif ;?> -->
 
                   <div class="col-sm-12">
 
@@ -997,7 +1287,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="50%"/> </a>
+                              <!-- <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="50%"/> </a> -->
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
@@ -1077,12 +1367,12 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                           $tv_shows_series = App\Series::where('active',1)->get();
 
                                           $languages = App\Language::all();
-
                                           foreach ($menus as $menu) {
 
                                              if ( $menu->in_menu == "video" ) {  ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
+                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
                                                    <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
@@ -1116,7 +1406,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                              <?php } elseif  ( $menu->in_menu == "movies") {  ?>
 
-                                                <li class="nav-item  dskdflex menu-item">
+                                                <li class="nav-item  dskdflex menu-item d-flex align-items-center">
+                                                <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
                                                    <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
                                                       <?= $menu->name ?>
                                                    </a>
@@ -1134,6 +1425,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php } elseif ( $menu->in_menu == "live") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
+                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
                                                    <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
@@ -1169,6 +1461,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php } elseif ( $menu->in_menu == "audios") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
+                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
                                                    <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
@@ -1203,8 +1496,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                              <?php }elseif ( $menu->in_menu == "tv_show") { ?>
                                                 
-                                                <li class="nav-item active dskdflex menu-item ">
-
+                                                <li class="nav-item active dskdflex menu-item d-flex align-items-center">
+                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
                                                    <a href="<?php echo URL::to($menu->url)?>">
                                                          <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
                                                    </a>
@@ -1231,6 +1524,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php }elseif ( $menu->in_menu == "series") { ?>
                                                 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
+                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
                                                    <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
@@ -1266,6 +1560,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php }elseif ( $menu->in_menu == "networks") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
+                                                      <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
@@ -1300,7 +1595,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                              <?php } else { ?>
 
-                                                <li class="menu-item">
+                                                <li class="menu-item d-flex align-items-center">
+                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
                                                    <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to( $menu->url ); }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
                                                          <?php echo __($menu->name);?>
                                                    </a>
@@ -1791,7 +2087,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  } ?>
                                  </div>
 
-                                 <div class="navbar-right menu-right">
+                                 <!-- <div class="navbar-right menu-right">
                                     <ul class="d-flex align-items-center list-inline m-0">
 
                                        <li class="nav-item nav-icon">
@@ -1806,7 +2102,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <input type="text" class="text search-input font-size-12 searches"
                                                       placeholder="type here to search...">
                                                    <i class="search-link ri-search-line"></i>
-                                                   <?php  include 'public/themes/theme3/partials/Search_content.php'; ?>
+                                                   <?php  // include 'public/themes/theme3/partials/Search_content.php'; ?>
                                                 </div>
                                              </form>
                                           </div>
@@ -1816,7 +2112,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <div id="search_list" class="search_list search-toggle device-search" ></div>
                                              </div>
                                           </div>
-                                       </li>
+                                       </li> -->
 
                                        <!-- Notification -->
                                        
@@ -1868,7 +2164,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              </div>
                                        </li>
                                           -->
-                                       <li class="nav-item nav-icon">
+                                       <!-- <li class="nav-item nav-icon">
                                              <?php if( !Auth::guest() ) : ?>
 
                                                 <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
@@ -1934,7 +2230,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                                      <h6 class="mb-0 ">Manage Profile</h6>
                                                                   </div>
                                                             </div>
-                                                         </a>
+                                                         </a> -->
                                                          
                                                          <!-- <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
@@ -1945,7 +2241,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                             </div>
                                                          </a> -->
 
-                                                         <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                                         <!-- <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
                                                                   <div class="media-body ml-3">
@@ -2086,7 +2382,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              </div>
                                        </li>
                                     </ul>
-                                 </div>
+                                 </div> -->
                            </div> <!-- container-fluid.// -->
                         </nav>
                         
