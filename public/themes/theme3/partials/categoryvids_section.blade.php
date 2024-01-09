@@ -1,125 +1,123 @@
-<div class="favorites-contens">
-    <ul class="category-page list-inline  row p-0 mb-4">
+@if (!empty($categoryVideos['video_categories']) && $categoryVideos['video_categories']->isNotEmpty())
+    <div class="container-fluid category-tab-content" id="category-videos-tab-content">
+        @foreach ($categoryVideos['video_categories'] as $video_categories)
+            <div class="col-sm-12 overflow-hidden">
 
-            @if (count($categoryVideos['categoryVideos']) > 0)         
-                @foreach($categoryVideos['categoryVideos']  as $category_video) 
-                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
-                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                            <div class="block-images position-relative">
-                                <div class="img-box">
-                                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
-                                </div>
-                            </div>
-
-                            <div class="block-description" >
-                                <div class="hover-buttons">
-                                    <a  class="text-white btn-cl"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                      
-                                    
-                                        {{-- @if($categoryVideos['ThumbnailSetting']->free_or_cost_label == 1) 
-                                            @if(!empty($category_video->ppv_price))
-                                                <p class="p-tag1">
-                                                    {{ $currency->symbol.' '.$category_video->ppv_price }}
-                                                </p>
-                                            @elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
-                                                <p class="p-tag1">
-                                                    {{ $category_video->global_ppv.' '.$currency->symbol }} 
-                                                </p>
-                                            @elseif($category_video->global_ppv == null && $category_video->ppv_price == null )
-                                                <p class="p-tag">
-                                                    {{ "Free" }}
-                                                </p>
-                                            @endif
-                                        @endif --}}
-
-                                    </a>
-                                </div>
-                                </div>
-
-                                <div>
-                                    <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                                        <?php if($categoryVideos['ThumbnailSetting']->title == 1) { ?>
-                                            <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
-                                        <?php } ?>
-
-                                        <?php if($categoryVideos['ThumbnailSetting']->age == 1) { ?>
-                                            <div class="badge badge-secondary"><?php echo $category_video->age_restrict.' '.'+' ?></div>
-                                        <?php } ?>
-                                    </div>
-
-                                    <div class="movie-time my-2">
-
-                                        <!-- Duration -->
-                
-                                        <?php if($categoryVideos['ThumbnailSetting']->duration == 1) { ?>
-                                        <span class="text-white">
-                                        <i class="fa fa-clock-o"></i>
-                                        <?= gmdate('H:i:s', $category_video->duration); ?>
-                                        </span>
-                                        <?php } ?>
-                
-                                        <!-- Rating -->
-                
-                                        <?php if($categoryVideos['ThumbnailSetting']->rating == 1 && $category_video->rating != null) { ?>
-                                        <span class="text-white">
-                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                        <?php echo __($category_video->rating); ?>
-                                        </span>
-                                        <?php } ?>
-                
-                                        <?php if($categoryVideos['ThumbnailSetting']->featured == 1 && $category_video->featured == 1) { ?>
-                                        <!-- Featured -->
-                                        <span class="text-white">
-                                            <i class="fa fa-flag" aria-hidden="true"></i>
-                                        </span>
-                                        <?php }?>
-                                    </div>
-
-                                    <div class="movie-time my-2">
-                                        <!-- published_year -->
-                
-                                        <?php  if ( ($categoryVideos['ThumbnailSetting']->published_year == 1) && ( $category_video->year != null ) ) { ?>
-                                        <span class="text-white">
-                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                        <?php echo __($category_video->year); ?>
-                                        </span>
-                                        <?php } ?>
-                                </div>
-
-                                <div class="movie-time my-2">
-                                    <!-- Category Thumbnail  setting -->
-                                    <?php
-                                    $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                ->where('categoryvideos.video_id',$category_video->video_id)
-                                                ->pluck('video_categories.name');       
-
-                                    ?>
-                                    <?php  if ( ($categoryVideos['ThumbnailSetting']->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                    <span class="text-white">
-                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                    <?php
-                                        $Category_Thumbnail = array();
-                                                foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                                $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                                }
-                                        echo implode(','.' ', $Category_Thumbnail);
-                                    ?>
-                                    </span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                @endforeach
-            @elseif( count($categoryVideos['categoryVideos']) == 0)
-                <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                    <h2 class="text-center" style="color: white;">No video Available</h2>
+                <div class="iq-main-header d-flex align-items-center justify-content-between">
+                    <h4 class="main-title">{{ $video_categories->name }}</h4>
                 </div>
-            @endif
 
-            <div class="col-md-12 pagination justify-content-end">
-                {!! count($categoryVideos['categoryVideos']) != 0 ? $categoryVideos['categoryVideos']->links() : " "!!}
+                <div class="trending-contens">
+                    <ul id="trending-slider-nav" class="category-based-videos-slider-nav list-inline p-0 mb-0 row align-items-center">
+                        @foreach ($video_categories->category_videos as $videos)
+                            <li>
+                                <a href="javascript:void(0);">
+                                    <div class="movie-slick position-relative">
+                                        <img src="{{ $videos->image ? URL::to('public/uploads/images/' . $videos->image) : default_vertical_image_url() }}" class="img-fluid">
+                                    </div>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <ul id="trending-slider category-based-videos-slider"
+                        class="list-inline p-0 m-0 align-items-center category-based-videos-slider">
+                        @foreach ($video_categories->category_videos as $key => $videos)
+                            <li>
+                                <div class="tranding-block position-relative trending-thumbnail-image" style="background-image: url({{ $videos->player_image ? URL::to('public/uploads/images/' . $videos->player_image) : default_horizontal_image_url() }}); background-repeat: no-repeat;background-size: cover;">
+                                    <button class="close_btn btn">×</button>
+                                    <div class="trending-custom-tab">
+                                        <div class="trending-content">
+                                            <div id="" class="overview-tab tab-pane fade active show">
+                                                <div class="trending-info align-items-center w-100 animated fadeInUp">
+
+                                                    <h2 class="trending-text big-title text-uppercase">
+                                                        {{ optional($videos)->title }}</h2>
+
+                                                    @if ($videos->year != null && $videos->year != 0)
+                                                        <div class="d-flex align-items-center text-white text-detail">
+                                                            <span
+                                                                class="trending">{{ $videos->year != null && $videos->year != 0 ? $videos->year : null }}</span>
+                                                        </div>
+                                                    @endif
+
+                                                    @if (optional($videos)->description)
+                                                        <div class="trending-dec">{!! html_entity_decode(optional($videos)->description) !!}</div>
+                                                    @endif
+
+                                                    <div class="p-btns">
+                                                        <div class="d-flex align-items-center p-0">
+                                                            <a href="{{ URL::to('category/videos/' . $videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
+        @endforeach
+    </div>
+@else
+    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+        <p ><h3 class="text-center">No video Available</h3>
+    </div>
+@endif
 
-    </ul>
-</div>
+<script>
+    $(window).on("load", function() {
+        $('.category-based-videos-slider').hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.category-based-videos-slider').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            draggable: false,
+            asNavFor: '.category-based-videos-slider-nav',
+        });
+
+        $('.category-based-videos-slider-nav').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            asNavFor: '.category-based-videos-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.category-based-videos-slider-nav').on('click', function() {
+            $(".close_btn").trigger("click");
+            $('.category-based-videos-slider').show();
+        });
+
+        $('body').on('click', '.close_btn', function() {
+            $('.category-based-videos-slider').hide();
+        });
+    });
+</script>

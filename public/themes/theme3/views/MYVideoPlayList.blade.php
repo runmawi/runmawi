@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 @endphp
     
 <section id="iq-favorites">
@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                <h4 class="main-title">My Video Playlist</h4></div>
+                <h4 class="main-title">{{ __('My Video Playlist') }}</h4></div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
                       @if(isset($VideoPlaylist)) 
@@ -43,5 +43,5 @@
 </section>
 
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp

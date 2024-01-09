@@ -5,14 +5,14 @@
                 <form method="get" action="<?= route('comments.update',  $reply_comments->id ) ?>">
                 
                     <div class="modal-header">
-                        <h5 class="modal-title">Edit Comment</h5>
+                        <h5 class="modal-title"><?= ( __('Edit Comment')) ?></h5>
                         <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="message">Update your message here:</label>
+                            <label for="message"><?= ( __('Update your message here')) ?>:</label>
                             <textarea required class="form-control" name="message" rows="3"><?= $reply_comments->comment ?></textarea>
                         </div>
                     </div>
@@ -23,8 +23,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-outline-secondary text-uppercase" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-sm btn-outline-success text-uppercase">Update</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary text-uppercase" data-dismiss="modal"><?= ( __('Cancel')) ?></button>
+                        <button type="submit" class="btn btn-sm btn-outline-success text-uppercase"><?= ( __('Update')) ?></button>
                     </div>
                 </form>
             </div>

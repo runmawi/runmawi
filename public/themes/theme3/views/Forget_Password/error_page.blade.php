@@ -90,15 +90,15 @@
 <body>
     <div class="text-wrapper">
         <div class="title" data-content="404">
-            403 - ACCESS DENIED
+            403 - {{ __('ACCESS DENIED') }}
         </div>
 
         <div class="subtitle">
-            Oops, You are not accessible to this page! 
+        {{ __('Oops, You are not accessible to this page!') }} 
         </div>
 
         <div class="buttons">
-            <a class="button" href="{{ route('home')}}">Go to homepage</a>
+            <a class="button" href="{{ route('home')}}">{{ __('Go to homepage') }}</a>
         </div>
     </div>
 </body>

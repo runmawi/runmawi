@@ -1,127 +1,145 @@
-
 @php
-include(public_path('themes/theme3/views/header.php'));
+    include(public_path('themes/theme3/views/header.php'));
 @endphp
 
-<div class="main-content">
-    <section id="iq-favorites">
+<section id="iq-favorites">
+    <div class="container-fluid">
 
-        <h2 class="text-center  mb-3">{{ ucwords("artist videos ".$artist_name) }}</h2>
+        <div class="iq-main-header align-items-center">
+            <h2 class="">{{ ucwords( __("artist videos").' '.$artist_name) }}</h2>
+        </div>
 
-        <div class="container-fluid" >
-            <div class="row pageheight">
-                <div class="col-sm-12 overflow-hidden">
-                    <div class="iq-main-header align-items-center"></div>
-
-                    <div class="favorites-contens">
-                        <ul class="category-page list-inline  row p-0 mb-4">
-                            @if(isset($artist_videos))  
-                                @foreach($artist_videos  as $artist_video) 
-
-                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
-                                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $artist_video->slug ?>">
-
-                                                <div class="block-images position-relative">
+        <div class="row">
+            <div class="col-sm-12 overflow-hidden">
+                <div class="favorites-contens">
+                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+                        @if(isset($artist_videos)) 
+                            @foreach($artist_videos as $key => $artists_videos)
+                                <li class="slide-item">
+                                        <a href="{{ URL::to('home') }} ">
+                                            <div class="block-images position-relative">
                                                     <div class="img-box">
-                                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_video->image;  ?>" class="img-fluid" alt="" width="">
-                                                    </div>
-                                                </div>
-
-                                                <div class="block-description" >
-                                                    <div class="hover-buttons">
-                                                        <a  class="text-white btn-cl"  href="<?php echo URL::to('category') ?><?= '/videos/' . $artist_video->slug ?>">
-                                                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">
+                                                        <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $artists_videos->slug ?>">
+                                                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artists_videos->image;  ?>" class="img-fluid loading w-100" alt=""> 
                                                         </a>
+                    
+                                                        <!-- PPV price -->   
+                                                      
+                                                            @if($ThumbnailSetting->free_or_cost_label == 1) 
+                                                                
+                                                                    @if( $artists_videos->access == 'subscriber' )
+                                                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                                                    
+                                                                    @elseif(!empty($artists_videos->ppv_price))
+                                                                        <p class="p-tag1">
+                                                                            {{  $currency->symbol.' '.$artists_videos->ppv_price }}
+                                                                        </p>
+                                                                    @elseif( !empty($artists_videos->global_ppv || !empty($artists_videos->global_ppv) && $artists_videos->ppv_price == null))
+                                                                        <p class="p-tag1">
+                                                                            {{  $artists_videos->global_ppv.' '.$currency->symbol }}
+                                                                        </p>
+                                                                    @elseif($artists_videos->global_ppv == null && $artists_videos->ppv_price == null )
+                                                                        <p class="p-tag">
+                                                                        {{  "Free" }}
+                                                                        </p>
+                                                                @endif
+                                                              
+                                                            @endif
+                                                       
                                                     </div>
-                                                </div>
-
-                                                <div>
-                                                    <div class="movie-time d-flex align-items-center justify-content-between my-2">
+                    
+                                                    <div class="block-description">
                                                         @if($ThumbnailSetting->title == 1)        <!-- Title -->
-                                                                <h6><?php  echo (strlen($artist_video->title) > 17) ? substr($artist_video->title,0,18).'...' : $artist_video->title; ?></h6>
+                                                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $artists_videos->slug ?>">
+                                                                <h6><?php  echo (strlen($artists_videos->title) > 17) ? substr($artists_videos->title,0,18).'...' : $artists_videos->title; ?></h6>
+                                                            </a>
                                                         @endif
                     
-                                                        @if($ThumbnailSetting->age == 1)   <!-- Age -->
-                                                                <div class="badge badge-secondary"><?php echo $artist_video->age_restrict.' '.'+' ?></div>
-                                                        @endif
-                                                    </div>
-
-                                                    <div class="movie-time my-2">
-
-                                                            <!-- Duration -->
-                                                        @if($ThumbnailSetting->duration == 1)      
-                                                            <span class="text-white">     
-                                                                <i class="fa fa-clock-o"></i>
-                                                                {{   gmdate('H:i:s', $artist_video->duration) }}
-                                                            </span>
-                                                        @endif
-                                   
-                                                            <!-- Rating -->
-                                                        @if($ThumbnailSetting->rating == 1 && $artist_video->rating != null) 
-                                                            <span class="text-white">
-                                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                {{ ($artist_video->rating) }}
-                                                            </span>
-                                                        @endif  
-                                   
-                                                            <!-- Featured -->
-                                                        @if($ThumbnailSetting->featured == 1 && $artist_video->featured == 1) 
-                                                            <span class="text-white">
-                                                                <i class="fa fa-flag" aria-hidden="true"></i>
-                                                            </span>
-                                                        @endif
-                                                    </div>
-
-                                                    <div class="movie-time my-2">
-                                                        <!-- published_year -->
-                                                        @if( ($ThumbnailSetting->published_year == 1) && ( $artist_video->year != null ) ) 
-                                                            <span class="text-white">
-                                                                <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                    {{ $artist_video->year }}
+                                                        <div class="movie-time d-flex align-items-center pt-1">
+                                                            @if($ThumbnailSetting->age == 1)   <!-- Age -->
+                                                                <div class="badge badge-secondary p-1 mr-2"><?php echo $artists_videos->age_restrict.' '.'+' ?></div>
+                                                            @endif
+                        
+                                                            @if($ThumbnailSetting->duration == 1)   <!-- Duration -->
+                                                                <span class="text-white">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                    <?= gmdate('H:i:s', $artists_videos->duration); ?>
                                                                 </span>
-                                                        @endif
-                                                    </div>
+                                                            @endif
+                                                        </div>
+                    
+                                                        @if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1))
+                                                            <div class="movie-time d-flex align-items-center pt-1">
 
-                                                    <div class="movie-time my-2">
-                                                        <!-- Category Thumbnail  setting -->
-                                                        @php
+                                                                @if($ThumbnailSetting->rating == 1) <!--Rating  -->
+                                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                                        <span class="text-white">
+                                                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                                            <?php echo __($artists_videos->rating); ?>
+                                                                        </span>
+                                                                    </div>
+                                                                @endif
+                        
+                                                                @if($ThumbnailSetting->published_year == 1) <!-- published_year -->
+                                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                                    <span class="text-white">
+                                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                        {{ $artists_videos->year  }}
+                                                                    </span>
+                                                                    </div>
+                                                                @endif
+                        
+                                                                @if($ThumbnailSetting->featured == 1 && $artists_videos->featured == 1) <!-- Featured -->
+                                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                                        <span class="text-white">
+                                                                            <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        @endif   
+                    
+                                                        <div class="movie-time d-flex align-items-center pt-1">
+                                                            <!-- Category Thumbnail  setting -->
+                                                            @php
                                                             $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                                    ->where('categoryvideos.video_id',$artist_video->video_id)
-                                                                    ->pluck('video_categories.name');       
-                                                        @endphp
-            
-                                                        @if( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) 
-                                                            <span class="text-white">
-                                                                <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                                    @php
-                                                                        $Category_Thumbnail = array();
-                                                                                foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                                                                    $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                                                                }
-                                                                                echo implode(','.' ', $Category_Thumbnail);
-                                                                    @endphp
-                                                            </span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                        </a>
-                                    </li>
-                                @endforeach
+                                                                        ->where('categoryvideos.video_id',$artists_videos->pre_video_id)
+                                                                        ->pluck('video_categories.name');        
+                                                            @endphp
 
-                            @else  
-                                <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
-                                    <p><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2> </p>
-                                </div>
-                            @endif                                
-                        </ul>
-                    </div>   
+                                                            @if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) 
+                                                                <span class="text-white">
+                                                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                                                        @php
+                                                                            $Category_Thumbnail = array();
+                                                                                foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
+                                                                                $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                                                                }
+                                                                            echo implode(','.' ', $Category_Thumbnail);
+                                                                        @endphp
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                        
+                                                        <div class="hover-buttons">
+                                                            <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $artists_videos->slug ?>" >
+                                                                <img class="ply mr-1 " src="<?php echo URL::to('/').'/assets/img/theme4_play_buttons.svg';  ?>"  width="10%" height="10%"/> {{ __('Watch Now') }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </a>
+                                </li>
+                            @endforeach 
+                        @endif
+                    </ul>
                 </div>
             </div>
         </div>
-    </section>
-</div>
+    </div>
+ </section>
+ 
 
-@php
+ @php
     include(public_path('themes/theme3/views/footer.blade.php'));
 @endphp
-  
