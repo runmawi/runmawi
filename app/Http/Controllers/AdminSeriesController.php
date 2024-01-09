@@ -117,14 +117,8 @@ class AdminSeriesController extends Controller
 
           $search_value = $request->get('s');
         
-            if(!empty($search_value)):
-                $series = Series::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
-            else:
-                $series = Series::orderBy('created_at', 'DESC')->paginate(9);
-            endif;
+            $series = Series::latest()->get();
         
-       // $series = Series::orderBy('created_at', 'DESC')->paginate(9);
-       
         $user = Auth::user();
 
         $data = array(

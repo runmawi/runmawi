@@ -612,6 +612,9 @@
    body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
       color: <?php echo GetDarkText(); ?>!important;
    }
+   body.light-theme #translator-table_filter input[type="search"]{
+      color: <?php echo GetLightText(); ?>;
+   }
 
    body.dark-theme .dropdown-menu.categ-head{
       background-color: <?php echo GetDarkBg(); ?>!important;  

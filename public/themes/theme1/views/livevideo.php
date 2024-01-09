@@ -30,14 +30,14 @@
     top: 0px;
     left: 0;
     width: 100%;
-    height: 425px !important;
+    /* height: 425px !important; */
     height: 100%;
 }
 
-.vjs-theme-fantasy .vjs-control-bar {
+/* .vjs-theme-fantasy .vjs-control-bar {
     top: 85%;
     height: 64px;
-}
+} */
 
 .live-stream-player-dimensions.vjs-fluid {
     padding-top: 31.25% !important;
@@ -510,10 +510,9 @@ else{
                     </li>
 -->
 
-                            </ul>
-                        </div>
-
+                            <!-- </ul> -->
                     </div>
+
 
                     <?php } ?>
 
@@ -529,38 +528,33 @@ else{
 
 
                         <div class="col-sm-6 col-md-6 col-xs-12">
-                            <!--
-                          <div class="d-flex align-items-center series mb-4">
-                             <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
-                                   alt=""></a>
-                             <span class="text-gold ml-3">#2 in Series Today</span>
-                          </div>
-        -->
-                            <ul class="list-inline p-0 mt-4 rental-lists">
-                                <!-- Subscribe -->
-                                <?php if ($video->access == 'subscriber' ) { ?>
 
-                                <li>
-                                    <a href="<?php echo URL::to('/login');?>"><span
-                                            class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?>
-                                        </span></a>
-                                </li>
-                                <?php } ?>
-                                <!-- PPV button -->
-                                <?php if ($video->access != 'guest' ) { ?>
-                                <li>
-                                    <a data-toggle="modal" data-target="#exampleModalCenter"
-                                        class="view-count btn btn-primary rent-video"
-                                        href="<?php echo URL::to('/login');?>">
-                                        <?php echo __('Rent');?> </a>
-                                </li>
-                                <?php   }?>
+                                <ul class="list-inline p-0 mt-4 rental-lists">
+                                    <!-- Subscribe -->
+                                    <?php if ($video->access == 'subscriber' ) { ?>
 
-                            </ul>
+                                    <li>
+                                        <a href="<?php echo URL::to('/login');?>"><span
+                                                class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?>
+                                            </span></a>
+                                    </li>
+                                    <?php } ?>
+                                    <!-- PPV button -->
+                                    <?php if ($video->access != 'guest' ) { ?>
+                                        <li>
+                                            <a data-toggle="modal" data-target="#exampleModalCenter"
+                                                class="view-count btn btn-primary rent-video"
+                                                href="<?php echo URL::to('/login');?>">
+                                                <?php echo __('Rent');?> </a>
+                                        </li>
+                                    <?php   }?>
+
+                                </ul>
                         </div>
                     </div>
-                    <?php   }?>
-                    <div class="container-fluid">
+                    <?php   } ?>
+
+                    <div class="">
                         <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
                     </div>
                     <div class="row">
@@ -587,14 +581,12 @@ else{
                 <div class="">
                     <div class=" container-fluid video-list you-may-like overflow-hidden">
                         <?php 
-                            if(isset($Related_videos)) :
-                                foreach($Related_videos as $related_video): ?>
-                                    <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
-                                    <div class="slider">
-                                        <?php include('partials/live_related_video.blade.php');?>
-                                    </div>
-                                <?php endforeach;
-                            endif; ?>
+                            if(isset($Related_videos)) : ?>
+                                <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
+                                <div class="slider">
+                                    <?php include('partials/live_related_video.blade.php');?>
+                                </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

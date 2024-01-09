@@ -500,7 +500,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 ?>
             </div>
 
-            <div class="series-details-container"><?= $episode->details ?></div>
+            <div class="series-details-container"><?= $episode->episode_description ?></div>
 
             <?php if(isset($episodenext)){ ?>
             <div class="next_episode" style="display: none;"><?= $episodenext->id ?></div>

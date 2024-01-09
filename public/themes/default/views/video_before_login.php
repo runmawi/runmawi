@@ -1212,9 +1212,11 @@
    var trailer_video_type =  <?php echo json_encode($video->trailer_type) ; ?> ;
    
    
-   if(trailer_video_type == "m3u8_url"){
+   if(trailer_video_type == "m3u8_urls"){
+
      (function () {
        var video = document.querySelector('#videoPlayer1');
+      //  alert(video);
    
        if (Hls.isSupported()) {
            var hls = new Hls();
@@ -1226,7 +1228,7 @@
        
      })();
    
-   }else if(trailer_video_type == "m3u8"){
+   }else if(trailer_video_type == "m3u8" || trailer_video_type == "m3u8_url" ){
    // alert(trailer_video_type);
    document.addEventListener("DOMContentLoaded", () => {
    const videos = document.querySelector('#videos');

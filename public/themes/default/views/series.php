@@ -140,7 +140,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
 		$settings->free_registration && !Auth::guest() && Auth::user()->role != 'registered' && $series->ppv_status != 1) 
     || $series->access == 'subscriber' && !Auth::guest() && Auth::user()->role == 'subscriber'):  ?>
-		<div class="col-md-7">
+		<div class="col-md-7 p-0">
 			<div id="series_title">
 				<div class="container">
 					 <h1><?= $series->title ?></h1>
@@ -155,8 +155,45 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 					<div class="row p-2 text-white">
                         <div class="col-md-7">
                         <?= __('Season') ?>  <span class="sea"> 1 </span> -<?= __('U/A English') ?> 
-                            <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p>
-						<b><p class="desc" style="color:#fff;"><?php echo $series->description;?></p></b>
+                            <!-- <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p> -->
+                            <!-- <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p> -->
+                              
+
+                           
+
+                                <?php
+                                  $description = $series->description;
+
+                                  if (strlen($description) > 200) {
+                                      $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                                  } else {
+                                      $shortDescription = html_entity_decode($description);
+                                  }
+                                  ?>
+
+                                  <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                      <?php echo $shortDescription; ?>
+                                  </div>
+
+                                    <script>
+                                        function toggleDescription() {
+                                            var descriptionContainer = document.querySelector('.description-container');
+                                            var moreText = descriptionContainer.querySelector('.more-text');
+                                            var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                            if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                                moreText.style.display = 'inline';
+                                                seeMoreButton.innerText = ' See Less ';
+                                            } else {
+                                                moreText.style.display = 'none';
+                                                seeMoreButton.innerText = ' See More ';
+                                            }
+                                        }
+                                    </script>
+
+                                
+
+						                <!-- <p class="desc" style="color:#fff;"><?php echo $series->description;?></p> -->
                             <div class="row p-0 mt-3 align-items-center">
                                 <div class="col-md-2 trailerbutton">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                           <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
@@ -270,7 +307,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
 		<div class="row">
 			<div class="col-md-12 mt-4">
-				<nav class="nav-justified">
+				<nav class="nav-justified pl-3">
 					<div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
                         <h4 class="ml-3"><?php echo __('Episode'); ?></h4>
 						<!--<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
@@ -281,7 +318,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
             </div>
 <!-- $series->title -->
 						<div class="container-fluid">
-				<div class="favorites-contens">
+				<div class="favorites-contens pl-5">
                     <div class="col-md-3 p-0">
                     <select class="form-control" id="season_id" name="season_id">
 							<?php foreach($season as $key => $seasons): ?>
@@ -396,15 +433,50 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 				</div> 
 
           <!-- <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
-			<div class="col-md-7">
+			<div class="col-md-7 p-0">
 				<div id="series_title">
             <div class="container">
               <h3><?= $series->title ?></h3>
               <div class="row p-2 text-white">
                 <div class="col-md-7">
                           <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
-                              <p  style="color:#fff!important;"><?php echo $series->details;?></p>
-                                <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
+
+
+                          <?php
+                            $description = $series->description;
+
+                            if (strlen($description) > 200) {
+                                $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                            } else {
+                                $shortDescription = html_entity_decode($description);
+                            }
+                            ?>
+
+                            <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                <?php echo $shortDescription; ?>
+                            </div>
+
+                              <script>
+                                  function toggleDescription() {
+                                      var descriptionContainer = document.querySelector('.description-container');
+                                      var moreText = descriptionContainer.querySelector('.more-text');
+                                      var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                      if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                          moreText.style.display = 'inline';
+                                          seeMoreButton.innerText = ' See Less ';
+                                      } else {
+                                          moreText.style.display = 'none';
+                                          seeMoreButton.innerText = ' See More ';
+                                      }
+                                  }
+                              </script>
+
+
+
+
+                              <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+                                <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
                                   <div class="row p-0 mt-3 align-items-center">
                                       <!-- <div class="col-md-2"> 
                                          <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
@@ -512,15 +584,48 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
         </div>
 				<?php elseif(!Auth::guest() && $series->ppv_status == 1 ||!Auth::guest() && Auth::User()->role == "subscriber"  || !Auth::guest() && Auth::User()->role == "registered" ):  ?>
 
-          <div class="col-md-7">
+          <div class="col-md-7 p-0">
 				    <div id="series_title">
               <div class="container">
                 <h3><?= $series->title ?></h3>
                   <div class="row p-2 text-white">
                     <div class="col-md-7">
                       <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
-                        <p  style="color:#fff!important;"><?php echo $series->details;?></p>
-                        <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
+
+                      <?php
+                        $description = $series->description;
+
+                        if (strlen($description) > 200) {
+                            $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                        } else {
+                            $shortDescription = html_entity_decode($description);
+                        }
+                        ?>
+
+                        <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                            <?php echo $shortDescription; ?>
+                        </div>
+
+                          <script>
+                              function toggleDescription() {
+                                  var descriptionContainer = document.querySelector('.description-container');
+                                  var moreText = descriptionContainer.querySelector('.more-text');
+                                  var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                  if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                      moreText.style.display = 'inline';
+                                      seeMoreButton.innerText = ' See Less ';
+                                  } else {
+                                      moreText.style.display = 'none';
+                                      seeMoreButton.innerText = ' See More ';
+                                  }
+                              }
+                          </script>
+
+
+
+                        <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+                        <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
                         <div class="row p-0 mt-3 align-items-center">
                                         <!-- <div class="col-md-2">
                                           <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
@@ -600,15 +705,46 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
          
           <?php elseif(Auth::guest() && $series->ppv_status == 1  || Auth::guest() && $series->access == "registered" ):  ?>
 
-              <div class="col-md-7">
+              <div class="col-md-7 p-0">
                 <div id="series_title">
                   <div class="container">
                     <h3><?= $series->title ?></h3>
                       <div class="row p-2 text-white">
                         <div class="col-md-7">
                           <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
-                            <p  style="color:#fff!important;"><?php echo $series->details;?></p>
-                            <b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
+
+                          <?php
+                            $description = $series->description;
+
+                            if (strlen($description) > 200) {
+                                $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                            } else {
+                                $shortDescription = html_entity_decode($description);
+                            }
+                            ?>
+
+                            <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                <?php echo $shortDescription; ?>
+                            </div>
+
+                              <script>
+                                  function toggleDescription() {
+                                      var descriptionContainer = document.querySelector('.description-container');
+                                      var moreText = descriptionContainer.querySelector('.more-text');
+                                      var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                      if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                          moreText.style.display = 'inline';
+                                          seeMoreButton.innerText = ' See Less ';
+                                      } else {
+                                          moreText.style.display = 'none';
+                                          seeMoreButton.innerText = ' See More ';
+                                      }
+                                  }
+                              </script>
+
+                            <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+                            <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
                             <div class="row p-0 mt-3 align-items-center">
                                             <!-- <div class="col-md-2">
                                               <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
