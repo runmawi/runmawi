@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @include('/header')
 @section('content')
-<?// dd($plans_data); ?>
+
     <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
     </script>
     <style>
@@ -131,21 +131,26 @@
    
 ?>
     <div class="row justify-content-center" id="signup-form">
-    @if (Session::has('message'))
-        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-    @endif
+            <!-- @if(session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session()->get('message') }}
+                </div>
+            @endif -->
+            @if (Session::has('message'))
+            <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                @endif
 
-    @if(count($errors) > 0)
-        @foreach( $errors->all() as $message )
-            <div class="alert alert-danger display-hide" id="successMessage" >
-                <button id="successMessage" class="close" data-close="alert"></button>
-                <span>{{ $message }}</span>
-            </div>
-        @endforeach
-    @endif
+                @if(count($errors) > 0)
+                    @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                            <button id="successMessage" class="close" data-close="alert"></button>
+                            <span>{{ $message }}</span>
+                        </div>
+                    @endforeach
+                @endif
         <div class="col-md-10 col-sm-offset-1">
 			<div class="login-block">
-                <div class="panel-heading"><h1>Choose Your Plan</h1></div>
+                <div class="panel-heading"><h1>{{ __('Choose Your Plan') }}</h1></div>
                      <div class="panel-body">
                        <!-- <div class="tab">
                           <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
@@ -185,17 +190,17 @@
                                     <?php echo $plan[0]->plans_name;?></h3>
                             </div>
                             <div class="plan-price">
-                                <p>plan</p>
+                                <p>{{ __('plan') }}</p>
                                 <h4><?php echo "$".$plan[0]->price;?>
                                     <small>
-                                    <?php if ($plans_name == 'Monthly') { echo 'for a Month'; } else if ($plans_name == 'Yearly') { echo 'for 1 Year'; } else if ($plans_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plans_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+                                    <?php if ($plans_name == 'Monthly') { echo 'for a Month'; } else if ($plans_name == 'Yearly') { echo __('for 1 Year'); } else if ($plans_name == 'Quarterly') { echo __('for 3 Months'); } else if ($plans_name == 'Half Yearly') { echo __('for 6 Months'); } ?>
                                     </small>
                                 </h4>
                             </div>
                             <div class="plan-details">
-                                <p class="text-black">Grab this plan for your best Movies to Watch.</p>
+                                <p class="text-black">{{ __('Grab this plan for your best Movies to Watch') }}.</p>
                                 <div class=" mt-4 text-center">
-                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan[0]->plan_id;?>"  >Pay Now</button>
+                                    <button type="submit" class="btn btn-primary" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan[0]->plan_id;?>"  >{{ __('Pay Now') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -219,18 +224,18 @@
                                                     <?php echo $plan[0]->plans_name;?></h3>
                                             </div>
                                             <div class="plan-price">
-                                                <p>plan</p>
+                                                <p>{{ __('plan') }}</p>
                                                 <h4><?php echo "$".$plan[0]->price;?>
                                                     <small>
-                                                    <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+                                                    <?php if ($plan_name == 'Monthly') { echo __('for a Month'); } else if ($plan_name == 'Yearly') { echo __('for 1 Year'); } else if ($plan_name == 'Quarterly') { echo __('for 3 Months'); } else if ($plan_name == 'Half Yearly') { echo __('for 6 Months'); } ?>
                                                     </small>
                                                 </h4>
                                             </div>
                                             <div class="plan-details">
-                                                <p>Grab this plan for your best Movies to Watch.</p>
+                                                <p>{{ __('Grab this plan for your best Movies to Watch') }}.</p>
                                                 <div class=" mt-4 text-center">
                                                     
-                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
+                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">{{ __('Pay Now') }}
                                             </button>
 
                                                 <!-- Launch demo modal
@@ -261,7 +266,7 @@
 			<div class="modal-content">
 				
 				<div class="modal-header">
-                <h4 class="modal-title" style="color: #000">You are one step away from purchasing subscription</h4>
+                <h4 class="modal-title" style="color: #000">{{ __('You are one step away from purchasing subscription') }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					
 				</div>
@@ -298,8 +303,8 @@
 						<?php  } }?>
                         </div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Next</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">{{ __('Close') }}</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">{{ __('Next') }}</button>
 				</div>
 			</div>
 		</div>

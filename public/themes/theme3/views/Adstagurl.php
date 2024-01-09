@@ -30,3 +30,4 @@ if(  plans_ads_enable() == 1 ){
 ?>
 
 <input type="hidden" id="video_tag_url" name="video_tag_url" value="<?= $video_tag_url ?>">
+<input type="hidden" id="ads_tag_url_id" name="ads_tag_url_id" value="<?= $video->ads_tag_url_id ?>">
