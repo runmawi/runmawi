@@ -1,9 +1,13 @@
 @php  include(public_path('themes/theme3/views/header.php')); @endphp
 
-<button id="rzp-button1" hidden>Pay</button>  
+<button id="rzp-button1" hidden>{{ __('Pay')  }}</button>  
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <div class="col-lg-12  h-100">
+    <div class="d-flex justify-content-center">
+        <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
+    </div>
+</div><div class="col-lg-12  h-100">
     <div class="d-flex justify-content-center">
         <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
     </div>
@@ -63,7 +67,7 @@ document.getElementById('rzp-button1').onclick = function(e){
         <input type="text"  name="video_id"  value= {{ $response['video_id'] }} />
         <input type="text"  name="amount"    value= {{ $response['amount'] }} />
 
-    <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">Submit</button>
+    <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">{{ __('Submit')  }}</button>
 </form>
 
 @php
