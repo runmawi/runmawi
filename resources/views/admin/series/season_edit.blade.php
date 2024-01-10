@@ -355,6 +355,93 @@
                                  </div>
                               </div>
                            </div>
+
+                           
+                @if( choosen_player() == 1 )    {{-- Video.Js Player--}}
+
+                    @if ( admin_ads_pre_post_position() == 1 )
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
+
+                            <label> {{ ucwords( 'Choose the Pre / Post-Position Advertisement' ) }}    </label>
+                            
+                            <select class="form-control" name="pre_post_ads" >
+
+                                <option value=" " > Select the Post / Pre-Position Advertisement </option>
+
+                                <option value="random_ads" > Random Ads </option>
+
+                                @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}" > {{ $video_js_Advertisement->ads_name }}</option>
+                                @endforeach
+                            
+                            </select>
+                        </div>
+                        
+                    @elseif ( admin_ads_pre_post_position() == 0 )
+
+                        <div class="row mt-3">
+
+                            <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                                <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                                
+                                <select class="form-control" name="pre_ads" >
+
+                                    <option value=" " > Select the Pre-Position Advertisement </option>
+
+                                    <option value="random_ads"> Random Ads </option>
+
+                                    @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                        <option value="{{ $video_js_Advertisement->id }}"  > {{ $video_js_Advertisement->ads_name }}</option>
+                                    @endforeach
+                                    
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
+                                <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                                
+                                <select class="form-control" name="post_ads" >
+
+                                    <option value=" " > Select the Post-Position Advertisement </option>
+
+                                    <option value="random_ads"> Random Ads </option>
+
+                                    @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                        <option value="{{ $video_js_Advertisement->id }}"> {{ $video_js_Advertisement->ads_name }}</option>
+                                    @endforeach
+                                
+                                </select>
+                            </div>
+                        </div>
+
+                    @endif
+
+                    <div class="row">
+                        <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                            <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                            <select class="form-control" name="mid_ads" >
+
+                                <option value=" " > Select the Mid-Position Advertisement Category </option>
+
+                                <option value="random_category"> Random Category </option>
+
+                                @foreach( $ads_category as $ads_category )
+                                    <option value="{{ $ads_category->id }}" > {{ $ads_category->name }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
+                            <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                            <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time"  >
+                        </div>
+
+                    </div>
+                
+                        {{-- Ply.io --}}
+                @else    
                     <div class="row mt-3">
                         <div class="col-sm-6"  >
                             <label class="m-0">Choose Ads Position</label>
@@ -374,6 +461,7 @@
                             </select>
                         </div>
                     </div>
+                @endif
 
                     <div class="clear"></div>
 
@@ -755,7 +843,9 @@
                 $('#recap_end_time').mask("00:00:00");
                 $('#skip_intro').mask("00:00:00");
                 $('#skip_recap').mask("00:00:00");
+                $('#video_js_mid_advertisement_sequence_time').mask("00:00:00");
         });
+        
         $(document).ready(function () {
             $("#duration").mask("00:00:00");
             $("#tags").tagsInput();

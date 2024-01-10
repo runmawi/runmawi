@@ -60,7 +60,7 @@ use App\Advertisement;
 use App\Playerui as Playerui;
 use App\SeriesSubtitle as SeriesSubtitle;
 use App\SeriesNetwork;
-
+use App\Adscategory;
 
 class AdminSeriesController extends Controller
 {
@@ -1647,6 +1647,8 @@ class AdminSeriesController extends Controller
             $dropzone_url =  URL::to('admin/episode_upload');
         }
 
+        $video_js_Advertisements = Advertisement::where('status',1)->get() ;
+
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season '.$season_id.' : '.$series->title,
                 'episodes' => $episodes,
@@ -1660,6 +1662,8 @@ class AdminSeriesController extends Controller
                 'InappPurchase' => InappPurchase::all(),
                 'post_dropzone_url' => $dropzone_url,
                 "subtitles" => Subtitle::all(),
+                'video_js_Advertisements' => $video_js_Advertisements ,
+                "ads_category" => Adscategory::all(),
 
             );
 
@@ -1912,10 +1916,30 @@ class AdminSeriesController extends Controller
             $episodes->ppv_price =  $ppv_price;
             $episodes->ppv_status =  $data['ppv_status'];
             $episodes->status =  1;
-            $episodes->ads_position =  $request->ads_position;
-            $episodes->episode_ads =  $request->episode_ads;
-            $episodes->save();
+            
+            // {{-- Video.Js Player--}}
 
+            if( choosen_player() == 1  ){
+
+                if( admin_ads_pre_post_position() == 1){
+                    
+                    $episodes->pre_post_ads =  $data['pre_post_ads'];
+                }
+                else{
+                    
+                    $episodes->pre_ads      =  $data['pre_ads'];
+                    $episodes->post_ads     =  $data['post_ads'];
+                    $episodes->mid_ads      =  $data['mid_ads'];
+                }
+
+                $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+            }
+            else{
+                $episodes->ads_position =  $data['ads_position'];
+                $episodes->episode_ads  =  $data['episode_ads'];
+            }
+
+            $episodes->save();
 
             $shortcodes = $request["short_code"];
             $languages = $request["sub_language"];
@@ -2006,7 +2030,9 @@ class AdminSeriesController extends Controller
         }
 
         $SeriesSubtitle = SeriesSubtitle::where('episode_id', $id)->get();
-        // dd($SeriesSubtitle);
+
+        $video_js_Advertisements = Advertisement::where('status',1)->get() ;
+
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Episode '.$episodes->title,
                 'episodes' => $episodes,
@@ -2019,6 +2045,8 @@ class AdminSeriesController extends Controller
                 // "subtitles" => $subtitles,
                 "SeriesSubtitle" => $SeriesSubtitle ,
                 "subtitlescount" => $subtitlescount,
+                "ads_category" => Adscategory::all(),
+                "video_js_Advertisements" => $video_js_Advertisements ,
             );
 
         return View::make('admin.series.edit_episode', $data);
@@ -2070,7 +2098,7 @@ class AdminSeriesController extends Controller
         }
 
         $data = $request->all();
-          
+
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
         if(empty($data['ppv_status'])){
@@ -2253,9 +2281,32 @@ class AdminSeriesController extends Controller
         $episode->slug =  $data['slug'];
         $episode->episode_description =  $data['episode_description'];
         $episode->status =  1;
-        $episode->ads_position =  $data['ads_position'];
-        $episode->episode_ads =  $data['episode_ads'];
+
+
+            // {{-- Video.Js Player--}}
+
+        if( choosen_player() == 1  ){
+
+            if( admin_ads_pre_post_position() == 1){
+                
+                $episode->pre_post_ads =  $data['pre_post_ads'];
+            }
+            else{
+                
+                $episode->pre_ads      =  $data['pre_ads'];
+                $episode->mid_ads      =  $data['mid_ads'];
+                $episode->post_ads     =  $data['post_ads'];
+            }
+
+            $episode->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+        }
+        else{
+            $episode->ads_position =  $data['ads_position'];
+            $episode->episode_ads  =  $data['episode_ads'];
+        }
+
         $episode->save();
+
         $shortcodes = $request["short_code"];
         $languages = $request["sub_language"];
         if (!empty($subtitles != "" && $subtitles != null)) {
