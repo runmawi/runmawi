@@ -25,9 +25,9 @@
         color: grey !important;
     }
 
-    select:valid {
+    /* select:valid {
         color: #fff !important;
-    }
+    } */
 
     .plyr__video-wrapper::before {
         display: none;
@@ -120,6 +120,10 @@
     .form-control:focus{
         background-color: transparent;
         box-shadow:none;
+    }
+     .form-control option {
+        background: #121111!important;
+        color: #ffffff!important;
     }
    
 </style>
@@ -326,7 +330,7 @@
                             @foreach ($season as $key => $seasons)
                                 @foreach ($seasons->episodes as $key => $episodes)
                                     @if ($seasons->ppv_interval > $key)
-                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                                        <li class="slide-item episodes_div season_<?= $seasons->id ?>">
                                             <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
                                             <div class=" position-relative">
                                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
@@ -347,7 +351,7 @@
                                             </a>
                                         </li>
                                     @else
-                                        <li>
+                                        <li class="slide-item  episodes_div season_<?= $seasons->id ?>">
                                             <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                                 <div class=" position-relative">
                                                     <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="img-fluid w-100" >
