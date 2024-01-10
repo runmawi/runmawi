@@ -1378,3 +1378,9 @@ function Enable_Extract_Image()
     $enable_extract_image = App\SiteTheme::pluck('enable_extract_image')->first();
     return  $enable_extract_image; 
 }
+
+function admin_ads_pre_post_position()
+{
+    $admin_ads_pre_post_position = App\SiteTheme::pluck('admin_ads_pre_post_position')->first();
+    return  $admin_ads_pre_post_position; 
+}
