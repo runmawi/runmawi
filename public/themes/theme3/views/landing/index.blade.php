@@ -27,7 +27,7 @@
 
             {{-- Header --}}
         @if ( $header == 1)
-            @php include(public_path('themes/default/views/header.php'))  @endphp 
+            @php include(public_path('themes/theme3/views/header.php'))  @endphp 
         @endif
 
                 {{-- Section 1 --}}
@@ -39,7 +39,7 @@
 
                 {{-- Section 2 --}}
 
-        @foreach ($sections_2 as $section_2)
+        @foreach ($sections_2 as $section_2
 
              @php echo html_entity_decode($section_2) @endphp
             
@@ -65,7 +65,7 @@
 
                 {{-- Footer --}}
         @if ( $footer == 1)
-          @php include(public_path('themes/default/views/footer.blade.php')); @endphp 
+          @php include(public_path('themes/theme3/views/footer.blade.php')); @endphp 
         @endif
 
     </body>

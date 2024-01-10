@@ -63,15 +63,16 @@
                <?php } ?>
 
                <div class="hover-buttons text-white">
-              <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
-              <p class="epi-name text-left m-0">
-                <?php echo __($latest_episode->title); ?></p>
-                
-                <div class="movie-time d-flex align-items-center my-2">
-                  <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_episode->age_restrict.' '.'+' ?></div>
-                  <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_episode->duration); ?></span>
-                </div>
-                </a>
+                  <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
+                      <p class="epi-name text-left m-0">
+                        <?php echo __($latest_episode->title); ?>
+                      </p>
+                        
+                        <div class="movie-time d-flex align-items-center my-2">
+                          <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_episode->age_restrict.' '.'+' ?></div>
+                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_episode->duration); ?></span>
+                        </div>
+                  </a>
 
                
                 <a class="epi-name mt-3 mb-0 btn" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">

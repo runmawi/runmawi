@@ -2441,7 +2441,7 @@ Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('vid
 
 Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
 
-Route::get('/Channels/{slug}', 'EPGChannelController@index')->name('Front-End.Channel-EPG');
+Route::get('/channels/{slug}', 'EPGChannelController@index')->name('Front-End.Channel-EPG');
 
 Route::get('/channel-List', 'EPGChannelController@EPG_Channel_List')->name('Front-End.EPG_Channel_List');
 

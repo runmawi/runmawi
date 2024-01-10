@@ -8,6 +8,8 @@ $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 $channel = Session::get('channel'); 
 
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
 // dd($channel);
 // exit();UA-42534483-14
       ?>
@@ -61,7 +63,7 @@ $channel = Session::get('channel');
                               <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
                            </div>
                         </a>
-                        <a class="navbar-brand" href="#"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
                          
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
@@ -186,7 +188,7 @@ $channel = Session::get('channel');
                                                 <i class="ri-settings-4-line text-primary"></i>
                                             </div>
                                             <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Signin</h6>
+                                                <h6 class="mb-0 ">{{ __('Signin') }}</h6>
                                             </div>
                                         </div>
                                     </a>
@@ -198,7 +200,7 @@ $channel = Session::get('channel');
                                            <i class="ri-logout-circle-line text-primary"></i>
                                         </div>
                                         <div class="media-body ml-3">
-                                           <h6 class="mb-0 ">Signup</h6>
+                                           <h6 class="mb-0 ">{{ __('Signup') }}</h6>
                                         </div>
                                      </div>
                                   </a>
@@ -211,7 +213,7 @@ $channel = Session::get('channel');
                                            <i class="ri-logout-circle-line text-primary"></i>
                                         </div>
                                         <div class="media-body ml-3">
-                                           <h6 class="mb-0 ">LogOut</h6>
+                                           <h6 class="mb-0 ">{{ __('LogOut') }}</h6>
                                         </div>
                                      </div>
                                   </a>

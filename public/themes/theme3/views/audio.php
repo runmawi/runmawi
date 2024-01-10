@@ -5,16 +5,11 @@ $audio = $audios ;
 ?>
 <style type="text/css">
     #myProgress {
-   background-color: #d9d9f2; 
+   background-color: #8b0000; 
   cursor: pointer;
   border-radius: 10px;
 }
-  .play-border{
-        border:1px solid rgba(255,255,255,0.3);
-        border-radius: 10px;
-        padding: 10px;
-        border-width:2px;
-    }
+  
 #myBar {
   width: 0%;
   height: 3px;
@@ -22,16 +17,22 @@ $audio = $audios ;
   border-radius: 10px;
 }
     .title{
-        text-align: left;
+        text-align: left!important;
         color: #fff;
     }
 .logo {
   fill: red;
 }
+    .play-border{
+        border:1px solid rgba(255,255,255,0.3);
+        border-radius: 10px;
+        padding: 10px;
+        border-width:2px;
+    }
 
 .btn-action{
   cursor: pointer;
- 
+  padding-top: 10px;
   width: 30px;
 }
 
@@ -65,16 +66,19 @@ padding-top: 20px;
 }
 
 .title{
-  margin-left: 10px;
-  
+   /*margin-left: 10px;
+ 
   text-align: center;
+    border-top:1px solid rgba(255, 255, 255,0.1)*/
 }
 
 .player-ctn{
   
  
-  padding: 10px;
-  background: linear-gradient(180deg, #151517 127.69%, #282834 0% );
+  padding: 25px;
+  /*background: linear-gradient(180deg, #151517 127.69%, #282834 0% );*/
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
   margin:auto;
    
     border-radius: 10px;
@@ -83,8 +87,10 @@ padding-top: 20px;
 
 .playlist-track-ctn{
   display: flex;
+    padding-left: 10px;
   background-color: #464646;
   margin-top: 3px;
+    margin-right: 10px;
   border-radius: 5px;
   cursor: pointer;
     align-items: center;
@@ -98,8 +104,8 @@ padding-top: 20px;
     color: #fff;
 }
 .playlist-info-track{
-  width: 85%;
-   
+  width: 80%;
+  
     padding: 2px;
 }
 .playlist-info-track,.playlist-duration{
@@ -110,21 +116,26 @@ padding-top: 20px;
   pointer-events: none;
 }
    .playlist-ctn {
-  scrollbar-width: thin;
-  scrollbar-color: #CFD8DC;
+ 
+}
+    .playlist-ctn::-webkit-scrollbar {
+width: 2px;
 }
 .playlist-ctn::-webkit-scrollbar-track {
-  background: #CFD8DC;
+  background: rgba(255,255,255,0.2);
+    
 }
 .playlist-ctn::-webkit-scrollbar-thumb {
-  background-color: rgb(0, 82, 204) ;
-  border-radius: 6px;
-  border: 3px solid var(--scrollbarBG);
+  background-color: red;
+  border-radius: 2px;
+  border: 2px solid red;
+     width: 2px;
 }
 .playlist-ctn{
    padding-bottom: 20px;
     overflow: scroll;
-    max-height: 400px;
+    scroll-behavior: auto;
+    max-height:335px;
     scrollbar-color: rebeccapurple green!important;
     overflow-x: hidden;
 }
@@ -134,19 +145,27 @@ padding-top: 20px;
   font-weight: bold;
   
 }
-
+    label{
+        color: #000;
+    }
 .active-track > .playlist-info-track,.active-track >.playlist-duration,.active-track > .playlist-btn-play{
   color: #ffc266 !important;
 }
 
-
+    .form-control{
+        color: #000!important;
+        font-weight: 700;
+        border-radius: 5px;
+        background-color: #fff!important;
+    }
 .playlist-btn-play{
+    color: #fff!important;
   pointer-events: none;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 .fas{
-  color: rgb(0, 82, 204);
+  color: rgb(255,0,0);
   font-size: 20px;
 }
     
@@ -161,7 +180,7 @@ border-radius: 25px !important;
 }
 .vjs-texttrack-settings { display: none; }
 .audio-js .vjs-big-play-button{ border: none !important; }
-.bd{/*border-radius: 25px!important;*/padding:5px;
+.bd{/*border-radius: 25px!important;*/padding:5px 15px;
 background: #2bc5b4!important;}
 .bd:hover{
 
@@ -229,7 +248,24 @@ text-align: center;
 #circle{
 border-radius: 50%;
 }
+          /* <!-- BREADCRUMBS  */
+
+      .bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
+          content: none; 
+      } 
+
+      ol.breadcrumb {
+            color: white;
+            background-color: transparent !important  ;
+            font-size: revert;
+      }
+
 </style>
+
+<?php if (Session::has('message')): ?>
+    <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  echo Session::get('message') ?></div>
+<?php endif ;?>
+
 
 <?php if (isset($error)) { ?>
                 <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;">
@@ -241,9 +277,12 @@ border-radius: 50%;
 <div id="audio_bg" >
 <div id="audio_bg_dim" <?php if($audio->access == 'guest' || ($audio->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 <div class="container-fluid">
-
-<?php if($audio->access == 'guest' || ( ($audio->access == 'subscriber' || $audio->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $audio->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') || (($audio->access == 'subscriber' || $audio->access == 'registered') && $ppv_status == 1)): ?>
-
+<?php if($audio->access == 'guest' || ( ($audio->access == 'subscriber' ||
+ $audio->access == 'registered') && !Auth::guest() && Auth::user()->subscribed())
+  || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) ||
+   (!Auth::guest() && $audio->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered')
+    || (($audio->access == 'subscriber' || $audio->access == 'registered' || $audio->access == 'ppv' ))): ?>
+ <!-- && $ppv_status == 1 -->
 
 <!-- <?php //if($audio->type == 'file'): ?>
 
@@ -267,22 +306,24 @@ Your browser does not support the audio element.
 
 <?php  //else: ?> -->
 
-<?php if($audio): ?>
-<?php if ( $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin') { ?>
+<?php if($audio):  ?>
+<?php if ( 1 == 0 ) { ?>
+  <!--  $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin' -->
 <div id="subscribers_only">
-<a  class="text-center btn btn-success" id="paynowbutton"> Pay for View  </a>
+<a  class="text-center btn btn-success" id="paynowbutton"> <?php echo __('Pay for View'); ?>  </a>
 </div>
 <?php } else { ?>                
 
 <div class="row album-top-30 mt-4 ">
+    
     <div class="col-lg-8">
-         <div class="player-ctn">
-              <div class="row">
-            <div class="col-sm-3 col-md-3 col-xs-3">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $audio->album ?>"  class="img-responsive" width="200" height="200">
-
-<!-- -->
-</div>
+         <div class="player-ctn" id="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/images/'. $audio->player_image ?>');background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right;">
+              <div class="row align-items-center">
+           <div class="col-sm-3 col-md-3 col-xs-3 ">
+              <img height="150" width="150" id="audio_img" src="">
+           </div>
             
 <div class="col-sm-9 col-md-9 col-xs-9">
     
@@ -291,16 +332,19 @@ Your browser does not support the audio element.
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
-<h2 class="hero-title album"> <?php echo ucfirst($audio->title); ?></h2>
+<h2 class="hero-title album">          <div class="title"></div>
+</h2>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
-<div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
+<div class="d-flex" style="justify-content: space-between;width: 70%;align-items: center;">
 
 <div onclick="toggleAudio()">
-  <button class=" bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+  <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> <?php echo __('Play'); ?></button>
 </div>
 
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
+    <i class="ri-thumb-up-line like" aria-hidden="true"  id="ff"  data-authenticated="<?= !Auth::guest() ?>"></i>
+    <i class="ri-thumb-down-line dislike" aria-hidden="true"   id="ff" data-authenticated="<?= !Auth::guest() ?>"></i>
 <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
 <div class="dropdown">
     <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
@@ -311,6 +355,13 @@ Your browser does not support the audio element.
         <div class="divider" style="border:1px solid white"></div>
         <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
     </div>
+</div>&nbsp;
+<div>
+<?php if(!Auth::guest()){ ?>
+<button type="button" class="btn bd btn-primary" data-toggle="modal" data-target="#exampleModal">
+<?php echo __('Create PlayList'); ?>
+</button>
+<?php } ?>
 </div>
 <!-- Share -->
 </div>
@@ -412,10 +463,25 @@ Your browser does not support the audio element.
     <div class="col-lg-4 p-0">
         <audio id="myAudio" ontimeupdate="onTimeUpdate()">
           <source id="source-audio" src="" type="audio/mpeg">
-            Your browser does not support the audio element.
+          <?php echo __('Your browser does not support the audio element'); ?>.
         </audio>
+        <div class="stripe_button">
+                  <!-- stripe Button -->
+                  <button onclick="stripe_checkout()" id="enable_button" style="display:none;margin-left: -43%;position: absolute;margin-top: 20px;"
+                      class="btn2  btn-outline-primary"><?php echo __('Purchase to Play Audio'); ?></button>
+
+                                     <!-- Subscriber Button -->
+                         
+                                      <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="display:none;margin-left: 66%;position: absolute;margin-top: 20px;"
+                      class="btn bd btn-action"><?php echo __('Subscribe to continue listening'); ?></button> 
+                      </a>
+
+              </div>
         <div class="play-border">
-      <div class="playlist-ctn"></div>
+            <div class="playlist-ctn">
+                <h6 class="mb-2 font-weight-bold"><?php echo __('AUDIO LIST'); ?> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+</h6>
+            </div></div>
     </div>
 
     </div>
@@ -442,9 +508,81 @@ Your browser does not support the audio element.
 
 <?php } ?>
 
+<!-- Playlist  -->
+
+<div class="container-fluid">
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-black" id="exampleModalLabel"><?php echo __('Create PlayList  '); ?></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	        
+      <form  id="my-playlist-form" accept-charset="UTF-8"  enctype="multipart/form-data"  action="<?= URL::to('/playlist/store') ?>" method="post">
+      
+      <div class="col-sm-10 p-0">
+            <label for="name"><?php echo __('PlayList Title'); ?></label>
+            <input name="title" id="title" placeholder="PlayList Title" class="form-control text-black"  />
+          </div>
+          <div class="col-sm-10 p-0">
+		
+            <label for="name"><?php echo __('PlayList Image'); ?></label>
+            <input type="file" name="image" id="image" />
+          </div>
+     
+      <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+<br>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" id="store-play-list" class="btn btn-primary"><?php echo __('Save'); ?></button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+</div>
+
+                        <!-- BREADCRUMBS -->
+                        <div class="ml-2">     
+        <div class="row">
+          <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <div class="bc-icons-2">
+                      <ol class="breadcrumb" style="isplay: flex; justify-content: start;align-items: center;">
+                        <li class="breadcrumb-item"><a class="black-text" href="<?= route('Audios_list') ?>"><?= ucwords('Audios') ?></a>
+                          <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                        </li>
+
+                        <?php foreach ($category_name as $key => $audio_category_name) { ?>
+                          <?php $category_name_length = count($category_name); ?>
+                          <li class="breadcrumb-item">
+                              <a class="black-text" href="<?= route('AudioCategory',[ $audio_category_name->categories_slug ])?>">
+                                  <?= ucwords($audio_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
+                              </a>
+                          </li>
+                        <?php } ?>
+
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                        <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($audio->title) > 50) ? ucwords(substr($audio->title,0,120).'...') : ucwords($audio->title); ?> </a></li>
+                      </ol>
+                  </div>
+              </div>
+            </div>
+        </div>
+      </div>
+
+
                <!-- Comment Section -->
                
-      <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
+      <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('audios')->first() == 1 ): ?>
         <div class="row">
             <div class=" container-fluid video-list you-may-like overflow-hidden">
                 <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
@@ -457,10 +595,12 @@ Your browser does not support the audio element.
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
    
-<h4  class="album-title">Other Albums </h4>
+<h4  class="album-title"><?php echo __('Other Albums'); ?> </h4>
     <div class="favorites-contens">
-<ul class="favorites-slider list-inline  row p-0 mb-0">
-    <?php foreach ($other_albums as $other_album) { ?>
+
+   
+        <ul class="favorites-slider list-inline  row p-0 mb-0">
+             <?php foreach ($other_albums as $other_album) { ?>
         <li class="slide-item">
             <?php if($other_album->album != ''){ ?>
             
@@ -468,21 +608,23 @@ Your browser does not support the audio element.
                     <div class="block-images position-relative">
                           <div class="img-box">
                              <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive w-100" />   
-                        </div></div>
-                        <div class="block-description"></div>
+                        </div>
+                        <div class="block-description">
                             <div class="hover-buttons text-white">
                                 <p class="mt-2"><?php echo ucfirst($other_album->albumname);?> </p>
-                
+                </div>
                            
             <?php  } ?> 
-                        
+                        </div>
                     </div>      
             </a>
            
           
         </li>
-    <?php } ?>
-</ul>
+             <?php } ?>
+            </ul>
+   
+
         </div>
 </div>
 
@@ -546,15 +688,15 @@ Your browser does not support the audio element.
 <?php else: ?>
 
 <div id="subscribers_only">
-<h2>Sorry, this audio is only available to <?php if($audio->access == 'subscriber'): ?>Subscribers<?php elseif($audio->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+<h2><?php echo __('Sorry, this audio is only available to'); ?> <?php if($audio->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($audio->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?></h2>
 <div class="clear"></div>
 <?php if(!Auth::guest() && $audio->access == 'subscriber'): ?>
 <form method="get" action="/user/<?= Auth::user()->username ?>/upgrade_subscription">
-<button id="button">Become a subscriber to watch this audio</button>
+<button id="button"><?php echo __('Become a subscriber to watch this audio'); ?></button>
 </form>
 <?php else: ?>
 <form method="get" action="/signup">
-<button id="button">Signup Now <?php if($audio->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($audio->access == 'registered'): ?>for Free!<?php endif; ?></button>
+<button id="button"><?php echo __('Signup Now'); ?> <?php if($audio->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?><?php elseif($audio->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
 </form>
 <?php endif; ?>
 </div>
@@ -566,9 +708,32 @@ Your browser does not support the audio element.
 </div>
 <?php } ?>
 
+<?php if(!Auth::guest()){ $role = Auth::user()->role ; }else{ $role = ''; } ?>
 
+<?php                 
+$payment_settings = App\PaymentSetting::first();
+
+$mode = $payment_settings->live_mode;
+if ($mode == 0) {
+    $secret_key = $payment_settings->test_secret_key;
+    $publishable_key = $payment_settings->test_publishable_key;
+} elseif ($mode == 1) {
+    $secret_key = $payment_settings->live_secret_key;
+    $publishable_key = $payment_settings->live_publishable_key;
+} else {
+    $secret_key = null;
+    $publishable_key = null;
+} ?>
+
+
+<input type="hidden" id="publishable_key" name="publishable_key"
+                        value="<?php echo $publishable_key; ?>">
 
 <script type="text/javascript">
+
+$('#store-play-list').click(function(){
+				$('#my-playlist-form').submit();
+			});
 
 var base_url = $('#base_url').val();
 
@@ -639,46 +804,27 @@ window.location = '<?= URL::to('login') ?>';
       });
 
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/add-on/jplayer.playlist.min.js"></script>
+<?php 
+  //           echo "<script>
+  //           var audioppv_id = '2';
+  //           </script>";
 
-<script type="text/javascript">
-    var ppbutton = document.getElementById("vidbutton");
+  //   $audioppv_id = "<script>document.writeln(audioppv_id);</script>";
+  //   if(!Auth::guest()){
 
-    $player = $("#jquery_jplayer_1")
-    jPlayer_method = $player.jPlayer
-    $player.jPlayer({
-        ready: function () {
-           jPlayer_method.call( $player, "setMedia",  <?php echo $json_list;?>);
-       },
-       cssSelectorAncestor: "#jp_container_1",
-       swfPath: "src/swf/",
-       solution: "html, flash",
-       supplied: "mp3",
-       preload: "auto",
-       useStateClassSkin: true,
-       autoBlur: false,
-       smoothPlayBar: true,
-       keyEnabled: true,
-       remainingDuration: true,
-       toggleDuration: true,
-       pause: function(e) {
-        ppbutton.innerHTML = '<i class="fa fa-play mr-2" aria-hidden="true"></i> Play';
-    },
-    play: function(e) {
-        ppbutton.innerHTML = '<i class="fa fa-pause mr-2" aria-hidden="true"></i> Pause';
-    }
-});
-    
-    $("#vidbutton").on("click", function(e) {
-        e.preventDefault();
-        $(".jp-play").trigger("click");
-    });
-</script>
+  //     $PpvPurchase = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',$audioppv_id)->count();
 
+  //   print_r($PpvPurchase); exit;
+  // }else{
+  //     $PpvPurchase = 0 ;
+  //    print_r('PpvPurchase'); exit;
+
+  //   }
+
+?>
     <script>
+
   function createTrackItem(index,name,duration){
 
     var trackItem = document.createElement('div');
@@ -706,7 +852,13 @@ window.location = '<?= URL::to('login') ?>';
 
     var trackDurationItem = document.createElement('div');
     trackDurationItem.setAttribute("class", "playlist-duration");
-    trackDurationItem.innerHTML = duration
+
+    var measuredTime = new Date(null);
+    measuredTime.setSeconds(duration); 
+    var MHSTime = measuredTime.toISOString().substr(11, 8);
+    
+    trackDurationItem.innerHTML = MHSTime
+
     document.querySelector("#ptc-"+index).appendChild(trackDurationItem);
 
   }
@@ -719,18 +871,226 @@ window.location = '<?= URL::to('login') ?>';
 
   var indexAudio = 0;
 
+  // function loadNewTrack(index){
+    
+    // var player = document.querySelector('#source-audio')
+    // player.src = listAudio[index].mp3_url
+    // document.querySelector('.title').innerHTML = listAudio[index].title
+    // var image = document.querySelector('#audio_img')
+    // image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image 
+
+    // var divElement = document.getElementById("player-ctn");
+    // var player_imageURL = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image 
+    // divElement.style.backgroundImage = "linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1))," + "url('" + player_imageURL + "')";
+
+    // this.currentAudio = document.getElementById("myAudio");
+    // this.currentAudio.load()
+    // this.toggleAudio()
+    // this.updateStylePlaylist(this.indexAudio,index)
+    // this.indexAudio = index;
+  // }
+
   function loadNewTrack(index){
 
-    var player = document.querySelector('#source-audio')
+var access = listAudio[index].access
+
+var audioppv_id  = listAudio[index].id
+
+var role = <?php echo json_encode($role) ?>;
+
+if(role == 'admin'){
+      var player = document.querySelector('#source-audio')
     player.src = listAudio[index].mp3_url
+    document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+    document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+    document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
     document.querySelector('.title').innerHTML = listAudio[index].title
+    var image = document.querySelector('#audio_img')
+    image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image 
+
+    var divElement = document.getElementById("player-ctn");
+    var player_imageURL = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image 
+    divElement.style.backgroundImage = "linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1))," + "url('" + player_imageURL + "')";
 
     this.currentAudio = document.getElementById("myAudio");
     this.currentAudio.load()
     this.toggleAudio()
     this.updateStylePlaylist(this.indexAudio,index)
     this.indexAudio = index;
-  }
+}else{
+
+        if(access == 'guest'){
+          // alert(access);
+
+          document.querySelector('#enable_button').style.display = 'none';
+          document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+          document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+          document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
+
+        var player = document.querySelector('#source-audio')
+
+        player.src = listAudio[index].mp3_url
+
+        document.querySelector('.title').innerHTML = listAudio[index].title
+
+        this.currentAudio = document.getElementById("myAudio");
+        this.currentAudio.load()
+        this.toggleAudio()
+        this.updateStylePlaylist(this.indexAudio,index)
+        this.indexAudio = index;
+      }else if(access == 'ppv'){ 
+        // alert(access);
+        var audioppv = <?php echo json_encode($ablum_audios); ?>;
+        var ppv_audio_status = 0 ;
+        document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+        document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+        document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
+        $.ajax({
+          url: '<?php echo URL::to('purchased-audio-check'); ?>',
+          type: "post",
+          data: {
+              _token: '<?php echo csrf_token(); ?>',
+              audio_id: audioppv_id,
+
+          },
+          success: function(value) {
+            var ppv_audio_status  = value ;
+            localStorage.clear();
+            localStorage.setItem("audio_status_value", value);
+          alert(localStorage.getItem("audio_status_value"));
+
+            return ppv_audio_status ;
+          },
+          error: (error) => {
+              swal('error');
+              
+          }
+
+        });
+        //  localStorage.getItem("audio_status_value");
+        <?php 
+        //  echo "<script>
+        //  var audioppv_id  = listAudio[index].id;
+        //  </script>";
+
+        $audioppv_id = "<script>document.writeln(audioppv_id);</script>";
+        // echo $phpVar; exit;
+        if(!Auth::guest()){
+          $PpvPurchase = App\PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',@$audioppv_id)->count();
+        }else{
+          $PpvPurchase = 0 ;
+        }
+    ?>
+  var ppv_audio_status = <?php echo json_encode($PpvPurchase); ?>;
+  // alert(ppv_audio_status);
+      // alert(localStorage.getItem("audio_status_value"));
+      if(ppv_audio_status == 0){
+            // alert(ppv_audio_status);
+            var countaudioppv = [];    
+
+            // audioppv.forEach(element => console.log(element));
+            audioppv.forEach(element => {
+                  if(element.audio_id == audioppv_id) {
+                    // alert(audioppv_id);
+                    countaudioppv.push(1) 
+                  }       
+                });
+
+              if(countaudioppv.length > 0 || role == 'subscriber'){
+                  var player = document.querySelector('#source-audio')
+
+                  player.src = listAudio[index].mp3_url
+
+                  document.querySelector('.title').innerHTML = listAudio[index].title
+
+                  this.currentAudio = document.getElementById("myAudio");
+                  this.currentAudio.load()
+                  this.toggleAudio()
+                  this.updateStylePlaylist(this.indexAudio,index)
+                  this.indexAudio = index;
+              }else{
+                  var player = document.querySelector('#source-audio')
+
+                  player.src = ''
+
+                  document.querySelector('.title').innerHTML = listAudio[index].title
+
+                  this.currentAudio = document.getElementById("myAudio");
+                  this.currentAudio.load()
+                  this.toggleAudio()
+                  this.updateStylePlaylist(this.indexAudio,index)
+                  this.indexAudio = index;
+
+                  document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
+                  document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
+
+                  document.querySelector('#enable_button').style.display = 'block';
+                  alert("Purchase Audio");   
+
+
+              }
+            }else{
+
+
+            document.querySelector('#enable_button').style.display = 'none';
+
+                var player = document.querySelector('#source-audio')
+
+                player.src = listAudio[index].mp3_url
+                // alert('ppv_audio_status');
+
+                document.querySelector('.title').innerHTML = listAudio[index].title
+
+                this.currentAudio = document.getElementById("myAudio");
+                this.currentAudio.load()
+                this.toggleAudio()
+                this.updateStylePlaylist(this.indexAudio,index)
+                this.indexAudio = index;
+            }
+      }else if(access == 'subscriber'){ 
+
+
+        var role = <?php echo json_encode($role) ?>;
+        // alert(role);
+        document.querySelector(".like").setAttribute("data-audio-id", listAudio[index].id);
+        document.querySelector(".like").setAttribute("data-audio-slug", listAudio[index].slug);
+        document.querySelector(".dislike").setAttribute("data-audio-id", listAudio[index].id);
+
+        if(role == 'subscriber'){
+              var player = document.querySelector('#source-audio')
+
+              player.src = listAudio[index].mp3_url
+
+              document.querySelector('.title').innerHTML = listAudio[index].title
+
+              this.currentAudio = document.getElementById("myAudio");
+              this.currentAudio.load()
+              this.toggleAudio()
+              this.updateStylePlaylist(this.indexAudio,index)
+              this.indexAudio = index;
+          }else{
+              var player = document.querySelector('#source-audio')
+
+              player.src = ''
+
+              document.querySelector('.title').innerHTML = listAudio[index].title
+
+              this.currentAudio = document.getElementById("myAudio");
+              this.currentAudio.load()
+              this.toggleAudio()
+              this.updateStylePlaylist(this.indexAudio,index)
+              this.indexAudio = index;
+
+              document.querySelector('#Subscriber_button').style.display = 'block';
+              alert("Become Subscriber to Listen this Audio");   
+
+
+          }
+
+      }
+}
+}
+
 
   var playListItems = document.querySelectorAll(".playlist-track-ctn");
 
@@ -750,14 +1110,43 @@ window.location = '<?= URL::to('login') ?>';
       }
     }
   }
+  var access = <?php echo json_encode(@$audios->access) ; ?>  
+  var role = <?php echo json_encode(@$role) ; ?>  
+  var ppv_status = <?php echo json_encode(@$ppv_status) ; ?>  
+  var audiosid = <?php echo json_encode(@$audios->id) ; ?>  
+  var audioslug = <?php echo json_encode(@$audios->slug) ; ?>  
 
-  document.querySelector('#source-audio').src = listAudio[indexAudio].mp3_url
-  document.querySelector('.title').innerHTML = listAudio[indexAudio].title
+  if(role == 'admin'){
+  // alert(audiosid)
+    document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
+    document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
+    document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
+    document.querySelector(".like").setAttribute("data-audio-id", audiosid);
+  }else{
+    if(access == 'ppv' && ppv_status == 0){
+      document.getElementById("enable_button").setAttribute("data-price", <?php echo json_encode(@$audios->ppv_price) ; ?>);
+      document.getElementById("enable_button").setAttribute("audio-id", <?php echo json_encode(@$audios->id) ; ?>);
+      document.querySelector('#enable_button').style.display = 'block';
+      document.querySelector('#source-audio').src = '';
+      document.querySelector(".like").setAttribute("data-audio-id", audiosid);
+      document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
+      document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
+          alert("Purchase Audio"); 
+    }else{
+      document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
+      document.querySelector(".like").setAttribute("data-audio-id", audiosid);
+      document.querySelector(".like").setAttribute("data-audio-slug", audioslug);
+      document.querySelector(".dislike").setAttribute("data-audio-id", audiosid);
+    }
+  }
 
+  document.querySelector('.title').innerHTML = <?php echo json_encode(@$audios->title) ; ?>  
+
+  var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
+  var audio_images = player_images +'/' + <?php echo json_encode(@$audio->image) ; ?>;
+  $("#audio_img").attr('src', audio_images);
   var currentAudio = document.getElementById("myAudio");
-
   currentAudio.load()
-  
   currentAudio.onloadedmetadata = function() {
         document.getElementsByClassName('duration')[0].innerHTML = this.getMinutes(this.currentAudio.duration)
   }.bind(this);
@@ -803,6 +1192,13 @@ window.location = '<?= URL::to('login') ?>';
       if (this.indexAudio < listAudio.length-1) {
           var index = parseInt(this.indexAudio)+1
           this.loadNewTrack(index)
+      }else{
+              var url =  "<?php echo URL::to('audio/related-playlist')  ?>";
+              var  audio_id = document.querySelector(".like").getAttribute("data-audio-id");
+              var  audio_slug = document.querySelector(".like").getAttribute("data-audio-slug");
+              var link_url = url+'/'+audio_slug;
+              location.href = link_url;
+
       }
     }
   }
@@ -899,5 +1295,108 @@ window.location = '<?= URL::to('login') ?>';
       volUp.style.display = "block"
     }
   }
+
+  </script>
+
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+
+  <script>
+  
+  function stripe_checkout() {
+    
+    var publishable_key = $('#publishable_key').val();
+
+    var video_id = $('#video_id').val();
+
+    var ppv_price = document.getElementById("enable_button").getAttribute("data-price");
+    var audio_id = document.getElementById("enable_button").getAttribute("audio-id");
+
+    // alert(ppv_price);
+    // alert(audio_id);
+    var handler = StripeCheckout.configure({
+
+        key: publishable_key,
+        locale: 'auto',
+        token: function(token) {
+            // You can access the token ID with `token.id`.
+            // Get the token ID to your server-side code for use.
+            console.log('Token Created!!');
+            console.log(token);
+            $('#token_response').html(JSON.stringify(token));
+
+            $.ajax({
+                url: '<?php echo URL::to('purchase-audio'); ?>',
+                method: 'post',
+                data: {
+                    "_token": "<?php echo csrf_token(); ?>",
+                    tokenId: token.id,
+                    amount: ppv_price,
+                    audio_id: audio_id
+                },
+                success: (response) => {
+                    alert("You have done  Payment !");
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+
+                },
+                error: (error) => {
+                    swal('error');
+                    //swal("Oops! Something went wrong");
+                    /* setTimeout(function() {
+                    location.reload();
+                    }, 2000);*/
+                }
+            })
+        }
+    });
+
+
+    handler.open({
+        name: '<?php $settings = App\Setting::first();
+        echo $settings->website_name; ?>',
+        description: 'Rent a Video',
+        amount: ppv_price * 100
+    });
+  }
+
+	$('.like').click(function(){
+        var  audio_id = document.querySelector(".like").getAttribute("data-audio-id");
+        // alert(audio_id);
+                var like = 1;
+                $.ajax({
+                url: "<?php echo URL::to('/').'/like-audio';?>",
+                type: "POST",
+                data: {like: like,audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function(data) {
+                    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have liked this media</div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+                    
+                }
+            });           
+  });
+
+  
+	$('.dislike').click(function(){
+        var  audio_id = document.querySelector(".dislike").getAttribute("data-audio-id");
+        // alert(audio_id);
+                var like = 1;
+                $.ajax({
+                url: "<?php echo URL::to('/').'/dislike-audio';?>",
+                type: "POST",
+                data: {like: like,audio_id:audio_id, _token: '<?= csrf_token(); ?>'},
+                dataType: "html",
+                success: function(data) {
+                  $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from liked this media </div>');
+                setTimeout(function() {
+                  $('.remove_watch').slideUp('fast');
+                }, 3000);
+                    
+                }
+            });           
+  });
     </script>
 <?php include(public_path('themes/theme3/views/footer.blade.php')); ?>
