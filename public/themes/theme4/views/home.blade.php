@@ -17,25 +17,25 @@
       <?php 
       
          $check_Kidmode = 0;
-         
-         $video_banner = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image',
-                                          'player_image','expiry_date')
-         
-                                 ->where('active',1)->where('status', 1)->where('draft',1);
-         
-                                 if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                                    $video_banner = $video_banner->whereNotIn('videos.id',Block_videos());
-                                 }
-         
-                                 if (videos_expiry_date_status() == 1 ) {
-                                    $video_banner = $video_banner->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
-                                 }
-                                 
-                                 if ($check_Kidmode == 1) {
-                                    $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
-                                 }
-         
+
+         $video_banner = App\Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
+
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+               $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
+            }
+
+            if ($check_Kidmode == 1) {
+               $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
+            }
+
+            if (videos_expiry_date_status() == 1) {
+               $video_banner = $video_banner->where(function ($query) {
+                  $query->whereNull('expiry_date')->orWhere('expiry_date', '>=', now()->format('Y-m-d\TH:i'));
+               });
+            }
+
          $video_banner = $video_banner->latest()->limit(30)->get();
+
 
          $Slider_array_data = array(
             'sliders'            => $sliders, 
@@ -45,6 +45,7 @@
             'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->get(),
             'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->get(),
          );    
+
       ?>
 
       <section id="home" class="iq-main-slider p-0">
