@@ -1175,3 +1175,6 @@ li.list-group-item a {
     transform: translate(0, 0);
     transition: all 0.3s;
 }
+#search_list li.list-group-item{
+    background:transparent;
+}
