@@ -49,14 +49,6 @@
 
       $SiteMeta_image = App\SiteMeta::where('page_slug', '=', $request_url)->pluck('meta_image')->first();
 
-      if($theme->header_position == 0){
-
-         $menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
-
-      }elseif ($theme->header_position == 1)
-      {
-         $menus = App\Menu::orderBy('order', 'asc')->where('in_side_menu',1)->get();
-      }
    ?>
 
    <meta charset="UTF-8">
@@ -1008,6 +1000,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                     <ul class="navbar-nav top-colps">
 
                                        <?php  
+
+                                          $header_top_position_menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
                                                                               
                                           $Parent_video_category = App\VideoCategory::whereIn('id', function ($query) {
                                              
@@ -1078,7 +1072,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                           $languages = App\Language::all();
 
-                                          foreach ($menus as $menu) {
+                                          foreach ($header_top_position_menus as $menu) {
 
                                              if ( $menu->in_menu == "video" ) {  ?>
 
@@ -1318,6 +1312,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                        <ul class="navbar-nav">
                                           
                                           <?php  
+
+                                             $header_side_position_menus = App\Menu::orderBy('order', 'asc')->where('in_side_menu',1)->get();
                                                                                  
                                              $Parent_video_category = App\VideoCategory::whereIn('id', function ($query) {
                                                 
@@ -1388,7 +1384,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                              $languages = App\Language::all();
 
-                                             foreach ($menus as $menu) {
+                                             foreach ($header_side_position_menus as $menu) {
 
                                                 if ( $menu->in_menu == "video" ) {  ?>
 
