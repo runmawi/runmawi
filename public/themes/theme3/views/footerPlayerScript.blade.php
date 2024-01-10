@@ -1,3 +1,7 @@
+<?php 
+    $user = !Auth::guest() ? Auth::User()->id : 'guest' ; 
+?>
+
 <script>
     var type = $('#video_type').val();
     var request_url = $('#request_url').val();
@@ -38,42 +42,52 @@
 
             ads: {
                 enabled: true,
-                publisherId: '',
                 tagUrl: video_tag_url
             }
         });
+
+            // Ads Views Count
+        player.on('adsloaded', (event) => {
+            Ads_Views_Count();
+        });
+
+            // Ads Redirection Count
+        player.on('adsclick', (event) => {
+            Ads_Redirection_URL_Count(event.timeStamp);
+        });
+
         player.on('seeked', () => {
             const seekedTime = player.currentTime;
             const duration = player.duration;
             console.log('Seeked time:', seekedTime);
- // Send seekedTime to Laravel backend
+            // Send seekedTime to Laravel backend
 
-                var videotype = $('#video_type').val();
-                var video_title = $('#video_title').val();
-                var video_slug = $('#videoslug').val();
-                var videoid = $('#video_id').val();
-                var url = '<?= URL::to('player_seektime_store') ?>';
+            var videotype = $('#video_type').val();
+            var video_title = $('#video_title').val();
+            var video_slug = $('#videoslug').val();
+            var videoid = $('#video_id').val();
+            var url = '<?= URL::to('player_seektime_store') ?>';
             // alert(seekedTime);
             $.ajaxSetup({
-                    headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
             $.ajax({
                 url: url,
                 type: "post",
-                    data: {
+                data: {
                     _token: '<?= csrf_token() ?>',
                     video_slug: video_slug,
                     video_id: videoid,
                     duration: duration,
                     seekedTime: seekedTime,
                     video_title: video_title,
-                    },      
-                    success: function(data){
-                    
+                },
+                success: function(data) {
+
                 }
-                });
+            });
         });
     }
 
@@ -115,34 +129,34 @@
             const seekedTime = player.currentTime;
             const duration = player.duration;
             console.log('Seeked time:', seekedTime);
- // Send seekedTime to Laravel backend
+            // Send seekedTime to Laravel backend
 
-                var videotype = $('#video_type').val();
-                var video_title = $('#video_title').val();
-                var video_slug = $('#videoslug').val();
-                var videoid = $('#video_id').val();
-                var url = '<?= URL::to('player_seektime_store') ?>';
+            var videotype = $('#video_type').val();
+            var video_title = $('#video_title').val();
+            var video_slug = $('#videoslug').val();
+            var videoid = $('#video_id').val();
+            var url = '<?= URL::to('player_seektime_store') ?>';
             // alert(seekedTime);
             $.ajaxSetup({
-                    headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
             $.ajax({
                 url: url,
                 type: "post",
-                    data: {
+                data: {
                     _token: '<?= csrf_token() ?>',
                     video_slug: video_slug,
                     video_id: videoid,
                     duration: duration,
                     seekedTime: seekedTime,
                     video_title: video_title,
-                    },      
-                    success: function(data){
-                    
+                },
+                success: function(data) {
+
                 }
-                });
+            });
         });
     }
 
@@ -185,34 +199,34 @@
             const seekedTime = player.currentTime;
             const duration = player.duration;
             console.log('Seeked time:', seekedTime);
- // Send seekedTime to Laravel backend
+            // Send seekedTime to Laravel backend
 
-                var videotype = $('#video_type').val();
-                var video_title = $('#video_title').val();
-                var video_slug = $('#videoslug').val();
-                var videoid = $('#video_id').val();
-                var url = '<?= URL::to('player_seektime_store') ?>';
+            var videotype = $('#video_type').val();
+            var video_title = $('#video_title').val();
+            var video_slug = $('#videoslug').val();
+            var videoid = $('#video_id').val();
+            var url = '<?= URL::to('player_seektime_store') ?>';
             // alert(seekedTime);
             $.ajaxSetup({
-                    headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
             $.ajax({
                 url: url,
                 type: "post",
-                    data: {
+                data: {
                     _token: '<?= csrf_token() ?>',
                     video_slug: video_slug,
                     video_id: videoid,
                     duration: duration,
                     seekedTime: seekedTime,
                     video_title: video_title,
-                    },      
-                    success: function(data){
-                    
+                },
+                success: function(data) {
+
                 }
-                });
+            });
         });
     }
     // Normal Episode HLS and M3U8 URL Script Not for Video
@@ -266,52 +280,85 @@
                             span.innerHTML = `AUTO`
                         }
                     })
-                    var player = new Plyr(video, defaultOptions);
+                    // var player = new Plyr(video, defaultOptions);
+
+                    var player = new Plyr(video, {
+        ...defaultOptions, // Keep existing default options
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'airplay', 'fullscreen'],
+        // Specify only the controls you want to use (excluding rewind and fast-forward)
+    });
+
+
                     addSeekedEventListener(player);
 
-                });
+                    
+                    // Create and append custom rewind icon to Plyr control bar
+                    const rewindIcon = document.createElement("button");
+                        rewindIcon.className = "plyr__controls__item plyr__control";
+                        rewindIcon.innerHTML = '<i class="fas fa-backward"></i>';
+                        rewindIcon.addEventListener("click", () => {
+                            const seekTime = Math.max(0, player.currentTime - 10); // Rewind by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(rewindIcon);
+                        const playButton = player.elements.controls.querySelector(".plyr__controls__item[data-plyr='play']");
+
+                        // Create and append custom fast-forward icon to Plyr control bar
+                        const fastForwardIcon = document.createElement("button");
+                        fastForwardIcon.className = "plyr__controls__item plyr__control";
+                        fastForwardIcon.innerHTML = '<i class="fas fa-forward"></i>';
+                        fastForwardIcon.addEventListener("click", () => {
+                            const seekTime = Math.min(player.duration, player.currentTime + 10); // Fast-forward by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(fastForwardIcon);
+                        player.elements.controls.insertBefore(rewindIcon, playButton);
+                        player.elements.controls.insertBefore(fastForwardIcon, playButton.nextSibling);
+                        });
+
+                // });
 
                 hls.attachMedia(video);
                 window.hls = hls;
             }
-                    // Get seek time when Plyr's timeupdate event is triggered
-                    function addSeekedEventListener(player) {
-                            // Get seeked time when Plyr's seeked event is triggered
-                            player.on('seeked', () => {
-                            const seekedTime = player.currentTime;
-                            const duration = player.duration
 
-                                // Send seekedTime to Laravel backend
+            function addSeekedEventListener(player) {
+                // Get seeked time when Plyr's seeked event is triggered
+                player.on('seeked', () => {
+                    const seekedTime = player.currentTime;
+                    const duration = player.duration
 
-                                var videotype = $('#video_type').val();
-                                var video_title = $('#video_title').val();
-                                var video_slug = $('#videoslug').val();
-                                var url = '<?= URL::to('player_seektime_store') ?>';
-                                var videoid = $('#video_id').val();
-                            // alert(seekedTime);
-                            $.ajaxSetup({
-                                    headers: {
-                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    }
-                            });
-                            $.ajax({
-                                url: url,
-                                type: "post",
-                                    data: {
-                                    _token: '<?= csrf_token() ?>',
-                                    video_id: videoid,
-                                    video_slug: video_slug,
-                                    duration: duration,
-                                    seekedTime: seekedTime,
-                                    video_title: video_title,
-                                    },      
-                                    success: function(data){
-                                   
-                                }
-                                });
-            
-                            });
+                    // Send seekedTime to Laravel backend
+
+                    var videotype = $('#video_type').val();
+                    var video_title = $('#video_title').val();
+                    var video_slug = $('#videoslug').val();
+                    var videoid = $('#video_id').val();
+                    var url = '<?= URL::to('player_seektime_store') ?>';
+                    // alert(seekedTime);
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
+                    });
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        data: {
+                            _token: '<?= csrf_token() ?>',
+                            video_slug: video_slug,
+                            video_id: videoid,
+                            duration: duration,
+                            seekedTime: seekedTime,
+                            video_title: video_title,
+                        },
+                        success: function(data) {
+
+                        }
+                    });
+
+                });
+            }
 
             function updateQuality(newQuality) {
                 if (newQuality === 0) {
@@ -380,38 +427,39 @@
                 tagUrl: video_tag_url
             }
         });
+        
         player.on('seeked', () => {
             const seekedTime = player.currentTime;
             const duration = player.duration;
             console.log('Seeked time:', seekedTime);
- // Send seekedTime to Laravel backend
+            // Send seekedTime to Laravel backend
 
-                var videotype = $('#video_type').val();
-                var video_title = $('#video_title').val();
-                var video_slug = $('#videoslug').val();
-                var videoid = $('#video_id').val();
-                var url = '<?= URL::to('player_seektime_store') ?>';
+            var videotype = $('#video_type').val();
+            var video_title = $('#video_title').val();
+            var video_slug = $('#videoslug').val();
+            var videoid = $('#video_id').val();
+            var url = '<?= URL::to('player_seektime_store') ?>';
             // alert(seekedTime);
             $.ajaxSetup({
-                    headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
             $.ajax({
                 url: url,
                 type: "post",
-                    data: {
+                data: {
                     _token: '<?= csrf_token() ?>',
                     video_slug: video_slug,
                     video_id: videoid,
                     duration: duration,
                     seekedTime: seekedTime,
                     video_title: video_title,
-                    },      
-                    success: function(data){
-                    
+                },
+                success: function(data) {
+
                 }
-                });
+            });
         });
     }
     // Normal Video AND LIVE AWS M3U8 URL Script   
@@ -463,52 +511,84 @@
                     })
 
                     // Initialize new Plyr player with quality options
-                    var player = new Plyr(video, defaultOptions);
+                    // var player = new Plyr(video, defaultOptions);
+                    var player = new Plyr(video, {
+        ...defaultOptions, // Keep existing default options
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'airplay', 'fullscreen'],
+        // Specify only the controls you want to use (excluding rewind and fast-forward)
+    });
+
                     addSeekedEventListener(player);
 
-                });
+                    // Create and append custom rewind icon to Plyr control bar
+                    const rewindIcon = document.createElement("button");
+                        rewindIcon.className = "plyr__controls__item plyr__control";
+                        rewindIcon.innerHTML = '<i class="fas fa-backward"></i>';
+                        rewindIcon.addEventListener("click", () => {
+                            const seekTime = Math.max(0, player.currentTime - 10); // Rewind by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(rewindIcon);
+                        const playButton = player.elements.controls.querySelector(".plyr__controls__item[data-plyr='play']");
+
+                        // Create and append custom fast-forward icon to Plyr control bar
+                        const fastForwardIcon = document.createElement("button");
+                        fastForwardIcon.className = "plyr__controls__item plyr__control";
+                        fastForwardIcon.innerHTML = '<i class="fas fa-forward"></i>';
+                        fastForwardIcon.addEventListener("click", () => {
+                            const seekTime = Math.min(player.duration, player.currentTime + 10); // Fast-forward by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(fastForwardIcon);
+                        player.elements.controls.insertBefore(rewindIcon, playButton);
+                        player.elements.controls.insertBefore(fastForwardIcon, playButton.nextSibling);
+                        });
+
+                // });
 
                 hls.attachMedia(video);
                 window.hls = hls;
             }
-                    // Get seek time when Plyr's timeupdate event is triggered
-                    function addSeekedEventListener(player) {
-                            // Get seeked time when Plyr's seeked event is triggered
-                            player.on('seeked', () => {
-                            const seekedTime = player.currentTime;
-                            const duration = player.duration
 
-                                // Send seekedTime to Laravel backend
+            function addSeekedEventListener(player) {
+                // Get seeked time when Plyr's seeked event is triggered
+                player.on('seeked', () => {
+                    const seekedTime = player.currentTime;
+                    const duration = player.duration
 
-                                var videotype = $('#video_type').val();
-                                var video_title = $('#video_title').val();
-                                var video_slug = $('#videoslug').val();
-                                var url = '<?= URL::to('player_seektime_store') ?>';
-                                var videoid = $('#video_id').val();
-                            // alert(seekedTime);
-                            $.ajaxSetup({
-                                    headers: {
-                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    }
-                            });
-                            $.ajax({
-                                url: url,
-                                type: "post",
-                                    data: {
-                                    _token: '<?= csrf_token() ?>',
-                                    video_id: videoid,
-                                    video_slug: video_slug,
-                                    duration: duration,
-                                    seekedTime: seekedTime,
-                                    video_title: video_title,
-                                    },      
-                                    success: function(data){
-                                   
-                                }
-                                });
-            
-                            });
+                    // Send seekedTime to Laravel backend
+
+                    var videotype = $('#video_type').val();
+                    var video_title = $('#video_title').val();
+                    var video_slug = $('#videoslug').val();
+                    var videoid = $('#video_id').val();
+                    var url = '<?= URL::to('player_seektime_store') ?>';
+
+                    // alert(seekedTime);
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
+                    });
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        data: {
+                            _token: '<?= csrf_token() ?>',
+                            video_slug: video_slug,
+                            video_id: videoid,
+                            duration: duration,
+                            seekedTime: seekedTime,
+                            video_title: video_title,
+                        },
+                        success: function(data) {
+
+                        }
+                    });
+
+
+                });
+            }
 
             function updateQuality(newQuality) {
                 if (newQuality === 0) {
@@ -526,6 +606,8 @@
     }
     // Normal Video M3U8 URL Script   
     else {
+        // alert('ss');
+
         document.addEventListener("DOMContentLoaded", () => {
             const video = document.querySelector("video");
             const source = video.getElementsByTagName("source")[0].src;
@@ -573,51 +655,90 @@
                     })
 
                     // Initialize new Plyr player with quality options
-                    var player = new Plyr(video, defaultOptions);
+                    // var player = new Plyr(video, defaultOptions);
+                    var player = new Plyr(video, {
+        ...defaultOptions, // Keep existing default options
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'airplay', 'fullscreen'],
+        // Specify only the controls you want to use (excluding rewind and fast-forward)
+    });
+
+                        // Ads Views Count
+                    player.on('adsloaded', (event) => {
+                        Ads_Views_Count();
+                    });
+
+                        // Ads Redirection Count
+                    player.on('adsclick', (event) => {
+                        Ads_Redirection_URL_Count(event.timeStamp);
+                    });
+
                     addSeekedEventListener(player);
 
-                });
+                    // Create and append custom rewind icon to Plyr control bar
+                        const rewindIcon = document.createElement("button");
+                        rewindIcon.className = "plyr__controls__item plyr__control";
+                        rewindIcon.innerHTML = '<i class="fas fa-backward"></i>';
+                        rewindIcon.addEventListener("click", () => {
+                            const seekTime = Math.max(0, player.currentTime - 10); // Rewind by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(rewindIcon);
+                        const playButton = player.elements.controls.querySelector(".plyr__controls__item[data-plyr='play']");
+
+                        // Create and append custom fast-forward icon to Plyr control bar
+                        const fastForwardIcon = document.createElement("button");
+                        fastForwardIcon.className = "plyr__controls__item plyr__control";
+                        fastForwardIcon.innerHTML = '<i class="fas fa-forward"></i>';
+                        fastForwardIcon.addEventListener("click", () => {
+                            const seekTime = Math.min(player.duration, player.currentTime + 10); // Fast-forward by 10 seconds
+                            player.currentTime = seekTime;
+                        });
+                        // player.elements.controls.appendChild(fastForwardIcon);
+                        player.elements.controls.insertBefore(rewindIcon, playButton);
+                        player.elements.controls.insertBefore(fastForwardIcon, playButton.nextSibling);
+                        });
 
                 hls.attachMedia(video);
                 window.hls = hls;
-                    // Get seek time when Plyr's timeupdate event is triggered
-                    function addSeekedEventListener(player) {
-                            // Get seeked time when Plyr's seeked event is triggered
-                            player.on('seeked', () => {
-                            const seekedTime = player.currentTime;
-                            const duration = player.duration
 
-                                // Send seekedTime to Laravel backend
+                // Get seek time when Plyr's timeupdate event is triggered
+                function addSeekedEventListener(player) {
+                    // Get seeked time when Plyr's seeked event is triggered
+                    player.on('seeked', () => {
+                        const seekedTime = player.currentTime;
+                        const duration = player.duration
 
-                                var videotype = $('#video_type').val();
-                                var video_title = $('#video_title').val();
-                                var video_slug = $('#videoslug').val();
-                                var url = '<?= URL::to('player_seektime_store') ?>';
-                                var videoid = $('#video_id').val();
-                            // alert(seekedTime);
-                            $.ajaxSetup({
-                                    headers: {
-                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    }
-                            });
-                            $.ajax({
-                                url: url,
-                                type: "post",
-                                    data: {
-                                    _token: '<?= csrf_token() ?>',
-                                    video_id: videoid,
-                                    video_slug: video_slug,
-                                    duration: duration,
-                                    seekedTime: seekedTime,
-                                    video_title: video_title,
-                                    },      
-                                    success: function(data){
-                                   
-                                }
-                                });
-            
-                            });
-                        }
+                        // Send seekedTime to Laravel backend
+
+                        var videotype = $('#video_type').val();
+                        var video_title = $('#video_title').val();
+                        var video_slug = $('#videoslug').val();
+                        var url = '<?= URL::to('player_seektime_store') ?>';
+                        var videoid = $('#video_id').val();
+                        // alert(seekedTime);
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            url: url,
+                            type: "post",
+                            data: {
+                                _token: '<?= csrf_token() ?>',
+                                video_id: videoid,
+                                video_slug: video_slug,
+                                duration: duration,
+                                seekedTime: seekedTime,
+                                video_title: video_title,
+                            },
+                            success: function(data) {
+
+                            }
+                        });
+
+                    });
+                }
 
 
                 function updateQuality(newQuality) {
@@ -706,43 +827,42 @@
 
                     ads: {
                         enabled: true,
-                        publisherId: '',
                         tagUrl: video_tag_url
                     }
                 });
                 player.on('seeked', () => {
-            const seekedTime = player.currentTime;
-            const duration = player.duration;
-            console.log('Seeked time:', seekedTime);
- // Send seekedTime to Laravel backend
+                    const seekedTime = player.currentTime;
+                    const duration = player.duration;
+                    console.log('Seeked time:', seekedTime);
+                    // Send seekedTime to Laravel backend
 
-                var videotype = $('#video_type').val();
-                var video_title = $('#video_title').val();
-                var video_slug = $('#videoslug').val();
-                var videoid = $('#video_id').val();
-                var url = '<?= URL::to('player_seektime_store') ?>';
-            // alert(seekedTime);
-            $.ajaxSetup({
-                    headers: {
+                    var videotype = $('#video_type').val();
+                    var video_title = $('#video_title').val();
+                    var video_slug = $('#videoslug').val();
+                    var videoid = $('#video_id').val();
+                    var url = '<?= URL::to('player_seektime_store') ?>';
+                    // alert(seekedTime);
+                    $.ajaxSetup({
+                        headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-            });
-            $.ajax({
-                url: url,
-                type: "post",
-                    data: {
-                    _token: '<?= csrf_token() ?>',
-                    video_slug: video_slug,
-                    video_id: videoid,
-                    duration: duration,
-                    seekedTime: seekedTime,
-                    video_title: video_title,
-                    },      
-                    success: function(data){
-                    
-                }
+                        }
+                    });
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        data: {
+                            _token: '<?= csrf_token() ?>',
+                            video_slug: video_slug,
+                            video_id: videoid,
+                            duration: duration,
+                            seekedTime: seekedTime,
+                            video_title: video_title,
+                        },
+                        success: function(data) {
+
+                        }
+                    });
                 });
-        });
                 // VIDEO WATCHED TIME CONTINUE WATCHING
 
                 $(window).on("beforeunload", function() {
@@ -797,4 +917,46 @@
         });
 
     }
+
+    function Ads_Redirection_URL_Count(timestamp_time){
+
+        let video_id = $('#video_id').val() ;
+        let ads_tag_url_id = $('#ads_tag_url_id').val() ;
+
+        $.ajax({
+            type:'get',
+            url:'<?= route('Advertisement_Redirection_URL_Count') ?>',
+            data: {
+                        "Count" : 1 , 
+                        "source_type" : "videos",
+                        "source_id"   : video_id ,
+                        "adveristment_id" : ads_tag_url_id ,
+                        "user" : "<?php echo $user ?>",
+                        "timestamp_time" : timestamp_time ,
+                },
+                success:function(data) {
+                }
+        });
+    }
+
+    function Ads_Views_Count(){
+
+        let video_id = $('#video_id').val() ;
+        let ads_tag_url_id = $('#ads_tag_url_id').val() ;
+
+        $.ajax({
+            type:'get',
+            url:'<?= route('Advertisement_Views_Count') ?>',
+            data: {
+                        "Count" : 1 , 
+                        "source_type" : "videos",
+                        "source_id"   : video_id ,
+                        "adveristment_id" : ads_tag_url_id ,
+                        "user" : "<?php echo $user ?>",
+                },
+                success:function(data) {
+                }
+        });
+    }
+
 </script>

@@ -1,6 +1,6 @@
 <?php  if(isset($featured_movies)) :?>
 <div class="video-list">
-    <p class="Continue Watching section-head">Popular Films</p>
+    <p class="Continue Watching section-head"><?php echo (__('Popular Films')); ?></p>
     <div class="border-line" style="margin-bottom:15px;"></div>
 	<div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
         
@@ -70,7 +70,7 @@
                 </div>
                 <div class="video-buttons">
                     <div class="video-button-1 video-play">
-                        <a href="<?= $movie->url;?>/<?= $movie->id;?>"><i class="fa fa-play" aria-hidden="true"></i> Play</a>
+                        <a href="<?= $movie->url;?>/<?= $movie->id;?>"><i class="fa fa-play" aria-hidden="true"></i> <?= __('Play')  ?></a>
                     </div>
                     <?php if(!Auth::guest()):
                         if($movie->url == 'video'):
@@ -85,12 +85,12 @@
                     ?>
                     <div class="add-wishlist video-button-1 mywishlist <?php if(isset($wishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $movie->id ?>" data-url="<?= $movie->url; ?>">
                         <a>
-                            <i class="<?php if(isset($wishlisted->id)): ?>fa fa-check<?php else: ?> fa fa-plus <?php endif; ?>"></i> <?php if(isset($wishlisted->id)): ?>Wishlisted<?php else: ?> Add Wishlist <?php endif; ?>
+                            <i class="<?php if(isset($wishlisted->id)): ?>fa fa-check<?php else: ?> fa fa-plus <?php endif; ?>"></i> <?php if(isset($wishlisted->id)): ?><?= __('Wishlisted')  ?><?php else: ?><?= __('Add Wishlist')  ?>  <?php endif; ?>
                         </a>
                     </div>
 
                     <div class="more-info video-button-1">
-                        <a href="/saka/info"><i class="fa fa-info"></i> More info</a>
+                        <a href="/saka/info"><i class="fa fa-info"></i> <?= __('More info')  ?></a>
                     </div>
                 </div>
                 <div style="clear: both"></div>
@@ -107,7 +107,7 @@
 <!-- Popular videos -->
 <?php  if(isset($featured_videos)) :?>
 <div class="video-list">
-    <p class="Continue Watching section-head">Popular Videos</p>
+    <p class="Continue Watching section-head"><?= __('Popular Videos')  ?></p>
     <div class="border-line" style="margin-bottom:15px;"></div>
     <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
         
@@ -177,7 +177,7 @@
                 </div>
                 <div class="video-buttons">
                     <div class="video-button-1 video-play">
-                        <a href="<?= $video->url;?>/<?= $video->id;?>"><i class="fa fa-play" aria-hidden="true"></i> Play</a>
+                        <a href="<?= $video->url;?>/<?= $video->id;?>"><i class="fa fa-play" aria-hidden="true"></i> <?= __('Play')  ?></a>
                     </div>
                     <?php if(!Auth::guest()):
                         if($video->url == 'video'):
@@ -192,12 +192,12 @@
                     ?>
                     <div class="add-wishlist video-button-1 mywishlist <?php if(isset($wishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" data-url="<?= $video->url; ?>">
                         <a>
-                            <i class="<?php if(isset($wishlisted->id)): ?>fa fa-check<?php else: ?> fa fa-plus <?php endif; ?>"></i> <?php if(isset($wishlisted->id)): ?>Wishlisted<?php else: ?> Add Wishlist <?php endif; ?>
+                            <i class="<?php if(isset($wishlisted->id)): ?>fa fa-check<?php else: ?> fa fa-plus <?php endif; ?>"></i> <?php if(isset($wishlisted->id)): ?><?= __('Wishlisted')  ?><?php else: ?><?= __('Add Wishlist')  ?>  <?php endif; ?>
                         </a>
                     </div>
 
                     <div class="more-info video-button-1">
-                        <a href="/saka/info"><i class="fa fa-info"></i> More info</a>
+                        <a href="/saka/info"><i class="fa fa-info"></i> <?= __('More info')  ?></a>
                     </div>
                 </div>
                 <div style="clear: both"></div>

@@ -337,20 +337,26 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                            <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
-                                  <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
-                                   
-                                         <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
-                                            <p class="p-tag"><?php echo __("Free"); ?></p>
-                                                 <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
-                                          <?php }elseif(!empty($seasons->ppv_price)){?>
-                                            <p class="p-tag"><?php echo __("Free"); ?></p>
-                                               <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
-                                          <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
-                                            <p class="p-tag"><?php echo __("Free"); ?></p>
-                                            <?php } ?>
-                                    <?php } ?>
+                                    </div>
+                                    <div class="block-description" >
+                                      <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>" >
+                                        <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/>  Watch Now
+                                      </a>
+                                    </div>
+                                      <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                    
+                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                              <p class="p-tag"><?php echo __("Free"); ?></p>
+                                                  <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
+                                            <?php }elseif(!empty($seasons->ppv_price)){?>
+                                              <p class="p-tag"><?php echo __("Free"); ?></p>
+                                                <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
+                                            <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                              <p class="p-tag"><?php echo __("Free"); ?></p>
+                                              <?php } ?>
+                                      <?php } ?>
 
-                               </div></div>
+                               </div>
                                  
                                <div class="block-description" ></div>
                                     
@@ -385,19 +391,63 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
                                    
-                                  <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
-                                   
-                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                          <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                      
+                                              <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                              <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                                              <?php }elseif(!empty($seasons->ppv_price)){?>
+                                              <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
+                                              <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                                <p class="p-tag"><?php echo __("Free"); ?></p>
+                                                <?php } ?>
+                                          <?php } ?>
+                                     </div>
+                                    </div>
+                                 
+                                  <div class="block-description" >
+                                    <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
+                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
+                                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                          
+                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                                           <?php }elseif(!empty($seasons->ppv_price)){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo __("Free"); ?></p>
                                             <?php } ?>
-                                      <?php } ?>
-                                     </div></div>
-                                 
-                                  <div class="block-description" ></div>
+                                        <?php } ?>
+                                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                          
+                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                                          <?php }elseif(!empty($seasons->ppv_price)){?>
+                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
+                                          <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                            <p class="p-tag"><?php echo __("Free"); ?></p>
+                                            <?php } ?>
+                                        <?php } ?>
+
+                                        <div class="hover-buttons text-white">
+                                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
+                                                <p class="epi-name text-left m-0">
+                                                  <?php echo __($episodes->title); ?>
+                                                </p>
+                                                  
+                                                  <div class="movie-time d-flex align-items-center my-2">
+                                                    <div class="badge badge-secondary p-1 mr-2"><?php echo $episodes->age_restrict.' '.'+' ?></div>
+                                                    <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate("H:i:s", $episodes->duration); ?></span>
+                                                  </div>
+                                            </a>
+
+                                        
+                                              <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
+                                                  <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                Watch Series
+                                                </a>
+                                          </div>
+                                  
+                                  </div>
                                     
                                          <h6><?= $episodes->title; ?></h6>
 										<!--<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>-->

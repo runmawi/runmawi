@@ -727,9 +727,9 @@ header .navbar ul li.menu-item a:hover {
     font-weight: 400 !important;
     background-color: transparent !important;
 }
-#search_list li.list-group-item{
+/* #search_list li.list-group-item{
     background-color: transparent !important;
-}
+} */
 
 /*  Signup Page*/
 
@@ -1154,4 +1154,24 @@ mask-image: linear-gradient(to right, transparent 0%, black 50%);
 .btn-close-white:hover{
     background-color: white;
     color: black;
+}
+ul.list-group {
+    text-align: left !important;
+    max-height: 450px !important;
+}
+li.list-group-item a {
+    background: transparent !important;
+    font-size: 12px !important;
+    padding-left: 10px !important;
+}
+#sidebar-scrollbar {
+    overflow-y: auto;
+    overflow-x:hidden;
+    scrollbar-color: var(--iq-primary) var(--iq-light-primary);
+    scrollbar-width: thin;
+}
+.navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box {
+    display: block;
+    transform: translate(0, 0);
+    transition: all 0.3s;
 }

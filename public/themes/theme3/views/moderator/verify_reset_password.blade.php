@@ -1,6 +1,10 @@
 <?php
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
 ?>
 <html>
 <head>
@@ -9,7 +13,7 @@ $system_settings = App\SystemSetting::find(1);
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Login | <?php echo $settings->website_name ; ?></title>
+      <title>{{ __('Login') }} | <?php echo $settings->website_name ; ?></title>
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
@@ -52,8 +56,7 @@ $system_settings = App\SystemSetting::find(1);
         
        
     }
-    .signcont {
- }
+    .sign-info .btn { padding: 10px 15px;font-size: 20px; }
     a.f-link {
     margin-bottom: 1rem;
         margin-left: 15vw;
@@ -91,7 +94,7 @@ i.fa.fa-google-plus {
          <div class="col-lg-5 col-md-12 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
-                  <div class="sign-in-from  m-auto" align="center">
+                  <div class="sign-in-from  m-auto  text-center">
                   <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
                   <div>
 
@@ -131,7 +134,7 @@ i.fa.fa-google-plus {
                             </span>
                         </div>                        
                            <div class="sign-info">
-                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">{{ __('Password Reset') }}</button>
+                              <button type="submit" class="btn ab" style="width:100%;color:#fff!important;">{{ __('Password Reset') }}</button>
                                                             
                            </div> 
                            <div class="clear"></div>                       
@@ -184,7 +187,7 @@ i.fa.fa-google-plus {
 </script>
                        {{-- Footer --}}
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
 
       <!-- jQuery, Popper JS -->

@@ -1,6 +1,7 @@
 /* Slider */
 .slick-slider
 {
+    width: 100% !important;
     position: relative;
 
     display: block;
@@ -27,6 +28,7 @@
 
     margin: 0;
     padding: 0;
+    z-index: 10;
 }
 .slick-list:focus
 {
@@ -117,3 +119,4 @@
 .slick-arrow.slick-hidden {
     display: none;
 }
+

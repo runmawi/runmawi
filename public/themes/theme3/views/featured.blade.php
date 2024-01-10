@@ -1,123 +1,152 @@
-<?php 
-    include(public_path('themes/theme2/views/header.php'));
+<?php
+    include(public_path('themes/theme3/views/header.php')) ; 
 ?>
 
-<section id="iq-favorites">
-      <h3 class="vid-title text-center mt-4 mb-5">Featured Videos</h3> 
-            <div class="container-fluid" style="padding: 0px 40px!important;background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);">
-           
-               <div class="row">
-                  <div class="col-sm-12 page-height">
-                     <div class="iq-main-header align-items-center justify-content-between"></div>
-                     <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
-                           @if(count($featured_videos) > 0)
-                              @if(isset($featured_videos)) 
-                                 @foreach($featured_videos as $featured_video)
-                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                       <a href="<?php echo URL::to('home') ?>">
-                                          <div class="block-images position-relative">
+@if (!empty($featured_videos) && $featured_videos->isNotEmpty())
+    <section id="iq-trending" class="s-margin">
+        <div class="container-fluid pl-0">
+            <div class="row">
+                <div class="col-sm-12 overflow-hidden">
+                                    
+                                    {{-- Header --}}
+                    <div class="iq-main-header text-center align-items-center justify-content-between">
+                        <h4 class="main-title pl-5">{{ "Featured Videos" }}</h4>
+                    </div>
 
-                                             <div class="img-box">
-                                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$featured_video->image;  ?>" class="img-fluid" alt="">
-                                             </div>
+                    <div class="trending-contens">
+                        <ul id="trending-slider-nav" class="latest-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
+                            @foreach ($featured_videos as $featured_video)
+                                <li>
+                                    <a href="javascript:void(0);">
+                                        <div class="movie-slick position-relative">
+                                            <img src="{{ $featured_video->image ?  URL::to('public/uploads/images/'.$featured_video->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                        
+                                            @if (videos_expiry_date_status() == 1 && optional($featured_video)->expiry_date)
+                                                <p style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit;">{{ 'Leaving Soon' }}</p>
+                                            @endif
 
-                                             <div class="block-description">
-                                                <div class="hover-buttons">
-                                                   <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $featured_video->slug ?>">	
-                                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">                                  
-                                                   </a>
-                                                <div>
-                                             </div>
-
-                                          </div> </div>
-                                          </div>
-
-                                          <div>
-                                             <div class="mt-2 d-flex justify-content-between p-0">
-                                                <?php if($ThumbnailSetting->title == 1) { ?>
-                                                   <h6><?php  echo (strlen($featured_video->title) > 17) ? substr($featured_video->title,0,18).'...' : $featured_video->title; ?></h6>
-                                                <?php } ?>
-
-                                                <?php if($ThumbnailSetting->age == 1) { ?>
-                                                   <div class="badge badge-secondary"><?php echo $featured_video->age_restrict.' '.'+' ?></div>
-                                                <?php } ?>
-                                             </div>
-
-                                             <div class="movie-time my-2"> <!-- Duration -->
-                                                @if($ThumbnailSetting->duration == 1)
-                                                   <span class="text-white">
-                                                      <i class="fa fa-clock-o"></i>
-                                                      {{ gmdate('H:i:s', $featured_video->duration)  }}
-                                                   </span>
-                                                @endif
-                           
-                                             
-                                                @if($ThumbnailSetting->rating == 1 && $featured_video->rating != null) 
-                                                   <span class="text-white">  <!-- Rating -->
-                                                      <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                      <?php echo __($featured_video->rating); ?>
-                                                   </span>
-                                                @endif
-                           
-                                                @if($ThumbnailSetting->featured == 1 && $featured_video->featured == 1) 
-                                                   <span class="text-white">   <!-- Featured -->
-                                                      <i class="fa fa-flag" aria-hidden="true"></i>
-                                                   </span>
-                                                @endif
-                                             </div>
-                                             
-                                             <div class="movie-time my-2">  <!-- published_year -->
-                                                @if ( ($ThumbnailSetting->published_year == 1) && ( $featured_video->year != null ) ) 
-                                                      <span class="text-white">
-                                                         <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                         <?php echo __($featured_video->year); ?>
-                                                      </span>
-                                                @endif
-                                             </div>
-
-                                             <div class="movie-time my-2">
-                                                   <!-- Category Thumbnail  setting -->
-                                                   <?php
-                                                   $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                               ->where('categoryvideos.video_id',$featured_video->id)
-                                                               ->pluck('video_categories.name');        
-                                                   ?>
-                                                   <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                                   <span class="text-white">
-                                                      <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                      <?php
-                                                         $Category_Thumbnail = array();
-                                                               foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                                               $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                                               }
-                                                         echo implode(','.' ', $Category_Thumbnail);
-                                                      ?>
-                                                   </span>
-                                                   <?php } ?>
-                                             </div>
-                                             
-                                          </div>
-                                       </a>
-                                    </li>
-                                 @endforeach
-
-                                 <div class="col-md-12 pagination justify-content-end" >
-                                    {!! $featured_videos->links() !!}
-                                 </div>
-                                 
-                              @endif
-                           @else
-                              <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
-                                 <p><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
-                              </div>
-                           @endif
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
                         </ul>
-                     </div>
-                  </div>
-               </div>
+
+                        <ul id="trending-slider latest-videos-slider" class="list-inline p-0 m-0 align-items-center latest-videos-slider">
+                            @foreach ($featured_videos as $key => $featured_video )
+                                <li>
+                                    <div class="tranding-block position-relative trending-thumbnail-image" >
+                                        <button class="drp-close">×</button>
+
+                                        <div class="trending-custom-tab">
+                                            <div class="trending-content">
+                                                <div id="" class="overview-tab tab-pane fade active show">
+                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+                                                        <div class="caption pl-5">
+                                                            <h2 class="caption-h2">{{ optional($featured_video)->title }}</h2>
+
+                                                            @if (videos_expiry_date_status() == 1 && optional($featured_video)->expiry_date)
+                                                                <ul class="vod-info">
+                                                                    <li>{{ "Expiry In ". Carbon\Carbon::parse($featured_video->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                                                </ul>
+                                                            @endif
+
+                                                            @if (optional($featured_video)->description)
+                                                                <div class="trending-dec">{!! html_entity_decode( optional($featured_video)->description) !!}</div>
+                                                            @endif
+
+                                                            <div class="p-btns">
+                                                                <div class="d-flex align-items-center p-0">
+                                                                    <a href="{{ URL::to('category/videos/'.$featured_video->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="dropdown_thumbnail">
+                                                            <img src="{{ $featured_video->player_image ?  URL::to('public/uploads/images/'.$featured_video->player_image) : default_horizontal_image_url() }}" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
+@else
+   <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+        <p ><h3 class="text-center">No video Available</h3>
+    </div>
+@endif
 
-<?php include(public_path('themes/theme2/views/footer.blade.php'));  ?>
+<script>
+    
+    $( window ).on("load", function() {
+        $('.latest-videos-slider').hide();
+    });
+
+    $(document).ready(function() {
+
+        $('.latest-videos-slider').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            arrows: true,
+            fade: true,
+            draggable: false,
+            asNavFor: '.latest-videos-slider-nav',
+        });
+
+        $('.latest-videos-slider-nav').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            asNavFor: '.latest-videos-slider',
+            dots: false,
+            arrows: true,
+            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
+            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
+            infinite: false,
+            focusOnSelect: true,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 6,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    },
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    },
+                },
+            ],
+        });
+
+        $('.latest-videos-slider-nav').on('click', function() {
+            $( ".drp-close" ).trigger( "click" );
+            $('.latest-videos-slider').show();
+        });
+
+        $('body').on('click', '.drp-close', function() {
+            $('.latest-videos-slider').hide();
+        });
+    });
+</script>
 
 
+<?php
+   include(public_path('themes/theme3/views/footer.blade.php')) ;
+?>

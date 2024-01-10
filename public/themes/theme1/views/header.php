@@ -1935,6 +1935,7 @@
 
 
 <!-- slider video trailer script  -->
+
       <script>
         $(document).ready(function () {
             const imageContainer = document.getElementById("image-container");

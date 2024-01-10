@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 <?php
-include(public_path('themes/theme3/views/header.php'));
+include(public_path('themes/theme4/views/header.php'));
 ?>
 
 @section('content')
@@ -54,8 +54,8 @@ $uppercase =  ucfirst($request_url);
 	<div class="row page-height">
 		<div class="col-sm-8 offset-2 content">
 			<div class="verifyemail-text">
-				<h3><i class="fa fa-check-circle"></i> A Verification link has been sent to your email account.</h3>  
-				<p class="text-white"> Please click on the link that has been sent to your email account to verify your email and continue the registration process.</p>
+				<h3><i class="fa fa-check-circle"></i>{{ __('A Verification link has been sent to your email account.') }} </h3>  
+				<p class="text-white">{{ __('Please click on the link that has been sent to your email account to verify your email and continue the registration process.') }} </p>
 			</div>
 		</div>
 	</div>
@@ -63,7 +63,7 @@ $uppercase =  ucfirst($request_url);
 </body>
 
 @php
-    include(public_path('themes/theme3/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
 
 @endsection 
