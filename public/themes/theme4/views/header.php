@@ -759,6 +759,14 @@
    body.dark-theme .onclickbutton_menu{
       color: <?php echo GetDarkText(); ?>;
    }
+   body.light select:valid {
+      background: #fcfcfc!important;
+      color: #000000!important;
+   }
+   body.dark-theme select:valid {
+      background: <?php echo GetDarkBg(); ?>!important;
+      color: <?php echo GetDarkText(); ?>!important;
+   }
    
 .side-colps:not(.show){
    display:block;
@@ -1809,7 +1817,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                           <div class="iq-sub-dropdown search_content overflow-auto mt-3" id="sidebar-scrollbar">
                                              <div class="iq-card-body">
-                                                <div id="search_list" class="search_list search-toggle device-search" ></div>
+                                                <div id="search_list" class="search_list search-toggle device-search no-result" ></div>
                                              </div>
                                           </div>
                                        </li>
