@@ -1169,12 +1169,25 @@ li.list-group-item a {
     overflow-x:hidden;
     scrollbar-color: var(--iq-primary) var(--iq-light-primary);
     scrollbar-width: thin;
+    top: 290%;
 }
 .navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box {
     display: block;
     transform: translate(0, 0);
     transition: all 0.3s;
 }
-#search_list li.list-group-item{
+/* .no-result li{
     background:transparent;
+} */li.list-group-item {
+    background-color: transparent !important;
+    padding-right: unset !important;
+}li.list-group-item a {
+    background: transparent !important;
+    color: var(--iq-body-text) !important;
+    font-size: 12px !important;
+    padding-left: 10px !important;
+}
+body.dark .form-control option {
+    background: #121111!important;
+    color: #ffffff!important;
 }
