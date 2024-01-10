@@ -1013,6 +1013,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/video-scheduler', 'AdminChannelVideoController@ChannelVideoScheduler')->name('VideoScheduler');
     Route::get('/filter-scheduler', 'AdminChannelVideoController@FilterVideoScheduler')->name('FilterScheduler');
+    Route::post('/drag-drop-Scheduler-videos', 'AdminChannelVideoController@DragDropSchedulerVideos');
+    Route::get('/Scheduled-videos', 'AdminChannelVideoController@ScheduledVideos');
         
     /*  Videos Setting  */
 
