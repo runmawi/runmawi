@@ -1176,12 +1176,14 @@ li.list-group-item a {
     transform: translate(0, 0);
     transition: all 0.3s;
 }
-/* .no-result li{
-    background:transparent;
-} */li.list-group-item {
+.no-result li{
+    border:none;
+}
+li.list-group-item {
     background-color: transparent !important;
     padding-right: unset !important;
-}li.list-group-item a {
+}
+li.list-group-item a {
     background: transparent !important;
     color: var(--iq-body-text) !important;
     font-size: 12px !important;

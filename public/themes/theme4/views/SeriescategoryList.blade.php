@@ -22,11 +22,12 @@
                                         <a href="{{ URL::to('/series/category').'/'.$category_lists->slug   }}">
                                             <div class="block-description" >
                                                 <div>
-                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" style="width:22px;"/>
-
-                                                    <p class="hover_tex pl-4"><?php  echo (strlen($category_lists->name) > 17) ? substr($category_lists->name,0,18).'...' : $category_lists->name; ?></p>
                                                     <span class="d-flex justify-content-center mt-3">
-                                                    <button class="btn btn-hover">View Channel</button>
+                                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" style="width:22px;"/>
+
+                                                        <p class="hover_tex pl-4 m-0"><?php  echo (strlen($category_lists->name) > 17) ? substr($category_lists->name,0,18).'...' : $category_lists->name; ?></p>
+                                                    
+                                                        <!-- <button class="btn btn-hover">View Channel</button> -->
                                                     </span>
                                                 </div>
                                             <div>
