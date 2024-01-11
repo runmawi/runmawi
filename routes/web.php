@@ -1016,7 +1016,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/filter-scheduler', 'AdminChannelVideoController@FilterVideoScheduler')->name('FilterScheduler');
     Route::post('/drag-drop-Scheduler-videos', 'AdminChannelVideoController@DragDropSchedulerVideos');
     Route::get('/Scheduled-videos', 'AdminChannelVideoController@ScheduledVideos');
-        
+    Route::get('/get-channel-details/{videoId}', 'AdminChannelVideoController@GetChannelDetail');
+    Route::post('/Scheduler-UpdateTime', 'AdminChannelVideoController@SchedulerUpdateTime');
+    Route::post('/Scheduler-ReSchedule', 'AdminChannelVideoController@SchedulerReSchedule');
+    Route::post('/get-all-channel-details', 'AdminChannelVideoController@GetAllChannelDetails');
     /*  Videos Setting  */
 
     Route::get('/video-schedule', 'AdminVideosController@ScheduleVideo');
