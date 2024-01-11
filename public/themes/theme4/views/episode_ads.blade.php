@@ -9,7 +9,7 @@
     $mid_advertisement  = null ;
     $post_advertisement = null ;
 
-    if(  plans_ads_enable() == 0 ){
+    if(  plans_ads_enable() == 1 ){
 
             // Pre-advertisement 
 
