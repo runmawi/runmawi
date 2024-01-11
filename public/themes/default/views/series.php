@@ -107,7 +107,7 @@
     }
 
     .modal-content {
-        background-color: #fff;
+        /* background-color: #fff; */
         border: 0px solid #F1F1F1;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         border-radius: 20px;

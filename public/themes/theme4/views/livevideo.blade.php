@@ -300,7 +300,7 @@ if(!Auth::guest()){
                         <div class="ppv-block">
                             <h2 class="mb-3"><?php echo __('Pay now to watch'); ?> <?php echo $video->title; ?></h2>
 
-                                <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p><?php echo __('Click Here To Become Subscriber'); ?></p></a></h4>
+                                <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p><?php echo __('Click here to purchase and watch this live'); ?></p></a></h4>
 
                             <!-- PPV button -->
                                     <?php $users = Auth::user();  ?>
@@ -392,11 +392,11 @@ if(!Auth::guest()){
     
     <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
 
-    <div class="container-fluid video-details">
+    <div class="mar-left video-details">
         <div class="row">
 
                                                         <!-- BREADCRUMBS -->
-            <div class="col-sm-12 col-md-12 col-xs-12">
+            <div class="col-sm-12 col-md-12 col-xs-12 p-0">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="bc-icons-2">
@@ -512,7 +512,7 @@ if(!Auth::guest()){
                 </div>
                 <?php   }?>
 
-            <div class="container-fluid">
+            <div class="mar-left">
                 <div class="text-white col-md-6 p-0">
                     <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
                 </div>
@@ -531,16 +531,16 @@ if(!Auth::guest()){
                             <!-- CommentSection -->
 
             <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
-                <div class="row">
-                    <div class=" container-fluid video-list you-may-like overflow-hidden">
+                <div class="">
+                    <div class=" mar-left video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                         <?php include(public_path('themes/theme4/views/comments/index.blade.php')) ; ?>                   
                     </div>
                 </div>
             <?php endif; ?>
 
-            <div class="row">
-                <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <div class="">
+                <div class=" mar-left video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
                     <div class="slider">   
                         <?php include(public_path('themes/theme4/views/partials/live_related_video.blade.php')) ; ?>                   
