@@ -1068,9 +1068,10 @@ border-radius: 0px 4px 4px 0px;
                <fieldset id="ads_data">
                   <div class="form-card">
                      
+
                                  {{-- ADS Management --}}
                    
-                     @if( choosen_player() == 1 )    {{-- Video.Js Player--}}
+                     @if( choosen_player() == 1  )    {{-- Video.Js Player--}}
 
                         <div class="row">
                            

@@ -15,7 +15,7 @@ class Series extends Model
                     
     public function Series_depends_episodes()
     {
-        return $this->hasMany(Episode::class, 'series_id')->where('active',1)->where('status',1)->latest();
+        return $this->hasMany(Episode::class, 'series_id')->where('active',1)->where('status',1)->latest('season_id')->orderBy('episode_order');
     }
 
     public function Series_depends_seasons()
