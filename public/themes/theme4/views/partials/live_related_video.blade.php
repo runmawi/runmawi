@@ -4,7 +4,7 @@
                 <div class="iq-main-header align-items-center justify-content-between">
             </div>
 
-            <div class="favorites-contens ">
+            <div class="favorites-contens sub_dropdown_image ">
                 <ul class="favorites-slider list-inline row mb-0">
                     <?php
                      if(isset($Related_videos)) :
@@ -12,12 +12,23 @@
 
                     <li class="slide-item">
                         <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">	
-                            <div class="block-images position-relative">
-                                <div class="img-box">
+                            <div class="position-relative">
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$related_video->image;  ?>" class="img-fluid w-100" alt="">
-                                </div>
+                                    <div class="controls">
+                                        <a href="<?php echo URL::to('live/'.$related_video->slug ) ?>">
+                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                        </a>
 
-                                <div class="block-description">
+                                        <nav>
+                                        <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                        </nav>
+                                                                                        
+                                        <!-- <p class="trending-dec" >
+                                            {{ $related_video->description}}
+                                        </p> -->
+                                    </div>
+
+                                <!-- <div class="block-description">
                                     <h6><?php  echo (strlen($related_video->title) > 15) ? substr($related_video->title,0,15).'...' : $related_video->title; ?></h6>
 
                                     <div class="movie-time  align-items-center my-2">
@@ -32,7 +43,7 @@
                                             </span>
                                         </a>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </a>
                     </li>
