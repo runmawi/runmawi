@@ -218,6 +218,10 @@
    .modal-content{
         background:transparent;
    }
+   li.slide-item {
+        position: relative;
+        padding: 0 15px 0 15px;
+    }
 
    body.light .modal-content{background: <?php echo GetAdminLightBg(); ?>!important;color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
    body.dark-theme .modal-content{background-color: <?php echo GetAdminDarkBg(); ?>!important;;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
@@ -317,7 +321,7 @@ if(!Auth::guest()){
 
                                     <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
                                         <button  data-toggle="modal" data-target="#exampleModalCenter" style="width:50%;" class="view-count btn btn-primary btn-block rent-video">
-                                        <?php echo __('Purchase Now '). '' .$video->ppv_price ;?> </button>
+                                        <?php echo __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price;  ;?> </button>
                                     <?php } ?>
                             </div>
                     </div>

@@ -424,3 +424,7 @@ li.breadcrumb-item a{
         line-height: 24px;
     }
 }
+li.slide-item {
+    position: relative;
+    padding: 0 15px 0 15px;
+}
