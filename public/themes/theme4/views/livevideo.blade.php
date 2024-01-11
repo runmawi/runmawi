@@ -180,7 +180,7 @@
       width: 100%;
    }
 
-   .modal {
+   /* .modal {
       position: fixed;
       top: 0;
       right: auto;
@@ -190,7 +190,7 @@
       display: none;
       overflow: hidden;
       outline: 0;
-   }
+   } */
 
    /* <!-- BREADCRUMBS  */
 
@@ -215,6 +215,14 @@
    .vjs-skin-hotdog-stand .vjs-play-progress {
       background: #FF0000;
    }
+   .modal-content{
+        background:transparent;
+   }
+
+   body.light .modal-content{background: <?php echo GetAdminLightBg(); ?>!important;color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
+   body.dark-theme .modal-content{background-color: <?php echo GetAdminDarkBg(); ?>!important;;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
+
+
 </style>
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
@@ -296,18 +304,20 @@ if(!Auth::guest()){
             <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                 <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
                 <div class="row justify-content-center pay-live">
-                    <div class="col-md-4 col-sm-offset-4">
+                    <div class="col-md-5 col-sm-offset-5 text-center">
                         <div class="ppv-block">
                             <h2 class="mb-3"><?php echo __('Pay now to watch'); ?> <?php echo $video->title; ?></h2>
 
-                                <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p><?php echo __('Click Here To Become Subscriber'); ?></p></a></h4>
+
+
+                                <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p><?php echo __('Click here to purchase and watch this live'); ?></p></a></h4>
 
                             <!-- PPV button -->
                                     <?php $users = Auth::user();  ?>
 
                                     <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
-                                        <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
-                                        <?php echo __('Purchase Now ');?> </button>
+                                        <button  data-toggle="modal" data-target="#exampleModalCenter" style="width:50%;" class="view-count btn btn-primary btn-block rent-video">
+                                        <?php echo __('Purchase Now '). '' .$video->ppv_price ;?> </button>
                                     <?php } ?>
                             </div>
                     </div>
@@ -392,11 +402,11 @@ if(!Auth::guest()){
     
     <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
 
-    <div class="container-fluid video-details">
+    <div class="mar-left video-details">
         <div class="row">
 
                                                         <!-- BREADCRUMBS -->
-            <div class="col-sm-12 col-md-12 col-xs-12">
+            <div class="col-sm-12 col-md-12 col-xs-12 p-0">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="bc-icons-2">
@@ -512,7 +522,7 @@ if(!Auth::guest()){
                 </div>
                 <?php   }?>
 
-            <div class="container-fluid">
+            <div class="mar-left">
                 <div class="text-white col-md-6 p-0">
                     <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
                 </div>
@@ -531,16 +541,16 @@ if(!Auth::guest()){
                             <!-- CommentSection -->
 
             <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
-                <div class="row">
-                    <div class=" container-fluid video-list you-may-like overflow-hidden">
+                <div class="">
+                    <div class=" mar-left video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                         <?php include(public_path('themes/theme4/views/comments/index.blade.php')) ; ?>                   
                     </div>
                 </div>
             <?php endif; ?>
 
-            <div class="row">
-                <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <div class="">
+                <div class=" mar-left video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
                     <div class="slider">   
                         <?php include(public_path('themes/theme4/views/partials/live_related_video.blade.php')) ; ?>                   

@@ -370,6 +370,27 @@
                             <ul class="favorites-slider list-inline  row p-0 mb-0">
 
                                 @foreach ( $videodetail->recommended_videos as $recommended_video)
+
+                                <!-- <li class="slide-item">
+                                    <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
+                                        <div class="position-relative">
+                                            <img src="{{ URL::to('/public/uploads/images/' . $recommended_video->image) }}" class="w-100">
+                                            <div class="controls">
+                                                <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
+                                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                </a>
+
+                                                <nav>
+                                                    <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target= <?= "#Recommend_series-episode-videos-Modal-".$key ?> ><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                </nav>
+
+                                            </div>
+                                            
+                                        </div>
+                                    </a>
+                                </li> -->
+
+
                                 
                                     <li class="slide-item">
                                         <div class="block-images position-relative">

@@ -27,7 +27,7 @@
     color: #fff;
 }
 .my-video-dimensions.vjs-fluid {padding-top: 0;height: 100vh !important;}
-.video-js .vjs-tech {object-fit: cover;}
+.video-js .vjs-tech {object-fit: contain;}
 .vjs-theme-fantasy .vjs-control-bar {height: 64px;}
 .video-js .vjs-control-bar {
     background: linear-gradient(transparent,rgba(0,0,0,.75));
@@ -36,15 +36,16 @@
     z-index: 3;
 }
 .vjs-theme-fantasy .vjs-play-control .vjs-icon-placeholder:before {
-    height: 10px;
-    width: 10px;
+    height: 30px;
+    width: 30px;
+    padding: 7px;
     margin-top: 0.25em;
     border-radius: 4px;
     border: 0px solid #fff0;
     top: 12px;
     left: 18px;
     line-height: 1.1;
-    font-size: 25px;
+    font-size: 17px;
 }
 .vjs-button>.vjs-icon-placeholder:before {font-size: 3em;}
 .vjs-theme-fantasy .vjs-play-control:hover .vjs-icon-placeholder:before {
