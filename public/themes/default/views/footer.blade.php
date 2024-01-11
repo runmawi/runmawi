@@ -12,7 +12,7 @@ $settings = App\Setting::first();
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
       <div class="row justify-content-center align-items-center">
          
-          <div class="col-lg-6 d-flex align-items-center justify-content-center">
+          <div class="col-lg-12 d-flex align-items-center justify-content-center">
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
           <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
