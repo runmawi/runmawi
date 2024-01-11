@@ -357,7 +357,7 @@
                            </div>
 
                            
-                @if( choosen_player() == 1 )    {{-- Video.Js Player--}}
+                @if( choosen_player() == 1 && ads_theme_status() == 1)    {{-- Video.Js Player--}}
 
                     @if ( admin_ads_pre_post_position() == 1 )
 

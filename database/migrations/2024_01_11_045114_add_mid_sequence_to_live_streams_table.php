@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddEpisodeToEpisodesTable extends Migration
+class AddMidSequenceToLiveStreamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddEpisodeToEpisodesTable extends Migration
      */
     public function up()
     {
-        Schema::table('episodes', function (Blueprint $table) {
+        Schema::table('live_streams', function (Blueprint $table) {
             $table->string('video_js_mid_advertisement_sequence_time')->nullable()->after('search_tags');
             $table->string('pre_post_ads')->nullable()->after('video_js_mid_advertisement_sequence_time');
         });
@@ -26,7 +26,7 @@ class AddEpisodeToEpisodesTable extends Migration
      */
     public function down()
     {
-        Schema::table('episodes', function (Blueprint $table) {
+        Schema::table('live_streams', function (Blueprint $table) {
             Schema::dropIfExists('video_js_mid_advertisement_sequence_time');
             Schema::dropIfExists('pre_post_ads');
         });

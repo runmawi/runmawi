@@ -375,9 +375,9 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     </div>
                 </div>
 
-                @if( choosen_player() == 1 )    {{-- Video.Js Player--}}
+                @if( choosen_player() == 1  && ads_theme_status() == 1)    {{-- Video.Js Player--}}
 
-                        @if ( admin_ads_pre_post_position() == 1 )
+                        @if ( admin_ads_pre_post_position() == 1  )
 
                             <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
 

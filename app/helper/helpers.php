@@ -1384,3 +1384,12 @@ function admin_ads_pre_post_position()
     $admin_ads_pre_post_position = App\SiteTheme::pluck('admin_ads_pre_post_position')->first();
     return  $admin_ads_pre_post_position; 
 }
+
+function ads_theme_status()
+{
+    $themeChosen = App\HomeSetting::pluck('theme_choosen')->first();
+    $adsThemeStatus = ($themeChosen == "theme4" || $themeChosen == "theme3") ? 1 : 0;
+    
+    return $adsThemeStatus;
+    
+}

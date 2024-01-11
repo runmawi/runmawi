@@ -1919,17 +1919,20 @@ class AdminSeriesController extends Controller
             
             // {{-- Video.Js Player--}}
 
-            if( choosen_player() == 1  ){
+            if( choosen_player() == 1  && ads_theme_status() == 1){
 
                 if( admin_ads_pre_post_position() == 1){
                     
                     $episodes->pre_post_ads =  $data['pre_post_ads'];
+                    $episodes->post_ads     =  $data['pre_post_ads'];
+                    $episodes->pre_ads      =  $data['pre_post_ads'];
                 }
                 else{
                     
                     $episodes->pre_ads      =  $data['pre_ads'];
                     $episodes->post_ads     =  $data['post_ads'];
                     $episodes->mid_ads      =  $data['mid_ads'];
+                    $episodes->pre_post_ads =  null ;
                 }
 
                 $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
@@ -2285,17 +2288,20 @@ class AdminSeriesController extends Controller
 
             // {{-- Video.Js Player--}}
 
-        if( choosen_player() == 1  ){
+        if( choosen_player() == 1  && ads_theme_status() == 1 ){
 
             if( admin_ads_pre_post_position() == 1){
-                
+
                 $episode->pre_post_ads =  $data['pre_post_ads'];
+                $episode->post_ads     =  $data['pre_post_ads'];
+                $episode->pre_ads      =  $data['pre_post_ads'];
             }
             else{
                 
                 $episode->pre_ads      =  $data['pre_ads'];
                 $episode->mid_ads      =  $data['mid_ads'];
                 $episode->post_ads     =  $data['post_ads'];
+                $episode->pre_post_ads =  null ;
             }
 
             $episode->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
