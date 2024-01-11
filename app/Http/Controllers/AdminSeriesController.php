@@ -61,6 +61,8 @@ use App\Playerui as Playerui;
 use App\SeriesSubtitle as SeriesSubtitle;
 use App\SeriesNetwork;
 use App\Adscategory;
+use App\VideoExtractedImages;
+
 
 class AdminSeriesController extends Controller
 {
@@ -1675,7 +1677,6 @@ class AdminSeriesController extends Controller
     {
         
         $data = $request->all();
-
         $settings =Setting::first();
 
         if(!empty($data['ppv_price'])){
@@ -1732,11 +1733,12 @@ class AdminSeriesController extends Controller
 
             $data['image'] = $episode_image ;
 
+        }else if (!empty($request->video_image_url)) {
+            $data["image"] = $request->video_image_url;
         } else {
 
             $data['image'] = 'placeholder.jpg';
         }
-
         
         $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
 
@@ -1765,7 +1767,9 @@ class AdminSeriesController extends Controller
 
            $player_image  = $episode_player_image ;
 
-         } else {
+         }else if (!empty($request->selected_image_url)) {
+            $player_image  = $request->selected_image_url;
+        } else {
             $player_image = "default_horizontal_image.jpg";
          }
 
@@ -1786,6 +1790,8 @@ class AdminSeriesController extends Controller
 
             $episodes->tv_image = $Episode_tv_filename;
 
+        }else if (!empty($request->selected_tv_image_url)) {
+            $episodes->tv_image  = $request->selected_tv_image_url;
         }
 
         if(!empty($data['searchtags'])){
@@ -2395,6 +2401,59 @@ class AdminSeriesController extends Controller
                 $episode->save(); 
 
                 $episode_id = $episode->id;
+                
+                // $outputFolder = storage_path('app/public/frames');
+
+                // if (!is_dir($outputFolder)) {
+                //     mkdir($outputFolder, 0755, true);
+                // }
+                if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                for ($i = 1; $i <= 5; $i++) {
+                   
+                    $imagePortraitPath = public_path("uploads/images/{$episode_id}_{$randportrait}_{$i}.jpg");
+                    $imagePath = public_path("uploads/images/{$episode_id}_{$rand}_{$i}.jpg");
+
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->socure_type = 'Episode';
+                        $VideoExtractedImage->video_id = $episode_id;
+                        $VideoExtractedImage->image_original_name = $episode_id;
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $episode_id . '_' . $rand . '_' . $i . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $episode_id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->image_original_name = $episode_id . '_' . $rand . '_' . $i . '.jpg';
+                        $VideoExtractedImage->save();
+                
+                
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                }
+                
                 $episode_title = Episode::find($episode_id);
                 $title =$episode_title->title; 
             
@@ -2449,6 +2508,58 @@ class AdminSeriesController extends Controller
                 $video->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
                 $video->duration = $Video_duration;
                 $video->save();
+                
+                $episode_id = $video->id;
+                
+                $outputFolder = storage_path('app/public/frames');
+
+                if (!is_dir($outputFolder)) {
+                    mkdir($outputFolder, 0755, true);
+                }
+                if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                for ($i = 1; $i <= 5; $i++) {
+                    $imagePortraitPath = public_path("uploads/images/{$episode_id}_{$randportrait}_{$i}.jpg");
+                    $imagePath = public_path("uploads/images/{$episode_id}_{$rand}_{$i}.jpg");
+
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->socure_type = 'Episode';
+                        $VideoExtractedImage->video_id = $episode_id;
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $episode_id . '_' . $rand . '_' . $i . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $episode_id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->image_original_name = $episode_id . '_' . $rand . '_' . $i . '.jpg';
+                        $VideoExtractedImage->save();
+                
+                
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                }
 
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
@@ -3595,6 +3706,28 @@ class AdminSeriesController extends Controller
                 );
             }
             return response()->json($response, 200);
+        }
+
+        public function ExtractedImage(Request $request)
+        {
+            try {
+                // print_r($request->all());exit;
+                $value = [];
+    
+                $ExtractedImage =  VideoExtractedImages::where('video_id',$request->episode_id)->where('socure_type','Episode')->get();
+               
+                $value["success"] = 1;
+                $value["message"] = "Uploaded Successfully!";
+                $value["episode_id"] = $request->episode_id;
+                $value["ExtractedImage"] = $ExtractedImage;
+    
+    
+                return $value;
+    
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+    
         }
 
 }

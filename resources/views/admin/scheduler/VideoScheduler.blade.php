@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 
     <link rel="stylesheet" type="text/css" href="{{asset('assets/admin/css/schedule_drag_drop.css')}}">
     <link rel="icon" href="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
@@ -60,12 +61,12 @@
                         <div class="col-md-4">
                             <select class="form-control js-example-basic-single" name="time_zone_id" id="time_zone_id">
                                 @foreach($TimeZone as $key => $time_zone)
-                                    <option value="{{ @$time_zone->id }}">{{ @$time_zone->time_zone }}</option>
+                                    <option value="{{ @$time_zone->id }}">{{ @$time_zone->time_zone }} {{ '(UTC'.@$time_zone->utc_difference.')' }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="date form-control">
+                            <input type="text" class="date form-control" value="{{ date('m-d-Y') }}">
                         </div>
                     </div>
                     
@@ -92,48 +93,104 @@
                                     <option value="Video">Video</option>
                                     <option value="LiveStream">LiveStream</option>
                                     <option value="Episode">Episode</option>
-                                    <option value="Audio">Audio</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Time Update Modal -->
+                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Channel Scheduler Time</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <label for="editStartTime">Start Time:</label>
+                                <input type="text" id="editStartTime" class="form-control" />
+
+                                <label for="editEndTime">Video Duration:</label>
+                                <input type="text" id="Duration" class="form-control" readonly/>
+
+                                <label for="editEndTime">End Time:</label>
+                                <input type="text" id="editEndTime" class="form-control" readonly />
+                                <input type="hidden" id="channel_Id">
+                                <input type="hidden" id="Scheduler_id">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id ="saveChangesBtn" >Update</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Reschedule Modal -->
+                     <div class="modal fade" id="rescheduleModal" tabindex="-1" role="dialog" aria-labelledby="rescheduleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="rescheduleModalLabel">Channel Video Re-Scheduler</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                
+                                <label for="rescheduleDate">Choose Date to Re-Schedule:</label>
+                                <input type="text" id="Scheduler_date" class="re-schedule-date form-control" value="{{ date('m-d-Y') }}">
+                                <input type="hidden" id="channel_Id">
+                                <input type="hidden" id="Scheduler_id">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id ="saveReSchedule" >Update</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                             </div>
                         </div>
                     </div>
                      <div class="row">
                      <div class="col-md-6 p-0">
-                        <div class="drop-zone ScrollStyle MainData">
-                                        @foreach(@$VideoCollection as $value)
+                        <div class="drop-zone ScrollStyle MainData" >
+                                    @foreach(@$VideoCollection as $value)
                                         <div class="draggable">
                                             <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="50" height="50">
-                                            <input type="text" data-class="{{ $value->id }}" id="source_id" draggable="true" ondragstart="drag(this)" class=" form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
-                                            <!-- <div class="video_id{{ $value->id }}" data-toggle="modal" data-target="#video" data-name="{{ $value->id }}"  onclick="dropZoneDropHandler(this)"  >{{ $value->title }}</div> -->
+                                            <input type="text" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}" id="video_id" draggable="true" ondragstart="drag(this)" class=" form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
+                                            <input type="hidden" id="socure_type" class=" form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
                                         </div>
-                                        @endforeach
+                                    @endforeach
                                 </div>
                             </div>
                         <div class="col-md-6">
-                            <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
+                                <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
+
                         </div>
                 </div>
             </div>
             <br>
-            <button style="margin-bottom: 10px" class="btn btn-primary delete_all" >Delete Selected Video</button>
+            <!-- <button style="margin-bottom: 10px" class="btn btn-primary delete_all" >Delete Selected Video</button> -->
 
                 <div class="row">
                             <div class="col-md-12">
                                 <table class="table text-center" id="schedule_videos_table" style="width:100%">
                                     <thead>
                                         <tr class="r1">
-                                            <th>Select All <input type="checkbox" id="select_all"></th>
                                             <th>#</th>
-                                            <th>Title</th>
-                                            <th>Type</th>
-                                            <th>Schedule Date</th>
+                                            <th>Channel Name</th>
+                                            <th>Socure Title</th>
                                             <th>Scheduled Starttime</th>
                                             <th>Schedule Endtime</th>
+                                            <th>Duration</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 <tbody>
                                 <tr>
-                                    
+                                   
                                 </tbody>
                            </table>
                         </div>
@@ -141,9 +198,7 @@
             </div>
 
             <br>
-
-
-<br>
+        <br>
 
         </div>
     </div>
@@ -163,11 +218,214 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript">
 
 
-$(document).ready(function () {
+    // Script For Time Update for Scheduler 
+
+        $(document).on('change', '.date', function () {
+                getAllChannelDetails();
+        });
+
+        function getAllChannelDetails(channelId) {
+
+            $.ajax({
+                url: "{{ URL::to('admin/get-all-channel-details/') }}",
+                type: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                        time     : $('.date').val(),
+                        time_zone: $('#time_zone_id').val(),
+                        channe_id: $('#channe_id').val(),
+                },        
+                success: function(value){
+                    $('tbody').html(value.table_data);
+                    $('#schedule_videos_table').DataTable();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching Channel details:', error);
+                }
+            });
+
+        }
+
+    // Script For Time Update for Scheduler 
+
+        var originalStartTime = '';
+        var originalEndTime = '';
+        var originalDuration = '';
+
+        $(document).ready(function($){
+            $('#editStartTime').mask("00:00:00");
+            $('#editEndTime').mask("00:00:00");
+            $('#Duration').mask("00:00:00");
+        });
+
+        $('#editStartTime').on('change', function () {
+            calculateEndTime();
+        });
+
+        function calculateEndTime() {
+            var startTime = $('#editStartTime').val();
+            var duration = $('#Duration').val();
+
+            if (startTime && duration) {
+                var startTimeMoment = moment(startTime, 'HH:mm:ss');
+                var durationMoment = moment(duration, 'HH:mm:ss');
+
+                var endTimeMoment = startTimeMoment.add(durationMoment.hours(), 'hours');
+                endTimeMoment.add(durationMoment.minutes(), 'minutes');
+                endTimeMoment.add(durationMoment.seconds(), 'seconds');
+
+                var endTime = endTimeMoment.format('HH:mm:ss');
+
+                $('#editEndTime').val(endTime);
+            }
+        }
+
+        function getVideoDetails(channelId) {
+            $.ajax({
+                url: "{{ URL::to('admin/get-channel-details/') }}" + "/" + channelId,
+                type: "get",
+                dataType: 'json',
+                success: function (data) {
+                    $('#editStartTime').val(data.start_time);
+                    $('#editEndTime').val(data.end_time);
+                    $('#Duration').val(data.duration);
+                    $('#channel_Id').val(data.channe_id);
+                    $('#Scheduler_id').val(data.id);
+                    originalStartTime = data.start_time;
+                    originalEndTime = data.end_time;
+                    originalDuration = data.duration;
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching video details:', error);
+                }
+            });
+        }
+
+        $(document).on('click', '.edit-btn', function () {
+                var channelId = $(this).data('id');
+                // alert(channelId);
+                getVideoDetails(channelId);
+                $('#editModal').modal('show');
+        });
+
+        $(document).on('click', '#saveChangesBtn', function () {
+            saveChanges();
+        });
+
+        
+
+        function saveChanges() {   
+                if ($('#editStartTime').val() !== originalStartTime) {
+                    $.ajax({
+                        url: "{{ URL::to('admin/Scheduler-UpdateTime/')  }}",
+                        type: "post", // Use "get" instead of "post"
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            editStartTime:  $('#editStartTime').val(),
+                            editEndTime:    $('#editEndTime').val(),
+                            Duration:       $('#Duration').val(),
+                            channe_id:      $('#channel_Id').val(),
+                            Scheduler_id:   $('#Scheduler_id').val(),
+                            SchedulerDate:  $('.date').val(),
+                        },        
+                        success: function(value){
+                            $('#editModal').modal('hide');
+                            Swal.fire({
+                                title: 'Updated Time for Scheduled Videos !',
+                            })
+                            location.reload();                            
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                    title: 'Edit StartTime not changed !',
+                })
+            }
+        }
+
+        // Script For rescheduler
+        
+        $(document).on('click', '.rescheduler-btn', function () {
+                var channelId = $(this).data('id');
+                // alert(channelId);
+                getVideoDetails(channelId);
+                $('#editModal').modal('show');
+        });
+
+        function getChannelDetail(channelId) {
+
+            $.ajax({
+                url: "{{ URL::to('admin/get-channel-details/') }}" + "/" + channelId,
+                type: "get",
+                dataType: 'json',
+                success: function (data) {
+
+                    $('#Scheduler_date').val(data.choosed_date);
+                    $('#channel_Id').val(data.channe_id);
+                    $('#Scheduler_id').val(data.id);
+
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching Channel details:', error);
+                }
+            });
+
+        }
+
+        $(document).on('click', '#saveReSchedule', function () {
+            saveReScheduleChanges();
+        });
+
+        
+        function saveReScheduleChanges() {   
+
+                    $.ajax({
+                        url: "{{ URL::to('admin/Scheduler-ReSchedule/')  }}",
+                        type: "post", // Use "get" instead of "post"
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            channe_id:      $('#channel_Id').val(),
+                            Scheduler_id:   $('#Scheduler_id').val(),
+                            SchedulerDate:  $('.re-schedule-date').val(),
+                        },        
+                        success: function(value){
+                            $('#editModal').modal('hide');
+                            Swal.fire({
+                                title: 'Re Scheduled Videos !',
+                            })
+                            location.reload();                            
+                        }
+                    });
+            }
+        
+
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "{{ URL::to('admin/Scheduled-videos/')  }}",
+            type: "get", // Use "get" instead of "post"
+            data: {
+                _token: '{{ csrf_token() }}',
+                time: $('.date').val(),
+                time_zone:  $('#time_zone_id').val(),
+                channe_id: $('#channe_id').val(),
+            },        
+            success: function(value){
+                $('tbody').html(value.table_data);
+                $('#schedule_videos_table').DataTable();
+            }
+        });
+
+    });
+// $(document).ready(function () {
 
         $('#filterDropdown').hide();
         $('.filterButton').click(function(){ 
@@ -175,57 +433,60 @@ $(document).ready(function () {
             $('#filterDropdown').toggle();
         });
 
-        // Function to filter items based on the selected filter option
-        function filterItems(filterValue) {
+//         // Function to filter items based on the selected filter option
+//         function filterItems(filterValue) {
 
-            $.ajax({
-                url:"{{ URL::to('admin/filter-scheduler') }}",
-                type: 'GET',
-                data: { filter: filterValue },
-                dataType: 'json',
-                success: function (data)
-                {
+//             $.ajax({
+//                 url:"{{ URL::to('admin/filter-scheduler') }}",
+//                 type: 'GET',
+//                 data: { filter: filterValue },
+//                 dataType: 'json',
+//                 success: function (data)
+//                 {
 
-                    $('.MainData').empty();
-                    var imageURL = "{{ URL::to('/public/uploads/images/') }} ";
-                    // Append new items based on the returned data
-                    $.each(data, function (index, value) {
-                    console.log(value);
-                        var newItem = $('<div class="draggable">' +
-                            '<img src="' + imageURL +'/'+ value.image + '" alt="" width="50" height="50">' +
-                            '<input type="text" data-class="' + value.id + '" id="source_id" draggable="true" ondragstart="drag(this)" class="form-control video_' + value.id + '" value="' + value.title + '" readonly>' +
-                            '</div>');
-                        $('.MainData').append(newItem); // Append to .MainData
-                    });
-                },
-                error: function (xhr, status, error) {
-                console.error('Error fetching data:', error);
-                }
-            });
+//                     $('.MainData').empty();
+//                     var imageURL = "{{ URL::to('/public/uploads/images/') }} ";
+//                     // Append new items based on the returned data
+//                     $.each(data, function (index, value) {
+//                     // console.log(value);
+//                         var newItem = $('<div class="draggable">' +
+//                             '<img src="' + imageURL +'/'+ value.image + '" alt="" width="50" height="50">' +
+//                             '<input type="text" data-class="' + value.id + '" data-socure_type="' + value.socure_type + '" id="source_id" draggable="true" ondragstart="drag(this)" class="form-control video_' + value.id + '" value="' + value.title + '" readonly>' +
+//                             '</div>');
+//                         $('.MainData').append(newItem); // Append to .MainData
+//                     });
+//                 },
+//                 error: function (xhr, status, error) {
+//                 console.error('Error fetching data:', error);
+//                 }
+//             });
+//         }
 
-
-            // $('.draggable').each(function () {
-            //     var itemCategory = $(this).find('input[type="text"]').data('category');
-            //     if (filterValue === 'all' || itemCategory === filterValue) {
-            //         $(this).show();
-            //     } else {
-            //         $(this).hide();
-            //     }
-            // });
-        }
-
-        // Event listener for the dropdown change
+//         // Event listener for the dropdown change
         $('#filterDropdown').on('change', function () {
             var filterValue = $(this).val();
             filterItems(filterValue);
         });
+        function filterItems(filterValue) {
+            searchTerm = filterValue.toLowerCase();
+        
+            $('.draggable').each(function () {
+                var itemText = $(this).find('input[type="hidden"]').val().toLowerCase();
+                if (itemText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
 
-        // Initial filtering based on the default selected option
-        filterItems($('#filterDropdown').val());
-    });
+        }
+
+//         // Initial filtering based on the default selected option
+//         filterItems($('#filterDropdown').val());
+//     });
 
 
-    // Search Data 
+//     // Search Data 
     
     $(document).ready(function () {
         // Function to filter items based on the search input
@@ -248,425 +509,206 @@ $(document).ready(function () {
         });
     });
 
-    $('.date').datepicker({  
-       format: 'mm-dd-yyyy'
-     });  
+        $('.date').datepicker({  
+            format: 'm-dd-yyyy'
+        });  
+
+        $('.re-schedule-date').datepicker({  
+            format: 'm-dd-yyyy'
+        });  
+
+        var currentDate = new Date();
+        var formattedDate = (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + '-' + currentDate.getFullYear();
+        // alert(formattedDate);
+        $('.date').val(formattedDate);
+        $('.re-schedule-date').val(formattedDate);
+        $('.js-example-basic-single').select2();
+
+//     </script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+    <script src="<?=URL::to("/assets/js/jquery.mask.min.js") ?>"></script>
     
-    var currentDate = new Date();
-    var formattedDate = (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + '-' + currentDate.getFullYear();
-    $('.date').val(formattedDate);
-// $(".deleteVideo").click(function(){
-//         var id = $(this).data("id");
-//         var token = $(this).data("token");
-//         var url = '<?php echo URL::to('admin/schedule/delete') ?>';
-
-//         alert(url+'/'+id);
-//         $.ajax(
-//         {
-//             url:url+'/'+id,
-//             type: 'GET',
-//             dataType: "JSON",
-//             data: {
-//                 "id": id,
-//                 "_method": 'get',
-//                 "_token": token,
-//             },
-//             success: function ()
-//             {
-//                 // console.log("it Work");
-//                 location.reload();
-//             }
-//         });
-
-//         console.log("It failed");
-//     });
-
-
-      $('#choose_start_time').mask("00:00 AM");
-      $('#choose_end_time').mask("00:00 AM");
-      $('.js-example-basic-single').select2();
-
-    </script>
-
-  <script>
-    
-
-    $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-    });
-
-    $(document).ready(function(){
-
-        var url = "{{ URL::to('admin/IndexScheduledVideos/')  }}";
-
-        $.ajax({
-            url: url,
-            type: "GET",      
-            success: function (data) {
-                console.log(data);
-            },
-            error: function() { 
-                console.log(data);
-            }
-        });
-    });
-
-  </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script>
-        
-            $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-            });
-            $('#reschedule_oneday').click(function(){
-                // alert();
-                let oneday = $('#reschedule_oneday').val();
-                  var url = "{{ URL::to('admin/reschedule_oneday/')  }}";
-                let time_zone = $('#time_zone').val();
-                
-                    $.ajax({
-                    url: url,
-                    type: "post",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                                oneday: 'one',
-                                month: month,
-                                year: year,
-                                date: date,
-                                schedule_id: schedule_id,
-                        },        
-                        success: function(value){
-                        console.log(value.message);
-                        if(value.message == 'Added Successfully'){
-                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Videos Reschedule Successfully</div>');
-                                setTimeout(function() {
-                                $('.add_watch').slideUp('fast');
-                                }, 3000);
-                        }else if(value.message == 'No Video'){
-                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">No Video Available to Reschedule</div>');
-                                setTimeout(function() {
-                                $('.add_watch').slideUp('fast');
-                                }, 3000);
-                        }else if(value.message == 'Already Added'){
-                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Alreay Video is Reschedule</div>');
-                                setTimeout(function() {
-                                $('.add_watch').slideUp('fast');
-                                }, 3000);
-                        }
-                    }
-                });
-            });
-
-            $('#reschedule_week').click(function(){
-                
-
-            });
-        // 
-    </script>
+         $(document).ready(function(){
+            $('#player_table').DataTable();
+         });
+</script>
 <script>
 
-initDragAndDrop();
+    initDragAndDrop();
 
-function initDragAndDrop() {
-    // Collect all draggable elements and drop zones
-    let draggables = document.querySelectorAll(".draggable");
-    let dropZones = document.querySelectorAll(".drop-zone");
-    initDraggables(draggables);
-    initDropZones(dropZones);
-}
-
-function initDraggables(draggables) {
-    for (const draggable of draggables) {
-        initDraggable(draggable);
+    function initDragAndDrop() {
+        // Collect all draggable elements and drop zones
+        let draggables = document.querySelectorAll(".draggable");
+        let dropZones = document.querySelectorAll(".drop-zone");
+        initDraggables(draggables);
+        initDropZones(dropZones);
     }
-}
 
-function initDropZones(dropZones) {
-    for (let dropZone of dropZones) {
-        initDropZone(dropZone);
-    }
-}
-
-
-function initDraggable(draggable) {
-    draggable.addEventListener("dragstart", dragStartHandler);
-    draggable.addEventListener("drag", dragHandler);
-    draggable.addEventListener("dragend", dragEndHandler);
-
-    // set draggable elements to draggable
-    draggable.setAttribute("draggable", "true");
-}
-
-
-function initDropZone(dropZone) {
-    dropZone.addEventListener("dragenter", dropZoneEnterHandler);
-    dropZone.addEventListener("dragover", dropZoneOverHandler);
-    dropZone.addEventListener("dragleave", dropZoneLeaveHandler);
-    dropZone.addEventListener("drop", dropZoneDropHandler);
-}
-
-
-function dragStartHandler(e) {
-    setDropZonesHighlight();
-    this.classList.add('dragged', 'drag-feedback');
-    e.dataTransfer.setData("type/dragged-box", 'dragged');
-    e.dataTransfer.setData("text/plain", this.textContent.trim());
-    deferredOriginChanges(this, 'drag-feedback');
-}
-
-
-function dragHandler() {
-    // do something... if you want
-}
-
-function dragEndHandler() {
-    setDropZonesHighlight(false);
-    this.classList.remove('dragged');
-}
-
-
-function dropZoneEnterHandler(e) {
-    if (e.dataTransfer.types.includes('type/dragged-box')) {
-        this.classList.add("over-zone");
-        e.preventDefault();
-    }
-}
-
-function dropZoneOverHandler(e) {
-    if (e.dataTransfer.types.includes('type/dragged-box')) {
-        e.preventDefault();
-    }
-}
-
-
-function dropZoneLeaveHandler(e) {
-    if (e.dataTransfer.types.includes('type/dragged-box') &&
-        e.relatedTarget !== null &&
-        e.currentTarget !== e.relatedTarget.closest('.drop-zone')) {
-        this.classList.remove("over-zone");
-    }
-}
-
-
-function dropZoneDropHandler(e,ele) {
-
-    let draggedElement = document.querySelector('.dragged');
-    e.currentTarget.appendChild(draggedElement);
-    e.preventDefault();
-
-}
-
-
-function setDropZonesHighlight(highlight = true) {
-    const dropZones = document.querySelectorAll(".drop-zone");
-    for (const dropZone of dropZones) {
-        if (highlight) {
-            dropZone.classList.add("active-zone");
-        } else {
-            dropZone.classList.remove("active-zone");
-            dropZone.classList.remove("over-zone");
+    function initDraggables(draggables) {
+        for (const draggable of draggables) {
+            initDraggable(draggable);
         }
     }
-}
+
+    function initDropZones(dropZones) {
+        for (let dropZone of dropZones) {
+            initDropZone(dropZone);
+        }
+    }
 
 
-function deferredOriginChanges(origin, dragFeedbackClassName) {
-    setTimeout(() => {
-        origin.classList.remove(dragFeedbackClassName);
-    });
-}
+    function initDraggable(draggable) {
+        draggable.addEventListener("dragstart", dragStartHandler);
+        draggable.addEventListener("drag", dragHandler);
+        draggable.addEventListener("dragend", dragEndHandler);
+
+        // set draggable elements to draggable
+        draggable.setAttribute("draggable", "true");
+    }
+
+    function initDropZone(dropZone) {
+        dropZone.addEventListener("dragenter", dropZoneEnterHandler);
+        dropZone.addEventListener("dragover", dropZoneOverHandler);
+        dropZone.addEventListener("dragleave", dropZoneLeaveHandler);
+        dropZone.addEventListener("drop", dropZoneDropHandler);
+    }
+
+    function dragStartHandler(e) {
+        setDropZonesHighlight();
+        this.classList.add('dragged', 'drag-feedback');
+        // we use these data during the drag operation to decide
+        // if we handle this drag event or not
+        e.dataTransfer.setData("type/dragged-box", 'dragged');
+        e.dataTransfer.setData("text/plain", this.textContent.trim());
+        deferredOriginChanges(this, 'drag-feedback');
+    }
+
+    function dragHandler() {
+        // do something... if you want
+    }
+
+    function dragEndHandler() {
+        setDropZonesHighlight(false);
+        this.classList.remove('dragged');
+    }
+
+    function dropZoneEnterHandler(e) {
+
+        if (e.dataTransfer.types.includes('type/dragged-box')) {
+            this.classList.add("over-zone");
+            e.preventDefault();
+        }
+    }
+        
+    function dropZoneOverHandler(e) {
+        if (e.dataTransfer.types.includes('type/dragged-box')) {
+            e.preventDefault();
+        }
+    }
 
 
-var video_id = '';
+    function dropZoneLeaveHandler(e) {
+        if (e.dataTransfer.types.includes('type/dragged-box') &&
+            e.relatedTarget !== null &&
+            e.currentTarget !== e.relatedTarget.closest('.drop-zone')) {
+            this.classList.remove("over-zone");
+        }
+    }
+
+    function dropZoneDropHandler(e,ele) {
+              
+        let draggedElement = document.querySelector('.dragged');
+        e.currentTarget.appendChild(draggedElement);
+        e.preventDefault();
+
+    }
+
+
+    function setDropZonesHighlight(highlight = true) {
+        const dropZones = document.querySelectorAll(".drop-zone");
+        for (const dropZone of dropZones) {
+            if (highlight) {
+                dropZone.classList.add("active-zone");
+            } else {
+                dropZone.classList.remove("active-zone");
+                dropZone.classList.remove("over-zone");
+            }
+        }
+    }
+
+    function deferredOriginChanges(origin, dragFeedbackClassName) {
+        setTimeout(() => {
+            origin.classList.remove(dragFeedbackClassName);
+        });
+    }
+
+
+    var video_id = '';
+    var socure_type = '';
  
 
 
-function allowDrop(ev) {
-//   ev.preventDefault();
-}
+    function allowDrop(ev) {
+    //   ev.preventDefault();
+    }
 
-function drag(ev) {
+    function drag(ev) {
 
-var video_id = $(ev).attr('data-class');
-// console.log(video_id);
-drop(video_id);
-}
+    var video_id = $(ev).attr('data-class');
+    var socure_type = $(ev).attr('data-socure_type');
+    drop(video_id,socure_type);
+    }
 
-function drop(video_id) {
+    function drop(video_id,socure_type) {
 
-    console.log(video_id);
+        // console.log(video_id);
+        // console.log(socure_type);
 
-    $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-    });
-
-
-        var url = "{{ URL::to('admin/dragdropScheduledVideos/')  }}";
-        var time = $('#time').val();
-        let time_zone = $('#time_zone').val();
-
-        $.ajax({
-           url: url,
-           type: "post",
-            data: {
-                  _token: '{{ csrf_token() }}',
-            },        
-            success: function(value){
-   			console.log(value);
-               if(value == ''){
-                        alert('Please Choose Time');
-                    }else if(value.schedule_time == 'Today Slot Are Full'){
-                        swal.fire({
-                    // title: 'Oops', 
-                    text: 'Today Slot Are Full Please Change The Calendar and Start Schedule!', 
-                    allowOutsideClick:false,
-                    // icon: 'error',
-                    // title: 'Oops...',
-                    });
-                        // alert('Today Slot Are Full Please Change The Calendar and Start Schedule.');
-                    }else if(value.schedule_time == 'Change the Slot time'){
-                        swal.fire({
-                    // title: 'Oops', 
-                    text: 'Change The Slot And Please Start to Schedule!', 
-                    allowOutsideClick:false,
-
-                    });
-                    }else if(value.schedule_time == 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule'){
-                        swal.fire({
-                    // title: 'Oops', 
-                    text: 'Video End Time Exceeded today Please Change the Calendar Slot to Add Schedule!', 
-                    allowOutsideClick:false,
-
-                    });
-                    }else{
-                        $('tbody').html(value.table_data);
-                    }
-           }
-       });
-
-}
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+        });
 
 
-$(".deleteVideo").click(function(){
-        var id = $(this).data("id");
-        var token = $(this).data("token");
-        var url = '<?php echo URL::to('admin/schedule/delete') ?>';
+            var url = "{{ URL::to('admin/drag-drop-Scheduler-videos/')  }}";
+            var time = $('.date').val();
+            let time_zone = $('#time_zone_id').val();
+            let channe_id = $('#channe_id').val();
 
-        // alert(url+'/'+id);
-        $.ajax(
-        {
-            url:url+'/'+id,
-            type: 'GET',
-            dataType: "JSON",
-            data: {
-                "id": id,
-                "_method": 'get',
-                "_token": token,
-            },
-            success: function ()
-            {
-                // console.log("it Work");
-                // location.reload();
-                // history.go(0);
-                alert('Deleted Succefully..!');
-
+            $.ajax({
+            url: url,
+            type: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                        socure_id: video_id,
+                        time: time,
+                        time_zone: time_zone,
+                        channe_id: channe_id,
+                        socure_type: socure_type,
+                },        
+                success: function(value){
+                    $('tbody').html(value.table_data);
+                    $('#schedule_videos_table').DataTable();
             }
         });
 
-        console.log("It failed");
-        
-    });
-
-    $(".delete_all").hide();
-
-$('#select_all').on('click', function(e) {
-
-     if($(this).is(':checked',true))  
-     {
-        $(".delete_all").show();
-        $(".sub_chk").prop('checked', true);  
-     } else {  
-        $(".delete_all").hide();
-        $(".sub_chk").prop('checked',false);  
-     }  
-});
+    }
 
 
-$('.sub_chk').on('click', function(e) {
 
-  var checkboxes = $('input:checkbox:checked').length;
-
-  if(checkboxes > 0){
-     $(".delete_all").show();
-  }else{
-     $(".delete_all").hide();
-  }
-});
-
-
-    $('.delete_all').on('click', function(e) {
-
-var allVals = [];  
- $(".sub_chk:checked").each(function() {  
-
-       allVals.push($(this).attr('data-id'));
- });  
-    // alert(allVals);
- if(allVals.length <=0)  
- {  
-       alert("Please select Anyone video");  
- }  
- else 
- {  
-    var check = confirm("Are you sure you want to delete selected videos?");  
-    if(check == true){  
-        var join_selected_values =allVals.join(","); 
-      
-        $.ajax({
-          url: '{{ URL::to('admin/ScheduleVideoBulk_delete') }}',
-          type: "get",
-          data:{ 
-             _token: "{{csrf_token()}}" ,
-             video_id: join_selected_values, 
-             month: month, 
-             date: date, 
-             year: year, 
-          },
-
-          success: function(value){
-   			console.log(value);
-               if(value == ''){
-                    swal.fire({
-                    title: 'Oops', 
-                    text: 'Something went wrong!', 
-                    allowOutsideClick:false,
-                    icon: 'error',
-                    title: 'Oops...',
-                    });
-                }else{
-                    $('tbody').html(value.table_data);
-                }
-           }
-
-
-       });
-    }  
- }  
-});
-
-
-</script>
+    </script>
 
 @stop
 

@@ -1,5 +1,8 @@
 <?php
 //use Auth;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\URL; 
 
 function changeDateFormate($date,$date_format){
     
@@ -1391,5 +1394,306 @@ function ads_theme_status()
     $adsThemeStatus = ($themeChosen == "theme4" || $themeChosen == "theme3") ? 1 : 0;
     
     return $adsThemeStatus;
+}
+
+function TimeZoneScheduler($id)
+{
+
+    $TimeZone = App\TimeZone::where('id',$id)->pluck('time_zone')->first();
+
+        date_default_timezone_set($TimeZone);
+        $now = date("Y-m-d H:i:s", time());
+        $current_time = date("H:i:s", time());
+        $time = date("A", time());
+        $nowTime = date("H:i:s A", time());
+        $data = array(
+            'now' => $now  ,
+            'current_time' => $current_time  ,            
+            'time' => $time  ,            
+            'nowTime' => $nowTime  ,            
+        );
+    return  $data; 
+        
+}
+
+function SchedulerSocureData($socure_type,$socure_id)
+{
+
+    if($socure_type == "Video"){
+        $socure_data = App\Video::where('id',$socure_id)->first();
+        if(!empty($socure_data) && $socure_data->type == ''){
+            $m3u8_url = URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8';
+            $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+            $process = new Process($command);
+            try {
+                // Run the process
+                $process->mustRun();
+                $duration = trim($process->getOutput());
+                $seconds = round($duration);
+            } catch (ProcessFailedException $exception) {
+                $error = $exception->getMessage();
+            }
+            $data = array(
+                'duration' => $duration  ,
+                'seconds' => $seconds  ,            
+                'type' => 'm3u8'  ,            
+                'URL' => URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8'  ,
+                'socure_data' => $socure_data  ,
+            );
+
+        }else if(!empty($socure_data) && $socure_data->type == 'm3u8_url'){
+            $m3u8_url = $socure_data->m3u8_url;
+            $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+            $process = new Process($command);
+            try {
+                // Run the process
+                $process->mustRun();
+                $duration = trim($process->getOutput());
+                $seconds = round($duration);
+            } catch (ProcessFailedException $exception) {
+                $error = $exception->getMessage();
+            }
+            $data = array(
+                'duration' => $duration  ,
+                'seconds' => $seconds  ,      
+                'type' => 'm3u8'  ,            
+                'URL' => $socure_data->m3u8_url  ,      
+                'socure_data' => $socure_data  ,
+            );
+        }else if(!empty($socure_data) && $socure_data->type == 'mp4_url'){
+            $mp4_url = $socure_data->mp4_url;
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $Video_duration = $ffprobe->format($mp4_url)->get('duration');
+            $duration = explode(".", $Video_duration)[0];
+            $seconds = round($duration);
+            $data = array(
+                'duration' => $duration  ,
+                'seconds' => $seconds  ,   
+                'type' => 'mp4'  ,            
+                'URL' => $socure_data->mp4_url  ,           
+                'socure_data' => $socure_data  ,
+            );
+        }
+    }else if($socure_type == "Episode"){ 
+        $socure_data = App\Episode::where('id',$socure_id)->first();
+        if(!empty($socure_data) && $socure_data->type == 'file' || $socure_data->type == 'upload' ){
+            $mp4_url = $socure_data->mp4_url;
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $Video_duration = $ffprobe->format($mp4_url)->get('duration');
+            $duration = explode(".", $Video_duration)[0];
+            $seconds = round($duration);
+            $data = array(
+                'duration' => $duration  ,
+                'seconds' => $seconds  ,        
+                'type' => 'mp4'  ,            
+                'URL' => $socure_data->mp4_url  ,        
+                'socure_data' => $socure_data  ,
+            );
+        }else if(!empty($socure_data) && $socure_data->type == 'm3u8'){
+            $m3u8_url = URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8';
+            $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+            $process = new Process($command);
+            try {
+                // Run the process
+                $process->mustRun();
+                $duration = trim($process->getOutput());
+                $seconds = round($duration);
+            } catch (ProcessFailedException $exception) {
+                $error = $exception->getMessage();
+            }
+            $data = array(
+                'duration' => $duration  ,
+                'seconds' => $seconds  ,      
+                'type' => 'm3u8'  ,            
+                'URL' => URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8'  ,          
+                'socure_data' => $socure_data  ,
+            );
+        }
+    }else if($socure_type == "LiveStream"){ 
+        $socure_data = App\LiveStream::where('id',$socure_id)->first();
+        if(!empty($socure_data) && $socure_data->url_type == 'mp4' ){
+            $mp4_url = $socure_data->mp4_url ;
+            $ffprobe = \FFMpeg\FFProbe::create();
+            $Video_duration = $ffprobe->format($mp4_url)->get('duration');
+            $duration = explode(".", $Video_duration)[0];
+            $seconds = round($duration);
+            $data = array(
+                'duration' => $duration  ,
+                'seconds' => $seconds  ,   
+                'type' => 'mp4'  ,            
+                'URL' => $socure_data->mp4_url  ,         
+                'socure_data' => $socure_data  ,
+            );
+        }else if(!empty($socure_data) && $socure_data->url_type == 'live_stream_video'){
+            $m3u8_url = $socure_data->live_stream_video;
+            $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+            $process = new Process($command);
+            try {
+                // Run the process
+                $process->mustRun();
+                $duration = trim($process->getOutput());
+                $seconds = round($duration);
+            } catch (ProcessFailedException $exception) {
+                $error = $exception->getMessage();
+            }
+            $data = array(
+                'duration' => $duration  ,
+                'seconds' => $seconds  , 
+                'type' => 'm3u8'  ,            
+                'URL' => $socure_data->live_stream_video  ,             
+                'socure_data' => $socure_data  ,
+            );
+        }else if(!empty($socure_data) && $socure_data->url_type == 'Encode_video'){
+            $m3u8_url = $socure_data->hls_url ;
+            $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+            $process = new Process($command);
+            try {
+                // Run the process
+                $process->mustRun();
+                $duration = trim($process->getOutput());
+                $seconds = round($duration);
+            } catch (ProcessFailedException $exception) {
+                $error = $exception->getMessage();
+            }
+            $data = array(
+                'duration' => $duration  ,
+                'seconds' => $seconds  , 
+                'type' => 'm3u8'  ,            
+                'URL' => $socure_data->hls_url  ,             
+                'socure_data' => $socure_data  ,
+            );
+        }
+    }
+
+    return  $data; 
+        
+}
+
+
+function ChannelVideoScheduler($channe_id,$time)
+{
+
+    $ChannelVideoScheduler = App\ChannelVideoScheduler::where('channe_id',$channe_id)
+                                ->where('choosed_date',$time)
+                                ->orderBy('created_at', 'DESC')->first();
+
+    return  $ChannelVideoScheduler; 
+        
+}
+
+
+function ChannelVideoSchedulerWithTimeZone($channe_id,$time,$time_zone)
+{
+
+    $ChannelVideoSchedulerWithTimeZone = App\ChannelVideoScheduler::where('channe_id',$channe_id)
+                                            ->where('choosed_date',$time)
+                                            ->where('time_zone',$time_zone)
+                                            ->orderBy('created_at', 'DESC')->first();
+
+    return  $ChannelVideoSchedulerWithTimeZone; 
+        
+}
+
+function chosen_datetime($time)
+{
+
+        $next_date = 1;
+        $carbonDate = explode("-",$time); 
+        if(!empty($carbonDate) && count($carbonDate) > 0 ){
+            $choosed_date = $carbonDate[2] . "-" . $carbonDate[0] . "-" . $carbonDate[1];
+            $chosen_datetime = \Carbon\Carbon::parse($choosed_date)->addDays($next_date) ;
+            $chosen_datetime = $chosen_datetime->format('n-j-Y');
+        }else{
+            $chosen_datetime = $time;
+        }
+
+    return  $chosen_datetime; 
+
+}
+
+function existingVideoSchedulerEntry($time,$channe_id,$start_time)
+{
+
+        $existingVideoSchedulerEntry = App\ChannelVideoScheduler::where('choosed_date', chosen_datetime($time))
+                ->where('channe_id', $channe_id)
+                ->first();
+
+        $current_time = strtotime($start_time);
+
+            if(!empty($existingVideoSchedulerEntry) ){
+                return 0;
+            }else{
+                return 1;
+            }
+
+}
+
+
+
+function VideoScheduledData($time,$channe_id,$time_zone){
     
+
+    $ChannelVideoScheduler = App\ChannelVideoScheduler::where('channe_id', $channe_id)
+                            ->where('time_zone', $time_zone)
+                            ->where('choosed_date', $time)
+                            ->orderBy('socure_order', 'ASC')
+                            ->join('admin_epg_channels', 'admin_epg_channels.id', '=', 'channel_videos_scheduler.channe_id')
+                            ->select('channel_videos_scheduler.*', 'admin_epg_channels.name')
+                            ->get();
+
+        $output = "";
+        $i = 1;
+        if (count($ChannelVideoScheduler) > 0) {
+            $total_row = $ChannelVideoScheduler->count();
+            if (!empty($ChannelVideoScheduler)) {
+
+                foreach ($ChannelVideoScheduler as $key => $row) {
+                    $output .=
+                        '
+                        <tr>
+                        <td>' . '#' .'</td>
+
+                        <td>' .
+                                            $row->name .
+                                            '</td>
+                        <td>' .
+                                            $row->socure_title .
+                                            '</td>  
+                        <td>' .
+                                            $row->start_time .
+                                            '</td>       
+                        <td>' .
+                                            $row->end_time .
+                                            '</td>    
+
+                        <td>' .
+                                            $row->duration .
+                                            '</td>  
+                        <td>' .
+                                    "<button class='btn btn-sm btn-info edit-btn' data-toggle='modal' data-target='#editModal' data-id='" . $row->id . "'><i class='fas fa-edit'></i>Edit</button>" .
+                                    "<button class='btn btn-sm btn-warning rescheduler-btn' data-toggle='modal' data-target='#rescheduleModal' data-id='" . $row->id . "'><i class='fas fa-calendar-alt'></i>Rescheduler</button>" .
+                                    '</td>
+                        </tr>
+                        ';
+                }
+            } else {
+
+                $output = '
+                    <tr>
+                        <td align="center" colspan="5">No Data Found</td>
+                    </tr>
+                    ';
+            }
+        }else{
+            $total_row = 0;
+            $ChannelVideoScheduler = [];
+        }
+
+        $value["success"] = 1;
+        $value["message"] = "Uploaded Successfully!";
+        $value["table_data"] = $output;
+        $value["total_data"] = $total_row;
+        $value["total_content"] = $ChannelVideoScheduler;
+
+    return $value;
 }

@@ -180,13 +180,16 @@ border-radius: 0px 4px 4px 0px;
 }
 .tags-input-wrapper .tag{
     display: inline-block;
-    background-color: #20222c;
-    color: white;
-    border-radius: 40px;
     padding: 0px 3px 0px 7px;
     margin-right: 5px;
     margin-bottom:5px;
-    box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7)
+    /* box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7) */
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+    color: #000;
+    font-size: 12px;
+    font-weight: 500;
 }
 .tags-input-wrapper .tag a {
     margin: 0 7px 3px;

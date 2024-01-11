@@ -12,7 +12,7 @@ $settings = App\Setting::first();
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
       <div class="row justify-content-center align-items-center">
          
-          <div class="col-lg-6 d-flex align-items-center justify-content-center">
+          <div class="col-lg-12 d-flex align-items-center justify-content-center">
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
           <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
@@ -22,30 +22,30 @@ $settings = App\Setting::first();
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>  
-                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.png')?>" /></a>
+                <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="150" style="object-fit:contain;" src="<?php echo  URL::to('/assets/img/android.png')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.png')?>"  /></a>
+                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="150" style="object-fit:contain;" src="<?php echo  URL::to('/assets/img/ios.png')?>"  /></a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
                   <a href="<?= $app_settings->android_tv ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" /></a>
+                      <img class="" height="60" width="150" style="object-fit:contain;" src="<?php echo  URL::to('/assets/img/android-tv-1.png')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Firetv_url)){ ?>
                   <a href="<?= $app_settings->Firetv_url ?>">
-                      <img class=""  width="100" src="<?php echo  URL::to('/assets/img/firetv.png')?>" /></a>
+                      <img class="" height="60"  width="150" style="object-fit:contain;" src="<?php echo  URL::to('/assets/img/firetv-1.png')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->samsungtv_url)){ ?>
                   <a href="<?= $app_settings->samsungtv_url ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/tizen-samsung.png')?>" /></a>
+                      <img class="" height="60" width="150" style="object-fit:contain;" src="<?php echo  URL::to('/assets/img/samsng.png')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Lgtv_url)){ ?>
                   <a href="<?= $app_settings->Lgtv_url ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/lg-webos.png')?>" /></a>
+                      <img class="" height="60" width="150" style="object-fit:contain;" src="<?php echo  URL::to('/assets/img/lg.png')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->Rokutv_url)){ ?>
                   <a href="<?= $app_settings->Rokutv_url ?>">
-                      <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/roku-app.png')?>" /></a>
+                      <img class="" height="60" width="150" style="object-fit:contain;" src="<?php echo  URL::to('/assets/img/roku-1.png')?>" /></a>
               <?php } ?>
               </div>
               

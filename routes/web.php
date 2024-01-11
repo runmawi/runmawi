@@ -980,6 +980,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/episode/episode_edit/{id}', 'AdminSeriesController@EpisodeUploadEdit');
     Route::post('/EpisodeVideoUpload', 'AdminSeriesController@EpisodeVideoUpload');
     Route::get('/episode/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminSeriesController@subtitledestroy']);
+    Route::post('/episode/extractedimage', 'AdminSeriesController@ExtractedImage');
 
     Route::post('/AWSEpisodeUpload', 'AdminSeriesController@AWSEpisodeUpload');
     Route::get('/episode/AWSepisode_edit/{id}', 'AdminSeriesController@AWSEpisodeUploadEdit');
@@ -1013,7 +1014,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/video-scheduler', 'AdminChannelVideoController@ChannelVideoScheduler')->name('VideoScheduler');
     Route::get('/filter-scheduler', 'AdminChannelVideoController@FilterVideoScheduler')->name('FilterScheduler');
-        
+    Route::post('/drag-drop-Scheduler-videos', 'AdminChannelVideoController@DragDropSchedulerVideos');
+    Route::get('/Scheduled-videos', 'AdminChannelVideoController@ScheduledVideos');
+    Route::get('/get-channel-details/{videoId}', 'AdminChannelVideoController@GetChannelDetail');
+    Route::post('/Scheduler-UpdateTime', 'AdminChannelVideoController@SchedulerUpdateTime');
+    Route::post('/Scheduler-ReSchedule', 'AdminChannelVideoController@SchedulerReSchedule');
+    Route::post('/get-all-channel-details', 'AdminChannelVideoController@GetAllChannelDetails');
     /*  Videos Setting  */
 
     Route::get('/video-schedule', 'AdminVideosController@ScheduleVideo');
