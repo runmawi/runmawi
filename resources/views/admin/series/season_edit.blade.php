@@ -149,6 +149,9 @@
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
+                            <div class="col-md-3">
+                                <div id="ImagesContainer" class="d-flex mt-3"></div>
+                            </div>
                             <div class="panel panel-primary" data-collapsed="0">
                                 <div class="panel-heading">
                                     <div class="panel-title"><label>Episode Image Cover</label></div>
@@ -167,6 +170,9 @@
                         </div>
                         
                         <div class="col-sm-6">
+                                <div class="col-md-3">
+                                    <div id="ajaxImagesContainer" class="d-flex mt-3"></div>
+                                    </div>
                             <label class="m-0">Episode Player Image</label>
                             <p class="p1">Select the player image ( 1280 X 720px or 16:9 Ratio )</p>
 
@@ -179,6 +185,10 @@
                         </div>
 
                         <div class="col-sm-6">
+                            <div class="col-md-3">
+                                <div id="TVImagesContainer" class="d-flex mt-3"></div>
+                                        {{-- Video TV Thumbnail --}}
+                                </div>
                             <label class="m-0">Episode TV Image</label>
                             <p class="p1">Select the player image ( 16:9 Ratio or 1920 X 1080 px)</p>
     
@@ -485,9 +495,13 @@
 
                         @if(isset($episodes->id))
                         <input type="hidden" id="id" name="id" value="{{ $episodes->id }}" />
+                        <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                        <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
                         @endif
                         <input type="hidden" id="episode_id" name="episode_id" value="" />
-
+                        <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                        <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
+                        <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         <input type="hidden" id="season_id" name="season_id" value="{{ $season_id }}" />
                     </div>
@@ -721,20 +735,20 @@
             rules: {
                 title: "required",
 
-                image: {
-                    required: true,
-                    dimention:[1080,1920]
-                },
+                // image: {
+                //     required: true,
+                //     dimention:[1080,1920]
+                // },
 
-                player_image: {
-                    required: true,
-                    player_dimention:[1280,720]
-                },
+                // player_image: {
+                //     required: true,
+                //     player_dimention:[1280,720]
+                // },
 
-                tv_image: {
-                    required: true,
-                    tv_image_dimention:[1920,1080]
-                },
+                // tv_image: {
+                //     required: true,
+                //     tv_image_dimention:[1920,1080]
+                // },
             },
             messages: {
                 title: "This field is required",
@@ -867,6 +881,90 @@
             $("#Next").hide();
             $("#episode_video_data").show();
             $("#submit").show();
+            
+                $.ajax({
+                        url: '{{ URL::to('admin/episode/extractedimage') }}',
+                        type: "post",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            episode_id: $('#episode_id').val()
+                        },
+                        success: function(value) {
+                            // console.log(value.ExtractedImage.length);
+
+                            if (value && value.ExtractedImage.length > 0) {
+                                $('#ajaxImagesContainer').empty();
+                                $('#ImagesContainer').empty();
+                                var ExtractedImage = value.ExtractedImage;
+                                var ExtractedImage = value.ExtractedImage;
+
+
+                                ExtractedImage.forEach(function(Image) {
+                                    var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
+                                    var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
+                                    var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
+
+                                    imgElement.click(function() {
+                                        $('.ajax-image').css('border', 'none');
+                                        
+                                        imgElement.css('border', '2px solid red');
+                                        var clickedImageUrl = Image.image_path;
+
+                                        var SelectedImageUrl = Image.image_original_name;
+                                        console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+
+                                        $('#selectedImageUrlInput').val(SelectedImageUrl);
+                                    });
+                                    $('#ajaxImagesContainer').append(imgElement);
+
+                                    ImagesContainer.click(function() {
+                                        $('.video-image').css('border', 'none');
+                                        
+                                        ImagesContainer.css('border', '2px solid red');
+                                        
+                                        var clickedImageUrl = Image.image_path;
+
+                                        var VideoImageUrl = Image.image_original_name;
+                                        console.log('VideoImageUrl Image URL:', VideoImageUrl);
+
+                                        $('#videoImageUrlInput').val(VideoImageUrl);
+                                    });
+                                    $('#ImagesContainer').append(ImagesContainer);
+
+                                    TVImagesContainer.click(function() {
+                                        $('.tv-video-image').css('border', 'none');
+                                        
+                                        TVImagesContainer.css('border', '2px solid red');
+                                        
+                                        var clickedImageUrl = Image.image_path;
+
+                                        var TVImageUrl = Image.image_original_name;
+
+                                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                                    });
+                                    $('#TVImagesContainer').append(TVImagesContainer);
+
+                                });
+                            } else {
+                                    var SelectedImageUrl = '';
+
+                                    $('#selectedImageUrlInput').val(SelectedImageUrl);
+                                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                            //  $('#ajaxImagesContainer').html('<p>No images available.</p>');
+                            }
+                        },
+                        error: function(error) {
+
+                            var SelectedImageUrl = '';
+
+                            $('#selectedImageUrlInput').val(SelectedImageUrl);
+                            $('#videoImageUrlInput').val(SelectedImageUrl);
+                            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                            console.error(error);
+                        }
+                    });
+                
         });
     </script>
 
