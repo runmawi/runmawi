@@ -407,6 +407,211 @@ class AdminChannelVideoController extends Controller
         }
     }
     
+    public function GetAllChannelDetails(Request $request){
+
+        try {
+
+            $channe_id = $request->channe_id;
+            $time = $request->time;
+            $time_zone = $request->time_zone;
+
+            return VideoScheduledData($time,$channe_id,$time_zone) ;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
+    }
+
+    public function GetChannelDetail(Request $request,$channelId){
+
+        try {
+
+            $data = ChannelVideoScheduler::where('id',$channelId)->first();
+            return $data ;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
+    }
+
+
+    public function SchedulerUpdateTime(Request $request){
+
+        try {
+            $editStartTime  = $request->editStartTime;
+            $editEndTime    = $request->editEndTime;
+            $Duration       = $request->Duration;
+            $Scheduler_id   = $request->Scheduler_id;
+            $channelId      = $request->channe_id;
+            $SchedulerDate  = $request->SchedulerDate;
+
+            $BeforeScheduler = ChannelVideoScheduler::where('choosed_date',$SchedulerDate)->where('channe_id',$channelId)
+                                ->where('id', '<', $Scheduler_id)->orderBy('created_at', 'DESC')
+                                ->first();
+            
+            if(!empty($BeforeScheduler)){
+
+                $socure_order = $this->GapVideoScheduler($BeforeScheduler,$editStartTime,$editEndTime);
+          
+            }else{
+                $socure_order = null;
+            }
+
+            $CurrentScheduler = ChannelVideoScheduler::where('id',$Scheduler_id)->where('channe_id',$channelId)
+                                ->where('choosed_date',$SchedulerDate)->first();
+
+            // Update the start time and end time of $CurrentScheduler
+
+                if ($CurrentScheduler) {
+                    $CurrentScheduler->start_time = $editStartTime;
+                    $CurrentScheduler->end_time = $editEndTime;
+                    if($socure_order != null){
+                        $CurrentScheduler->socure_order = $socure_order + 1;
+                    }
+                    $CurrentScheduler->save();
+                }
+           
+                $AfterScheduler = ChannelVideoScheduler::where('channe_id',$channelId)
+                            ->where('choosed_date',$SchedulerDate)
+                            ->where('id', '>', $Scheduler_id)
+                            ->get();
+                foreach ($AfterScheduler as $scheduler) {
+
+                    $BeforeVideoScheduler = ChannelVideoScheduler::where('choosed_date',$scheduler->choosed_date)
+                                    ->where('channe_id',$scheduler->channe_id)
+                                    ->where('id', '<', $scheduler->id)->orderBy('created_at', 'DESC')
+                                    ->first();
+                    $start_time = $BeforeVideoScheduler->end_time;
+                    $duration = $scheduler->duration;
+
+                    // Convert start_time to seconds
+                    list($startHours, $startMinutes, $startSeconds) = explode(':', $start_time);
+                    $totalStartSeconds = ($startHours * 3600) + ($startMinutes * 60) + $startSeconds;
+
+                    // Convert duration to seconds
+                    list($durationHours, $durationMinutes, $durationSeconds) = explode(':', $duration);
+                    $totalDurationSeconds = ($durationHours * 3600) + ($durationMinutes * 60) + $durationSeconds;
+
+                    // Calculate total seconds for end time
+                    $totalEndSeconds = $totalStartSeconds + $totalDurationSeconds;
+
+                    // Convert totalEndSeconds back to H:i:s format
+                    $endTime = gmdate('H:i:s', $totalEndSeconds);
+
+                    if($scheduler->socure_id != null){
+                        $scheduler->start_time = $BeforeVideoScheduler->end_time;
+                        $scheduler->socure_order = $BeforeVideoScheduler->socure_order + 1;
+                        $scheduler->end_time = $endTime;
+                    }
+                    $scheduler->save();
+
+                }
+                $data = 1 ;
+            
+            return $data ;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
+    }
+
+    private static function GapVideoScheduler($BeforeScheduler,$editStartTime,$editEndTime){
+    
+ 
+            // Store the Gap Scheduler
+        
+            $time1 = new \DateTime($BeforeScheduler->end_time);
+            $time2 = new \DateTime($editStartTime);
+            $interval = $time1->diff($time2);
+            $duration = $interval->format('%H:%I:%S');
+
+                $start_time = $BeforeScheduler->end_time;
+
+                // Convert start_time to seconds
+                list($startHours, $startMinutes, $startSeconds) = explode(':', $start_time);
+                $totalStartSeconds = ($startHours * 3600) + ($startMinutes * 60) + $startSeconds;
+
+                // Convert duration to seconds
+                list($durationHours, $durationMinutes, $durationSeconds) = explode(':', $duration);
+                $totalDurationSeconds = ($durationHours * 3600) + ($durationMinutes * 60) + $durationSeconds;
+
+                // Calculate total seconds for end time
+                $totalEndSeconds = $totalStartSeconds + $totalDurationSeconds;
+
+                // Convert totalEndSeconds back to H:i:s format
+                $endTime = gmdate('H:i:s', $totalEndSeconds);
+
+                $VideoScheduler                 = new ChannelVideoScheduler;
+                $VideoScheduler->user_id        = Auth::user()->id;
+                $VideoScheduler->socure_id      = null;
+                $VideoScheduler->socure_type    = 'Gap';
+                $VideoScheduler->channe_id      = $BeforeScheduler->channe_id;
+                $VideoScheduler->content_id     = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+                $VideoScheduler->socure_order   = $BeforeScheduler->socure_order + 1;
+                $VideoScheduler->time_zone      = $BeforeScheduler->time_zone;
+                $VideoScheduler->choosed_date   = $BeforeScheduler->choosed_date;
+                $VideoScheduler->current_time   = $BeforeScheduler->current_time;
+                $VideoScheduler->start_time     = $BeforeScheduler->end_time;
+                $VideoScheduler->end_time       = $endTime;
+                $VideoScheduler->socure_title   = 'Gap';
+                $VideoScheduler->AM_PM_Time     = $BeforeScheduler->AM_PM_Time;
+                $VideoScheduler->duration	    = $duration;
+                $VideoScheduler->type           = 'Gap';
+                $VideoScheduler->url            = 'Gap';
+                $VideoScheduler->save();
+
+                $data = $BeforeScheduler->socure_order + 1;
+            // echo"<pre>";print_r($BeforeScheduler->end_time);exit;
+                
+            return $data ;
+
+    }
+
+    public function SchedulerReSchedule(Request $request){
+
+        try {
+
+            $Scheduler_id   = $request->Scheduler_id;
+            $channelId      = $request->channe_id;
+            $SchedulerDate  = $request->SchedulerDate;
+
+            $CurrentScheduler = ChannelVideoScheduler::where('id',$Scheduler_id)
+            ->where('channe_id',$channelId)
+            ->first();
+            // print_r($request->all());exit;
+            $data = ChannelVideoScheduler::where('id',$channelId)->first();
+
+                $VideoScheduler                 = new ChannelVideoScheduler;
+                $VideoScheduler->user_id        = Auth::user()->id;
+                $VideoScheduler->socure_id      = $CurrentScheduler->socure_id;
+                $VideoScheduler->socure_type    = $CurrentScheduler->socure_type;
+                $VideoScheduler->channe_id      = $CurrentScheduler->channe_id;
+                $VideoScheduler->content_id     = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+                $VideoScheduler->socure_order   = ChannelVideoScheduler::where('channe_id',$channelId)->where('choosed_date',$SchedulerDate)->max('socure_order') + 1;
+                $VideoScheduler->time_zone      = $CurrentScheduler->time_zone;
+                $VideoScheduler->choosed_date   = $SchedulerDate;
+                $VideoScheduler->current_time   = $CurrentScheduler->current_time;
+                $VideoScheduler->start_time     = $CurrentScheduler->start_time;
+                $VideoScheduler->end_time       = $CurrentScheduler->end_time;
+                $VideoScheduler->socure_title   = $CurrentScheduler->socure_title;
+                $VideoScheduler->AM_PM_Time     = $CurrentScheduler->AM_PM_Time;
+                $VideoScheduler->duration	    = $CurrentScheduler->duration;
+                $VideoScheduler->type           = $CurrentScheduler->type;
+                $VideoScheduler->url            = $CurrentScheduler->url;
+                $VideoScheduler->save();
+
+                $data = 1;
+                            
+            return $data ;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
+    }
     
 
 }
