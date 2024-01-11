@@ -12,7 +12,7 @@ class LiveStream extends Model
     
 	public static $rules = array();
 
-	protected $fillable = array('id','video_category_id', 'slug' , 'status' ,'title', 'details', 'description', 'featured','banner', 'footer', 'duration', 'image', 'mp4_url','language' ,'year','created_at','free_duration');
+	protected $fillable = array('id','video_category_id', 'slug' , 'status' ,'title', 'details', 'description', 'featured','banner', 'footer', 'duration', 'image', 'mp4_url','language' ,'year','created_at','free_duration','pre_post_ads','mid_ads');
 
 	public function tags(){
 		return $this->belongsToMany('Tag');

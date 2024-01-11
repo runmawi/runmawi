@@ -241,3 +241,39 @@
         </div>
     @endforeach
 @endif
+
+        {{-- Video Category Banner --}}
+
+@if (!empty($VideoCategory_banner) && $VideoCategory_banner->isNotEmpty())
+    @forelse ($VideoCategory_banner as $key => $item)
+        <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;">
+            <div class="container-fluid position-relative h-100 pl-4">
+                <div class="slider-inner h-100">
+                    <div class="row align-items-center  h-100">
+                        <div class="col-xl-6 col-lg-12 col-md-12">
+                            <a href="javascript:void(0);">
+                                <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
+                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
+                                </div>
+                            </a>
+                            <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 25 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
+
+                            <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                <span class="badge badge-secondary p-2"> {{ optional($item)->age_restrict.'+' }} </span>
+                                <span class="ml-3">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
+                            </div>
+
+                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
+
+                            <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                aria-hidden="true"></i>Play Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @empty
+    @endforelse
+@endif

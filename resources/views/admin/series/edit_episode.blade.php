@@ -375,29 +375,116 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     </div>
                 </div>
 
-                <div class="row mt-3">
-                    <div class="col-sm-6"  >
-                        <label class="m-0">Choose Ads Position</label>
-                        <select class="form-control" name="ads_position" id="ads_position" >
-                           <option value=" ">Select the Ads Position </option>
-                           <option value="pre"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
-                           <option value="mid"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
-                           <option value="post" @if(($episodes->ads_position != null ) && $episodes->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
-                           <option value="all"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'all'){{ 'selected' }}@endif >  All Ads Position</option>
-                        </select>
-                    </div>
+                @if( choosen_player() == 1  && ads_theme_status() == 1)    {{-- Video.Js Player--}}
 
-                    <div class="col-sm-6"  >
-                        <label class="">Choose Advertisement </label>
-                        <select class="form-control" name="episode_ads" id="episode_ads" >
-                           <option value=" ">Select the Advertisement </option>
-                            @if( $episodes->episode_ads != null)
-                                @php $ads_name = App\Advertisement::where('id', $episodes->episode_ads )->pluck('ads_name')->first() ;@endphp
-                                <option value="{{ $episodes->episode_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
-                            @endif
-                        </select>
+                        @if ( admin_ads_pre_post_position() == 1  )
+
+                            <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
+
+                                <label> {{ ucwords( 'Choose the Pre / Post-Position Advertisement' ) }}    </label>
+                                
+                                <select class="form-control" name="pre_post_ads" >
+
+                                    <option value=" " > Select the Post / Pre-Position Advertisement </option>
+
+                                    <option value="random_ads" {{  ( $episodes->pre_post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                                    @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                        <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->pre_post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                    @endforeach
+                                
+                                </select>
+                            </div>
+                            
+                        @elseif ( admin_ads_pre_post_position() == 0 )
+
+                            <div class="row mt-3">
+
+                                <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                                    <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                                    
+                                    <select class="form-control" name="pre_ads" >
+
+                                        <option value=" " > Select the Pre-Position Advertisement </option>
+        
+                                        <option value="random_ads" {{  ( $episodes->pre_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+        
+                                        @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                            <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->pre_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                        @endforeach
+                                        
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
+                                    <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                                    
+                                    <select class="form-control" name="post_ads" >
+
+                                        <option value=" " > Select the Post-Position Advertisement </option>
+        
+                                        <option value="random_ads" {{  ( $episodes->post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+        
+                                        @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                            <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                        @endforeach
+                                    
+                                    </select>
+                                </div>
+                            </div>
+
+                        @endif
+
+                        <div class="row">
+                            <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                                <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                                <select class="form-control" name="mid_ads" >
+
+                                    <option value=" " > Select the Mid-Position Advertisement Category </option>
+
+                                    <option value="random_category"  {{  ( $episodes->mid_ads == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+
+                                    @foreach( $ads_category as $ads_category )
+                                    <option value="{{ $ads_category->id }}"  {{  ( $episodes->mid_ads == $ads_category->id ) ? 'selected' : '' }} > {{ $ads_category->name }}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
+                                <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                                <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="{{ $episodes->video_js_mid_advertisement_sequence_time }}" >
+                            </div>
+
+                        </div>
+                        
+                                {{-- Ply.io --}}
+                @else    
+
+                    <div class="row mt-3">
+                        <div class="col-sm-6"  >
+                            <label class="m-0">Choose Ads Position</label>
+                            <select class="form-control" name="ads_position" id="ads_position" >
+                            <option value=" ">Select the Ads Position </option>
+                            <option value="pre"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
+                            <option value="mid"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
+                            <option value="post" @if(($episodes->ads_position != null ) && $episodes->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
+                            <option value="all"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'all'){{ 'selected' }}@endif >  All Ads Position</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6"  >
+                            <label class="">Choose Advertisement </label>
+                            <select class="form-control" name="episode_ads" id="episode_ads" >
+                            <option value=" ">Select the Advertisement </option>
+                                @if( $episodes->episode_ads != null)
+                                    @php $ads_name = App\Advertisement::where('id', $episodes->episode_ads )->pluck('ads_name')->first() ;@endphp
+                                    <option value="{{ $episodes->episode_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
+                                @endif
+                            </select>
+                        </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="row mt-3">
                     <div class="col-sm-4">
@@ -477,7 +564,6 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-        <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
