@@ -419,7 +419,7 @@ i.fa.fa-google-plus {
 
 							<div class="col-md-12" id="mob">
                                 <input id="password-confirm" type="checkbox" name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
+								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" class="text-primary" data-target="#terms" style="text-decoration:none;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
 
                             <div class="sign-up-buttons col-md-12" align="right">
@@ -459,7 +459,7 @@ i.fa.fa-google-plus {
             <?php
                 $terms_page = App\Page::where('slug','terms-and-conditions')->pluck('body');
              ?>
-            <p style='color: white;'><?php echo $terms_page[0];?></p>
+            <div class="termsandconditiontexts" style="color:#fff;"><?php echo $terms_page[0];?></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('Close');?></button>
