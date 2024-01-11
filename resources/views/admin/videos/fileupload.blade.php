@@ -1029,6 +1029,9 @@ border-radius: 0px 4px 4px 0px;
 
                            <div class="row">
                               <div class="col-sm-6 form-group">
+                                 <div class="col-md-3">
+                                    <div id="ImagesContainer" class="d-flex mt-3"></div>
+                                    </div>
                                  <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                                  <input type="file" name="image" id="image" >
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or ratio 9:16 </p></span>
@@ -1040,7 +1043,6 @@ border-radius: 0px 4px 4px 0px;
                               <div class="col-sm-6 form-group">
                                  <div class="col-md-3">
                                     <div id="ajaxImagesContainer" class="d-flex mt-3"></div>
-                                          {{-- Video TV Thumbnail --}}
                                     </div>
                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
                                  <input type="file" name="player_image" id="player_image" >
@@ -1053,6 +1055,10 @@ border-radius: 0px 4px 4px 0px;
 
                            <div class="row">
                               <div class="col-sm-6 form-group">
+                                 <div class="col-md-3">
+                                    <div id="TVImagesContainer" class="d-flex mt-3"></div>
+                                        {{-- Video TV Thumbnail --}}
+                                </div>
                                  <label class="mb-1">  Video TV Thumbnail  </label><br>
                                  <input type="file" name="video_tv_image" id="video_tv_image" >
                                  <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1920  x 1080  pixels dimension or 16:9 ratio </p></span>
@@ -1240,6 +1246,8 @@ border-radius: 0px 4px 4px 0px;
                <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                <input type="hidden" id="video_id" name="video_id" value="">
                <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+               <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
+               <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
 
             </div> 
 
@@ -2103,10 +2111,15 @@ $(document).ready(function($){
 
             if (value && value.ExtractedImage.length > 0) {
                 $('#ajaxImagesContainer').empty();
+                $('#ImagesContainer').empty();
                 var ExtractedImage = value.ExtractedImage;
+                var ExtractedImage = value.ExtractedImage;
+
 
                 ExtractedImage.forEach(function(Image) {
                     var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
+                    var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
+                    var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
 
                     imgElement.click(function() {
                         $('.ajax-image').css('border', 'none');
@@ -2120,11 +2133,42 @@ $(document).ready(function($){
                         $('#selectedImageUrlInput').val(SelectedImageUrl);
                     });
                     $('#ajaxImagesContainer').append(imgElement);
+
+                    ImagesContainer.click(function() {
+                        $('.video-image').css('border', 'none');
+                        
+                        ImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var VideoImageUrl = Image.image_original_name;
+                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+
+                        $('#videoImageUrlInput').val(VideoImageUrl);
+                    });
+                    $('#ImagesContainer').append(ImagesContainer);
+
+                    TVImagesContainer.click(function() {
+                        $('.tv-video-image').css('border', 'none');
+                        
+                        TVImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var TVImageUrl = Image.image_original_name;
+
+                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                  });
+                  $('#TVImagesContainer').append(TVImagesContainer);
+
+
                 });
             } else {
                      var SelectedImageUrl = '';
 
                      $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
                //  $('#ajaxImagesContainer').html('<p>No images available.</p>');
             }
         },
@@ -2133,6 +2177,8 @@ $(document).ready(function($){
             var SelectedImageUrl = '';
 
             $('#selectedImageUrlInput').val(SelectedImageUrl);
+            $('#videoImageUrlInput').val(SelectedImageUrl);
+            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
             console.error(error);
         }
     });

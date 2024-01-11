@@ -1149,8 +1149,13 @@ class TvshowsController extends Controller
 
     
     public function SeriescategoryList(Request $request)
+
     {
         try {
+
+            $Theme = HomeSetting::pluck('theme_choosen')->first();
+            Theme::uses($Theme);
+
             $settings = Setting::first();
 
             if ($settings->enable_landing_page == 1 && Auth::guest()) {

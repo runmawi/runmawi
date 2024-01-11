@@ -560,11 +560,11 @@ class AdminVideosController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
 
-                $outputFolder = storage_path('app/public/frames');
+                // $outputFolder = storage_path('app/public/frames');
 
-                if (!is_dir($outputFolder)) {
-                    mkdir($outputFolder, 0755, true);
-                }
+                // if (!is_dir($outputFolder)) {
+                //     mkdir($outputFolder, 0755, true);
+                // }
                                     
                 $video = new Video();
                 $video->disk = "public";
@@ -603,9 +603,10 @@ class AdminVideosController extends Controller
                 $randportrait = 'portrait_' . $rand;
                 
                 for ($i = 1; $i <= 5; $i++) {
-                    $imagePortraitPath = storage_path("app/public/frames/{$video->id}_{$randportrait}_{$i}.jpg");
-                    $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
-                
+                    
+                    $imagePortraitPath = public_path("uploads/images/{$video->id}_{$randportrait}_{$i}.jpg");
+                    $imagePath = public_path("uploads/images/{$video->id}_{$rand}_{$i}.jpg");
+
                     try {
                         $videoFrame
                             ->frame(TimeCode::fromSeconds($i * 5))
@@ -617,9 +618,11 @@ class AdminVideosController extends Controller
                 
                         $VideoExtractedImage = new VideoExtractedImages();
                         $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->socure_type = 'Video';
                         $VideoExtractedImage->video_id = $video->id;
-                        $VideoExtractedImage->image_path = URL::to("/storage/app/public/frames/" . $video->id . '_' . $rand . '_' . $i . '.jpg');
-                        $VideoExtractedImage->portrait_image = URL::to("/storage/app/public/frames/" . $video->id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video->id . '_' . $rand . '_' . $i . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video->id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->image_original_name = $video->id . '_' . $rand . '_' . $i . '.jpg';
                         $VideoExtractedImage->save();
              
                 
@@ -735,6 +738,7 @@ class AdminVideosController extends Controller
                 
                         $VideoExtractedImage = new VideoExtractedImages();
                         $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->socure_type = 'Video';
                         $VideoExtractedImage->video_id = $video->id;
                         $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video->id . '_' . $rand . '_' . $i . '.jpg');
                         $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video->id . '_' . $randportrait . '_' . $i . '.jpg');
@@ -2802,7 +2806,7 @@ class AdminVideosController extends Controller
         $image_path = public_path() . '/uploads/images/';
 
         // Image
-
+// dd($data);
         if ($request->hasFile('image')) {
             $file = $request->image;
 
@@ -2831,6 +2835,8 @@ class AdminVideosController extends Controller
             $data["mobile_image"] = $Mobile_image;
             $data["tablet_image"] = $Tablet_image;
 
+        }else if (!empty($request->video_image_url)) {
+            $data["image"] = $request->video_image_url;
         } else {
             // Default Image
 
@@ -2880,6 +2886,8 @@ class AdminVideosController extends Controller
 
             $data["video_tv_image"] = $Tv_image_filename;
 
+        }else if (!empty($request->selected_tv_image_url)) {
+            $data["video_tv_image"] = $request->selected_tv_image_url;
         } else {
             $data["video_tv_image"] = default_horizontal_image();
         }
@@ -10199,7 +10207,7 @@ class AdminVideosController extends Controller
             // print_r($request->all());exit;
             $value = [];
 
-            $ExtractedImage =  VideoExtractedImages::where('video_id',$request->video_id)->get();
+            $ExtractedImage =  VideoExtractedImages::where('video_id',$request->video_id)->where('socure_type','Video')->get();
            
             $value["success"] = 1;
             $value["message"] = "Uploaded Successfully!";
