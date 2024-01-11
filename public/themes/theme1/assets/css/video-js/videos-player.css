@@ -27,7 +27,7 @@
     color: #fff;
 }
 .my-video-dimensions.vjs-fluid {padding-top: 0;height: 100vh !important;}
-.video-js .vjs-tech {object-fit: cover;}
+.video-js .vjs-tech {object-fit: contain;}
 .vjs-theme-fantasy .vjs-control-bar {height: 64px;}
 .video-js .vjs-control-bar {
     background: linear-gradient(transparent,rgba(0,0,0,.75));
