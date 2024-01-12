@@ -82,7 +82,7 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="date form-control">
+                            <input type="text" class="date form-control" value="{{ date('m-d-Y') }}">
                         </div>
                     </div>
                     
@@ -110,6 +110,62 @@
                                     <option value="LiveStream">LiveStream</option>
                                     <option value="Episode">Episode</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Time Update Modal -->
+                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Channel Scheduler Time</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <label for="editStartTime">Start Time:</label>
+                                <input type="text" id="editStartTime" class="form-control" />
+
+                                <label for="editEndTime">Video Duration:</label>
+                                <input type="text" id="Duration" class="form-control" readonly/>
+
+                                <label for="editEndTime">End Time:</label>
+                                <input type="text" id="editEndTime" class="form-control" readonly />
+                                <input type="hidden" id="channel_Id">
+                                <input type="hidden" id="Scheduler_id">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id ="saveChangesBtn" >Update</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Reschedule Modal -->
+                     <div class="modal fade" id="rescheduleModal" tabindex="-1" role="dialog" aria-labelledby="rescheduleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="rescheduleModalLabel">Channel Video Re-Scheduler</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                
+                                <label for="rescheduleDate">Choose Date to Re-Schedule:</label>
+                                <input type="text" id="Scheduler_date" class="re-schedule-date form-control" value="{{ date('m-d-Y') }}">
+                                <input type="hidden" id="channel_Id">
+                                <input type="hidden" id="Scheduler_id">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id ="saveReSchedule" >Update</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -167,9 +223,7 @@
             </div>
 
             <br>
-
-
-<br>
+        <br>
 
         </div>
     </div>
@@ -189,8 +243,193 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript">
+
+
+    // Script For Time Update for Scheduler 
+
+        $(document).on('change', '.date', function () {
+                getAllChannelDetails();
+        });
+
+        function getAllChannelDetails(channelId) {
+
+            $.ajax({
+                url: "{{ URL::to('admin/get-all-channel-details/') }}",
+                type: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                        time     : $('.date').val(),
+                        time_zone: $('#time_zone_id').val(),
+                        channe_id: $('#channe_id').val(),
+                },        
+                success: function(value){
+                    $('tbody').html(value.table_data);
+                    $('#schedule_videos_table').DataTable();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching Channel details:', error);
+                }
+            });
+
+        }
+
+    // Script For Time Update for Scheduler 
+
+        var originalStartTime = '';
+        var originalEndTime = '';
+        var originalDuration = '';
+
+        $(document).ready(function($){
+            $('#editStartTime').mask("00:00:00");
+            $('#editEndTime').mask("00:00:00");
+            $('#Duration').mask("00:00:00");
+        });
+
+        $('#editStartTime').on('change', function () {
+            calculateEndTime();
+        });
+
+        function calculateEndTime() {
+            var startTime = $('#editStartTime').val();
+            var duration = $('#Duration').val();
+
+            if (startTime && duration) {
+                var startTimeMoment = moment(startTime, 'HH:mm:ss');
+                var durationMoment = moment(duration, 'HH:mm:ss');
+
+                var endTimeMoment = startTimeMoment.add(durationMoment.hours(), 'hours');
+                endTimeMoment.add(durationMoment.minutes(), 'minutes');
+                endTimeMoment.add(durationMoment.seconds(), 'seconds');
+
+                var endTime = endTimeMoment.format('HH:mm:ss');
+
+                $('#editEndTime').val(endTime);
+            }
+        }
+
+        function getVideoDetails(channelId) {
+            $.ajax({
+                url: "{{ URL::to('admin/get-channel-details/') }}" + "/" + channelId,
+                type: "get",
+                dataType: 'json',
+                success: function (data) {
+                    $('#editStartTime').val(data.start_time);
+                    $('#editEndTime').val(data.end_time);
+                    $('#Duration').val(data.duration);
+                    $('#channel_Id').val(data.channe_id);
+                    $('#Scheduler_id').val(data.id);
+                    originalStartTime = data.start_time;
+                    originalEndTime = data.end_time;
+                    originalDuration = data.duration;
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching video details:', error);
+                }
+            });
+        }
+
+        $(document).on('click', '.edit-btn', function () {
+                var channelId = $(this).data('id');
+                // alert(channelId);
+                getVideoDetails(channelId);
+                $('#editModal').modal('show');
+        });
+
+        $(document).on('click', '#saveChangesBtn', function () {
+            saveChanges();
+        });
+
+        
+
+        function saveChanges() {   
+                if ($('#editStartTime').val() !== originalStartTime) {
+                    $.ajax({
+                        url: "{{ URL::to('admin/Scheduler-UpdateTime/')  }}",
+                        type: "post", // Use "get" instead of "post"
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            editStartTime:  $('#editStartTime').val(),
+                            editEndTime:    $('#editEndTime').val(),
+                            Duration:       $('#Duration').val(),
+                            channe_id:      $('#channel_Id').val(),
+                            Scheduler_id:   $('#Scheduler_id').val(),
+                            SchedulerDate:  $('.date').val(),
+                        },        
+                        success: function(value){
+                            $('#editModal').modal('hide');
+                            Swal.fire({
+                                title: 'Updated Time for Scheduled Videos !',
+                            })
+                            location.reload();                            
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                    title: 'Edit StartTime not changed !',
+                })
+            }
+        }
+
+        // Script For rescheduler
+        
+        $(document).on('click', '.rescheduler-btn', function () {
+                var channelId = $(this).data('id');
+                // alert(channelId);
+                getVideoDetails(channelId);
+                $('#editModal').modal('show');
+        });
+
+        function getChannelDetail(channelId) {
+
+            $.ajax({
+                url: "{{ URL::to('admin/get-channel-details/') }}" + "/" + channelId,
+                type: "get",
+                dataType: 'json',
+                success: function (data) {
+
+                    $('#Scheduler_date').val(data.choosed_date);
+                    $('#channel_Id').val(data.channe_id);
+                    $('#Scheduler_id').val(data.id);
+
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching Channel details:', error);
+                }
+            });
+
+        }
+
+        $(document).on('click', '#saveReSchedule', function () {
+            saveReScheduleChanges();
+        });
+
+        
+        function saveReScheduleChanges() {   
+
+                    $.ajax({
+                        url: "{{ URL::to('admin/Scheduler-ReSchedule/')  }}",
+                        type: "post", // Use "get" instead of "post"
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            channe_id:      $('#channel_Id').val(),
+                            Scheduler_id:   $('#Scheduler_id').val(),
+                            SchedulerDate:  $('.re-schedule-date').val(),
+                        },        
+                        success: function(value){
+                            $('#editModal').modal('hide');
+                            Swal.fire({
+                                title: 'Re Scheduled Videos !',
+                            })
+                            location.reload();                            
+                        }
+                    });
+            }
+        
 
 
     $(document).ready(function () {
@@ -296,13 +535,18 @@
     });
 
         $('.date').datepicker({  
-            format: 'yyyy-dd-mm'
+            format: 'm-dd-yyyy'
         });  
-    
+
+        $('.re-schedule-date').datepicker({  
+            format: 'm-dd-yyyy'
+        });  
+
         var currentDate = new Date();
         var formattedDate = (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + '-' + currentDate.getFullYear();
         // alert(formattedDate);
         $('.date').val(formattedDate);
+        $('.re-schedule-date').val(formattedDate);
         $('.js-example-basic-single').select2();
 
 //     </script>
@@ -453,8 +697,8 @@
 
     function drop(video_id,socure_type) {
 
-        console.log(video_id);
-        console.log(socure_type);
+        // console.log(video_id);
+        // console.log(socure_type);
 
         $.ajaxSetup({
                 headers: {

@@ -1382,6 +1382,19 @@ function Enable_Extract_Image()
     return  $enable_extract_image; 
 }
 
+function admin_ads_pre_post_position()
+{
+    $admin_ads_pre_post_position = App\SiteTheme::pluck('admin_ads_pre_post_position')->first();
+    return  $admin_ads_pre_post_position; 
+}
+
+function ads_theme_status()
+{
+    $themeChosen = App\HomeSetting::pluck('theme_choosen')->first();
+    $adsThemeStatus = ($themeChosen == "theme4" || $themeChosen == "theme3") ? 1 : 0;
+    
+    return $adsThemeStatus;
+}
 
 function TimeZoneScheduler($id)
 {
@@ -1623,11 +1636,10 @@ function VideoScheduledData($time,$channe_id,$time_zone){
     $ChannelVideoScheduler = App\ChannelVideoScheduler::where('channe_id', $channe_id)
                             ->where('time_zone', $time_zone)
                             ->where('choosed_date', $time)
-                            // ->orderBy('created_at', 'DESC')
+                            ->orderBy('socure_order', 'ASC')
                             ->join('admin_epg_channels', 'admin_epg_channels.id', '=', 'channel_videos_scheduler.channe_id')
                             ->select('channel_videos_scheduler.*', 'admin_epg_channels.name')
                             ->get();
-
 
         $output = "";
         $i = 1;
@@ -1658,9 +1670,9 @@ function VideoScheduledData($time,$channe_id,$time_zone){
                                             $row->duration .
                                             '</td>  
                         <td>' .
-                                        "<button class='btn btn-sm btn-info edit-btn' data-toggle='modal' data-target='#editModal' data-id=' . $row->id . '>Edit</button>
-                                        " .
-                                            '</td>
+                                    "<button class='btn btn-sm btn-info edit-btn' data-toggle='modal' data-target='#editModal' data-id='" . $row->id . "'><i class='fas fa-edit'></i>Edit</button>" .
+                                    "<button class='btn btn-sm btn-warning rescheduler-btn' data-toggle='modal' data-target='#rescheduleModal' data-id='" . $row->id . "'><i class='fas fa-calendar-alt'></i>Rescheduler</button>" .
+                                    '</td>
                         </tr>
                         ';
                 }

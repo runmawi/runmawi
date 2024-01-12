@@ -227,8 +227,7 @@ class TvshowsController extends Controller
     public function play_episode($series_name, $episode_name)
     {
         try {
-    
-    
+
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             
         $Theme = HomeSetting::pluck('theme_choosen')->first();
@@ -530,7 +529,56 @@ class TvshowsController extends Controller
                 ->where('series.id','!=',$series->id)
                 ->where('series.active',1)
                 ->groupBy('series.id')->get();
-    
+
+
+                // video Js
+
+
+            $episode_details = Episode::where('id',$source_id)->get()->map( function ($item)   {
+
+                $item['Thumbnail']  =   !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                $item['Player_thumbnail'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+                $item['TV_Thumbnail'] = !is_null($item->tv_image)  ? URL::to('public/uploads/images/'.$item->tv_image)  : default_horizontal_image_url() ;
+  
+                    //  Episode URL
+            
+                    switch (true) {
+
+                        case $item['type'] == "file"  :
+                            $item['Episode_url'] =  $item->mp4_url ;
+                            $item['Episode_player_type'] =  'video/mp4' ;
+                        break;
+        
+                        case $item['type'] == "upload"  :
+                          $item['Episode_url'] =  $item->mp4_url ;
+                          $item['Episode_player_type'] =   'video/mp4' ;
+                        break;
+        
+                        case $item['type'] == "m3u8":
+                            $item['Episode_url'] =  URL::to('/storage/app/public/'. $item->path .'.m3u8')   ;
+                            $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                        break;
+        
+                        case $item['type'] == "aws_m3u8":
+                          $item['Episode_url'] =  $item->path ;
+                          $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                        break;
+
+                        case $item['type'] == "embed":
+                            $item['Episode_url'] =  $item->path ;
+                            $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                        break;
+        
+                        default:
+                            $item['Episode_url'] =  null ;
+                            $item['Episode_player_type'] =  null ;
+                        break;
+                    }
+  
+                return $item;
+  
+            })->first();
+
     
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
@@ -569,6 +617,7 @@ class TvshowsController extends Controller
                     'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
                     'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                     'category_name'             => $category_name ,
+                    'episode_details'           => $episode_details 
                 ];
                 
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -607,6 +656,7 @@ class TvshowsController extends Controller
                     'playerui_settings' =>   $playerui ,
                     'episodesubtitles' =>   $subtitle ,
                     'category_name'             => $category_name ,
+                    'episode_details'  => $episode_details ,
                 ];
     
                 if (Auth::guest() && $settings->access_free == 1) {

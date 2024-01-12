@@ -524,30 +524,121 @@ border-radius: 0px 4px 4px 0px;
             </div>
 
                         {{-- Ads --}}
-            <div class="row mt-3">
-                <div class="col-sm-6"  >
-                    <label class="m-0">Choose Ads Position</label>
-                    <select class="form-control" name="ads_position" id="ads_position" >
+            
+            @if( choosen_player() == 1  && ads_theme_status() == 1)    {{-- Video.Js Player--}}
 
-                        <option value=" ">Select the Ads Position </option>
-                        <option value="pre"  @if(($video->ads_position != null ) && $video->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
-                        <option value="mid"  @if(($video->ads_position != null ) && $video->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
-                        <option value="post" @if(($video->ads_position != null ) && $video->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
-                        <option value="all"  @if(($video->ads_position != null ) && $video->ads_position == 'all'){{ 'selected' }}@endif >   All Ads Position</option>
-                    </select>
-                </div>
+                @if ( admin_ads_pre_post_position() == 1  )
 
-                <div class="col-sm-6"  >
-                    <label class="">Choose Advertisement </label>
-                    <select class="form-control" name="live_ads" id="live_ads" >
-                        <option value=" ">Select the Advertisement </option>
-                        @if( $video->live_ads != null)
-                            @php $ads_name = App\Advertisement::where('id',$video->live_ads)->pluck('ads_name')->first() ;@endphp
-                            <option value="{{ $video->live_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
-                        @endif
-                    </select>
+                    <div class="row ">
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
+
+                            <label> {{ ucwords( 'Choose the Pre / Post-Position Advertisement' ) }}    </label>
+                            
+                            <select class="form-control" name="pre_post_ads" >
+
+                                <option value=" " > Select the Post / Pre-Position Advertisement </option>
+
+                                <option value="random_ads" {{  ( $video->pre_post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                                @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->pre_post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                @endforeach
+                            
+                            </select>
+                        </div>
+                    </div>
+                    
+                @elseif ( admin_ads_pre_post_position() == 0 )
+
+                    <div class="row mt-3">
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                            <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                            
+                            <select class="form-control" name="pre_ads" >
+
+                                <option value=" " > Select the Pre-Position Advertisement </option>
+
+                                <option value="random_ads" {{  ( $video->pre_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                                @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->pre_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                @endforeach
+                                
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
+                            <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                            
+                            <select class="form-control" name="post_ads" >
+
+                                <option value=" " > Select the Post-Position Advertisement </option>
+
+                                <option value="random_ads" {{  ( $video->post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                                @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                @endforeach
+                            
+                            </select>
+                        </div>
+                    </div>
+
+                @endif
+
+                <div class="row">
+                    <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                        <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                        <select class="form-control" name="mid_ads" >
+
+                            <option value=" " > Select the Mid-Position Advertisement Category </option>
+
+                            <option value="random_category"  {{  ( $video->mid_ads == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+
+                            @foreach( $ads_category as $ads_category )
+                            <option value="{{ $ads_category->id }}"  {{  ( $video->mid_ads == $ads_category->id ) ? 'selected' : '' }} > {{ $ads_category->name }}</option>
+                            @endforeach
+
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
+                        <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                        <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="{{ $video->video_js_mid_advertisement_sequence_time }}" >
+                    </div>
+
                 </div>
-            </div>
+            
+                    {{-- Ply.io --}}
+            @else   
+
+                <div class="row mt-3">
+                    <div class="col-sm-6"  >
+                        <label class="m-0">Choose Ads Position</label>
+                        <select class="form-control" name="ads_position" id="ads_position" >
+
+                            <option value=" ">Select the Ads Position </option>
+                            <option value="pre"  @if(($video->ads_position != null ) && $video->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
+                            <option value="mid"  @if(($video->ads_position != null ) && $video->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
+                            <option value="post" @if(($video->ads_position != null ) && $video->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
+                            <option value="all"  @if(($video->ads_position != null ) && $video->ads_position == 'all'){{ 'selected' }}@endif >   All Ads Position</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6"  >
+                        <label class="">Choose Advertisement </label>
+                        <select class="form-control" name="live_ads" id="live_ads" >
+                            <option value=" ">Select the Advertisement </option>
+                            @if( $video->live_ads != null)
+                                @php $ads_name = App\Advertisement::where('id',$video->live_ads)->pluck('ads_name')->first() ;@endphp
+                                <option value="{{ $video->live_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
+                            @endif
+                        </select>
+                    </div>
+                </div>
+            @endif
 
             <div class="row mt-3">
                 <div class="col-sm-6">
@@ -755,6 +846,7 @@ border-radius: 0px 4px 4px 0px;
    $(document).ready(function($){
     $("#duration").mask("00:00:00");
     $("#free_duration").mask("00:00:00");
+    $("#video_js_mid_advertisement_sequence_time").mask("00:00:00");
 
    });
   

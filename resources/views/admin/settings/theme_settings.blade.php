@@ -383,25 +383,13 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;"> Player 2 (Only for Videos) </div>
                             </div>
                         </div>
+
+                        
                     </div> 
 
                     <div class="row d-flex"> 
-                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Content_Partner_Page_checkout == 1)
-                        <div class="col-md-6">
-                            <label>{{ ucfirst(('Enable Content Partner Page')) }} </label>
+                        
 
-                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-                                <div style="color:red;">Vod</div>
-                                <div class="mt-1">
-                                    <label class="switch">
-                                        <input name="content_partner_checkout"  type="checkbox" @if( $settings->content_partner_checkout == "1") checked  @endif >
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div style="color:green;">Aod</div>
-                            </div>
-                        </div>
-                        @endif 
                         <div class="col-md-6">
                             <label>{{ (__('Enable Translate Option')) }} </label>
 
@@ -417,6 +405,40 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Admin Ads Pre/Post Position')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:60%;">
+                                <div style="color:#006AFF;"> Individual  <span> (Default)</span>  </div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="admin_ads_pre_post_position"  type="checkbox" @if( $settings->admin_ads_pre_post_position == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;"> Combine (Only for Videos) </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row d-flex">
+                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Content_Partner_Page_checkout == 1)
+                            <div class="col-md-6">
+                                <label>{{ ucfirst(('Enable Content Partner Page')) }} </label>
+
+                                <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                    <div style="color:red;">Vod</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="content_partner_checkout"  type="checkbox" @if( $settings->content_partner_checkout == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div style="color:green;">Aod</div>
+                                </div>
+                            </div>
+                        @endif 
                     </div>
 
                     
