@@ -48,3 +48,9 @@
     include public_path('themes/theme4/views/footer.blade.php'); 
 
 @endphp
+
+<style>
+    #my-video_ima-ad-container div{
+        overflow:hidden;
+    }
+</style>

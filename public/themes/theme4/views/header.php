@@ -716,7 +716,7 @@
    }
    #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo button_bg_color();?> !important; }
    #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo button_bg_color(); ?> !important; }
-   .dark-theme header .navbar ul li.menu-item a {color: <?php echo GetDarkText(); ?>;}
+   .dark-theme header .navbar ul li.menu-item a {color: <?php echo GetDarkText(); ?>!important;}
    .light-theme header .navbar ul li.menu-item a {color: <?php echo GetLightText(); ?> !important;}
    .dark-theme ul.f-link li a {color: <?php echo GetDarkText(); ?>;}
    .light-theme ul.f-link li a {color: <?php echo GetLightText(); ?> !important;}
