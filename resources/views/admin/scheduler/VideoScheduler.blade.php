@@ -20,20 +20,36 @@
 
     .draggable {
         margin-bottom: 10px;
+         width: 100%;
+        /* display:flex;
+        align-items:center; */
     }
+    input#video_id{
+        border:none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100px;
+    }
+    body.dark .drop-zone{background-color: <?php echo GetAdminDarkBg(); ?>;}
+    body.dark input#video_id{background-color: <?php echo GetAdminDarkBg(); ?> !important; color: <?php echo GetAdminDarkText(); ?>!important;}
 
     .drop-zone {
         min-height: 100px; /* Set a minimum height for the drop zone */
-        border: 2px dashed #ccc;
+        border: none;
         margin-bottom: 10px;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust the column width as needed */
         gap: 10px;
         padding: 10px;
+        overflow-x:hidden;
     }
 
     .form-control {
         width: 100%; /* Ensure the form controls take up the full width of their container */
+    }
+    .select2-selection__rendered{
+        height: calc(1.5em + 0.75rem + 2px);
     }
     </style>
     @section('content')
@@ -98,18 +114,18 @@
                         </div>
                     </div>
                      <div class="row">
-                     <div class="col-md-6 p-0">
-                        <div class="drop-zone ScrollStyle MainData" >
-                                    @foreach(@$VideoCollection as $value)
-                                        <div class="draggable">
-                                            <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="50" height="50">
-                                            <input type="text" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}" id="video_id" draggable="true" ondragstart="drag(this)" class=" form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
-                                            <input type="hidden" id="socure_type" class=" form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
-                                        </div>
-                                    @endforeach
-                                </div>
+                        <div class="col-md-8 p-0">
+                            <div class="drop-zone ScrollStyle MainData" >
+                                @foreach(@$VideoCollection as $value)
+                                    <div class="draggable">
+                                        <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100" style="object-fit:contain;">
+                                        <input type="text" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}" id="video_id" draggable="true" ondragstart="drag(this)" class=" form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
+                                        <input type="hidden" id="socure_type" class=" form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
+                                    </div>
+                                @endforeach
                             </div>
-                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-4">
                                 <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
 
                         </div>
@@ -118,26 +134,35 @@
             <br>
             <!-- <button style="margin-bottom: 10px" class="btn btn-primary delete_all" >Delete Selected Video</button> -->
 
-                <div class="row">
+                    <div class="row">
                             <div class="col-md-12">
-                                <table class="table text-center" id="schedule_videos_table" style="width:100%">
-                                    <thead>
-                                        <tr class="r1">
-                                            <th>#</th>
-                                            <th>Channel Name</th>
-                                            <th>Socure Title</th>
-                                            <th>Scheduled Starttime</th>
-                                            <th>Schedule Endtime</th>
-                                            <th>Duration</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                <tbody>
-                                <tr>
-                                   
-                                </tbody>
-                           </table>
-                        </div>
+                                        <table class="table text-center" id="schedule_videos_table" style="width:100%">
+                                            <thead>
+                                                <tr class="r1">
+                                                    <!-- <th>#</th> -->
+                                                    <th style="text-align:left;">Connent Name</th>
+                                                    <!-- <th>Socure Title</th> -->
+                                                    <th>Start</th>
+                                                    <th>Duration</th>
+                                                    <th>End</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://test.e360tv.com/public/uploads/images/pc-image-1700681754.webp"  width="100" alt="" style="object-fit:contain;">
+                                                        <p><?= 'titile' ?></p>
+                                                    </div>
+                                                </th>
+                                                <th>13.12.2</th>
+                                                <th>13.12.2</th>
+                                                <th>13.12.2</th>
+                                            </tbody>
+                                        </table>
+                                
+                            </div>
                     </div>
             </div>
 
