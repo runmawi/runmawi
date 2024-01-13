@@ -192,6 +192,7 @@ class AdminChannelVideoController extends Controller
             $time = $request->time;
             $time_zone = $request->time_zone;
             $socure_type = $request->socure_type;
+            $choosed_date = $request->time;
             $socure_id = $request->socure_id;
             // $ChannelVideoScheduler = ChannelVideoScheduler($request->channe_id,$request->time,$request->time_zone);
             // $ChannelVideoScheduler = ChannelVideoSchedulerWithTimeZone($request->channe_id,$request->time,$request->time_zone);
@@ -200,37 +201,75 @@ class AdminChannelVideoController extends Controller
 
             // Video Scheduler Logic 
 
-            if(  $this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone) !== null ){
-                $ChannelVideoScheduler = $this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone);
+            $today_date_time = new \DateTime("now");
+            $today_date = $today_date_time->format("n-j-Y");
 
-                if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler) !== null ){
-                   
-                    // print_r($this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone));
+            if($today_date < $choosed_date){
+                
+                if(  $this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone) !== null ){
+                    $ChannelVideoScheduler = $this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone);
 
-                   return VideoScheduledData($time,$channe_id,$time_zone);
+                    if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler,$choosed_date) !== null ){
+                    
+                    return VideoScheduledData($time,$channe_id,$time_zone);
+
+                    }else{
+
+                        return VideoScheduledData($time,$channe_id,$time_zone);
+                        
+                    }
+
+                }else if($this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){
 
                 }else{
+                    if($this->VideoSchedulerDifferentDay($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id) !== null){
+                        
+                        return VideoScheduledData($time,$channe_id,$time_zone) ;
+
+                    }else{
+
+                        return VideoScheduledData($time,$channe_id,$time_zone) ;
+                        
+                    }
+
+                }
+
+            }elseif($today_date == $choosed_date){
+                
+
+                if(  $this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone) !== null ){
+                    $ChannelVideoScheduler = $this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone);
+
+                    if($this->VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler,$choosed_date) !== null ){
+                    
+                        // print_r($this->ChannelVideoSchedulerWithInTimeZone($channe_id,$time,$time_zone));
 
                     return VideoScheduledData($time,$channe_id,$time_zone);
-                    
-                }
 
-            }else if($this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){
+                    }else{
 
-            }else{
-                if($this->VideoScheduler($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id) !== null){
-                    
-                    return VideoScheduledData($time,$channe_id,$time_zone) ;
+                        return VideoScheduledData($time,$channe_id,$time_zone);
+                        
+                    }
+
+                }else if($this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){
 
                 }else{
+                    if($this->VideoScheduler($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id) !== null){
+                        
+                        return VideoScheduledData($time,$channe_id,$time_zone) ;
 
-                    return VideoScheduledData($time,$channe_id,$time_zone) ;
-                    
+                    }else{
+
+                        return VideoScheduledData($time,$channe_id,$time_zone) ;
+                        
+                    }
+
                 }
 
-            }
-
-            // return  $result ;
+            }else{
+                return "Can't Set Video before current date" ;
+            }            // return  $result ;
 
         } catch (\Throwable $th) {
             throw $th;
@@ -318,7 +357,7 @@ class AdminChannelVideoController extends Controller
       }
   
 
-      private static function VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler){
+      private static function VideoSchedulerWithInTimeZone($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id,$ChannelVideoScheduler,$choosed_date){
     
         try {
     
@@ -326,10 +365,13 @@ class AdminChannelVideoController extends Controller
             $nowTime            = $TimeZone_NowTime['time'];
             $end_time           = $ChannelVideoScheduler->end_time;
     
+            $time = strtotime($time);
+
+
             $chosen_datetime = Carbon::parse($time);
 
             // // Check if a scheduling entry already exists for the same date
-            if(existingVideoSchedulerEntry($time,$channe_id,$ChannelVideoScheduler->start_time) == 1){
+            if(existingVideoSchedulerEntry($choosed_date,$channe_id,$ChannelVideoScheduler->start_time) == 1){
            
                 //     print_r($existingEntry);exit;
 
@@ -347,10 +389,10 @@ class AdminChannelVideoController extends Controller
                     $duration = gmdate('H:i:s', $SocureData['seconds']);
                     // print_r($endtime);exit;
                     if ($ChannelVideoScheduler->AM_PM_Time == 'PM'  && $TimeZone_NowTime['time'] == 'AM') {
-                        $chosen_datetime = chosen_datetime($time);
+                        $chosen_datetime = chosen_datetime($choosed_date);
                         
                     }else{
-                        $chosen_datetime = $time;
+                        $chosen_datetime = $choosed_date;
                     }
 
         
@@ -365,7 +407,7 @@ class AdminChannelVideoController extends Controller
         
                     $duration = gmdate('H:i:s', $SocureData['seconds']);
 
-                    $chosen_datetime = $time;
+                    $chosen_datetime = $choosed_date;
                 }
 
                     // Store the Scheduler
@@ -613,5 +655,57 @@ class AdminChannelVideoController extends Controller
         
     }
     
+
+    private static function VideoSchedulerDifferentDay($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id){
+    
+
+        try {
+
+            $TimeZone_NowTime['current_time'] = "00:00:00";
+            $current_time = strtotime($TimeZone_NowTime['current_time']);
+        
+            // Set the time to midnight
+
+            // Calculate the start time and end time
+            $start_time = date('Y-m-d H:i:s', $current_time);
+            $end_time = date('Y-m-d H:i:s', $current_time + $SocureData['seconds']);
+            
+            $starttime = date('H:i:s', $current_time);
+            $endtime = date('H:i:s', $current_time + $SocureData['seconds']);
+
+            $duration = gmdate('H:i:s', $SocureData['seconds']);
+            
+
+            // Store the Scheduler
+
+                $VideoScheduler = new ChannelVideoScheduler;
+                $VideoScheduler->user_id        = Auth::user()->id;
+                $VideoScheduler->socure_id      = $socure_id;
+                $VideoScheduler->socure_type    = $socure_type;
+                $VideoScheduler->channe_id      = $channe_id;
+                $VideoScheduler->content_id     = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+                $VideoScheduler->socure_order   = 1;
+                $VideoScheduler->time_zone      = $time_zone;
+                $VideoScheduler->choosed_date   = $time;
+                $VideoScheduler->current_time   = $current_time;
+                $VideoScheduler->start_time     = $starttime;
+                $VideoScheduler->end_time       = $endtime;
+                $VideoScheduler->socure_title   = $SocureData['socure_data']->title;
+                $VideoScheduler->AM_PM_Time     = "AM";
+                $VideoScheduler->duration	    = $duration;
+                $VideoScheduler->type           = $SocureData['type'];
+                $VideoScheduler->url            = $SocureData['URL'];
+                $VideoScheduler->save();
+
+                $data = 1;
+                
+            return $data ;
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+      }
+  
 
 }
