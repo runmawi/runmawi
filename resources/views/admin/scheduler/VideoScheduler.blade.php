@@ -252,11 +252,12 @@
 
     // Script For Time Update for Scheduler 
 
-        $(document).on('change', '.date', function () {
+
+        $(document).on('change', '.date,#time_zone_id,#channe_id', function () {
                 getAllChannelDetails();
         });
 
-        function getAllChannelDetails(channelId) {
+        function getAllChannelDetails() {
 
             $.ajax({
                 url: "{{ URL::to('admin/get-all-channel-details/') }}",
@@ -724,6 +725,11 @@
                         socure_type: socure_type,
                 },        
                 success: function(value){
+                    if(value == "Can't Set Video before current date"){
+                        Swal.fire({
+                                title: "Can't Set Scheduled Before Current date",
+                        })
+                    }
                     $('tbody').html(value.table_data);
                     $('#schedule_videos_table').DataTable();
             }
