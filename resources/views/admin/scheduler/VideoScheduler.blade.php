@@ -195,13 +195,13 @@
                                         <table class="table text-center" id="schedule_videos_table" style="width:100%">
                                             <thead>
                                                 <tr class="r1">
-                                                    <!-- <th>#</th> -->
+                                                    <th>#</th>
                                                     <th style="text-align:left;">Connent Name</th>
-                                                    <!-- <th>Socure Title</th> -->
+                                                    <th>Socure Title</th>
                                                     <th>Start</th>
-                                                    <th>Duration</th>
                                                     <th>End</th>
-                                                    <th></th>
+                                                    <th>Duration</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -494,6 +494,11 @@
             filterItems(filterValue);
         });
         function filterItems(filterValue) {
+
+            if(filterValue == 'all'){
+                location.reload();                            
+            }
+            
             searchTerm = filterValue.toLowerCase();
         
             $('.draggable').each(function () {
