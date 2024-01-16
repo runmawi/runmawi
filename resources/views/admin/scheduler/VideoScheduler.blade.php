@@ -173,11 +173,19 @@
                         <div class="col-md-8 p-0">
                             <div class="drop-zone ScrollStyle MainData" >
                                 @foreach(@$VideoCollection as $value)
-                                    <div class="draggable">
+
+                                <div class="draggable" draggable="true" ondragstart="drag(event)">
+                                    <div class="drag-container" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
+                                        <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100" style="object-fit:contain;">
+                                        <input type="text" class="form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
+                                        <input type="hidden" class="form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
+                                    </div>
+                                </div>
+                                    <!-- <div class="draggable">
                                         <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100" style="object-fit:contain;">
                                         <input type="text" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}" id="video_id" draggable="true" ondragstart="drag(this)" class=" form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
                                         <input type="hidden" id="socure_type" class=" form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
-                                    </div>
+                                    </div> -->
                                 @endforeach
                             </div>
                         </div>
@@ -618,10 +626,8 @@
     function dragStartHandler(e) {
         setDropZonesHighlight();
         this.classList.add('dragged', 'drag-feedback');
-        // we use these data during the drag operation to decide
-        // if we handle this drag event or not
         e.dataTransfer.setData("type/dragged-box", 'dragged');
-        e.dataTransfer.setData("text/plain", this.textContent.trim());
+        e.dataTransfer.setData("text/plain", this.innerHTML);
         deferredOriginChanges(this, 'drag-feedback');
     }
 
@@ -694,17 +700,26 @@
     //   ev.preventDefault();
     }
 
-    function drag(ev) {
+    // function drag(ev) {
 
-    var video_id = $(ev).attr('data-class');
-    var socure_type = $(ev).attr('data-socure_type');
-    drop(video_id,socure_type);
+    // var video_id = $(ev).attr('data-class');
+    // var socure_type = $(ev).attr('data-socure_type');
+    // drop(video_id,socure_type);
+    // }
+
+
+    function drag(ev) {
+        var container = ev.target.closest('.draggable');
+        var video_id = container.querySelector('.drag-container').getAttribute('data-class');
+        var socure_type = container.querySelector('.drag-container').getAttribute('data-socure_type');
+        drop(video_id, socure_type);
     }
+
 
     function drop(video_id,socure_type) {
 
-        // console.log(video_id);
-        // console.log(socure_type);
+        console.log(video_id);
+        console.log(socure_type);
 
         $.ajaxSetup({
                 headers: {
