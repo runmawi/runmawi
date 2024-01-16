@@ -706,7 +706,7 @@
                                                     <a class="dropdown-item cont-item"
                                                         style="text-decoration: none!important;"
                                                         href="<?php echo URL::to('/') . '/category/' . $category->slug; ?>">
-                                                        <?php echo $category->name; ?>
+                                                        <?php echo __($category->name); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -727,7 +727,7 @@
                                                 <?php foreach ( $languages as $language){ ?>
                                                 <li>
                                                     <a class="dropdown-item cont-item" href="<?php echo URL::to('/') . '/language/' . $language->id . '/' . $language->name; ?>">
-                                                        <?php echo $language->name; ?>
+                                                        <?php echo __($language->name); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -748,7 +748,7 @@
                                                 <?php foreach ( $LiveCategory as $category){ ?>
                                                 <li>
                                                     <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->slug; ?>">
-                                                        <?php echo $category->name; ?>
+                                                        <?php echo __($category->name); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
