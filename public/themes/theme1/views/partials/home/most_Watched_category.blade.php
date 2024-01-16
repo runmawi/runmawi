@@ -8,7 +8,7 @@
                          $setting= \App\HomeSetting::first();
                             if($setting['Recommendation'] !=null && $setting['Recommendation'] != 0 ):
 
-                         echo __(('Most watched videos from').' ' .$category->name.' '. __('Genre'));?>
+                         echo __(('Most watched videos from') .' ' . $category->name.' '. __('Genre'));?>
                 </h4>
             </a>
         </div>
