@@ -431,10 +431,17 @@
                         },        
                         success: function(value){
                             $('#editModal').modal('hide');
-                            Swal.fire({
-                                title: 'Re Scheduled Videos !',
-                            })
-                            location.reload();                            
+                            if(value == 0){
+                                Swal.fire({
+                                    title: "Can't Set Re Schedule In same day",
+                                })
+                            }else{
+                                Swal.fire({
+                                    title: 'Re Scheduled Videos !',
+                                })
+                                location.reload();    
+                            }
+                      
                         }
                     });
             }

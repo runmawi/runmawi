@@ -620,6 +620,13 @@ class AdminChannelVideoController extends Controller
             $channelId      = $request->channe_id;
             $SchedulerDate  = $request->SchedulerDate;
 
+            $CheckSameDateScheduler = ChannelVideoScheduler::where('id',$Scheduler_id)
+            ->where('channe_id',$channelId)
+            ->where('choosed_date',$SchedulerDate)
+            ->count();
+            if($CheckSameDateScheduler > 0){
+                return 0 ;
+            }
             $CurrentScheduler = ChannelVideoScheduler::where('id',$Scheduler_id)
             ->where('channe_id',$channelId)
             ->first();
