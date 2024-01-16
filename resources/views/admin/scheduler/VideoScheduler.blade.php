@@ -203,7 +203,7 @@
                                         <table class="table text-center" id="schedule_videos_table" style="width:100%">
                                             <thead>
                                                 <tr class="r1">
-                                                    <th>#</th>
+                                                    <!-- <th>#</th> -->
                                                     <th style="text-align:left;">Connent Name</th>
                                                     <th>Socure Title</th>
                                                     <th>Start</th>
@@ -548,19 +548,33 @@
         });
     });
 
+
+        // $('.re-schedule-date').datepicker({  
+        //     format: 'm-dd-yyyy'
+        // });  
+
+        $('.re-schedule-date').datepicker({
+            format: 'm-dd-yyyy',
+            startDate: '+1d', // Set the minimum date to tomorrow
+            autoclose: true
+        });
+
+        var currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + 1); // Set the date to tomorrow
+        var formattedDate = (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + '-' + currentDate.getFullYear();
+    
+        $('.re-schedule-date').datepicker('setDate', formattedDate); // Set the selected date
+
         $('.date').datepicker({  
             format: 'm-dd-yyyy'
         });  
 
-        $('.re-schedule-date').datepicker({  
-            format: 'm-dd-yyyy'
-        });  
 
         var currentDate = new Date();
         var formattedDate = (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + '-' + currentDate.getFullYear();
         // alert(formattedDate);
         $('.date').val(formattedDate);
-        $('.re-schedule-date').val(formattedDate);
+        // $('.re-schedule-date').val(formattedDate);
         $('.js-example-basic-single').select2();
 
 //     </script>
