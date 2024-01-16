@@ -767,7 +767,7 @@
                                                 <?php foreach ( $AudioCategory as $category){ ?>
                                                 <li>
                                                     <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->name; ?>">
-                                                        <?php echo $category->name; ?>
+                                                        <?php echo  __($category->name); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -788,7 +788,7 @@
                                                 <li>
                                                     <?php if($key < 5): ?>
                                                         <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series') . '/' . $tvshows_series->slug; ?>">
-                                                            <?php echo $tvshows_series->title; ?>
+                                                            <?php echo  __($tvshows_series->title); ?>
                                                         </a>
                                                     <?php else: ?>
                                                         <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/Series/category/list');?>"> 
