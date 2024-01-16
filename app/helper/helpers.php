@@ -1651,8 +1651,7 @@ function VideoScheduledData($time,$channe_id,$time_zone){
                     $output .=
                         '
                         <tr>
-                        <td>' . '#' .'</td>
-
+                       
                         <td>' .
                                             $row->name .
                                             '</td>
