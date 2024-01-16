@@ -177,6 +177,10 @@ border-radius: 20px;
         .dl{
             font-size: 16px;
         }
+
+        .black-text {
+    color: black;
+}
     </style>
    <body>
      
@@ -312,12 +316,12 @@ border-radius: 20px;
                                 </a>
 </div>
                             </li>
-                        <li><div class="d-flex showSingle" target="3">
+                        <!-- <li><div class="d-flex showSingle" target="3">
                                 <a>
                             <img class="ply mr-3" width="38" height="33" src="<?php echo URL::to('/').'/assets/img/kids.png';  ?>"> 
                             {{ __('Kids zone') }}
                                 </a>
-                        </div></li>
+                        </div></li> -->
                         <li><div class="d-flex showSingle" target="4">
                                 <a>
                             <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/video.png';  ?>"> 
@@ -756,12 +760,12 @@ border-radius: 5px;padding:10px;">
 			<div class="modal-content">
 				
 				<div class="modal-header">
-                    <h4 class="modal-title">{{ __('Update Profile') }}</h4>
+                    <h4 class="modal-title black-text">{{ __('Update Profile') }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" enctype="multipart/form-data" method="post">
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                 
@@ -778,11 +782,15 @@ border-radius: 5px;padding:10px;">
                         
                             <div class="form-group">
 		                        <label>{{ __('Password') }}:</label><br>
-		                        <input type="password"  name="password"  value="<?php if(!empty($user->password)): ?><?= $user->password ?><?php endif; ?>" placeholder="{{ __('Password') }}"  class="form-control"  >
+		                        <input type="password"  name="password"  value="" placeholder="{{ __('Password') }}"  class="form-control"  >
 		                        <!-- <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  > -->
 		                    </div> 
                         
-                        
+                            <div class="form-group">
+		                        <label>{{ __('Image') }}:</label><br>
+                                <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" required/>
+		                    </div> 
+
                             <div class="form-group">
 		                         <label>{{ __('Phone') }} :</label>
 		                         <input type="number" id="mobile"  pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="{{ ('Mobile Number') }}">
@@ -899,9 +907,7 @@ border-radius: 5px;padding:10px;">
 		</div>
 		<?php $settings = App\Setting::first(); ?>
 
-@php
-  include(public_path('themes/theme1/views/footer.blade.php'));
-@endphp
+
           <!-- back-to-top End -->
      <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
@@ -1284,3 +1290,6 @@ $(document).ready(function(){
     })
 
 </script>
+@php
+  include(public_path('themes/theme1/views/footer.blade.php'));
+@endphp
