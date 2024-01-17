@@ -330,10 +330,10 @@
                             @foreach ($season as $key => $seasons)
                                 @forelse ($seasons->episodes as $key => $episodes)
                                     @if ($seasons->ppv_interval > $key)
-                                        <li class="slide-item episodes_div season_<?= $seasons->id ?>">
+                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
                                             <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                            <div class=" position-relative">
-                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
+                                                <div class=" position-relative">
+                                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
                                                     <div class="controls">
                                                         <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -351,7 +351,7 @@
                                             </a>
                                         </li>
                                     @else
-                                        <li class="slide-item  episodes_div season_<?= $seasons->id ?>">
+                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
                                             <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                                 <div class=" position-relative">
                                                     <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="img-fluid w-100" >
@@ -375,7 +375,7 @@
                                         </li>
                                     @endif
                                 @empty
-                                    <li>
+                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
                                         <div class="e-item col-lg-3 col-sm-12 col-md-6">
                                             <div class="block-image position-relative">
                                                 <img src="{{ URL::to('assets\images\episodes\No-data-amico.svg')}}" class="img-fluid transimga img-zoom" alt="">
