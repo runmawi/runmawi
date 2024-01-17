@@ -160,6 +160,14 @@
     display: inline-block;
     cursor: pointer;
 } 
+.gridContainer{
+   display: grid;
+   grid-template-columns: repeat(5, calc(100% / 5));
+}
+.gridItem{
+   padding:5px;
+}
+
 
 </style>
 <div id=" content_videopage" class="content-page">
@@ -1029,9 +1037,7 @@ border-radius: 0px 4px 4px 0px;
 
                            <div class="row">
                               <div class="col-sm-6 form-group">
-                                 <div class="col-md-3">
-                                    <div id="ImagesContainer" class="d-flex mt-3"></div>
-                                    </div>
+                                 <div id="ImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                                  <input type="file" name="image" id="image" >
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or ratio 9:16 </p></span>
@@ -1041,9 +1047,7 @@ border-radius: 0px 4px 4px 0px;
                               </div>
 
                               <div class="col-sm-6 form-group">
-                                 <div class="col-md-3">
-                                    <div id="ajaxImagesContainer" class="d-flex mt-3"></div>
-                                    </div>
+                                <div id="ajaxImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
                                  <input type="file" name="player_image" id="player_image" >
                                  <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or ratio 16:9 </p></span>
@@ -1055,10 +1059,8 @@ border-radius: 0px 4px 4px 0px;
 
                            <div class="row">
                               <div class="col-sm-6 form-group">
-                                 <div class="col-md-3">
-                                    <div id="TVImagesContainer" class="d-flex mt-3"></div>
+                                <div id="TVImagesContainer" class="gridContainer mt-3"></div>
                                         {{-- Video TV Thumbnail --}}
-                                </div>
                                  <label class="mb-1">  Video TV Thumbnail  </label><br>
                                  <input type="file" name="video_tv_image" id="video_tv_image" >
                                  <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1920  x 1080  pixels dimension or 16:9 ratio </p></span>
@@ -2076,7 +2078,7 @@ $(document).ready(function($){
    //          var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+`-=[]\{}|;':,./<>?", //random data prevents gzip effect
    //              iterations = sizeInMb * 1024 * 1024, //get byte count
    //              result = '';
-   //          for( var index = 0; index < iterations; index++ ) {
+   //          for( var index = 0; index <div iterations; index++ ) {
    //              result += chars.charAt( Math.floor( Math.random() * chars.length ) );
    //          };     
    //          return result;
@@ -2117,9 +2119,9 @@ $(document).ready(function($){
 
 
                 ExtractedImage.forEach(function(Image) {
-                    var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
-                    var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
-                    var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
+                    var imgElement = $('<div class="gridItem"><img src="' + Image.image_path + '" class="ajax-image m-1 w-100 h-100" /></div>');
+                    var ImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="video-image m-1 w-100 h-100" /></div>');
+                    var TVImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="tv-video-image m-1 w-100 h-100" /></div>');
 
                     imgElement.click(function() {
                         $('.ajax-image').css('border', 'none');

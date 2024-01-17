@@ -1678,7 +1678,9 @@ function VideoScheduledData($time,$channe_id,$time_zone){
                                         <button class="btn btn-sm btn-warning rescheduler-btn" data-toggle="modal" data-target="#rescheduleModal" data-id="' . $row->id . '">
                                             <i class="fas fa-calendar-alt"></i>
                                         </button>
-                                       
+                                        <button class="btn btn-sm btn-danger remove-btn" data-id="' . $row->id . '">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </td>
@@ -1705,9 +1707,4 @@ function VideoScheduledData($time,$channe_id,$time_zone){
         $value["total_content"] = $ChannelVideoScheduler;
 
     return $value;
-
-    //     <button class="btn btn-sm btn-danger remove-btn" data-id="' . $row->id . '">
-    //     <i class="fas fa-trash-alt"></i>
-    // </button>
-
 }
