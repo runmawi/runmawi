@@ -326,14 +326,14 @@
                     </div>
 
                     <div class="trending-contens sub_dropdown_image mt-3">
-                        <ul id="trending-slider-nav" class= "cnt-videos-slider-nav list-inline m-0 row align-items-center" >
+                        <ul id="trending-slider-nav" class= " list-inline m-0 row align-items-center" >
                             @foreach ($season as $key => $seasons)
-                                @foreach ($seasons->episodes as $key => $episodes)
+                                @forelse ($seasons->episodes as $key => $episodes)
                                     @if ($seasons->ppv_interval > $key)
-                                        <li class="slide-item episodes_div season_<?= $seasons->id ?>">
+                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
                                             <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                            <div class=" position-relative">
-                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
+                                                <div class=" position-relative">
+                                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
                                                     <div class="controls">
                                                         <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -351,7 +351,7 @@
                                             </a>
                                         </li>
                                     @else
-                                        <li class="slide-item  episodes_div season_<?= $seasons->id ?>">
+                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
                                             <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                                 <div class=" position-relative">
                                                     <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="img-fluid w-100" >
@@ -374,91 +374,19 @@
                                             </a>
                                         </li>
                                     @endif
-                                @endforeach
+                                @empty
+                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_{{ $seasons->id }}">
+                                        <div class="e-item col-lg-3 col-sm-12 col-md-6">
+                                            <div class="block-image position-relative">
+                                                <img src="{{ URL::to('assets\images\episodes\No-data-amico.svg')}}" class="img-fluid transimga img-zoom" alt="">
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endforelse
                             @endforeach
                         </ul>
                     </div>
 
-
-
-
-
-                    <!-- <ul class="category-page list-inline row p-3 mb-0">
-                        @foreach ($season as $key => $seasons)
-                            @foreach ($seasons->episodes as $key => $episodes)
-                                @if ($seasons->ppv_interval > $key)
-                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
-
-                                        <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                            <div
-                                                class="block-images position-relative episodes_div season_<?= $seasons->id ?>">
-                                                <div class="img-box">
-
-                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="img-fluid w-100">
-
-                                                    @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                        @if (!empty($series->ppv_price) && $series->ppv_status == 1)
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @elseif(!empty($seasons->ppv_price))
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @elseif($series->ppv_status == null && $series->ppv_status == 0)
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @endif
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <div class="block-description">
-                                                <div class="hover-buttons">
-                                                    <img class="ply" src="{{ URL::to('assets/img/default_play_buttons.svg') }}">
-                                                </div>
-                                            </div>
-
-                                            <p>{{ $episodes->title }}</p>
-                                            <p class="text-white desc mb-0">{{ gmdate('H:i:s', $episodes->duration) }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @else
-                                    <li
-                                        class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
-                                        <a
-                                            href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                            <div class="block-images position-relative">
-                                                <div class="img-box">
-                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class=" img-fluid w-100">
-
-                                                    @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                        @if (!empty($series->ppv_price) && $series->ppv_status == 1)
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @elseif(!empty($seasons->ppv_price))
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @elseif($series->ppv_status == null && $series->ppv_status == 0)
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @endif
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <div class="block-description">
-                                                <div class="hover-buttons">
-                                                    <img class="ply" src="{{ URL::to('assets/img/default_play_buttons.svg') }}">
-                                                </div>
-                                            </div>
-
-                                            <h6>{{ $episodes->title }} </h6>
-
-                                            <p class="desc text-white mt-2 mb-0">
-                                                {{ strlen($series->description) > 90 ? substr($series->description, 0, 90) . '...' : $series->description }}
-                                            </p>
-
-                                            <p class="text-white desc mb-0">{{ gmdate('H:i:s', $episodes->duration) }}</p>
-                                        </a>
-                                    </li>
-                                @endif
-                            @endforeach
-                        @endforeach
-                    </ul> -->
                 </div>
             </div>
         @elseif(Auth::guest() && $series->access == 'subscriber')
@@ -613,7 +541,7 @@
         $("#videos").hide();
 
         var obj = JSON.parse(imageseason);
-        console.log(obj)
+        // console.log(obj)
         var season_id = $('#season_id').val();
         $.each(obj, function(i, $val) {
             if ('season_' + $val.id == season_id) {
