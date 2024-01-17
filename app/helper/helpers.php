@@ -1668,10 +1668,22 @@ function VideoScheduledData($time,$channe_id,$time_zone){
                         <td>' .
                                             $row->duration .
                                             '</td>  
-                        <td>' .
-                                    "<button class='btn btn-sm btn-info edit-btn' data-toggle='modal' data-target='#editModal' data-id='" . $row->id . "'><i class='fas fa-edit'></i>Edit</button>" .
-                                    "<button class='btn btn-sm btn-warning rescheduler-btn' data-toggle='modal' data-target='#rescheduleModal' data-id='" . $row->id . "'><i class='fas fa-calendar-alt'></i>Rescheduler</button>" .
-                                    '</td>
+                        <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-ellipsis-v action-icon" data-id="' . $row->id . '"></i>
+                                    <div class="hidden-buttons" id="buttons_' . $row->id . '">
+                                        <button class="btn btn-sm btn-info edit-btn" data-toggle="modal" data-target="#editModal" data-id="' . $row->id . '">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-warning rescheduler-btn" data-toggle="modal" data-target="#rescheduleModal" data-id="' . $row->id . '">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger remove-btn" data-id="' . $row->id . '">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         ';
                 }

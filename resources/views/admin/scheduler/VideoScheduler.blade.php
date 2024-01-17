@@ -1,6 +1,6 @@
 @extends('admin.master')
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <!-- CSS -->
@@ -13,7 +13,16 @@
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 
     <style>
-         .ScrollStyle {
+
+
+    .drag-container {
+        text-align: center;
+        border: 1px solid #cecece;
+        border-radius: 5px;
+        box-shadow: 0px 0px 1px #747474;
+    }
+
+    .ScrollStyle {
         overflow-y: auto;
         max-height: 200px; /* Set a maximum height for the scrollable area */
     }
@@ -52,6 +61,35 @@
         height: calc(1.5em + 0.75rem + 2px);
     }
     </style>
+
+<style>
+  .action-icons {
+        position: relative;
+        display: inline-block;
+    }
+
+    .hidden-buttons {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: none;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .action-icons:hover .hidden-buttons {
+        display: block;
+    }
+
+    .hidden-buttons button {
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
+</style>
+
     @section('content')
     <div id="content-page" class="content-page">
         <div class="iq-card">
@@ -204,8 +242,8 @@
                                             <thead>
                                                 <tr class="r1">
                                                     <!-- <th>#</th> -->
-                                                    <th style="text-align:left;">Connent Name</th>
-                                                    <th>Socure Title</th>
+                                                    <th style="text-align:left;">Channel Name</th>
+                                                    <th>Content Title</th>
                                                     <th>Start</th>
                                                     <th>End</th>
                                                     <th>Duration</th>
@@ -213,16 +251,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <th>
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="https://test.e360tv.com/public/uploads/images/pc-image-1700681754.webp"  width="100" alt="" style="object-fit:contain;">
-                                                        <p><?= 'titile' ?></p>
-                                                    </div>
-                                                </th>
-                                                <th>13.12.2</th>
-                                                <th>13.12.2</th>
-                                                <th>13.12.2</th>
+                                               
                                             </tbody>
                                         </table>
                                 
@@ -254,9 +283,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
     <script type="text/javascript">
 
+
+
+     $(document).on('click', '.remove-btn', function () {
+
+            var dataId = $(this).data('id');
+                RemoveSchedulers(dataId);
+        });
+
+        function RemoveSchedulers(dataId) {
+              
+            // alert(dataId);
+            $.ajaxSetup({
+              headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+            });
+            $.ajax({
+                url: "{{ URL::to('admin/remove-scheduler/') }}",
+                type: "post",
+                data: {
+                        _token: '{{ csrf_token() }}',
+                        Scheduler_id : dataId,
+                },        
+                success: function(value){
+                    $('tbody').html(value.table_data);
+                    $('#schedule_videos_table').DataTable();
+                    location.reload();                            
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching Channel details:', error);
+                }
+            });
+
+        }
 
     // Script For Time Update for Scheduler 
 
@@ -266,12 +330,16 @@
         });
 
         function getAllChannelDetails() {
-
+            $.ajaxSetup({
+              headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+            });
             $.ajax({
                 url: "{{ URL::to('admin/get-all-channel-details/') }}",
                 type: "post",
                 data: {
-                    _token: '{{ csrf_token() }}',
+                        _token: '{{ csrf_token() }}',
                         time     : $('.date').val(),
                         time_zone: $('#time_zone_id').val(),
                         channe_id: $('#channe_id').val(),
@@ -357,6 +425,12 @@
 
         function saveChanges() {   
                 if ($('#editStartTime').val() !== originalStartTime) {
+
+                    $.ajaxSetup({
+                        headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
                     $.ajax({
                         url: "{{ URL::to('admin/Scheduler-UpdateTime/')  }}",
                         type: "post", // Use "get" instead of "post"
@@ -419,7 +493,11 @@
 
         
         function saveReScheduleChanges() {   
-
+                    $.ajaxSetup({
+                    headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                    });
                     $.ajax({
                         url: "{{ URL::to('admin/Scheduler-ReSchedule/')  }}",
                         type: "post", // Use "get" instead of "post"
@@ -449,6 +527,12 @@
 
 
     $(document).ready(function () {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         $.ajax({
             url: "{{ URL::to('admin/Scheduled-videos/')  }}",
@@ -598,11 +682,7 @@
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-    <script>
-         $(document).ready(function(){
-            $('#player_table').DataTable();
-         });
-</script>
+
 <script>
 
     initDragAndDrop();
@@ -753,7 +833,11 @@
             var time = $('.date').val();
             let time_zone = $('#time_zone_id').val();
             let channe_id = $('#channe_id').val();
-
+            $.ajaxSetup({
+              headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+            });
             $.ajax({
             url: url,
             type: "post",
