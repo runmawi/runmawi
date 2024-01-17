@@ -72,6 +72,12 @@
         cursor: pointer;
     }
 </style>
+<style>
+    .admin-section-title {
+        height: 500px; /* Set a fixed height for your container */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
+</style>
 
 @section('css')
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -83,7 +89,7 @@
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
-            <div class="admin-section-title">
+            <div class="admin-section-titles">
                 @if(!empty($episodes->id))
                 <h4>{{ $episodes->title }}</h4>
                 <!-- {{ URL::to('episodes') . '/' . $episodes->id }} -->
@@ -1094,7 +1100,7 @@
                      _token :  "{{ csrf_token() }}",
                     },
             success:function(){
-                alert('Position changed successfully.');
+                // alert('Position changed successfully.');
                 location.reload();
             }
         })
