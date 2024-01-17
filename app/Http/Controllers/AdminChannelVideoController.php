@@ -765,41 +765,34 @@ class AdminChannelVideoController extends Controller
 
                 $AfterScheduler = ChannelVideoScheduler::where('channe_id',$NextScheduler->channe_id)
                             ->where('choosed_date',$NextScheduler->choosed_date)
-                            ->where('id', '>', $Scheduler_id)
+                            ->where('id', '>', $NextScheduler->id)
                             ->get();
 
                 ChannelVideoScheduler::where('id',$Scheduler_id)->delete();
-
+                $previousEndTime = $NextScheduler->end_time;
 
                 foreach ($AfterScheduler as $scheduler) {
-
-                    $BeforeVideoScheduler = ChannelVideoScheduler::where('choosed_date',$scheduler->choosed_date)
-                                    ->where('channe_id',$scheduler->channe_id)
-                                    ->where('id', '<', $scheduler->id)->first();
-                    $start_time = $BeforeVideoScheduler->end_time;
-                    $duration = $scheduler->duration;
-
-                    // Convert start_time to seconds
-                    list($startHours, $startMinutes, $startSeconds) = explode(':', $start_time);
-                    $totalStartSeconds = ($startHours * 3600) + ($startMinutes * 60) + $startSeconds;
-
+                    $scheduler->start_time = $previousEndTime;
+                    list($previousEndHours, $previousEndMinutes, $previousEndSeconds) = explode(':', $previousEndTime);
+                    $totalPreviousEndSeconds = ($previousEndHours * 3600) + ($previousEndMinutes * 60) + $previousEndSeconds;
+                
+                    $scheduler->start_time = $previousEndTime;
+                    $scheduler->socure_order = $NextScheduler->socure_order;
+                    
                     // Convert duration to seconds
-                    list($durationHours, $durationMinutes, $durationSeconds) = explode(':', $duration);
+                    list($durationHours, $durationMinutes, $durationSeconds) = explode(':', $scheduler->duration);
                     $totalDurationSeconds = ($durationHours * 3600) + ($durationMinutes * 60) + $durationSeconds;
-
+                
                     // Calculate total seconds for end time
-                    $totalEndSeconds = $totalStartSeconds + $totalDurationSeconds;
-
+                    $totalEndSeconds = $totalPreviousEndSeconds + $totalDurationSeconds;
+                
                     // Convert totalEndSeconds back to H:i:s format
-                    $endTime = gmdate('H:i:s', $totalEndSeconds);
-
-                    $scheduler->start_time = $BeforeVideoScheduler->end_time;
-                    $scheduler->socure_order = $BeforeVideoScheduler->socure_order + 1;
-                    $scheduler->end_time = $endTime;
+                    $scheduler->end_time = gmdate('H:i:s', $totalEndSeconds);
+                    $previousEndTime = $scheduler->end_time;
+                
                     $scheduler->save();
 
                 }
-
             return 1 ;
 
         } catch (\Throwable $th) {
