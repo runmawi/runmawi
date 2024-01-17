@@ -13,7 +13,16 @@
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 
     <style>
-         .ScrollStyle {
+
+
+    .drag-container {
+        text-align: center;
+        border: 1px solid #cecece;
+        border-radius: 5px;
+        box-shadow: 0px 0px 1px #747474;
+    }
+
+    .ScrollStyle {
         overflow-y: auto;
         max-height: 200px; /* Set a maximum height for the scrollable area */
     }
@@ -52,6 +61,35 @@
         height: calc(1.5em + 0.75rem + 2px);
     }
     </style>
+
+<style>
+  .action-icons {
+        position: relative;
+        display: inline-block;
+    }
+
+    .hidden-buttons {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: none;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .action-icons:hover .hidden-buttons {
+        display: block;
+    }
+
+    .hidden-buttons button {
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
+</style>
+
     @section('content')
     <div id="content-page" class="content-page">
         <div class="iq-card">
@@ -204,8 +242,8 @@
                                             <thead>
                                                 <tr class="r1">
                                                     <!-- <th>#</th> -->
-                                                    <th style="text-align:left;">Connent Name</th>
-                                                    <th>Socure Title</th>
+                                                    <th style="text-align:left;">Channel Name</th>
+                                                    <th>Content Title</th>
                                                     <th>Start</th>
                                                     <th>End</th>
                                                     <th>Duration</th>
@@ -257,6 +295,36 @@
 
     <script type="text/javascript">
 
+
+     // Script For Remove Scheduler 
+
+     $(document).on('click', '.remove-btn', function () {
+
+            var dataId = $(this).data('id');
+                RemoveSchedulers(dataId);
+        });
+
+        function RemoveSchedulers(dataId) {
+              
+            // alert(dataId);
+
+            $.ajax({
+                url: "{{ URL::to('admin/remove-scheduler/') }}",
+                type: "post",
+                data: {
+                        _token: '{{ csrf_token() }}',
+                        Scheduler_id : dataId,
+                },        
+                success: function(value){
+                    $('tbody').html(value.table_data);
+                    $('#schedule_videos_table').DataTable();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching Channel details:', error);
+                }
+            });
+
+        }
 
     // Script For Time Update for Scheduler 
 
