@@ -705,7 +705,7 @@ class TvshowsController extends Controller
     public function play_series($name)
     {
         $Theme = HomeSetting::pluck('theme_choosen')->first();
-        Theme::uses($Theme);
+        $theme = Theme::uses($Theme);
 
         $currency = CurrencySetting::first();
 
@@ -716,7 +716,7 @@ class TvshowsController extends Controller
         endif;
 
         $series = Series::where('slug', '=', $name)->first();
-// dd($series);
+
         if (@$series->uploaded_by == 'Channel') {
             $user_id = $series->user_id;
 
@@ -750,7 +750,7 @@ class TvshowsController extends Controller
         }  else {
             $video_access = 'free';
         }
-    // dd($video_access);
+
         $id = $series->id;
 
         if (!Auth::guest() && $series->ppv_status == 1) {
@@ -760,7 +760,6 @@ class TvshowsController extends Controller
         } else {
             $ppv_exits = 0;
         }
-
       
         $season = SeriesSeason::where('series_id', '=', $id)
             ->with('episodes')
@@ -794,7 +793,19 @@ class TvshowsController extends Controller
                 $secret_key = null;
                 $publishable_key = null;
             }
-            $series = Series::where('slug', '=', $name)->first();
+
+            $series = Series::where('slug', $name)->first();
+
+            // for theme5 , theme4, theme3
+
+            $series_season_first = SeriesSeason::where('series_id',$id)->Pluck('id')->first();
+
+
+            $season_depends_episode = Episode::where('active',1)->where('status',1)->where('series_id',$id)
+                                            ->where('season_id',$series_season_first)->orderBy('episode_order')->get();
+
+            $featured_season_depends_episode = Episode::where('active',1)->where('status',1)->where('featured',1)
+                                             ->where('season_id',$series_season_first)->where('series_id',$id)->orderBy('episode_order')->get();
            
             $data = [
                 'series_data' => $series,
@@ -812,9 +823,14 @@ class TvshowsController extends Controller
                 'series_categories' => SeriesGenre::all(),
                 'category_name'     => $category_name ,
                 'pages' => Page::where('active', '=', 1)->get(),
+                'season_depends_episode' => $season_depends_episode ,
+                'featured_season_depends_episode' => $featured_season_depends_episode ,
             ];
 
-            return Theme::view('series', $data);
+            // return Theme::view('series', $data);
+
+            return $theme->load('public/themes/'.$Theme.'/views/series',  $data )->render();
+
         } else {
             
             $payment_settings = PaymentSetting::first();
@@ -850,6 +866,29 @@ class TvshowsController extends Controller
             ];
             return Redirect::to('series')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
         }
+    }
+
+    public function season_depends_episode_section(Request $request)
+    {
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        $theme = Theme::uses($Theme);
+
+        $series = Series::where('id', $request->series_id)->first();
+
+        $season_depends_episode = Episode::where('active',1)->where('status',1)->where('series_id',$request->series_id)
+                                            ->where('season_id',$request->season_id)->orderBy('episode_order')->get();
+
+        $featured_season_depends_episode = Episode::where('active',1)->where('status',1)->where('featured',1)
+                                            ->where('series_id',$request->series_id)->where('season_id',$request->season_id)
+                                            ->orderBy('episode_order')->get();
+
+        $data = [
+            'series_data' => $series,
+            'season_depends_episode' => $season_depends_episode ,
+            'featured_season_depends_episode' => $featured_season_depends_episode ,
+        ];
+
+        return $theme->load('public\themes\theme6\partials\season_depends_episode_section',  $data )->render();
     }
 
     public function PlayEpisode($episode_name)

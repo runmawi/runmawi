@@ -271,15 +271,18 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
 
-    Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
-    Route::get('networks/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('network_play_episode');
 
     Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
 
+    Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
+    Route::get('networks/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('network_play_episode');
+
     Route::get('play_series/{name}/', 'TvshowsController@play_series')->name('play_series');
     Route::get('networks/play_series/{name}/', 'TvshowsController@play_series')->name('network.play_series');
+
+    Route::get('play-series/season-depends-episode/', 'TvshowsController@season_depends_episode_section')->name('front-end.series.season-depends-episode');
 
     Route::get('datafree/play_series/{name}/', 'TvshowsController@play_series');
 
