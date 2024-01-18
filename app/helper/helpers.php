@@ -1645,7 +1645,9 @@ function VideoScheduledData($time,$channe_id,$time_zone){
                             ->get();
 
             $image_URL = URL::to("");
-
+            $edit_svg = URL::to('assets/img/icon/edit.svg');
+            $delete_svg = URL::to('assets/img/icon/delete.svg');
+            $calender_svg = URL::to('assets/img/icon/Calender.svg');
             $output = "";
             $i = 1;
             if (count($ChannelVideoScheduler) > 0) {
@@ -1655,22 +1657,23 @@ function VideoScheduledData($time,$channe_id,$time_zone){
                     foreach ($ChannelVideoScheduler as $key => $row) {
                         $output .=
                             '<tr>
-                            <td>' . $row->socure_title.
+                            <td class="border-lft">' . $row->socure_title.
                                             '</td>
                                  
                                 <td>' . $row->start_time . '</td>       
                                 <td>' . $row->end_time . '</td>    
                                 <td>' . $row->duration . '</td>  
-                                <td>
+                                <td class="border-rigt">
                                     <div class="action-icons">
                                         <button class="btn btn-sm edit-btn" data-toggle="modal" data-target="#editModal" data-id="' . $row->id . '">
-                                            <img class="ply" src="https://localhost/flicknexs/assets/img/icon/edit.svg">
+                                            <img class="ply" src="'.$edit_svg.'">
+                                            
                                         </button>
                                         <button class="btn btn-sm rescheduler-btn" data-toggle="modal" data-target="#rescheduleModal" data-id="' . $row->id . '">
-                                            <img class="ply" src="https://localhost/flicknexs/assets/img/icon/calender.svg">
+                                            <img class="ply" src="'.$calender_svg.'" width="19px" height="19px">
                                         </button>
                                         <button class="btn btn-sm remove-btn" data-id="' . $row->id . '">
-                                            <img class="ply" src="https://localhost/flicknexs/assets/img/icon/delete.svg">                                            
+                                            <img class="ply" src="'.$delete_svg.'">                                         
                                         </button>
                                     </div>
                                 </td>

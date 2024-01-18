@@ -441,7 +441,7 @@
    }
 
    body.light-theme h4, body.light-theme p {
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo GetDarkText(); ?>;
    }
 
    body.light-theme header#main-header{
