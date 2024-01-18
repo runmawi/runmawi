@@ -30,7 +30,7 @@
     .main-data-scr .draggable {
         margin-bottom: 10px;
          width: 100%;
-         flex-basis:47%;
+         flex-basis:45%;
         /* display:flex;
         align-items:center; */
     }
