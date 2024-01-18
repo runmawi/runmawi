@@ -42,9 +42,7 @@
         align-items:center;
         gap:10px;
     }
-    .drag-container .form-control:disabled, .drag-container .form-control[readonly]{
-        border:none;
-    }
+    
     input#video_id{
         border:none;
         white-space: nowrap;
@@ -130,14 +128,24 @@
         background-color: #fff;
         background-clip: padding-box;
         border: 1px solid #ced4da;
-        border-radius: 0.25rem;
+        border-radius: 0;
         transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        flex-basis: 30%;
     }
     .main-data-scr input{
         text-align:center;
     }
     .main-data-scr img{
         width: 100%;
+    }
+    tbody{
+        border: 1px solid #dee2e6;
+    }
+    table.dataTable thead th, table.dataTable thead td{
+        border-bottom: 0px !important;
+    }
+    .form-control{
+        border-radius: 0px !important;
     }
     </style>
 
@@ -214,7 +222,7 @@
                             <div class="search-container" style="flex-basis:70%; padding: 0 5px 0 0;">
                                     <input type="text" class="form-control" id="searchInput" placeholder="Search...">
                             </div>
-                            <div class="filterButton" style="flex-basis:30%;">
+                            <div class="filterButton">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
                                     <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
                                 </svg>
@@ -302,16 +310,11 @@
                                         <input type="hidden" class="form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
                                     </div>
                                 </div>
-                                    <!-- <div class="draggable">
-                                        <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100" style="object-fit:contain;">
-                                        <input type="text" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}" id="video_id" draggable="true" ondragstart="drag(this)" class=" form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
-                                        <input type="hidden" id="socure_type" class=" form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
-                                    </div> -->
                                 @endforeach
                             </div>
                         </div>
                         <div class="col-md-7 drop-side">
-                                <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
+                                <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)" style="height:100%;"></div>
 
                         </div>
                 </div>
