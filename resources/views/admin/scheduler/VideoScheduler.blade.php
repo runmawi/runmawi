@@ -27,11 +27,23 @@
         max-height: 200px; /* Set a maximum height for the scrollable area */
     }
 
-    .draggable {
+    .main-data-scr .draggable {
         margin-bottom: 10px;
          width: 100%;
+         flex-basis:47%;
         /* display:flex;
         align-items:center; */
+    }
+    .draggable{
+        width:100%;
+    }
+    .drop-side .drag-container{
+        display:flex;
+        align-items:center;
+        gap:10px;
+    }
+    .drag-container .form-control:disabled, .drag-container .form-control[readonly]{
+        border:none;
     }
     input#video_id{
         border:none;
@@ -47,7 +59,8 @@
         min-height: 100px; /* Set a minimum height for the drop zone */
         border: none;
         margin-bottom: 10px;
-        display: grid;
+        display: flex;
+        flex-wrap:wrap;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust the column width as needed */
         gap: 10px;
         padding: 10px;
@@ -60,12 +73,72 @@
     .select2-selection__rendered{
         height: calc(1.5em + 0.75rem + 2px);
     }
+    .select2-container--default .select2-selection--single{
+        display: block;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px) !important;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+    .select2-container .select2-selection--single .select2-selection__rendered{
+        height: calc(1.5em + 0.75rem + 2px) !important;
+        background: transparent !important;
+        line-height: 1.2 !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        top:5px !important;
+    }
+        .drag-container .form-control:disabled, .drag-container .form-control[readonly] {
+        background-color: transparent !important;
+        padding: 10px 5px;
+        font-size: 14px;
+    }
+
+    .drag-container img {
+        /* object-fit: cover !important; */
+        height: auto !important;
+        /* width: 100%; */
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    .drag-container {
+        text-align: center;
+        border: 0px solid #cecece;
+        border-radius: 5px;
+        box-shadow: none;
+    }
+    .filterButton{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
     </style>
 
 <style>
   .action-icons {
         position: relative;
-        display: inline-block;
+        display: flex;
     }
 
     .hidden-buttons {
@@ -127,27 +200,31 @@
                 </div>
               
                 <!-- <div class="row"> -->
-                    <h4 class="container-fluid mt-3">Drag Video and Drop for Scheduling:</h4>
+                    <!-- <h4 class="container-fluid mt-3">Drag Video and Drop for Scheduling:</h4> -->
                 <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="search-container">
+                    <div class="row mt-4">
+                        <div class="col-md-8 col-sm-8"></div>
+                        <div class="col-md-4 col-sm-4 d-flex">
+                            <div class="search-container" style="flex-basis:70%; padding: 0 5px 0 0;">
                                     <input type="text" class="form-control" id="searchInput" placeholder="Search...">
                             </div>
-                        </div>
-                            <div class="col-md-2 filterButton">
+                            <div class="filterButton" style="flex-basis:30%;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
-                                <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+                                    <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
                                 </svg>
                             </div>
+                        </div>
+                            
                         <!-- </div> -->
-                            <div class="filter-container">
-                                <select id="filterDropdown" class="form-control">
-                                    <option value="all">All</option>
-                                    <option value="Video">Video</option>
-                                    <option value="LiveStream">LiveStream</option>
-                                    <option value="Episode">Episode</option>
-                                </select>
+                            <div class="d-flex justify-content-end" style="width:100%">
+                                <div class="filter-container mt-2">
+                                    <select id="filterDropdown" class="form-control">
+                                        <option value="all">All</option>
+                                        <option value="Video">Video</option>
+                                        <option value="LiveStream">LiveStream</option>
+                                        <option value="Episode">Episode</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -208,14 +285,14 @@
                         </div>
                     </div>
                      <div class="row">
-                        <div class="col-md-8 p-0">
-                            <div class="drop-zone ScrollStyle MainData" >
+                        <div class="col-md-5 p-0">
+                            <div class="drop-zone ScrollStyle MainData main-data-scr" >
                                 @foreach(@$VideoCollection as $value)
 
                                 <div class="draggable" draggable="true" ondragstart="drag(event)">
                                     <div class="drag-container" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
                                         <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100" style="object-fit:contain;">
-                                        <input type="text" class="form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
+                                        <input type="text" class="form-control text-center video_{{ $value->id }}" value="{{ $value->title }}" readonly>
                                         <input type="hidden" class="form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
                                     </div>
                                 </div>
@@ -227,7 +304,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-7 drop-side">
                                 <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
 
                         </div>
@@ -242,8 +319,8 @@
                                             <thead>
                                                 <tr class="r1">
                                                     <!-- <th>#</th> -->
-                                                    <th style="text-align:left;">Channel Name</th>
-                                                    <th>Content Title</th>
+                                                    <th >Content Name</th>
+                                                    <!-- <th>Content Title</th> -->
                                                     <th>Start</th>
                                                     <th>End</th>
                                                     <th>Duration</th>

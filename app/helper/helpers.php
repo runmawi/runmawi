@@ -1644,51 +1644,37 @@ function VideoScheduledData($time,$channe_id,$time_zone){
                             ->select('channel_videos_scheduler.*', 'admin_epg_channels.name')
                             ->get();
 
-        $output = "";
-        $i = 1;
-        if (count($ChannelVideoScheduler) > 0) {
-            $total_row = $ChannelVideoScheduler->count();
-            if (!empty($ChannelVideoScheduler)) {
+            $image_URL = URL::to("");
 
-                foreach ($ChannelVideoScheduler as $key => $row) {
-                    $output .=
-                        '
-                        <tr>
-                       
-                        <td>' .
-                                            $row->name .
+            $output = "";
+            $i = 1;
+            if (count($ChannelVideoScheduler) > 0) {
+                $total_row = $ChannelVideoScheduler->count();
+                if (!empty($ChannelVideoScheduler)) {
+    
+                    foreach ($ChannelVideoScheduler as $key => $row) {
+                        $output .=
+                            '<tr>
+                            <td>' . $row->socure_title.
                                             '</td>
-                        <td>' .
-                                            $row->socure_title .
-                                            '</td>  
-                        <td>' .
-                                            $row->start_time .
-                                            '</td>       
-                        <td>' .
-                                            $row->end_time .
-                                            '</td>    
-
-                        <td>' .
-                                            $row->duration .
-                                            '</td>  
-                        <td>
-                                <div class="action-icons">
-                                    <i class="fas fa-ellipsis-v action-icon" data-id="' . $row->id . '"></i>
-                                    <div class="hidden-buttons" id="buttons_' . $row->id . '">
-                                        <button class="btn btn-sm btn-info edit-btn" data-toggle="modal" data-target="#editModal" data-id="' . $row->id . '">
-                                            <i class="fas fa-edit"></i>
+                                 
+                                <td>' . $row->start_time . '</td>       
+                                <td>' . $row->end_time . '</td>    
+                                <td>' . $row->duration . '</td>  
+                                <td>
+                                    <div class="action-icons">
+                                        <button class="btn btn-sm edit-btn" data-toggle="modal" data-target="#editModal" data-id="' . $row->id . '">
+                                            <img class="ply" src="https://localhost/flicknexs/assets/img/icon/edit.svg">
                                         </button>
-                                        <button class="btn btn-sm btn-warning rescheduler-btn" data-toggle="modal" data-target="#rescheduleModal" data-id="' . $row->id . '">
+                                        <button class="btn btn-sm rescheduler-btn" data-toggle="modal" data-target="#rescheduleModal" data-id="' . $row->id . '">
                                             <i class="fas fa-calendar-alt"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-danger remove-btn" data-id="' . $row->id . '">
-                                            <i class="fas fa-trash-alt"></i>
+                                        <button class="btn btn-sm remove-btn" data-id="' . $row->id . '">
+                                            <img class="ply" src="https://localhost/flicknexs/assets/img/icon/delete.svg">
                                         </button>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        ';
+                                </td>
+                            </tr>';
                 }
             } else {
 
