@@ -147,6 +147,19 @@
     .form-control{
         border-radius: 0px !important;
     }
+    .border-rigt{
+        border-right: 1px solid #dee2e6;
+    }
+    .border-lft{
+        border-left: 1px solid #dee2e6;
+    }
+    div.dataTables_wrapper div.dataTables_filter input{
+        border: 1px solid #aaa !important;
+        border-radius: 0px;
+    }
+    .drop-side input{
+        border: none;
+    }
     </style>
 
 <style>
@@ -222,16 +235,7 @@
                             <div class="search-container" style="flex-basis:70%; padding: 0 5px 0 0;">
                                     <input type="text" class="form-control" id="searchInput" placeholder="Search...">
                             </div>
-                            <div class="filterButton">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
-                                    <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
-                                </svg>
-                            </div>
-                        </div>
-                            
-                        <!-- </div> -->
-                            <div class="d-flex justify-content-end" style="width:100%">
-                                <div class="filter-container mt-2">
+                            <div class="filter-container">
                                     <select id="filterDropdown" class="form-control">
                                         <option value="all">All</option>
                                         <option value="Video">Video</option>
@@ -239,6 +243,16 @@
                                         <option value="Episode">Episode</option>
                                     </select>
                                 </div>
+                            <!-- <div class="filterButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                                    <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+                                </svg>
+                            </div> -->
+                        </div>
+                            
+                        <!-- </div> -->
+                            <div class="d-flex justify-content-end" style="width:100%">
+                                
                             </div>
                         </div>
                     </div>
@@ -324,16 +338,16 @@
 
                     <div class="row">
                             <div class="col-md-12">
-                                        <table class="table text-center" id="schedule_videos_table" style="width:100%">
+                                        <table class="table " id="schedule_videos_table" style="width:100%">
                                             <thead>
                                                 <tr class="r1">
                                                     <!-- <th>#</th> -->
-                                                    <th >Content Name</th>
+                                                    <th class="border-lft">Content Name</th>
                                                     <!-- <th>Content Title</th> -->
                                                     <th>Start</th>
                                                     <th>End</th>
                                                     <th>Duration</th>
-                                                    <th>Action</th>
+                                                    <th class="border-rigt">Action</th>
                                                 </tr>
                                             </thead>
                                            
@@ -639,10 +653,10 @@
     });
 // $(document).ready(function () {
 
-        $('#filterDropdown').hide();
+        // $('#filterDropdown').hide();
         $('.filterButton').click(function(){ 
             // alert();
-            $('#filterDropdown').toggle();
+            // $('#filterDropdown').toggle();
         });
 
 //         // Function to filter items based on the selected filter option
