@@ -37,6 +37,54 @@
             }
         });
 
+        // Skip Intro & Skip Recap 
+
+        player.on("loadedmetadata", function() {
+
+            const player_duration_Seconds        =  player.duration();
+            const video_skip_intro_seconds       = '<?= $videodetail->video_skip_intro_seconds ?>' ;
+            const video_intro_start_time_seconds = '<?= $videodetail->video_intro_start_time_seconds ?>' ;
+            const video_intro_end_time_seconds   = '<?= $videodetail->video_intro_end_time_seconds ?>' ;
+
+            const video_skip_recap_seconds       = '<?= $videodetail->video_skip_recap_seconds ?>' ;
+            const video_recap_start_time_seconds = '<?= $videodetail->video_recap_start_time_seconds ?>'  ;
+            const video_recap_end_time_seconds   = '<?= $videodetail->video_recap_end_time_seconds ?>'  ;
+
+            if( player_duration_Seconds != "Infinity" && !!video_skip_intro_seconds && !!video_intro_start_time_seconds && !!video_intro_end_time_seconds ){
+                player.skipButton({
+                    text: "Skip Intro",
+                    from: video_intro_start_time_seconds,
+                    to: video_skip_intro_seconds,
+                    position: "bottom-right",
+                    offsetH: 46,
+                    offsetV: 96
+                });
+
+                player.on("timeupdate", function() {
+                    if(video_intro_end_time_seconds <= player.currentTime() ){
+                        $(".vjs-fg-skip-button").removeAttr("style").hide();
+                    }
+                });
+            }
+
+            if(  player_duration_Seconds != "Infinity" &&  !!video_skip_recap_seconds && !!video_recap_start_time_seconds && !!video_recap_end_time_seconds ){
+                player.skipButton({
+                    text: "Skip Recap",
+                    from: video_recap_start_time_seconds,
+                    to: video_skip_recap_seconds,
+                    position: "bottom-right",
+                    offsetH: 46,
+                    offsetV: 96
+                });
+
+                player.on("timeupdate", function() {
+                    if(video_recap_end_time_seconds <= player.currentTime() ){
+                        $(".vjs-fg-skip-button").removeAttr("style").hide();
+                    }
+                });
+            }
+        });
+
         // Ads Marker
 
         player.on("loadedmetadata", function() {
@@ -97,12 +145,15 @@
             history.back();
         });
 
+        // Hls Quality Selector - M3U8 
 
-        player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
+        player.hlsQualitySelector({ 
             displayCurrentQuality: true,
         });
 
-        var vastTagPreroll  = '<?= $pre_advertisement ?>'; // Advertisement
+        // Advertisement
+
+        var vastTagPreroll  = '<?= $pre_advertisement ?>'; 
         var vastTagPostroll = '<?= $post_advertisement ?>';
 
         var prerollTriggered = false;
@@ -204,8 +255,6 @@
             player.play();
 
         });
-
-
     });
 
 </script>
