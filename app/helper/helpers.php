@@ -1667,10 +1667,10 @@ function VideoScheduledData($time,$channe_id,$time_zone){
                                             <img class="ply" src="https://localhost/flicknexs/assets/img/icon/edit.svg">
                                         </button>
                                         <button class="btn btn-sm rescheduler-btn" data-toggle="modal" data-target="#rescheduleModal" data-id="' . $row->id . '">
-                                            <i class="fas fa-calendar-alt"></i>
+                                            <img class="ply" src="https://localhost/flicknexs/assets/img/icon/calender.svg">
                                         </button>
                                         <button class="btn btn-sm remove-btn" data-id="' . $row->id . '">
-                                            <img class="ply" src="https://localhost/flicknexs/assets/img/icon/delete.svg">
+                                            <img class="ply" src="https://localhost/flicknexs/assets/img/icon/delete.svg">                                            
                                         </button>
                                     </div>
                                 </td>
