@@ -1,5 +1,5 @@
 <div class="iq-main-header ">
-    <h4 class="main-title"> <?= __('Episode') </h4>
+    <h4 class="main-title"> <?= __('Episode') ?> </h4>
 </div>
 
 <div class="col-sm-12 overflow-hidden">

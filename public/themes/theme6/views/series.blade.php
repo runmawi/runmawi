@@ -233,15 +233,17 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 
                             <ul
                                 class="p-0 list-inline d-flex flex-wrap align-items-center movie-content movie-space-action flex-wrap iq_tag-list">
-                                @if (optional($series)->search_tag)
-
-                                    <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
-                                            aria-hidden="true"></i>TAGS:</li>
-                                            
-                                    <li> <p class="tag-list m-0" >{{ optional($series)->search_tag }}</p></li>
-                                @endif
+                                <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
+                                        aria-hidden="true"></i>TAGS:</li>
+                                <li> <a class="tag-list" href="tags/brother.html">Brother,</a>
+                                </li>
+                                <li><a class="tag-list" href="tags/brother-relationship.html">Brother
+                                        Relationship,</a></li>
+                                <li> <a class="tag-list" href="tags/king.html">King,</a>
+                                </li>
+                                <li> <a class="tag-list" href="tags/kings.html">kings</a>
+                                </li>
                             </ul>
-
                         </div>
                     </div>
                 </div>
@@ -293,142 +295,25 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                 </nav>
             </div> -->
 
-        <!-- $series->title -->
         <div class="container-fluid mt-5">
             <div class="favorites-contens">
-                <div class="col-md-3 p-0" style="width:150px">
-                    <select class="form-control" id="season_id" name="season_id" style="box-shadow: none;">
-                        @foreach ($season as $key => $seasons)
-                            <option data-key="<?= $key + 1 ?>" value="season_<?= $seasons->id ?>">Season
-                                <?= $key + 1 ?></option>
-                        @endforeach
-                    </select>
-                </div>
 
+                {{-- Season Depends Episode --}}
+
+                @if(($season)->isNotEmpty())
+
+                    <div class="col-md-3 p-0" style="width:150px">
+                        <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;">
+                            @foreach ($season as $key => $seasons)
+                                <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 
-                <!-- Season dropdown start -->
-                <div class="tab-container">
-                <div class="tab-navigation">              
-                    <select id="select-box">
-                    <option value="1">Season 1</option>
-                    <option value="2">Season 2</option>
-                    <option value="3">Season 3</option>
-                    </select>
-                </div>
-  
-                <!-- Season 1 Start Here -->
-                <div id="tab-1" class="tab-season">           
-                
-                <!-- Tablist -->
-
-                <div class="trending-custom-tab ">
-                     <div class="tab-title-info position-relative">
-                        <ul class="trending-pills nav nav-pills text-center iq-ltr-direction" role="tablist">
-                           <li class="nav-item">
-                              <a class="nav-link m-0 active show" data-toggle="pill" href="#episodes" role="tab" aria-selected="true">Episodes</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link m-0 " data-toggle="pill" href="#feature-clips" role="tab" aria-selected="false">FEATURED CLIPS</a>
-                           </li>
-                        </ul>
-                     </div>
-
-                     <div class="tab-content" id="nav-tabContent" style="display: block !important ;">
-                        
-                        <!-- Episode -->
-                        <div id="episodes" class="tab-pane animated fadeInUp">
-                           <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction ">
-                              
-                              <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                 <div class="block-image position-relative">
-                                    <a href="show-details.html">
-                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid transimga img-zoom" alt="" >
-                                    </a>
-                                    <div class="episode-number episodenum">S01E04</div>
-                                    <div class="episode-play-info">
-                                       <div class="episode-play">
-                                          <a href="show-details.html" tabindex="0"><i class="ri-play-fill"></i></a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="epi-desc p-3">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 22, 2020</span>
-                                       <span class="text-primary run-time" style="font-weight: 700">41min</span>
-                                    </div>
-                                    <a href="show-detail.html">
-                                       <h5 class="epi-name text-white mb-0">
-                                          The Reckless 4</h5>
-                                    </a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                        <!-- Features clips -->
-                        
-                        <div id="feature-clips" class="tab-pane animated fadeInUp active show">
-                           <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction">
-                              
-                              
-                              <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                 <div class="block-image position-relative">
-                                    <a href="show-details.html">
-                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid img-zoom" alt="" >
-                                    </a>
-                                    <div class="episode-number episodenum">S01E02</div>
-                                    <div class="episode-play-info">
-                                       <div class="episode-play">
-                                          <a href="show-details.html" tabindex="0"><i class="ri-play-fill"></i></a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="epi-desc p-3">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 8, 2020</span>
-                                       <span class="text-primary run-time" style="font-weight: 700">35min</span>
-                                    </div>
-                                    <a href="show-detail.html">
-                                       <h5 class="epi-name text-white mb-0">
-                                          The Reckless 2 </h5>
-                                    </a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                </div>
-                <!-- Season 1 End Here -->
-
-
-                <!-- Season 2 Start Here -->
-                <div id="tab-2" class="tab-season">
-                    <p> Money Heist Season 2 </p>
-                </div>
-                <!-- Season 2 End Here -->
-
-                <!-- Season 3 Start Here -->
-                <div id="tab-3" class="tab-season">
-                    <p> Money Heist Season 3 </p>
-                </div>
-                <!-- Season 3 End Here -->
-
-
-                  </div>
-
-                  <script>
-                    $('.tab-season').hide();
-                    $('#tab-1').show();
-
-                    $('#select-box').change(function () {                   
-                    dropdown = $('#select-box').val();
-                    $('.tab-season').hide();
-                    $('#' + "tab-" + dropdown).show();                                    
-                    });
-                </script>
-                <!-- Season dropdwon end -->
-
+                    <div class="data">
+                        @partial('season_depends_episode_section')
+                    </div>
+                @endif
 
                 <ul class="category-page list-inline row p-3 mb-0">
                     <?php 
@@ -1006,4 +891,25 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
             $('.add_watch').slideUp('fast');
         }, 3000);
     }
+</script>
+
+<script>
+    $(".season-depends-episode").change(function() {
+        
+        const season_id = $(this,':selected').val();
+
+        const series_id = $('#series_id').val();
+
+        $.ajax({
+            type: "get",
+            url: "{{ route('front-end.series.season-depends-episode') }}",
+            data: {
+                series_id: series_id ,
+                season_id: season_id ,
+            },
+            success: function(data) {
+                $(".data").html(data);
+            },
+        });
+    });
 </script>
