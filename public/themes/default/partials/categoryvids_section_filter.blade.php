@@ -4,6 +4,31 @@
     ->first();
 @endphp
 
+<style>
+    .bootstrap-select>.dropdown-toggle{
+        background: transparent !important;
+        border: 1px solid #ddd !important;
+        border-radius: 10px !important;
+        color: #fff !important;
+    }
+    body.light-theme .dropdown-menu{
+      background-color: <?php echo GetLightBg(); ?>!important;  
+      color: <?php echo GetLightText(); ?>!important;
+      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+    }
+    .dropdown-menu{
+        background-color: #000;
+        color: #fff !important;
+        box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+    }
+    .dropdown-item:focus, .dropdown-item:hover{
+        background-color: #000;
+        color: #fff !important;
+        box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
+    }
+
+</style>
+
 <div class="row mt-2 p-0 justify-content-end">
 
     {{-- <div class="col-md-2 col-sm-4 mb-1">
