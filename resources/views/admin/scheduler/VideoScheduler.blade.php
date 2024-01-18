@@ -291,7 +291,7 @@
 
                                 <div class="draggable" draggable="true" ondragstart="drag(event)">
                                     <div class="drag-container" data-class="{{ $value->id }}" data-socure_type="{{ $value->socure_type }}">
-                                        <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100" style="object-fit:contain;">
+                                        <img src="{{ URL::to('/public/uploads/images/').'/'.$value->image }}" alt="" width="100" height="100" style="object-fit:contain; width:100%;">
                                         <input type="text" class="form-control text-center video_{{ $value->id }}" value="{{ $value->title }}" readonly>
                                         <input type="hidden" class="form-control video_{{ $value->socure_type }}" value="{{ $value->socure_type }}" readonly>
                                     </div>
