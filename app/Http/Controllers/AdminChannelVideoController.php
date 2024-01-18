@@ -252,9 +252,11 @@ class AdminChannelVideoController extends Controller
                         
                     }
 
-                }else if($this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){
+                }
+                // else if($this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){
 
-                }else{
+                // }
+                else{
                     if($this->VideoScheduler($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id) !== null){
                         
                         return VideoScheduledData($time,$channe_id,$time_zone) ;
