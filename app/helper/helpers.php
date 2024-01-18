@@ -1422,17 +1422,20 @@ function SchedulerSocureData($socure_type,$socure_id)
     if($socure_type == "Video"){
         $socure_data = App\Video::where('id',$socure_id)->first();
         if(!empty($socure_data) && $socure_data->type == ''){
+            // https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8
             $m3u8_url = URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8';
+            $m3u8_url = 'https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8';
             $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
             $process = new Process($command);
-            try {
+            // try {
                 // Run the process
                 $process->mustRun();
                 $duration = trim($process->getOutput());
                 $seconds = round($duration);
-            } catch (ProcessFailedException $exception) {
-                $error = $exception->getMessage();
-            }
+            // } catch (ProcessFailedException $exception) {
+            //     $error = $exception->getMessage();
+            // }
+
             $data = array(
                 'duration' => $duration  ,
                 'seconds' => $seconds  ,            
