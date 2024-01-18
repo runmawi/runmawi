@@ -2791,7 +2791,7 @@ class HomeController extends Controller
 
                 // videos Search
                     if(count($videos) > 0){
-                        $output = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background:#000;">';
+                        $output = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
                         $output .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Videos</h6>";
                         foreach ($videos as $row)
                         {
@@ -2821,7 +2821,7 @@ class HomeController extends Controller
                 // Audio Search
 
                     if(count($audio) > 0){
-                        $audios = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
+                        $audios = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
                         $audios .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Audio </h6>";
                         foreach ($audio as $row)
                         {
@@ -2836,7 +2836,7 @@ class HomeController extends Controller
                 // Episode
 
                     if(count($Episode) > 0){
-                        $Episodes = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
+                        $Episodes = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
                         $Episodes .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Episode </h6>";
                         foreach ($Episode as $row)
                         {  
@@ -2856,7 +2856,7 @@ class HomeController extends Controller
 
                 if(count($Series) > 0){
 
-                    $Series_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
+                    $Series_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
                     $Series_search .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Series Videos</h6>";
                     foreach ($Series as $row)
                     {
@@ -2872,7 +2872,7 @@ class HomeController extends Controller
 
                 if(count($station_audio) > 0){
 
-                    $station_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
+                    $station_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
                     $station_search .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Music Station </h6>";
                     foreach ($station_audio as $row)
                     {
