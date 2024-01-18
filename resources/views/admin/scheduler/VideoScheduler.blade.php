@@ -274,9 +274,7 @@
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                               
-                                            </tbody>
+                                           
                                         </table>
                                 
                             </div>
@@ -308,6 +306,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+        <!-- Include DataTables CSS and JS files -->
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 
     <script type="text/javascript">
 
@@ -568,8 +569,8 @@
                 channe_id: $('#channe_id').val(),
             },        
             success: function(value){
-                $('tbody').html(value.table_data);
                 $('#schedule_videos_table').DataTable();
+                $('tbody').html(value.table_data);
             }
         });
 
