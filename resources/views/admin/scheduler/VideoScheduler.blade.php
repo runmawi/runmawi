@@ -350,7 +350,9 @@
                                                     <th class="border-rigt">Action</th>
                                                 </tr>
                                             </thead>
-                                           
+                                            <tbody>
+
+                                            </tbody>
                                         </table>
                                 
                             </div>
@@ -393,7 +395,9 @@
      $(document).on('click', '.remove-btn', function () {
 
             var dataId = $(this).data('id');
+            if (confirm('Are you sure you want to delete this item?')) {
                 RemoveSchedulers(dataId);
+            }
         });
 
         function RemoveSchedulers(dataId) {
@@ -413,7 +417,9 @@
                 },        
                 success: function(value){
                     $('tbody').html(value.table_data);
-                    $('#schedule_videos_table').DataTable();
+                        Swal.fire({
+                                title: 'Removed the Video !',
+                        })
                     location.reload();                            
                 },
                 error: function (xhr, status, error) {
@@ -645,8 +651,9 @@
                 channe_id: $('#channe_id').val(),
             },        
             success: function(value){
-                $('#schedule_videos_table').DataTable();
+                
                 $('tbody').html(value.table_data);
+                $('#schedule_videos_table').DataTable();
             }
         });
 
@@ -958,6 +965,7 @@
                     }
                     $('tbody').html(value.table_data);
                     $('#schedule_videos_table').DataTable();
+                    
             }
         });
 
