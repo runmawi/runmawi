@@ -6,7 +6,7 @@
             <a href="<?php echo URL::to('/live/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration:none;color:#fff">
                <h4 class="movie-title">
                   <?php
-                     if(!empty($category->home_genre)){ echo __('Live').' '.__($category->home_genre) ; }else{ echo __('Live').' '.__($category->name) ; }  
+                     if(!empty($category->home_genre)){ echo (__('Live')).' '.(__($category->home_genre)) ; }else{ echo (__('Live')).' '.(__($category->name)) ; }  
                      //   echo __($category->name);
                        ?>
                </h4>
