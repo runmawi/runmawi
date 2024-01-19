@@ -82,6 +82,15 @@ $settings = App\Setting::first();
     display: flex;
     justify-content: center;
     }
+    .modal-backdrop.show{
+      opacity: 0;
+    }
+    .modal-backdrop{
+      position:relative;
+    }
+    label{
+      color: #000;
+    }
 </style>
 
 <body>
@@ -215,7 +224,7 @@ $settings = App\Setting::first();
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
                           <!-- <li><a class="showSingle" target="2">Transaction details</a></li>-->
                          <!--  <li><a class="showSingle" target="3">Plan details</a></li>-->
-                        <li><a class="showSingle" target="1">Manage Profile</a></li>
+                        <li><a class="showSingle" target="1">Manage Profile details</a></li>
                         <li><a class="showSingle" target="2">Plan details</a></li>
                         <li><a class="showSingle" target="5">Preference for videos</a></li>
                         <li><a class="showSingle" target="6">Profile</a></li>
@@ -333,7 +342,7 @@ $settings = App\Setting::first();
         </div>
         
         <div class="modal-body">
-           <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
+            <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
               <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
               <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                             
@@ -406,7 +415,7 @@ $settings = App\Setting::first();
                          
                          <!-- -->
                   <div class="row align-items-center justify-content-center mb-3 mt-3">
-                     <div class=" text-center col-sm-4 ">
+                     <div class=" text-center col-sm-12 col-md-12 col-lg-12 ">
                         <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
                      </div>
 
@@ -520,8 +529,10 @@ $settings = App\Setting::first();
                         <p class="name"> No Profile </p>  </div>
                   @endforelse
 
-                  <div class="col-md-6" style="margin-top: 63px;">
-                     <li> <a class="fa fa-plus-circle fa-100x" style="color: white !important; " href="{{ route('Multi-profile-create') }}" ></a> </li>
+                  <div class="col-md-6">
+                     <a  style="color: white !important; " href="{{ route('Multi-profile-create') }}" >
+                        <i class="fa fa-plus-circle fa-100x"></i> <?= 'add profile' ?>
+                     </a> 
                   </div>
 
               </div>    
@@ -606,7 +617,7 @@ $settings = App\Setting::first();
                   
                   <p class="text-white">Tv Logged User List</p>
        
-                               <div class="col-md-4">
+                               <div class="col-md-12 col-lg-12">
 
                                <table class="table  artists-table iq-card text-center p-0">
                                           <tr class="r1">
@@ -637,7 +648,7 @@ $settings = App\Setting::first();
 <style>
 .form-control {
 background-color: #F2F5FA;
-border: 1px solid transparent;
+border: 1px solid #acaeb3;
 height: 45px;
 position: relative;
 color: #000000!important;
