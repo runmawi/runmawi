@@ -58,7 +58,7 @@
                         </div>
 
                         <div class="row sumbit_btn">
-                            <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('Multiprofile')}}'" >Cancel</button>
+                            <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('myprofile')}}'" >Cancel</button>
                             <button type="submit" class="btn btn-hover ab" >Save Changes</button>
                         </div>
 

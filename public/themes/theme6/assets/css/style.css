@@ -719,6 +719,18 @@ li.slide-item.slick-slide.slick-active {
 .music-play-lists li span i:hover{
     color: blue !important;
 }
+.navbar-right .search-box {
+    display: none;
+}
+.navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box {
+    display: block !important;
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0, 0);
+}
+
+
+
 /*  Signup Page*/
 
 /* .img-box {
