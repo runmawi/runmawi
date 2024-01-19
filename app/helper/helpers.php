@@ -1647,7 +1647,7 @@ function VideoScheduledData($time,$channe_id,$time_zone){
             $image_URL = URL::to("");
             $edit_svg = URL::to('assets/img/icon/edit.svg');
             $delete_svg = URL::to('assets/img/icon/delete.svg');
-            $calender_svg = URL::to('assets/img/icon/Calender.svg');
+            $calender_svg = URL::to('assets/img/icon/cal-event.svg');
             $output = "";
             $i = 1;
             if (count($ChannelVideoScheduler) > 0) {
