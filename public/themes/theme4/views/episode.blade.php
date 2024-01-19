@@ -18,6 +18,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 <link href="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') ?>" rel="stylesheet">
 <link href="<?= asset('public/themes/theme1/assets/css/video-js/videos-player.css') ?>" rel="stylesheet">
 <link href="<?= asset('public/themes/theme1/assets/css/video-js/video-end-card.css') ?>" rel="stylesheet">
+<link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
 
 <!-- video-js Script  -->
 
@@ -30,6 +31,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 <script src="<?= asset('public/themes/theme1/assets/js/video-js/videojs-hls-quality-selector.min.js') ?>"></script>
 <script src="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') ?>"></script>
 <script src="<?= asset('public/themes/theme1/assets/js/video-js/end-card.js') ?>"></script>
+<script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
 
 
 <style>

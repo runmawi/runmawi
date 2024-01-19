@@ -6,7 +6,7 @@
 
     $data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
                                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
-                                        'expiry_date')
+                                        'expiry_date','active','status','draft')
 
         ->where('active',1)->where('status', 1)->where('draft',1);
 
