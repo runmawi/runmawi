@@ -30,7 +30,7 @@
         } ?>">
 
             <?php if ($order_settings_list[17]->header_name) {
-                echo __($order_settings_list[17]->header_name);
+                echo (__($order_settings_list[17]->header_name));
             } else {
                 echo '';
             } ?></a>

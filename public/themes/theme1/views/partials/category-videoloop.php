@@ -37,7 +37,7 @@
                 <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
                     <h4 class="movie-title">
                         <?php 
-                        if(!empty($category->home_genre)){ echo $category->home_genre ; }else{ echo $category->name ; }  
+                        if(!empty($category->home_genre)){ echo (__($category->home_genre)) ; }else{ echo (__($category->name)) ; }  
                         //   echo __($category->name);
                           ?>
                     </h4>
