@@ -132,6 +132,9 @@ $user = App\User::where('id',$id)->first();
 a{
 cursor: pointer;
 }
+.font-size-13{
+   font-size: 13px !important;
+}
 
     </style>
    <body>

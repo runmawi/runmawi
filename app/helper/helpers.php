@@ -1644,51 +1644,40 @@ function VideoScheduledData($time,$channe_id,$time_zone){
                             ->select('channel_videos_scheduler.*', 'admin_epg_channels.name')
                             ->get();
 
-        $output = "";
-        $i = 1;
-        if (count($ChannelVideoScheduler) > 0) {
-            $total_row = $ChannelVideoScheduler->count();
-            if (!empty($ChannelVideoScheduler)) {
-
-                foreach ($ChannelVideoScheduler as $key => $row) {
-                    $output .=
-                        '
-                        <tr>
-                       
-                        <td>' .
-                                            $row->name .
+            $image_URL = URL::to("");
+            $edit_svg = URL::to('assets/img/icon/edit.svg');
+            $delete_svg = URL::to('assets/img/icon/delete.svg');
+            $calender_svg = URL::to('assets/img/icon/Calender.svg');
+            $output = "";
+            $i = 1;
+            if (count($ChannelVideoScheduler) > 0) {
+                $total_row = $ChannelVideoScheduler->count();
+                if (!empty($ChannelVideoScheduler)) {
+    
+                    foreach ($ChannelVideoScheduler as $key => $row) {
+                        $output .=
+                            '<tr>
+                            <td class="border-lft">' . $row->socure_title.
                                             '</td>
-                        <td>' .
-                                            $row->socure_title .
-                                            '</td>  
-                        <td>' .
-                                            $row->start_time .
-                                            '</td>       
-                        <td>' .
-                                            $row->end_time .
-                                            '</td>    
-
-                        <td>' .
-                                            $row->duration .
-                                            '</td>  
-                        <td>
-                                <div class="action-icons">
-                                    <i class="fas fa-ellipsis-v action-icon" data-id="' . $row->id . '"></i>
-                                    <div class="hidden-buttons" id="buttons_' . $row->id . '">
-                                        <button class="btn btn-sm btn-info edit-btn" data-toggle="modal" data-target="#editModal" data-id="' . $row->id . '">
-                                            <i class="fas fa-edit"></i>
+                                 
+                                <td>' . $row->start_time . '</td>       
+                                <td>' . $row->end_time . '</td>    
+                                <td>' . $row->duration . '</td>  
+                                <td class="border-rigt">
+                                    <div class="action-icons">
+                                        <button class="btn btn-sm edit-btn" data-toggle="modal" data-target="#editModal" data-id="' . $row->id . '">
+                                            <img class="ply" src="'.$edit_svg.'">
+                                            
                                         </button>
-                                        <button class="btn btn-sm btn-warning rescheduler-btn" data-toggle="modal" data-target="#rescheduleModal" data-id="' . $row->id . '">
-                                            <i class="fas fa-calendar-alt"></i>
+                                        <button class="btn btn-sm rescheduler-btn" data-toggle="modal" data-target="#rescheduleModal" data-id="' . $row->id . '">
+                                            <img class="ply" src="'.$calender_svg.'" width="19px" height="19px">
                                         </button>
-                                        <button class="btn btn-sm btn-danger remove-btn" data-id="' . $row->id . '">
-                                            <i class="fas fa-trash-alt"></i>
+                                        <button class="btn btn-sm remove-btn" data-id="' . $row->id . '">
+                                            <img class="ply" src="'.$delete_svg.'">                                         
                                         </button>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        ';
+                                </td>
+                            </tr>';
                 }
             } else {
 
