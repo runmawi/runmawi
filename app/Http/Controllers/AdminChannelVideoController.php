@@ -252,9 +252,11 @@ class AdminChannelVideoController extends Controller
                         
                     }
 
-                }else if($this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){
+                }
+                // else if($this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone) !== null && $this->ChannelVideoSchedulerWithOtherTimeZone($channe_id,$time,$time_zone)->isNotEmpty()){
 
-                }else{
+                // }
+                else{
                     if($this->VideoScheduler($TimeZone_NowTime,$SocureData,$TimeZone,$channe_id,$time,$time_zone,$socure_type,$socure_id) !== null){
                         
                         return VideoScheduledData($time,$channe_id,$time_zone) ;
@@ -344,6 +346,8 @@ class AdminChannelVideoController extends Controller
                 $VideoScheduler->duration	    = $duration;
                 $VideoScheduler->type           = $SocureData['type'];
                 $VideoScheduler->url            = $SocureData['URL'];
+                $VideoScheduler->image          = $SocureData['socure_data']->image;
+                $VideoScheduler->description    = $SocureData['socure_data']->description;
                 $VideoScheduler->save();
 
                 $data = 1;
@@ -429,6 +433,8 @@ class AdminChannelVideoController extends Controller
                     $VideoScheduler->duration	    = $duration;
                     $VideoScheduler->type           = $SocureData['type'];
                     $VideoScheduler->url            = $SocureData['URL'];
+                    $VideoScheduler->image          = $SocureData['socure_data']->image;
+                    $VideoScheduler->description    = $SocureData['socure_data']->description;
                     $VideoScheduler->save();
 
                     $data = 1;
@@ -603,6 +609,8 @@ class AdminChannelVideoController extends Controller
                 $VideoScheduler->duration	    = $duration;
                 $VideoScheduler->type           = 'Gap';
                 $VideoScheduler->url            = 'Gap';
+                $VideoScheduler->image          = 'default_image.webp';
+                $VideoScheduler->description    = 'Gap Video Added';
                 $VideoScheduler->save();
 
                 $data = $BeforeScheduler->socure_order + 1;
@@ -650,6 +658,8 @@ class AdminChannelVideoController extends Controller
                 $VideoScheduler->duration	    = $CurrentScheduler->duration;
                 $VideoScheduler->type           = $CurrentScheduler->type;
                 $VideoScheduler->url            = $CurrentScheduler->url;
+                $VideoScheduler->image          = $CurrentScheduler->image;
+                $VideoScheduler->description    = $CurrentScheduler->description;
                 $VideoScheduler->save();
 
                 $data = 1;
@@ -702,6 +712,8 @@ class AdminChannelVideoController extends Controller
                 $VideoScheduler->duration	    = $duration;
                 $VideoScheduler->type           = $SocureData['type'];
                 $VideoScheduler->url            = $SocureData['URL'];
+                $VideoScheduler->image          = $SocureData['socure_data']->image;
+                $VideoScheduler->description    = $SocureData['socure_data']->description;
                 $VideoScheduler->save();
 
                 $data = 1;

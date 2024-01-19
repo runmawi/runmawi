@@ -556,7 +556,7 @@ background-color: #000;padding: 10px!important;}
                 <div class="flick1">
                  <div class="small-heading text-white">{{ __('Step 2 of') }}  <span class="ml-2">2</span></div>
                     <p class="text-white">{{ __('Hello') }}, {{ $user_mail }}</p>
-                    <div class="medium-heading text-white"> {{  $signup_step2_title }} </div>
+                    <div class="medium-heading text-white"> {{  __($signup_step2_title) }} </div>
                     <div class="col-md-12 p-0 mt-2">
 
                                                 <!-- <h5> Payment Method</h5> -->
