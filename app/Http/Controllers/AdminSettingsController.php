@@ -246,6 +246,11 @@ class AdminSettingsController extends Controller
         $settings->show_subtitle = $request['show_subtitle'];
         $settings->show_views = $request['show_views'];
 
+        $settings->search_title_status  = $request['search_title_status'];
+        $settings->search_category_status = $request['search_category_status'];
+        $settings->search_tags_status = $request['search_tags_status'];
+        $settings->search_description_status = $request['search_description_status'];
+        $settings->search_details_status = $request['search_details_status'];
 
         $settings->ppv_status = $request['ppv_status'];
 
