@@ -2836,30 +2836,19 @@ class AdminUsersController extends Controller
 
     public function profilePreference(Request $request)
     {
-        $data = $request->all();
-        $id = $data['user_id'];
-        $preference = User::find($id);
 
-        if (!empty($data['preference_language']))
-        {
-            $preference_language = json_encode($data['preference_language']);
-            $preference->preference_language = $preference_language;
-        }
-        if (!empty($data['preference_genres']))
-        {
-            $preference_genres = json_encode($data['preference_genres']);
-            $preference->preference_genres = $preference_genres;
-        }
-        $preference->save();
+        $inputs = array(
+            'preference_language' => !empty($request->preference_language) ? json_encode($request->preference_language) : null ,
+            'preference_genres'   => !empty($request->preference_genres ) ? json_encode($request->preference_genres ) : null ,
+        ) ;
+        
+        User::find($request->user_id)->update($inputs);
 
-        return Redirect::to('/myprofile')
-            ->with(array(
-            'message' => 'Successfully Created Preference',
-            'note_type' => 'success'
-        ));
+        return Redirect::to('/myprofile')->with(array('message' => 'Successfully Created Preference', 'note_type' => 'success'));
 
     }
- public function myprofile()
+
+    public function myprofile()
     {
 
         $Theme = HomeSetting::pluck('theme_choosen')->first();
@@ -2988,6 +2977,9 @@ class AdminUsersController extends Controller
             {
                 $video = [];
             }
+
+
+
             $data = array(
                 'recent_videos' => $video,
                 'videocategory' => $videocategory,
@@ -3004,7 +2996,6 @@ class AdminUsersController extends Controller
                 'UserTVLoginCode' => $UserTVLoginCode,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
                 'LoggedusersCode' => TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get() ,
-
             );
             
             if(!empty($SiteTheme) && $SiteTheme->my_profile_theme == 0 || $SiteTheme->my_profile_theme ==  null){
