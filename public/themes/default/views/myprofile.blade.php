@@ -474,8 +474,8 @@ $settings = App\Setting::first();
                   <div class="col-sm-9 form-group p-0 mt-3">
                     <label><h5>{{ __('Preference Language') }}</h5></label>
                     <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
-                        @foreach($preference_languages as $preference_language)
-                            <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
+                        @foreach ($preference_languages as $preference_language)
+                           <option value="{{ $preference_language->id }}" @if( !empty(json_decode($user->preference_language)) && in_array( $preference_language->id, json_decode($user->preference_language) ))selected='selected' @endif >{{ $preference_language->name }}</option>
                         @endforeach
                     </select>
                  </div>
@@ -483,8 +483,8 @@ $settings = App\Setting::first();
                  <div class="col-sm-9 form-group p-0 mt-3">
                     <label><h5>{{ __('Preference Genres') }}</h5></label>
                     <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
-                        @foreach($videocategory as $preference_genres)
-                            <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
+                        @foreach ($videocategory as $preference_genres)
+                           <option value="{{ $preference_genres->id }}" @if( !empty(json_decode($user->preference_genres)) && in_array( $preference_genres->id, json_decode($user->preference_genres) ))selected='selected' @endif >{{ $preference_genres->name }}</option>
                         @endforeach
                     </select>
                  </div>
