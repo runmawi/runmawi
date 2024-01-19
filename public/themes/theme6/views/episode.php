@@ -235,7 +235,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
         value="<?= $episode->genre_id ?>">
     <br>
 
-    <div class="row">
+    <div class="">
         <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
                 <ol class="breadcrumb">
@@ -251,14 +251,20 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                             href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
                             <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                         </a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
                     <?php } ?>
 
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    
 
-                    <li class="breadcrumb-item"><a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> </a></li>
+                    <li class="breadcrumb-item">
+                        <a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>">
+                            <?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> 
+                        </a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
 
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    
 
                     <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? ucwords(substr(@$episode->title, 0, 120) . '...') : ucwords($episode->title); ?> </a></li>
                 </ol>
@@ -267,7 +273,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     <div>
 
     <div class="container-fluid series-details">
-        <div id="series_title">
+        <div id="series_title" style="padding-left:15px;">
             <div class="">
             <?php if($free_episode > 0 && Auth::user()->role != 'admin' || $checkseasonppv_exits > 0 && Auth::user()->role != 'admin' ||  $ppv_exits > 0 && Auth::user()->role != 'admin' ||  Auth::guest()){
 
@@ -519,8 +525,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             <!-- Comment Section -->
 
             <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
-            <div class="row">
-                <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <div class="">
+                <div class="video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>
                     <?php include 'comments/index.blade.php'; ?>
                 </div>

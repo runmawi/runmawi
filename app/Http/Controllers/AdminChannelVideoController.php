@@ -774,38 +774,45 @@ class AdminChannelVideoController extends Controller
                         $NextScheduler->save();
 
                 }
+                if(!empty($NextScheduler)){
 
-                $AfterScheduler = ChannelVideoScheduler::where('channe_id',$NextScheduler->channe_id)
-                            ->where('choosed_date',$NextScheduler->choosed_date)
-                            ->where('id', '>', $NextScheduler->id)
-                            ->get();
+                    $AfterScheduler = ChannelVideoScheduler::where('channe_id',$NextScheduler->channe_id)
+                                ->where('choosed_date',$NextScheduler->choosed_date)
+                                ->where('id', '>', $NextScheduler->id)
+                                ->get();
 
-                ChannelVideoScheduler::where('id',$Scheduler_id)->delete();
-                $previousEndTime = $NextScheduler->end_time;
+                    ChannelVideoScheduler::where('id',$Scheduler_id)->delete();
+                    $previousEndTime = $NextScheduler->end_time;
 
-                foreach ($AfterScheduler as $scheduler) {
-                    $scheduler->start_time = $previousEndTime;
-                    list($previousEndHours, $previousEndMinutes, $previousEndSeconds) = explode(':', $previousEndTime);
-                    $totalPreviousEndSeconds = ($previousEndHours * 3600) + ($previousEndMinutes * 60) + $previousEndSeconds;
-                
-                    $scheduler->start_time = $previousEndTime;
-                    $scheduler->socure_order = $NextScheduler->socure_order;
+                    foreach ($AfterScheduler as $scheduler) {
+                        $scheduler->start_time = $previousEndTime;
+                        list($previousEndHours, $previousEndMinutes, $previousEndSeconds) = explode(':', $previousEndTime);
+                        $totalPreviousEndSeconds = ($previousEndHours * 3600) + ($previousEndMinutes * 60) + $previousEndSeconds;
                     
-                    // Convert duration to seconds
-                    list($durationHours, $durationMinutes, $durationSeconds) = explode(':', $scheduler->duration);
-                    $totalDurationSeconds = ($durationHours * 3600) + ($durationMinutes * 60) + $durationSeconds;
-                
-                    // Calculate total seconds for end time
-                    $totalEndSeconds = $totalPreviousEndSeconds + $totalDurationSeconds;
-                
-                    // Convert totalEndSeconds back to H:i:s format
-                    $scheduler->end_time = gmdate('H:i:s', $totalEndSeconds);
-                    $previousEndTime = $scheduler->end_time;
-                
-                    $scheduler->save();
+                        $scheduler->start_time = $previousEndTime;
+                        $scheduler->socure_order = $NextScheduler->socure_order;
+                        
+                        // Convert duration to seconds
+                        list($durationHours, $durationMinutes, $durationSeconds) = explode(':', $scheduler->duration);
+                        $totalDurationSeconds = ($durationHours * 3600) + ($durationMinutes * 60) + $durationSeconds;
+                    
+                        // Calculate total seconds for end time
+                        $totalEndSeconds = $totalPreviousEndSeconds + $totalDurationSeconds;
+                    
+                        // Convert totalEndSeconds back to H:i:s format
+                        $scheduler->end_time = gmdate('H:i:s', $totalEndSeconds);
+                        $previousEndTime = $scheduler->end_time;
+                    
+                        $scheduler->save();
 
-                }
-            return 1 ;
+                    }
+                return 1 ;
+            }else{
+
+                    ChannelVideoScheduler::where('id',$Scheduler_id)->delete();
+                    return 1 ;
+            }
+
 
         } catch (\Throwable $th) {
             throw $th;

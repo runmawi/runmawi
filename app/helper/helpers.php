@@ -1635,7 +1635,8 @@ function existingVideoSchedulerEntry($time,$channe_id,$start_time)
 
 function VideoScheduledData($time,$channe_id,$time_zone){
     
-
+    $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $time);
+    $time = $carbonDate->format('n-d-Y');
     $ChannelVideoScheduler = App\ChannelVideoScheduler::where('channe_id', $channe_id)
                             ->where('time_zone', $time_zone)
                             ->where('choosed_date', $time)
@@ -1647,7 +1648,7 @@ function VideoScheduledData($time,$channe_id,$time_zone){
             $image_URL = URL::to("");
             $edit_svg = URL::to('assets/img/icon/edit.svg');
             $delete_svg = URL::to('assets/img/icon/delete.svg');
-            $calender_svg = URL::to('assets/img/icon/Calender.svg');
+            $calender_svg = URL::to('assets/img/icon/cal-event.svg');
             $output = "";
             $i = 1;
             if (count($ChannelVideoScheduler) > 0) {
