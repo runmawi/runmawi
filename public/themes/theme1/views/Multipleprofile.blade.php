@@ -13,6 +13,36 @@
 
     </style>
 </head>
+@php
+    $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
+    $translate_language = App\Setting::pluck('translate_language')->first();
+
+    if (Auth::guest()) {
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $UserTranslation = App\UserTranslation::where('ip_address', $userIp)->first();
+
+        $translate_language = !empty($UserTranslation) ? $UserTranslation->translate_language : 'en';
+    } elseif (!Auth::guest()) {
+        $subuser_id = Session::get('subuser_id');
+
+        if ($subuser_id != '') {
+            $Subuserranslation = App\UserTranslation::where('multiuser_id', $subuser_id)->first();
+            $translate_language = !empty($Subuserranslation) ? $Subuserranslation->translate_language : 'en';
+        } elseif (Auth::user()->id != '') {
+            $UserTranslation = App\UserTranslation::where('user_id', Auth::user()->id)->first();
+            $translate_language = !empty($UserTranslation) ? $UserTranslation->translate_language : 'en';
+        } else {
+            $translate_language = 'en';
+        }
+    } else {
+        $translate_language = 'en';
+    }
+
+    \App::setLocale($translate_language);
+@endphp
+
       
 @section('content')
 <div class="container">
