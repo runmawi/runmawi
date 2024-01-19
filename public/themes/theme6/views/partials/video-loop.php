@@ -2,14 +2,63 @@
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
  <!-- MainContent iq-favorites-->
-<section id="">
+<section id="iq-favorites">
             <div class="">
                <div class="row">
                   <div class="col-sm-12 ">
                      <div class="iq-main-header align-items-center justify-content-between">
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
-                     <div class="favorites-contens ml-2">
+
+                     <div class="favorites-contens">
+                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                          <?php if(isset($recomended)) :
+                            foreach($recomended as $watchlater_video): ?>
+                                <li class="slide-item">
+                                    <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
+                                        <div class="block-images position-relative">
+                                            <div class="img-box">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
+                                            </div>
+                                            <div class="block-description">
+                                                <h6> <?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?> </h6>
+                                                <div class="movie-time d-flex align-items-center my-2">
+
+                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                      <?php echo $watchlater_video->age_restrict.' '.'+' ?>
+                                                    </div>
+
+                                                    <span class="text-white">
+                                                      <?= gmdate('H:i:s', $watchlater_video->duration); ?>
+                                                    </span>
+                                                </div>
+
+                                                <div class="hover-buttons">
+                                                    <span class="btn btn-hover">
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                        Play Now
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="block-social-info">
+                                                <ul class="list-inline p-0 m-0 music-play-lists">
+                                                    <li><span><i class="ri-heart-fill"></i></span></li>
+                                                    <li><span><i class="ri-add-line"></i></span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php endforeach; 
+                          endif; ?>
+                        </ul>
+                    </div>
+
+
+
+
+
+                     <!-- <div class="favorites-contens ml-2">
                         <ul class="favorites-slider list-inline row mb-0">
                             <?php if(isset($recomended)) :
                            foreach($recomended as $watchlater_video): ?>
@@ -33,20 +82,20 @@
                                           </span>
                                            </a>
                                        </div>
-                                        <!--<div>
+                                        <div>
                                             <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $watchlater_video->id;?>">
                                                 <span class="text-center thumbarrow-sec">
                                                     <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
                                                 </span>
-                                                    </button></div>-->
+                                                    </button></div>
                                         </div>
-                                <!--    <div class="block-social-info">
+                                   <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
                                           <li><span><i class="ri-volume-mute-fill"></i></span></li>
                                           <li><span><i class="ri-heart-fill"></i></span></li>
                                           <li><span><i class="ri-add-line"></i></span></li>
                                        </ul>
-                                    </div>-->
+                                    </div>
                                  </div>
                               </a>
                            </li>
@@ -54,7 +103,7 @@
                             <?php endforeach; 
 		                          endif; ?>
                         </ul>
-                     </div>
+                     </div> -->
                   </div>
                </div>
             </div>

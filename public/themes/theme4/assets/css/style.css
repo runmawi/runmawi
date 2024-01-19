@@ -947,6 +947,7 @@ transition: all 0.15s ease;
 @media screen and (min-width: 601px){
     .dropdown_thumbnail {
 width: 74%;
+height: 100vh;
 mask-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(50%, black));
 mask-image: linear-gradient(to right, transparent 0%, black 50%);
 -webkit-mask-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(50%, black));
