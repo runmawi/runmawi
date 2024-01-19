@@ -80,7 +80,7 @@
                                 <table class="table table-bordered iq-card text-center" id="categorytbl">
                                     <tr class="table-header r1">
                                         <th><label>S.No</label></th>
-                                        <th><label>EPG Name </label></th>
+                                        <th><label>Channel Name </label></th>
                                         <th><label>Start Date </label></th>
                                         <th><label>End Date </label></th>
                                         <th><label>Operation</</label></th>
@@ -89,9 +89,9 @@
                                     @foreach ($EPG as $key => $epg_data )
                                         <tr id="{{ $epg_data->id }}">
                                             <td>{{ $key+1 }}</td>
-                                            <td>{{ $epg_data->name }}</td>
-                                            <td>{{ ($epg_data->epg_start_date) ? $epg_data->epg_start_date : '-' }}</td>
-                                            <td>{{ $epg_data->epg_end_date ? $epg_data->epg_end_date : "-" }}</td>
+                                            <td>{{ $epg_data->channel_name }}</td>
+                                            <td>{{ ($epg_data->epg_start_date) ? Carbon\Carbon::createFromFormat('Y-m-d', $epg_data->epg_start_date)->format('d-m-Y')  : '-' }}</td>
+                                            <td>{{ $epg_data->epg_end_date ? Carbon\Carbon::createFromFormat('Y-m-d', $epg_data->epg_end_date)->format('d-m-Y')  : "-" }}</td>
 
                                             <td>
                                                 <div class=" align-items-center list-user-action" style="display: inline !important;">
