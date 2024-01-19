@@ -1635,7 +1635,8 @@ function existingVideoSchedulerEntry($time,$channe_id,$start_time)
 
 function VideoScheduledData($time,$channe_id,$time_zone){
     
-
+    $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $time);
+    $time = $carbonDate->format('n-d-Y');
     $ChannelVideoScheduler = App\ChannelVideoScheduler::where('channe_id', $channe_id)
                             ->where('time_zone', $time_zone)
                             ->where('choosed_date', $time)
