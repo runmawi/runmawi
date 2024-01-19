@@ -27,7 +27,7 @@
                                                 </a>
 
                                                 <nav>
-                                                    <button class="moreBTN" tabindex="0" data-bs-toggle="modal"  ><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                    <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#maincontent" ><i class="fas fa-info-circle"></i><span>More info</span></button>
                                                 </nav>
 
                                             </div>
@@ -35,6 +35,7 @@
                                         </div>
                                     </a>
                                 </li>
+
                     <?php endforeach; endif; ?>
 
                     <!-- Episode -->

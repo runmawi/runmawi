@@ -894,7 +894,7 @@ if(!Auth::guest()){
         <div class="row">
 
                                                         <!-- BREADCRUMBS -->
-            <div class="col-sm-12 col-md-12 col-xs-12">
+            <div class="col-sm-12 col-md-12 col-xs-12 p-0">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="bc-icons-2">
@@ -909,10 +909,11 @@ if(!Auth::guest()){
                                     <a class="black-text" href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
                                         <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                                     </a>
+                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                 </li>
                                 <?php } ?>
 
-                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                
 
                                 <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
                             </ol>
@@ -1029,7 +1030,7 @@ if(!Auth::guest()){
                             <!-- CommentSection -->
 
             <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
-                <div class="row">
+                <div class="">
                     <div class=" container-fluid video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                         <?php include('comments/index.blade.php');?>
@@ -1037,7 +1038,7 @@ if(!Auth::guest()){
                 </div>
             <?php endif; ?>
 
-            <div class="row">
+            <div class="">
                 <div class=" container-fluid video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
                     <div class="slider">   
