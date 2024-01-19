@@ -59,23 +59,6 @@
                 <div class="row mt-3 p-3 align-items-center">
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0"> EPG Name </label>
-                        <div class="panel-body">
-                            <input type="text" id="name" name="name"  class="form-control" placeholder="Enter the EPG Name">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0">  EPG Slug   </label>
-                        <div class="panel-body">
-                            <input type="text" id="slug" name="slug"  class="form-control" placeholder="Enter the EPG Slug">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mt-3 p-3 align-items-center">
-
-                    <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0"> Channel </label>
                         <div class="panel-body">
                             <select class="form-control m-bot15" name="epg_channel_id">
@@ -102,14 +85,14 @@
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0"> {{ ucwords('Start Date') }}</label>
                         <div class="panel-body">
-                            <input type="date" class="form-control"  name="epg_start_date"  max="{{ date('Y-m-d') }}">
+                            <input type="date" class="form-control"  name="epg_start_date" >
                         </div>
                     </div>
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0"> {{ ucwords('End Date') }}</label>
                         <div class="panel-body">
-                            <input type="date" class="form-control"  name="epg_end_date" max="{{ date('Y-m-d') }}">
+                            <input type="date" class="form-control"  name="epg_end_date">
                         </div>
                     </div>
                 </div>
@@ -162,7 +145,6 @@
 
             $('form[id="EPG_form"]').validate({
                 rules: {
-                    name: "required",
                     epg_channel_id : "required",
                     epg_start_date : "required",
                     epg_end_date : "required",

@@ -15,8 +15,6 @@ class CreateAdminEpgTable extends Migration
     {
         Schema::create('admin_epg', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100)->nullable();
-            $table->string('slug', 100)->nullable();
             $table->integer('epg_channel_id')->nullable();
             $table->string('epg_format', 100)->nullable();
             $table->string('epg_start_date', 100)->nullable();
