@@ -144,6 +144,7 @@ class AdminEPGChannelController extends Controller
                 'name'          =>  $request->name ,
                 "slug"          =>  $request->slug == null  ? Str::slug($request->name)  : Str::slug($request->slug)  ,
                 'description'   =>  $request->description ,
+                'unique_channel_id' => time().'-'.Str::uuid( $request->name ) ,
             );
             
             if($request->hasFile('image')){
