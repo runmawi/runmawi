@@ -9,6 +9,11 @@
                                 {{ !empty($category->home_genre) ?  $category->home_genre : $category->name }}
                             </a>
                         </h4>
+                        <h4 class="main-title"><a
+                                href="{{  URL::to('/series/category/' . $category->slug ) }} ">
+                                {{ 'view all' }}
+                            </a>
+                        </h4>
                     </div>
                     <div class="tvthrillers-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
