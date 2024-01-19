@@ -695,7 +695,7 @@
                                         <li class="dropdown menu-item dskdflex">
                                             <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/categoryList'); ?>" data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/categoryList'); ?>"> -->
-                                                    <?php echo __($menu->name); ?>
+                                                    <?php echo (__($menu->name)); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
                                                 <!-- </a> -->
                                             </a>
@@ -706,7 +706,7 @@
                                                     <a class="dropdown-item cont-item"
                                                         style="text-decoration: none!important;"
                                                         href="<?php echo URL::to('/') . '/category/' . $category->slug; ?>">
-                                                        <?php echo __($category->name); ?>
+                                                        <?php echo (__($category->name)); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -727,7 +727,7 @@
                                                 <?php foreach ( $languages as $language){ ?>
                                                 <li>
                                                     <a class="dropdown-item cont-item" href="<?php echo URL::to('/') . '/language/' . $language->id . '/' . $language->name; ?>">
-                                                        <?php echo __($language->name); ?>
+                                                        <?php echo (__($language->name)); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -740,7 +740,7 @@
                                         <li class="dropdown menu-item">
                                             <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/Live-list'); ?>"  data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Live-list'); ?>"> -->
-                                                    <?php echo __($menu->name); ?>
+                                                    <?php echo (__($menu->name)); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
                                                 <!-- </a> -->
                                             </a>
@@ -748,7 +748,7 @@
                                                 <?php foreach ( $LiveCategory as $category){ ?>
                                                 <li>
                                                     <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->slug; ?>">
-                                                        <?php echo __($category->name); ?>
+                                                        <?php echo (__($category->name)); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -761,13 +761,13 @@
                                         <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/') . $menu->url; ?>"
                                                 data-toggle="dropdown">
-                                                <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
+                                                <?php echo(__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                                 <?php foreach ( $AudioCategory as $category){ ?>
                                                 <li>
                                                     <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->name; ?>">
-                                                        <?php echo  __($category->name); ?>
+                                                        <?php echo  (__($category->name)); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -780,7 +780,7 @@
                                           ?>
                                         <li class="dropdown menu-item">
                                             <a class="" id="" href="<?php echo URL::to('/') . $menu->url; ?>">
-                                                <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
+                                                <?php echo (__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                             </a>
                                             <?php if(count($tv_shows_series) > 0 ){ ?>
                                             <ul class="dropdown-menu categ-head">
@@ -788,7 +788,7 @@
                                                 <li>
                                                     <?php if($key < 5): ?>
                                                         <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series') . '/' . $tvshows_series->slug; ?>">
-                                                            <?php echo  __($tvshows_series->title); ?>
+                                                            <?php echo  (__($tvshows_series->title)); ?>
                                                         </a>
                                                     <?php else: ?>
                                                         <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/Series/category/list');?>"> 
@@ -808,7 +808,7 @@
                                             } elseif ($menu->select_url == 'add_Custom_url') {
                                                 echo $menu->custom_url;
                                             } ?>">
-                                                <?php echo __($menu->name); ?>
+                                                <?php echo (__($menu->name)); ?>
                                             </a>
                                         </li>
                                         <?php } } ?>

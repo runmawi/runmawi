@@ -540,10 +540,10 @@ background-color: #000;padding: 10px!important;}
                 <div class="flick1">
                  <div class="small-heading text-white">{{ __('Step 2 of') }}<span class="ml-2">2</span></div>
                      <p class="text-white" style="font-size: 16px;">{{ __('Welcome') }} {{ Auth::user()->username ? Auth::user()->username  : " "  }}, </p>
-                     <div class="medium-heading text-white pb-3"> {{  $signup_step2_title  }} </div>
+                     <div class="medium-heading text-white pb-3"> {{ (__($signup_step2_title))  }} </div>
 
                     <div class="col-md-12 p-0">
-                        <p class="meth"> {{ __('plan') }}Payment Method</p>
+                        <p class="meth"> {{ __('Plan Payment Method') }}</p>
                     <div class="d-flex">
                                                 <!-- Stripe -->
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)

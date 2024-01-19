@@ -1,7 +1,7 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
 <h4 class="main-title">
 <a href="<?php if ($order_settings_list[0]->header_name) { echo URL::to('/').'/'.$order_settings_list[0]->url ;} else { echo "" ; } ?>">                   
-  <?php if ($order_settings_list[0]->header_name) { echo __($order_settings_list[0]->header_name) ;} else { echo "" ; } ?>
+  <?php if ($order_settings_list[0]->header_name) { echo (__($order_settings_list[0]->header_name)) ;} else { echo "" ; } ?>
                     <!-- Featured Movies -->
                   </a></h4>    
 </div>
