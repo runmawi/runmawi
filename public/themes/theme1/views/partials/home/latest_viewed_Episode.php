@@ -27,7 +27,7 @@ if(count($latest_view_episodes) > 0) :
         } ?>">
 
             <?php if ($order_settings_list[18]->header_name) {
-                echo __($order_settings_list[18]->header_name);
+                echo (__($order_settings_list[18]->header_name));
             } else {
                 echo '';
             } ?></a>
