@@ -413,7 +413,7 @@ else{
                                     <div class="bc-icons-2">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a class="black-text"
-                                                    href="<?= route('liveList') ?>"><?= ucwords('Livestreams') ?></a>
+                                                    href="<?= route('liveList') ?>"><?= __(ucwords('Livestreams')) ?></a>
                                                 <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                             </li>
 
@@ -422,7 +422,7 @@ else{
                                             <li class="breadcrumb-item">
                                                 <a class="black-text"
                                                     href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
-                                                    <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                                                    <?= __(ucwords($video_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                                                 </a>
                                                 <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                             </li>
@@ -431,7 +431,7 @@ else{
 
 
                                             <li class="breadcrumb-item"><a
-                                                    class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?>
+                                                    class="black-text"><?php echo (strlen($video->title) > 50) ? __(ucwords(substr($video->title,0,120).'...')) : __(ucwords($video->title)); ?>
                                                 </a></li>
                                         </ol>
                                     </div>
@@ -476,7 +476,7 @@ else{
                         <div class=" align-items-center text-white text-detail p-0">
                             <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>
                             <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>
-                            <span class="badge badge-secondary p-2">Published On : <?php  echo $publishdate;?></span>
+                            <span class="badge badge-secondary p-2"><?= __('Published On') ?> : <?php  echo $publishdate;?></span>
                             <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>
 
                         </div>
