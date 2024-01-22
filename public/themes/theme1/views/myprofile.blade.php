@@ -557,7 +557,7 @@
                                             class="js-example-basic-multiple myselect col-md-5"
                                             style="width: 46%!important;" multiple="multiple">
                                             @foreach ($preference_languages as $preference_language)
-                                                <option value="{{ $preference_language->id }}" @if( !empty(json_decode($user->preference_language)) && in_array( $preference_language->id, json_decode($user->preference_language) ))selected='selected' @endif >{{ $preference_language->name }}</option>
+                                                <option value="{{ $preference_language->id }}" @if( !empty(json_decode($user->preference_language)) && in_array( $preference_language->id, json_decode($user->preference_language) ))selected='selected' @endif >{{ __($preference_language->name) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -570,7 +570,7 @@
 
                                         <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 46%;" multiple="multiple">
                                             @foreach ($videocategory as $preference_genres)
-                                                <option value="{{ $preference_genres->id }}" @if( !empty(json_decode($user->preference_genres)) && in_array( $preference_genres->id, json_decode($user->preference_genres) ))selected='selected' @endif >{{ $preference_genres->name }}</option>
+                                                <option value="{{ $preference_genres->id }}" @if( !empty(json_decode($user->preference_genres)) && in_array( $preference_genres->id, json_decode($user->preference_genres) ))selected='selected' @endif >{{ __($preference_genres->name) }}</option>
                                             @endforeach
                                         </select>
 

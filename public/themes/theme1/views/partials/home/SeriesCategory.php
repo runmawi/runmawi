@@ -36,12 +36,12 @@ ol.breadcrumb {
                                 </li>
 
                                 <li class="breadcrumb-item"><a class="black-text"
-                                        href="<?= route('SeriescategoryList') ?>"><?= ucwords(__('category')) ?></a>
+                                        href="<?= route('SeriescategoryList') ?>"><?= ucwords(__('Category')) ?></a>
                                     <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                 </li>
 
                                 <li class="breadcrumb-item"><a
-                                        class="black-text"><?php echo strlen($CategorySeries->name) > 50 ? ucwords(substr($CategorySeries->name, 0, 120) . '...') : ucwords($CategorySeries->name); ?>
+                                        class="black-text"><?php echo strlen($CategorySeries->name) > 50 ? __(ucwords(substr($CategorySeries->name, 0, 120) . '...')) : __(ucwords($CategorySeries->name)); ?>
                                     </a></li>
                             </ol>
                         </div>
@@ -49,7 +49,7 @@ ol.breadcrumb {
                 </div>
 
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="movie-title"> <?php echo @$CategorySeries->name ?></h4>
+                    <h4 class="movie-title"> <?php echo __(@$CategorySeries->name) ?></h4>
                 </div>
 
                 <div class="favorites-contens">
