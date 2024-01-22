@@ -71,7 +71,7 @@
                         foreach ($column2_footer as $key => $footer_link){ ?>
 
                           <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
-                                  <?php echo  $footer_link->name ; ?>
+                                  <?php echo  __($footer_link->name) ; ?>
                               </a>
                           </li>
                       
@@ -99,7 +99,7 @@
                           
                           foreach ($column3_footer as $key => $footer_link){ ?>
                               <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
-                                      <?php echo  $footer_link->name ; ?>
+                                      <?php echo  __($footer_link->name) ; ?>
                                   </a>
                               </li>
                               
