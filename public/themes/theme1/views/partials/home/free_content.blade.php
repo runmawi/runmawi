@@ -1,5 +1,5 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h4 class="main-title"><?= (__('Free Content Videos'))  ?></h4>                      
+  <h4 class="main-title"><?= ( __('Free Content Videos') )  ?></h4>                      
 </div>
 
 <div class="favorites-contens">
@@ -18,7 +18,7 @@
               
                 <div class="hover-buttons d-flex">
                 <a class="text-white " href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->slug->title.'/'.$free_Content->slug) ; }?> ">
-                     <i class="fa fa-play mr-1"></i> <?= ('Watch now') ?>
+                     <i class="fa fa-play mr-1"></i> <?= __('Watch now') ?>
                   
                   </a>
                 </div>
