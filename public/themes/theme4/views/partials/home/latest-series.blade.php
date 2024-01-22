@@ -29,7 +29,7 @@
                     <div class="trending-contens">
                         <ul id="trending-slider-nav" class="series-slider-nav list-inline p-0 mar-left row align-items-center"  >
                             @foreach ($data as $series_key => $latest_series)
-                                <li  onclick="series_slider_nav(this)" >
+                                <li>
                                     <a href="javascript:void(0);" >
                                         <div class="movie-slick position-relative">
                                             <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : default_vertical_image_url() }}" class="img-fluid" >
@@ -40,7 +40,7 @@
                         </ul>
 
                         <ul id="trending-slider series-slider" class="list-inline p-0 m-0 align-items-center series-slider">
-                            @forelse ($data as $key => $latest_series )
+                            @foreach ($data as $key => $latest_series )
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image">
                                         <button class="drp-close">×</button>
@@ -66,7 +66,6 @@
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
                                                                     <a href="{{ URL::to('play_series/'.$latest_series->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    {{-- <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> --}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -79,11 +78,12 @@
                                                                             <div class=" position-relative">
                                                                                 <img src="{{ $episode->image_url }}" class="img-fluid" >
                                                                                 <div class="controls">
+                                                                                    
                                                                                     <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}">
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                                     </a>
 
-                                                                                    <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-series-Modal-'.$key }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+                                                                                    <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-series-Modal-' }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                                                     
                                                                                     @php
                                                                                         $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first() ;
@@ -117,19 +117,14 @@
                                         </div>
                                     </div>
                                 </li>
-                            @empty
-
-                            @endforelse
+                            @endforeach
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
 
-
-
-        @foreach ($latest_series->Series_depends_episodes as $episode )
-            <div class="modal fade info_model" id="{{ "Home-Latest-series-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+            <div class="modal fade info_model" id="{{ "Home-Latest-series-Modal-" }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
                         <div class="modal-content" style="border:none; background:transparent;">
@@ -143,15 +138,14 @@
                                             <div class="row">
                                                 <div class="col-lg-10 col-md-10 col-sm-10">
                                                     <h2 class="caption-h2">{{ optional($episode)->title }}</h2>
-
                                                 </div>
+
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
                                                     <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
                                                         <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
                                                     </button>
                                                 </div>
                                             </div>
-                                            
 
                                             @if (optional($episode)->description)
                                                 <div class="trending-dec mt-4">{!! html_entity_decode( optional($episode)->description) !!}</div>
@@ -166,7 +160,6 @@
                     </div>
                 </div>
             </div>
-        @endforeach
 
 
     </section>
