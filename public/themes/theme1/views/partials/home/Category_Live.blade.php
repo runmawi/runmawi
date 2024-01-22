@@ -27,7 +27,7 @@ include public_path('themes/theme1/views/header.php');
             <div class="bc-icons-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('liveList') ?>"><?= ucwords( __('live Stream')) ?></a>
+                            href="<?= route('liveList') ?>"><?= ucwords( __('Live Stream')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
@@ -36,7 +36,7 @@ include public_path('themes/theme1/views/header.php');
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
-                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($category_title) > 50 ? ucwords(substr($category_title, 0, 120) . '...') : ucwords($category_title); ?>
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($category_title) > 50 ? __(ucwords(substr($category_title, 0, 120) . '...')) : __(ucwords($category_title)); ?>
                         </a></li>
                 </ol>
             </div>
