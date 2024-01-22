@@ -221,7 +221,7 @@ if (Auth::guest())
         <div class="bc-icons-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                            href="<?= route('series.tv-shows') ?>"><?= __(ucwords('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
@@ -230,7 +230,7 @@ if (Auth::guest())
                     <li class="breadcrumb-item">
                         <a class="black-text"
                             href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
-                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                            <?= __(ucwords($series_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                         </a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
@@ -239,14 +239,14 @@ if (Auth::guest())
                     
 
                     <li class="breadcrumb-item">
-                      <a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?>
+                      <a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? __(ucwords(substr(@$series->title, 0, 120) . '...')) : __(ucwords(@$series->title)); ?>
                      </a>
                      <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
                     
 
-                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? ucwords(substr(@$episode->title, 0, 120) . '...') : ucwords($episode->title); ?> </a></li>
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? __(ucwords(substr(@$episode->title, 0, 120) . '...')) : __(ucwords($episode->title)); ?> </a></li>
                 </ol>
         </div>  
     </div>
@@ -289,11 +289,11 @@ else
       <p style=";font-size: 130%;color: white;"><?php $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
 			foreach($seasons as $key=>$seasons_value){ ?>
                         <?php
-			if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo 'Season'.' '. ($key+1)   .' ';}  }
+			if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo __('Season').' '. ($key+1)   .' ';}  }
 			$Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
 			foreach($Episode as $key=>$Episode_value){  ?>
                         <?php if (!empty($episode) && $episode->id == $Episode_value->id) {
-                            echo 'Episode' . ' ' . $episode->episode_order . ' ';
+                            echo __('Episode') . ' ' . $episode->episode_order . ' ';
                         } ?>
                         <?php } ?>
        <p style=";font-size: 130%;color: white;"><?=$episode->title
@@ -319,7 +319,7 @@ endif; ?><?= __('Views') ?>
 
       <div class="col-md-5 text-right">
         <div class="watchlater btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" ><?= __('Watch Later') ?>   </div>
-        <div class="mywishlist btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" ><?= __('Add  Wishlist') ?>  </div>
+        <div class="mywishlist btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" ><?= __('Add Wishlist') ?>  </div>
     </div>
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") {
@@ -386,7 +386,7 @@ elseif (isset($episodeprev))
       <?php endif; ?>
 
 		<div class="iq-main-header container-fluid d-flex align-items-center justify-content-between">
-  <h4 class="main-title">Season</h4>                      
+  <h4 class="main-title"><?= ('Season') ?></h4>                      
 </div>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
