@@ -37,7 +37,7 @@
         <div>
             <?php if( Auth::user() != null && Auth::user()->id != $comment->user_id  && Auth::user()->role != 'register' ):?>
                 <a data-toggle="modal" data-target="#reply-modal-<?= $comment->id ?>"
-                class=" text-uppercase text-secondary"> <i class="fa fa-share" aria-hidden="true"></i>&nbsp;{{ __('Reply') }}</a>
+                class=" text-uppercase text-secondary"> <i class="fa fa-share" aria-hidden="true"></i>&nbsp;<?= __('Reply') ?></a>
             <?php endif; ?>
 
             <?php if( Auth::user() != null && Auth::user()->id == $comment->user_id && Auth::user()->role != 'register' ):?>
