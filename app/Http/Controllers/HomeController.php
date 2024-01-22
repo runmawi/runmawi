@@ -74,6 +74,9 @@ use App\CategoryVideo;
 use App\AppSetting as AppSetting;
 use App\TVLoginCode as TVLoginCode;
 use App\Watchlater as Watchlater;
+use App\OrderHomeSetting;
+use App\ChannelVideoScheduler;
+use App\AdminEPGChannel;
 
 class HomeController extends Controller
 {
@@ -5092,5 +5095,43 @@ public function uploadExcel(Request $request)
         return Theme::view('MyList',['MyList'=>$data]);
     }
 
+    public function EPG_date_filter(Request $request)
+    {
+        $theme = Theme::uses($this->Theme);
+        
+        $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
+        $order_settings_list = OrderHomeSetting::get();  
 
+        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->get()->map(function ($item )  use( $request) {
+
+            $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+
+            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+
+            $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+
+            $item['ChannelVideoScheduler']  =  ChannelVideoScheduler::where('channe_id',$request->channel_id)
+                                                
+                                                ->when( !is_null($request->date), function ($query) use ($request) {
+                                                    return $query->Where('choosed_date', $request->date);
+                                                })
+
+                                                ->get()->map(function ($item) {
+                                                    $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                    return $item;
+                                                });
+            return $item;
+        })->first();
+
+
+        $data =[
+            'order_settings' => $order_settings ,
+            'order_settings_list' => $order_settings_list ,
+            'order_settings' => $order_settings ,
+            'epg_channel_data' => $epg_channel_data ,
+            'EPG_date_filter_status' => 1 ,
+        ];
+
+        return $theme->load('public/themes/theme4/views/partials/home/channel-epg-partial', $data)->render();
+    }
 }

@@ -1,10 +1,23 @@
 @php
     
     $data =  App\AdminEPGChannel::where('status',1)->get()->map(function ($item) {
+                    
                     $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+                    
                     $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+                    
                     $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
-                    $item['EPG']  =  App\AdminEPG::where('status',1)->where('epg_channel_id',$item->id)->first();
+                    
+                    $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->get()->map(function ($item) {
+                                                            $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                            return $item;
+                                                        });
+
+                                                        
+                    $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->groupBy('choosed_date')->get()->map(function ($item) {
+                                                                    $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                                    return $item;
+                                                                });
                     return $item;
                 });
 
@@ -13,7 +26,7 @@
 
 <style>
     .time{
-        width: 105px;
+        width: 28%;
         font-size: 18px;
         height: 100%;
         background-color: rgba(129, 128, 128, 0.1);
@@ -145,14 +158,14 @@
                                                     <div class="caption pl-4">
 
                                                         <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
-
+{{-- 
                                                         @if ( Carbon\Carbon::now()->greaterThanOrEqualTo( $epg_channel_data->EPG->epg_start_date )) 
                                                             <ul class="vod-info">
                                                                 <li><span></span> LIVE NOW</li>
                                                             </ul>
                                                         @else
                                                             <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($epg_channel_data->EPG->epg_start_date)->isoFormat('YYYY-MM-DD') }} </span>
-                                                        @endif
+                                                        @endif --}}
 
                                                         @if (optional($epg_channel_data)->description)
                                                             <div class="trending-dec">{!! html_entity_decode( optional($epg_channel_data)->description) !!}</div>
@@ -202,13 +215,13 @@
 
                                                     <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
 
-                                                    @if ( Carbon\Carbon::now()->greaterThanOrEqualTo( $epg_channel_data->EPG->epg_start_date )) 
+                                                    {{-- @if ( Carbon\Carbon::now()->greaterThanOrEqualTo( $epg_channel_data->EPG->epg_start_date )) 
                                                         <ul class="vod-info">
                                                             <li><span></span> LIVE NOW</li>
                                                         </ul>
                                                     @else
                                                         <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($epg_channel_data->EPG->epg_start_date)->isoFormat('YYYY-MM-DD') }} </span>
-                                                    @endif
+                                                    @endif --}}
 
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
@@ -260,61 +273,20 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading panel-heading-nav d-flex position-relative">
                                                     <button class="tabs__scroller tabs__scroller--left js-action--scroll-left"><i class="fa fa-chevron-left"></i></button>
+                                                    
                                                     <ul class="nav nav-tabs m-0">
-                                                        
-                                                        <li role="presentation" class="active">
-                                                            <a href="{{ '#one' . $key }}" aria-controls="one" role="tab" data-toggle="tab">Monday</a>
-                                                        </li>
-
-                                                        <li role="presentation">
-                                                            <a href="{{ '#two' . $key }}" aria-controls="two" role="tab" data-toggle="tab">Tuesday</a>
-                                                        </li>
-
+                                                        @foreach ( $epg_channel_data->ChannelVideoScheduler_top_date as $ChannelVideoScheduler_key => $item)
+                                                            <li role="presentation" class="active" data-choosed-date={{ $item->choosed_date }} data-channel-id={{ $item->channe_id }}  onclick="EPG_date_filter(this)">
+                                                                <a href="#" aria-controls="one" role="tab" data-toggle="tab">{{ $item->ChannelVideoScheduler_Choosen_date }}
+                                                            </li>
+                                                        @endforeach
                                                     </ul>
+
                                                     <button class="tabs__scroller tabs__scroller--right js-action--scroll-right "><i class="fa fa-chevron-right"></i></button>
                                                 </div>
-                                                <div class="panel-body">
-                                                    <div class="tab-content">
-                                                        <div role="tabpanel" class="tab-pane fade in active"
-                                                            id="{{ 'one' . $key }}">
-                                                            <table class="table table-striped">
 
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th scope="row" class="time">12.30 <small>PM</small></th>
-                                                                        <td><h6>Mark</h6></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th scope="row" class="time">1.00 <small>PM</small></th>
-                                                                        <td><h6>Jacob</h6></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th scope="row" class="time">2.00 <small>PM</small></th>
-                                                                        <td><h6>Larry</h6></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <div role="tabpanel" class="tab-pane fade" id="{{ 'two' . $key }}">
-                                                            <table class="table">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th scope="row" class="time">12.30 <small>AM</small></th>
-                                                                        <td><h6>Mark 1</h6></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th scope="row" class="time">1.00 <small>AM</small></th>
-                                                                        <td><h6>Jacob 2</h6></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th scope="row" class="time">2.00 <small>AM</small></th>
-                                                                        <td><h6>Larry 3</h6> </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/channel-epg-partial', ['order_settings_list' => $order_settings_list ,'epg_channel_data' => $epg_channel_data ])->content() !!}
+
                                             </div>
                                         </div>
                                     </div>
@@ -390,69 +362,25 @@
             $('.epg-channel-slider').hide();
         });
     });
-</script>
 
-<script>
-    var hidWidth;
-        var scrollBarWidths = 40;
 
-        var widthOfList = function(){
-        var itemsWidth = 0;
-        $('.list li').each(function(){
-            var itemWidth = $(this).outerWidth();
-            itemsWidth+=itemWidth;
-        });
-        return itemsWidth;
-        };
+    function EPG_date_filter(ele) {
 
-        var widthOfHidden = function(){
-        return (($('.wrapper').outerWidth())-widthOfList()-getLeftPosi())-scrollBarWidths;
-        };
+        const channel_id = $(ele).attr('data-channel-id');
+        const date       = $(ele).attr('data-choosed-date');
 
-        var getLeftPosi = function(){
-        return $('.list').position().left;
-        };
-
-        var reAdjust = function(){
-        if (($('.wrapper').outerWidth()) < widthOfList()) {
-            $('.scroller-right').show();
-        }
-        else {
-            $('.scroller-right').hide();
-        }
-        
-        if (getLeftPosi()<0) {
-            $('.scroller-left').show();
-        }
-        else {
-            $('.item').animate({left:"-="+getLeftPosi()+"px"},'slow');
-            $('.scroller-left').hide();
-        }
-        }
-
-        reAdjust();
-
-        $(window).on('resize',function(e){  
-            reAdjust();
+        $.ajax({
+            type: "get",
+            url: "{{ route('front-end.EPG_date_filter') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                channel_id: channel_id,
+                date: date,
+            },
+            success: function(data) {
+                $(".data").html(data);
+            },
         });
 
-        $('.scroller-right').click(function() {
-        
-        $('.scroller-left').fadeIn('slow');
-        $('.scroller-right').fadeOut('slow');
-        
-        $('.list').animate({left:"+="+widthOfHidden()+"px"},'slow',function(){
-
-        });
-        });
-
-        $('.scroller-left').click(function() {
-        
-            $('.scroller-right').fadeIn('slow');
-            $('.scroller-left').fadeOut('slow');
-        
-            $('.list').animate({left:"-="+getLeftPosi()+"px"},'slow',function(){
-            
-            });
-        });    
+    }
 </script>
