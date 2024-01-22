@@ -102,7 +102,7 @@ $data = App\Series::where('active', '=', '1')
                                                         <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
 
                                                         <div class="d-flex align-items-center text-white text-detail">
-                                                            <span class="badge badge-secondary p-3">18+</span>
+                                                            <span class="badge badge-secondary p-3">13+</span>
                                                             <span class="ml-3">{{ $series_details->season_count . " Seasons" }} </span>
                                                             <span class="trending-year">{{ optional($series_details)->year }}</span>
                                                         </div>
@@ -111,8 +111,9 @@ $data = App\Series::where('active', '=', '1')
                                                             <img src="{{ front_end_logo() }}" class="img-fluid" alt="">
                                                             <span class="text-gold ml-3"> {{ "#". ($key+1) ." in Series Today" }} </span>
                                                         </div>
-
-                                                        <p class="trending-dec">{!! html_entity_decode( optional($series_details)->details) !!}</p>
+                                                        <div class="col-md-6">
+                                                            <p class="trending-dec">{!! html_entity_decode( optional($series_details)->details) !!}</p>
+                                                        </div>
 
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
@@ -200,7 +201,9 @@ $data = App\Series::where('active', '=', '1')
                                                                                     {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
                                                                                 </span>
                                                                             </div>
-                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
+                                                                            <div class="mb-0">
+                                                                                {!! html_entity_decode( optional($item)->episode_description) !!}
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 @endforeach
@@ -242,7 +245,9 @@ $data = App\Series::where('active', '=', '1')
                                                                                     {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
                                                                                 </span>
                                                                             </div>
-                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
+                                                                            <div class="mb-0">
+                                                                                {!! html_entity_decode( optional($item)->episode_description) !!}
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 @endforeach
@@ -285,7 +290,7 @@ $data = App\Series::where('active', '=', '1')
                                                                                     {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
                                                                                 </span>
                                                                             </div>
-                                                                            <p class="mb-0">{{ optional($item)->episode_description }}</p>
+                                                                            <div class="mb-0">{!! html_entity_decode( optional($item)->episode_description) !!}</div>
                                                                         </div>
                                                                     </div>
                                                                 @endforeach

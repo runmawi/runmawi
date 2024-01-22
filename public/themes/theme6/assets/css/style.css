@@ -145,7 +145,7 @@ li.slide-item .block-images {position: relative; width: 100%;transition: all 0.4
 li.slide-item:hover .block-images { overflow: visible; }
 li.slide-item:hover .block-images .img-box{position:relative;}
 li.slide-item:hover .block-images{z-index: 99;transform: scale3d(1.3, 1.3, 1) translate3d(0, 0, 0) perspective(500px); transform-origin: 50% 50%; transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; -moz-transition: all 0.6s ease 0s; -o-transition: all 0.6s ease 0s; box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.9); }
-.block-social-info { position: absolute; top: 0; left: auto; bottom: 0;right: 25px; z-index: 999;display: flex; align-items: center; opacity: 0; }
+.block-social-info { position: absolute; top: 0; left: auto; bottom: 0;right: 4px; z-index: 999;display: flex; align-items: center; opacity: 0; }
 .music-play-lists li { height: 30px; width: 30px; line-height: 35px; text-align: center; background: rgba(255, 255, 255, 0.30); border-radius: 50%; margin: 0 auto 7px; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; }
 .music-play-lists span { position: relative; display: block; height: 20px; width: 20px; line-height: 26px; font-size: 12px; text-align: center;  border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -o-border-radius: 50%; margin: 0 auto; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; justify-content: center; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; cursor: pointer; }
 .music-play-lists li:hover span { transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; }
@@ -164,7 +164,7 @@ li.slide-item:hover .block-social-info { animation: fadeIn  0.6s ease-in-out; op
 .hover-buttons .btn { padding: 5px 15px; font-size: 12px; }
 li.slide-item.slick-current:hover .block-images{ transform: scale3d(1.3, 1.3, 1) translate3d(11%, 0, 0) perspective(500px); }
 .block-images .hover-buttons { margin-top: 5px; }
-.block-social-info .music-play-lists li{width:40px;height:40px;}
+.block-social-info .music-play-lists li{width:30px;height:30px;}
 .block-social-info .music-play-lists span{width:30px;height:30px;}
 .block-social-info .music-play-lists span i{font-size: 15px;}
 #iq-upcoming-movie .movie-time{font-size: 10px;}
@@ -709,9 +709,9 @@ header .navbar ul li.menu-item a:hover {
     background-color: transparent !important;
 }
 
-li.slide-item.slick-slide.slick-active {
+/* li.slide-item.slick-slide.slick-active {
     width: 280px !important;
-}
+} */
 
 .music-play-lists li span i{
     color: white !important;
@@ -728,7 +728,9 @@ li.slide-item.slick-slide.slick-active {
     visibility: visible;
     transform: translate(0, 0);
 }
-
+.slide-item a:hover{
+    color:white;
+}
 
 
 /*  Signup Page*/
