@@ -543,7 +543,7 @@
                     <div class="col-md-8 targetDiv" id="div4">
                         <div class=" mb-3">
                             <h4 class="card-title mb-0">{{ __('Preference for videos') }}</h4>
-                            <form action="{{ URL::to('admin/profilePreference') }}" method="POST">
+                            <form action="{{ URL::to('/profilePreference') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="user_id" value="<?= $user->id ?>" />
 
@@ -995,7 +995,7 @@ border-radius: 5px;padding:10px;">
     <!-- Slick Animation-->
     <script src="<?= URL::to('/') . '/assets/js/slick-animation.min.js' ?>"></script>
     <!-- Custom JS-->
-    <script src="<?= URL::to('/') . '/assets/js/custom.js' ?>"></script>
+    
     <script>
         $(document).ready(function() {
 
