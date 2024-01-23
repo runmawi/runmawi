@@ -146,7 +146,7 @@
                                         <p class="reset-help text-center">We will send you an email with instructions on
                                             how to reset your password.</p>
 
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary ml-4">
                                             {{ __('Send Password Reset Link') }}
                                         </button>
                                     </form>

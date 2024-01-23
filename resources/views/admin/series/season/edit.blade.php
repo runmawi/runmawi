@@ -27,12 +27,12 @@
                     <div class="form-group">
                         <label class="m-0">Season Trailer :</label>
                         <p class="p1">Drop and drag the video file</p>
-                        <div style="position: relative;" class="form_video-upload">
+                        <div style="position: relative;" class="form_video-upload mb-3">
                             <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
-                            <p class="p1">Drop and drag the video file</p>
+                            <!-- <p class="p1">Drop and drag the video file</p> -->
                         </div>
                         <?php if(!empty($season->trailer)){ ?>
-                        <video width="200" height="200" controls>
+                        <video width="100%" height="200" controls>
                             <source src="<?php echo $season->trailer; ?>" type="video/mp4" />
                         </video>
                         <?php }else{  } ?>
@@ -149,6 +149,12 @@
 </script>
 <script src="<?= URL::to('/'). '/assets/css/vue.min.js';?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<style>
+    .form_video-upload input{
+        position:relative;
+    }
+</style>
 
 @stop @stop
 
