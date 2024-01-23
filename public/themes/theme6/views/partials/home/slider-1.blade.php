@@ -65,7 +65,7 @@
                             </div>
 
                             <!-- <div data-animation-in="fadeInUp" data-delay-in="1.2"> -->
-                            <?php
+                            <!-- <?php
                                 $description = $item->description;
 
                                 if (strlen($description) > 143) {
@@ -77,9 +77,9 @@
 
                                 <div id="descriptionContainer" class="description-container mb-1">
                                     <?php echo $shortDescription; ?>
-                                </div>
+                                </div> -->
                                 <!-- {!! strlen($item->description) > 100 ? html_entity_decode(substr($item->description, 0, 95)) . '...'. "  See more" : html_entity_decode($item->description) !!} -->
-                                 <!-- {!! html_entity_decode( optional($item)->description) !!} -->
+                                 {!! html_entity_decode( optional($item)->description) !!}
                             <!-- </div> -->
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
@@ -127,7 +127,7 @@
                                 <span class="ml-3"> {{ App\Episode::where('series_id', $item->id)->count() }} Episodes </span>
                             </div>
 
-                            <?php
+                            <!-- <?php
                                 $description = $item->details;
 
                                 if (strlen($description) > 143) {
@@ -139,9 +139,9 @@
 
                                 <div id="descriptionContainer" class="description-container mb-1">
                                     <?php echo $shortDescription; ?>
-                                </div>
+                                </div> -->
 
-                            <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p> -->
+                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p>
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('play_series/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
@@ -185,8 +185,8 @@
                                 <span class="ml-1">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
 
-                            <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p> -->
-                            <?php
+                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
+                            <!-- <?php
                                 $description = $item->description;
 
                                 if (strlen($description) > 143) {
@@ -198,7 +198,7 @@
 
                                 <div id="descriptionContainer" class="description-container mb-1">
                                     <?php echo $shortDescription; ?>
-                                </div>
+                                </div> -->
 
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
@@ -233,7 +233,7 @@
                                 <span class="ml-1">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
 
-                            <?php
+                            <!-- <?php
                                 $description = $item->description;
 
                                 if (strlen($description) > 143) {
@@ -245,10 +245,10 @@
 
                                 <div id="descriptionContainer" class="description-container mb-1">
                                     <?php echo $shortDescription; ?>
-                                </div>
+                                </div> -->
                                       
 
-                            <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p> -->
+                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"

@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8">
-                    <div class="parallax-img">
+                    <div class="parallax-img" style="width:250px; height:350px;">
                         <a href="{{ URL::to('category/videos/'.$data->slug ) }}">
                             <img src="{{ URL::to('public/uploads/images/' . $data->image) }}"
                                 class="img-fluid" alt="bailey">
