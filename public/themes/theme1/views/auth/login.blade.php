@@ -228,7 +228,7 @@
                                                 <img class=" fa fa-user icon mr-3" src="<?php echo URL::to('/') . '/assets/img/uss.png'; ?>"> </i>
                                             <input id="email" type="email"
                                                 class=" input-field form-control @error('email') is-invalid @enderror"
-                                                name="email" placeholder="{{ __('USER NAME') }}"
+                                                name="email" placeholder="{{ __('USER EMAIL') }}"
                                                 value="{{ old('email') }}" required autocomplete="email" autofocus>
                                         </div>
                                     </div>
