@@ -20,8 +20,8 @@
                                                 <img src="{{ $video->image ? URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}
-                                                </h6>
+                                                <p> {{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}
+                                                </p>
                                                 <div class="movie-time d-flex align-items-center my-2">
 
                                                     <div class="badge badge-secondary p-1 mr-2">

@@ -78,8 +78,8 @@
                                                     <img src="{{  URL::to('public/uploads/images/'.$latest_video->image) }}" class="img-fluid" alt="">
                                                 </div>
                                                 <div class="block-description">
-                                                    <h6> {{ strlen($latest_video->title) > 17 ? substr($latest_video->title, 0, 18) . '...' : $latest_video->title }}
-                                                    </h6>
+                                                    <p> {{ strlen($latest_video->title) > 17 ? substr($latest_video->title, 0, 18) . '...' : $latest_video->title }}
+                                                    </p>
                                                     <div class="movie-time d-flex align-items-center my-2">
 
                                                         <div class="badge badge-secondary p-1 mr-2">

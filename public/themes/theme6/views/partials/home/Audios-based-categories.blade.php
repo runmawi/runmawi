@@ -58,8 +58,8 @@
                                                 </div>
 
                                                 <div class="block-description">
-                                                    <h6> {{ strlen($audios_details->title) > 17 ? substr($audios_details->title, 0, 18) . '...' : $audios_details->title }}
-                                                    </h6>
+                                                    <p> {{ strlen($audios_details->title) > 17 ? substr($audios_details->title, 0, 18) . '...' : $audios_details->title }}
+                                                    </p>
 
                                                     <div class="movie-time d-flex align-items-center my-2">
 

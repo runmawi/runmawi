@@ -62,7 +62,7 @@ ol.breadcrumb {
                                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Genre->image;  ?>" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> <?php  echo (strlen(@$Series_Genre->title) > 17) ? substr(@$Series_Genre->title,0,18).'...' : @$Series_Genre->title; ?> </h6>
+                                                <p> <?php  echo (strlen(@$Series_Genre->title) > 17) ? substr(@$Series_Genre->title,0,18).'...' : @$Series_Genre->title; ?> </p>
                                                 
 
                                                 <div class="hover-buttons">
@@ -99,8 +99,8 @@ ol.breadcrumb {
 
                                     <div class="block-description">
                                         <a href="<?php echo URL::to('/play_series/').'/'.$Series_Genre->slug  ?>">
-                                            <h6><?php  echo (strlen(@$Series_Genre->title) > 17) ? substr(@$Series_Genre->title,0,18).'...' : @$Series_Genre->title; ?>
-                                            </h6>
+                                            <p><?php  echo (strlen(@$Series_Genre->title) > 17) ? substr(@$Series_Genre->title,0,18).'...' : @$Series_Genre->title; ?>
+                                            </p>
                                         </a>
                                         <div class="hover-buttons">
                                             <div>
