@@ -21,6 +21,7 @@ Route::get('/video-chat', function () {
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
 Route::get('/BunnyCDNStream', 'AdminDashboardController@BunnyCDNStream');
+Route::post('/profilePreference', 'AdminUsersController@profilePreference');
 
 Route::get('/paypal/create-payment', 'PayPalController@createPayment');
 Route::get('/paypal/execute-payment', 'PayPalController@executePayment');
@@ -510,7 +511,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/user/view/{id}', 'AdminUsersController@view');
     Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
     Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
-    Route::post('/profilePreference', 'AdminUsersController@profilePreference');
     Route::get('/email_exitsvalidation', 'AdminUsersController@email_exitsvalidation')->name('email_exitsvalidation');
     Route::get('/mobilenumber_exitsvalidation', 'AdminUsersController@mobilenumber_exitsvalidation')->name('mobilenumber_exitsvalidation');
     Route::get('/password_validation', 'AdminUsersController@password_validation')->name('password_validation');
