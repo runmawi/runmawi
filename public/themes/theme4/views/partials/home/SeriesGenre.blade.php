@@ -24,7 +24,7 @@
                         </ul>
 
                         <ul id="trending-slider series-category-slider" class="list-inline p-0 m-0 align-items-center series-category-slider">
-                            @foreach ($data as $key => $seriesGenre )
+                            @foreach ($data as $seriesGenre )
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image" >
                                         <button class="drp-close">×</button>
@@ -68,7 +68,7 @@
                                                                     
                                                                 ?>
 
-                                                                @foreach ($series as $series_details )
+                                                                @foreach ($series as $key => $series_details )
                                                                     <li>
                                                                         <a href="{{ URL::to('play_series/'.$series_details->slug) }}">
                                                                             <div class=" position-relative">
@@ -78,7 +78,7 @@
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                                     </a>
 
-                                                                                    <nav><button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+                                                                                    <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-SeriesGenre-series-Modal-'.$key }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                                                     
                                                                                     <p class="trending-dec" >
                                                                                         {{ $series_details->season_count ." S ".$series_details->episode_count .' E' }} <br>
@@ -109,6 +109,55 @@
                 </div>
             </div>
         </div>
+
+        
+        {{-- Episode Modal --}}
+
+        @foreach ($data as  $seriesGenre )
+            @foreach ($series as $key => $series_details )
+                <div class="modal fade info_model" id="{{ "Home-SeriesGenre-series-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                        <div class="container">
+                            <div class="modal-content" style="border:none; background:transparent;">
+                                <div class="modal-body">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <img  src="{{ $series_details->player_image ?  URL::to('public/uploads/images/'.$series_details->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                                        <h2 class="caption-h2">{{ optional($series_details)->title }}</h2>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                                        <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                            <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="trending-dec mt-4" >
+                                                    {{ $series_details->season_count ." Series ".$series_details->episode_count .' Episodes' }} 
+                                                </div>
+
+                                                @if (optional($series_details)->description)
+                                                    <div class="trending-dec mt-4">{!! html_entity_decode( optional($series_details)->description) !!}</div>
+                                                @endif
+
+                                                <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endforeach
     </section>
 @endif
 
