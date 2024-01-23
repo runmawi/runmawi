@@ -66,22 +66,27 @@ $data = App\Series::where('active', '=', '1')
                                             <div class="tab-title-info position-relative">
                                                 <ul class="trending-pills d-flex nav nav-pills justify-content-center align-items-center text-center"
                                                     role="tablist">
+
                                                     <li class="nav-item">
                                                         <a class="nav-link active show" data-toggle="pill"  href="{{'#trending-data-overview-'.$key }}" role="tab"
                                                             aria-selected="true">Overview</a>
                                                     </li>
+
                                                     <li class="nav-item">
                                                         <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Episodes-'.$key }}"
                                                             role="tab" aria-selected="false">Episodes</a>
                                                     </li>
+
                                                     <li class="nav-item">
                                                         <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Trailers-'.$key }}"
                                                             role="tab" aria-selected="false">Trailers</a>
                                                     </li>
+
                                                     <li class="nav-item">
                                                         <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Similar-'.$key }}"
                                                             role="tab" aria-selected="false">Similar Like This</a>
                                                     </li>
+                                                    
                                                 </ul>
                                             </div>
                                                             
@@ -102,7 +107,6 @@ $data = App\Series::where('active', '=', '1')
                                                         <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
 
                                                         <div class="d-flex align-items-center text-white text-detail">
-                                                            <span class="badge badge-secondary p-3">13+</span>
                                                             <span class="ml-3">{{ $series_details->season_count . " Seasons" }} </span>
                                                             <span class="trending-year">{{ optional($series_details)->year }}</span>
                                                         </div>
@@ -183,20 +187,20 @@ $data = App\Series::where('active', '=', '1')
                                                                 @foreach ($series_details->Episode_details as $key => $item)
                                                                     <div class="e-item">
                                                                         <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
+                                                                            <a href="{{ URL::to('episode/'.$series_details->slug .'/'. $item->slug ) }}">
                                                                                 <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                                                             </a>
                                                                             <div class="episode-number">{{ ($key+1) }}</div>
                                                                             <div class="episode-play-info">
                                                                                 <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
+                                                                                    <a href="{{ URL::to('episode/'.$series_details->slug .'/'. $item->slug ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="episodes-description text-body mt-2">
                                                                             <div
                                                                                 class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
+                                                                                <a href="{{ URL::to('episode/'.$series_details->slug .'/'. $item->slug ) }}">{{ 'Episode ' .$item->episode_order }} </a>
                                                                                 <span class="text-primary">                           
                                                                                     {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
                                                                                 </span>
@@ -227,20 +231,20 @@ $data = App\Series::where('active', '=', '1')
                                                                 @foreach ($series_details->Episode_Traler_details as $key => $item)
                                                                     <div class="e-item">
                                                                         <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
+                                                                            <a href="{{  URL::to('episode/'.$series_details->slug .'/'. $item->slug  ) }}">
                                                                                 <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                                                             </a>
                                                                             <div class="episode-number">{{ ($key+1) }}</div>
                                                                             <div class="episode-play-info">
                                                                                 <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
+                                                                                    <a href="{{  URL::to('episode/'.$series_details->slug .'/'. $item->slug  ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="episodes-description text-body mt-2">
                                                                             <div
                                                                                 class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
+                                                                                <a href="{{  URL::to('episode/'.$series_details->slug .'/'. $item->slug  ) }}">{{ 'Episode ' .$item->episode_order }} </a>
                                                                                 <span class="text-primary">                           
                                                                                     {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
                                                                                 </span>
@@ -272,20 +276,20 @@ $data = App\Series::where('active', '=', '1')
                                                                 @foreach ( $series_details->Episode_Similar_content as $key =>  $item )
                                                                     <div class="e-item">
                                                                         <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
+                                                                            <a href="{{  URL::to('episode/'.$series_details->slug .'/'. $item->slug  ) }}">
                                                                                 <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                                                             </a>
                                                                             <div class="episode-number">{{ ($key+1) }}</div>
                                                                             <div class="episode-play-info">
                                                                                 <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
+                                                                                    <a href="{{  URL::to('episode/'.$series_details->slug .'/'. $item->slug  ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="episodes-description text-body mt-2">
                                                                             <div
                                                                                 class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
+                                                                                <a href="{{  URL::to('episode/'.$series_details->slug .'/'. $item->slug  ) }}">{{ 'Episode ' .$item->episode_order }} </a>
                                                                                 <span class="text-primary">                           
                                                                                     {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
                                                                                 </span>
