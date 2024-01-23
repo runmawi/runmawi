@@ -1583,6 +1583,8 @@ class AdminVideosController extends Controller
 
         $video = Video::findOrFail($id);
 
+        Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
+
         if ($request->slug == "") {
             $data["slug"] = $this->createSlug($data["title"]);
         } else {
@@ -2411,6 +2413,7 @@ class AdminVideosController extends Controller
         $video->video_js_mid_position_ads_category = $request->video_js_mid_position_ads_category;
         $video->video_js_mid_advertisement_sequence_time = $request->video_js_mid_advertisement_sequence_time;
         $video->expiry_date = $request->expiry_date;
+        $video->today_top_video = $request->today_top_video;
         $video->save();
 
         if (
@@ -2757,6 +2760,7 @@ class AdminVideosController extends Controller
             return redirect('/home');
         }
 
+    
         $user_package = User::where('id', 1)->first();
         $data = $request->all();
 
@@ -2766,6 +2770,8 @@ class AdminVideosController extends Controller
         
         $id = $data['video_id'];
         $video = Video::findOrFail($id);
+
+        Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
 
         if (!empty($video->embed_code)) {
             $embed_code = $video->embed_code;
@@ -3340,6 +3346,8 @@ class AdminVideosController extends Controller
         $video->ios_ppv_price = $data['ios_ppv_price'];
         $video->player_image = $data["player_image"] ;
         $video->video_tv_image = $data["video_tv_image"] ;
+        $video->today_top_video = $data["today_top_video"] ;
+
 
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
