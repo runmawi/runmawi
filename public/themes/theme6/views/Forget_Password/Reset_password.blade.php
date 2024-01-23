@@ -81,6 +81,9 @@
         .sign-user_card {
             padding: 20px;
         }
+        .sign-in-page {
+            background: #000;
+        }
     </style>
 </head>
 
