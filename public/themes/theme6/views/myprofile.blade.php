@@ -91,6 +91,15 @@ $settings = App\Setting::first();
     label{
       color: #000;
     }
+    th label{
+      color: #fff !important;
+    }
+    .modal-open .modal{
+      overflow: auto;
+    }
+    .m-profile .form-group {
+    margin-bottom: 1rem;
+}
 </style>
 
 <body>
@@ -420,7 +429,7 @@ $settings = App\Setting::first();
                      </div>
 
                         
-                        <div class="col-sm-4 text-center">
+                        <div class="col-sm-4 text-center mt-3">
                            @if(Auth::user()->role == "subscriber")
                               <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
                            

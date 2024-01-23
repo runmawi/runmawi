@@ -55,9 +55,10 @@
     <title>{{ __('Reset Password') }} | <?php echo $settings->website_name; ?></title>
     <link rel="shortcut icon" href="<?= getFavicon() ?>" />
 
+    <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css'); ?>" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css" />
-    <link rel="stylesheet" href="<?= URL::to('/assets/css/style.css') ?>" />
+    
     <link rel="stylesheet" href="<?= URL::to('/assets/css/bootstrap.min.css') ?>" />
     <link rel="stylesheet" href="<?= URL::to('/assets/css/typography.css') ?>" />
     <link rel="stylesheet" href="<?= URL::to('/assets/css/responsive.css') ?>" />
@@ -174,9 +175,9 @@
         padding-right: 150px !important;
     }
 
-    i.fa.fa-google-plus {
+    /* i.fa.fa-google-plus {
         padding: 10px !important;
-    }
+    } */
 
     option {
         background: #474644 !important;
@@ -202,6 +203,9 @@
     .error {
         color: brown;
         font-family: 'remixicon';
+    }
+    footer{
+        background: #161617 !important;
     }
 </style>
 
@@ -364,6 +368,6 @@
         });
     </script>
 
-    @php include(public_path('themes/default/views/footer.blade.php')); @endphp
+    @php include(public_path('themes/theme1/views/footer.blade.php')); @endphp
 
 </body>
