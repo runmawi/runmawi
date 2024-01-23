@@ -320,4 +320,5 @@ if ($Prevent_inspect == 1) { ?>
             }
         });
     </script>
+    
 <?php } ?>

@@ -809,21 +809,23 @@
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
         <script>
-        $("#searchResult").validate({
-            errorClass: 'Search_error_class',
-            rules: {
-                search: {
-                    required: true,
-                },
-            },
+               $("#searchResult").validate({
+                     errorClass: 'Search_error_class',
+                     rules: {
+                        search: {
+                           required: true,
+                        },
+                     },
 
-            messages: {
-                search: {
-                    required: "This Search field is required",
-                }
-            }
-        });
-        </script>
+                     messages: {
+                        search: {
+                           required: "This Search field is required",
+                        }
+                     }
+               });
+               </script>
+
+         
 
         <style>
          .dropdown-toggle::after{

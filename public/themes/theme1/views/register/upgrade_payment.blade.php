@@ -99,11 +99,11 @@
     .tab button:hover {
       background-color: #111;
     }
-        .toggle{
+        /* .toggle{
             display: flex;
             justify-content: space-between;
     width: 43%;
-        }
+        } */
     /* Create an active/current tablink class */
     .tab button.active {
       border-bottom: 2px solid #c3ab06;
@@ -500,6 +500,13 @@ i.fa.fa-google-plus {
     }
 .ambk{
 background-color: #000;padding: 10px!important;}
+.switch{
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 20px;
+    padding-top: 11px;
+}
 </style>
 
 <script>
