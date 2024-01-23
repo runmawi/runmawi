@@ -155,11 +155,9 @@ Index Of Script
 			slidesToShow: 6,
 			slidesToScroll: 1,
 			arrows: true,
-			infinite: true,
+			infinite: false,
 			speed: 300,
-			autoplay: false,
-			slidesToShow: 4,
-			slidesToScroll: 1,		
+			autoplay: false,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
 			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
@@ -211,7 +209,7 @@ Index Of Script
 			]
 		});
 		jQuery('#top-ten-slider-nav').slick({
-			slidesToShow: 5,
+			slidesToShow: 6,
 			slidesToScroll: 1,
 			asNavFor: '#top-ten-slider',
 			dots: false,

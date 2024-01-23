@@ -222,11 +222,16 @@
         position: relative;
         padding: 0 15px 0 15px;
     }
+    
 
    body.light .modal-content{background: <?php echo GetAdminLightBg(); ?>!important;color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
    body.dark-theme .modal-content{background-color: <?php echo GetAdminDarkBg(); ?>!important;;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
 
 
+</style>
+<style>
+    div#video\ sda{position:relative;}
+    .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 2%; left:1%; color: white; border: none; cursor: pointer; }
 </style>
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
@@ -258,7 +263,9 @@ if(!Auth::guest()){
                         </iframe>
 
                     <?php else: ?>
-
+                        <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </button>
                         <video id="live-stream-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls
                             preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
                             <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
