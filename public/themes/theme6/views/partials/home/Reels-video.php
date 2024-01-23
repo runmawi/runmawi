@@ -18,7 +18,7 @@
                                 
                             <div class="block-description" >
                                 <a  class="text-white"  data-toggle="modal" data-target="#Reels">
-                                <h6><?php  echo (strlen($reel->reels_videos_slug) > 18) ? substr($reel->reels_videos_slug,0,19).'...' : $reel->reels_videos_slug; ?></h6>
+                                <p><?php  echo (strlen($reel->reels_videos_slug) > 18) ? substr($reel->reels_videos_slug,0,19).'...' : $reel->reels_videos_slug; ?></p>
                                 
                                <div class="hover-buttons">
                                    <a class="text-white"  data-toggle="modal" data-target="#Reels"  >

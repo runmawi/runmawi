@@ -50,7 +50,42 @@ ol.breadcrumb {
                     </div>
                 </div>
 
+
                 <div class="favorites-contens">
+                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+                        <?php if(isset($SeriesGenre)) {
+                            foreach($SeriesGenre as $Series_Genre){ ?>
+                                <li class="slide-item">
+                                    <a href="<?php echo URL::to('/play_series/'.$Series_Genre->slug ) ?>">
+                                        <div class="block-images position-relative">
+                                            <div class="img-box">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Series_Genre->image;  ?>" class="img-fluid" alt="">
+                                            </div>
+                                            <div class="block-description">
+                                                <p> <?php  echo (strlen(@$Series_Genre->title) > 17) ? substr(@$Series_Genre->title,0,18).'...' : @$Series_Genre->title; ?> </p>
+                                                
+
+                                                <div class="hover-buttons">
+                                                    <span class="btn btn-hover">
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                        Visit Series
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="block-social-info">
+                                                <ul class="list-inline p-0 m-0 music-play-lists">
+                                                    <li><span><i class="ri-heart-fill"></i></span></li>
+                                                    <li><span><i class="ri-add-line"></i></span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php } } ?>
+                    </ul>
+                </div>
+
+                <!-- <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
                         <?php if(isset($SeriesGenre)) {
                         foreach($SeriesGenre as $Series_Genre){ ?>
@@ -64,8 +99,8 @@ ol.breadcrumb {
 
                                     <div class="block-description">
                                         <a href="<?php echo URL::to('/play_series/').'/'.$Series_Genre->slug  ?>">
-                                            <h6><?php  echo (strlen(@$Series_Genre->title) > 17) ? substr(@$Series_Genre->title,0,18).'...' : @$Series_Genre->title; ?>
-                                            </h6>
+                                            <p><?php  echo (strlen(@$Series_Genre->title) > 17) ? substr(@$Series_Genre->title,0,18).'...' : @$Series_Genre->title; ?>
+                                            </p>
                                         </a>
                                         <div class="hover-buttons">
                                             <div>
@@ -85,7 +120,7 @@ ol.breadcrumb {
 
                         <?php } } ?>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

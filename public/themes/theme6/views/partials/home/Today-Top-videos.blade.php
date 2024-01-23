@@ -1,5 +1,5 @@
 @if (!is_null($data))
-    <section id="parallax" class="parallax-window" style="background: url('{{ URL::to('public/uploads/images/' . $data->player_image) }}') center center;">
+    <section id="parallax" class="parallax-window" style="background: url('{{ URL::to('public/uploads/images/' . $data->player_image) }}') center center;background-repeat:no-repeat;background-size:cover;">
         <div class="container-fluid h-100">
             <div class="row align-items-center justify-content-center h-100 parallaxt-details">
                 <div class="col-lg-4 r-mb-23">
@@ -30,8 +30,8 @@
                         </div>
                         <div class="movie-time d-flex align-items-center mb-3">
                             <div class="badge badge-secondary mr-3">{{ optional($data)->age_restrict.'+' }}</div>
-                            <h6 class="text-white"> {{ $data->duration !=null ? Carbon\CarbonInterval::seconds($data->duration)->cascade()->format('%im %ss') : null }}
-                            </h6>
+                            <p class="text-white"> {{ $data->duration !=null ? Carbon\CarbonInterval::seconds($data->duration)->cascade()->format('%im %ss') : null }}
+                            </p>
                         </div>
                         <p> {!! html_entity_decode( optional($data)->description ) !!}</p>
                         <div class="parallax-buttons">
@@ -43,7 +43,7 @@
                     <div class="parallax-img">
                         <a href="{{ URL::to('category/videos/'.$data->slug ) }}">
                             <img src="{{ URL::to('public/uploads/images/' . $data->image) }}"
-                                class="img-fluid w-100" alt="bailey">
+                                class="img-fluid" alt="bailey">
                         </a>
                     </div>
                 </div>

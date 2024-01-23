@@ -21,8 +21,8 @@
                                                 <img src="{{ $video_details->image ?  $video_details->image : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($video_details->name) > 17 ? substr($video_details->name, 0, 18) . '...' : $video_details->name }}
-                                                </h6>
+                                                <p> {{ strlen($video_details->name) > 17 ? substr($video_details->name, 0, 18) . '...' : $video_details->name }}
+                                                </p>
 
                                                 <div class="movie-time d-flex align-items-center my-2">
 

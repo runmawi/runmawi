@@ -24,7 +24,7 @@
 
                                             <div class="block-description">
 
-                                                <h6> {{ strlen($playlist_videos->title) > 17 ? substr($playlist_videos->title, 0, 18) . '...' : $playlist_videos->title }}
+                                                <p> {{ strlen($playlist_videos->title) > 17 ? substr($playlist_videos->title, 0, 18) . '...' : $playlist_videos->title }} </p>
 
                                                 <div class="movie-time d-flex align-items-center my-2"></div>
 
