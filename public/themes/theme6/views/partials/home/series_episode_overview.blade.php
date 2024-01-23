@@ -136,7 +136,7 @@ $data = App\Series::where('active', '=', '1')
                                                             <img src="{{ front_end_logo() }}" class="img-fluid" alt="">
                                                             <span class="text-gold ml-3"> {{ "#". ($key+1) ." in Series Today" }} </span>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-6 pl-0">
                                                             <p class="trending-dec">{!! html_entity_decode( optional($series_details)->details) !!}</p>
                                                         </div>
 
