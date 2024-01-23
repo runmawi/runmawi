@@ -246,6 +246,7 @@
                                 <div id="descriptionContainer" class="description-container mb-1">
                                     <?php echo $shortDescription; ?>
                                 </div>
+                                      
 
                             <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p> -->
 
@@ -262,18 +263,22 @@
     @endforeach
 @endif
 
-<script>
-    function toggleDescription() {
-        var descriptionContainer = document.querySelector('.description-container');
-        var moreText = descriptionContainer.querySelector('.more-text');
-        var seeMoreButton = descriptionContainer.querySelector('.see-more');
+<!-- slider see more script -->
+<!-- <script>
+            function toggleDescription() {
+               var descriptionContainer = document.querySelector('.description-container');
+               var moreText = descriptionContainer.querySelector('.more-text');
+               var seeMoreButton = descriptionContainer.querySelector('.see-more');
 
-        if (moreText.style.display === 'none' || moreText.style.display === '') {
-            moreText.style.display = 'inline';
-            seeMoreButton.innerText = ' See Less ';
-        } else {
-            moreText.style.display = 'none';
-            seeMoreButton.innerText = ' See More ';
-        }
-    }
-</script>
+               if (moreText.style.display === 'none' || moreText.style.display === '') {
+                     moreText.style.display = 'inline';
+                     seeMoreButton.innerText = ' See Less ';
+               } else {
+                     moreText.style.display = 'none';
+                     seeMoreButton.innerText = ' See More ';
+               }
+            }
+         </script> -->
+
+         
+
