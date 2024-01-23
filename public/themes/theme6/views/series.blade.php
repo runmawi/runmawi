@@ -427,7 +427,6 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 <?php endif;?>
 <?php $payment_type = App\PaymentSetting::get(); ?>
 
-<?php include public_path('themes/theme6/views/footer.blade.php'); ?>
 
 
 <!-- Modal -->
@@ -911,3 +910,5 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
         });
     });
 </script>
+<?php include public_path('themes/theme6/views/footer.blade.php'); ?>
+
