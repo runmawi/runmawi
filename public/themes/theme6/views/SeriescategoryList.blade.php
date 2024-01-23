@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="vid-title">{{ "Category List" }}</h4>                     
+                    <h4 class="vid-title">{{  __("Category List") }}</h4>                     
                 </div>
 
                 <div class="favorites-contens">
@@ -15,13 +15,13 @@
                         @if(isset($category_list)) 
                             @foreach($category_list as $category_lists)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('category/videos/'.$latest_video->slug ) }}">
+                                    <a href="{{ URL::to('category/videos/'.$category_lists->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                <img src="{{ $category_lists->image ?  URL::to('public/uploads/videocategory/'.$category_lists->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($category_lists->name) > 17 ? substr($category_lists->name, 0, 18) . '...' : $category_lists->name }}
+                                                <h6> {{ strlen($category_lists->name) > 17 ? __(substr($category_lists->name, 0, 18)) . '...' : __($category_lists->name) }}
                                                 </h6>
                                                 <!-- <div class="movie-time d-flex align-items-center my-2">
 
@@ -37,7 +37,7 @@
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
+                                                        {{ __("Play Now") }}
                                                     </span>
                                                 </div>
                                             </div>

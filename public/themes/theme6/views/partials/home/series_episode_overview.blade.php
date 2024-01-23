@@ -27,13 +27,34 @@ $data = App\Series::where('active', '=', '1')
 
         $item['Episode_details'] = $item->Series_depends_episodes;
 
-        $item['Episode_Traler_details'] = $item->Series_depends_episodes;
+        $item['Season_Trailer_details'] = App\SeriesSeason::where('series_id', $item->id)->whereNotNull('trailer_type')->whereNotNull('trailer')
+                                            ->get()->map(function ($item) {
+                                                
+                                                switch (true) {
+
+                                                case $item['trailer_type'] === "mp4_url":
+                                                    $item['trailer_videos_url']  =  $item->trailer ;
+                                                    $item['trailer_video_player_type'] =  'video/mp4' ;
+                                                break;
+
+                                                case $item['trailer_type'] === "m3u8_url" :
+                                                    $item['trailer_videos_url']  =  $item->trailer ;
+                                                    $item['trailer_video_player_type'] =  'application/x-mpegURL' ;
+                                                break;
+
+                                                default:
+                                                    $item['trailer_videos_url']    = null ;
+                                                    $item['trailer_video_player_type']   =  null ;
+                                                break;
+                                                }
+
+                                                return $item;
+                                            });
 
         $item['Episode_Similar_content'] = App\Episode::where('series_id','!=',$item->id)->where('status','1')->where('active',1)->get();
 
         return $item;
     });
-
 ?>
 
 @if (!empty($data) && $data->isNotEmpty())
@@ -66,22 +87,27 @@ $data = App\Series::where('active', '=', '1')
                                             <div class="tab-title-info position-relative">
                                                 <ul class="trending-pills d-flex nav nav-pills justify-content-center align-items-center text-center"
                                                     role="tablist">
+
                                                     <li class="nav-item">
                                                         <a class="nav-link active show" data-toggle="pill"  href="{{'#trending-data-overview-'.$key }}" role="tab"
                                                             aria-selected="true">Overview</a>
                                                     </li>
+
                                                     <li class="nav-item">
                                                         <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Episodes-'.$key }}"
                                                             role="tab" aria-selected="false">Episodes</a>
                                                     </li>
+
                                                     <li class="nav-item">
                                                         <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Trailers-'.$key }}"
                                                             role="tab" aria-selected="false">Trailers</a>
                                                     </li>
+
                                                     <li class="nav-item">
                                                         <a class="nav-link" data-toggle="pill" href="{{ '#trending-data-Similar-'.$key }}"
                                                             role="tab" aria-selected="false">Similar Like This</a>
                                                     </li>
+                                                    
                                                 </ul>
                                             </div>
                                                             
@@ -102,7 +128,6 @@ $data = App\Series::where('active', '=', '1')
                                                         <h1 class="trending-text big-title text-uppercase">{{ optional($series_details)->title }}</h1>
 
                                                         <div class="d-flex align-items-center text-white text-detail">
-                                                            <span class="badge badge-secondary p-3">13+</span>
                                                             <span class="ml-3">{{ $series_details->season_count . " Seasons" }} </span>
                                                             <span class="trending-year">{{ optional($series_details)->year }}</span>
                                                         </div>
@@ -180,23 +205,23 @@ $data = App\Series::where('active', '=', '1')
                                                             <div
                                                                 class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
                                                                 
-                                                                @foreach ($series_details->Episode_details as $key => $item)
+                                                                @foreach ($series_details->Episode_details as  $item)
                                                                     <div class="e-item">
                                                                         <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
+                                                                            <a href="{{ URL::to('episode/'.$series_details->slug .'/'. $item->slug ) }}">
                                                                                 <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                                                             </a>
                                                                             <div class="episode-number">{{ ($key+1) }}</div>
                                                                             <div class="episode-play-info">
                                                                                 <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
+                                                                                    <a href="{{ URL::to('episode/'.$series_details->slug .'/'. $item->slug ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="episodes-description text-body mt-2">
                                                                             <div
                                                                                 class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
+                                                                                <a href="{{ URL::to('episode/'.$series_details->slug .'/'. $item->slug ) }}">{{ 'Episode ' .$item->episode_order }} </a>
                                                                                 <span class="text-primary">                           
                                                                                     {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
                                                                                 </span>
@@ -224,33 +249,29 @@ $data = App\Series::where('active', '=', '1')
 
                                                         <div class="episodes-contens mt-4">
                                                             <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                @foreach ($series_details->Episode_Traler_details as $key => $item)
-                                                                    <div class="e-item">
-                                                                        <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
-                                                                                <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                                                            </a>
-                                                                            <div class="episode-number">{{ ($key+1) }}</div>
-                                                                            <div class="episode-play-info">
-                                                                                <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
+                                                                @if( ($series_details->Season_Trailer_details)->isNotEmpty())
+
+                                                                    @foreach ($series_details->Season_Trailer_details as $Season_Trailer_details_key =>   $item)
+                                                                        <div class="e-item">
+                                                                            <div class="block-image position-relative">
+
+                                                                                <img src="{{ $item->image ? $item->image : default_vertical_image_url() }}" class="img-fluid" alt="">
+
+                                                                                <div class="episode-play-info">
+                                                                                    <div class="episode-play">
+                                                                                        <a tabindex="0"><i class="ri-play-fill" data-toggle="modal" data-target={{ "#series_episode_overview-trailer-".$key.'-'.$Season_Trailer_details_key }} ></i></a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            
+                                                                            <div class="episodes-description text-body mt-2">
+                                                                                <div  class="d-flex align-items-center justify-content-between">
+                                                                                    {{ $item->series_seasons_name }} </a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="episodes-description text-body mt-2">
-                                                                            <div
-                                                                                class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
-                                                                                <span class="text-primary">                           
-                                                                                    {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
-                                                                                </span>
-                                                                            </div>
-                                                                            <div class="mb-0">
-                                                                                {!! html_entity_decode( optional($item)->episode_description) !!}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @endforeach
+                                                                    @endforeach
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -269,23 +290,23 @@ $data = App\Series::where('active', '=', '1')
 
                                                         <div class="episodes-contens mt-4">
                                                             <div class="owl-carousel owl-theme episodes-slider1 list-inline p-0 mb-0">
-                                                                @foreach ( $series_details->Episode_Similar_content as $key =>  $item )
+                                                                @foreach ( $series_details->Episode_Similar_content as   $item )
                                                                     <div class="e-item">
                                                                         <div class="block-image position-relative">
-                                                                            <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">
+                                                                            <a href="{{  URL::to('episode/'.$series_details->slug .'/'. $item->slug  ) }}">
                                                                                 <img src="{{ $item->player_image ? URL::to('public/uploads/images/'. $item->player_image ) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                                                             </a>
                                                                             <div class="episode-number">{{ ($key+1) }}</div>
                                                                             <div class="episode-play-info">
                                                                                 <div class="episode-play">
-                                                                                    <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
+                                                                                    <a href="{{  URL::to('episode/'.$series_details->slug .'/'. $item->slug  ) }}" tabindex="0"><i class="ri-play-fill"></i></a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="episodes-description text-body mt-2">
                                                                             <div
                                                                                 class="d-flex align-items-center justify-content-between">
-                                                                                <a href="{{ URL::to('episode/'.$item->series_id .'/'. $item->id ) }}">{{ 'Episode ' .$item->episode_order }} </a>
+                                                                                <a href="{{  URL::to('episode/'.$series_details->slug .'/'. $item->slug  ) }}">{{ 'Episode ' .$item->episode_order }} </a>
                                                                                 <span class="text-primary">                           
                                                                                     {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
                                                                                 </span>
@@ -302,7 +323,6 @@ $data = App\Series::where('active', '=', '1')
                                         </div>
                                     </div>
                                 </li>
-
                             @endforeach
                         </ul>
                     </div>
@@ -310,4 +330,127 @@ $data = App\Series::where('active', '=', '1')
             </div>
         </div>
     </section>
+
+    {{-- Trailer Modal --}}
+
+    @foreach ($data as $key => $series_details )
+        @foreach ($series_details->Season_Trailer_details as $Season_Trailer_details_key =>   $item)
+
+            <div class="modal fade" id='{{ "series_episode_overview-trailer-".$key.'-'.$Season_Trailer_details_key }}'  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="video-js-trailer-modalLabel" aria-hidden="true">
+                <div class="modal-dialog video-js-trailer-modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body video-js-trailer-modal-body">
+            
+                            <button type="button" class="close video-js-trailer-modal-close"  data-series-episode-overview-modal-key="{{ 'series_episode_overview-trailer-'.$key.'-'.$Season_Trailer_details_key }}"  
+                                onclick="video_js_trailer_modal_close(this)" >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+            
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <video id="series_episode_overview-video-js-trailer-player" class="video-js vjs-theme-fantasy vjs-icon-hd embed-responsive-item video-btn" controls
+                                        preload="auto" width="100%" height="auto" poster=" {{ $item->image }}" >
+                                        <source src="{{ $item->trailer_videos_url }}" type="{{ $item->trailer_video_player_type }}">
+                                </video>       
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endforeach
 @endif
+
+{{-- Style Link--}}
+    <link rel="stylesheet" href="{{ asset('public/themes/theme6/assets/css/video-js/video-details.css') }}">
+
+{{-- video-js Style --}}
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
+    <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
+    <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
+
+{{-- video-js Script --}}
+
+    <script src="{{ asset('public/themes/theme6/assets/js/video-js/video.min.js') }}"></script>
+    <script src="{{ asset('public/themes/theme6/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+    <script src="{{ asset('public/themes/theme6/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const videoElements = document.querySelectorAll('#series_episode_overview-video-js-trailer-player');
+
+        videoElements.forEach(function(videoElement) {
+
+            var player = videojs(videoElement, {  // Video Js Player  - Trailer
+                aspectRatio: '16:9',
+                fluid: true,
+
+                controlBar: {
+                    volumePanel: {
+                        inline: false
+                    },
+
+                    children: {
+                        'playToggle': {},
+                        'currentTimeDisplay': {},
+                        'timeDivider': {},
+                        'durationDisplay': {},
+                        'liveDisplay': {},
+
+                        'flexibleWidthSpacer': {},
+                        'progressControl': {},
+
+                        'settingsMenuButton': {
+                            entries: [
+                                'playbackRateMenuButton'
+                            ]
+                        },
+                        'fullscreenToggle': {}
+                    }
+                }
+            });
+
+            player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
+                displayCurrentQuality: true,
+            });
+
+            $(".video-js-trailer-modal-close").click(function(){
+                player.pause();  
+            });
+
+        });
+    });
+
+    function video_js_trailer_modal_close(ele) {
+        const series_episode_overview_modal_key = $(ele).attr('data-series-episode-overview-modal-key');
+        $('#'+series_episode_overview_modal_key).modal('hide');
+    }
+
+</script>
+
+<style>
+    .video-js-trailer-modal-dialog {
+        max-width: 800px;
+        margin: 30px auto;
+    }
+
+    .video-js-trailer-modal-body {
+        position: relative;
+        padding: 0px;
+    }
+
+    .video-js-trailer-modal-close {
+        position: absolute;
+        right: -30px;
+        top: 0;
+        z-index: 999;
+        font-size: 2rem;
+        font-weight: normal;
+        color: #fff;
+        opacity: 1;
+    }
+</style>

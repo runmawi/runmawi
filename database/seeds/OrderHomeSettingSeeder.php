@@ -203,7 +203,7 @@ class OrderHomeSettingSeeder extends Seeder
                     'order_id' => 20,
                     'video_name' => 'Series_Genre' ,
                     'header_name' => 'SeriesGenre', 
-                    'url' => '',
+                    'url' => 'Series/category/list',
                     'created_at' => Carbon::now(),
                     'updated_at' => null,
                 ],
