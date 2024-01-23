@@ -731,6 +731,7 @@ header .navbar ul li.menu-item a:hover {
 .slide-item a:hover{
     color:white;
 }
+#descriptionContainer p{margin:0;}
 
 
 /*  Signup Page*/

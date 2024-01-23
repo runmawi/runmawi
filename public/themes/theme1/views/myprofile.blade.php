@@ -995,7 +995,7 @@ border-radius: 5px;padding:10px;">
     <!-- Slick Animation-->
     <script src="<?= URL::to('/') . '/assets/js/slick-animation.min.js' ?>"></script>
     <!-- Custom JS-->
-    <script src="<?= URL::to('/') . '/assets/js/custom.js' ?>"></script>
+    
     <script>
         $(document).ready(function() {
 
