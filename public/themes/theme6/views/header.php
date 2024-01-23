@@ -834,4 +834,7 @@
          ul.dropdown-menu.categ-head{
             overflow:hidden;
          }
+        .home-search li.list-group-item{
+            text-align:left;
+         }
          </style>
