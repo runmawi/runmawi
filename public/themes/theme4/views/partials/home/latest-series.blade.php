@@ -40,7 +40,7 @@
                         </ul>
 
                         <ul id="trending-slider series-slider" class="list-inline p-0 m-0 align-items-center series-slider">
-                            @foreach ($data as $key => $latest_series )
+                            @foreach ($data as $series_key => $latest_series)
                                 <li>
                                     <div class="tranding-block position-relative trending-thumbnail-image">
                                         <button class="drp-close">×</button>
@@ -83,7 +83,7 @@
                                                                                         <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                                     </a>
 
-                                                                                    <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-series-episode-Modal-'.$episode_key }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
+                                                                                    <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ "#Home-Latest-series-episode-Modal-".$series_key.'-'.$episode_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                                                     
                                                                                     @php
                                                                                         $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first() ;
@@ -124,11 +124,11 @@
             </div>
         </div>
 
-        {{-- Episode Modal --}}
+        {{-- Series Based Episode Modal --}}
 
-        @foreach ($data as $key => $latest_series )
+        @foreach ($data as $series_key => $latest_series )
             @foreach ($latest_series->Series_depends_episodes as $episode_key =>  $episode )
-                <div class="modal fade info_model" id="{{ "Home-Latest-series-episode-Modal-".$episode_key }}" tabindex="-1" aria-hidden="true">
+                <div class="modal fade info_model" id="{{ "Home-Latest-series-episode-Modal-".$series_key.'-'.$episode_key   }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                         <div class="container">
                             <div class="modal-content" style="border:none; background:transparent;">
@@ -151,8 +151,8 @@
                                                     </div>
                                                 </div>
 
-                                                @if (optional($episode)->description)
-                                                    <div class="trending-dec mt-4">{!! html_entity_decode( optional($episode)->description) !!}</div>
+                                                @if (optional($episode)->episode_description)
+                                                    <div class="trending-dec mt-4">{!! html_entity_decode( optional($episode)->episode_description) !!}</div>
                                                 @endif
 
                                                 <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
