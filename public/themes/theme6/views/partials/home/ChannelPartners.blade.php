@@ -24,7 +24,7 @@
 
                                             <div class="block-description">
 
-                                                <h6>{{ ucwords(optional($channel)->channel_name) }}</h6>
+                                                <p>{{ ucwords(optional($channel)->channel_name) }}</p>
 
                                                 <div class="movie-time d-flex align-items-center my-2"></div>
 

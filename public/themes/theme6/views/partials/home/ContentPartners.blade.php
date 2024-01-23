@@ -21,8 +21,8 @@
 
                                             <div class="block-description">
 
-                                                <h6>{{ ucwords(optional($CPP_details)->username)  }}
-                                                </h6>
+                                                <p>{{ ucwords(optional($CPP_details)->username)  }}
+                                                </p>
 
                                                 <div class="movie-time d-flex align-items-center my-2">
                                                 </div>

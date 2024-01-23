@@ -113,9 +113,9 @@
                                     <div class="block-description">
                                         <a href="<?php echo URL::to('/') ?><?= '/live'.'/' . $livestream->slug ?>">
                                             <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                                    <h6>
+                                                    <p>
                                                         <?php  echo (strlen($livestream->title) > 17) ? substr($livestream->title,0,18).'...' : $livestream->title; ?>
-                                                    </h6>
+                                                    </p>
                                             <?php } ?>  
 
                                         <div class="movie-time d-flex align-items-center pt-1">

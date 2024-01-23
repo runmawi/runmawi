@@ -10,7 +10,59 @@
                 <div class="iq-main-header align-items-center justify-content-between">
                     <h4 class="main-title">{{ "All Channels" }}</h4>                     
                 </div>
+
                 <div class="favorites-contens">
+                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+                        @if(isset($channels)) 
+                            @foreach($channels as $channel)
+                                <li class="slide-item">
+                                    <a href="{{ URL::to('channel').'/'.$channel->channel_slug   }}">
+                                        <div class="block-images position-relative">
+                                            <div class="img-box">
+                                                @if(!empty($channel->channel_image) && $channel->channel_image != null)
+                                                <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="">
+                                                @else
+                                                <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" class="img-fluid w-100" alt="">
+                                                @endif
+
+                                            </div>
+                                            <div class="block-description">
+                                                <p> <?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?>
+                                                </p>
+                                                <div class="movie-time d-flex align-items-center my-2">
+
+                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                        {{ optional($channel)->age_restrict.'+' }}
+                                                        </div>
+
+                                                        <span class="text-white">
+                                                        {{ $channel->duration != null ? gmdate('H:i:s', $channel->duration) : null }}
+                                                        </span>
+                                                </div>
+
+                                                <div class="hover-buttons">
+                                                        <span class="btn btn-hover">
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                        Play Now
+                                                        </span>
+                                                </div>
+                                            </div>
+                                            <div class="block-social-info">
+                                                <ul class="list-inline p-0 m-0 music-play-lists">
+                                                        {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
+                                                        <li><span><i class="ri-heart-fill"></i></span></li>
+                                                        <li><span><i class="ri-add-line"></i></span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endif
+                    </ul>
+                </div>
+
+                <!-- <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
                       @if(isset($channels)) 
                         @foreach($channels as $channel)
@@ -39,7 +91,7 @@
                         @endforeach
                     @endif
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
