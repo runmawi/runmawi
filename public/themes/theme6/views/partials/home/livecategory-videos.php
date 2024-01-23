@@ -73,7 +73,7 @@ $currency = App\CurrencySetting::first();
                                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="">
                                         </div>
                                         <div class="block-description">
-                                            <h6> <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>   </h6>
+                                            <p> <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>   </p>
                                             <div class="movie-time d-flex align-items-center my-2">
 
                                                 <div class="badge badge-secondary p-1 mr-2">

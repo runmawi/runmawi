@@ -58,8 +58,8 @@ $data->each(function ($category) {
                                                         class="img-fluid" alt="">
                                                 </div>
                                                 <div class="block-description">
-                                                    <h6> {{ strlen($livestream_videos->title) > 17 ? substr($livestream_videos->title, 0, 18) . '...' : $livestream_videos->title }}
-                                                    </h6>
+                                                    <p> {{ strlen($livestream_videos->title) > 17 ? substr($livestream_videos->title, 0, 18) . '...' : $livestream_videos->title }}
+                                                    </p>
                                                     <div class="movie-time d-flex align-items-center my-2">
 
                                                         <div class="badge badge-secondary p-1 mr-2">

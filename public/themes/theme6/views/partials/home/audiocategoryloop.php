@@ -78,9 +78,9 @@
                                     <a href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
                                         <?php if($ThumbnailSetting->title == 1) { ?>
                                         <!-- Title -->
-                                        <h6>
+                                        <p>
                                             <?php echo strlen($audio->title) > 17 ? substr($audio->title, 0, 18) . '...' : $audio->title; ?>
-                                        </h6>
+                                        </p>
                                         <?php } ?>
                                         <div class="movie-time d-flex align-items-center pt-1">
                                             
