@@ -273,7 +273,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     <div>
 
     <div class="container-fluid series-details">
-        <div id="series_title" style="padding-left:15px;">
+        <div id="series_title">
             <div class="">
             <?php if($free_episode > 0 && Auth::user()->role != 'admin' || $checkseasonppv_exits > 0 && Auth::user()->role != 'admin' ||  $ppv_exits > 0 && Auth::user()->role != 'admin' ||  Auth::guest()){
 

@@ -143,7 +143,7 @@ $data = App\Series::where('active', '=', '1')
                                                         <div class="p-btns">
                                                             <div class="d-flex align-items-center p-0">
                                                                 <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
-                                                                <a href="#" class="btn btn-link" tabindex="0"><i class="ri-add-line"></i>My List</a>
+                                                                <a href="#" class="btn btn-hover" tabindex="0"><i class="ri-add-line"></i>My List</a>
                                                             </div>
                                                         </div>
                                                         <div class="trending-list mt-4">

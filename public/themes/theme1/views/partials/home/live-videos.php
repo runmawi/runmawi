@@ -88,7 +88,7 @@
                         <div class="block-description" >
                           <div class="hover-buttons">
                               <a class="text-white d-flex justify-content-center align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                                  <img class="ply mr-2" style="width: 20%; height: 20%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                  <img class="ply mr-2" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                     <!-- Live Now-->
                               </a>
                           </div>
