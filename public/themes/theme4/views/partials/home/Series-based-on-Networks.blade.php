@@ -26,6 +26,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
 });
     return $item;
 });
+
 ?>
 
 @if (!empty($data) && $data->isNotEmpty())
@@ -36,7 +37,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                                         
-                        @if (!empty($series_networks->Series_depends_Networks))
+                        @if (!empty($series_networks->Series_depends_Networks) && ($series_networks->Series_depends_Networks)->isNotEmpty() )
                                                                     {{-- Header --}}
                             <div class="iq-main-header d-flex align-items-center justify-content-between">
                                 <h4 class="main-title mar-left"><a href="{{ route('Specific_Series_Networks',[$series_networks->slug] )}}">{{ optional($series_networks)->name }}</a></h4>
@@ -59,7 +60,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                             </ul>
 
                             <ul id="trending-slider" class= "{{ 'series-networks-videos-slider list-inline p-0 m-0 align-items-center category-series-'.$key }}" >
-                                @foreach ($series_networks->Series_depends_Networks as $series )
+                                @foreach ($series_networks->Series_depends_Networks  as $Series_depends_Networks_key  => $series )
                                     <li>
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
                                             <button class="drp-close">×</button>
@@ -78,26 +79,25 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                                                                 <div class="p-btns">
                                                                     <div class="d-flex align-items-center p-0">
                                                                         <a href="{{ route('network.play_series',$series->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a href="{{ route('network.play_series',$series->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                        {{-- <a href="{{ route('network.play_series',$series->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a> --}}
                                                                     </div>
                                                                 </div>
                                                             </div>
 
                                                             <div class="trending-contens sub_dropdown_image mt-3">
                                                                 <ul id="trending-slider-nav" class= "{{ 'pl-4 m-0  series-depends-episode-slider-'.$key }}" >
-                                                                    @foreach ($series->Series_depends_episodes as $episode )
+                                                                    @foreach ($series->Series_depends_episodes as  $episode_key  => $episode )
                                                                         <li>
                                                                             <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}">
                                                                                 <div class=" position-relative">
                                                                                     <img src="{{ $episode->image_url }}" class="img-fluid" >
                                                                                     <div class="controls">
-                                                                                        <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}                                                                                            ">
+                                                                                        
+                                                                                        <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }} ">
                                                                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
                                                                                         </a>
 
-                                                                                        <nav>
-                                                                                            <button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button>
-                                                                                        </nav>
+                                                                                        <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Networks-based-categories-episode-Modal-'.$key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                                                         
                                                                                         @php
                                                                                             $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first() ;
@@ -138,6 +138,52 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                 </div>
             </div>
         </section>
+    @endforeach
+
+    {{-- Networks depends Episode Modal --}}
+
+    @foreach( $data as $key => $series_networks )
+        @foreach ($series_networks->Series_depends_Networks as $Series_depends_Networks_key =>  $series )
+            @foreach ($series->Series_depends_episodes as $episode_key =>  $episode )
+                <div class="modal fade info_model" id="{{ "Home-Networks-based-categories-episode-Modal-".$key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                        <div class="container">
+                            <div class="modal-content" style="border:none; background:transparent;">
+                                <div class="modal-body">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <img  src="{{ $episode->player_image ?  URL::to('public/uploads/images/'.$episode->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                                        <h2 class="caption-h2">{{ optional($episode)->title }}</h2>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                                        <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                            <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                @if (optional($episode)->episode_description)
+                                                    <div class="trending-dec mt-4">{!! html_entity_decode( optional($episode)->episode_description) !!}</div>
+                                                @endif
+
+                                                <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endforeach
     @endforeach
 @endif
 

@@ -74,6 +74,9 @@ use App\CategoryVideo;
 use App\AppSetting as AppSetting;
 use App\TVLoginCode as TVLoginCode;
 use App\Watchlater as Watchlater;
+use App\OrderHomeSetting;
+use App\ChannelVideoScheduler;
+use App\AdminEPGChannel;
 
 class HomeController extends Controller
 {
@@ -2705,76 +2708,161 @@ class HomeController extends Controller
     public function search(Request $request)
     {
 
+        $settings = Setting::first();
+
         if ($request->ajax())
         {
+            $videos = Video::select('videos.*', 'categoryvideos.category_id', 'categoryvideos.video_id', 'video_categories.id', 'video_categories.name as category_name')
+                            ->leftJoin('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                            ->leftJoin('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
 
-            // $videos = Video::Select('videos.*','categoryvideos.category_id','categoryvideos.video_id','video_categories.name as category_name')
-            //                ->Join('categoryvideos','categoryvideos.video_id','=','videos.id')
-            //                ->Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-            //                ->orwhere('videos.search_tags', 'LIKE', '%' . $request->country . '%')
-            //                ->orwhere('videos.title', 'LIKE', '%' . $request->country . '%')
-            //                ->orwhere('video_categories.name', 'LIKE', '%' . $request->country . '%')
-            //                ->where('active', '=', '1')
-            //                ->where('status', '=', '1')
-            //                ->where('draft', '=', '1')
-            //                ->orderBy('created_at', 'desc')
-            //                ->groupBy('videos.id')
-            //                ->limit('10');
+                                ->when($settings->search_tags_status, function ($query) use ($request) {
+                                    return $query->orWhere('videos.search_tags', 'LIKE', '%' . $request->country . '%');
+                                })
 
-                            $videos = Video::Select('videos.*')
-                            ->where('videos.search_tags', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('videos.title', 'LIKE', '%' . $request->country . '%')
-                            ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->where('draft', '=', '1')
-                            ->orderBy('created_at', 'desc')
-                            ->groupBy('videos.id')
-                            ->limit('10');
+                                ->when($settings->search_title_status, function ($query) use ($request) {
+                                    return $query->orWhere('videos.title', 'LIKE', '%' . $request->country . '%');
+                                })
 
-                           if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                                $videos = $videos  ->whereNotIn('videos.id',Block_videos());
-                            }
+                                ->when($settings->search_category_status, function ($query) use ($request) {
+                                    return $query->orWhere('video_categories.name', 'LIKE', '%' . $request->country . '%');
+                                })
 
-                           $videos = $videos->get();
+                                ->when($settings->search_description_status, function ($query) use ($request) {
+                                    return $query->orWhere('videos.description', 'LIKE', '%' . $request->country . '%');
+                                })
 
-            $livestream = LiveStream::Select('live_streams.*','livecategories.live_id','live_categories.name')
-                            ->Join('livecategories','livecategories.live_id','=','live_streams.id')
-                            ->Join('live_categories','live_categories.id','=','livecategories.category_id')
-                            ->orwhere('live_streams.search_tags', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('live_streams.title', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('live_categories.name', 'LIKE', '%' . $request->country . '%')           
+                                ->when($settings->search_details_status, function ($query) use ($request) {
+                                    return $query->orWhere('videos.details', 'LIKE', '%' . $request->country . '%');
+                                })
+
+                            ->where('active', 1)->where('status', 1)->where('draft', 1)
+                            ->orderBy('created_at', 'desc')->groupBy('videos.id')
+                            ->limit(10)
+
+                            ->when(Geofencing() != null && Geofencing()->geofencing == 'ON', function ($query) {
+                                return $query->whereNotIn('videos.id', Block_videos());
+                            })
+
+                            ->get();
+
+
+            $livestream = LiveStream::Select('live_streams.*','livecategories.live_id','live_categories.name','livecategories.category_id','live_categories.id')
+                            ->leftJoin('livecategories','livecategories.live_id','=','live_streams.id')
+                            ->leftJoin('live_categories','live_categories.id','=','livecategories.category_id')
+
+                            ->when($settings->search_tags_status, function ($query) use ($request) {
+                                return $query->orwhere('live_streams.search_tags', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_title_status, function ($query) use ($request) {
+                                return $query ->orwhere('live_streams.title', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_description_status, function ($query) use ($request) {
+                                return $query->orwhere('live_streams.description', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_details_status, function ($query) use ($request) {
+                                return $query->orwhere('live_streams.details', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_category_status, function ($query) use ($request) {
+                                return $query->orwhere('live_categories.name', 'LIKE', '%' . $request->country . '%');
+                            })
                             ->where('live_streams.active', '=', '1')
                             // ->where('status', '=', '1')
                             ->limit('10')
                             ->groupBy('live_streams.id')
                             ->get();
 
-            $audio = Audio::orwhere('search_tags', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('audio.title', 'LIKE', '%' .$request->country . '%')
-                            ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->limit('10')
-                            ->get();
+            $audio = Audio::Select('audio.*','category_audios.audio_id','audio_categories.name','category_audios.category_id','audio_categories.id')
+                            ->leftJoin('category_audios','category_audios.audio_id','=','audio.id')
+                            ->leftJoin('audio_categories','audio_categories.id','=','category_audios.category_id')
+                            
 
-            $Episode = Episode::Select('episodes.*','series.id','series_categories.category_id','video_categories.name as Category_name')
-                            ->Join('series','series.id','=','episodes.series_id')
-                            ->Join('series_categories','series_categories.series_id','=','series.id')
-                            ->Join('video_categories','video_categories.id','=','series_categories.category_id')
-                            ->orwhere('episodes.search_tags', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('episodes.title', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('video_categories.name', 'LIKE', '%' . $request->country . '%')           
+                            ->when($settings->search_tags_status, function ($query) use ($request) {
+                                return $query->orwhere('search_tags', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_title_status, function ($query) use ($request) {
+                                return $query ->orwhere('title', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_description_status, function ($query) use ($request) {
+                                return $query->orwhere('description', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_details_status, function ($query) use ($request) {
+                                return $query->orwhere('details', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_category_status, function ($query) use ($request) {
+                                return $query->orwhere('audio_categories.name', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->where('audio.active', '1')->where('audio.status', '1')
+                           
+                        ->limit('10')
+                        ->get();
+
+
+            $Episode = Episode::Select('episodes.*','series.id','series_categories.category_id')
+                            ->leftJoin('series','series.id','=','episodes.series_id')
+                            ->leftJoin('series_categories','series_categories.series_id','=','series.id')
+                            ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
+
+                            ->when($settings->search_tags_status, function ($query) use ($request) {
+                                return $query->orwhere('episodes.search_tags', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_title_status, function ($query) use ($request) {
+                                return $query ->orwhere('episodes.title', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_description_status, function ($query) use ($request) {
+                                return $query->orwhere('episodes.episode_description', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_category_status, function ($query) use ($request) {
+                                return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->country . '%');
+                            })
+
                             ->where('episodes.active', '=', '1')
                             ->where('episodes.status', '=', '1')
                             ->groupBy('episodes.id')
                             ->limit('10')
                             ->get(); 
                             
-            $Series = Series::Select('series.*','series_categories.category_id','video_categories.name as Category_name')
-                            ->Join('series_categories','series_categories.series_id','=','series.id')
-                            ->Join('video_categories','video_categories.id','=','series_categories.category_id')
-                            ->orwhere('series.search_tag', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('series.title', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('video_categories.name', 'LIKE', '%' . $request->country . '%')           
+            $Series = Series::Select('series.*','series_categories.category_id')
+                            ->leftJoin('series_categories','series_categories.series_id','=','series.id')
+                            ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
+
+                            
+                            ->when($settings->search_tags_status, function ($query) use ($request) {
+                                return $query->orwhere('series.search_tags', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_title_status, function ($query) use ($request) {
+                                return $query ->orwhere('series.title', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_description_status, function ($query) use ($request) {
+                                return $query->orwhere('series.description', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_details_status, function ($query) use ($request) {
+                                return $query->orwhere('series.details', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->when($settings->search_category_status, function ($query) use ($request) {
+                                return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->country . '%');
+                            })
+
+                            ->orwhere('.search_tag', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('.title', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('.name', 'LIKE', '%' . $request->country . '%')   
+
                             ->where('series.active', '=', '1')
                             ->groupBy('series.id')
                             ->limit('10')
@@ -5007,5 +5095,43 @@ public function uploadExcel(Request $request)
         return Theme::view('MyList',['MyList'=>$data]);
     }
 
+    public function EPG_date_filter(Request $request)
+    {
+        $theme = Theme::uses($this->Theme);
+        
+        $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
+        $order_settings_list = OrderHomeSetting::get();  
 
+        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->get()->map(function ($item )  use( $request) {
+
+            $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+
+            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+
+            $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+
+            $item['ChannelVideoScheduler']  =  ChannelVideoScheduler::where('channe_id',$request->channel_id)
+                                                
+                                                ->when( !is_null($request->date), function ($query) use ($request) {
+                                                    return $query->Where('choosed_date', $request->date);
+                                                })
+
+                                                ->get()->map(function ($item) {
+                                                    $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                    return $item;
+                                                });
+            return $item;
+        })->first();
+
+
+        $data =[
+            'order_settings' => $order_settings ,
+            'order_settings_list' => $order_settings_list ,
+            'order_settings' => $order_settings ,
+            'epg_channel_data' => $epg_channel_data ,
+            'EPG_date_filter_status' => 1 ,
+        ];
+
+        return $theme->load('public/themes/theme4/views/partials/home/channel-epg-partial', $data)->render();
+    }
 }

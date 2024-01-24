@@ -2456,3 +2456,5 @@ Route::get('/channel-List', 'EPGChannelController@EPG_Channel_List')->name('Fron
 Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
 
 Route::get('activationcode', 'AdminUsersController@myprofile');
+
+Route::get('EPG_date_filter', 'HomeController@EPG_date_filter')->name('front-end.EPG_date_filter');
