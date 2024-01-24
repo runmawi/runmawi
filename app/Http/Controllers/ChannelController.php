@@ -4408,7 +4408,7 @@ class ChannelController extends Controller
 
             $response = array(
                 'status'=> true,
-                'watchlater_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
+                'wishlist_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
                 'message'=> is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list"  ,
             );
 

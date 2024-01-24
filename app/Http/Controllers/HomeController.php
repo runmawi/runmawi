@@ -77,6 +77,7 @@ use App\Watchlater as Watchlater;
 use App\OrderHomeSetting;
 use App\ChannelVideoScheduler;
 use App\AdminEPGChannel;
+use App\Wishlist;
 
 class HomeController extends Controller
 {
@@ -5133,5 +5134,99 @@ public function uploadExcel(Request $request)
         ];
 
         return $theme->load('public/themes/theme4/views/partials/home/channel-epg-partial', $data)->render();
+    }
+
+    public function Homepage_watchlater(Request $request)
+    {
+        try {
+            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                $request->where_column  => $request->source_id,
+                'type' => $request->type,
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+            ];
+
+            $watchlater_exist = Watchlater::where($request->where_column, $request->source_id)
+
+                                                ->when($request->where_column == "video_id", function ($query) use($request)  {
+                                                    $query->where('type', $request->type);
+                                                })
+
+                                                ->where(function ($query) use ($geoip) {
+                                                    if (!Auth::guest()) {
+                                                        $query->where('user_id', Auth::user()->id);
+                                                    } else {
+                                                        $query->where('users_ip_address', $geoip->getIP());
+                                                    }
+                                                })->first();
+        
+            !is_null($watchlater_exist) ? $watchlater_exist->delete() : Watchlater::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'watchlater_status' => is_null($watchlater_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($watchlater_exist) ? "This video was successfully added to Watchlater's list" : "This video was successfully remove from Watchlater's list"  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]); 
+    }
+
+    public function Homepage_wishlist(Request $request)
+    {
+        try {
+            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                $request->where_column  => $request->source_id,
+                'type' => $request->type,
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+            ];
+
+
+            $wishlist_exist = Wishlist::where($request->where_column, $request->source_id)
+
+                                            ->when($request->where_column == "video_id", function ($query) use($request) {
+                                                $query->where('type', $request->type);
+                                            })
+
+                                            ->where(function ($query) use ($geoip) {
+                                                if (!Auth::guest()) {
+                                                    $query->where('user_id', Auth::user()->id);
+                                                } else {
+                                                    $query->where('users_ip_address', $geoip->getIP());
+                                                }
+                                            })->first();
+
+        
+            !is_null($wishlist_exist) ? $wishlist_exist->delete() : Wishlist::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'wishlist_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list"  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]); 
     }
 }
