@@ -59,7 +59,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
 <div id="series_bg">
     <div class="">
         <?php 
-			   if(!Auth::guest()){ dd($episode_PpvPurchase);
+			   if(!Auth::guest()){ ;
                 if( $free_episode > 0 && $checkseasonppv_exits == 0 ||  $ppv_exits > 0 && $checkseasonppv_exits == 0
                     || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber' ||  Auth::guest() && $checkseasonppv_exits == 0){ 
               
