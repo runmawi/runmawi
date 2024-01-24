@@ -174,7 +174,8 @@
             @if( $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
                 && !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
                 Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
-                $settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) )
+                $settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) ||  Auth::user()->role == 'registered' 
+                ||  Auth::user()->role == 'subscriber')
 
             <div class="col-md-7 pl-0">
                 <div id="series_title">
