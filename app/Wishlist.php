@@ -9,7 +9,7 @@ class Wishlist extends Model
 	protected $guarded = array();
 	public static $rules = array();
 
-	protected $fillable = array('user_id', 'video_id','movie_id','episode_id','users_ip_address','type');
+	protected $fillable = array('user_id', 'video_id','movie_id','episode_id','users_ip_address','type', 'livestream_id' ,'episode_id' ,'audio_id');
 
 	public function user(){
 		return $this->belongsTo('User')->first();
