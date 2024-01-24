@@ -722,9 +722,6 @@ header .navbar ul li.menu-item a:hover {
 .music-play-lists li span i{
     color: white !important;
 }
-.music-play-lists li span i:hover{
-    color: blue !important;
-}
 .navbar-right .search-box {
     display: none;
 }

@@ -26,9 +26,14 @@
       ?>
 
       <section id="home" class="iq-main-slider p-0">
+         
+         {{-- Message Note  --}}
+               <div id="message-note" ></div>
+
          <div id="home-slider" class="slider m-0 p-0">
             {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/slider-1', $Slider_array_data )->content() !!}
          </div>
+
       </section>
 
                <!-- MainContent -->

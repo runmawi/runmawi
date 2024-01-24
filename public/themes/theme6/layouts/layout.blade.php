@@ -137,6 +137,10 @@
     .sta {
         color: {{ button_bg_color() . '!important' }};
     }
+
+    .music-play-lists li span i:hover{
+            color: {{ button_bg_color() . '!important' }};
+    }
 </style>
 
 {{-- Toggle - Dark-Mode & Light-Mode --}}

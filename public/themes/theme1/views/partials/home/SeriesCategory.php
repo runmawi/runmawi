@@ -77,7 +77,7 @@ ol.breadcrumb {
                                             <a class="text-white"
                                                 href="<?php echo URL::to('/play_series'.'/'.$Series_Genre->slug  ) ?> ">
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                <?= __('Visit Series')  ?>
+                                                <?= (__('Visit Series'))  ?>
                                             </a>
                                         </div>
                                     </div>

@@ -51,8 +51,8 @@ $data->each(function ($category) {
                             <ul class="favorites-slider list-inline  row p-0 mb-0">
                                 @foreach ($live_Category->category_livestream as $livestream_videos)
                                     <li class="slide-item">
-                                        <a href="{{ URL::to('live/' . $livestream_videos->slug) }}">
-                                            <div class="block-images position-relative">
+                                        <div class="block-images position-relative">
+                                            <a href="{{ URL::to('live/' . $livestream_videos->slug) }}">
                                                 <div class="img-box">
                                                     <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/' . $livestream_videos->image) : default_vertical_image_url() }}"
                                                         class="img-fluid" alt="">
@@ -78,15 +78,22 @@ $data->each(function ($category) {
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div class="block-social-info">
-                                                    <ul class="list-inline p-0 m-0 music-play-lists">
-                                                        {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                        <li><span><i class="ri-heart-fill"></i></span></li>
-                                                        <li><span><i class="ri-add-line"></i></span></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </a>
+                                            </a>
+
+                                                {{-- WatchLater & wishlist --}}
+
+                                            @php
+                                                $inputs = [
+                                                    'source_id'     => $livestream_videos->id ,
+                                                    'type'          => null ,
+                                                    'wishlist_where_column' =>'livestream_id',
+                                                    'watchlater_where_column'=>'live_id',
+                                                ];
+                                            @endphp
+
+                                            {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+                                        
+                                        </div>
                                     </li>
                                 @endforeach
                             </ul>
