@@ -6,6 +6,7 @@ $autoplay = $episode_ads == null ? 'autoplay' : '';
 $series = App\series::first();
 $series = App\series::where('id', $episode->series_id)->first();
 $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
+$CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
 ?>
 
 <style>
@@ -58,14 +59,19 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 <div id="series_bg">
     <div class="">
         <?php 
-			   if(!Auth::guest()){
-			      if($free_episode > 0 && $checkseasonppv_exits == 0 ||  $ppv_exits > 0 && $checkseasonppv_exits == 0
-                   || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber' ||  Auth::guest() && $checkseasonppv_exits == 0){ 
-
-                  if($episode->access == 'guest' || $video_access == 'free' || ( ($episode->access == 'subscriber' || 
-                     $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && 
-                     (Auth::user()->role == 'demo'  || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' 
-                     && $settings->free_registration && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'): 
+			   if(!Auth::guest()){ dd($episode_PpvPurchase);
+                if( $free_episode > 0 && $checkseasonppv_exits == 0 ||  $ppv_exits > 0 && $checkseasonppv_exits == 0
+                    || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber' ||  Auth::guest() && $checkseasonppv_exits == 0){ 
+              
+                if($episode_PpvPurchase > 0 && Auth::user()->role == 'registered' && $episode->access == 'ppv' || $episode->access == 'guest' ||  ( ($episode->access == 'subscriber' ||
+                    $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'registered' ||
+                    $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'guest'  ||
+                    $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'guest'  ||
+                    $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'subscriber'
+                    || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed())
+                    || (!Auth::guest() && (Auth::user()->role == 'demo'  || Auth::user()->role == 'admin')) || 
+                    (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration 
+                    && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'): 
                   ?>
 
         <?php if($episode->type == 'embed'): ?>
@@ -165,26 +171,36 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
         <?php else: ?>
 
-        <div
+            <div
             id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
             <div class="container-fluid">
                 <h4 class=""><?php echo $episode->title; ?></h4>
                 <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
-                <h4 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered
-                    Users<?php endif; ?></h4>
+                <h4 class=""><?php if ($episode->access == 'subscriber'): ?><?php echo __('Subscribe to view more'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
+                    <?php endif; ?></h4>
                 <div class="clear"></div>
             </div>
-            <?php if( !Auth::guest() && Auth::user()->role == 'registered'):  ?>
+            <?php if( !Auth::guest() && $episode->access == 'ppv'):  ?>
             <div class=" mt-3">
-                <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
-                    <button class="btn btn-primary" id="button">Subscribe to view more</button>
+                <a onclick="pay(<?php if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($episode->ppv_price); }else if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 0){ echo __(@$episode->ppv_price) ; } ?>)">
+                <button type="button"
+                    class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
+                </a>
+                <!-- <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
+                </form> -->
+            </div>
+            <?php elseif( !Auth::guest() && $episode->access == 'subscriber'):  ?>
+            <div class=" mt-3">
+            <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
                 </form>
             </div>
             <?php else: ?>
             <div class=" mt-3">
                 <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
-                    <button id="button" class="btn bd">Signup Now <?php if($series->access == 'subscriber'): ?>to Become a
-                        Subscriber<?php elseif($series->access == 'registered'): ?>for Free!<?php endif; ?></button>
+                    <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
+                        <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
                 </form>
             </div>
             <?php endif; ?>
@@ -274,7 +290,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
     <div class="container-fluid series-details">
         <div id="series_title" style="padding-left:15px;">
-            <div class="">
+            <!-- <div class="">
             <?php if($free_episode > 0 && Auth::user()->role != 'admin' || $checkseasonppv_exits > 0 && Auth::user()->role != 'admin' ||  $ppv_exits > 0 && Auth::user()->role != 'admin' ||  Auth::guest()){
 
 ?>
@@ -313,7 +329,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     </div>
                     <?php	} } ?>
 
-                    </div>
+                    </div> -->
                     <div class="col-md-12">
                         <span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
                         <p class="mb-0" style=";font-size: 80%;color: white;">

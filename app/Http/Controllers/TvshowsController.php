@@ -432,7 +432,7 @@ class TvshowsController extends Controller
                 $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
                 ->where('season_id', '=', $episode->season_id)
                 ->count();
-        
+                
                 if ($checkseasonppv->access == "ppv" ) {
         
                     if($checkseasonppv->ppv_interval > 0 ){
@@ -453,6 +453,7 @@ class TvshowsController extends Controller
         
                 } else {
                     $checkseasonppv_exits = 0;
+                    
                 }
                 $ppv_exits = 0;
             }
@@ -587,6 +588,16 @@ class TvshowsController extends Controller
                 return $item;
   
             })->first();
+            if(!Auth::guest()){
+                $episode_PpvPurchase = PpvPurchase::where('user_id', '=', Auth::user()->id)
+                                        ->where('series_id', '=', $episode->series_id)
+                                        ->where('season_id', '=', $episode->season_id)
+                                        ->where('episode_id', '=', $episode->id)
+                                        ->count();
+
+            }else{
+                $episode_PpvPurchase = 0;
+            }
 
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
@@ -625,7 +636,8 @@ class TvshowsController extends Controller
                     'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
                     'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                     'category_name'             => $category_name ,
-                    'episode_details'           => $episode_details 
+                    'episode_details'           => $episode_details ,
+                    'episode_PpvPurchase'  => $episode_PpvPurchase,
                 ];
                 
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -665,6 +677,7 @@ class TvshowsController extends Controller
                     'episodesubtitles' =>   $subtitle ,
                     'category_name'             => $category_name ,
                     'episode_details'  => $episode_details ,
+                    'episode_PpvPurchase'  => $episode_PpvPurchase,
                 ];
     
                 if (Auth::guest() && $settings->access_free == 1) {

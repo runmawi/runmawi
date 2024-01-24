@@ -139,20 +139,17 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
         <div id="series_bg_dim" class="{{ ($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest())) ? '' : 'darker' }}"></div>
 
         <div class="row mt-3 align-items-center">
-            <?php if ( $ppv_exits > 0 || $video_access == 'free' ||
+            <?php  if ( $ppv_exits > 0 || $video_access == 'free' ||
                 ($series->access == 'guest' && $series->ppv_status != 1) ||
                 (($series->access == 'subscriber' || $series->access == 'registered') &&
                     !Auth::guest() &&
                     Auth::user()->subscribed() &&
                     $series->ppv_status != 1) ||
-                (!Auth::guest() &&
-                    (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) ||
-                (!Auth::guest() &&
-                    $series->access == 'registered' &&
-                    $settings->free_registration &&
-                    Auth::user()->role != 'registered' &&
-                    $series->ppv_status != 1)
-            ) : ?>
+                (!Auth::guest() &&  Auth::user()->role == 'admin') ||  Auth::user()->role == 'registered' 
+                ||  Auth::user()->role == 'subscriber' ||
+                (!Auth::guest() && $series->access == 'registered' &&
+                    $settings->free_registration && $series->ppv_status != 1)
+            ) :  ?>
 
             <div class="col-md-7 p-0">
                 <div id="series_title" class="show-movie">
