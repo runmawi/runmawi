@@ -740,7 +740,7 @@
                                         <li class="dropdown menu-item">
                                             <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/Live-list'); ?>"  data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Live-list'); ?>"> -->
-                                                    <?php echo (__($menu->name)); ?>
+                                                    <?php echo ( __($menu->name) ); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
                                                 <!-- </a> -->
                                             </a>
