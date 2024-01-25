@@ -1015,7 +1015,7 @@ border-radius: 0px 4px 4px 0px;
 
                                        <div>
                                           <label class="" for="banner">Enable this Today Top Video :</label>
-                                          <input type="checkbox" name="today_top_video" value={{ $video->today_top_video }}  {{ $video->today_top_video ? 'checked' : null }}/>
+                                          <input type="checkbox" name="today_top_video" @if(!empty($video->today_top_video) && $video->today_top_video == 1){{ 'checked="checked"' }}@elseif(!isset($video->today_top_video)){{ 'checked="checked"' }}@endif name="today_top_video" value="1" id="today_top_video" />
                                        </div>
 
                                        <div class="clear"></div>

@@ -21,7 +21,7 @@
               
                 <div class="hover-buttons d-flex">
                 <a class="text-white " href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
-                    <i class="fa fa-play mr-1"></i> <?= ('Watch now') ?> 
+                    <i class="fa fa-play mr-1"></i> <?= __('Watch Now') ?> 
                   
                   </a>
                 </div>
