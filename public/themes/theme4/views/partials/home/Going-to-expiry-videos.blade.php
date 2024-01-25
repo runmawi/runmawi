@@ -11,7 +11,7 @@
         ->where('active',1)->where('status', 1)->where('draft',1);
 
         if( videos_expiry_date_status() == 1 ){
-            $data = $data->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+            $data = $data->whereNotNull('expiry_date')->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
         if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
