@@ -17,9 +17,9 @@ $settings = App\Setting::first();
            border-radius: 4px;
   }
 
-  .sign-user_card input{
+  /* .sign-user_card input{
      background-color: rgb(255 255 255) !important;
-  }
+  } */
 
   /* profile */
   .col-md-12.profile_image {
@@ -95,11 +95,12 @@ $settings = App\Setting::first();
       color: #fff !important;
     }
     .modal-open .modal{
-      overflow: auto;
+      overflow: hidden;
     }
     .m-profile .form-group {
-    margin-bottom: 1rem;
-}
+         margin-bottom: 0.5rem;
+      }
+      .modal-header{padding:1rem 1rem 0 1rem;}
 </style>
 
 <body>
@@ -249,7 +250,7 @@ $settings = App\Setting::first();
                 <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
                     <img class="rounded-circle img-fluid d-block  mb-3"  src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;"/>
                     <?php }else{ ?> 
-                    <img class="rounded-circle img-fluid d-block  mb-3"  src="<?=  $user->provider_avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;"/>
+                    <img class="rounded-circle img-fluid d-block  mb-3"  src="<?=  $user->provider_avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;object-fit:cover;"/>
                      <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                    </div>
@@ -399,9 +400,9 @@ $settings = App\Setting::first();
          
                 <div class="col-sm-12 text-center targetDiv" id="div2">
                 <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
-                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height:150px;width:150px;object-fit:cover;"/></div>
                         <?php }else{ ?> 
-                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= $user->provider_avatar; ?>"  alt="profile-bg" style="height:150px;width:150px;object-fit:cover;" /></div>
                            <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                       <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>

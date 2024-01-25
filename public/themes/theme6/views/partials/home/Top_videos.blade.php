@@ -48,7 +48,7 @@
 
                                             @php
                                                 $inputs = [
-                                                    'source_id'     => $latest_video->id ,
+                                                    'source_id'     => $videos->id ,
                                                     'type'          => 'channel',  // for videos - channel
                                                     'wishlist_where_column'    => 'video_id',
                                                     'watchlater_where_column'  => 'video_id',
