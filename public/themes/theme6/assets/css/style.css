@@ -686,7 +686,6 @@ video { display: block; width: 100%; height: 100%; }
     background-color: black;
     overflow: scroll;
     height: auto;
-    max-height: 280px;
 }
 @media (min-width: 992px){
 .navbar-expand-lg .navbar-nav .dropdown-menu {
