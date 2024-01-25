@@ -41,9 +41,9 @@
             <span data-source_id={{ $source_id }}  data-type ="{{  $type }}" data-wherecolumn="{{ $wishlist_where_column }}"  onclick="video_wishlist(this)" >
                 <i class="video-wishlist {{ !is_null( $wishlist_exist ) ? 'fa fa-heart' : 'fa fa-heart-o'  }}"></i>
             </span>
-            <div class="share-box box-watchtrailer "  style="top:41px">
+            <div class="share-box box-watchtrailer ">
                 <div class="playbtn"  data-toggle="modal">  
-                    <span class="text wishlist-tooltip-text" style="background-color: transparent; font-size: 14px; width:124px; height:21px"> {{ is_null( $wishlist_exist ) ? 'Add To Wishlist' : 'Remove from Wishlist'  }} </span>
+                    <span class="text wishlist-tooltip-text" style="background-color: transparent; font-size: 14px; width:100%;"> {{ is_null( $wishlist_exist ) ? 'Add To Wishlist' : 'Remove from Wishlist'  }} </span>
                 </div>
             </div>
         </li>
@@ -53,9 +53,9 @@
             <span  data-toggle="modal"  data-source_id={{ $source_id }}  data-type ="{{  $type }}"  data-wherecolumn="{{ $watchlater_where_column }}"  onclick="video_watchlater(this)" >
                 <i class="video-watchlater {{ !is_null($watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
             </span>
-            <div class="share-box box-watchtrailer" style="top:41px">
+            <div class="share-box box-watchtrailer">
                 <div class="playbtn"  data-toggle="modal">  
-                    <span class="text watchlater-tooltip-text" style="background-color: transparent; font-size: 14px; width:124px; height:21px"> {{ is_null( $watchlater_exist ) ? 'Add To Watchlater' : 'Remove from Watchlater'  }} </span>
+                    <span class="text watchlater-tooltip-text" style="background-color: transparent; font-size: 14px; width:100%;"> {{ is_null( $watchlater_exist ) ? 'Add To Watchlater' : 'Remove from Watchlater'  }} </span>
                 </div>
             </div>
         </li>
