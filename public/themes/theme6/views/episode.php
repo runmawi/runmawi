@@ -243,7 +243,44 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
    <div>
    </div> -->
 
-            <?php } } ?>
+            <?php } else{ ?>
+
+                        <div
+                        id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+                        <div class="container-fluid">
+                            <h4 class=""><?php echo $episode->title; ?></h4>
+                            <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
+                            <h4 class=""><?php if ($episode->access == 'subscriber'): ?><?php echo __('Subscribe to view more'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
+                                <?php endif; ?></h4>
+                            <div class="clear"></div>
+                        </div>
+                        <?php if( !Auth::guest() && $episode->access == 'ppv'):  ?>
+                        <div class=" mt-3">
+                            <a onclick="pay(<?php if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($episode->ppv_price); }else if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 0){ echo __(@$episode->ppv_price) ; } ?>)">
+                            <button type="button"
+                                class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
+                            </a>
+                            <!-- <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+                                <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
+                            </form> -->
+                        </div>
+                        <?php elseif( !Auth::guest() && $episode->access == 'subscriber'):  ?>
+                        <div class=" mt-3">
+                        <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
+                            </form>
+                        </div>
+                        <?php else: ?>
+                        <div class=" mt-3">
+                            <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
+                                <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
+                                    <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+                            </form>
+                        </div>
+                        <?php endif; ?>
+
+                        </div>
+                        <?php }  } ?>
         </div>
     </div>
 

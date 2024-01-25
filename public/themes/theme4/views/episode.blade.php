@@ -144,7 +144,59 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
             @elseif($checkseasonppv_exits == 0)
                 <div id="series_container">
                 </div>
+                @else
+                <div id="subscribers_only"
+                        style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+
+                        <div class="container-fluid">
+                            <h4 class=""> {{ $episode->title }}</h4>
+                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
+                            </p>
+                            <h4 class="">
+                                <!-- {{ __('Subscribe to view more') }} -->
+                                @if ($episode->access == 'subscriber')
+                                    {{ __('Purchase to view more') }}
+                                @elseif ($episode->access == 'registered')
+                                    {{ __('Subscribe to view more') }}
+                                @endif
+                            </h4>
+                            <div class="clear"></div>
+                        </div>
+
+                        @if (!Auth::guest() && $episode->access == 'ppv')
+                            <div class=" mt-3">
+                            <a onclick="pay(@if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 1){{ PPV_CurrencyConvert($episode->ppv_price) }}@elseif($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 0){{ $episode->ppv_price }}@endif)">
+                                <button type="button"
+                                    class="btn2  btn-outline-primary">{{ __('Purchase Now') }}</button>
+                                </a>
+                                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                    <button class="btn btn-primary" id="button">
+                                        {{ __('Subscribe to view more') }}</button>
+                                </form>
+                            </div>
+                        @elseif (!Auth::guest() && $episode->access == 'subscriber')
+                            <div class=" mt-3">
+                                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                    <button class="btn btn-primary" id="button">
+                                        {{ __('Subscribe to view more') }}</button>
+                                </form>
+                            </div>
+                        @else
+                            <div class=" mt-3">
+                                <form method="get" action="{{ URL::to('signup') }}" class="mt-4">
+                                    <button id="button" class="btn bd">{{ __('Signup Now') }}
+                                        @if ($series->access == 'subscriber')
+                                            {{ __('to Become a Subscriber') }}
+                                        @elseif($series->access == 'registered')
+                                            {{ __('for Free!') }}
+                                        @endif
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
+                    </div>
             @endif
+            
         @endif
     </div>
 </div>
