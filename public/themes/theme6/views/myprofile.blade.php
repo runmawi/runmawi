@@ -643,7 +643,7 @@ $settings = App\Setting::first();
                                                 <td valign="bottom"><p> {{ $Logged_usersCode->tv_code  }} </p></td>
                                                 <td>
                                                    <p class=" align-items-center list-user-action">
-                                                      <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$Logged_usersCode->id}}" style="z-index:999; position: absolute; background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                                      <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$Logged_usersCode->id}}" style="z-index:999;  background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
                                                    </p>
                                                 </td>
                                              </tr>
