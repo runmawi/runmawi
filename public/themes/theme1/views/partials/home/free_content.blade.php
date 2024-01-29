@@ -18,7 +18,7 @@
               <div class="block-description">
               
                 <div class="hover-buttons d-flex">
-                <a class="text-white " href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->slug->title.'/'.$free_Content->slug) ; }?> ">
+                <a class="text-white " href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$series_slug.'/'.$free_Content->slug) ; }?> ">
                      <i class="fa fa-play mr-1"></i> <?= __('Watch now') ?>
                   
                   </a>
