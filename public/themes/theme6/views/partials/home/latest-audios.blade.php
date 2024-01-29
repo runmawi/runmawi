@@ -14,16 +14,16 @@
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
                             @foreach ($data as $key => $audios_details)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('audio/'.$audios_details->slug ) }}">
-                                        <div class="block-images position-relative">
+                                    <div class="block-images position-relative">
+                                        <a href="{{ URL::to('audio/'.$audios_details->slug ) }}">
                                             <div class="img-box">
                                                 <img src="{{  $audios_details->image ? URL::to('public/uploads/images/'.$audios_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
-                                            <div class="block-description">
-                                                <p> {{ strlen($audios_details->title) > 17 ? substr($audios_details->title, 0, 18) . '...' : $audios_details->title }}
-                                                </p>
-                                                <div class="movie-time d-flex align-items-center my-2">
 
+                                            <div class="block-description">
+                                                <p> {{ strlen($audios_details->title) > 17 ? substr($audios_details->title, 0, 18) . '...' : $audios_details->title }}</p>
+                                                
+                                                <div class="movie-time d-flex align-items-center my-2">
                                                     <div class="badge badge-secondary p-1 mr-2">
                                                         {{ optional($audios_details)->age_restrict.'+' }}
                                                     </div>
@@ -40,15 +40,22 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </a>
+                                        </a>
+                                        
+                                            {{-- WatchLater & wishlist --}}
+
+                                        @php
+                                            $inputs = [
+                                                'source_id'     => $audios_details->id ,
+                                                'type'          => null,  
+                                                'wishlist_where_column'    => 'audio_id',
+                                                'watchlater_where_column'  => 'audio_id',
+                                            ];
+                                        @endphp
+
+                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+                                        
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>

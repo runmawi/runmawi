@@ -5,9 +5,10 @@
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php  if(isset($free_Contents)) :
-    					 foreach($free_Contents as $key => $free_Content) { ?>
+    					 foreach($free_Contents as $key => $free_Content) { 
+                $series_slug = App\Series::where('id', '=', $free_Content->series_id)->pluck('slug')->first() ?>
         <li class="slide-item">
-          <a href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->series_title->slug.'/'.$free_Content->slug) ; }?> ">
+          <a href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$series_slug.'/'.$free_Content->slug) ; }?> ">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
@@ -28,7 +29,7 @@
               <div>
                   
                 <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                    <a href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->series_title->slug.'/'.$free_Content->slug) ; }?> ">
+                    <a href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$series_slug.'/'.$free_Content->slug) ; }?> ">
                   <h6><?php echo __($free_Content->title); ?></h6>
                 </a>
                   <div class="badge badge-secondary p-1 mr-2"><?php echo $free_Content->age_restrict.' '.'+' ?></div>

@@ -16,12 +16,60 @@
 
                <!-- Slider  -->
       <?php 
+         
+         $check_Kidmode = 0;
+
+      $video_banner = App\Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
+
+         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+            $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
+         }
+
+         if ($check_Kidmode == 1) {
+            $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
+         }
+
+         if (videos_expiry_date_status() == 1) {
+            $video_banner = $video_banner->where(function ($query) {
+               $query->whereNull('expiry_date')->orWhere('expiry_date', '>=', now()->format('Y-m-d\TH:i'));
+            });
+         }
+
+      $video_banner = $video_banner->latest()->limit(30)->get();
+
+         // Video Category Banner
+
+      $VideoCategory_id = App\VideoCategory::where('in_home',1)->where('banner', 1)->pluck('id')->toArray();
+
+      $VideoCategory_banner = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                                 ->whereIn('category_id', $VideoCategory_id)->where('videos.active', 1)->where('videos.status', 1)
+                                 ->where('videos.draft', 1)->where('videos.banner', 0);   
+
+                              if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                                 $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', Block_videos());
+                              }
+
+                              if ($check_Kidmode == 1) {
+                                 $VideoCategory_banner = $VideoCategory_banner->whereBetween('videos.age_restrict', [0, 12]);
+                              }
+
+                              if (videos_expiry_date_status() == 1) {
+                                 $VideoCategory_banner = $VideoCategory_banner->where(function ($query) {
+                                    $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', now()->format('Y-m-d\TH:i'));
+                                 });
+                              }
+
+      $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(30)->get();
+
+
          $Slider_array_data = array(
-            'sliders'         => $sliders, 
-            'live_banner'  => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->get() , 
-            'video_banners'   => $video_banners ,
-            'series_sliders'  => $series_sliders ,
+            'sliders'            => $sliders, 
+            'live_banner'        => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->get() , 
+            'video_banners'      => $video_banner ,
+            'series_sliders'     => $series_sliders ,
             'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->get(),
+            'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->get(),
+            'VideoCategory_banner' => $VideoCategory_banner ,
          );    
       ?>
 
@@ -114,7 +162,7 @@
             @endif
 
             @if( $item == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1 ) {{-- series Based on Category  --}}
-               {{-- {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/series-based-categories', [ 'order_settings_list' => $order_settings_list ])->content() !!} --}}
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/series-based-categories', [ 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
                   
             @if( $item == 'Audio_Genre_audios' && $home_settings->AudioGenre_audios == 1 ) {{-- Audios Based on Category  --}}
@@ -168,6 +216,10 @@
                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Today-Top-videos', ['data' => $video_details, 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
             
+            @if(  $item == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Going-to-expiry-videos', ['order_settings_list' => $order_settings_list ])->content() !!}
+            @endif
+            
          @empty
              
          @endforelse
@@ -181,4 +233,5 @@
 <?php
    include(public_path('themes/theme6/views/partials/home/home_pop_up.php'));
    include(public_path('themes/theme6/views/footer.blade.php')) ;
+   include(public_path('themes/theme6/views/partials/home/HomePage-wishlist-watchlater-script.blade.php')) ; 
 ?>

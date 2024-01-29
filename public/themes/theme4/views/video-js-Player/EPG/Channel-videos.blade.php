@@ -23,9 +23,31 @@
     <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
     
     <div class="container-fluid p-0">
-        <video id="dynamicVideo" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls preload="auto" width="auto" height="auto" poster="" >
+        <video id="dynamicVideo" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls preload="auto"  poster="" style="width:100%;height:100%;">
             <source src="{{ 'https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8' }}" type="{{ 'application/x-mpegURL' }}">
         </video>
+        <div class="col-sm-12 col-md-12 col-xs-12 p-0">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bc-icons-2">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a class="black-text" href="<?= route('liveList') ?>"><?= ucwords( __('Livestreams')) ?></a>
+                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                            </li>
+
+                           
+                            <li class="breadcrumb-item">
+                                
+                            </li>
+
+                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                            <li class="breadcrumb-item"><a class="black-text"> </a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 @php 
