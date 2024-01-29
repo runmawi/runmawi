@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('auth/video_chat', 'VideoChatController@auth');
   });
 //   Route::get('/MusicAudioPlayer', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
+    Route::get('admin/video/combine-video', 'AdminVideosController@combinevideo');
 
   Route::get('MusicAudioPlayer/{slug}', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
   Route::get('/convertExcelToJson', 'HomeController@uploadExcel');

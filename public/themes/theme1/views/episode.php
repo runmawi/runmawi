@@ -287,7 +287,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 <br>
                 <br>
                 <div class="col-md-5">
-                    <span class="text-white" style="font-size: 129%;font-weight: 700;"><?= ("You're watching") ?>:</span>
+                    <span class="text-white" style="font-size: 129%;font-weight: 700;"><?= __("You're watching") ?>:</span>
                     <p style=";font-size: 130%;color: white;">
                         <?php 
 			$seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
