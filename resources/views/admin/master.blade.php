@@ -947,20 +947,21 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                     
           </ul></li>
-
-          <li><a href="#contentchannel" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span class="">{{ (__('Channel Management')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-            <ul id="contentchannel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-            @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Channel_checkout == 1)
-               <li><a href="{{ route('admin.Channel.index') }}" class="iq-waves-effect">Channel </a></li> 
-            @endif      
-            @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Channel_Video_Scheduler_checkout == 1)
-               <li><a href="{{ route('VideoScheduler') }}" class="iq-waves-effect">Channel Video Scheduler </a></li>
-            @endif   
-            @if (EPG_Status() == 1)
-               <li><a href="{{ route('admin.epg.index') }}" class="iq-waves-effect"> EPG </a></li>
+          @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Channel_checkout == 1 || $AdminAccessPermission->Video_Channel_Video_Scheduler_checkout == 1 || EPG_Status() == 1 )
+            <li><a href="#contentchannel" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span class="">{{ (__('Channel Management')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+               <ul id="contentchannel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+               @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Channel_checkout == 1)
+                  <li><a href="{{ route('admin.Channel.index') }}" class="iq-waves-effect">Channel </a></li> 
+               @endif      
+               @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Channel_Video_Scheduler_checkout == 1)
+                  <li><a href="{{ route('VideoScheduler') }}" class="iq-waves-effect">Channel Video Scheduler </a></li>
+               @endif   
+               @if (EPG_Status() == 1)
+                  <li><a href="{{ route('admin.epg.index') }}" class="iq-waves-effect"> EPG </a></li>
+               @endif    
+               </ul>
+            </li>
             @endif    
-            </ul>
-          </li>
           <li>
           <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span class="">{{ (__('TV Shows')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
