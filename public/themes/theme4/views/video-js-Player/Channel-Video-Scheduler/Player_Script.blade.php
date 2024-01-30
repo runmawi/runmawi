@@ -22,7 +22,9 @@
                             'playbackRateMenuButton'
                         ]
                     },
-                    'fullscreenToggle': {}
+                    'fullscreenToggle': {},
+                    'progressControl': {},
+
                 }
             }
         });
@@ -43,6 +45,8 @@
                 mimeType: item.videos_list.mimeType,
             };
         });
+
+        console.log( videoList );
 
         player.concat({
 

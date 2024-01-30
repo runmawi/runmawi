@@ -41,6 +41,7 @@ class ChannelVideoSchedulerController extends Controller
 
                 $item['ChannelVideoScheduler'] = ChannelVideoScheduler::where('channe_id', $item->id)
                     ->where('choosed_date', '=', Carbon::today()->format('n-d-Y'))
+                    ->orderBy('start_time')
                     ->get()
                     ->map(function ($item) {
 
@@ -53,6 +54,11 @@ class ChannelVideoSchedulerController extends Controller
 
                             case $item['url'] != null && pathinfo($item['url'], PATHINFO_EXTENSION) == 'm3u8':
                                 $item['video_url'] = $item->url;
+                                $item['mimeType'] = 'application/x-mpegURL';
+                            break;
+
+                            case $item['url'] != null && $item['url'] == 'Gap':
+                                $item['video_url'] = 'https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8';
                                 $item['mimeType'] = 'application/x-mpegURL';
                             break;
 
