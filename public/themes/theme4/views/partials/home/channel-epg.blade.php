@@ -8,13 +8,13 @@
                     
                     $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
                     
-                    $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->get()->map(function ($item) {
+                    $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-d-Y'))->get()->map(function ($item) {
                                                             $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
                                                             return $item;
                                                         });
 
                                                         
-                    $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->groupBy('choosed_date')->get()->map(function ($item) {
+                    $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-d-Y'))->groupBy('choosed_date')->get()->map(function ($item) {
                                                                     $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
                                                                     return $item;
                                                                 });
@@ -23,7 +23,6 @@
 
 @endphp    
               
-
 <style>
     .time{
         width: 28%;
@@ -158,7 +157,7 @@
                                                     <div class="caption pl-4">
 
                                                         <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
-{{-- 
+                                                    {{-- 
                                                         @if ( Carbon\Carbon::now()->greaterThanOrEqualTo( $epg_channel_data->EPG->epg_start_date )) 
                                                             <ul class="vod-info">
                                                                 <li><span></span> LIVE NOW</li>
