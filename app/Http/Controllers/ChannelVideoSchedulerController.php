@@ -27,6 +27,9 @@ class ChannelVideoSchedulerController extends Controller
 
     public function index(Request $request)
     {
+
+        // dd(Carbon::now()->toTimeString());
+
         $channel_video_scheduler_id = AdminEPGChannel::where('slug', $request->slug)->pluck('id')->first();
 
         $AdminEPGChannel = AdminEPGChannel::where('status', 1)->where('id', $channel_video_scheduler_id)->get()
@@ -41,6 +44,7 @@ class ChannelVideoSchedulerController extends Controller
 
                 $item['ChannelVideoScheduler'] = ChannelVideoScheduler::where('channe_id', $item->id)
                     ->where('choosed_date', '=', Carbon::today()->format('n-d-Y'))
+                    ->where('start_time','>',Carbon::now()->toTimeString())
                     ->orderBy('start_time')
                     ->get()
                     ->map(function ($item) {
