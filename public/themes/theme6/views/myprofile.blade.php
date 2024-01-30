@@ -17,9 +17,9 @@ $settings = App\Setting::first();
            border-radius: 4px;
   }
 
-  .sign-user_card input{
+  /* .sign-user_card input{
      background-color: rgb(255 255 255) !important;
-  }
+  } */
 
   /* profile */
   .col-md-12.profile_image {
@@ -67,10 +67,10 @@ $settings = App\Setting::first();
      padding: 10px 10px;
      cursor: pointer;
   }
-    .rounded-circle {
+    /* .rounded-circle {
     height: 150px;
     width: 150px;
-}
+} */
     .fa-fw{
         position: absolute;
     right: 0px;
@@ -91,6 +91,16 @@ $settings = App\Setting::first();
     label{
       color: #000;
     }
+    th label{
+      color: #fff !important;
+    }
+    .modal-open .modal{
+      overflow: hidden;
+    }
+    .m-profile .form-group {
+         margin-bottom: 0.5rem;
+      }
+      .modal-header{padding:1rem 1rem 0 1rem;}
 </style>
 
 <body>
@@ -238,9 +248,9 @@ $settings = App\Setting::first();
                 <div class="targetDiv" id="div1">
                 <div class=" d-flex justify-content-between mb-3">
                 <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
-                    <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                    <img class="rounded-circle img-fluid d-block  mb-3"  src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;"/>
                     <?php }else{ ?> 
-                    <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?=  $user->provider_avatar; ?>"  alt="profile-bg"/>
+                    <img class="rounded-circle img-fluid d-block  mb-3"  src="<?=  $user->provider_avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;object-fit:cover;"/>
                      <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                    </div>
@@ -390,9 +400,9 @@ $settings = App\Setting::first();
          
                 <div class="col-sm-12 text-center targetDiv" id="div2">
                 <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
-                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height:150px;width:150px;object-fit:cover;"/></div>
                         <?php }else{ ?> 
-                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= $user->provider_avatar; ?>"  alt="profile-bg" style="height:150px;width:150px;object-fit:cover;" /></div>
                            <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                       <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
@@ -420,7 +430,7 @@ $settings = App\Setting::first();
                      </div>
 
                         
-                        <div class="col-sm-4 text-center">
+                        <div class="col-sm-4 text-center mt-3">
                            @if(Auth::user()->role == "subscriber")
                               <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
                            
@@ -633,7 +643,7 @@ $settings = App\Setting::first();
                                                 <td valign="bottom"><p> {{ $Logged_usersCode->tv_code  }} </p></td>
                                                 <td>
                                                    <p class=" align-items-center list-user-action">
-                                                      <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$Logged_usersCode->id}}" style="z-index:999; position: absolute; background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                                      <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$Logged_usersCode->id}}" style="z-index:999;  background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
                                                    </p>
                                                 </td>
                                              </tr>

@@ -30,8 +30,8 @@
                         </div>
                         <div class="movie-time d-flex align-items-center mb-3">
                             <div class="badge badge-secondary mr-3">{{ optional($data)->age_restrict.'+' }}</div>
-                            <h6 class="text-white"> {{ $data->duration !=null ? Carbon\CarbonInterval::seconds($data->duration)->cascade()->format('%im %ss') : null }}
-                            </h6>
+                            <p class="text-white"> {{ $data->duration !=null ? Carbon\CarbonInterval::seconds($data->duration)->cascade()->format('%im %ss') : null }}
+                            </p>
                         </div>
                         <p> {!! html_entity_decode( optional($data)->description ) !!}</p>
                         <div class="parallax-buttons">
@@ -40,10 +40,10 @@
                     </div>
                 </div>
                 <div class="col-lg-8">
-                    <div class="parallax-img">
+                    <div class="parallax-img" style="width:250px; height:350px;">
                         <a href="{{ URL::to('category/videos/'.$data->slug ) }}">
                             <img src="{{ URL::to('public/uploads/images/' . $data->image) }}"
-                                class="img-fluid" alt="bailey">
+                                class="img-fluid" alt="bailey" style="height:100%; width:100%; object-fit:contain;">
                         </a>
                     </div>
                 </div>

@@ -1012,6 +1012,14 @@ border-radius: 0px 4px 4px 0px;
                                           <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                        </div>
                                        <div class="clear"></div>
+
+                                       <div>
+                                          <label class="" for="banner">Enable this Today Top Video :</label>
+                                          <input type="checkbox" name="today_top_video" @if(!empty($video->today_top_video) && $video->today_top_video == 1){{ 'checked="checked"' }}@elseif(!isset($video->today_top_video)){{ 'checked="checked"' }}@endif name="today_top_video" value="1" id="today_top_video" />
+                                       </div>
+
+                                       <div class="clear"></div>
+
                                     </div>
                                  </div>
                               </div>
@@ -2021,6 +2029,7 @@ $(document).ready(function($){
      Dropzone.autoDiscover = false;
      var myDropzone = new Dropzone(".dropzone",{ 
        //   maxFilesize: 900,  // 3 mb
+         parallelUploads: 4,
          maxFilesize: 150000000,
          acceptedFiles: "video/mp4,video/x-m4v,video/*",
      });

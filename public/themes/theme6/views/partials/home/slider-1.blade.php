@@ -64,7 +64,23 @@
                                 <span class="ml-3">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
 
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
+                            <!-- <div data-animation-in="fadeInUp" data-delay-in="1.2"> -->
+                            <!-- <?php
+                                $description = $item->description;
+
+                                if (strlen($description) > 143) {
+                                    $shortDescription = html_entity_decode(substr($description, 0, 143)) . "<span class='more-text' style='display:none;'>" . substr($description, 143) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See more </span>";
+                                } else {
+                                    $shortDescription = html_entity_decode($description);
+                                }
+                                ?>
+
+                                <div id="descriptionContainer" class="description-container mb-1">
+                                    <?php echo $shortDescription; ?>
+                                </div> -->
+                                <!-- {!! strlen($item->description) > 100 ? html_entity_decode(substr($item->description, 0, 95)) . '...'. "  See more" : html_entity_decode($item->description) !!} -->
+                                 {!! html_entity_decode( optional($item)->description) !!}
+                            <!-- </div> -->
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
@@ -111,6 +127,20 @@
                                 <span class="ml-3"> {{ App\Episode::where('series_id', $item->id)->count() }} Episodes </span>
                             </div>
 
+                            <!-- <?php
+                                $description = $item->details;
+
+                                if (strlen($description) > 143) {
+                                    $shortDescription = html_entity_decode(substr($description, 0, 143)) . "<span class='more-text' style='display:none;'>" . substr($description, 143) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See more </span>";
+                                } else {
+                                    $shortDescription = html_entity_decode($description);
+                                }
+                                ?>
+
+                                <div id="descriptionContainer" class="description-container mb-1">
+                                    <?php echo $shortDescription; ?>
+                                </div> -->
+
                             <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p>
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
@@ -156,6 +186,20 @@
                             </div>
 
                             <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
+                            <!-- <?php
+                                $description = $item->description;
+
+                                if (strlen($description) > 143) {
+                                    $shortDescription = html_entity_decode(substr($description, 0, 143)) . "<span class='more-text' style='display:none;'>" . substr($description, 143) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See more </span>";
+                                } else {
+                                    $shortDescription = html_entity_decode($description);
+                                }
+                                ?>
+
+                                <div id="descriptionContainer" class="description-container mb-1">
+                                    <?php echo $shortDescription; ?>
+                                </div> -->
+
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
@@ -189,6 +233,21 @@
                                 <span class="ml-1">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
 
+                            <!-- <?php
+                                $description = $item->description;
+
+                                if (strlen($description) > 143) {
+                                    $shortDescription = html_entity_decode(substr($description, 0, 143)) . "<span class='more-text' style='display:none;'>" . substr($description, 143) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See more </span>";
+                                } else {
+                                    $shortDescription = html_entity_decode($description);
+                                }
+                                ?>
+
+                                <div id="descriptionContainer" class="description-container mb-1">
+                                    <?php echo $shortDescription; ?>
+                                </div> -->
+                                      
+
                             <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
@@ -203,3 +262,23 @@
         </div>
     @endforeach
 @endif
+
+<!-- slider see more script -->
+<!-- <script>
+            function toggleDescription() {
+               var descriptionContainer = document.querySelector('.description-container');
+               var moreText = descriptionContainer.querySelector('.more-text');
+               var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+               if (moreText.style.display === 'none' || moreText.style.display === '') {
+                     moreText.style.display = 'inline';
+                     seeMoreButton.innerText = ' See Less ';
+               } else {
+                     moreText.style.display = 'none';
+                     seeMoreButton.innerText = ' See More ';
+               }
+            }
+         </script> -->
+
+         
+

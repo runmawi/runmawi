@@ -21,8 +21,8 @@
                                                 <img src="{{ $video_details->image ?  $video_details->image : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
                                             <div class="block-description">
-                                                <h6> {{ strlen($video_details->name) > 17 ? substr($video_details->name, 0, 18) . '...' : $video_details->name }}
-                                                </h6>
+                                                <p> {{ strlen($video_details->name) > 17 ? substr($video_details->name, 0, 18) . '...' : $video_details->name }}
+                                                </p>
 
                                                 <div class="movie-time d-flex align-items-center my-2">
 
@@ -34,13 +34,6 @@
                                                         Play Now
                                                     </span>
                                                 </div>
-                                            </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
                                             </div>
                                         </div>
                                     </a>

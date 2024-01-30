@@ -6,6 +6,7 @@ include public_path('themes/theme4/views/episode_ads.blade.php');
 $series = App\series::first();
 $series = App\series::where('id', $episode->series_id)->first();
 $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
+$CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
 ?>
 
 <!-- video-js Style  -->
@@ -66,12 +67,17 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     <div class="">
         @if (!Auth::guest())
             @if (
-                ($free_episode > 0 && $checkseasonppv_exits == 0) || ($ppv_exits > 0 && $checkseasonppv_exits == 0) ||
+                ( $free_episode > 0 && $checkseasonppv_exits == 0) || ($ppv_exits > 0 && $checkseasonppv_exits == 0) ||
                     Auth::user()->role == 'admin' || Auth::user()->role == 'subscriber' || (Auth::guest() && $checkseasonppv_exits == 0))
-                @if ( $episode->access == 'guest' || $video_access == 'free' ||
+                    @if ( $episode_PpvPurchase > 0  && Auth::user()->role == 'registered' && $episode->access == 'ppv' ||
+                        $episode->access == 'guest' || Auth::user()->role == 'subscriber' ||
+                        $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'registered' ||
+                        $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'guest'  ||
+                        $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'guest'  ||
+                        $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'subscriber'
                         (($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) ||
                         (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) ||
-                        (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'):
+                        (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ):
 
                     <div id="series_container" class="fitvid">
 
@@ -92,21 +98,32 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                             <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
                             </p>
                             <h4 class="">
-                                {{ __('Subscribe to view more') }}
-                                @if ($series->access == 'subscriber')
-                                    {{ __('Subscribers') }}
-                                @elseif ($series->access == 'registered')
-                                    {{ __('Registered Users') }}
+                                <!-- {{ __('Subscribe to view more') }} -->
+                                @if ($episode->access == 'subscriber')
+                                    {{ __('Purchase to view more') }}
+                                @elseif ($episode->access == 'registered')
+                                    {{ __('Subscribe to view more') }}
                                 @endif
                             </h4>
                             <div class="clear"></div>
                         </div>
 
-                        @if (!Auth::guest() && Auth::user()->role == 'registered')
+                        @if (!Auth::guest() && $episode->access == 'ppv')
                             <div class=" mt-3">
-                                <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+                            <a onclick="pay(@if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 1){{ PPV_CurrencyConvert($episode->ppv_price) }}@elseif($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 0){{ $episode->ppv_price }}@endif)">
+                                <button type="button"
+                                    class="btn2  btn-outline-primary">{{ __('Purchase Now') }}</button>
+                                </a>
+                                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                                     <button class="btn btn-primary" id="button">
-                                        {{ 'Subscribe to view more' }}</button>
+                                        {{ __('Subscribe to view more') }}</button>
+                                </form>
+                            </div>
+                        @elseif (!Auth::guest() && $episode->access == 'subscriber')
+                            <div class=" mt-3">
+                                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                    <button class="btn btn-primary" id="button">
+                                        {{ __('Subscribe to view more') }}</button>
                                 </form>
                             </div>
                         @else
@@ -127,7 +144,59 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             @elseif($checkseasonppv_exits == 0)
                 <div id="series_container">
                 </div>
+                @else
+                <div id="subscribers_only"
+                        style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+
+                        <div class="container-fluid">
+                            <h4 class=""> {{ $episode->title }}</h4>
+                            <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ $episode->episode_description }}
+                            </p>
+                            <h4 class="">
+                                <!-- {{ __('Subscribe to view more') }} -->
+                                @if ($episode->access == 'subscriber')
+                                    {{ __('Purchase to view more') }}
+                                @elseif ($episode->access == 'registered')
+                                    {{ __('Subscribe to view more') }}
+                                @endif
+                            </h4>
+                            <div class="clear"></div>
+                        </div>
+
+                        @if (!Auth::guest() && $episode->access == 'ppv')
+                            <div class=" mt-3">
+                            <a onclick="pay(@if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 1){{ PPV_CurrencyConvert($episode->ppv_price) }}@elseif($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 0){{ $episode->ppv_price }}@endif)">
+                                <button type="button"
+                                    class="btn2  btn-outline-primary">{{ __('Purchase Now') }}</button>
+                                </a>
+                                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                    <button class="btn btn-primary" id="button">
+                                        {{ __('Subscribe to view more') }}</button>
+                                </form>
+                            </div>
+                        @elseif (!Auth::guest() && $episode->access == 'subscriber')
+                            <div class=" mt-3">
+                                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                    <button class="btn btn-primary" id="button">
+                                        {{ __('Subscribe to view more') }}</button>
+                                </form>
+                            </div>
+                        @else
+                            <div class=" mt-3">
+                                <form method="get" action="{{ URL::to('signup') }}" class="mt-4">
+                                    <button id="button" class="btn bd">{{ __('Signup Now') }}
+                                        @if ($series->access == 'subscriber')
+                                            {{ __('to Become a Subscriber') }}
+                                        @elseif($series->access == 'registered')
+                                            {{ __('for Free!') }}
+                                        @endif
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
+                    </div>
             @endif
+            
         @endif
     </div>
 </div>
@@ -175,7 +244,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             <div id="series_title">
                 <div class="">
 
-                    @if ( ($free_episode > 0 && Auth::user()->role != 'admin') || ($checkseasonppv_exits > 0 && Auth::user()->role != 'admin') || ($ppv_exits > 0 && Auth::user()->role != 'admin') || Auth::guest())
+                    <!-- @if ( ($free_episode > 0 && Auth::user()->role != 'admin') || ($checkseasonppv_exits > 0 && Auth::user()->role != 'admin') || ($ppv_exits > 0 && Auth::user()->role != 'admin') || Auth::guest())
 
                         <div class="row align-items-center justify-content-between"
                             style="background: url({{ URL::to('public/uploads/images/' . $episode->player_image) }} ); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
@@ -220,7 +289,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                             @endif
                         </div>
                     @endif
-                    @endif
+                    @endif -->
 
                 </div>
                 <div class="col-md-12 pl-0">

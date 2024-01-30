@@ -14,39 +14,49 @@
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
                             @foreach ($data as $key => $video)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('category/videos/'.$video->slug ) }}">
                                         <div class="block-images position-relative">
-                                            <div class="img-box">
-                                                <img src="{{ $video->image ? URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
-                                            </div>
-                                            <div class="block-description">
-                                                <h6> {{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}
-                                                </h6>
-                                                <div class="movie-time d-flex align-items-center my-2">
+                                            <a href="{{ URL::to('category/videos/'.$video->slug ) }}">
 
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($video)->age_restrict.'+' }}
+                                                <div class="img-box">
+                                                    <img src="{{ $video->image ? URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                </div>
+
+                                                <div class="block-description">
+                                                    <p> {{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}</p>
+
+                                                    <div class="movie-time d-flex align-items-center my-2">
+
+                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                            {{ optional($video)->age_restrict.'+' }}
+                                                        </div>
+
+                                                        <span class="text-white">
+                                                            {{ $video->duration != null ? gmdate('H:i:s', $video->duration) : null }}
+                                                        </span>
                                                     </div>
 
-                                                    <span class="text-white">
-                                                        {{ $video->duration != null ? gmdate('H:i:s', $video->duration) : null }}
-                                                    </span>
+                                                    <div class="hover-buttons">
+                                                        <span class="btn btn-hover">
+                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                            Play Now
+                                                        </span>
+                                                    </div>
                                                 </div>
+                                            </a>
 
-                                                <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
-                                            </div>
+                                             {{-- WatchLater & wishlist --}}
+
+                                            @php
+                                                $inputs = [
+                                                    'source_id'     => $video->id ,
+                                                    'type'          => 'channel',  // for videos - channel
+                                                    'wishlist_where_column'    => 'video_id',
+                                                    'watchlater_where_column'  => 'video_id',
+                                                ];
+                                            @endphp
+
+                                            {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+                                           
                                         </div>
                                     </a>
                                 </li>

@@ -21,6 +21,7 @@ Route::get('/video-chat', function () {
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
 Route::get('/BunnyCDNStream', 'AdminDashboardController@BunnyCDNStream');
+Route::post('/profilePreference', 'AdminUsersController@profilePreference');
 
 Route::get('/paypal/create-payment', 'PayPalController@createPayment');
 Route::get('/paypal/execute-payment', 'PayPalController@executePayment');
@@ -35,6 +36,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('auth/video_chat', 'VideoChatController@auth');
   });
 //   Route::get('/MusicAudioPlayer', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
+    Route::get('admin/video/combine-video', 'AdminVideosController@combinevideo');
 
   Route::get('MusicAudioPlayer/{slug}', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
   Route::get('/convertExcelToJson', 'HomeController@uploadExcel');
@@ -510,7 +512,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/user/view/{id}', 'AdminUsersController@view');
     Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
     Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
-    Route::post('/profilePreference', 'AdminUsersController@profilePreference');
     Route::get('/email_exitsvalidation', 'AdminUsersController@email_exitsvalidation')->name('email_exitsvalidation');
     Route::get('/mobilenumber_exitsvalidation', 'AdminUsersController@mobilenumber_exitsvalidation')->name('mobilenumber_exitsvalidation');
     Route::get('/password_validation', 'AdminUsersController@password_validation')->name('password_validation');
@@ -2456,3 +2457,11 @@ Route::get('/channel-List', 'EPGChannelController@EPG_Channel_List')->name('Fron
 Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
 
 Route::get('activationcode', 'AdminUsersController@myprofile');
+
+Route::get('EPG_date_filter', 'HomeController@EPG_date_filter')->name('front-end.EPG_date_filter');
+
+// For theme6 
+
+Route::post('HomePage-watchlater', 'HomeController@Homepage_watchlater')->name('home-page.watchlater');
+
+Route::post('HomePage-wishlist', 'HomeController@Homepage_wishlist')->name('home-page.wishlist');

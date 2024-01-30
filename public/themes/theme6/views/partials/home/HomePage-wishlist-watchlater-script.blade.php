@@ -1,14 +1,21 @@
 <script>
     function video_watchlater(ele) {
         
-        let video_id = $(ele).data('video-id');
+        let source_id     = $(ele).data('source_id');
+        let where_column  = $(ele).data('wherecolumn');
+        let type          = $(ele).data('type');
+        let watchlater_unique_key  = $(ele).data('watchlater-unique-key');
+
+        // alert(watchlater_unique_key);
 
         $.ajax({
-            url: '<?php echo route('video-js.watchlater') ?>',
+            url: '<?php echo route('home-page.watchlater') ?>',
             method: 'post',
             data: {
                 "_token": "<?= csrf_token() ?>",
-                video_id: video_id,
+                source_id: source_id,
+                type : type ,
+                where_column : where_column ,
             },
             success: function(response) {
 
@@ -22,9 +29,7 @@
 
                     const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${response.data.message}</div>`;
                         
-                    $('.video-watchlater').removeClass('ri-subtract-line ri-add-line').addClass(iconClass);
-
-                    $('.watchlater-tooltip-text').text(Watchlater_tooltip);
+                    $('.home-page-watchlater-'+watchlater_unique_key).removeClass('ri-subtract-line ri-add-line').addClass(iconClass);
 
                     $('#message-note').html(message_note).slideDown('fast');
 
@@ -38,14 +43,21 @@
 
     function video_wishlist(ele){
         
-        let video_id = $(ele).data('video-id');
+        let source_id     = $(ele).data('source_id');
+        let where_column  = $(ele).data('wherecolumn');
+        let type          = $(ele).data('type');
+        let wishlist_unique_key  = $(ele).data('wishlist-unique-key');
+
+        // alert(wishlist_unique_key);
 
         $.ajax({
-            url: '<?php echo route('video-js.wishlist') ?>',
+            url: '<?php echo route('home-page.wishlist') ?>',
             method: 'post',
             data: {
                 "_token": "<?= csrf_token() ?>",
-                video_id: video_id,
+                source_id: source_id,
+                type : type ,
+                where_column : where_column ,
             },
             success: function(response) {
 
@@ -59,7 +71,7 @@
 
                     const message_note = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${response.data.message}</div>`;
                         
-                    $('.video-wishlist').removeClass('ri-heart-fill ri-heart-line').addClass(iconClass);
+                    $('.home-page-wishlist-'+wishlist_unique_key).removeClass('ri-heart-fill ri-heart-line').addClass(iconClass);
 
                     $('#message-note').html(message_note).slideDown('fast');
 
@@ -71,6 +83,5 @@
                 }
             },
         });
-
     }
 </script>

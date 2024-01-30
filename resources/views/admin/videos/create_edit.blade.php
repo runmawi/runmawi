@@ -870,16 +870,27 @@ border-radius: 0px 4px 4px 0px;
                                         <label class="" for="featured">Enable this video as Featured:</label>
                                         <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                                    </div>
+
                                    <div class="clear"></div>
+
                                    <div>
                                        <label class="" for="active">Enable this Video:</label>
                                        <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                    </div>
+
                                     <div class="clear"></div>
                                    <div>
+
                                        <label class="" for="banner">Enable this Video as Slider:</label>
                                        <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                    </div>
+                                   <div class="clear"></div>
+
+                                    <div>
+                                       <label class="" for="banner">Enable this Today Top Video :</label>
+                                       <input type="checkbox" name="today_top_video" value={{ $video->today_top_video }}  {{ $video->today_top_video ? 'checked' : null }}/>
+                                    </div>
+
                                     <div class="clear"></div>
                                </div> 
                            </div>

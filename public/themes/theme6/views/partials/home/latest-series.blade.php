@@ -23,7 +23,7 @@
 
                                             <div class="block-description">
 
-                                                <h6>{{ strlen($latest_series->title) > 17 ? substr($latest_series->title, 0, 18) . '...' : $latest_series->title }}</h6>
+                                                <p>{{ strlen($latest_series->title) > 17 ? substr($latest_series->title, 0, 18) . '...' : $latest_series->title }}</p>
 
                                                 <div class="movie-time d-flex align-items-center my-2">
                                                     <span class="text-white"> 
@@ -38,13 +38,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li> -->
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
-                                            </div>
+                                           
                                         </div>
                                     </a>
                                 </li>

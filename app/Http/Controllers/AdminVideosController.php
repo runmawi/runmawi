@@ -1583,6 +1583,8 @@ class AdminVideosController extends Controller
 
         $video = Video::findOrFail($id);
 
+        Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
+
         if ($request->slug == "") {
             $data["slug"] = $this->createSlug($data["title"]);
         } else {
@@ -2411,6 +2413,7 @@ class AdminVideosController extends Controller
         $video->video_js_mid_position_ads_category = $request->video_js_mid_position_ads_category;
         $video->video_js_mid_advertisement_sequence_time = $request->video_js_mid_advertisement_sequence_time;
         $video->expiry_date = $request->expiry_date;
+        $video->today_top_video = $request->today_top_video;
         $video->save();
 
         if (
@@ -2757,6 +2760,7 @@ class AdminVideosController extends Controller
             return redirect('/home');
         }
 
+    
         $user_package = User::where('id', 1)->first();
         $data = $request->all();
 
@@ -2766,6 +2770,8 @@ class AdminVideosController extends Controller
         
         $id = $data['video_id'];
         $video = Video::findOrFail($id);
+
+        Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
 
         if (!empty($video->embed_code)) {
             $embed_code = $video->embed_code;
@@ -3340,6 +3346,8 @@ class AdminVideosController extends Controller
         $video->ios_ppv_price = $data['ios_ppv_price'];
         $video->player_image = $data["player_image"] ;
         $video->video_tv_image = $data["video_tv_image"] ;
+        $video->today_top_video = $data["today_top_video"] ;
+
 
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
@@ -10223,6 +10231,51 @@ class AdminVideosController extends Controller
 
     }
 
+    public function combinevideo(Request $request){
+        try {
+            // Array of video URLs
+                $videoUrls = [
+                    'https://localhost/flicknexs/storage/app/public/GOM8pKrjNNCLGACc.mp4',
+                    'https://localhost/flicknexs/storage/app/public/CnKjtQWUQHjDKXEA.mp4',
+                    'https://localhost/flicknexs/storage/app/public/B5Lh9CdVSPoe5QTN.m3u8',
+                    'https://localhost/flicknexs/storage/app/public/CnKjtQWUQHjDKXEA.mp4',
+                ];
+
+                
+// Create a new FFMpeg instance
+$ffmpeg = FFMpeg::create();
+
+// Create an array to store the individual segments
+$segments = [];
+
+// Add each video to the segments array
+foreach ($videoUrls as $index => $videoUrl) {
+    // Check if the URL is an M3U8 playlist or a direct link to an MP4 file
+    if (pathinfo($videoUrl, PATHINFO_EXTENSION) === 'm3u8') {
+        // If it's an M3U8 playlist, you can directly add it to the segments array
+        $segments[] = $ffmpeg->fromDisk('url')->open($videoUrl);
+    } else {
+        // If it's an MP4 file, add it to the segments array after converting it to a TS segment
+        $segments[] = $ffmpeg->fromDisk('url')->open($videoUrl)
+            ->export()
+            ->toDisk('local') // Change the disk as needed
+            ->inFormat(new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
+            ->save("segment{$index}.ts");
+    }
+}
+
+// Concatenate the segments into a single output file
+$ffmpeg->concat($segments)
+    ->save('master_playlist.m3u8');
+
+// Optionally, serve the master playlist using Laravel
+return response()->file('master_playlist.m3u8');
+
+                
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 
 }
     

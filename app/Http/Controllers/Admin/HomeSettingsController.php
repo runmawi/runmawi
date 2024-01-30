@@ -385,7 +385,6 @@ class HomeSettingsController extends Controller
         $settings->series_episode_overview = !empty($request->series_episode_overview) ?  "1" : "0" ;
         $settings->Series_Networks = !empty($request->Series_Networks) ?  "1" : "0" ;
         $settings->Series_based_on_Networks = !empty($request->Series_based_on_Networks) ?  "1" : "0" ;
-        $settings->Leaving_soon_videos = !empty($request->Leaving_soon_videos) ?  "1" : "0" ;
         $settings->save();
 
         return redirect::to('/admin/home-settings');
