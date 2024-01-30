@@ -28,8 +28,6 @@ class ChannelVideoSchedulerController extends Controller
     public function index(Request $request)
     {
 
-        // dd(Carbon::now()->toTimeString());
-
         $channel_video_scheduler_id = AdminEPGChannel::where('slug', $request->slug)->pluck('id')->first();
 
         $AdminEPGChannel = AdminEPGChannel::where('status', 1)->where('id', $channel_video_scheduler_id)->get()
@@ -61,10 +59,10 @@ class ChannelVideoSchedulerController extends Controller
                                 $item['mimeType'] = 'application/x-mpegURL';
                             break;
 
-                            case $item['url'] != null && $item['url'] == 'Gap':
-                                $item['video_url'] = 'https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8';
-                                $item['mimeType'] = 'application/x-mpegURL';
-                            break;
+                            // case $item['url'] != null && $item['url'] == 'Gap':
+                            //     $item['video_url'] = 'https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8';
+                            //     $item['mimeType'] = 'application/x-mpegURL';
+                            // break;
 
                             default:
                                 $item['video_url'] = null;
