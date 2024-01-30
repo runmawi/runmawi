@@ -10234,43 +10234,36 @@ class AdminVideosController extends Controller
     public function combinevideo(Request $request){
         try {
             // Array of video URLs
-                $videoUrls = [
-                    'https://localhost/flicknexs/storage/app/public/GOM8pKrjNNCLGACc.mp4',
-                    'https://localhost/flicknexs/storage/app/public/CnKjtQWUQHjDKXEA.mp4',
+                $m3u8Urls = [
+                    'https://localhost/flicknexs/storage/app/public/Gs6LJZ0PTl3ynjn3.m3u8',
                     'https://localhost/flicknexs/storage/app/public/B5Lh9CdVSPoe5QTN.m3u8',
-                    'https://localhost/flicknexs/storage/app/public/CnKjtQWUQHjDKXEA.mp4',
                 ];
+                // 'https://localhost/flicknexs/storage/app/public/GOM8pKrjNNCLGACc.mp4',
+                // 'https://localhost/flicknexs/storage/app/public/CnKjtQWUQHjDKXEA.mp4',
 
-                
-// Create a new FFMpeg instance
-$ffmpeg = FFMpeg::create();
+    // Create a master playlist file (M3U8)
+    $masterPlaylistPath = 'master_playlist.m3u8';
 
-// Create an array to store the individual segments
-$segments = [];
+    // Generate the content for the master playlist
+    $masterPlaylistContent = "#EXTM3U\n";
 
-// Add each video to the segments array
-foreach ($videoUrls as $index => $videoUrl) {
-    // Check if the URL is an M3U8 playlist or a direct link to an MP4 file
-    if (pathinfo($videoUrl, PATHINFO_EXTENSION) === 'm3u8') {
-        // If it's an M3U8 playlist, you can directly add it to the segments array
-        $segments[] = $ffmpeg->fromDisk('url')->open($videoUrl);
-    } else {
-        // If it's an MP4 file, add it to the segments array after converting it to a TS segment
-        $segments[] = $ffmpeg->fromDisk('url')->open($videoUrl)
-            ->export()
-            ->toDisk('local') // Change the disk as needed
-            ->inFormat(new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
-            ->save("segment{$index}.ts");
+    // Add each M3U8 URL to the master playlist
+    foreach ($m3u8Urls as $index => $m3u8Url) {
+        $masterPlaylistContent .= "#EXT-X-STREAM-INF:BANDWIDTH=1000000,RESOLUTION=640x360,CODECS=\"mp4a.40.2,avc1.64001f\"\n";
+        $masterPlaylistContent .= $m3u8Url . "\n";
     }
-}
 
-// Concatenate the segments into a single output file
-$ffmpeg->concat($segments)
-    ->save('master_playlist.m3u8');
+    // Save the master playlist file
+    Storage::disk('local')->put($masterPlaylistPath, $masterPlaylistContent);
 
-// Optionally, serve the master playlist using Laravel
-return response()->file('master_playlist.m3u8');
+    // Optionally, serve the master playlist using Laravel
+    return response()->file(storage_path("app/{$masterPlaylistPath}"));
 
+                    // Save the master playlist file
+                    // file_put_contents($masterPlaylistPath, $masterPlaylistContent);
+
+                    // // Optionally, serve the master playlist using Laravel
+                    // return response()->file($masterPlaylistPath);
                 
         } catch (\Throwable $th) {
             throw $th;
