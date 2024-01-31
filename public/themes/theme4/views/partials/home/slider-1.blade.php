@@ -226,7 +226,7 @@
                                 <span class="ml-3"> {{ 'E '.$item->episode_order }}  </span>
                             </div>
 
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! (html_entity_decode(substr(optional($item)->episode_description, 0, 150))) !!} </p>
+                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! (html_entity_decode(substr(optional($item)->description, 0, 150))) !!} </p>
 
                             <div class="p-btns">
                                 <div class="d-flex align-items-center p-0">

@@ -154,7 +154,7 @@ $data = $data->latest()->limit(30)->get();
     $(document).ready(function() {
 
         $('.latest-videos-slider').slick({
-            slidesToShow: 6,
+            slidesToShow: 1,
             slidesToScroll: 1,
             arrows: true,
             fade: true,
