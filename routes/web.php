@@ -204,6 +204,8 @@ Route::get('/verify-request-sent', 'HomeController@VerifyRequestNotsent');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 
+
+
 // CheckAuthTheme5 & restrictIp Middleware
 Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('datafree/category/videos/{vid}', 'ChannelController@play_videos');
@@ -1093,6 +1095,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/ads_viewcount', 'AdminAdvertiserController@ads_viewcount');
     Route::post('/ads_viewcount_mid', 'AdminAdvertiserController@ads_viewcount_mid');
     Route::post('/ads_viewcount_Post', 'AdminAdvertiserController@ads_viewcount_Post');
+
+    Route::get('advertisement/ads-banners', 'AdminAdvertiserController@ads_banners')->name('admin.ads_banners');
+    Route::post('advertisement/ads-banners-update', 'AdminAdvertiserController@ads_banners_update')->name('admin.ads_banners_update');
+
 
     /*Ads Management ends*/
 
@@ -2450,9 +2456,7 @@ Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('vid
 
 Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
 
-Route::get('/channels/{slug}', 'EPGChannelController@index')->name('Front-End.Channel-EPG');
-
-Route::get('/channel-List', 'EPGChannelController@EPG_Channel_List')->name('Front-End.EPG_Channel_List');
+Route::get('/channel-video-scheduler/{slug}', 'ChannelVideoSchedulerController@index')->name('Front-End.Channel-video-scheduler');
 
 Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
 
