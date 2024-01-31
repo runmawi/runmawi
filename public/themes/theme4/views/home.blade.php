@@ -1,9 +1,10 @@
 <?php
-       include(public_path('themes/theme4/views/header.php')) ; 
+      include(public_path('themes/theme4/views/header.php')) ; 
 
       $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();  
       $order_settings_list = App\OrderHomeSetting::get();  
       $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(); 
+      $admin_advertistment_banners = App\AdminAdvertistmentBanners::first(); 
 ?>
 
    <!-- loader Start -->
@@ -81,6 +82,50 @@
                <!-- MainContent -->
 
       <div class="main-content">
+         
+         {{-- Left Ads Banners --}}
+
+         @if ( optional($admin_advertistment_banners)->left_banner_status == 1 )
+
+            @if (optional($admin_advertistment_banners)->left_image_url )
+               <div class="col-sm-9 mx-auto ">
+                  <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->left_image_url }}" /> 
+               </div>
+            @endif
+
+            @if (optional($admin_advertistment_banners)->left_script_url )
+               <script src="{{ optional($admin_advertistment_banners)->left_script_url }}"></script>
+            @endif
+         @endif
+
+         {{-- Right Ads Banners --}}
+
+         @if ( optional($admin_advertistment_banners)->right_banner_status == 1 )
+            @if (optional($admin_advertistment_banners)->right_image_url )
+               <div class="col-sm-9 mx-auto ">
+                  <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->right_image_url }}" /> 
+               </div>
+            @endif
+
+            @if (optional($admin_advertistment_banners)->right_script_url )
+               <script src="{{ optional($admin_advertistment_banners)->right_script_url }}"></script>
+            @endif
+         @endif
+         
+         {{-- Top Ads Banners --}}
+
+         @if ( optional($admin_advertistment_banners)->top_banner_status == 1 )
+            @if (optional($admin_advertistment_banners)->top_image_url )
+               <div class="col-sm-9 mx-auto ">
+                  <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->top_image_url }}" /> 
+               </div>
+            @endif
+
+            @if (optional($admin_advertistment_banners)->top_script_url )
+                  <script src="{{ optional($admin_advertistment_banners)->top_script_url }}"></script>
+            @endif
+         @endif
+
                                         {{-- continue watching videos --}}
          @if( !Auth::guest() && !is_null($continue_watching_setting) &&  $continue_watching_setting == 1 )
             {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', ['data' => $cnt_watching, 'order_settings_list' => $order_settings_list ])->content() !!}
@@ -232,6 +277,23 @@
          @empty
              
          @endforelse
+
+               {{-- End Ads banners --}}
+
+         @if ( optional($admin_advertistment_banners)->bottom_banner_status == 1 )
+
+            @if (optional($admin_advertistment_banners)->bottom_image_url )
+               <div class="col-sm-9 mx-auto ">
+                  <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->bottom_image_url }}" /> 
+               </div>
+            @endif
+
+            @if (optional($admin_advertistment_banners)->bottom_script_url )
+               <script src="{{ optional($admin_advertistment_banners)->bottom_script_url }}"></script>
+            @endif
+            
+         @endif
+
       </div>
 
       <!-- back-to-top -->
