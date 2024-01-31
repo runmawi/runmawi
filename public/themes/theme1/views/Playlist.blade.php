@@ -1,5 +1,5 @@
 @php
-include(public_path('themes/default/views/header.php'));
+include(public_path('themes/theme1/views/header.php'));
 $settings = App\Setting::first(); 
 @endphp
 
@@ -668,5 +668,5 @@ window.location = '<?= URL::to('login') ?>';
 
 </script>
 @php
-include(public_path('themes/default/views/footer.blade.php'));
+include(public_path('themes/theme1/views/footer.blade.php'));
 @endphp
