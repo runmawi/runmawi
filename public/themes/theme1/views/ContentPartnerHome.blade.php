@@ -1,6 +1,6 @@
 <!-- Header Start -->
 <?php
-include public_path('themes/theme2/views/header.php');
+include public_path('themes/theme1/views/header.php');
 
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
 $order_settings_list = App\OrderHomeSetting::get();
@@ -366,5 +366,5 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
 
 <?php
-    include public_path('themes/theme2/views/footer.blade.php');
+    include public_path('themes/theme1/views/footer.blade.php');
 ?>
