@@ -47,6 +47,12 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         background-color: transparent !important;
         font-size: revert;
     }
+    .vjs-icon-hd:before{
+        display:none;
+    }
+    #my-video_ima-ad-container div{ overflow:hidden;}
+    #my-video { position: relative; }
+    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 14%; left:1%; color: white; border: none; cursor: pointer; }
 </style>
 
 @if (Session::has('message'))
@@ -77,10 +83,14 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                         $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'subscriber'
                         (($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) ||
                         (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) ||
-                        (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ):
+                        (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') )
 
+
+                        
                     <div id="series_container" class="fitvid">
-
+                        <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </button>
                         <video id="episode-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large"
                             controls preload="auto" width="auto" height="auto" playsinline="playsinline"
                             muted="muted" preload="yes" autoplay="autoplay"
@@ -430,7 +440,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
 
                             {{ $shortDescription . " <span class='text-primary' data-bs-toggle='modal' data-bs-target='#video-details-description'>See More</span>" }}
                         @else
-                            {{ html_entity_decode($series->description) }};
+                            {{ html_entity_decode($series->description) }}
                         @endif
                     </div>
 
@@ -810,7 +820,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
     
     ?>
 
-    // <!-- Watchlater & wishlist -->
+     <!-- Watchlater & wishlist -->
 
     <script>
         function episodewatchlater(ele) {
@@ -1047,7 +1057,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         }
     </script>
 
-    // <!-- Cinet Pay CheckOut -->
+     <!-- Cinet Pay CheckOut -->
 
     <script src="https://cdn.cinetpay.com/seamless/main.js"></script>
 
