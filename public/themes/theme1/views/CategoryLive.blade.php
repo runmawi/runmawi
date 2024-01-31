@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme1/views/header.php'));
 @endphp
     
 <section id="iq-favorites">
@@ -18,19 +18,22 @@
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$category_lists->image;  ?>" class="img-fluid w-100" alt="">
                                         </div>
-                            
-                                        <div class="block-description" >
+
+                                        <div class="block-description">
+                                            <div class="hover-buttons">
                                                 <a href="{{ URL::to('LiveCategory').'/'.$category_lists->slug   }}">
-                                                    <h6><?php  echo (strlen($category_lists->name) > 17) ? substr($category_lists->name,0,18).'...' : $category_lists->name; ?></h6>
+                                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>">                                  
                                                 </a>
-                                            <div class="hover-buttons"><div>
+                                            <div>
                                         </div>
+                            
+                                        
                                     </div>
-                                    <div>
+                                    <!-- <div>
                                         <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $category_lists->id;?>">
                                             <span class="text-center thumbarrow-sec"></span>
                                         </button>
-                                    </div> </div> </div>
+                                    </div> </div> </div> -->
                                 </a>
                             </li>
                         @endforeach
@@ -43,5 +46,5 @@
 </section>
 
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme1/views/footer.blade.php'));
 @endphp

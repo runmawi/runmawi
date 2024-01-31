@@ -21,11 +21,11 @@
                                 <p class="date" style="color:#fff;font-size:14px;">
                                     <?= date('F jS, Y', strtotime($series_list->created_at)) ?>
                                     <?php if($series_list->access == 'guest'): ?>
-                                    <span class="label label-info">{{ __('Free') }}</span>
+                                    <span class="label label-info"><?= __('Free') ?></span>
                                     <?php elseif($series_list->access == 'subscriber'): ?>
-                                    <span class="label label-success">{{ __('Subscribers Only') }}</span>
+                                    <span class="label label-success"><?= __('Subscribers Only') ?></span>
                                     <?php elseif($series_list->access == 'registered'): ?>
-                                    <span class="label label-warning">{{ __('Registered Users') }}</span>
+                                    <span class="label label-warning"><?= __('Registered Users') ?></span>
                                     <?php endif; ?>
                                 </p>
                             <?php endif; ?>
@@ -47,7 +47,7 @@
                                 <div class="hover-buttons">
                                     <a href="<?= URL::to('play_series/' . $series_list->slug) ?>">
                                         <span class="text-white">
-                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Series') }} 
+                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> <?= __('Watch Series') ?> 
                                         </span>
                                     </a>
                                 </div>

@@ -31,6 +31,12 @@
         display: inline-block;
         cursor: pointer;
     }
+
+    .gridContainer{
+   display: grid;
+   grid-template-columns: repeat(5, calc(100% / 5));
+}
+
 </style>
 
 
@@ -120,6 +126,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
                 <div class="row mb-3">
                     <div class="col-sm-6">
+                        <div id="ImagesContainer" class="gridContainer mt-3"></div>
                         <label class="m-1">Episode Image Cover</label>
                         <p class="p1">Select the episodes image (9:16 ratio or 1080 X 1920px )</p>
 
@@ -133,6 +140,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     </div>
 
                     <div class="col-sm-6">
+                         <div id="ajaxImagesContainer" class="gridContainer mt-3"></div>
                         <label class="m-0">Episode Player Image</label>
                         <p class="p1">Select the player image ( 16:9 Ratio or 1280X720px)</p>
 
@@ -153,6 +161,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 <div class="row mb-3">
 
                     <div class="col-sm-6">
+                        <div id="TVImagesContainer" class="gridContainer mt-3"></div>
                         <label class="m-0">Episode TV Image</label>
                         <p class="p1">Select the player image ( 16:9 Ratio or 1920 X 1080  px)</p>
 
@@ -542,7 +551,9 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         @endif @if(isset($episodes->id))
                         <input type="hidden" id="id" name="id" value="{{ $episodes->id }}" />
                         @endif
-
+                        <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                        <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
+                        <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         <input type="submit" value="{{ $button_text }}" class="btn btn-primary pull-right" />
                     </div>
@@ -572,6 +583,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
            
             $(document).ready(function ($) {
+
                 $("#duration").mask("00:00:00");
                 $('#intro_start_time').mask("00:00:00");
                 $('#intro_end_time').mask("00:00:00");
@@ -582,6 +594,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             });
 
             $(document).ready(function () {
+                
                 $("#ppv_price").hide();
                 $("#global_ppv_status").hide();
                 // alert($(this).val());
@@ -830,20 +843,20 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     required: true, 
                 },
 
-                image: {
-                    required: '#check_image:blank',
-                    dimention:[1080,1920]
-                },
+                // image: {
+                //     required: '#check_image:blank',
+                //     dimention:[1080,1920]
+                // },
 
-                player_image: {
-                    required: '#player_check_image:blank',
-                    player_dimention:[1280,720]
-                },
+                // player_image: {
+                //     required: '#player_check_image:blank',
+                //     player_dimention:[1280,720]
+                // },
 
-                tv_image: {
-                    required: '#check_Tv_image:blank',
-                    tv_image_dimention:[1920,1080]
-                },
+                // tv_image: {
+                //     required: '#check_Tv_image:blank',
+                //     tv_image_dimention:[1920,1080]
+                // },
 
 
                 intro_start_time: {
@@ -1159,10 +1172,121 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     }, 3000);
  
     }
+    $.ajax({
+            url: '{{ URL::to('admin/episode/extractedimage') }}',
+            type: "post",
+            data: {
+                _token: '{{ csrf_token() }}',
+                episode_id: $('#id').val(),
+            },
+            success: function(value) {
+                // console.log(value.ExtractedImage.length);
+
+                if (value && value.ExtractedImage.length > 0) {
+                    $('#ajaxImagesContainer').empty();
+                    $('#ImagesContainer').empty();
+                    var ExtractedImage = value.ExtractedImage;
+                    var ExtractedImage = value.ExtractedImage;
+                    var episodeimage = "{{ $episodes->image }}";
+                    var episodeplayer_image = "{{ $episodes->player_image }}";
+                    var episodetv_image = "{{ $episodes->tv_image }}";
+                    // alert(index);
+                    // alert(episodeplayer_image);
+                    // alert(episodetv_image);
+                    var previouslySelectedElement = null;
+                    var previouslySelectedVideoImag = null;
+                    var previouslySelectedTVImage = null;
+                    
+                    ExtractedImage.forEach(function(Image,index ) {
+                        var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
+                        var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
+                        var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
+
+                        imgElement.click(function() {
+                            $('.ajax-image').css('border', 'none');
+                            if (previouslySelectedElement) {
+                                previouslySelectedElement.css('border', 'none');
+                            }
+                            imgElement.css('border', '2px solid red');
+                            var clickedImageUrl = Image.image_path;
+
+                            var SelectedImageUrl = Image.image_original_name;
+                            console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                            previouslySelectedElement = $(this);
+
+                            $('#selectedImageUrlInput').val(SelectedImageUrl);
+                        });
+
+                        // if (Image.image_original_name === imgElement) {
+                        //     alert();
+                        //     imgElement.trigger('click');
+                        // }
+                        // console.log(Image);
+                        $('#ajaxImagesContainer').append(imgElement);
+
+                        ImagesContainer.click(function() {
+                            $('.video-image').css('border', 'none');
+                            if (previouslySelectedVideoImag) {
+                                previouslySelectedVideoImag.css('border', 'none');
+                            }
+                            ImagesContainer.css('border', '2px solid red');
+                            
+                            var clickedImageUrl = Image.image_path;
+
+                            var VideoImageUrl = Image.image_original_name;
+                            console.log('VideoImageUrl Image URL:', VideoImageUrl);
+                            previouslySelectedVideoImag = $(this);
+
+                            $('#videoImageUrlInput').val(VideoImageUrl);
+                        });
+                        // if (index === 0) {
+                        //     ImagesContainer.click();
+                        //     }
+                        $('#ImagesContainer').append(ImagesContainer);
+
+                        TVImagesContainer.click(function() {
+                            $('.tv-video-image').css('border', 'none');
+                            if (previouslySelectedTVImage) {
+                                previouslySelectedTVImage.css('border', 'none');
+                            }
+                            TVImagesContainer.css('border', '2px solid red');
+                            
+                            var clickedImageUrl = Image.image_path;
+
+                            var TVImageUrl = Image.image_original_name;
+                            previouslySelectedTVImage = $(this);
+
+                            $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                        });
+                        
+                        // if (index === 0) {
+                        //     TVImagesContainer.click();
+                        // }
+                        $('#TVImagesContainer').append(TVImagesContainer);
+
+                    });
+                } else {
+                        var SelectedImageUrl = '';
+
+                        $('#selectedImageUrlInput').val(SelectedImageUrl);
+                        $('#videoImageUrlInput').val(SelectedImageUrl);
+                        $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                }
+            },
+            error: function(error) {
+
+                var SelectedImageUrl = '';
+
+                $('#selectedImageUrlInput').val(SelectedImageUrl);
+                $('#videoImageUrlInput').val(SelectedImageUrl);
+                $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                console.error(error);
+            }
+        });
         </script>
 
         @include('admin.series.Ads_episode'); 
 
-        @stop @stop @stop
+        @stop @stop 
     </div>
 </div>

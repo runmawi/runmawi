@@ -652,4 +652,7 @@ Route::group(
             Route::post('CinetPaySubscription', 'ApiAuthController@CinetPaySubscription');
             Route::post('PayPalSubscription', 'ApiAuthController@PayPalSubscription');
 
+            Route::get('channels', 'ApiAuthController@Channels');
+            Route::post('channel-scheduled-videos', 'ApiAuthController@ChannelScheduledVideos');
+
         });

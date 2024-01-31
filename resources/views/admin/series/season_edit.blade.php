@@ -994,50 +994,73 @@
                                 var ExtractedImage = value.ExtractedImage;
                                 var ExtractedImage = value.ExtractedImage;
 
-
-                                ExtractedImage.forEach(function(Image) {
+                                var previouslySelectedElement = null;
+                                var previouslySelectedVideoImag = null;
+                                var previouslySelectedTVImage = null;
+                                
+                                ExtractedImage.forEach(function(Image,index ) {
                                     var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
                                     var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
                                     var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
 
                                     imgElement.click(function() {
                                         $('.ajax-image').css('border', 'none');
-                                        
+                                        if (previouslySelectedElement) {
+                                            previouslySelectedElement.css('border', 'none');
+                                        }
                                         imgElement.css('border', '2px solid red');
                                         var clickedImageUrl = Image.image_path;
 
                                         var SelectedImageUrl = Image.image_original_name;
                                         console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                                        previouslySelectedElement = $(this);
 
                                         $('#selectedImageUrlInput').val(SelectedImageUrl);
                                     });
+
+                                    if (index === 0) {
+                                        imgElement.click();
+                                    }
                                     $('#ajaxImagesContainer').append(imgElement);
 
                                     ImagesContainer.click(function() {
                                         $('.video-image').css('border', 'none');
-                                        
+                                        if (previouslySelectedVideoImag) {
+                                            previouslySelectedVideoImag.css('border', 'none');
+                                        }
                                         ImagesContainer.css('border', '2px solid red');
                                         
                                         var clickedImageUrl = Image.image_path;
 
                                         var VideoImageUrl = Image.image_original_name;
                                         console.log('VideoImageUrl Image URL:', VideoImageUrl);
+                                        previouslySelectedVideoImag = $(this);
 
                                         $('#videoImageUrlInput').val(VideoImageUrl);
                                     });
+                                    if (index === 0) {
+                                        ImagesContainer.click();
+                                        }
                                     $('#ImagesContainer').append(ImagesContainer);
 
                                     TVImagesContainer.click(function() {
                                         $('.tv-video-image').css('border', 'none');
-                                        
+                                        if (previouslySelectedTVImage) {
+                                            previouslySelectedTVImage.css('border', 'none');
+                                        }
                                         TVImagesContainer.css('border', '2px solid red');
                                         
                                         var clickedImageUrl = Image.image_path;
 
                                         var TVImageUrl = Image.image_original_name;
+                                        previouslySelectedTVImage = $(this);
 
                                         $('#SelectedTVImageUrlInput').val(TVImageUrl);
                                     });
+                                    
+                                    if (index === 0) {
+                                        TVImagesContainer.click();
+                                    }
                                     $('#TVImagesContainer').append(TVImagesContainer);
 
                                 });
