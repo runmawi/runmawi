@@ -1997,6 +1997,8 @@ class AdminVideosController extends Controller
                 $video->tablet_image = $Tablet_image;
             }
           
+        }else if (!empty($request->video_image_url)) {
+            $data["image"] = $request->video_image_url;
         } else {
             $data["image"] = $video->image;
         }
@@ -2025,6 +2027,8 @@ class AdminVideosController extends Controller
                 Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image );
             }
 
+        }else if (!empty($request->selected_image_url)) {
+            $players_image = $request->selected_image_url;
         } else {
             $players_image = $video->player_image;
         }
@@ -2324,10 +2328,12 @@ class AdminVideosController extends Controller
                 Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename );
             }
             $video->video_tv_image = $Tv_image_filename;
-        }
+        }else if (!empty($request->selected_tv_image_url)) {
+            $video->video_tv_image = $request->selected_tv_image_url;
+        } 
 
                     // Video Title Thumbnail
-
+        // dd($request->all());
         if($request->hasFile('video_title_image')){
 
             if (File::exists(base_path('public/uploads/images/'.$video_title_image))) {
