@@ -2160,6 +2160,8 @@ class AdminSeriesController extends Controller
 
                 $data['image'] = $episode_image ;
 
+            }else if (!empty($request->video_image_url)) {
+                $data["image"] = $request->video_image_url;
             } else {
                 $data['image'] = $episode->image ;
             }
@@ -2190,10 +2192,13 @@ class AdminSeriesController extends Controller
 
                $player_image  = $episode_player_image;
 
-             } else {
+             }else if (!empty($request->selected_image_url)) {
+                $player_image  = $request->selected_image_url;
+            } else if(!empty($episode->player_image)) {
                 $player_image = $episode->player_image;
-
-             }
+             }else{
+                $player_image = "default_horizontal_image.jpg";
+            }
 
              if($request->hasFile('tv_image')){
 
@@ -2215,8 +2220,9 @@ class AdminSeriesController extends Controller
                 }
 
                 $episode->tv_image = $Episode_tv_filename;
+            }else if (!empty($request->selected_tv_image_url)) {
+                $episode->tv_image  = $request->selected_tv_image_url;
             }
-             
         if(empty($data['active'])){
             $data['active'] = 0;
         }
