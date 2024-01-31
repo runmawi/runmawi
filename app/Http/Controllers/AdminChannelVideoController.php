@@ -607,8 +607,8 @@ class AdminChannelVideoController extends Controller
                 $VideoScheduler->socure_title   = 'Gap';
                 $VideoScheduler->AM_PM_Time     = $BeforeScheduler->AM_PM_Time;
                 $VideoScheduler->duration	    = $duration;
-                $VideoScheduler->type           = 'Gap';
-                $VideoScheduler->url            = 'Gap';
+                $VideoScheduler->type           = 'mp4';
+                $VideoScheduler->url            = URL::to('/assets/video/gapvideo.mp4');
                 $VideoScheduler->image          = 'default_image.webp';
                 $VideoScheduler->description    = 'Gap Video Added';
                 $VideoScheduler->save();
