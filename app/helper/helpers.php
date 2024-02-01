@@ -1422,7 +1422,8 @@ function SchedulerSocureData($socure_type,$socure_id)
     if($socure_type == "Video"){
         $socure_data = App\Video::where('id',$socure_id)->first();
         if(!empty($socure_data) && $socure_data->type == ''){
-            // https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8
+        echo"<pre>"; print_r($socure_data);exit;
+        // https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8
             $m3u8_url = URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8';
             $m3u8_url = 'https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8';
             $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
@@ -1445,16 +1446,20 @@ function SchedulerSocureData($socure_type,$socure_id)
             );
 
         }else if(!empty($socure_data) && $socure_data->type == 'm3u8_url'){
-            $m3u8_url = $socure_data->m3u8_url;
+        $m3u8_url = $socure_data->m3u8_url;
             $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
             $process = new Process($command);
-            try {
+            // try {
                 // Run the process
                 $process->mustRun();
                 $duration = trim($process->getOutput());
                 $seconds = round($duration);
-            } catch (ProcessFailedException $exception) {
-                $error = $exception->getMessage();
+            // } catch (ProcessFailedException $exception) {
+            //     $error = $exception->getMessage();
+            // }
+            if($duration == 'N/A'){
+                $duration = 3600;
+                $seconds  = 3600;
             }
             $data = array(
                 'duration' => $duration  ,
@@ -1464,7 +1469,8 @@ function SchedulerSocureData($socure_type,$socure_id)
                 'socure_data' => $socure_data  ,
             );
         }else if(!empty($socure_data) && $socure_data->type == 'mp4_url'){
-            $mp4_url = $socure_data->mp4_url;
+        // echo"<pre>"; print_r($socure_data);exit;
+        $mp4_url = $socure_data->mp4_url;
             $ffprobe = \FFMpeg\FFProbe::create();
             $Video_duration = $ffprobe->format($mp4_url)->get('duration');
             $duration = explode(".", $Video_duration)[0];
@@ -1531,13 +1537,17 @@ function SchedulerSocureData($socure_type,$socure_id)
             $m3u8_url = $socure_data->live_stream_video;
             $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
             $process = new Process($command);
-            try {
+            // try {
                 // Run the process
                 $process->mustRun();
                 $duration = trim($process->getOutput());
                 $seconds = round($duration);
-            } catch (ProcessFailedException $exception) {
-                $error = $exception->getMessage();
+            // } catch (ProcessFailedException $exception) {
+            //     $error = $exception->getMessage();
+            // }
+            if($duration == 'N/A'){
+                $duration = 3600;
+                $seconds  = 3600;
             }
             $data = array(
                 'duration' => $duration  ,
@@ -1550,14 +1560,20 @@ function SchedulerSocureData($socure_type,$socure_id)
             $m3u8_url = $socure_data->hls_url ;
             $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
             $process = new Process($command);
-            try {
+            // try {
                 // Run the process
                 $process->mustRun();
                 $duration = trim($process->getOutput());
                 $seconds = round($duration);
-            } catch (ProcessFailedException $exception) {
-                $error = $exception->getMessage();
+            // } catch (ProcessFailedException $exception) {
+            //     $error = $exception->getMessage();
+            // }
+
+            if($duration == 'N/A'){
+                $duration = 3600;
+                $seconds  = 3600;
             }
+            
             $data = array(
                 'duration' => $duration  ,
                 'seconds' => $seconds  , 
@@ -1567,6 +1583,7 @@ function SchedulerSocureData($socure_type,$socure_id)
             );
         }
     }
+    // echo"<pre>"; print_r('$socure_data');exit;
 
     return  $data; 
         
@@ -1636,7 +1653,7 @@ function existingVideoSchedulerEntry($time,$channe_id,$start_time)
 function VideoScheduledData($time,$channe_id,$time_zone){
     
     $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $time);
-    $time = $carbonDate->format('n-d-Y');
+    $time = $carbonDate->format('n-j-Y');
     $ChannelVideoScheduler = App\ChannelVideoScheduler::where('channe_id', $channe_id)
                             ->where('time_zone', $time_zone)
                             ->where('choosed_date', $time)
@@ -1644,7 +1661,6 @@ function VideoScheduledData($time,$channe_id,$time_zone){
                             ->join('admin_epg_channels', 'admin_epg_channels.id', '=', 'channel_videos_scheduler.channe_id')
                             ->select('channel_videos_scheduler.*', 'admin_epg_channels.name')
                             ->get();
-
             $image_URL = URL::to("");
             $edit_svg = URL::to('assets/img/icon/edit.svg');
             $delete_svg = URL::to('assets/img/icon/delete.svg');
