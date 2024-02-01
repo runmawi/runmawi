@@ -431,7 +431,11 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                         </ul>
                     </div>
 
-                    <div class="desc">
+                    <div class="description">
+                        {!! strlen($series->description) > 400 ?  html_entity_decode(substr($series->description, 0, 400 )) . "..." . " <span class='text-primary' data-bs-toggle='modal' data-bs-target='#video-details-description'>See More</span>" :  html_entity_decode($series->description)  !!}
+                    </div>
+
+                    <!-- <div class="desc">
                         @if (strlen($series->description) > 500)
                             @php
                                 $shortDescription = html_entity_decode(substr($series->description, 0, 500)) . '...';
@@ -442,7 +446,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                         @else
                             {{ html_entity_decode($series->description) }}
                         @endif
-                    </div>
+                    </div> -->
 
                     <!-- Model for banner description -->
 
@@ -1143,6 +1147,8 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
             });
         }
     </script>
+
+     
 
 <?php
     include public_path('themes/theme4/views/footer.blade.php');
