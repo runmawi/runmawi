@@ -21,6 +21,8 @@ use GuzzleHttp\Message\Response;
 use Carbon\Carbon;
 use App\AdsTimeSlot;
 use App\EmailTemplate;
+use App\AdminAdvertistmentBanners;
+use Intervention\Image\Facades\Image;
 use Auth;
 use Mail;
 use URL;
@@ -991,6 +993,147 @@ class AdminAdvertiserController extends Controller
             return 'success';
         } catch (\Exception $e) {
             return 'false';
+        }
+    }
+
+    public function ads_banners(Request $request)
+    {
+        try {
+         
+            $data = [
+                'ads_banners' => AdminAdvertistmentBanners::first(),
+            ];
+
+            return view('admin.ads_management.ads_banners',$data);
+            
+        } catch (\Throwable $th) {
+            
+            return abort(404);
+        }
+    }
+
+    public function ads_banners_update(Request $request)
+    {
+        try {
+
+            $inputs = array(
+                'left_ads_banners_type'  => $request->left_ads_banners_type ,
+                'left_script_url'        => $request->left_ads_banners_type == "left_script_url" ? $request->left_script_url : null,
+                
+                'right_ads_banners_type'  => $request->right_ads_banners_type ,
+                'right_script_url'        => $request->right_ads_banners_type == "right_script_url" ? $request->right_script_url : null ,
+
+                'bottom_ads_banners_type' => $request->bottom_ads_banners_type ,
+                'bottom_script_url'       => $request->bottom_ads_banners_type == "bottom_script_url" ? $request->bottom_script_url : null ,
+                
+                'top_ads_banners_type'    => $request->top_ads_banners_type ,
+                'top_script_url'          => $request->top_ads_banners_type == "top_script_url" ? $request->top_script_url : null ,
+                
+                'right_banner_status'     => !empty($request->right_banner_status) || $request->right_banner_status == "on" ? 1 : 0  ,
+                'left_banner_status'      => !empty($request->left_banner_status) || $request->left_banner_status == "on" ? 1 : 0  ,
+                'top_banner_status'       => !empty($request->top_banner_status) || $request->top_banner_status == "on" ? 1 : 0  ,
+                'bottom_banner_status'    => !empty($request->bottom_banner_status) || $request->bottom_banner_status == "on" ? 1 : 0  ,
+            );
+
+            if( $request->left_ads_banners_type == "left_script_url" ){
+
+                $inputs += ['left_image_url' =>  null ];
+            }
+            
+            if( $request->right_ads_banners_type == "right_script_url" ){
+
+                $inputs += ['right_image_url' =>  null ];
+            }
+            
+            if( $request->bottom_ads_banners_type == "bottom_script_url" ){
+
+                $inputs += ['bottom_image_url' =>  null ];
+            }
+            
+            if( $request->bottom_ads_banners_type == "top_script_url" ){
+
+                $inputs += ['top_image_url' =>  null ];
+            }
+
+            if($request->hasFile('left_image_url')){
+
+                $file = $request->left_image_url;
+
+                if(compress_image_enable() == 1){
+
+                    $filename   = 'Ads-banners-image-'.time().'.'. compress_image_format();
+                    Image::make($file)->save(base_path().'/public/uploads/Ads-banners/'.$filename , compress_image_resolution() );
+
+                }else{
+
+                    $filename   = 'Ads-banners-image-'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($file)->save(base_path().'/public/uploads/Ads-banners/'.$filename );
+                }
+
+                $inputs+=['left_image_url' =>  URL::to('public/uploads/Ads-banners/'.$filename) ];
+            }
+
+            if($request->hasFile('right_image_url')){
+
+                $file = $request->right_image_url;
+
+                if(compress_image_enable() == 1){
+
+                    $filename   = 'Ads-banners-image-'.time().'.'. compress_image_format();
+                    Image::make($file)->save(base_path().'/public/uploads/Ads-banners/'.$filename , compress_image_resolution() );
+
+                }else{
+
+                    $filename   = 'Ads-banners-image-'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($file)->save(base_path().'/public/uploads/Ads-banners/'.$filename );
+                }
+
+                $inputs+=['right_image_url' => URL::to('public/uploads/Ads-banners/'.$filename) ];
+            }
+
+            if($request->hasFile('top_image_url')){
+
+                $file = $request->top_image_url;
+
+                if(compress_image_enable() == 1){
+
+                    $filename   = 'Ads-banners-image-'.time().'.'. compress_image_format();
+                    Image::make($file)->save(base_path().'/public/uploads/Ads-banners/'.$filename , compress_image_resolution() );
+
+                }else{
+
+                    $filename   = 'Ads-banners-image-'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($file)->save(base_path().'/public/uploads/Ads-banners/'.$filename );
+                }
+
+                $inputs +=  ['top_image_url' => URL::to('public/uploads/Ads-banners/'.$filename) ];
+            }
+            
+            if($request->hasFile('bottom_image_url')){
+
+                $file = $request->bottom_image_url;
+
+                if(compress_image_enable() == 1){
+
+                    $filename   = 'Ads-banners-image-'.time().'.'. compress_image_format();
+                    Image::make($file)->save(base_path().'/public/uploads/Ads-banners/'.$filename , compress_image_resolution() );
+
+                }else{
+
+                    $filename   = 'Ads-banners-image-'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($file)->save(base_path().'/public/uploads/Ads-banners/'.$filename );
+                }
+
+                $inputs +=  ['bottom_image_url' => URL::to('public/uploads/Ads-banners/'.$filename) ];
+            }
+
+            AdminAdvertistmentBanners::first() == null ? AdminAdvertistmentBanners::create($inputs) : AdminAdvertistmentBanners::first()->update($inputs); 
+
+            return redirect(route('admin.ads_banners'));
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
         }
     }
 }

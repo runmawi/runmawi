@@ -84,8 +84,8 @@ header .navbar ul li:last-child { margin-right: 0; }
 #home-slider li { position: relative; }
 .slider-description { position: absolute; top: 15%; left: 80px; }
 #home-slider h1.slider-text { font-size: 70px; margin: 15px 0; }
-#home-slider p { margin: 20px 0; width: 75%; }
-#home-slider .slick-bg { padding: 100px 0 50px;width:100%; background-size: cover;background-position: center center; background-repeat: no-repeat; height: 90vh; position: relative; z-index: 1;}
+#home-slider p { margin: 20px 0; width: 100%; }
+#home-slider .slick-bg { padding: 0px 0 50px;width:100%; background-size: cover;background-position: center center; background-repeat: no-repeat; height: 90vh; position: relative; z-index: 1;}
 .trailor-video { position: absolute; bottom: 50%; right: 5%; z-index: 999; }
 .channel-name { color: var(--iq-primary); font-size: 20px; margin-left: 10px; letter-spacing: 2.5px; font-weight: 500; }
 .c-logo { width: 130px; }
@@ -740,7 +740,7 @@ header .navbar ul li.menu-item a:hover {
     font-size: 35px !important;
 }
 .big-title{
-    font-size:35px;
+    font-size:28px;
 }
 .button-groups:before{
     padding: 0.75em 2.3em !important;

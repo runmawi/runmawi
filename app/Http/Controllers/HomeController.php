@@ -5117,7 +5117,7 @@ public function uploadExcel(Request $request)
                                                     return $query->Where('choosed_date', $request->date);
                                                 })
 
-                                                ->get()->map(function ($item) {
+                                                ->orderBy('start_time')->get()->map(function ($item) {
                                                     $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
                                                     return $item;
                                                 });
