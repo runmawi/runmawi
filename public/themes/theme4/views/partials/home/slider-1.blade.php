@@ -21,7 +21,7 @@
                                 </div>
                             </a>
 
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1">
                                 <a href="{{ $item->link }}" class="btn btn-hover"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
@@ -64,7 +64,13 @@
                                 <span class="ml-3">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
 
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2" > {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 205)) . '...'. "  See more" : html_entity_decode($item->description) !!} </p>
+                            {{-- Description with "See more" option --}}
+                            <div class="description-container">
+                                <p class="description-text" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                    {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 200)) . '... <a href="#" class="see-more">See more</a>' : html_entity_decode($item->description) !!}
+                                </p>
+                            </div>
+                            <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2" > {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 205)) . '...'. "  See more" : html_entity_decode($item->description) !!} </p> -->
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
@@ -104,14 +110,22 @@
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                 <span class="ml-3"> {{ App\SeriesSeason::where('series_id', $item->id)->count() }} Seasons</span>
                                 <span class="ml-3"> {{ App\Episode::where('series_id', $item->id)->count() }} Episodes </span>
                             </div>
 
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode(optional($item)->details) !!} </p>
+                            {{-- Description with "See more" option --}}
+                            <div class="description-container">
+                                <p class="description-text" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                    {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 200)) . '... <a href="#" class="see-more">See more</a>' : html_entity_decode($item->description) !!}
+                                </p>
+                            </div>
+                            <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2">
+                                {!! strlen($item->details) > 200 ? html_entity_decode(substr($item->details, 0, 205)) . '...'. "  See more" : html_entity_decode($item->details) !!}
+                            </p> -->
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('play_series/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
@@ -149,13 +163,19 @@
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                 <span class="ml-1">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
 
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
+                            {{-- Description with "See more" option --}}
+                            <div class="description-container">
+                                <p class="description-text" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                    {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 200)) . '... <a href="#" class="see-more">See more</a>' : html_entity_decode($item->description) !!}
+                                </p>
+                            </div>
+                            <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p> -->
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
@@ -183,13 +203,19 @@
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                 <span class="ml-1">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
 
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
+                            {{-- Description with "See more" option --}}
+                            <div class="description-container">
+                                <p class="description-text" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                    {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 200)) . '... <a href="#" class="see-more">See more</a>' : html_entity_decode($item->description) !!}
+                                </p>
+                            </div>
+                            <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p> -->
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
@@ -219,14 +245,20 @@
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                 <span class="ml-3"> {{ 'S '.$item->season_id   }}  </span>
                                 <span class="ml-3"> {{ 'E '.$item->episode_order }}  </span>
                             </div>
 
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! (html_entity_decode(substr(optional($item)->description, 0, 150))) !!} </p>
+                            {{-- Description with "See more" option --}}
+                            <div class="description-container">
+                                <p class="description-text" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                    {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 200)) . '... <a href="#" class="see-more">See more</a>' : html_entity_decode($item->description) !!}
+                                </p>
+                            </div>
+                            <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! (html_entity_decode(substr(optional($item)->description, 0, 150))) !!} </p> -->
 
                             <div class="p-btns">
                                 <div class="d-flex align-items-center p-0">
@@ -263,7 +295,13 @@
                                 <span class="ml-3">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
 
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
+                            {{-- Description with "See more" option --}}
+                            <div class="description-container">
+                                <p class="description-text" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                    {!! strlen($item->description) > 200 ? html_entity_decode(substr($item->description, 0, 200)) . '... <a href="#" class="see-more">See more</a>' : html_entity_decode($item->description) !!}
+                                </p>
+                            </div>
+                            <!-- <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p> -->
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
@@ -277,3 +315,45 @@
     @empty
     @endforelse
 @endif
+
+
+<script>
+    $(document).ready(function() {
+        var maxLength = 200;
+
+        $('.description-container').each(function() {
+            var descriptionText = $(this).find('.description-text');
+            var fullText = descriptionText.text();
+
+            if (fullText.length > maxLength) {
+                var truncatedText = fullText.substr(0, maxLength);
+                var remainingText = fullText.substr(maxLength);
+
+                descriptionText.html(truncatedText +
+                    '<span class="ellipsis">...</span>' +
+                    '<span class="remaining-text" style="display:none;">' + remainingText + '</span>' +
+                    '<a href="#" class="see-more">See more</a>');
+            }
+
+            $(this).on('click', '.see-more', function(e) {
+                e.preventDefault();
+
+                var remainingText = $(this).prev('.remaining-text');
+                var ellipsis = $(this).prev('.ellipsis');
+
+                if ($(this).text() === 'See more') {
+                    descriptionText.append(remainingText.text());
+                    $(this).text('See less');
+                    ellipsis.hide();
+                    remainingText.slideDown();
+                } else {
+                    remainingText.slideUp(function() {
+                        ellipsis.show();
+                        $(this).remove();
+                    });
+                    $(this).text('See less');
+                }
+            });
+        });
+    });
+</script>
