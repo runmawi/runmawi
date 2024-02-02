@@ -942,19 +942,19 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <!-- <li><a href="{{ URL::to('admin/test/videoupload') }}" class="iq-waves-effect">Test Server Video Upload</a></li> -->
                         <li><a href="{{ URL::to('admin/assign_videos/partner') }}" class="iq-waves-effect">Move Videos to Partner</a></li>
                         <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/videos/categories') }}">{{ (__('Manage Video Categories')) }}</a></li>                    
-                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Manage_Video_Playlist_checkout == 1)
+                        @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->Video_Manage_Video_Playlist_checkout == 1)
                            <li><a href="{{ URL::to('admin/videos/playlist') }}" class="iq-waves-effect">{{ (__('Manage Video Playlist')) }}</a></li>
                         @endif 
 
                     
           </ul></li>
-          @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Channel_checkout == 1 || $AdminAccessPermission->Video_Channel_Video_Scheduler_checkout == 1 || EPG_Status() == 1 )
+          @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->Video_Channel_checkout == 1 || @$AdminAccessPermission->Video_Channel_Video_Scheduler_checkout == 1 || EPG_Status() == 1 )
             <li><a href="#contentchannel" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span class="">{{ (__('Channel Management')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                <ul id="contentchannel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-               @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Channel_checkout == 1)
+               @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->Video_Channel_checkout == 1)
                   <li><a href="{{ route('admin.Channel.index') }}" class="iq-waves-effect">Channel </a></li> 
                @endif      
-               @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Video_Channel_Video_Scheduler_checkout == 1)
+               @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->Video_Channel_Video_Scheduler_checkout == 1)
                   <li><a href="{{ route('VideoScheduler') }}" class="iq-waves-effect">Channel Video Scheduler </a></li>
                @endif   
                @if (EPG_Status() == 1)
@@ -1038,10 +1038,10 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}">{{ (__('Video Languages')) }}</a></li>
                         <li><a href="{{ URL::to('admin/subtitles/create') }}">{{ (__('Add Subtitle Languages')) }}</a></li>
-                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Manage_Translate_Languages_checkout == 1)
+                        @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->Manage_Translate_Languages_checkout == 1)
                            <li><a href="{{ URL::to('admin/translate-languages-index') }}">{{ (__('Manage Translate Languages')) }}</a></li> 
                         @endif 
-                        @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Manage_Translations_checkout == 1)
+                        @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->Manage_Translations_checkout == 1)
                            <li><a href="{{ URL::to('admin/languages') }}">{{ (__('Manage Translations')) }}</a></li>
                         @endif 
                      </ul>
@@ -1170,7 +1170,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> {{ (__('Comment Section Settings')) }} </a></li>
                             <li><a href="{{ route('meta_setting') }}" class="iq-waves-effect"> {{ (__('Site Meta Settings')) }} </a></li>
                             <li><a href="{{ route('TV_Settings_Index') }}" class="iq-waves-effect">{{ (__('TV Settings')) }} </a></li>
-                            @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Page_Permission_checkout == 1 || Auth::user()->plan_name == 'SuperAdmin')
+                            @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->Page_Permission_checkout == 1 || Auth::user()->plan_name == 'SuperAdmin')
                               <li><a href="{{ URL::to('admin/access-premission') }}" class="iq-waves-effect">{{ (__('Page Permission Settings')) }}</a></li>
                             @endif 
                         </ul>
