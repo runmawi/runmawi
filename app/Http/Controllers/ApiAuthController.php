@@ -22985,7 +22985,7 @@ public function TV_login(Request $request)
         $date = !empty($request->date) ? $request->date : date('m-d-Y');
         $time_zone = $request->time_zone;
         $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $date);
-        $choosed_date = $carbonDate->format('n-d-Y');
+        $choosed_date = $carbonDate->format('n-j-Y');
         $Channel_videos =  AdminEPGChannel::get()->map(function ($item) use ($request,$choosed_date) {
             $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
             $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
