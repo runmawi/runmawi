@@ -205,7 +205,7 @@ text-align: left;
 						</div>-->
                         <div class="soc mb-3">
                             <div class="d-flex align-items-center">
-                                <?php if($system_settings != null){ ?>
+                                <?php if($system_settings != null && $system_settings->facebook == 1 || $system_settings->google == 1){ ?>
                                     <div>
                                         <p class="links">{{ __('Login with using').':' }}</p>
                                     </div>

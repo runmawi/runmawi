@@ -23010,4 +23010,39 @@ public function TV_login(Request $request)
 
     }
     
+
+    
+    public function ChannelScheduledDataVideos( Request $request ){
+
+      try {
+
+        $channe_id = $request->channe_id;
+        $date = !empty($request->date) ? $request->date : date('m-d-Y');
+        $time_zone = $request->time_zone;
+        $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $date);
+        $choosed_date = $carbonDate->format('n-j-Y');
+
+        $ChannelVideoScheduler = ChannelVideoScheduler::where('channe_id',$channe_id)
+            ->where('choosed_date',$choosed_date)->get()->map(function ($item) use ($request,$choosed_date) {
+            $item['image_url'] = $item->image != null ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url() ;
+          return $item;
+        });
+
+       
+        $response = array(
+          "status"  => 'true' ,
+          "Channel_videos" => $ChannelVideoScheduler ,
+          "message" => "Retrieved Channels Videos Successfully" ,
+        );
+        
+      } catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+
+    }
+    
 }
