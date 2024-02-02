@@ -654,5 +654,6 @@ Route::group(
 
             Route::get('channels', 'ApiAuthController@Channels');
             Route::post('channel-scheduled-videos', 'ApiAuthController@ChannelScheduledVideos');
+            Route::post('scheduled-programs', 'ApiAuthController@ChannelScheduledDataVideos');
 
         });
