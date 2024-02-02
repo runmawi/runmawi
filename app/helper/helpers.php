@@ -1526,6 +1526,12 @@ function SchedulerSocureData($socure_type,$socure_id)
             $Video_duration = $ffprobe->format($mp4_url)->get('duration');
             $duration = explode(".", $Video_duration)[0];
             $seconds = round($duration);
+            
+            if($duration == 'N/A'|| empty($duration)){
+                $duration = 3600;
+                $seconds  = 3600;
+            }
+
             $data = array(
                 'duration' => $duration  ,
                 'seconds' => $seconds  ,   
