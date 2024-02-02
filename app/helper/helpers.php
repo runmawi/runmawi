@@ -1422,7 +1422,6 @@ function SchedulerSocureData($socure_type,$socure_id)
     if($socure_type == "Video"){
         $socure_data = App\Video::where('id',$socure_id)->first();
         if(!empty($socure_data) && $socure_data->type == ''){
-        echo"<pre>"; print_r($socure_data);exit;
         // https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8
             $m3u8_url = URL::to('/storage/app/public/') . '/' . $socure_data->path . '.m3u8';
             $m3u8_url = 'https://test.e360tv.com/storage/app/public/OCHg9md4AfzOTQoP.m3u8';
