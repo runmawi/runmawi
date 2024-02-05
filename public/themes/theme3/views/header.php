@@ -982,7 +982,14 @@ div#main_nav {
     transition: all 0.3s ease-out 0s;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
 }
-
+.avatar-40 {
+    height: 40px !important;
+    width: 40px !important;
+    min-width: 40px;
+    line-height: 40px;
+    font-size: 0.6rem;
+    padding: 6px;
+}
 </style>
 
 
