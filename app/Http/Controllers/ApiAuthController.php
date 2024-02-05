@@ -4046,7 +4046,8 @@ public function verifyandupdatepassword(Request $request)
       try {
         
         $this->validate($request, [
-          'coupon_code'  => 'required|integer' ,
+          'coupon_code'  => 'required' ,
+          'plan_price'  => 'required'
         ]);
           
         $stripe = new \Stripe\StripeClient(
@@ -4069,7 +4070,7 @@ public function verifyandupdatepassword(Request $request)
             $percentage = $coupon->percent_off;
   
             $plan_price = preg_replace('/[^0-9. ]/', ' ', $request->plan_price);
-  
+
             $promo_code_amt = (($percentage / 100) * $plan_price);
   
             $discount_amt = $plan_price -  $promo_code_amt ;
