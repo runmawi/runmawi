@@ -1080,6 +1080,7 @@ $(document).ready(function(){
 	rules: {
 	  title: 'required',
 	  url_type: 'required',
+      duration: 'required',
       'language[]': {
                 required: true
             },
