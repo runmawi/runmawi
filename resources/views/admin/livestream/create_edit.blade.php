@@ -901,6 +901,7 @@ border-radius: 0px 4px 4px 0px;
         rules: {
             title: "required",
             url_type: "required",
+            duration: "required",
             'language[]': {
                 required: true
             },
