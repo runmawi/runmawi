@@ -120,9 +120,26 @@
                   <script src="{{ optional($admin_advertistment_banners)->right_script_url }}"></script>
                @endif
             @endif
+            
 
          </div>
       <div class="main">
+            <div class="bottom-nav">
+
+               @if ( optional($admin_advertistment_banners)->bottom_banner_status == 1 )
+
+                  @if (optional($admin_advertistment_banners)->bottom_image_url )
+                     <div class="col-sm-9 mx-auto ">
+                        <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->bottom_image_url }}" /> 
+                     </div>
+                  @endif
+
+                  @if (optional($admin_advertistment_banners)->bottom_script_url )
+                     <script src="{{ optional($admin_advertistment_banners)->bottom_script_url }}"></script>
+                  @endif
+                  
+               @endif
+            </div>
 
          <div class="sidenav">
                      {{-- Left Ads Banners --}}
@@ -449,6 +466,11 @@
    .main {
      position:relative;
    }
+   .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      z-index: 99;
+   }
 
    @media screen and (max-height: 450px) {
       .sidenav {padding-top: 15px;}
@@ -467,6 +489,7 @@
          document.querySelector('.sidenav').style.display = 'none';
          document.querySelector('.rightnav').style.display = 'none';
          document.querySelector('.header_top_position_img').style.display = 'none';
+         document.querySelector('.bottom-nav').style.display = 'none';
          document.querySelector('.main').style.marginLeft = '0px';
          document.querySelector('.main').style.marginRight = '0px';
       }, 5000);
