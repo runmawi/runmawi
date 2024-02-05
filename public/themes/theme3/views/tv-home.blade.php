@@ -1,88 +1,102 @@
-@php
+<?php
     include public_path('themes/theme3/views/header.php');
 
-    $slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();
-    $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
+    $parentCategories = App\SeriesGenre::orderBy('order', 'ASC')->get();
+
+    $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')
+        ->pluck('video_name')
+        ->toArray();
+
     $order_settings_list = App\OrderHomeSetting::get();
     $home_settings = App\HomeSetting::first();
-    $ThumbnailSetting = App\ThumbnailSetting::first();
-    $SeriesGenre = App\SeriesGenre::all();
 
-    $Slider_array_data = [
-        'Episode_sliders' => $banner,
-    ];
-
-@endphp
-
-@if (count($errors) > 0)
-    @foreach ($errors->all() as $message)
-        <div class="alert alert-danger display-hide" id="successMessage">
-            <button id="successMessage" class="close" data-close="alert"> </button>
-            <span><?php echo $message; ?></span>
-        </div>
-    @endforeach
-@endif
+    $Slider_array_data = array(
+            'live_banner'  => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->get() , 
+            'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->get(),
+         );    
+?>
 
 @if (Session::has('message'))
-    <div id="successMessage" class="alert alert-info"><?php echo Session::get('message'); ?></div>
+    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
 @endif
+
+                {{-- Slider --}}
 
 <section id="home" class="iq-main-slider p-0">
     <div id="home-slider" class="slider m-0 p-0">
-        {!! Theme::uses('theme3')->load('public/themes/theme3/views/partials/home/slider-1', $Slider_array_data)->content() !!}
+       {!! Theme::uses('theme6')->load('public/themes/theme3/views/partials/home/slider-1', [
+                'series_sliders' => App\Series::where('active', '=', '1')->where('banner','=','1')
+                                        ->latest()->get() ,
+            ])->content() !!}
+    </div>
+ </section>
+
+<section>
+    <div class="main-content">
+
+                    {{-- Series   --}}
+
+        {!! Theme::uses('theme6')->load('public/themes/theme3/views/partials/home/latest-series', [
+                'data' => $latest_series,
+                'order_settings_list' => $order_settings_list,
+            ])->content() !!}
+
+                    {{-- Free Content  --}}
+
+        {!! Theme::uses('theme6')->load('public/themes/theme3/views/partials/home/free_content', [
+                'data' => $free_Contents,
+                'order_settings_list' => $order_settings_list,
+            ])->content() !!}
+
+                    {{-- Latest Episode  --}}
+
+        {!! Theme::uses('theme6')->load('public/themes/theme3/views/partials/home/latest-episodes', [
+                'data' => $latest_episodes,
+                'order_settings_list' => $order_settings_list,
+            ])->content() !!}
+
+                    {{-- featured Episodes  --}}
+
+        {!! Theme::uses('theme6')->load('public/themes/theme3/views/partials/home/featured-episodes', [
+                'data' => $featured_episodes,
+                'order_settings_list' => $order_settings_list,
+            ])->content() !!}
+
+
+        @foreach ($order_settings as $key => $item)
+
+                {{-- Series Genre  --}}
+
+            @if ($item == 'Series_Genre' && $home_settings->SeriesGenre == 1)
+                {!! Theme::uses('theme6')->load('public/themes/theme3/views/partials/home/SeriesGenre', [
+                        'data' => $parentCategories,
+                        'order_settings_list' => $order_settings_list,
+                    ])->content() !!}
+            @endif
+
+                {{-- Series video based on Genre   --}}
+
+            @if ($item == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1)    
+                @foreach ($parentCategories as $category)
+                    @php
+                        $series = App\Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                            ->where('category_id', $category->id)
+                            ->where('active', '1')
+                            ->latest('series.created_at')
+                            ->groupBy('series.id')
+                            ->get();
+                    @endphp
+
+                    {!! Theme::uses('theme6')->load('public/themes/theme3/views/partials/home/seriescategoryloop', [
+                            'data' => $series,
+                            'category' => $category,
+                            'order_settings_list' => $order_settings_list,
+                        ])->content() !!}
+                @endforeach
+            @endif
+        @endforeach
     </div>
 </section>
-
-<div class="main-content">
-
-    @php
-        $sections = array(
-                        ['view' => 'latest-series','data' => $latest_series],
-                        ['view' => 'free_content', 'data' => $free_Contents], 
-                        ['view' => 'latest-episodes', 'data' => $latest_episodes], 
-                        ['view' => 'featured-episodes', 'data' => $featured_episodes]
-                    );
-    @endphp
-
-    @foreach ($sections as $section)
-        <section id="iq-favorites">
-            <div class="container-fluid overflow-hidden pl-0">
-                <div class="row">
-                    <div class="col-sm-12">
-                        {!! Theme::uses('theme3')->load("public/themes/theme3/views/partials/home/{$section['view']}", [
-                                'data' => $section['data'],
-                                'order_settings_list' => $order_settings_list,
-                            ])->content() !!}
-                    </div>
-                </div>
-            </div>
-        </section>
-    @endforeach
-
-    @foreach ($order_settings as $key => $value)
-        @if ( ($value->video_name == 'Series_Genre' && $home_settings->SeriesGenre == 1) || ($value->video_name == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1))
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden pl-0">
-                    <div class="row">
-                        <div class="col-sm-12">
-
-                            @if ($value->video_name == 'Series_Genre')
-                                {!! Theme::uses('theme3')->load('public/themes/theme3/views/partials/home/SeriesGenre', [ 'data' => $SeriesGenre, 'order_settings_list' => $order_settings_list, ])->content() !!}
-                            @endif
-
-                            @if ($value->video_name == 'Series_Genre_videos')
-                                {!! Theme::uses('theme3')->load('public/themes/theme3/views/partials/home/series-based-categories', ['order_settings_list' => $order_settings_list, ])->content() !!}
-                            @endif
-
-                        </div>
-                    </div>
-                </div>
-            </section>
-        @endif
-    @endforeach
-</div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -96,6 +110,4 @@
     })
 </script>
 
-@php
-    include public_path('themes/theme3/views/footer.blade.php');
-@endphp
+<?php include public_path('themes/theme3/views/footer.blade.php'); ?>

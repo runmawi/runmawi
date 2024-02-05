@@ -45,7 +45,7 @@
                <a type="button" class="btn btn-primary btn-hover"
                   href="<?php echo URL::to('play_series') ?>/<?= $category_series->slug ?>">
                <i class="fa fa-play mr-1" aria-hidden="true"></i>
-               <?= __('Play Now')  ?>
+               Play Now
                </a>
                </div>
                </div>

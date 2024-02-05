@@ -547,13 +547,13 @@
                         <div style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-repeat: no-repeat;background-size: cover;height: 25vh;background-position: center;border-top-left-radius: 5px;border-top-right-radius: 5px;"></div>
                             <div class="row freebwrapper" style="" >
                                 <div class="col-md-9">
-                                    <h2 class="mb-3" style=""><?php echo __('Pay now to watch'); ?> <br /><?php echo $video->title; ?></h2>
+                                    <h2 class="mb-3" style="">Pay now to watch <br /><?php echo $video->title; ?></h2>
                                     <?php if(Auth::guest()){ ?>
                                         <a href="<?= URL::to('/login'); ?>" class="btn btn-primary btn-block" style="">
-                                            <?php echo $currency->symbol.''.$video->ppv_price; ?> <?php echo __('Purchase Now'); ?>
+                                            <?php echo $currency->symbol.''.$video->ppv_price; ?> Purchase Now
                                         </a>
                                     <?php }else{ ?>
-                                        <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)"><?php echo $currency->symbol.''.$video->ppv_price; ?> <?php echo __('Purchase Now'); ?></button>
+                                        <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)"><?php echo $currency->symbol.''.$video->ppv_price; ?> Purchase Now</button>
                                     <?php } ?>
                                 </div>
 
@@ -561,7 +561,7 @@
                                     <p class="free_price">
                                         <?php echo $currency->symbol.''.$video->ppv_price; ?>
                                     </p>
-                                    <small style="color: #fff;"><?php echo __('Per'); ?> <?php echo $video->ppv_hours; ?> Hrs</small> 
+                                    <small style="color: #fff;">Per <?php echo $video->ppv_hours; ?> Hrs</small> 
                                 </div>
                             </div>
                             
@@ -569,17 +569,17 @@
                                 <div class="row">
                                     <?php if(Auth::guest()){ ?>
                                         <div class="col-md-8">
-                                            <p><?php echo __('If you are already a member Login using this link'); ?></p>
+                                            <p>If you are already a member Login using this link</p>
                                         </div>
                                         <div class="col-md-4 text-right" style="">
-                                            <a href="<?= URL::to('/login') ?>" class="btn btn-primary btn-block"><?php echo __('Login'); ?> </a>
+                                            <a href="<?= URL::to('/login') ?>" class="btn btn-primary btn-block">Login </a>
                                         </div>
                                     <?php }else{ ?>
                                         <div class="col-md-8">
-                                            <h3 style=""><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><?php echo __('Get a Subscription and Watch unlimited Contents'); ?></a></h3>
+                                            <h3 style=""><a href="<?=URL::to('/') . '/stripe/billings-details' ?>">Get a Subscription and Watch unlimited Contents</a></h3>
                                         </div>
                                         <div class="col-md-4 text-right" style="">
-                                            <a class="btn btn-primary btn-block" href="<?=URL::to('/') . '/stripe/billings-details' ?>"><?php echo __('Subscribe Now'); ?></a>
+                                            <a class="btn btn-primary btn-block" href="<?=URL::to('/') . '/stripe/billings-details' ?>">Subscribe Now</a>
                                         </div>
                                     <?php } ?>
                                 </div>

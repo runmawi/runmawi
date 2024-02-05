@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 <?php
-include(public_path('themes/theme4/views/header.php'));
+include(public_path('themes/theme3/views/header.php'));
 ?>
 
 @section('content')
@@ -54,11 +54,11 @@ $uppercase =  ucfirst($request_url);
 	<div class="row page-height">
 		<div class="col-sm-8 offset-2 content">
 			<div class="verifyemail-text">
-				<h3><i class="fa fa-check-circle"></i> {{ __('sorry for the inconvenience , A Verification link not sent to your email account.') }}</h3>   <br>
+				<h3><i class="fa fa-check-circle"></i> sorry for the inconvenience , A Verification link not sent to your email account.</h3>   <br>
                 
-				<p class="text-white"> {{ __('Please Contact Admin for other details') }} </p>
+				<p class="text-white"> Please Contact Admin for other details </p>
 
-                <button onclick="location.href='{{  URL::to('login') }}' " type="button">{{ __('Go to Login') }}  </button>
+                <button onclick="location.href='{{  URL::to('login') }}' " type="button"> Go to Login </button>
 
 			</div>
 		</div>
@@ -69,7 +69,7 @@ $uppercase =  ucfirst($request_url);
 
 
 @php
-    include(public_path('themes/theme4/views/footer.blade.php'));
+    include(public_path('themes/theme3/views/footer.blade.php'));
 @endphp
 
 @endsection 

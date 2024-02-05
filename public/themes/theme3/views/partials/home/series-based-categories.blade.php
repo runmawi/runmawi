@@ -35,104 +35,47 @@
 ?>
 
 @if (!empty($data) && $data->isNotEmpty())
-
     @foreach( $data as $key => $series_genre )
-        <section id="iq-trending" class="s-margin">
-            <div class="container-fluid pl-0">
+        <section id="iq-tvthrillers" class="s-margin">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
-                                        
-                                        {{-- Header --}}
+
+                          {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title mar-left"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ optional($series_genre)->name }}</a></h4>
-                            <h4 class="main-title"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ "view all" }}</a></h4>
+                            <h4 class="main-title"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ optional($series_genre)->name }}</a></h4>
+                            <h4 class="main-title"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ 'view all' }}</a></h4>
                         </div>
 
-                        <div class="trending-contens">
-                            <ul id="trending-slider-nav" class="{{ 'series-genre-videos-slider-nav list-inline p-0 mar-left row align-items-center' }}" data-key-id="{{$key}}">
+                        <div class="tvthrillers-contens">
+                            <ul class="favorites-slider list-inline row p-0 mb-0">
+                                @foreach ($series_genre->category_series as $latest_series)
+                                    <li class="slide-item">
+                                        <a href="{{ URL::to('play_series/'.$latest_series->slug) }}">
+                                            <div class="block-images position-relative">
+                                                <div class="img-box">
+                                                    <img src="{{ $latest_series->image ? URL::to('public/uploads/images/' . $latest_series->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                                </div>
 
-                                @foreach ($series_genre->category_series as $series )
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="movie-slick position-relative">
-                                                <img src="{{ $series->image_url }}" class="img-fluid" >
-                                            </div>
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
+                                                <div class="block-description">
 
-                            <ul id="trending-slider" class= "{{ 'series-genre-videos-slider list-inline p-0 m-0 align-items-center category-series-'.$key }}" >
-                                @foreach ($series_genre->category_series as $series )
-                                    <li>
-                                        <div class="tranding-block position-relative trending-thumbnail-image" >
-                                            <button class="drp-close">×</button>
-                                            <div class="trending-custom-tab">
-                                                <div class="trending-content">
-                                                    <div id="" class="overview-tab tab-pane fade active show">
-                                                        <div class="trending-info align-items-center w-100 animated fadeInUp">
+                                                    <p>{{ strlen($latest_series->title) > 17 ? substr($latest_series->title, 0, 18) . '...' : $latest_series->title }}</p>
 
-                                                            <div class="caption pl-4">
-                                                                <h2 class="caption-h2">{{ optional($series)->title }}</h2>
-                                                                                                                            
-                                                                @if ( optional($series)->description )
-                                                                    <div class="trending-dec">{!! html_entity_decode(substr(optional($series)->description, 0, 50)) !!}</div>
-                                                                @endif
+                                                    <div class="movie-time d-flex align-items-center my-2">
+                                                        <span class="text-white"> 
+                                                            {{ App\SeriesSeason::where('series_id',$latest_series->id)->count() . " Seasons" }}  
+                                                            {{ App\Episode::where('series_id',$latest_series->id)->count() . " Episodes" }}  
+                                                        </span>
+                                                    </div>
 
-                                                                <div class="p-btns">
-                                                                    <div class="d-flex align-items-center p-0">
-                                                                        <a href="{{ URL::to('play_series/' . $series->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a href="{{ URL::to('play_series/' . $series->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="trending-contens sub_dropdown_image mt-3">
-                                                                <ul id="trending-slider-nav" class= "{{ 'pl-4 m-0  series-depends-episode-slider-'.$key }}" >
-                                                                    @foreach ($series->Series_depends_episodes as $episode )
-                                                                        <li>
-                                                                            <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                                <div class=" position-relative">
-                                                                                    <img src="{{ $episode->image_url }}" class="img-fluid" >
-                                                                                    <div class="controls">
-                                                                                        <a href="{{ URL::to('episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                                                                        </a>
-
-                                                                                        <nav>
-                                                                                            <button class="moreBTN"><i class="fas fa-info-circle"></i><span>More info</span></button>
-                                                                                        </nav>
-                                                                                                                    
-                                                                                        @php
-                                                                                            $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first() ;
-                                                                                        @endphp
-                                                                                        
-                                                                                        <p class="trending-dec" >
-
-                                                                                            @if ( !is_null($series_seasons_name) )
-                                                                                                {{ "Season - ". $series_seasons_name  }}  <br>
-                                                                                            @endif
-
-                                                                                            {{ "Episode - " . optional($episode)->title  }} <br>
-
-                                                                                            {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
-                                                                                        </p>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </a>
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-
-                                                            <div class="dropdown_thumbnail">
-                                                                <img  src="{{ $series->Player_image_url }}" alt="">
-                                                            </div>
-                                                        </div>
+                                                    <div class="hover-buttons">
+                                                        <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                            Play Now
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </a>
                                     </li>
                                 @endforeach
                             </ul>
@@ -143,79 +86,3 @@
         </section>
     @endforeach
 @endif
-
-<script>
-    
-    $( window ).on("load", function() {
-        $('.series-genre-videos-slider').hide();
-    });
-
-    $(document).ready(function() {
-
-        $('.series-genre-videos-slider').slick({
-            slidesToShow: 6,
-            slidesToScroll: 1,
-            arrows: true,
-            fade: true,
-            draggable: false,
-            asNavFor: '.series-genre-videos-slider-nav',
-        });
-
-        $('.series-genre-videos-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 1,
-            asNavFor: '.series-genre-videos-slider',
-            dots: false,
-            arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
-            infinite: false,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-        
-        $('.series-genre-videos-slider-nav').click(function() {
-
-            $( ".drp-close" ).trigger( "click" );
-
-             let category_key_id = $(this).attr("data-key-id");
-             $('.series-genre-videos-slider').hide();
-             $('.category-series-' + category_key_id).show();
-
-            $('.series-depends-episode-slider-'+ category_key_id).slick({
-                dots: false,
-                infinite: false,
-                speed: 300,
-                slidesToShow: 6,
-                slidesToScroll: 4,
-            });
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.series-genre-videos-slider').hide();
-        });
-    });
-
-</script>               

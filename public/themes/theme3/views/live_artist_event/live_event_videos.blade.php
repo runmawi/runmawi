@@ -164,16 +164,16 @@ if ($ppv_exist > 0 || Auth::user()->subscribed() || Auth::user()->role == "admin
             <div class="row justify-content-center pay-live">
                 <div class="col-md-4 col-sm-offset-4">
                     <div class="ppv-block">
-                        <h2 class="mb-3">{{ __('Pay now to watch') }} <?php echo $video->title; ?></h2>
+                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
                         <div class="clear"></div>
 
                        
             <!-- Stripe Button -->
-                    <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">{{ __('Watch Now For') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                    <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Watch Now For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
 
             <!-- Razorpay Button -->
             <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
-                    <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >{{ __('Razorpay Purchase For') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                    <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >Razorpay Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
             <?php } ?>
                     </div>
                 </div>
@@ -246,12 +246,12 @@ else{
             <div class="row justify-content-center pay-live">
                 <div class="col-md-4 col-sm-offset-4">
                     <div class="ppv-block">
-                        <h2 class="mb-3">{{ __('Pay now to watch') }} <?php echo $video->title; ?></h2>
+                        <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
                         <div class="clear"></div>
                         <?php if(Auth::guest()){ ?>
-                        <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >{{ __('Purchase For Pay') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                        <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
                         <?php }else{ ?>
-                        <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">{{ __('Purchase For Pay') }} <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                        <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                         <?php } ?>
                     </div>
                 </div>
@@ -261,7 +261,7 @@ else{
     }
     } elseif(!empty($new_date)){ ?>
         <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
-            <h2> {{ __('COMING SOON') }} </h2>
+            <h2> COMING SOON </h2>
             <p class="countdown" id="demo"></p>
             </div>
            <?php }
@@ -284,14 +284,14 @@ else{
                 @if(  $video->tips == 1 )
                                 {{--Tips  --}}
                     <div class="d-flex justify-content-end mt-2">
-                        <div> <button class="btn bd btn-primary" id="tips" onclick="tips_hide()" >{{  $video->donations_label ? $video->donations_label : __("TIPS") }} {{ __('TIPS') }} </button></div> </div>
+                        <div> <button class="btn bd btn-primary" id="tips" onclick="tips_hide()" >{{  $video->donations_label ? $video->donations_label : "TIPS" }} TIPS </button></div> </div>
                         <div><form action="{{ route('live_event_tips') }}" method="post">
                         @csrf
                         <div class=" mt-2" id="live_event_amount">
                             <div class="d-flex justify-content-end">
                                 <div><input type="hidden" name="live_event_video_slug" class="form-control " required  value="{{ $video->slug  }}">
-                            <input type="text" name="live_event_amount" class="form-control " placeholder="{{ __('Please Enter the Amount') }}" required></div>
-                                <div class="ml-1">  <button class="btn bd btn-primary" > {{ __('Amount Pay') }} </button></div>
+                            <input type="text" name="live_event_amount" class="form-control " placeholder="Please Enter the Amount" required></div>
+                                <div class="ml-1">  <button class="btn bd btn-primary" > Amount Pay </button></div>
                             
                           </div>
                         </div>
@@ -414,7 +414,7 @@ else{
                     <div class="col-sm-12 col-md-12 col-xs-12">
                         <div class="video-details-container">
                             <?php if (!empty($video->details)) { ?>
-                                <h6 class="mt-3 mb-1">{{ __('Live Details') }}</h6>
+                                <h6 class="mt-3 mb-1">Live Details</h6>
                                 <p class="trending-dec w-100 mb-3 text-white"><?=$video->details; ?></p>
                             <?php  } ?>
                         </div>
@@ -446,7 +446,7 @@ endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id
 <div class="modal-dialog modal-dialog-centered" role="document">
 <div class="modal-content">
   <div class="modal-header">
-    <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">{{ __('Rent Now') }}</h4>
+    <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
    
   </div>
   <div class="modal-body">
@@ -463,7 +463,7 @@ endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id
       </div>                    
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary"  data-dismiss="modal">{{ __('Close') }}</button>
+    <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
   </div>
 </div>
 </div>

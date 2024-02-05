@@ -6,7 +6,7 @@
     <div class="container-fluid">
 
         <div class="iq-main-header align-items-center">
-            <h2 class="">{{ ucwords( __("artist videos").' '.$artist_name) }}</h2>
+            <h2 class="">{{ ucwords("artist videos ".$artist_name) }}</h2>
         </div>
 
         <div class="row">
@@ -123,7 +123,7 @@
                                                         
                                                         <div class="hover-buttons">
                                                             <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $artists_videos->slug ?>" >
-                                                                <img class="ply mr-1 " src="<?php echo URL::to('/').'/assets/img/theme4_play_buttons.svg';  ?>"  width="10%" height="10%"/> {{ __('Watch Now') }}
+                                                                <img class="ply mr-1 " src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                                             </a>
                                                         </div>
                                                     </div>

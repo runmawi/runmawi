@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-12 overflow-hidden">
                 <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h2 class="Continue Watching"> <?= __('Media in My Watchlater') ?></h2>
+                    <h2 class="Continue Watching">Media in My Watchlater</h2>
                 </div>
             </div>
         </div>
@@ -117,7 +117,7 @@
                                             
                                         <div class="hover-buttons">
                                             <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $channelwatchlater_videos->slug ?>" >
-                                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/theme4_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                             </a>
                                             <div>
                                             <!-- <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $channelwatchlater_videos->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
@@ -192,7 +192,7 @@
 
                                             <div class="hover-buttons">
                                                 <a class="text-white d-flex align-items-center" href="<?php echo URL::to('episode') ?><?= '/'.$series_slug .'/'. $episode_videos->slug ?>">
-                                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/theme4_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                                    <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                                 </a>
                                             <div>
                                         </div>

@@ -92,6 +92,7 @@ use FFMpeg\Filters\Video\VideoResizeFilter;
 use FFMpeg\Filters\Video\Resizer;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\SiteTheme;
 
 class AdminVideosController extends Controller
 {
@@ -908,6 +909,7 @@ class AdminVideosController extends Controller
                 }else{
                     $streamUrl = '';
                 }
+                $theme_settings = SiteTheme::first();
 
             $data = [
                 "headline" => '<i class="fa fa-plus-circle"></i> New Video',
@@ -936,6 +938,7 @@ class AdminVideosController extends Controller
                 'storage_settings' => $storage_settings ,
                 'videolibrary' => $videolibrary ,
                 'streamUrl' => $streamUrl ,
+                'theme_settings' => $theme_settings ,
             ];
 
             return View::make("admin.videos.fileupload", $data);

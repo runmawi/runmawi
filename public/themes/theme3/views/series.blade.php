@@ -1,6 +1,4 @@
-@php
-    include public_path('themes/theme3/views/header.php');
-@endphp
+<?php include public_path('themes/theme3/views/header.php'); ?>
 
 <style type="text/css">
     .nav-pills li a {
@@ -26,7 +24,7 @@
     }
 
     select:valid {
-        color: #fff !important;
+        color: #808080 !important;
     }
 
     .plyr__video-wrapper::before {
@@ -42,6 +40,8 @@
         font-size: 18px !important;
 
     }
+
+
 
     .sea {
         font-size: 14px;
@@ -77,28 +77,11 @@
     }
 
     .modal {
-            top: 40px;
-        }
+        top: 40px;
+    }
 
     .ply {
         width: 40px;
-    }
-    .model_close-button{
-        border: 2px solid;
-        width: 30px;
-        height: 30px;
-        font-size: 27px;
-    }
-    .model_close-button:hover{
-        background:white;
-        color:black;
-
-    }
-    .drp-close.model_close-button:hover {
-        transform: none;
-    }
-    .trending-dec.mt-2 span.text-primary{
-        cursor: pointer;
     }
 
     /* <!-- BREADCRUMBS  */
@@ -113,184 +96,154 @@
         font-size: revert;
     }
 
-    body.dark-theme .block-description {
-        background-image: none;
-        backdrop-filter: none;
+    .seasonpublisheddate {
+        font-weight: bold !important;
+        font-size: 19px !important;
     }
-    .form-control:focus{
-        background-color: transparent;
-        box-shadow:none;
+
+    .list-inline {
+        list-style: none;
     }
-   
+
+    #season_id {
+        background-color: var(--iq-bg1);
+        border: none;
+        border-radius: 0;
+        color: var(--iq-white);
+    }
+
+    #season_id option {
+        line-height: calc(1.5em + 1.2em);
+        padding-left: 0.625em;
+    }
 </style>
 
 <?php
-    $series = $series_data;
-    $media_url = URL::to('play_series/' . $series->slug);
-    $ThumbnailSetting = App\ThumbnailSetting::first();
+$series = $series_data;
+$media_url = URL::to('play_series/' . $series->slug);
+$ThumbnailSetting = App\ThumbnailSetting::first();
+
+$Series_Category = App\SeriesCategory::select('category_id', 'series_id', 'name', 'slug')
+    ->join('series_genre', 'series_genre.id', '=', 'series_categories.category_id')
+    ->where('series_id', $series->id)
+    ->get();
+
+$latest_Episode = App\Episode::where('active',1)->where('status',1)->where('series_id',$series->id)->latest()->first();
+
 ?>
 
-<div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:cover;padding:0px 0px 20px; ">
-    <!-- <div class="dropdown_thumbnail" >
-        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" alt="" style="height:450px;">
-    </div> -->
-    <!-- BREADCRUMBS -->
+<div id="myImage" class="container"
+    style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%); background-size: cover;  padding: 0px 0px 0px;position:relative;z-index:1;">
+    <div> </div>
+    <div class="container-fluid pt-5">
+        <div id="series_bg_dim" class="{{ ($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest())) ? '' : 'darker' }}"></div>
 
-    <div class="row mr-2">
-        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
-            <div class="bc-icons-2">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Channels')) ?></a>
-                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                    </li>
+        <div class="row mt-3 align-items-center">
+            <?php  if ( $ppv_exits > 0 || $video_access == 'free' ||
+                ($series->access == 'guest' && $series->ppv_status != 1) ||
+                (($series->access == 'subscriber' || $series->access == 'registered') &&
+                    !Auth::guest() &&
+                    Auth::user()->subscribed() &&
+                    $series->ppv_status != 1) ||
+                (!Auth::guest() &&  Auth::user()->role == 'admin') ||  Auth::user()->role == 'registered' 
+                ||  Auth::user()->role == 'subscriber' ||
+                (!Auth::guest() && $series->access == 'registered' &&
+                    $settings->free_registration && $series->ppv_status != 1)
+            ) :  ?>
 
-                    <?php foreach ($category_name as $key => $series_category_name) { ?>
-                    <?php $category_name_length = count($category_name); ?>
-                    <li class="breadcrumb-item">
-                        <a class="black-text"
-                            href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
-                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
-                        </a>
-                        
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                    </li>
-                    <?php } ?>
+            <div class="col-md-7 p-0">
+                <div id="series_title" class="show-movie">
+                    <div class=" p-2 text-white ">
+                        <div class="trending-info p-0">
+                                                        
+                                                        {{-- Ṭitle --}}
+                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">
+                                {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }}
+                            </h1>
 
-                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title); ?> </a></li>
-                </ol>
-            </div>
-        </div>
-     </div>
+                                                        {{-- Rating --}}
+                            <div class="slider-ratting d-flex align-items-center" data-animation-in="fadeInLeft">
+                                @if (optional($series)->rating)
+                                    <ul
+                                        class="ratting-start p-0 m-0 list-inline text-primary d-flex align-items-center justify-content-left">
+                                        @php $rating = ($series->rating / 2) ; @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($rating >= $i)
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            @elseif ($rating + 0.5 == $i)
+                                                <li><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                            @else
+                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                                            @endif
+                                        @endfor
+                                    </ul>
+                                @endif
+                                <span class="text-white ml-3">{{ $series->rating ? $series->rating / 2 : ' ' }}</span>
+                            </div>
 
-    <div class="container-fluid pl-0">
-        <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker" <?php endif; ?>></div>
+                                                        {{-- Category --}}
+                            <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-content">
+                                @foreach ($Series_Category as $key => $Series_Category_details)
+                                    <li class="trending-list"><a class="text-primary title"
+                                            href=" {{ URL::to('/series/category/' . $Series_Category_details->slug) }}">{{ $Series_Category_details->name }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
 
-        <div class="container-fluid pl-3">
-            @if( $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
-                && !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
-                Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
-                $settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) )
+                                                        {{-- year & season Count --}}
+                            <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
+                                <span> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
+                                <span class="trending-year">{{ optional($series)->year }}</span>
+                            </div>
 
-            <div class="col-md-7 pl-0">
-                <div id="series_title">
-                    <div class="container-fluid pl-0">
-                        <h3> {{ $series->title }} </h3>
-
-                        <div class="row text-white">
-
-                            <div class="col-lg-8 col-md-8 pl-3">
-
-                                <?php echo __('Season'); ?> <span class="sea"> 1 </span> 
-                                - <?php echo __('U/A English'); ?>
-
-                                <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p>
-                                
-                                    <!-- Model for banner discription -->
-                                        <div class="modal fade info_model" id='discription-Modal' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                                                <div class="container">
-                                                    <div class="modal-content" style="border:none;">
-                                                        <div class="modal-body">
-                                                            <div class="col-lg-12">
-                                                                <div class="row">
-                                                                    <div class="col-lg-6">
-                                                                        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" width="100%" alt="">
-                                                                    </div>
-                                                                    <div class="col-lg-6">
-                                                                        <div class="row">
-                                                                            <div class="col-lg-10 col-md-10 col-sm-10">
-                                                                                <h2 class="caption-h2">{{ $series->title }}</h2>
-
-                                                                            </div>
-                                                                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                                                                <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
-                                                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="trending-dec mt-4">{{ html_entity_decode($series->description ) }}</div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                <div class="row p-0 mt-3 align-items-center">
-
-                                    <div class="col-md-2">
-                                        <a data-video="{{ $series->trailer }}" data-toggle="modal" data-target="#videoModal">
-                                            <img class="ply" src="{{ URL::to('assets/img/default_play_buttons.svg') }}" />
-                                        </a>
-                                    </div>
-
-                                    <div class="col-md-1 pls  d-flex text-center mt-2">
-                                        <div></div>
-                                        <ul>
-                                            <li class="share">
-                                                <span><i class="ri-share-fill"></i></span>
-                                                <div class="share-box">
-                                                    <div class="d-flex align-items-center">
-                                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
-                                                            class="share-ico"><i class="ri-facebook-fill"></i>
-                                                        </a>
-
-                                                        <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
-                                                            class="share-ico"><i class="ri-twitter-fill"></i>
-                                                        </a>
-
-                                                        <a href="#" onclick="Copy();" class="share-ico"><i
-                                                                class="ri-links-fill"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </li>Share
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="modal fade modal-xl" id="videoModal" data-keyboard="false"
-                                    data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                                    aria-hidden="true">
-
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <button type="button" class="close videoModalClose" data-dismiss="modal"
-                                                aria-label="Close"><span aria-hidden="true">&times;</span>
-                                            </button>
-
-                                            <div class="modal-body">
-
-                                                <video id="videoPlayer1" controls poster="{{ URL::to('public/uploads/images/' . $series->player_image) }}"
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="" type="video/mp4">
-                                                </video>
-
-                                                <video id="videos" class="" controls poster="{{ URL::to('public/uploads/images/' . $series->player_image) }}"
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    type="application/x-mpegURL">
-                                                    <source id="m3u8urlsource" type="application/x-mpegURL" src="">
-                                                </video>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-
-                                <script>
-                                    const player = new Plyr('#videoPlayer1');
-                                </script>
+                                                        {{-- Details --}}
+                            <div class="trending-">
+                                <p class="m-0">{!! html_entity_decode(optional($series)->details) !!}</p>
                             </div>
                         </div>
-                    </div>
 
+                                                        {{-- Episode --}}
+                        @if( $latest_Episode != null )
+                            <div class="position-relative mt-5">
+                                <a href="{{ URL::to('episode/'. $series->slug.'/'.$latest_Episode->slug ) }}" class="d-flex align-items-center">
+                                    <div class="play-button"> <i class="ri-play-fill"></i></div>
+                                    <h4 class="w-name text-white font-weight-700">Watch latest Episode</h4>
+                                </a>
+                            </div>
+                        @endif
+
+                        <div class="col-12 mt-auto mb-auto mt-3 p-0">
+                            <ul class="list-inline p-0 mt-5 share-icons music-play-lists">
+                                <li class="share mb-0">
+                                    <span><i class="ri-share-fill"></i></span>
+                                    <div class="share-box">
+                                        <div class="d-flex align-items-center">
+                                            <a href="#" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                            <a href="#" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                            <a href="#" class="share-ico"><i class="ri-links-fill"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-0"><span><i class="ri-heart-fill"></i></span></li>
+                                <li class="mb-0"><span><i class="ri-add-line"></i></span></li>
+                            </ul>
+
+                            <ul
+                                class="p-0 list-inline d-flex flex-wrap align-items-center movie-content movie-space-action flex-wrap iq_tag-list">
+                                @if (optional($series)->search_tag)
+
+                                    <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
+                                            aria-hidden="true"></i>TAGS:</li>
+                                            
+                                    <li> <p class="tag-list m-0" >{{ optional($series)->search_tag }}</p></li>
+                                @endif
+                            </ul>
+
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="col-md-6 text-center" id="theDiv">
             </div>
         </div>
     </div>
@@ -299,202 +252,178 @@
 <section id="tabs" class="project-tab">
     <div class="container-fluid p-0">
 
-        
+        <!-- BREADCRUMBS -->
 
-        <div class=" ">
-            <div class="col-md-12 mt-4 p-0">
-                <nav class="nav-justified p-0 m-0 w-100">
-                    <div class="nav" id="nav-tab" role="tablist">
-                        <h4 class="ml-3"> {{ 'Episode' }} </h4>
+        <!-- <div class="row">
+            <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+                <div class="bc-icons-2">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a class="black-text"
+                                href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                        </li>
+
+                        <?php foreach ($category_name as $key => $series_category_name) { ?>
+                        <?php $category_name_length = count($category_name); ?>
+                        <li class="breadcrumb-item">
+                            <a class="black-text"
+                                href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
+                                <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                            </a>
+                        </li>
+                        <?php } ?>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
+                        <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title); ?> </a></li>
+                    </ol>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- <div class="row">
+            <div class="col-md-12 mt-4">
+                <nav class="nav-justified">
+                    <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+                        <h4 class="ml-3">Episode</h4>
+
                     </div>
                 </nav>
-            </div>
+            </div> -->
 
-            <div class="container-fluid pl-3">
-                <div class="favorites-contens">
-                    <div class="col-md-3 p-0 mt-4">
-                        <select class="form-control" id="season_id" name="season_id">
+        <div class="container-fluid mt-5">
+            <div class="favorites-contens">
+
+                {{-- Season Depends Episode --}}
+
+                @if(($season)->isNotEmpty())
+
+                    <div class="col-md-3 p-0" style="width:150px">
+                        <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;">
                             @foreach ($season as $key => $seasons)
-                                <option data-key="{{ $key + 1 }}" value={{ 'season_' . $seasons->id }}>
-                                    {{ $seasons->series_seasons_name }}</option>
+                                <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
                             @endforeach
                         </select>
                     </div>
-
-                    <div class="trending-contens sub_dropdown_image mt-3">
-                        <ul id="trending-slider-nav" class= "cnt-videos-slider-nav list-inline m-0 row align-items-center" >
-                            @foreach ($season as $key => $seasons)
-                                @foreach ($seasons->episodes as $key => $episodes)
-                                    @if ($seasons->ppv_interval > $key)
-                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
-                                            <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                            <div class=" position-relative">
-                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
-                                                    <div class="controls">
-                                                        <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                                        </a>
-
-                                                        <nav>
-                                                        <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle"></i><span>More info</span></button>
-                                                        </nav>
-                                                                                                        
-                                                        <p class="trending-dec" >
-                                                            {{ $episodes->description}}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    @else
-                                        <li>
-                                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
-                                                <div class=" position-relative">
-                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="img-fluid w-100" >
-                                                    <div class="controls">
-                                                        <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                                            <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                                        </a>
-
-                                                        <nav>
-                                                        
-                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fas fa-info-circle"  ></i><span>More info</span></button>
-                                                    
-                                                        </nav>
-                                                                                                        
-                                                        <p class="trending-dec" >
-                                                            {{ $episodes->description}}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    @endif
-                                @endforeach
-                            @endforeach
-                        </ul>
+                
+                    <div class="data">
+                        @partial('season_depends_episode_section')
                     </div>
+                @endif
+
+                <ul class="category-page list-inline row p-3 mb-0">
+                    <?php 
+                    foreach($season as $key => $seasons):  
+                      foreach($seasons->episodes as $key => $episodes):
+                        if($seasons->ppv_interval > $key):
+							 ?>
+
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                        <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
+                            <div class="block-images position-relative episodes_div season_<?= $seasons->id ?>">
+                                <div class="img-box">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid w-100">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+
+                                    <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price;
+                                    ?></p> -->
+                                    <?php }elseif(!empty($seasons->ppv_price)){?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price;
+                                    ?></p> -->
+                                    <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <?php } ?>
+                                    <?php } ?>
+
+                                </div>
+                            </div>
+
+                            <div class="block-description"></div>
+
+
+                            <h6><?= $episodes->title ?></h6>
+                            <p class="text-white desc mb-0"><?= gmdate('H:i:s', $episodes->duration) ?></p>
+
+                           
+
+                        </a>
+                    </li>
+
+                    <?php else : ?>
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                        <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
+                        
+
+                        </a>
+                    </li>
+                    <?php endif;	endforeach; 
+						                      endforeach; ?>
+                </ul>
+
+
+<!-- Starring -->
+
+                    {{-- <div class="sectionArtists-Artists">   
+                        <div class="Headingartist-artist">Starring</div>
+                            <div class="listItems">
+                                <a href="https://dev-flick.webnexs.org/artist/The_Chainsmokers_-_Halsey">
+                                <div class="listItem">
+                                    <div class="profileImg">
+                                        <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                            <img src="https://templates.iqonic.design/streamit/frontend/html/images/genre/43.jpg">
+                                        </span>
+                                    </div>
+                                    <div class="name">The Chainsmokers - Halsey</div>
+                                    <div class="character">Art Director</div>
+                                </div>
+                                </a>
+                                                  
+                            </div>
+                    </div> --}}
 
 
 
-
-
-                    <!-- <ul class="category-page list-inline row p-3 mb-0">
-                        @foreach ($season as $key => $seasons)
-                            @foreach ($seasons->episodes as $key => $episodes)
-                                @if ($seasons->ppv_interval > $key)
-                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
-
-                                        <a href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                            <div
-                                                class="block-images position-relative episodes_div season_<?= $seasons->id ?>">
-                                                <div class="img-box">
-
-                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class="img-fluid w-100">
-
-                                                    @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                        @if (!empty($series->ppv_price) && $series->ppv_status == 1)
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @elseif(!empty($seasons->ppv_price))
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @elseif($series->ppv_status == null && $series->ppv_status == 0)
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @endif
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <div class="block-description">
-                                                <div class="hover-buttons">
-                                                    <img class="ply" src="{{ URL::to('assets/img/default_play_buttons.svg') }}">
-                                                </div>
-                                            </div>
-
-                                            <p>{{ $episodes->title }}</p>
-                                            <p class="text-white desc mb-0">{{ gmdate('H:i:s', $episodes->duration) }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @else
-                                    <li
-                                        class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
-                                        <a
-                                            href="{{ URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug }}">
-                                            <div class="block-images position-relative">
-                                                <div class="img-box">
-                                                    <img src="{{ URL::to('public/uploads/images/' . $episodes->image) }}" class=" img-fluid w-100">
-
-                                                    @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                        @if (!empty($series->ppv_price) && $series->ppv_status == 1)
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @elseif(!empty($seasons->ppv_price))
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @elseif($series->ppv_status == null && $series->ppv_status == 0)
-                                                            <p class="p-tag">{{ 'Free' }}</p>
-                                                        @endif
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <div class="block-description">
-                                                <div class="hover-buttons">
-                                                    <img class="ply" src="{{ URL::to('assets/img/default_play_buttons.svg') }}">
-                                                </div>
-                                            </div>
-
-                                            <h6>{{ $episodes->title }} </h6>
-
-                                            <p class="desc text-white mt-2 mb-0">
-                                                {{ strlen($series->description) > 90 ? substr($series->description, 0, 90) . '...' : $series->description }}
-                                            </p>
-
-                                            <p class="text-white desc mb-0">{{ gmdate('H:i:s', $episodes->duration) }}</p>
-                                        </a>
-                                    </li>
-                                @endif
-                            @endforeach
-                        @endforeach
-                    </ul> -->
-                </div>
-            </div>
-        @elseif(Auth::guest() && $series->access == 'subscriber')
-        </div>
-
-        <div class="col-sm-12">
-            <div id="ppv">
-                <h2 class="text-center" style="margin-top:80px;">{{ __('Purchase to Watch the Series') }}
-                    @if ($series->access == 'subscriber') 
-                        {{ __('Subscribers') }}
-                    @elseif($series->access == 'registered')
-                        {{ __('Registered Users') }} @endif
-                </h2>
-                <div class="clear"></div>
-            </div>
-
-            <div class="col-md-2 text-center text-white">
-                <div class="col-md-4">
-                    @if ($series->ppv_status == 1 && !Auth::guest() && Auth::User()->role != 'admin')
-                        <button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)">
-                            {{ 'Purchase For'.$currency->symbol ." ".$settings->ppv_price }}
-                        </button>
-                    @endif
-                    <br>
-                </div>
             </div>
         </div>
+        <?php elseif( Auth::guest() && $series->access == "subscriber"):
+						
+					// }
+						?>
+    </div>
+
+    <!-- <div  style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
+    <div class="col-sm-12">
+        <div id="ppv">
+            <h2 class="text-center" style="margin-top:80px;">Purchase to Watch the Series
+                <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+            <div class="clear"></div>
+        </div>
+        <!-- </div>  -->
+
+
+        <div class="col-md-2 text-center text-white">
+            <div class="col-md-4">
+                <?php if ( $series->ppv_status == 1 && !Auth::guest() && Auth::User()->role !="admin") { ?>
+                <button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)">
+                    Purchase For <?php echo $currency->symbol . ' ' . $settings->ppv_price; ?></button>
+                <?php } ?>
+                <br>
+                <!-- </div> -->
+
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
     </div>
     </div>
     </div>
 </section>
 
-
-
-@endif
+<?php endif;?>
 <?php $payment_type = App\PaymentSetting::get(); ?>
 
-@php
-    include public_path('themes/theme3/views/footer.blade.php');
-@endphp
 
 
 <!-- Modal -->
@@ -502,76 +431,76 @@
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-
             <div class="modal-header">
                 <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">
-                    {{ __('Rent Now') }}
-                </h4>
+                    Rent Now</h4>
             </div>
-
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-2" style="width:52%;">
                         <span id="paypal-button"></span>
                     </div>
-
                     <?php $payment_type = App\PaymentSetting::get(); ?>
 
                     <div class="col-sm-4">
                         <label for="method">
-                            <h3> {{ __('Payment Method') }} </h3>
+                            <h3>Payment Method</h3>
                         </label>
-                        @foreach ($payment_type as $payment)
-                            @if ($payment->stripe_status == 1 || $payment->paypal_status == 1)
-                                @if ($payment->live_mode == 1 && $payment->stripe_status == 1)
-                                    <label class="radio-inline">
-                                        <input type="radio" id="tres_important" checked name="payment_method"
-                                            value="{{ $payment->payment_type }}">
-                                        @if (!empty($payment->stripe_lable))
-                                            {{ $payment->stripe_lable }}
-                                        @else
-                                            {{ $payment->payment_type }}
-                                        @endif
-                                    </label>
-                                @elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1)
-                                    <label class="radio-inline">
-                                        <input type="radio" id="important" name="payment_method"
-                                            value="{{ $payment->payment_type }}">
-                                        @if (!empty($payment->paypal_lable))
-                                            {{ $payment->paypal_lable }}
-                                        @else
-                                            {{ $payment->payment_type }}
-                                        @endif
-                                    </label>
-                                @elseif($payment->live_mode == 0 && $payment->stripe_status == 1)
-                                    <input type="radio" id="tres_important" checked name="payment_method"
-                                        value="{{ $payment->payment_type }}">
-                                    @if (!empty($payment->stripe_lable))
-                                        {{ $payment->stripe_lable }}
-                                    @else
-                                        {{ $payment->payment_type }}
-                                    @endif <br>
-                                @elseif($payment->paypal_live_mode == 0 && $payment->paypal_status == 1)
-                                    <input type="radio" id="important" name="payment_method"
-                                        value="{{ $payment->payment_type }}">
-                                    @if (!empty($payment->paypal_lable))
-                                        {{ $payment->paypal_lable }}
-                                    @else
-                                        {{ $payment->payment_type }}
-                                    @endif
-                                @endif
-                            @else
-                                {{ __('Please Turn on Payment Mode to Purchase') }}
-                            @endif
-                        @endforeach
+                        <label class="radio-inline">
+                            <?php  foreach($payment_type as $payment){
+                          if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
+                          if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
+                            <input type="radio" id="tres_important" checked name="payment_method"
+                                value="{{ $payment->payment_type }}">
+                            <?php if (!empty($payment->stripe_lable)) {
+                                echo $payment->stripe_lable;
+                            } else {
+                                echo $payment->payment_type;
+                            } ?>
+                        </label>
+                        <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
+                        <label class="radio-inline">
+                            <input type="radio" id="important" name="payment_method"
+                                value="{{ $payment->payment_type }}">
+                            <?php if (!empty($payment->paypal_lable)) {
+                                echo $payment->paypal_lable;
+                            } else {
+                                echo $payment->payment_type;
+                            } ?>
+                        </label>
+                        <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
+                        <input type="radio" id="tres_important" checked name="payment_method"
+                            value="{{ $payment->payment_type }}">
+                        <?php if (!empty($payment->stripe_lable)) {
+                            echo $payment->stripe_lable;
+                        } else {
+                            echo $payment->payment_type;
+                        } ?>
+                        <br>
+                        <?php 
+						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
+                        <input type="radio" id="important" name="payment_method"
+                            value="{{ $payment->payment_type }}">
+                        <?php if (!empty($payment->paypal_lable)) {
+                            echo $payment->paypal_lable;
+                        } else {
+                            echo $payment->payment_type;
+                        } ?>
+
+                        <?php  } }else{
+                            echo "Please Turn on Payment Mode to Purchase";
+                            break;
+                         }
+                         }?>
+
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <a onclick="pay({{ $settings->ppv_price }})">
-                    <button type="button" class="btn btn-primary" id="submit-new-cat">{{ 'Continue' }}</button>
+                <a onclick="pay(<?php echo $settings->ppv_price; ?>)">
+                    <button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
                 </a>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __('Close') }}</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -581,6 +510,7 @@
 <input type="hidden" name="series_id" id="series_id" value="<?= $series->id ?>">
 
 <input type="hidden" name="m3u8url_datasource" id="m3u8url_datasource" value="">
+
 
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
@@ -596,6 +526,9 @@
     var purchase_series = $('#purchase_url').val();
     var publishable_key = $('#publishable_key').val();
 
+
+    // alert(livepayment);
+
     $(document).ready(function() {
 
         $('.videoModalClose').click(function() {
@@ -605,6 +538,7 @@
         });
 
         var imageseason = '<?= $season_trailer ?>';
+        // console.log(imageseason)
         $("#videoPlayer1").hide();
         $("#videos").hide();
 
@@ -613,6 +547,7 @@
         var season_id = $('#season_id').val();
         $.each(obj, function(i, $val) {
             if ('season_' + $val.id == season_id) {
+                // alert($val.trailer_type)	
                 console.log('season_' + $val.id)
                 if ($val.trailer_type == 'mp4_url' || $val.trailer_type == null) {
                     $("#videoPlayer1").show();
@@ -629,12 +564,16 @@
                     $("#videos").show();
                     $("#m3u8urlsource").attr("src", $val.trailer);
 
+
                     $('.videoModalClose').click(function() {
                         $('#videos')[0].pause();
                     });
+
                 }
             }
         });
+
+
 
         $('#season_id').change(function() {
             var season_id = $('#season_id').val();
@@ -642,7 +581,9 @@
             $.each(obj, function(i, $val) {
                 if ('season_' + $val.id == season_id) {
                     console.log('season_' + $val.id)
+                    // $("#theDiv").append("<img id='theImg' src=$val.image/>");
                     $("#myImage").attr("src", $val.image);
+                    // $("#videoPlayer1").attr("src", $val.trailer);
                     if ($val.trailer_type == 'mp4_url' || $val.trailer_type == null) {
                         $("#videoPlayer1").show();
                         $("#videos").hide();
@@ -660,7 +601,10 @@
                     $(".sea").html(i + 1);
                 }
             });
+
         })
+
+
 
         $.ajaxSetup({
             headers: {
@@ -702,8 +646,10 @@
                         swal('error');
                     }
                 })
+
             }
         });
+
 
         handler.open({
             name: '<?php $settings = App\Setting::first();
@@ -712,7 +658,9 @@
             amount: amount * 100
         });
     }
+</script>
 
+<script type="text/javascript">
     var first = $('select').val();
     $(".episodes_div").hide();
     $("." + first).show();
@@ -721,7 +669,9 @@
         $(".episodes_div").hide();
         $("." + this.value).show();
     });
+</script>
 
+<script>
     var imageseason = '<?= $season_trailer ?>';
     $("#videoPlayer1").hide();
     $("#videos").hide();
@@ -734,10 +684,10 @@
 
         if ($val.trailer_type == 'm3u8_url') {
 
+
             document.addEventListener("DOMContentLoaded", () => {
 
                 var video = document.querySelector('#videos');
-
                 var source = $val.trailer;
 
                 const defaultOptions = {};
@@ -746,12 +696,16 @@
                     video.src = source;
                     var player = new Plyr(video, defaultOptions);
                 } else {
-
+                    // For more Hls.js options, see https://github.com/dailymotion/hls.js
                     const hls = new Hls();
                     hls.loadSource(source);
 
+                    // From the m3u8 playlist, hls parses the manifest and returns
+                    // all available video qualities. This is important, in this approach,
+                    // we will have one source on the Plyr player.
                     hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
 
+                        // Transform available levels into an array of integers (height values).
                         const availableQualities = hls.levels.map((l) => l.height)
                         availableQualities.unshift(0) //prepend 0 to quality array
 
@@ -802,6 +756,7 @@
                     }
                 }
             });
+
         }
     });
 
@@ -822,11 +777,17 @@
 
                     if ($val.trailer_type == 'm3u8_url') {
 
+                        // alert($('#videos').attr("src"));
+                        // alert(sourcevaltrailer);
+
                         document.addEventListener("DOMContentLoaded", () => {
 
+                            // alert(sourcevaltrailer);
                             var video = document.querySelector('#videos');
-
+                            // var sourcess = video.getElementsByTagName("source")[0].src;
+                            // alert(sourcess);
                             var source = $val.trailer;
+                            // alert(source);
 
                             const defaultOptions = {};
 
@@ -838,6 +799,9 @@
                                 const hls = new Hls();
                                 hls.loadSource(source);
 
+                                // From the m3u8 playlist, hls parses the manifest and returns
+                                // all available video qualities. This is important, in this approach,
+                                // we will have one source on the Plyr player.
                                 hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
 
                                     // Transform available levels into an array of integers (height values).
@@ -896,14 +860,18 @@
                                 }
                             }
                         });
+
+
                     }
                 }
 
                 $(".sea").empty();
+                // alert($val.id);
                 var id = $val.id;
                 $(".sea").html(i + 1);
             }
         });
+
     })
 
     function Copy() {
@@ -920,64 +888,24 @@
 </script>
 
 <script>
-    
-    $( window ).on("load", function() {
-        $('.cnt-videos-slider').hide();
-    });
+    $(".season-depends-episode").change(function() {
+        
+        const season_id = $(this,':selected').val();
 
-    $(document).ready(function() {
+        const series_id = $('#series_id').val();
 
-        $('.cnt-videos-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.cnt-videos-slider-nav',
-        });
-
-        $('.cnt-videos-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 1,
-            asNavFor: '.cnt-videos-slider',
-            dots: false,
-            arrows: true,
-            nextArrow: '<a href="#" class="slick-arrow slick-next"></a>',
-            prevArrow: '<a href="#" class="slick-arrow slick-prev"></a>',
-            infinite: false,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
-        $('.cnt-videos-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.cnt-videos-slider').show();
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.cnt-videos-slider').hide();
+        $.ajax({
+            type: "get",
+            url: "{{ route('front-end.series.season-depends-episode') }}",
+            data: {
+                series_id: series_id ,
+                season_id: season_id ,
+            },
+            success: function(data) {
+                $(".data").html(data);
+            },
         });
     });
 </script>
+<?php include public_path('themes/theme3/views/footer.blade.php'); ?>
+

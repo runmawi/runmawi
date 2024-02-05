@@ -3,9 +3,7 @@
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
 ?>
-@php
-    include(public_path('themes/theme3/views/Channel/header.blade.php'));
-@endphp
+@extends('moderator.header')
 <link rel="stylesheet" href="<?= typography_link()?>" />
 <!-- Style -->
 <link rel="stylesheet" href="<?= style_sheet_link() ;?>" />
@@ -51,13 +49,13 @@ $system_settings = App\SystemSetting::find(1);
 ?>
 <div class="container">
     <div class="row justify-content-center align-items-center height-self-center">
-        <div class="col-sm-9 col-md-7 col-lg-7 align-self-center mb-5">
+        <div class="col-sm-9 col-md-7 col-lg-7 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto text-center">
                       <div>
                           <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       
-                          <h3 class="mb-3 text-center">{{ __('Channel Partner Sign Up') }}</h3>
+                          <h3 class="mb-3 text-center">Channel Partner Sign Up</h3>
                       </div>
                       <div class="clear"></div>
                       @if (Session::has('message'))
@@ -75,7 +73,7 @@ $system_settings = App\SystemSetting::find(1);
                         @csrf
                         <div class="form-group">
                             <div class="col-md-12">
-                                <input id="channel_name" type="text"  class="form-control alphaonly  @error('channel_name') is-invalid @enderror" name="channel_name" value="{{ old('name') }}" placeholder="{{ __('Channel Name') }}" required autocomplete="off" autofocus>
+                                <input id="channel_name" type="text"  class="form-control alphaonly  @error('channel_name') is-invalid @enderror" name="channel_name" value="{{ old('name') }}" placeholder="Channel Name" required autocomplete="off" autofocus>
                                 @error('channel_name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -83,7 +81,7 @@ $system_settings = App\SystemSetting::find(1);
                                 @enderror
                             </div>
                             <div class="col-md-12">
-                                <input id="email_id" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
+                                <input id="email_id" type="email" placeholder="Email Address"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -94,7 +92,7 @@ $system_settings = App\SystemSetting::find(1);
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <select class="phselect" name="ccode" id="ccode" >
-                                            <option>{{ __('Select Country') }}</option>
+                                            <option>Select Country</option>
                                             @foreach($jsondata as $code)
                                                 <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                             @endforeach
@@ -113,19 +111,19 @@ $system_settings = App\SystemSetting::find(1);
                             </div>
 
                             <div class="col-md-12 text-left">
-                                <label for="" style="color: white;">{{ __('Upload Home Page Image') }}  :</label>
+                                <label for="" style="color: white;">Upload Home Page Image  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;"  name="image" id="image"/>
                             </div>
 
                             <div class="col-md-12 text-left">
-                                <label for="" style="color: white;">{{ __('Upload your best work ( Intro Video )') }}  :</label>
+                                <label for="" style="color: white;">Upload your best work ( Intro Video )  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video"/>
                             </div>
 
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <input id="password" type="password" placeholder="{{ __('Password') }}" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                        <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
                                     </div>
                                     <div>
                                         <span class="input-group-btn" id="eyeSlash">
@@ -142,10 +140,10 @@ $system_settings = App\SystemSetting::find(1);
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-12 p-0">
+                            <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <input id="password-confirm" type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required autocomplete="new-password">
+                                        <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
                                     </div>
                                 <div >
                                 <span class="input-group-btn" id="eyeSlash1">
@@ -165,7 +163,7 @@ $system_settings = App\SystemSetting::find(1);
                                 <label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
                             <div class="sign-up-buttons col-md-12">
-                                <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;">{{ __('Verify Profile') }} </button>
+                                <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                 <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                             </div>
                         </div>
@@ -174,7 +172,7 @@ $system_settings = App\SystemSetting::find(1);
             </div>    
             <div class="mt-3">
                 <div class="d-flex justify-content-center links">
-                {{ __('Already have an account?') }} <a href="<?= URL::to('/channel/login')?>" class="text-primary ml-2">{{ __('Sign In') }}</a>
+                    Already have an account? <a href="<?= URL::to('/channel/login')?>" class="text-primary ml-2">Sign In</a>
                 </div>                        
             </div>
         </div>

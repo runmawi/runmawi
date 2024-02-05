@@ -86,7 +86,10 @@ Route::group(
         Route::post('upgradesubscription', 'ApiAuthController@upgradesubscription');
         Route::post('cancelsubscription', 'ApiAuthController@cancelsubscription');
         Route::post('renewsubscription', 'ApiAuthController@renewsubscription');
+
         Route::post('becomesubscriber', 'ApiAuthController@becomesubscriber');
+        Route::post('retrieve_stripe_coupon', 'ApiAuthController@retrieve_stripe_coupon');
+
         Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
         Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
         Route::post('add_payperview', 'ApiAuthController@add_payperview');

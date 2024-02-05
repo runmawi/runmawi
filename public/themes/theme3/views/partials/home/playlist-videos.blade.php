@@ -24,7 +24,7 @@
 
                                             <div class="block-description">
 
-                                                <h6> {{ strlen($playlist_videos->title) > 17 ? substr($playlist_videos->title, 0, 18) . '...' : $playlist_videos->title }}
+                                                <p> {{ strlen($playlist_videos->title) > 17 ? substr($playlist_videos->title, 0, 18) . '...' : $playlist_videos->title }} </p>
 
                                                 <div class="movie-time d-flex align-items-center my-2"></div>
 
@@ -33,13 +33,6 @@
                                                         Visit Video PlayList
                                                     </span>
                                                 </div>
-                                            </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li> -->
-                                                    {{-- <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li> --}}
-                                                </ul>
                                             </div>
                                         </div>
                                     </a>

@@ -29,7 +29,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 </section>            
 @else
 <section class="ContentPartner-header"
-    style="background:url('<?= URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
+    style="background:url('<?= URL::to('/') . '/public/uploads/images/' . $settings->theme3_horizontal_image ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
     background-blend-mode: multiply;">
 </section> 
 @endif
@@ -40,7 +40,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             @if(!empty($Content_Partner->picture) && $Content_Partner->picture != null)
                 <img src="<?php echo  URL::to('/') . '/public/uploads/moderator_albums/'. @$Content_Partner->picture; ?>" class=" " width="150" alt="user">
             @else
-                <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>"  class=" " width="150" alt="user">
+                <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->theme3_video_image ?>"  class=" " width="150" alt="user">
             @endif
         </div>
     </div>
@@ -60,7 +60,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             <div class="col-2 col-lg-2">
             <a data-video="{{ @$Content_Partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false" >	
                 <span class="text-white">
-                <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('About Content Partner') }}
+                <i class="fa fa-play mr-1" aria-hidden="true"></i> About Content Partner
                 </span>
             </a>
 
@@ -88,19 +88,19 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     <div class="container-fluid">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item Allnav">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{ __('All') }}</a>
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
   </li>
   <li class="nav-item videonav">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{ __('Videos') }}</a>
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Videos</a>
   </li>
         <li class="nav-item livenav">
-    <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">{{ __('Live Stream') }}</a>
+    <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">Live Stream</a>
   </li>
   <!-- <li class="nav-item seriesnav">
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
   </li> -->
          <li class="nav-item audionav">
-    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">{{ __('Audios') }}</a>
+    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
   </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -223,8 +223,8 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
     </section>
     <?php } }else{ ?>
     <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
-        <h4 class="main-title mb-4">{{ __('Sorry! There are no contents under this genre at this moment') }}.</h4>
-        <a href="{{ URL::to('/') }}" class="outline-danger1">{{ __('Home') }}</a>
+        <h4 class="main-title mb-4">Sorry! There are no contents under this genre at this moment.</h4>
+        <a href="{{ URL::to('/') }}" class="outline-danger1">Home</a>
     </div>
     <?php   } ?>
 </div>

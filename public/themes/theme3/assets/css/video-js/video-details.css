@@ -127,11 +127,11 @@
 }
 .genres .genre:last-child { border-right: 0px solid #848484; }
 
-.vpageBanner .content .right .watch_buttons .row {
+.vpageBanner .content .right .row {
     display: flex;
     align-items: center;
     gap: 25px;
-    /* margin-bottom: 25px; */
+    margin-bottom: 25px;
 }
 
 .circleRating {
@@ -354,15 +354,6 @@
 }
 ul.breadcrumb.breadcrumb-csp{
     background-color: transparent !important;
-}
-.breadcrumb{
-    background-color: transparent;
-}
-li.breadcrumb-item a{
-    color: #fff;
-}
-.modal-dialog-centered .modal-content {
-    background: transparent;
 }
 
 @media only screen and (min-width: 768px) {

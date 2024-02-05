@@ -9,6 +9,11 @@
                                 {{ !empty($category->home_genre) ?  $category->home_genre : $category->name }}
                             </a>
                         </h4>
+                        <h4 class="main-title"><a
+                                href="{{  URL::to('/series/category/' . $category->slug ) }} ">
+                                {{ 'view all' }}
+                            </a>
+                        </h4>
                     </div>
                     <div class="tvthrillers-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -22,7 +27,7 @@
 
                                             <div class="block-description">
 
-                                                <h6>{{ strlen($series_details->title) > 17 ? substr($series_details->title, 0, 18) . '...' : $series_details->title }}</h6>
+                                                <p>{{ strlen($series_details->title) > 17 ? substr($series_details->title, 0, 18) . '...' : $series_details->title }}</p>
 
                                                 <div class="movie-time d-flex align-items-center my-2">
                                                     <span class="text-white"> 
@@ -36,13 +41,6 @@
                                                         Play Now
                                                     </span>
                                                 </div>
-                                            </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    <!-- <li><span><i class="ri-volume-mute-fill"></i></span></li> -->
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
                                             </div>
                                         </div>
                                     </a>

@@ -13,11 +13,11 @@ foreach($favorite_videos as $favorite_video): ?>
 		<div class="block-contents">
 			<p class="date"><?= date("F jS, Y", strtotime($favorite_video->created_at)); ?>
 				<?php if($favorite_video->access == 'guest'): ?>
-					<span class="label label-info"><?= __('Free')  ?></span>
+					<span class="label label-info">Free</span>
 				<?php elseif($favorite_video->access == 'subscriber'): ?>
-					<span class="label label-success"><?= __('Subscribers Only')  ?></span>
+					<span class="label label-success">Subscribers Only</span>
 				<?php elseif($favorite_video->access == 'registered'): ?>
-					<span class="label label-warning"><?= __('Registered Users')  ?></span>
+					<span class="label label-warning">Registered Users</span>
 				<?php endif; ?>
 			</p>
 			<p class="desc"><?php if(strlen($favorite_video->description) > 90){ echo substr($favorite_video->description, 0, 90) . '...'; } else { echo $favorite_video->description; } ?></p>
@@ -42,11 +42,11 @@ foreach($favorite_movies as $favorite_movie): ?>
 		<div class="block-contents">
 			<p class="date"><?= date("F jS, Y", strtotime($favorite_movie->created_at)); ?>
 				<?php if($favorite_movie->access == 'guest'): ?>
-					<span class="label label-info"><?= __('Free')  ?></span>
+					<span class="label label-info">Free</span>
 				<?php elseif($favorite_movie->access == 'subscriber'): ?>
-					<span class="label label-success"><?= __('Subscribers Only')  ?></span>
+					<span class="label label-success">Subscribers Only</span>
 				<?php elseif($favorite_movie->access == 'registered'): ?>
-					<span class="label label-warning"><?= __('Registered Users')  ?></span>
+					<span class="label label-warning">Registered Users</span>
 				<?php endif; ?>
 			</p>
 			<p class="desc"><?php if(strlen($favorite_movie->description) > 90){ echo substr($favorite_movie->description, 0, 90) . '...'; } else { echo $favorite_movie->description; } ?></p>
@@ -71,11 +71,11 @@ foreach($favorite_episodes as $favorite_episode): ?>
 		<div class="block-contents">
 			<p class="date"><?= date("F jS, Y", strtotime($favorite_episode->created_at)); ?>
 				<?php if($favorite_episode->access == 'guest'): ?>
-					<span class="label label-info"><?= __('Free')  ?></span>
+					<span class="label label-info">Free</span>
 				<?php elseif($favorite_episode->access == 'subscriber'): ?>
-					<span class="label label-success"><?= __('Subscribers Only')  ?></span>
+					<span class="label label-success">Subscribers Only</span>
 				<?php elseif($favorite_episode->access == 'registered'): ?>
-					<span class="label label-warning"><?= __('Registered Users')  ?></span>
+					<span class="label label-warning">Registered Users</span>
 				<?php endif; ?>
 			</p>
 			<p class="desc"><?php if(strlen($favorite_episode->description) > 90){ echo substr($favorite_episode->description, 0, 90) . '...'; } else { echo $favorite_episode->description; } ?></p>

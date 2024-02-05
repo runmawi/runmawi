@@ -8,7 +8,7 @@
 
 <head>
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
-    <title>{{ __('Reset Password') }} | <?php echo $settings->website_name; ?></title>
+    <title>Reset Password | <?php echo $settings->website_name; ?></title>
     <link rel="shortcut icon" href="<?= getFavicon() ?>" />
 
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css" />
@@ -181,7 +181,7 @@
                                         <img  src="<?php echo URL::to('public/uploads/settings/'. $settings->logo) ; ?>" style="margin-bottom:1rem;">
                                     <?php } ?>
 
-                                    <h3 class="mb-3 text-center">{{ __('Reset Password') }} </h3>
+                                    <h3 class="mb-3 text-center"> Reset Password </h3>
                                 </div>
 
                                   @if (session('status_message'))
@@ -223,7 +223,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <input id="password_confirmation" type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required>
+                                                    <input id="password_confirmation" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required>
                                                 </div>
 
                                                 <div class="">
@@ -241,9 +241,8 @@
 
                                             <span
                                                 style="color: var(--iq-white);font-size: 14px;font-style: italic;">
-                                                {{ __('(Password should be at least 8 characters in length and should include at least
-                                                one upper case letter, one number, and one special character.)') }}
-
+                                                (Password should be at least 8 characters in length and should include at least
+                                                one upper case letter, one number, and one special character.)
                                             </span>
                                         </div>
                                     </div>
@@ -321,6 +320,6 @@
         });
     </script>
 
-    @php include(public_path('themes/theme4/views/footer.blade.php')); @endphp
+    @php include(public_path('themes/theme3/views/footer.blade.php')); @endphp
 
 </body>

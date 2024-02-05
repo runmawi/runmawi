@@ -10,15 +10,161 @@
     $app_settings = App\AppSetting::where('id', '=', 1)->first(); 
 
 ?>
+<style>
+    .row.m-0 {
+        border-top: 1px solid;
+        border-bottom: 1px solid;
+        margin: 20px 0 !important;
+    }
 
-<footer>
+    li.list-inline-item{
+        height: 100%;
+        border-left: 1px solid;
+        padding: 20px;
+    }
+    ul.list-inline.m-0 {
+        height: 100%;
+    }
+</style>
+<footer class="mb-0">
+        <div class="logo-content">
+            
+            <div class="row m-0">
+                <div class="col-lg-3">
+                    <div class="text-center">
+                        <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
+                        <p style="font-size:11px;"> <?= 'Created by Music Fans for Music Fans' ?></p>
+                    </div>
+                    <!-- <a class="navbar-brand" href="<?php URL::to('/home'); ?>">
+                        <img class="img-fluid logo" src="<?= front_end_logo() ?>" />
+                    </a> -->
+                </div>
+                <div class="col-lg-9 text-right m-0">
+                    <ul class="list-inline m-0">
+                        <?php if (!empty($settings->instagram_page_id)) { ?>
+                            <li class="list-inline-item">
+                                <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon">
+                                    <i class="ri-instagram-fill"></i>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->twitter_page_id)) { ?>
+                            <li class="list-inline-item">
+                                <a href="https://twitter.com/<?php echo TwiterId(); ?>" target="_blank" class="s-icon">
+                                    <i class="ri-threads-fill"></i>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->facebook_page_id)) { ?>
+                            <li class="list-inline-item">
+                                <a href="<?= 'https://www.facebook.com/' . FacebookId() ?>" target="_blank" class="s-icon">
+                                    <i class="ri-facebook-fill"></i>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->skype_page_id)) { ?>
+                            <li class="list-inline-item">
+                                <a href="<?= 'https://www.skype.com/en/' . SkypeId() ?>" target="_blank" class="s-icon">
+                                    <i class="ri-skype-fill"></i>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->linkedin_page_id)) { ?>
+                            <li class="list-inline-item">
+                                <a href="<?= 'https://www.linkedin.com/' . linkedinId() ?>" target="_blank" class="s-icon">
+                                    <i class="ri-linkedin-fill"></i>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->whatsapp_page_id)) { ?>
+                            <li class="list-inline-item">
+                                <a href="<?= 'https://www.whatsapp.com/' . WhatsappId() ?>" class="s-icon">
+                                    <i class="ri-whatsapp-fill"></i>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->youtube_page_id)) { ?>
+                            <li class="list-inline-item">
+                                <a href="https://www.youtube.com/<?php echo YoutubeId(); ?>" target="_blank" class="s-icon">
+                                    <i class="ri-youtube-fill"></i>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->google_page_id)) { ?>
+                            <li class="list-inline-item">
+                                <a href="https://www.google.com/<?php echo GoogleId(); ?>" target="_blank" class="s-icon">
+                                    <i class="fa fa-google-plus"></i>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if (!empty($settings->tiktok_page_id)) { ?>
+                            <li class="list-inline-item">
+                                <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id; ?>" target="_blank" class="s-icon">
+                                    <i class="ri-tiktok-fill"></i>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <li class="list-inline-item">
+                            <i class="ri-facebook-fill"></i>
+                        </li>
+                        <li class="list-inline-item">
+                            <i class="fa fa-google-plus"></i>
+                        </li>
+                        <li class="list-inline-item">
+                            <i class="ri-youtube-fill"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
     <div class="container-fluid">
+        
         <div class="block-space">
             <div class="row">
+                <?php
+                for ($i = 1; $i <= 3; $i++) {
 
-            <div class="col-lg-3 col-md-12 r-mt-15 p-1">
-                    <p class="footer-title">Contact with us:</p>
-                    <div class="d-flex footer-title">
+                    $footerLinks = App\FooterLink::where('column_position', $i)
+                        ->orderBy('order')
+                        ->get();
+                ?>
+
+                    <div class="col-lg-3 col-md-4">
+                        <ul class="f-link list-unstyled mb-0">
+                            <?php foreach ($footerLinks as $key => $footerLink) { ?>
+                                <li><a href="<?= URL::to('/' . $footerLink->link) ?>"><?= $footerLink->name ?></a></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                <?php } ?>
+
+                <div class="col-lg-3 col-md-12 r-mt-15 p-1 text-right">
+
+                    <h5><?= "Join the community" ?></h5>
+                    <p><?= "For the latest news and offers signup below" ?></p>
+                    <!-- <div class="d-flex justify-content-end">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <input type="text" placeholder="Your Email">
+                            </div>
+                            <div class="col-lg-4">
+                                <button class="join">Join</button>
+                            </div>
+                        </div>
+                    </div> -->
+
+
+                    <div class="d-flex">
 
                         <?php if (!empty($settings->instagram_page_id)) { ?>
                             <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon">
@@ -28,7 +174,7 @@
 
                         <?php if (!empty($settings->twitter_page_id)) { ?>
                             <a href="https://twitter.com/<?php echo TwiterId(); ?>" target="_blank" class="s-icon">
-                                <i class="ri-twitter-fill"></i>
+                                <i class="ri-threads-fill"></i>
                             </a>
                         <?php } ?>
 
@@ -90,64 +236,43 @@
                     </div>
                 </div>
 
-
-                <?php
-                for ($i = 1; $i <= 3; $i++) {
-
-                    $footerLinks = App\FooterLink::where('column_position', $i)
-                        ->orderBy('order')
-                        ->get();
-                ?>
-
-                    <div class="col-lg-3 col-md-4 col-sm-12">
-                        <ul class="f-link list-unstyled mb-0">
-                            <?php foreach ($footerLinks as $key => $footerLink) { ?>
-                                <li><a href="<?= URL::to('/' . $footerLink->link) ?>"><?= $footerLink->name ?></a></li>
-                            <?php } ?>
-                        </ul>
-                    </div>
-                <?php } ?>
-
                 
-
-                
-            </div>
-        </div>
-        <div class="copyright py-2">
-            <div class="container-fluid">
-                <p class="mb-0 text-center font-size-14 text-body">
-                    <?= $settings->website_name . ' <i class="ri-copyright-line"></i> ' . Carbon::now()->year ?> All Rights Reserved
-                </p>
             </div>
         </div>
     </div>
-    
+    <div class="copyright py-2">
+        <div class="container-fluid">
+            <p class="mb-0 text-center font-size-14 text-body">
+                <?= $settings->website_name . ' - ' . Carbon::now()->year ?> All Rights Reserved
+            </p>
+        </div>
+    </div>
 </footer>
 
    <!-- jQuery, Popper JS -->
-   <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.4.1.min.js') ?>"></script>
-   <script src="<?= asset('public/themes/theme4/assets/js/popper.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme6/assets/js/jquery-3.4.1.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme6/assets/js/popper.min.js') ?>"></script>
    
    <!-- Bootstrap JS -->
-   <script src="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme6/assets/js/bootstrap.min.js') ?>"></script>
    
    <!-- Slick JS -->
-   <script src="<?= asset('public/themes/theme4/assets/js/slick.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme6/assets/js/slick.min.js') ?>"></script>
    
    <!-- owl carousel Js -->
-   <script src="<?= asset('public/themes/theme4/assets/js/owl.carousel.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme6/assets/js/owl.carousel.min.js') ?>"></script>
    
    <!-- select2 Js -->
-   <script src="<?= asset('public/themes/theme4/assets/js/select2.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme6/assets/js/select2.min.js') ?>"></script>
    
    <!-- Magnific Popup-->
-   <script src="<?= asset('public/themes/theme4/assets/js/jquery.magnific-popup.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme6/assets/js/jquery.magnific-popup.min.js') ?>"></script>
    
    <!-- Slick Animation-->
-    <script src="<?= asset('public/themes/theme4/assets/js/slick-animation.min.js') ?>"></script>
+    <script src="<?= asset('public/themes/theme6/assets/js/slick-animation.min.js') ?>"></script>
    
    <!-- Custom JS-->
-    <script src="<?= asset('public/themes/theme4/assets/js/custom.js') ?>"></script>
+    <script src="<?= asset('public/themes/theme6/assets/js/custom.js') ?>"></script>
     <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.js' ?>"></script>
     <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.min.js' ?>"></script>
 
@@ -326,4 +451,5 @@ if ($Prevent_inspect == 1) { ?>
             }
         });
     </script>
+    
 <?php } ?>

@@ -220,7 +220,7 @@
                         <button class="btn btn-primary"  id="submit_embed">Submit</button>
                      </div>
                   </div>
-
+                  
                                     <!-- BunnyCDN Video -->        
                   <div id="bunnycdnvideo" style="">
                      <div class="new-audio-file mt-3">
@@ -286,8 +286,10 @@
                      <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile"> m3u8 Url &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
-                     <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code              
+                     <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code   
+                  @if(@$theme_settings->enable_bunny_cdn == 1):
                      <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="videofile"> Bunny CDN Videos              
+                  @endif
                   </div>
                </div>
          </div>

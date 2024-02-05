@@ -68,7 +68,7 @@
                     srclang="<?= $episodesubtitles_file->sub_language ?>"
                     label="<?= $episodesubtitles_file->shortcode ?>" default>
                 <?php } } } ?>
-            <p class="vjs-no-js"><?php echo __('To view this series please enable JavaScript, and consider upgrading to a web browser that'); ?> <a href="http://videojs.com/html5-video-support/" target="_blank"><?php echo __('supports HTML5 series'); ?></a></p>
+            <p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
          </video>
       </div>
       <?php  elseif($episode->type == 'm3u8'): ?>
@@ -136,21 +136,21 @@
           <div class="container-fluid">
       <h4 class=""><?php echo $episode->title ; ?></h4>
       <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
-         <h4 class=""><?php echo __('Subscribe to view more'); ?><?php if ($series->access == 'subscriber'): ?><?php
-            elseif ($series->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php
+         <h4 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?><?php
+            elseif ($series->access == 'registered'): ?>Registered Users<?php
             endif; ?></h4>
          <div class="clear"></div>
          <?php if (!Auth::guest() && $series->access == 'subscriber'): ?>
          <form method="get" action="<?=URL::to('/') ?>/user/<?=Auth::user()->username ?>/upgrade_subscription">
              <div class="">
-             <button id="button"><?php echo __('Become a subscriber to watch this episode'); ?></button></div>
+             <button id="button">Become a subscriber to watch this episode</button></div>
          </form>
          <?php
             else: ?>
          <form method="get" action="<?=URL::to('signup') ?>">
              <div class=" mt-3">
-            <button id="button" class="btn btn-primary"><?php echo __('Subscribe to view more'); ?> <?php if ($series->access == 'subscriber'): ?><?php
-               elseif ($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php
+            <button id="button" class="btn btn-primary">Subscribe to view more <?php if ($series->access == 'subscriber'): ?><?php
+               elseif ($series->access == 'registered'): ?>for Free!<?php
                endif; ?></button></div>
          </form>
          <?php
@@ -213,7 +213,7 @@
             <div class="bc-icons-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Series')) ?></a>
+                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
@@ -250,9 +250,9 @@
                else
                { ?>
             <div class="col-md-6">
-               <span class="text-white" style="font-size: 129%;font-weight: 700;"><?php echo __('Purchase to Watch the Series'); ?>:</span>
-               <?php if ($series->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php
-                  elseif ($series->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php
+               <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the Series:</span>
+               <?php if ($series->access == 'subscriber'): ?>Subscribers<?php
+                  elseif ($series->access == 'registered'): ?>Registered Users<?php
                   endif; ?>
                </p>
             </div>
@@ -262,7 +262,7 @@
                        ?>
                <input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
                <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)" >
-               <?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+               Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
             </div>
             <?php
                }
@@ -271,9 +271,9 @@
             <br>
             <br>
             <div class="col-md-6">
-               <span class="text-white" style="font-size: 120%;font-weight: 700;"><?php echo __("You're watching"); ?>:</span> 
+               <span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span> 
                <p class="mb-0" style=";font-size: 80%;color: white;"><?php 
-                  if(!empty($SeriesSeason)){ echo __('Season').' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo __('Episode').' '.$episode->id;} ?>
+                  if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
                </p>
                <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
                   ?></p>
@@ -288,7 +288,7 @@
                <?php if (isset($view_increment) && $view_increment == true): ?><?=$episode->views + 1 ?>
                <?php
                   else: ?><?=$episode->views ?><?php
-                  endif; ?> <?php echo __('Views'); ?> 
+                  endif; ?> Views 
                </span>
             </div>
             
@@ -372,7 +372,7 @@
                
             <div class="col-sm-12 d-flex row">
                <?php if($episode->search_tags != null ) : ?>
-                  <h4 ><?php echo __('Tags'); ?>  : </h4>
+                  <h4 >Tags  : </h4>
                   <span class="mb-0" style=";font-size: 100%;color: white;"> <?= $episode->search_tags ?> </span>
 		         <?php  endif;?>
             </div>
@@ -410,7 +410,7 @@
       <?php endif; ?>
       
       <div class="iq-main-header ">
-         <h4 class="main-title"><?php echo __('Season'); ?></h4>
+         <h4 class="main-title">Season</h4>
       </div>
 
       <div class="col-sm-12 overflow-hidden">
@@ -439,7 +439,7 @@
                                           </p>
                                           <div class="hover-buttons">
                                              <a  href="<?php echo URL::to('category')?><?='/videos/' .$episode->slug ?>">	
-                                                <span class="text-white"> <i class="fa fa-play mr-1" aria-hidden="true"></i> <?php echo __('Play Now'); ?> </span>
+                                                <span class="text-white"> <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now </span>
                                              </a>
                                           </div>
                                        </div>
@@ -488,7 +488,7 @@
    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;"><?php echo __('Rent Now'); ?></h4>
+            <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
             <img src="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" alt=""width="50" height="60">
          </div>
          <div class="modal-body">
@@ -516,7 +516,7 @@
                      } ?></span>
                   <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol . ' ' . $episodes->ppv_price); ?></button>
                   <label for="method">
-                     <h3><?php echo __('Payment Method'); ?></h3>
+                     <h3>Payment Method</h3>
                   </label>
                   <label class="radio-inline">
                   <?php foreach ($payment_type as $payment)
@@ -584,9 +584,9 @@
          </div>
          <div class="modal-footer">
             <a onclick="pay(<?php echo $episode->ppv_price; ?>)">
-            <button type="button" class="btn btn-primary" id="submit-new-cat"><?php echo __('Continue'); ?></button>
+            <button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
             </a>
-            <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __('Close'); ?></button>
+            <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
          </div>
       </div>
    </div>
