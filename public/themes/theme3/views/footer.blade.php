@@ -240,13 +240,13 @@
             </div>
         </div>
     </div>
-    <div class="copyright py-2">
+    <!-- <div class="copyright py-2">
         <div class="container-fluid">
             <p class="mb-0 text-center font-size-14 text-body">
                 <?= $settings->website_name . ' - ' . Carbon::now()->year ?> All Rights Reserved
             </p>
         </div>
-    </div>
+    </div> -->
 </footer>
 
    <!-- jQuery, Popper JS -->

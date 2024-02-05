@@ -38,14 +38,3 @@
 
 
 
-
-
-<style>
-  
- .favorites-contens .favorites-slider {
-    background: conic-gradient(at 50% var(--s),#222 75%,#0000 0) 0 0/calc(2*var(--s)) calc(100% - var(--s)) padding-box;
-    border: var(--s) solid #222;
-    --s: 10px;
-    padding: 38px 0 !important;
-}
-</style>

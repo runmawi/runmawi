@@ -11,7 +11,7 @@
                                 href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ 'view all' }}</a>
                         </h4>
                     </div>
-                    <div class="tvthrillers-contens">
+                    <div class="favorites-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
                             @foreach ($data as $latest_series)
                                 <li class="slide-item">

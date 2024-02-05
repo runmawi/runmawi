@@ -47,7 +47,7 @@
                             <h4 class="main-title"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ 'view all' }}</a></h4>
                         </div>
 
-                        <div class="tvthrillers-contens">
+                        <div class="favorites-contens">
                             <ul class="favorites-slider list-inline row p-0 mb-0">
                                 @foreach ($series_genre->category_series as $latest_series)
                                     <li class="slide-item">
