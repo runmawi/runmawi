@@ -469,7 +469,7 @@
          document.querySelector('.header_top_position_img').style.display = 'none';
          document.querySelector('.main').style.marginLeft = '0px';
          document.querySelector('.main').style.marginRight = '0px';
-      }, 700000);
+      }, 5000);
    };
 </script>
 
