@@ -497,8 +497,24 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;">On</div>
                             </div>
                         </div>
-                    </div>
                     @endif 
+
+                    <div class="col-md-6">
+                        <label>{{ (__('Enable Bunny CDN Option')) }} </label>
+
+                        <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            <div style="color:red;">Off</div>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="enable_bunny_cdn"  type="checkbox" @if( $settings->enable_bunny_cdn == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div style="color:green;">On</div>
+                        </div>
+                    </div>
+                </div>
+
                 </div>
                 
                 <div class="panel-body mt-4" style="display: flex; justify-content: flex-end;">
