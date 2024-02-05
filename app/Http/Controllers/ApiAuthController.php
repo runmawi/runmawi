@@ -4041,6 +4041,60 @@ public function verifyandupdatepassword(Request $request)
     return response()->json($response, 200);
     }
 
+    public function retrieve_stripe_coupon(Request $request)
+    {
+      try {
+        
+        $this->validate($request, [
+          'coupon_code'  => 'required|integer' ,
+        ]);
+          
+        $stripe = new \Stripe\StripeClient(
+          env('STRIPE_SECRET')
+        );
+
+        $coupon = $stripe->coupons->retrieve( $request->coupon_code , []);
+      
+        if($coupon->amount_off != null){
+  
+          $plan_price = preg_replace('/[^0-9. ]/', ' ', $request->plan_price);
+  
+          $promo_code_amt = $coupon->amount_off / 100 ;
+  
+          $discount_amt = $plan_price - $promo_code_amt ;
+    
+        }
+        elseif( $coupon->percent_off != null ){
+  
+            $percentage = $coupon->percent_off;
+  
+            $plan_price = preg_replace('/[^0-9. ]/', ' ', $request->plan_price);
+  
+            $promo_code_amt = (($percentage / 100) * $plan_price);
+  
+            $discount_amt = $plan_price -  $promo_code_amt ;
+        }
+
+          
+        $data = array(
+          'status' => 'true' ,
+          'message' => 'Retrieve stripe coupon',
+          'plan_price'     => $plan_price ,
+          'promo_code_amt' => $promo_code_amt ,
+          'discount_amt'   => $discount_amt ,
+        );
+
+      } catch (\Throwable $th) {
+        
+        $data = array(
+          'status' => 'false' ,
+          'message' => $th->getMessage(),
+        );
+      }
+
+      return response()->json($data, 200);
+    }
+
     public function becomesubscriber(Request $request)
      {
 
@@ -4050,6 +4104,7 @@ public function verifyandupdatepassword(Request $request)
         $user = User::find($user_id);
         $paymentMethod = $request->get('py_id');
 
+        
       $user->newSubscription('test', $plan)->create($paymentMethod);
 
        if ( $user->subscribed('test') ) {
