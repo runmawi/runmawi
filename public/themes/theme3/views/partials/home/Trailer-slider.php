@@ -81,4 +81,4 @@
     </div>
 
 
-<?php  include(public_path('themes/theme6/views/partials/home/Trailer-script.php')); ?>
+<?php  include(public_path('themes/theme3/views/partials/home/Trailer-script.php')); ?>

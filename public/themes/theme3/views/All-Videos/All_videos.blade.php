@@ -3,7 +3,7 @@
 <section id="iq-favorites mt-4">
    <div class="container-fluid mb-5 mt-4">
        <div class="d-flex">
-           <div><h5 class="mr-2">{{ __('Explore titles related to videos') }}  :</h5></div>
+           <div><h5 class="mr-2">Explore titles related to videos  :</h5></div>
 
            <div class="d-flex">
                <a class="drama" href="{{ route('all_videos') }}"><p class="mb-0">{{ "ALL" }}</p></a>
@@ -15,7 +15,7 @@
        </div>
 
        <div class="d-flex">
-           <div><h5 class="mr-2">{{ __('Explore titles related to series') }}  :</h5></div>
+           <div><h5 class="mr-2">Explore titles related to series  :</h5></div>
            <div class="d-flex">
                <a class="drama" href="{{ route('all_videos') }}"><p class="mb-0">{{ "ALL" }}</p></a>
 
@@ -39,7 +39,7 @@
 
 
             {{-- <div class="iq-main-header align-items-center justify-content-between">
-               <h3 class="vid-title"> {{ __('Videos') }}</h3>
+               <h3 class="vid-title"> Videos</h3>
             </div>
              --}}
              
@@ -56,7 +56,7 @@
                                        @elseif( !empty($video->global_ppv || !empty($video->global_ppv) && $video->ppv_price == null)) 
                                           <p class="p-tag1"><?php echo $video->global_ppv.' '. $respond_data['currency']->symbol; ?></p>
                                        @elseif($video->global_ppv == null && $video->ppv_price == null )
-                                          <p class="p-tag" ><?php echo __("Free"); ?></p>
+                                          <p class="p-tag" ><?php echo "Free"; ?></p>
                                        @endif
                                  </div>
 
@@ -119,7 +119,7 @@
                                     <div class="hover-buttons">
                                        <a  href="{{ $video->redirect_url  }}">	
                                           <span class="text-white">
-                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }}
+                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
                                           </span>
                                        </a>
                                     <div>
@@ -139,7 +139,7 @@
                         </li>
                      @empty
                         <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                           <p ><h3 class="text-center">{{ __('No Video Available') }}</h3>
+                           <p ><h3 class="text-center">No video Available</h3>
                         </div>
                      @endforelse
                </ul>
@@ -151,7 +151,7 @@
             </div>
          @else
             <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-               <p ><h3 class="text-center">{{ __('No Video Available') }}</h3>
+               <p ><h3 class="text-center">No Video Available</h3>
             </div>
          @endif
       </div>

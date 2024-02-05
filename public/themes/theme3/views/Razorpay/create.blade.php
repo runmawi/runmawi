@@ -12,13 +12,13 @@
         <div class="form">
             <form class="login-form" action="" method="POST">
                 {{ csrf_field() }}
-                <span class="material-icons">{{ __('lock')  }}</span>
+                <span class="material-icons">lock</span>
                 <input type="text" placeholder="Name" name="name" required/>
                 <input type="text" placeholder="Amount" name="amount" required />
                 <input type="text" placeholder="Password" name="password" required />
                 <input type="text" placeholder="Email" name="Email" required />
 
-                <button>{{ __('Pay')  }}</button>
+                <button>pay</button>
             </form>
         </div>
     </div>

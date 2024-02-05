@@ -6,8 +6,10 @@
     .blink_me { animation: blinker 2s linear infinite; } @keyframes blinker { 50% { opacity: 0;}}
     .page-height{ margin-top: 100px; min-height: 540px; }
     .page-wrapper{
+        background: #212121;
         padding: 25px 0px;
         border-radius: 0;
+        box-shadow: 0px 0px 10px #141414;
         margin: 0;
     }
     .page-body h2{
@@ -26,7 +28,6 @@
         font-size: 27px;
         font-weight: 400;
     }
-    .page-wrapper .page-body ul li {color: #000;}
 </style>
 
     <div class="container">

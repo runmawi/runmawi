@@ -2,7 +2,7 @@
     <div class="row">
       <div class="col-sm-12 overflow-hidden">
          <div class="iq-main-header d-flex align-items-center justify-content-between">                        
-            <h4 class="main-title"><a href="href="<?php echo URL::to('home') ?>><?= __('Trending Audios') ?><?= __('Upcoming Videos') ?></a></h4>
+            <h4 class="main-title"><a href="href="<?php echo URL::to('home') ?>>Upcoming Videos</a></h4>
          </div>
          <div class="upcoming-contens">
             <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -26,7 +26,7 @@
                                <button type="button" class="btn btn-primary btn-hover" data-toggle="modal" data-target=".bd-example-modal-xl2<?= $watchlater_video->id;?>">
                               <span class="btn ">
                               <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                              <?= __('Play Now') ?>
+                              Play Now
                               </span>
                                </button>
                            </div>
@@ -73,10 +73,10 @@
                                     <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->webm_url; ?>" type='video/webm' label='auto' >
                                     <source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->ogg_url; ?>" type='video/ogg' label='auto' >-->
 
-                                    <p class="vjs-no-js"><?= __('To view this video please enable JavaScript, and consider upgrading to a web browser that') ?> <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 video') ?></a></p>
+                                    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
                                 </video>
                                 <div class="playertextbox hide">
-                                <h2><?= __('Up Next') ?></h2>
+                                <h2>Up Next</h2>
                                 <p><?php if(isset($videonext)){ ?>
                                 <?= $watchlater_video::where('id','=',$videonext->id)->pluck('title'); ?>
                                 <?php }elseif(isset($videoprev)){ ?>
@@ -100,7 +100,7 @@
 
 
                                 <div class="playertextbox hide">
-                                <h2><?= __('Up Next') ?></h2>
+                                <h2>Up Next</h2>
                                 <p><?php if(isset($videonext)){ ?>
                                 <?= Video::where('id','=',$videonext->id)->pluck('title'); ?>
                                 <?php }elseif(isset($videoprev)){ ?>
@@ -142,13 +142,13 @@
                                                     <span class="viewers"><i class="fa fa-eye"></i>(<?= $watchlater_video->views;?>)</span>
                                                     <span class="running-time"><i class="fa fa-clock-o"></i><?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
                                                     </p>
-                                                  <p><?= __('Welcome') ?></p>
+                                                  <p>Welcome</p>
                                            	
                                                        <!-- <div class="btn btn-danger btn-right-space br-0">
                                                     <i class="fa fa-play flexlink" aria-hidden="true"></i> Play
                                                 </div>-->
                                          <a class="btn btn-hover"  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"><i class="fa fa-play mr-2"
-                                 aria-hidden="true"></i><?= __('Play Now') ?></a>
+                                 aria-hidden="true"></i>Play Now</a>
                                     </div>
         <div id="trailer<?= $watchlater_video->id;?>" class="container tab-pane "><br>
 
@@ -193,26 +193,26 @@
     </div>
     <div id="like<?= $watchlater_video->id;?>" class="container tab-pane "><br>
      
-           <h2><?= __('More Like This') ?></h2>
+           <h2>More Like This</h2>
     </div>
      <div id="details<?= $watchlater_video->id;?>" class="container tab-pane "><br>
-        <h2><?= __('Description') ?></h2>
+        <h2>Description</h2>
 
     </div>
 	</div>
     <div align="center">
             <ul class="nav nav-tabs">
                     <li class="nav-item">
-                      <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>"><?= __('OVERVIEW') ?></a>
+                      <a class="nav-link active" data-toggle="tab" href="#overview<?= $watchlater_video->id;?>">OVERVIEW</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#trailer<?= $watchlater_video->id;?>"><?= __('TRAILER AND MORE') ?></a>
+                      <a class="nav-link" data-toggle="tab" href="#trailer<?= $watchlater_video->id;?>">TRAILER AND MORE</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#like<?= $watchlater_video->id;?>"><?= __('MORE LIKE THIS') ?></a>
+                      <a class="nav-link" data-toggle="tab" href="#like<?= $watchlater_video->id;?>">MORE LIKE THIS</a>
                     </li>
                      <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#details<?= $watchlater_video->id;?>"><?= __('DETAILS') ?> </a>           
+                      <a class="nav-link" data-toggle="tab" href="#details<?= $watchlater_video->id;?>">DETAILS </a>           
                     </li>
               </ul>
         </div>

@@ -39,7 +39,7 @@
 
                 {{-- Section 2 --}}
 
-        @foreach ($sections_2 as $section_2
+        @foreach ($sections_2 as $section_2)
 
              @php echo html_entity_decode($section_2) @endphp
             

@@ -13,7 +13,7 @@
                         <img src="<?= optional($videodetail)->Reels_Thumbnail ?>">
                     </span>
                 </div>
-                <div class="name">{{ __('Reels') }}</div>
+                <div class="name">Reels</div>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
         <div class="modal-content">
             <div class="modal-body" id="Reels_player"> </div>
             <div class="modal-footer" style="">
-                <button type="button" class="btn btn-secondary reelsclose" data-dismiss="modal">{{ __('Close') }}</button>
+                <button type="button" class="btn btn-secondary reelsclose" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

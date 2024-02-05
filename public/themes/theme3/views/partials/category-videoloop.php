@@ -35,9 +35,9 @@
                     <h4 class="movie-title">
                         <?php
                         if (!empty($category->home_genre)) {
-                            echo __($category->home_genre);
+                            echo $category->home_genre;
                         } else {
-                            echo __($category->name);
+                            echo $category->name;
                         }
                         ?>
                     </h4>
@@ -89,27 +89,24 @@
                    }
                   ?>
                     <li class="slide-item">
-                        <div class="block-images position-relative">
-                            <!-- block-images -->
-                            <div class="border-bg">
-                            <div class="img-box">
-                                <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
+                        <a href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
+                            <div class="block-images position-relative">
+                                <div class="img-box">
+                                    <!-- block-images -->
                                     <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->image; ?>" class="img-fluid w-100" alt="cate">
-                                </a>
-                                    
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
                                         <?php  if($category_video->access == 'subscriber' ){ ?>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                     <?php }elseif($category_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
+                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
                                             <?php } 
                                        elseif(!empty($category_video->ppv_price)) {
                                           echo $currency->symbol.' '.$category_video->ppv_price ; 
                                           } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                              echo $currency->symbol .' '.$category_video->global_ppv;
                                           } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo __("Free"); 
+                                             echo "Free"; 
                                           }
                                        ?>
                                     </p>
@@ -118,63 +115,13 @@
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
                                     <?php  } ?>
                                 </div>
-                                </div>
-
                                 <div class="block-description">
-                                <a class="playTrailer" href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $category_video->player_image; ?>" class="img-fluid w-100" alt="cate">
-                                
-                                    
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                                    <p class="p-tag1">
-                                        <?php  if($category_video->access == 'subscriber' ){ ?>
-                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php }elseif($category_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
-                                            <?php } 
-                                       elseif(!empty($category_video->ppv_price)) {
-                                          echo $currency->symbol.' '.$category_video->ppv_price ; 
-                                          } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo $currency->symbol .' '.$category_video->global_ppv;
-                                          } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo __("Free"); 
-                                          }
-                                       ?>
-                                    </p>
-                                    <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
-                                    <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
-                                    </a>
-                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                                    <p class="p-tag1">
-                                        <?php  if($category_video->access == 'subscriber' ){ ?>
-                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php }elseif($category_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
-                                            <?php } 
-                                       elseif(!empty($category_video->ppv_price)) {
-                                          echo $currency->symbol.' '.$category_video->ppv_price ; 
-                                          } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo $currency->symbol .' '.$category_video->global_ppv;
-                                          } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo __("Free"); 
-                                          }
-                                       ?>
-                                    </p>
-                                    <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
-                                    <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
-
-
-                                    <div class="hover-buttons text-white">
                                     <a href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
                                         <?php if($ThumbnailSetting->title == 1) { ?>
                                         <!-- Title -->
-                                        <p class="epi-name text-left m-0">
+                                        <h6>
                                             <?php echo strlen($category_video->title) > 17 ? substr($category_video->title, 0, 18) . '...' : $category_video->title; ?>
-                                        </p>
+                                        </h6>
                                         <?php } ?>
                                         <div class="movie-time d-flex align-items-center pt-1">
                                             <?php if($ThumbnailSetting->age == 1) { ?>
@@ -239,18 +186,17 @@
                                             </span>
                                             <?php } ?>
                                         </div>
-                                            </a>
-
-
-                                       
-                                            <a type="button" class="epi-name mt-3 mb-0 btn"
+                                        <div class="hover-buttons">
+                                            <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
-                                                <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/theme4_play_buttons.svg'; ?>"
-                                                    width="10%" height="10%" /> <?= __('Watch Now')  ?> 
+                                                <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
+                                                    width="10%" height="10%" /> Watch Now
                                             </a>
                                         </div>
+                                    </a>
                                 </div>
                             </div>
+                        </a>
                     </li>
                     <?php   endforeach;  endif; ?>
 
@@ -324,8 +270,8 @@
                                         <div class="hover-buttons">
                                             <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('episode'); ?><?= '/' . @$Episode_video->series_slug . '/' . $Episode_video->slug ?>">
-                                                <img class="ply mr-1" src="<?php echo URL::to('/') . '/assets/img/theme4_play_buttons.svg'; ?>" width="10%"
-                                                    height="10%" /> <?= __('Watch Now')  ?>
+                                                <img class="ply mr-1" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
+                                                    height="10%" /> Watch Now
                                             </a>
                                         </div>
                                     </a>
