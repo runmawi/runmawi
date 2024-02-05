@@ -73,6 +73,57 @@
       
       ?>
 
+         <!-- <div class="sidenav">
+                     {{-- Left Ads Banners --}}
+
+            @if ( optional($admin_advertistment_banners)->left_banner_status == 1 )
+
+               @if (optional($admin_advertistment_banners)->left_image_url )
+                  
+                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->left_image_url }}" /> 
+                  
+               @endif
+
+               @if (optional($admin_advertistment_banners)->left_script_url )
+                  <script src="{{ optional($admin_advertistment_banners)->left_script_url }}"></script>
+               @endif
+            @endif
+
+            
+
+            {{-- Top Ads Banners --}}
+
+            @if ( optional($admin_advertistment_banners)->top_banner_status == 1 )
+               @if (optional($admin_advertistment_banners)->top_image_url )
+                  <div class="col-sm-9 mx-auto ">
+                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->top_image_url }}" /> 
+                  </div>
+               @endif
+
+               @if (optional($admin_advertistment_banners)->top_script_url )
+                     <script src="{{ optional($admin_advertistment_banners)->top_script_url }}"></script>
+               @endif
+            @endif
+         </div> -->
+
+         <div class="rightnav">
+                     {{-- Right Ads Banners --}}
+
+            @if ( optional($admin_advertistment_banners)->right_banner_status == 1 )
+               @if (optional($admin_advertistment_banners)->right_image_url )
+                  
+                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->right_image_url }}" /> 
+                  
+               @endif
+
+               @if (optional($admin_advertistment_banners)->right_script_url )
+                  <script src="{{ optional($admin_advertistment_banners)->right_script_url }}"></script>
+               @endif
+            @endif
+
+         </div>
+      <div class="main">
+
          <div class="sidenav">
                      {{-- Left Ads Banners --}}
 
@@ -106,23 +157,8 @@
             @endif
          </div>
 
-         <div class="rightnav">
-                     {{-- Right Ads Banners --}}
 
-            @if ( optional($admin_advertistment_banners)->right_banner_status == 1 )
-               @if (optional($admin_advertistment_banners)->right_image_url )
-                  
-                     <img class="img-fluid logo" src="{{ optional($admin_advertistment_banners)->right_image_url }}" /> 
-                  
-               @endif
 
-               @if (optional($admin_advertistment_banners)->right_script_url )
-                  <script src="{{ optional($admin_advertistment_banners)->right_script_url }}"></script>
-               @endif
-            @endif
-
-         </div>
-      <div class="main">
 
          <section id="home" class="iq-main-slider p-0">
             <div id="home-slider" class="slider m-0 p-0">
@@ -396,28 +432,23 @@
       font-size: calc(14px + 0.5vmin);
    }
    .sidenav {
-      /*  height: 100%;  */
+       height: 100%; 
       width: 37px;
       position: fixed;
-      z-index: 1;
-      top: 0;
+      z-index: 99;
       left: 0;
-      padding-top: 20px;
    }
    .rightnav {
-      /*  height: 100%;  */
+       height: 100%; 
       width: 37px;
       position: fixed;
       z-index: 1;
-      top: 0;
       right: 0;
-      padding-top: 20px;
    }
 
-   /* .main {
-      margin-left: 37px; 
-      margin-right: 37px; 
-   } */
+   .main {
+     position:relative;
+   }
 
    @media screen and (max-height: 450px) {
       .sidenav {padding-top: 15px;}
@@ -428,8 +459,8 @@
       // Show sidenav, rightnav, and main initially
       document.querySelector('.sidenav').style.display = 'block';
       document.querySelector('.rightnav').style.display = 'block';
-      document.querySelector('.main').style.marginLeft = '37px';
-      document.querySelector('.main').style.marginRight = '37px';
+      // document.querySelector('.main').style.marginLeft = '37px';
+      // document.querySelector('.main').style.marginRight = '37px';
 
       // Hide sidenav, rightnav, and main after 5 seconds
       setTimeout(function() {
@@ -438,7 +469,7 @@
          document.querySelector('.header_top_position_img').style.display = 'none';
          document.querySelector('.main').style.marginLeft = '0px';
          document.querySelector('.main').style.marginRight = '0px';
-      }, 5000);
+      }, 700000);
    };
 </script>
 
