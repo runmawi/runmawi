@@ -12,7 +12,9 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         height: 1px;
          background-image: linear-gradient(90deg, white, transparent);
     }
-    
+    .lkn{
+        cursor: pointer;
+    }
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
@@ -29,18 +31,17 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 </section>
 @else
 <section class="channel-header"
-    style="background:url('<?= URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
+    style="background:url('<?= URL::to('/') . '/public/uploads/images/' . $settings->theme3_horizontal_image ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
     background-blend-mode: multiply;">
 </section>
 @endif
-
 <div class="container-fluid">
     <div class="position-relative">
         <div class="channel-img">
             @if(!empty($channel_partner->channel_logo) && $channel_partner->channel_logo != null)
                 <img src="<?php echo $channel_partner->channel_logo;  ?>"  class=" " width="150" alt="user">
             @else
-                <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>"  class=" " width="150" alt="user">
+                <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->theme3_video_image ?>"  class=" " width="150" alt="user">
             @endif
         </div>
     </div>
@@ -52,13 +53,13 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             <div class="col-2 col-lg-2">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     @php
-                        include(public_path('themes/default/views/partials/channel-social-share.php'));
+                        include(public_path('themes/theme3/views/partials/channel-social-share.php'));
                     @endphp
                 </ul>
             </div>
             @if(!empty(@$channel_partner) && $channel_partner->intro_video != null):
             <div class="col-2 col-lg-2">
-            <a data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false" >	
+            <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
                 <span class="text-white">
                 <i class="fa fa-play mr-1" aria-hidden="true"></i> About Channel Partner
                 </span>
@@ -129,7 +130,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                         </div></div>
   <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab"><hr>
      
-      <div class="Audio_Categorynav">
+      <div class="Audio_Categorynav d-flex">
                             <?php foreach ($AudioCategory as $key => $audios_category) { ?>
 
                             <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
@@ -230,7 +231,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php include public_path('themes/default/views/partials/home/latest-videos.php');  ?>
+                    <?php include public_path('themes/theme3/views/partials/home/latest-videos.php');  ?>
                 </div>
             </div>
         </div>
@@ -246,7 +247,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/default/views/partials/home/live-videos.php');
+                    include public_path('themes/theme3/views/partials/home/live-videos.php');
                     ?>
                 </div>
             </div>
@@ -264,7 +265,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/default/views/partials/home/latest-series.php');
+                    include public_path('themes/theme3/views/partials/home/latest-series.php');
                     ?>
                 </div>
             </div>
@@ -282,7 +283,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/default/views/partials/home/latest-audios.php');
+                    include public_path('themes/theme3/views/partials/home/latest-audios.php');
                     ?>
                 </div>
             </div>

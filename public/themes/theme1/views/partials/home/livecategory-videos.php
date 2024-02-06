@@ -53,7 +53,7 @@ $currency = App\CurrencySetting::first();
                     style="text-decoration:none;color:#fff">
                     <h4 class="movie-title">
                         <?php 
-                          echo __($category->name);?>
+                          echo (__($category->name));?>
                     </h4>
                 </a>
             </div>

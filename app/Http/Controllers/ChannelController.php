@@ -4268,6 +4268,14 @@ class ChannelController extends Controller
                 $item['pdf_files_url']      = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url']     = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
 
+                $item['video_skip_intro_seconds']        = $item->skip_intro  ? Carbon::parse($item->skip_intro)->secondsSinceMidnight() : null ;
+                $item['video_intro_start_time_seconds']  = $item->intro_start_time ? Carbon::parse($item->intro_start_time)->secondsSinceMidnight() : null ;
+                $item['video_intro_end_time_seconds']    = $item->intro_end_time ? Carbon::parse($item->intro_end_time)->secondsSinceMidnight() : null ;
+
+                $item['video_skip_recap_seconds']        = $item->skip_recap ? Carbon::parse($item->skip_recap)->secondsSinceMidnight() : null ;
+                $item['video_recap_start_time_seconds']  = $item->recap_start_time ? Carbon::parse($item->recap_start_time)->secondsSinceMidnight() : null ;
+                $item['video_recap_end_time_seconds']    = $item->recap_end_time ? Carbon::parse($item->recap_end_time)->secondsSinceMidnight() : null ;
+
                 // Videos URL 
 
                 switch (true) {
@@ -4318,6 +4326,7 @@ class ChannelController extends Controller
             $data = array(
                 'videodetail' => $videodetail ,
             );
+
 
             // dd($videodetail);
 
@@ -4399,7 +4408,7 @@ class ChannelController extends Controller
 
             $response = array(
                 'status'=> true,
-                'watchlater_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
+                'wishlist_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
                 'message'=> is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list"  ,
             );
 

@@ -22,7 +22,7 @@ class Video extends Model
 		'reelvideo','url_link','url_linktym','url_linksec','urlEnd_linksec','search_tags',
 		'trailer_description','trailer_type','reels_thumbnail','tag_url_ads_position','video_tv_image','free_duration_status',
 		'video_js_pre_position_ads','video_js_post_position_ads','video_js_mid_position_ads_category',
-		'video_js_mid_advertisement_sequence_time'
+		'video_js_mid_advertisement_sequence_time','today_top_video'
 	);
 
 	public function tags(){

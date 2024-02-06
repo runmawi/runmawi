@@ -12,7 +12,7 @@
 
             <h2 class="my_profile" style="color: black;">
                 <i class="fa fa-edit"></i> 
-                    {{  'Transaction History' }}
+                {{  'Transaction History' }}
             </h2>
                 <hr>
                 <div class="bg-strip">

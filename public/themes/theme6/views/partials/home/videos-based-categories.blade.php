@@ -65,45 +65,55 @@
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
+                            <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'view all' }}</a></h4>
                         </div>
 
                         <div class="favorites-contens">
                             <ul class="favorites-slider list-inline  row p-0 mb-0">
                                 @foreach ($video_category->category_videos as $key => $latest_video)
                                     <li class="slide-item">
-                                        <a href="{{ $latest_video->image ? URL::to('category/videos/'.$latest_video->slug ) : default_vertical_image_url() }}">
                                             <div class="block-images position-relative">
-                                                <div class="img-box">
-                                                    <img src="{{  URL::to('public/uploads/images/'.$latest_video->image) }}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="block-description">
-                                                    <h6> {{ strlen($latest_video->title) > 17 ? substr($latest_video->title, 0, 18) . '...' : $latest_video->title }}
-                                                    </h6>
-                                                    <div class="movie-time d-flex align-items-center my-2">
+                                                <a href="{{ $latest_video->image ? URL::to('category/videos/'.$latest_video->slug ) : default_vertical_image_url() }}">
+                                                
+                                                    <div class="img-box">
+                                                        <img src="{{  URL::to('public/uploads/images/'.$latest_video->image) }}" class="img-fluid" alt="">
+                                                    </div>
+                                                    <div class="block-description">
+                                                        <p> {{ strlen($latest_video->title) > 17 ? substr($latest_video->title, 0, 18) . '...' : $latest_video->title }}
+                                                        </p>
+                                                        <div class="movie-time d-flex align-items-center my-2">
 
-                                                        <div class="badge badge-secondary p-1 mr-2">
-                                                            {{ optional($latest_video)->age_restrict.'+' }}
+                                                            <div class="badge badge-secondary p-1 mr-2">
+                                                                {{ optional($latest_video)->age_restrict.'+' }}
+                                                            </div>
+
+                                                            <span class="text-white">
+                                                                {{ $latest_video->duration != null ? gmdate('H:i:s', $latest_video->duration) : null }}
+                                                            </span>
                                                         </div>
 
-                                                        <span class="text-white">
-                                                            {{ $latest_video->duration != null ? gmdate('H:i:s', $latest_video->duration) : null }}
-                                                        </span>
+                                                        <div class="hover-buttons">
+                                                            <span class="btn btn-hover">
+                                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                                Play Now
+                                                            </span>
+                                                        </div>
                                                     </div>
+                                                </a>
 
-                                                    <div class="hover-buttons">
-                                                        <span class="btn btn-hover">
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="block-social-info">
-                                                    <ul class="list-inline p-0 m-0 music-play-lists">
-                                                        {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                        <li><span><i class="ri-heart-fill"></i></span></li>
-                                                        <li><span><i class="ri-add-line"></i></span></li>
-                                                    </ul>
-                                                </div>
+                                                        {{-- WatchLater & wishlist --}}
+
+                                                @php
+                                                    $inputs = [
+                                                        'source_id'     => $latest_video->id ,
+                                                        'type'          => 'channel',  // for videos - channel
+                                                        'wishlist_where_column'    => 'video_id',
+                                                        'watchlater_where_column'  => 'video_id',
+                                                    ];
+                                                @endphp
+
+                                                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+
                                             </div>
                                         </a>
                                     </li>

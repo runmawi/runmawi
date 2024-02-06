@@ -236,6 +236,10 @@ class AdminThemeSettingsController extends Controller
         
         $theme_settings->enable_extract_image       = !empty($data['enable_extract_image']) ? '1' : '0';
 
+        $theme_settings->admin_ads_pre_post_position = !empty($data['admin_ads_pre_post_position']) ? '1' : '0';
+
+        $theme_settings->enable_bunny_cdn       = !empty($data['enable_bunny_cdn']) ? '1' : '0';
+
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);

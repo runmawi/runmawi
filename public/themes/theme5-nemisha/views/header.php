@@ -460,7 +460,9 @@
         color: <?php echo GetLightText(); ?>;
         box-shadow: 0 0 50px #ccc;
     }
-
+    body.light-theme #translator-table_filter input[type="search"]{
+        color: <?php echo GetLightText(); ?>;
+    }
     body.light-theme footer {
         background-color: <?php echo GetLightBg(); ?> !important;
         color: <?php echo GetLightText(); ?>;

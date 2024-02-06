@@ -1,4 +1,9 @@
-<?php $settings = App\Setting::first(); ?>
+<?php 
+    $settings = App\Setting::first();
+
+    $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+    $theme = App\SiteTheme::first();
+?>
 
 <html>
 
@@ -76,12 +81,15 @@
         .sign-user_card {
             padding: 20px;
         }
+        .sign-in-page {
+            background: #000;
+        }
     </style>
 </head>
 
 <body>
 
-    <section class="sign-in-page" style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat;background-size: cover;">
+    <section class="sign-in-page" >
         <div class="container  page-height">
             <div class="row justify-content-around">
                 <div class="col-lg-7 col-12 align-self-center">
@@ -94,12 +102,20 @@
                     <div class="sign-user_card ">
                         <div class="sign-in-page-data">
                             <div class="sign-in-from w-100 m-auto" align="center">
-                                <img src="<?php echo URL::to('/public/uploads/settings/' . $settings->logo); ?>" style="margin-bottom:1rem;">
+                                    
+                                <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                    <img src="<?php echo URL::to('public/uploads/settings/'. $theme->light_mode_logo) ; ?>"  style="margin-bottom:1rem;"></div></div>
+                                <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                                    <img src="<?php echo URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ; ?>"  style="margin-bottom:1rem;"></div></div>
+                                <?php }else { ?> 
+                                    <img src="<?php echo URL::to('public/uploads/settings/'. $settings->logo) ; ?>"  style="margin-bottom:1rem;"></div></div>
+                                <?php } ?>
+
                                 <h2 class="mb-3 text-center h">{{ __('Forgot Password') }}</h2>
 
                                 <div class="">
                                     
-                                    @if (session('status-success'))
+                                    @if (session()->has('status-success'))
                                         <div class="alert alert-success status_message" role="alert" style="font-size: 15px;">
                                             {{ session('status-success') }}
                                         </div>
@@ -130,7 +146,7 @@
                                         <p class="reset-help text-center">We will send you an email with instructions on
                                             how to reset your password.</p>
 
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary ml-4">
                                             {{ __('Send Password Reset Link') }}
                                         </button>
                                     </form>
@@ -151,7 +167,7 @@
         })
     </script>
 
-    @php include(public_path('themes/default/views/footer.blade.php')); @endphp
+    @php include(public_path('themes/theme3/views/footer.blade.php')); @endphp
 
 </body>
 

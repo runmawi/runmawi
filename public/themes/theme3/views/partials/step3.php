@@ -14,10 +14,10 @@
       <link rel="shortcut icon" href="assets/images/fl-logo.png" />-->
               <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-      <!-- Typography CSS -->
-      <link rel="stylesheet" href="assets/css/typography.css" />
-      <!-- Style -->
-      <link rel="stylesheet" href="assets/css/style.css" />
+     <!-- Typography CSS -->
+    <link rel="stylesheet" href="<?= typography_link(); ?>" >
+    <!-- Style -->
+    <link rel="stylesheet" href="<?= style_sheet_link(); ?>">
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
     </head>

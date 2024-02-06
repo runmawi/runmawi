@@ -102,11 +102,11 @@ text-align: left;
                           <div class="col-md-12">
 
                             <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;width:200px;"></div></div>
                             <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;width:200px;"></div></div>
                             <?php }else { ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;width:200px;"></div></div>
                             <?php } ?>
 
                       <?php if($settings->demo_mode == 1) { ?>
@@ -205,7 +205,7 @@ text-align: left;
 						</div>-->
                         <div class="soc mb-3">
                             <div class="d-flex align-items-center">
-                                <?php if($system_settings != null){ ?>
+                                <?php if($system_settings != null && $system_settings->facebook == 1 || $system_settings->google == 1){ ?>
                                     <div>
                                         <p class="links">{{ __('Login with using').':' }}</p>
                                     </div>

@@ -17,9 +17,9 @@ $settings = App\Setting::first();
            border-radius: 4px;
   }
 
-  .sign-user_card input{
+  /* .sign-user_card input{
      background-color: rgb(255 255 255) !important;
-  }
+  } */
 
   /* profile */
   .col-md-12.profile_image {
@@ -67,10 +67,10 @@ $settings = App\Setting::first();
      padding: 10px 10px;
      cursor: pointer;
   }
-    .rounded-circle {
+    /* .rounded-circle {
     height: 150px;
     width: 150px;
-}
+} */
     .fa-fw{
         position: absolute;
     right: 0px;
@@ -82,6 +82,25 @@ $settings = App\Setting::first();
     display: flex;
     justify-content: center;
     }
+    .modal-backdrop.show{
+      opacity: 0;
+    }
+    .modal-backdrop{
+      position:relative;
+    }
+    label{
+      color: #000;
+    }
+    th label{
+      color: #fff !important;
+    }
+    .modal-open .modal{
+      overflow: hidden;
+    }
+    .m-profile .form-group {
+         margin-bottom: 0.5rem;
+      }
+      .modal-header{padding:1rem 1rem 0 1rem;}
 </style>
 
 <body>
@@ -215,7 +234,7 @@ $settings = App\Setting::first();
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
                           <!-- <li><a class="showSingle" target="2">Transaction details</a></li>-->
                          <!--  <li><a class="showSingle" target="3">Plan details</a></li>-->
-                        <li><a class="showSingle" target="1">Manage Profile</a></li>
+                        <li><a class="showSingle" target="1">Manage Profile details</a></li>
                         <li><a class="showSingle" target="2">Plan details</a></li>
                         <li><a class="showSingle" target="5">Preference for videos</a></li>
                         <li><a class="showSingle" target="6">Profile</a></li>
@@ -229,9 +248,9 @@ $settings = App\Setting::first();
                 <div class="targetDiv" id="div1">
                 <div class=" d-flex justify-content-between mb-3">
                 <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
-                    <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                    <img class="rounded-circle img-fluid d-block  mb-3"  src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;"/>
                     <?php }else{ ?> 
-                    <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?=  $user->provider_avatar; ?>"  alt="profile-bg"/>
+                    <img class="rounded-circle img-fluid d-block  mb-3"  src="<?=  $user->provider_avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;object-fit:cover;"/>
                      <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                    </div>
@@ -333,7 +352,7 @@ $settings = App\Setting::first();
         </div>
         
         <div class="modal-body">
-           <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
+            <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
               <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
               <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                             
@@ -381,9 +400,9 @@ $settings = App\Setting::first();
          
                 <div class="col-sm-12 text-center targetDiv" id="div2">
                 <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
-                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height:150px;width:150px;object-fit:cover;"/></div>
                         <?php }else{ ?> 
-                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= $user->provider_avatar; ?>"  alt="profile-bg" style="height:150px;width:150px;object-fit:cover;" /></div>
                            <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                       <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
@@ -406,12 +425,12 @@ $settings = App\Setting::first();
                          
                          <!-- -->
                   <div class="row align-items-center justify-content-center mb-3 mt-3">
-                     <div class=" text-center col-sm-4 ">
+                     <div class=" text-center col-sm-12 col-md-12 col-lg-12 ">
                         <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
                      </div>
 
                         
-                        <div class="col-sm-4 text-center">
+                        <div class="col-sm-4 text-center mt-3">
                            @if(Auth::user()->role == "subscriber")
                               <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
                            
@@ -473,8 +492,8 @@ $settings = App\Setting::first();
                   <div class="col-sm-9 form-group p-0 mt-3">
                     <label><h5>Preference Language</h5></label>
                     <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
-                        @foreach($preference_languages as $preference_language)
-                            <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
+                        @foreach ($preference_languages as $preference_language)
+                           <option value="{{ $preference_language->id }}" @if( !empty(json_decode($user->preference_language)) && in_array( $preference_language->id, json_decode($user->preference_language) ))selected='selected' @endif >{{ $preference_language->name }}</option>
                         @endforeach
                     </select>
                  </div>
@@ -482,8 +501,8 @@ $settings = App\Setting::first();
                  <div class="col-sm-9 form-group p-0 mt-3">
                     <label><h5>Preference Genres</h5></label>
                     <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
-                        @foreach($videocategory as $preference_genres)
-                            <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
+                        @foreach ($videocategory as $preference_genres)
+                           <option value="{{ $preference_genres->id }}" @if( !empty(json_decode($user->preference_genres)) && in_array( $preference_genres->id, json_decode($user->preference_genres) ))selected='selected' @endif >{{ $preference_genres->name }}</option>
                         @endforeach
                     </select>
                  </div>
@@ -520,8 +539,10 @@ $settings = App\Setting::first();
                         <p class="name"> No Profile </p>  </div>
                   @endforelse
 
-                  <div class="col-md-6" style="margin-top: 63px;">
-                     <li> <a class="fa fa-plus-circle fa-100x" style="color: white !important; " href="{{ route('Multi-profile-create') }}" ></a> </li>
+                  <div class="col-md-6">
+                     <a  style="color: white !important; " href="{{ route('Multi-profile-create') }}" >
+                        <i class="fa fa-plus-circle fa-100x"></i> <?= 'add profile' ?>
+                     </a> 
                   </div>
 
               </div>    
@@ -606,7 +627,7 @@ $settings = App\Setting::first();
                   
                   <p class="text-white">Tv Logged User List</p>
        
-                               <div class="col-md-4">
+                               <div class="col-md-12 col-lg-12">
 
                                <table class="table  artists-table iq-card text-center p-0">
                                           <tr class="r1">
@@ -622,7 +643,7 @@ $settings = App\Setting::first();
                                                 <td valign="bottom"><p> {{ $Logged_usersCode->tv_code  }} </p></td>
                                                 <td>
                                                    <p class=" align-items-center list-user-action">
-                                                      <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$Logged_usersCode->id}}" style="z-index:999; position: absolute; background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                                      <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$Logged_usersCode->id}}" style="z-index:999;  background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
                                                    </p>
                                                 </td>
                                              </tr>
@@ -637,7 +658,7 @@ $settings = App\Setting::first();
 <style>
 .form-control {
 background-color: #F2F5FA;
-border: 1px solid transparent;
+border: 1px solid #acaeb3;
 height: 45px;
 position: relative;
 color: #000000!important;

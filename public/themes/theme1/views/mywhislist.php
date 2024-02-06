@@ -108,8 +108,8 @@
            
                 <div class="col-md-12 text-center mt-4" style="margin-left:30%;">
             <img class=""  src="<?php echo  URL::to('/assets/img/sub.png')?>" >
-                      <p class="med"><?= __('No Media in My WishLists') ?></p>
-                     <a class="mb-5 text-white pag"><?= __('Please refresh your page to retry') ?></a>
+                      <p class="med"><?= (__('No Media in My WishLists')) ?></p>
+                     <a class="mb-5 text-white pag"><?= (__('Please refresh your page to retry')) ?></a>
         </div>
         <?php endif; ?>
         

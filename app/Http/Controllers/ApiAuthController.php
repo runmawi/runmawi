@@ -135,6 +135,8 @@ use App\TVSetting as TVSetting;
 use App\TvSearchData ;
 use App\Currency ;
 use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
+use App\ChannelVideoScheduler as ChannelVideoScheduler;
+use App\AdminEPGChannel as AdminEPGChannel;
 
 
 class ApiAuthController extends Controller
@@ -4039,6 +4041,215 @@ public function verifyandupdatepassword(Request $request)
     return response()->json($response, 200);
     }
 
+    public function retrieve_stripe_coupon(Request $request)
+    {
+      try {
+        
+        $this->validate($request, [
+          'coupon_code'  => 'required' ,
+          'plan_price'  => 'required'
+        ]);
+          
+        $stripe = new \Stripe\StripeClient(
+          env('STRIPE_SECRET')
+        );
+
+        $coupon = $stripe->coupons->retrieve( $request->coupon_code , []);
+      
+        if($coupon->amount_off != null){
+  
+          $plan_price = preg_replace('/[^0-9. ]/', ' ', $request->plan_price);
+  
+          $promo_code_amt = $coupon->amount_off / 100 ;
+  
+          $discount_amt = $plan_price - $promo_code_amt ;
+    
+        }
+        elseif( $coupon->percent_off != null ){
+  
+            $percentage = $coupon->percent_off;
+  
+            $plan_price = preg_replace('/[^0-9. ]/', ' ', $request->plan_price);
+
+            $promo_code_amt = (($percentage / 100) * $plan_price);
+  
+            $discount_amt = $plan_price -  $promo_code_amt ;
+        }
+
+          
+        $data = array(
+          'status' => 'true' ,
+          'message' => 'Retrieve stripe coupon',
+          'plan_price'     => $plan_price ,
+          'promo_code_amt' => $promo_code_amt ,
+          'discount_amt'   => $discount_amt ,
+        );
+
+      } catch (\Throwable $th) {
+        
+        $data = array(
+          'status' => 'false' ,
+          'message' => $th->getMessage(),
+        );
+      }
+
+      return response()->json($data, 200);
+    }
+
+    
+    public function stripe_become_subscriber(Request $request)
+    {
+      try {
+            $stripe = new \Stripe\StripeClient(
+              env('STRIPE_SECRET')
+            );
+        
+            $paymentMethod = $request->get('py_id');
+            $plan          = $request->get('plan_id');
+            $apply_coupon  = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
+
+            $user_id      = $request->get('userid');
+            $user         = User::where('id',$user_id)->first();
+
+            $product_id =  $stripe->plans->retrieve($plan)->product;
+
+            if( subscription_trails_status() == 1 ){
+              
+                $subscription_details = $user->newSubscription( $product_id, $plan )->trialUntil( subscription_trails_day() )->withCoupon($apply_coupon)->create( $paymentMethod );
+
+            }else{
+
+                $subscription_details = $user->newSubscription( $product_id, $plan )->withCoupon($apply_coupon)->create( $paymentMethod );
+            }
+
+              // Retrieve Subscriptions
+            $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
+            
+            if( subscription_trails_status() == 1 ){
+
+              $subscription_days_count = $subscription['plan']['interval_count'];
+      
+              switch ($subscription['plan']['interval']) {
+    
+                case 'day':
+                  break;
+
+                case 'week':
+                  $subscription_days_count *= 7;
+                break;
+
+                case 'month':
+                  $subscription_days_count *= 30;
+                break;
+
+                case 'year':
+                  $subscription_days_count *= 365;
+                break;
+              }
+    
+              $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+              $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString(); 
+              $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString(); 
+
+            }else{
+
+              $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+              $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+              $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+
+            }
+    
+            $Subscription = Subscription::create([
+                'user_id'        =>  $user->id,
+                'name'           =>  $subscription->plan['product'],
+                'price'          =>  $subscription->plan['amount_decimal'] / 100,   // Amount Paise to Rupees
+                'stripe_id'      =>  $subscription['id'],
+                'stripe_status'  =>  $subscription['status'],
+                'stripe_plan'    =>  $subscription->plan['id'],
+                'quantity'       =>  $subscription['quantity'],
+                'countryname'    =>  Country_name(),
+                'regionname'     =>  Region_name(),
+                'cityname'       =>  city_name(),
+                'PaymentGateway' =>  'Stripe',
+                'trial_ends_at'  =>  $trial_ends_at,
+                'ends_at'        =>  $trial_ends_at,
+            ]);
+    
+            $user_data = array(
+                'role'                  =>  'subscriber',
+                'stripe_id'             =>  $subscription['customer'],
+                'subscription_start'    =>  $Sub_Startday,
+                'subscription_ends_at'  =>  $Sub_Endday,
+                'payment_type'          => 'recurring',
+                'payment_status'        => $subscription['status'],
+            );
+
+            if( subscription_trails_status()  == 1 ){
+                $user_data +=  ['Subscription_trail_status' => 1 ];
+                $user_data +=  ['Subscription_trail_tilldate' => subscription_trails_day() ];
+            }
+
+            User::where('id',$user_id)->update( $user_data );
+            
+            try {
+
+              $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+              $plandetail = SubscriptionPlan::where('plan_id','=',$plan)->first();
+
+              $nextPaymentAttemptDate =  Carbon::createFromTimeStamp( $subscription['current_period_end'] )->format('F jS, Y')  ;
+
+              \Mail::send('emails.subscriptionmail', array(
+
+                  'name'          => ucwords($user->username),
+                  'paymentMethod' => $paymentMethod,
+                  'plan'          => ucfirst($plandetail->plans_name),
+                  'price'         => $subscription->plan['amount_decimal'] / 100 ,
+                  'plan_id'       => $subscription['plan']['id'] ,
+                  'billing_interval'  => $subscription['plan']['interval'] ,
+                  'next_billing'      => $nextPaymentAttemptDate,
+                  'subscription_type' => 'recurring',
+                ), 
+
+                function($message) use ($request,$user,$email_subject){
+                  $message->from(AdminMail(),GetWebsiteName());
+                  $message->to($user->email, $user->username)->subject($email_subject);
+                });
+
+              $email_log      = 'Mail Sent Successfully from Become Subscription';
+              $email_template = "23";
+              $user_id = $user->id;
+  
+              Email_sent_log($user_id,$email_log,$email_template);
+
+          } catch (\Throwable $th) {
+
+              $email_log      = $th->getMessage();
+              $email_template = "23";
+              $user_id = $user->id;
+  
+              Email_notsent_log($user_id,$email_log,$email_template);
+          }
+
+            $data = array(
+              'status'        => "true",
+              'message'       => "Your Payment done Successfully!",
+              'next_billing'  => $nextPaymentAttemptDate ,
+              'Subscription'  => $Subscription ,
+              'users_role'    => User::where('id',$user_id)->pluck('role')->first() ,
+              'user_id'       => $user->id,
+            );
+
+      } catch (\Throwable $th) {
+
+          $data = array(
+            'status'    => "false",
+            'message'   => $th->getMessage(),
+          );
+      }
+
+      return response()->json($data, 200);
+    }
+
     public function becomesubscriber(Request $request)
      {
 
@@ -4048,6 +4259,7 @@ public function verifyandupdatepassword(Request $request)
         $user = User::find($user_id);
         $paymentMethod = $request->get('py_id');
 
+        
       $user->newSubscription('test', $plan)->create($paymentMethod);
 
        if ( $user->subscribed('test') ) {
@@ -8964,7 +9176,7 @@ public function Adstatus_upate(Request $request)
     ->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['video_url'] = URL::to('/').'/storage/app/public/';
-      $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/'.$item->reelvideo;
+      $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/shorts/'.$item->reelvideo;
       $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
       $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
       $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
@@ -22947,4 +23159,100 @@ public function TV_login(Request $request)
         return response()->json($response, 200);
     }
 
+    
+    public function Channels( Request $request ){
+      
+      try {
+        
+        $Admin_EPG_Channel =  AdminEPGChannel::get()->map(function ($item) {
+              $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+              $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+              $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+              return $item;
+          });
+
+        $response = array(
+          "status"  => 'true' ,
+          "Channels" => $Admin_EPG_Channel ,
+          "message" => "Retrieved Channels Successfully" ,
+        );
+        
+      } catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $e->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+
+    }
+
+    public function ChannelScheduledVideos( Request $request ){
+
+      try {
+
+        $channe_id = $request->channe_id;
+        $date = !empty($request->date) ? $request->date : date('m-d-Y');
+        $time_zone = $request->time_zone;
+        $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $date);
+        $choosed_date = $carbonDate->format('n-j-Y');
+        $Channel_videos =  AdminEPGChannel::get()->map(function ($item) use ($request,$choosed_date) {
+            $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+            $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+            $item['scheduled_videos'] = ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date',$choosed_date)->get();
+          return $item;
+        });
+
+        $response = array(
+          "status"  => 'true' ,
+          "Channel_videos" => $Channel_videos ,
+          "message" => "Retrieved Channels Videos Successfully" ,
+        );
+        
+      } catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+
+    }
+    
+
+    
+    public function ChannelScheduledDataVideos( Request $request ){
+
+      try {
+
+        $channe_id = $request->channe_id;
+        $date = !empty($request->date) ? $request->date : date('m-d-Y');
+        $time_zone = $request->time_zone;
+        $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $date);
+        $choosed_date = $carbonDate->format('n-j-Y');
+
+        $ChannelVideoScheduler = ChannelVideoScheduler::where('channe_id',$channe_id)
+            ->where('choosed_date',$choosed_date)->get()->map(function ($item) use ($request,$choosed_date) {
+            $item['image_url'] = $item->image != null ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url() ;
+          return $item;
+        });
+
+       
+        $response = array(
+          "status"  => 'true' ,
+          "Channel_videos" => $ChannelVideoScheduler ,
+          "message" => "Retrieved Channels Videos Successfully" ,
+        );
+        
+      } catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+
+    }
+    
 }

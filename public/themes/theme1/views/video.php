@@ -823,7 +823,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                 <div class="col-md-12 pl-0">
                     <div class="bc-icons-2">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                            <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= __(ucwords('videos')) ?></a>
                             <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                             </li>
 
@@ -831,7 +831,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                             <?php $category_name_length = count($category_name); ?>
                             <li class="breadcrumb-item">
                                 <a class="black-text" href="<?= route('video_categories',[ $video_category_name->categories_slug ])?>">
-                                    <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
+                                    <?= __(ucwords($video_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                                 </a>
                                 <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                             </li>
@@ -839,7 +839,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
                             
 
-                            <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
+                            <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? __(ucwords(substr($video->title,0,120).'...')) : __(ucwords($video->title)); ?> </a></li>
                         </ol>
                     </div>
                 </div>
@@ -857,7 +857,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                                                         <!-- Video Title  -->
                   <?php }else{ ?>
                     <h1 class="trending-text big-title text-uppercase mt-3">
-                        <?php echo (strlen($video->title) > 15) ? substr($video->title,0,80).'...' : $video->title;  if( Auth::guest() ) { } ?>
+                        <?php echo (strlen($video->title) > 15) ? __(substr($video->title,0,80)).'...' : __($video->title);  if( Auth::guest() ) { } ?>
                       </h1>
                   <?php } ?>
 
@@ -897,7 +897,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             <?php if (empty($video->year)) { ?>  <?php } else { ?><span class="trending-year"> <?php echo $video->year;} ?></span>
             <span class="trending-year"><?php
             foreach($category_name as $value){
-              echo $value->categories_name. ',';  
+              echo __($value->categories_name). ',';  
             }
              ?></span>
 
@@ -966,7 +966,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div> -->
                        <?php } ?>
-                        <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i><?= __('Remove Whislist') ?>   <?php else: ?><?= __('+ Add to Wishlist') ?>  <?php endif; ?>
+                        <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i><?= __('Remove Whislist') ?>   <?php else: ?><?= __('Add to Wishlist') ?>  <?php endif; ?>
                         </div>
 
                         <?php

@@ -229,11 +229,11 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     value="<?= $episode->genre_id ?>">
 <br>
 
-    <div class="row-flex">
+    <div class="container-fluid">
         <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb p-0">
                     <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                            href="<?= route('series.tv-shows') ?>"><?= __(ucwords('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
@@ -242,7 +242,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     <li class="breadcrumb-item">
                         <a class="black-text"
                             href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
-                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                            <?= __(ucwords($series_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                         </a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
@@ -251,13 +251,13 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     
 
                     <li class="breadcrumb-item">
-                        <a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> </a>
+                        <a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? __(ucwords(substr(@$series->title, 0, 120) . '...')) : __(ucwords(@$series->title)); ?> </a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
                     
 
-                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? ucwords(substr(@$episode->title, 0, 120) . '...') : ucwords($episode->title); ?> </a></li>
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? __(ucwords(substr(@$episode->title, 0, 120) . '...')) : __(ucwords($episode->title)); ?> </a></li>
                 </ol>
         </div>  
     </div>
@@ -287,17 +287,17 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 <br>
                 <br>
                 <div class="col-md-5">
-                    <span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span>
+                    <span class="text-white" style="font-size: 129%;font-weight: 700;"><?= __("You're watching") ?>:</span>
                     <p style=";font-size: 130%;color: white;">
                         <?php 
 			$seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
 			foreach($seasons as $key=>$seasons_value){ ?>
                         <?php
-			if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo 'Season'.' '. ($key+1)   .' ';}  }
+			if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo __('Season').' '. ($key+1)   .' ';}  }
 			$Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
 			foreach($Episode as $key=>$Episode_value){  ?>
                         <?php if (!empty($episode) && $episode->id == $Episode_value->id) {
-                            echo 'Episode' . ' ' . $episode->episode_order . ' ';
+                            echo __('Episode') . ' ' . $episode->episode_order . ' ';
                         } ?>
                         <?php } ?>
                     <p style=";font-size: 130%;color: white;"><?= $episode->title ?></p>
@@ -391,7 +391,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             </div>
 
 
-            <h2 id="tags">Tags:
+            <h2 id="tags"><?= ('Tags') ?>:
                 <?php if(isset($episode->tags)) {
 		foreach($episode->tags as $key => $tag): ?>
 

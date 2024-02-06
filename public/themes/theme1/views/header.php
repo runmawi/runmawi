@@ -490,6 +490,9 @@
    background-color: <?php echo GetLightBg(); ?>;
    color: <?php echo GetLightText(); ?>;
    }
+   body.light-theme #translator-table_filter input[type="search"]{
+   color: <?php echo GetLightText(); ?>;
+   }
    body.light-theme .s-icon{
    background-color: <?php echo GetLightBg(); ?>; 
    box-shadow: 0 0 50px #ccc;
@@ -692,7 +695,7 @@
                                         <li class="dropdown menu-item dskdflex">
                                             <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/categoryList'); ?>" data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/categoryList'); ?>"> -->
-                                                    <?php echo __($menu->name); ?>
+                                                    <?php echo (__($menu->name)); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
                                                 <!-- </a> -->
                                             </a>
@@ -703,7 +706,7 @@
                                                     <a class="dropdown-item cont-item"
                                                         style="text-decoration: none!important;"
                                                         href="<?php echo URL::to('/') . '/category/' . $category->slug; ?>">
-                                                        <?php echo $category->name; ?>
+                                                        <?php echo (__($category->name)); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -724,7 +727,7 @@
                                                 <?php foreach ( $languages as $language){ ?>
                                                 <li>
                                                     <a class="dropdown-item cont-item" href="<?php echo URL::to('/') . '/language/' . $language->id . '/' . $language->name; ?>">
-                                                        <?php echo $language->name; ?>
+                                                        <?php echo (__($language->name)); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -737,7 +740,7 @@
                                         <li class="dropdown menu-item">
                                             <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/Live-list'); ?>"  data-toggle="dropdown">
                                                 <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Live-list'); ?>"> -->
-                                                    <?php echo __($menu->name); ?>
+                                                    <?php echo ( __($menu->name) ); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
                                                 <!-- </a> -->
                                             </a>
@@ -745,7 +748,7 @@
                                                 <?php foreach ( $LiveCategory as $category){ ?>
                                                 <li>
                                                     <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->slug; ?>">
-                                                        <?php echo $category->name; ?>
+                                                        <?php echo (__($category->name)); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -758,13 +761,13 @@
                                         <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/') . $menu->url; ?>"
                                                 data-toggle="dropdown">
-                                                <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
+                                                <?php echo(__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                                 <?php foreach ( $AudioCategory as $category){ ?>
                                                 <li>
                                                     <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->name; ?>">
-                                                        <?php echo $category->name; ?>
+                                                        <?php echo  (__($category->name)); ?>
                                                     </a>
                                                 </li>
                                                 <?php } ?>
@@ -777,7 +780,7 @@
                                           ?>
                                         <li class="dropdown menu-item">
                                             <a class="" id="" href="<?php echo URL::to('/') . $menu->url; ?>">
-                                                <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
+                                                <?php echo (__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                             </a>
                                             <?php if(count($tv_shows_series) > 0 ){ ?>
                                             <ul class="dropdown-menu categ-head">
@@ -785,7 +788,7 @@
                                                 <li>
                                                     <?php if($key < 5): ?>
                                                         <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series') . '/' . $tvshows_series->slug; ?>">
-                                                            <?php echo $tvshows_series->title; ?>
+                                                            <?php echo  (__($tvshows_series->title)); ?>
                                                         </a>
                                                     <?php else: ?>
                                                         <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/Series/category/list');?>"> 
@@ -805,7 +808,7 @@
                                             } elseif ($menu->select_url == 'add_Custom_url') {
                                                 echo $menu->custom_url;
                                             } ?>">
-                                                <?php echo __($menu->name); ?>
+                                                <?php echo (__($menu->name)); ?>
                                             </a>
                                         </li>
                                         <?php } } ?>
@@ -1043,7 +1046,7 @@
                                     </li>
 
                                     
-                        <?php if(!Auth::guest()){ ?>
+                        <?php // if(!Auth::guest()){ ?>
 
                                 <!-- Translator Choose -->
                            <li class="nav-item nav-icon  ml-3">
@@ -1074,7 +1077,7 @@
                            </li>
 
 
-                        <?php } ?>
+                        <?php // } ?>
 
                                     <li class="nav-item nav-icon">
                                         <!--<a href="#" class="search-toggle" data-toggle="search-toggle">
@@ -1928,6 +1931,29 @@
          
 
       </script>
+
+
+
+<!-- slider video trailer script  -->
+
+      <script>
+        $(document).ready(function () {
+            const imageContainer = document.getElementById("image-container");
+            const video = document.querySelector(".myvideos");
+            video.style.opacity = 0;
+
+            // Function to play the video after 5 seconds
+            function playVideoAfterDelay() {
+                setTimeout(function () {
+                    video.play();
+                    video.style.opacity = 1;
+                }, 5000); // 5000 milliseconds (5 seconds)
+            }
+
+            // Call the function to play the video after a delay
+            playVideoAfterDelay();
+        });
+    </script>
     </header>
     <!-- Header End -->
 

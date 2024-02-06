@@ -3,7 +3,7 @@
 <h4 class="main-title">
         <!-- Live Videos -->
 <a href="<?php if ($order_settings_list[3]->header_name) { echo URL::to('/').'/'.$order_settings_list[3]->url ;} else { echo "" ; } ?>">
-  <?php if ($order_settings_list[3]->header_name) { echo __($order_settings_list[3]->header_name) ;} else { echo "" ; } ?></a>
+  <?php if ($order_settings_list[3]->header_name) { echo (__($order_settings_list[3]->header_name)) ;} else { echo "" ; } ?></a>
     </h4>
 </div>
 <div class="favorites-contens">
@@ -88,7 +88,7 @@
                         <div class="block-description" >
                           <div class="hover-buttons">
                               <a class="text-white d-flex justify-content-center align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                                  <img class="ply mr-2" style="width: 20%; height: 20%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                  <img class="ply mr-2" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                     <!-- Live Now-->
                               </a>
                           </div>

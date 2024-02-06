@@ -6,12 +6,12 @@
 
     $data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
                                         'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
-                                        'expiry_date')
+                                        'expiry_date','active','status','draft')
 
         ->where('active',1)->where('status', 1)->where('draft',1);
 
         if( videos_expiry_date_status() == 1 ){
-            $data = $data->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+            $data = $data->whereNotNull('expiry_date')->where('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
         if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
@@ -114,7 +114,7 @@
             <div class="modal fade info_model" id="{{ "Home-Going_to_expiry_videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
-                        <div class="modal-content" style="border:none;">
+                        <div class="modal-content" style="border:none; background:transparent;">
                             <div class="modal-body">
                                 <div class="col-lg-12">
                                     <div class="row">

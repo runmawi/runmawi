@@ -1,5 +1,5 @@
 /*
-Template: Flicknexs - Responsive Bootstrap 4 Template
+Template: streamit - Responsive Bootstrap 4 Template
 Author: iqonicthemes.in
 Design and Developed by: iqonicthemes.in
 NOTE: This file contains the styling for responsive Template.
@@ -51,6 +51,8 @@ Import CSS
 /*---------------------------------------------------------------------
 Font
 -----------------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@font-face { font-family: 'Helvetica Neue Regular'; src: url(../fonts/helvetica/HelveticaNeueBold.woff) format('woff'); }
 
 /*---------------------------------------------------------------------
 General
@@ -58,51 +60,37 @@ General
 *::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
-body {   font-family: 'Gilroy';
-font-style: normal;
-font-weight: normal;font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.5; padding: 0; margin: 0; color: var(--iq-body-text); /*background: var(--iq-body-bg);*/background: radial-gradient(72.19% 72.19% at 47.68% 20.46%, #2B0781 0%, #22093C 100%);
-
-
- }
+body { font-family: 'Roboto', sans-serif; font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.5; padding: 0; margin: 0; color: var(--iq-body-text); background: var(--iq-body-bg); }
 a, .btn { -webkit-transition: all 0.5s ease-out 0s; -moz-transition: all 0.5s ease-out 0s; -ms-transition: all 0.5s ease-out 0s; -o-transition: all 0.5s ease-out 0s; transition: all 0.5s ease-out 0s; }
 a, button, input, btn { outline: medium none; }
 a { color: var(--iq-body-text); text-decoration: none; }
 a:hover { text-decoration: none; }
 a.text-primary:focus, a.text-primary:hover { color: var(--iq-primary) !important; }
 hr { border-color: var(--iq-border-light); }
-h1, h2, h3, h4, h5, h6 { font-weight: 500; margin: 0px; line-height: 1.2; color: var(--iq-white);      font-family: 'Gilroy';}
+h1, h2, h3, h4, h5, h6 { font-weight: 500; margin: 0px; line-height: 1.2; color: var(--iq-white); }
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; }
-label { font-weight: normal;      font-family: 'Gilroy';}
-h1, .h1 { font-size: 2.500em;      font-family: 'Gilroy';font-weight: 600;}
-h2, .h2 { font-size: 2.300em;       font-family: 'Gilroy';}
-h3, .h3 { font-size: 1.953em;      font-family: 'Gilroy';}
-h4, .h4 {font-family: 'Gilroy';
-font-style: normal;
-font-weight: 600;
-font-size: 30px;
-line-height: 43px;}
-h5, .h5 { font-size: 1.200em;       font-family: 'Gilroy';}
+label { font-weight: normal; }
+h1, .h1 { font-size: 3.052em; }
+h2, .h2 { font-size: 2.300em; }
+h3, .h3 { font-size: 1.953em; }
+h4, .h4 { font-size: 1.400em; }
+h5, .h5 { font-size: 1.200em; }
 h6, .h6 { font-size: 1.0em; }
-.container-fluid { padding: 0 50px; font-family: 'Gilroy';}
-.fluid{padding: 5px 20px;   min-width: 100%;overflow: visible;position: relative;
-    top: 0;
-    left: 0;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 50px;
-}
+.container-fluid { padding: 0 40px; }
 .height-100-vh { height: 100vh; }
 .w-20 { width: 20px; }
-.big-title {       font-family: 'Gilroy';}
+.big-title { font-family: 'Helvetica Neue Regular'; }
 .badge { border-radius: 0 !important; }
 .iq-mb-30 { margin-bottom: 30px; }
+#iq-favorites .container-fluid{
+    padding: 0 40px;
+}
 
 /*----------------------------------------------
 Input
 ------------------------------------------------*/
 label { color: var(--iq-dark); }
-.form-control { height: 45px; line-height: 45px; background: #33333391; border: 1px solid var(--iq-body-text); font-size: 14px; color: var(--iq-secondary); border-radius: 4px; }
+.form-control { height: 45px; line-height: 45px; background: transparent; border: 1px solid var(--iq-body-text); font-size: 14px; color: var(--iq-secondary); border-radius: 0; }
 .iq-custom-select { position: relative; }
 .custom-control-input:checked~.custom-control-label::before {
     background-color: var(--iq-primary)!important;
@@ -115,7 +103,7 @@ dl dd:last-child { margin-bottom: 0px; }
 /*----------------------------------------------
 loading
 ------------------------------------------------*/
-#loading { background: var(--iq-body-bg) url(../images/fl-logo.png) no-repeat scroll center center; height: 100%; width: 100%; background-size: 15%; position: fixed; margin-top: 0px; top: 0px; left: 0px; bottom: 0px; overflow: hidden !important; right: 0px; z-index: 999999; }
+#loading { background: var(--iq-body-bg) url(../images/loader.gif) no-repeat scroll center center; height: 100%; width: 100%; background-size: 15%; position: fixed; margin-top: 0px; top: 0px; left: 0px; bottom: 0px; overflow: hidden !important; right: 0px; z-index: 999999; }
 #loading-center { width: 100%; height: 100%; position: relative; }
 
 /*----------------------------------------------
@@ -138,11 +126,10 @@ Border Color
 /*----------------------------------------------
  Buttons Design
 ------------------------------------------------*/
-.btn { /*padding: 15px 30px;*/ position: relative; display: inline-block; -webkit-border-radius: 0p; -moz-border-radius: 30px; /*border-radius: 30px !important;*/ cursor: pointer; z-index: 4; }
-.btn-hover { background:#FF0052!important; border: 1px solid #FF0052; color: var(--iq-white); transition: color 0.3s ease; display: inline-block; vertical-align: middle; -webkit-transform: perspective(1px) translateZ(0); transform: perspective(1px) translateZ(0); box-shadow: 0 0 1px rgba(0, 0, 0, 0); position: relative; border-radius: 5px; }
+.btn { padding: 5px 15px; position: relative; display: inline-block; -webkit-border-radius: 0p; -moz-border-radius: 0; border-radius: 5px !important; cursor: pointer; z-index: 4; }
+.btn-hover { background: var(--iq-primary-hover); border: 1px solid var(--iq-primary-hover); color: var(--iq-white); transition: color 0.3s ease; display: inline-block; vertical-align: middle; -webkit-transform: perspective(1px) translateZ(0); transform: perspective(1px) translateZ(0); box-shadow: 0 0 1px rgba(0, 0, 0, 0); position: relative; border-radius: 5px; }
 .btn-hover:before { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 0; right: 0; background: var(--iq-primary); border: 1px solid var(--iq-primary); -webkit-transform: scaleX(1); transform: scaleX(1); -webkit-transform-origin: 50%; transform-origin: 50%; transition: transform 0.3s ease-out; -webkit-transition: transform 0.3s ease-out; }
-
-.btn-hover:hover, .btn-hover:focus, .btn-hover:active { color:  #000000; }
+.btn-hover:hover, .btn-hover:focus, .btn-hover:active { color: var(--iq-white); }
 .btn-hover:focus { box-shadow: none !important; }
 .btn-hover:hover:before, .btn-hover:focus:before, .btn-hover:active:before { -webkit-transform: scaleX(0); transform: scaleX(0); }
 .btn-outline-primary { background: transparent; border: 2px solid var(--iq-primary); color: var(--iq-primary); transition: all 0.3s ease-out; -webkit-transition: all 0.3s ease-out; }
@@ -156,13 +143,7 @@ Border Color
 button:focus { outline: none; }
 .btn-link { background: transparent; color: var(--iq-white); }
 .btn-link:hover { color: var(--iq-primary); text-decoration: none; }
-#bd{
-    border-radius: 10px!important;
-    font-weight: 800;
-}
-#bd:before{
-     border-radius: 10px!important;
-}
+
 /*----------------------------------------------
 Text Color
 ------------------------------------------------*/
@@ -261,7 +242,7 @@ Select 2
 .select2-container--bootstrap4.select2-container--focus .select2-selection { box-shadow: none; }
 .select2-search--dropdown .select2-search__field { border-radius: 0; border: none; background: rgba(85, 85, 85, 0.65); color: var(--iq-white); }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { border: none; }
-.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b:before { content: '\ea41'; position: absolute;       font-family: 'Gilroy-Regular';top: 50%; transform: translateY(-50%); right: 1px; color: var(--iq-white); font-size: 16px; z-index: 99; transition: all 0.4s ease; }
+.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b:before { content: '\ea41'; position: absolute; font-family: "remixicon"; top: 50%; transform: translateY(-50%); right: 1px; color: var(--iq-white); font-size: 16px; z-index: 99; transition: all 0.4s ease; }
 .select2-container--bootstrap4.select2-container--open .select2-selection__arrow b:before { transform: translateY(-50%) rotate(180deg); }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { margin-top: 0; }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow { width: auto; }

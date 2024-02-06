@@ -49,14 +49,6 @@
 
       $SiteMeta_image = App\SiteMeta::where('page_slug', '=', $request_url)->pluck('meta_image')->first();
 
-      if($theme->header_position == 0){
-
-         $menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
-
-      }elseif ($theme->header_position == 1)
-      {
-         $menus = App\Menu::orderBy('order', 'asc')->where('in_side_menu',1)->get();
-      }
    ?>
 
    <meta charset="UTF-8">
@@ -449,7 +441,7 @@
    }
 
    body.light-theme h4, body.light-theme p {
-      color: <?php echo GetLightText(); ?>;
+      color: <?php echo GetDarkText(); ?>;
    }
 
    body.light-theme header#main-header{
@@ -612,6 +604,9 @@
    body.dark-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
       color: <?php echo GetDarkText(); ?>!important;
    }
+   body.light-theme #translator-table_filter input[type="search"]{
+      color: <?php echo GetLightText(); ?>;
+   }
 
    body.dark-theme .dropdown-menu.categ-head{
       background-color: <?php echo GetDarkBg(); ?>!important;  
@@ -721,7 +716,7 @@
    }
    #trending-slider-nav .slick-current.slick-active .movie-slick { border-color: <?php echo button_bg_color();?> !important; }
    #trending-slider-nav .movie-slick:before { border-top: 20px solid <?php echo button_bg_color(); ?> !important; }
-   .dark-theme header .navbar ul li.menu-item a {color: <?php echo GetDarkText(); ?>;}
+   .dark-theme header .navbar ul li.menu-item a {color: <?php echo GetDarkText(); ?>!important;}
    .light-theme header .navbar ul li.menu-item a {color: <?php echo GetLightText(); ?> !important;}
    .dark-theme ul.f-link li a {color: <?php echo GetDarkText(); ?>;}
    .light-theme ul.f-link li a {color: <?php echo GetLightText(); ?> !important;}
@@ -731,13 +726,15 @@
    .light-theme .s-icon{color: <?php echo GetLightText(); ?> !important;}
    .dark-theme .iq-search-bar .search-input {color: <?php echo GetDarkText(); ?> !important;}
    .light-theme .iq-search-bar .search-input {color: <?php echo GetLightText(); ?> !important;}
+   .light-theme li.list-group-item a {background:<?php echo GetLightBg(); ?>; color: <?php echo GetLightText(); ?> !important;}
    .dark-theme ul.list-group.home-search {background: <?php echo GetDarkBg(); ?> !important;}
    .light-theme ul.list-group.home-search {background: <?php echo GetLightBg(); ?> !important;}
    .dark-theme .iq-search-bar .search-input {background: <?php echo GetDarkBg(); ?> !important;}
-   .light-theme .iq-search-bar .search-input {background:<?php echo GetLightText(); ?> !important;}
+   .light-theme .iq-search-bar .search-input {background:<?php echo GetLightBg(); ?> !important;}
    .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo GetDarkText(); ?> !important;}
    .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo GetLightText(); ?> !important;}
-   .navbar-expand-lg .navbar-nav .dropdown-menu {background:  <?php echo GetDarkBg(); ?> !important;}
+   .dark-theme .navbar-expand-lg .navbar-nav .dropdown-menu {background:  <?php echo GetDarkBg(); ?> !important; color: <?php echo GetDarkText(); ?>;}
+   body.light-theme .navbar-expand-lg .navbar-nav .dropdown-menu {background-color: <?php echo GetLightBg(); ?>!important; color: <?php echo GetLightText(); ?>;}
    body.dark-theme .offcanvas-collapse{
       background-color: <?php echo GetDarkBg(); ?>!important;  
       color: <?php echo GetDarkText(); ?>;
@@ -756,13 +753,20 @@
    body.light-theme ul.navbar-nav{
       background-color: <?php echo GetLightBg(); ?>!important;  
       color: <?php echo GetLightText(); ?>;
-      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
    .light-theme.onclickbutton_menu{
       color: <?php echo GetLightText(); ?>;
    }
    body.dark-theme .onclickbutton_menu{
       color: <?php echo GetDarkText(); ?>;
+   }
+   body.light select:valid {
+      background: #fcfcfc!important;
+      color: #000000!important;
+   }
+   body.dark-theme select:valid {
+      background: <?php echo GetDarkBg(); ?>!important;
+      color: <?php echo GetDarkText(); ?>!important;
    }
    
 .side-colps:not(.show){
@@ -1005,6 +1009,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                     <ul class="navbar-nav top-colps">
 
                                        <?php  
+
+                                          $header_top_position_menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
                                                                               
                                           $Parent_video_category = App\VideoCategory::whereIn('id', function ($query) {
                                              
@@ -1075,7 +1081,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                           $languages = App\Language::all();
 
-                                          foreach ($menus as $menu) {
+                                          foreach ($header_top_position_menus as $menu) {
 
                                              if ( $menu->in_menu == "video" ) {  ?>
 
@@ -1315,6 +1321,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                        <ul class="navbar-nav">
                                           
                                           <?php  
+
+                                             $header_side_position_menus = App\Menu::orderBy('order', 'asc')->where('in_side_menu',1)->get();
                                                                                  
                                              $Parent_video_category = App\VideoCategory::whereIn('id', function ($query) {
                                                 
@@ -1385,7 +1393,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                              $languages = App\Language::all();
 
-                                             foreach ($menus as $menu) {
+                                             foreach ($header_side_position_menus as $menu) {
 
                                                 if ( $menu->in_menu == "video" ) {  ?>
 
@@ -1808,9 +1816,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              </form>
                                           </div>
 
-                                          <div class="iq-sub-dropdown search_content overflow-auto mt-3" id="sidebar-scrollbar" style="width:146px;">
+                                          <div class="iq-sub-dropdown search_content overflow-auto mt-3" id="sidebar-scrollbar">
                                              <div class="iq-card-body">
-                                                <div id="search_list" class="search_list search-toggle device-search" ></div>
+                                                <div id="search_list" class="search_list search-toggle device-search no-result" ></div>
                                              </div>
                                           </div>
                                        </li>

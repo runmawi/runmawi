@@ -1,42 +1,42 @@
     <!-- Trailer for video banner  -->
 <?php if( $videos->trailer != null && $videos->trailer_type == 'm3u8' ){  ?>
 
-    <div class="trailor-video">
+    <!-- <div class="trailor-video">
         <a href="#video-trailer" class="video-open playbtn btn bd ml-2" data-trailer-url="<?= $videos->trailer ?>"
             data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_videos(this)"> 
             <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
         </a>
-    </div>
+    </div> -->
     
 
 <?php }elseif($videos->trailer != null && $videos->trailer_type == 'm3u8_url' ){ ?>
 
-    <div class="trailor-video">
+    <!-- <div class="trailor-video">
         <a href="#M3U8_video-trailer" class="video-open playbtn btn bd ml-2" data-trailer-url="<?= $videos->trailer ?>"
             data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_videos(this)">
             <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
         </a>
-    </div>
+    </div> -->
 
 
 <?php  }elseif( $videos->trailer != null && $videos->trailer_type == 'mp4_url' || $videos->trailer_type == 'video_mp4' ){ ?>
 
-    <div class="trailor-video">
+    <!-- <div class="trailor-video">
         <a href="#MP4_videos-trailer" class="video-open playbtn btn bd ml-2" data-trailer-url="<?= $videos->trailer ?>"
             data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_videos(this)">
             <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
         </a>
-    </div>
+    </div> -->
 
 
 <?php  }elseif( $videos->trailer != null && $videos->trailer_type == "embed_url" ){ ?>
 
-    <div class="trailor-video">
+    <!-- <div class="trailor-video">
         <a href="#Embed_videos-trailer" class="video-open playbtn btn bd ml-2" data-trailer-url="<?= $videos->trailer ?>"
             data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_videos(this)">
             <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
         </a>
-    </div>
+    </div> -->
 
 <?php } ?>
 

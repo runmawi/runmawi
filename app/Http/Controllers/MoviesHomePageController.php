@@ -44,7 +44,7 @@ class MoviesHomePageController extends Controller
 
     public function index()
     {
-        // try {
+        try {
 
             $data = array(
                 'latest_video'      => $this->latest_videos(),
@@ -59,12 +59,12 @@ class MoviesHomePageController extends Controller
 
             return Theme::view('Movies-Home-Page.index', $data);
 
-        // } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
 
-        //     return $th->getMessage();
+            // return $th->getMessage();
 
-        //     return abort(404);
-        // }
+            return abort(404);
+        }
     }
 
     Private function latest_videos(){

@@ -27,9 +27,7 @@
         border-top: 0px !important;
     }
 </style>
-<div class="container-fluid overflow-hidden">
-    <div class="row">
-        <div class="col-sm-12 ">
+
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <a href="<?php echo URL::to('/audios/category') . '/' . $category->slug; ?>" class="category-heading" style="text-decoration:none;color:#fff">
                     <h4 class="movie-title">
@@ -61,16 +59,18 @@
                                     <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $audio->image; ?>" class="img-fluid w-100" alt="cate">
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
-                                        <?php  if($audio->access == 'subscriber' ){ ?>
+                                        <?php  if($audio->access == 'subscriber' ){ ?></p>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php }
+                                    <?php }elseif($audio->access == 'registered'){?>
+                                          <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                          <?php }
                                        elseif(!empty($audio->ppv_price)) {
                                           echo $currency->symbol.' '.$audio->ppv_price ; 
                                           }  elseif( $audio->ppv_price == null) {
                                              echo "Free"; 
                                           }
                                        ?>
-                                    </p>
+                                    
                                     <?php } ?>
                                     
                                 </div>
@@ -78,9 +78,9 @@
                                     <a href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
                                         <?php if($ThumbnailSetting->title == 1) { ?>
                                         <!-- Title -->
-                                        <h6>
+                                        <p>
                                             <?php echo strlen($audio->title) > 17 ? substr($audio->title, 0, 18) . '...' : $audio->title; ?>
-                                        </h6>
+                                        </p>
                                         <?php } ?>
                                         <div class="movie-time d-flex align-items-center pt-1">
                                             
@@ -151,9 +151,7 @@
 
                 </ul>
             </div>
-        </div>
-    </div>
-</div>
+       
 
 <script>
     $('.mywishlist').click(function() {

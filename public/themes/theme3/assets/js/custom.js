@@ -1,5 +1,5 @@
 /*
-Template: Flicknexs - Responsive Bootstrap 4 Template
+Template: Streamit - Responsive Bootstrap 4 Template
 Author: iqonicthemes.in
 Design and Developed by: iqonicthemes.in
 NOTE: This file contains the styling for responsive Template.
@@ -118,15 +118,11 @@ Index Of Script
 		/*---------------------------------------------------------------------
 			Slick Slider
 		----------------------------------------------------------------------- */
-         $(window).on('load',function(){
-             });
-
-		
-        $('#home-slider').slick({
-			autoplay: true,
-			speed: 900,
+		$('#home-slider').slick({
+			autoplay: false,
+			speed: 800,
 			lazyLoad: 'progressive',
-			arrows: false,
+			arrows: true,
 			dots: false,
 			prevArrow: '<div class="slick-nav prev-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			nextArrow: '<div class="slick-nav next-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
@@ -137,9 +133,7 @@ Index Of Script
 						dots: true,
 						arrows: false,
 					}
-				},
-                
-                
+				}
 			]
 		}).slickAnimation();
 		$('.slick-nav').on('click touch', function (e) {
@@ -156,87 +150,46 @@ Index Of Script
 			}
 
 		});
+		jQuery('.favorites-slider').slick({
+			dots: false,
+			slidesToShow: 6,
+			slidesToScroll: 1,
+			arrows: true,
+			infinite: false,
+			speed: 300,
+			autoplay: false,		
+			// appendArrows: $('#sm-slick-arrow'),
+			
+			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
+			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
+			responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				slidesToShow: 7,
+				slidesToScroll: 1,
+				infinite: true,
+				dots: false,
+				}
+			},
+			{
+				breakpoint: 768,
+				settings: {
+				slidesToShow: 4,
+				slidesToScroll: 1
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				// arrows: false,
+				slidesToShow: 1,
+				slidesToScroll: 1
+				}
+			}
+			]
+		});
 
-        jQuery('.favorites-slider').slick({
-			dots: false,
-			arrows: true,
-			infinite: true,
-			speed: 300,
-			autoplay: false,
-			slidesToShow: 7,
-			slidesToScroll: 1,		
-			// appendArrows: $('#sm-slick-arrow'),
-			
-			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
-			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
-			responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-				slidesToShow: 3,
-				slidesToScroll: 1,
-				infinite: true,
-				dots: true
-				}
-			},
-			{
-				breakpoint: 768,
-				settings: {
-				slidesToShow: 2,
-				slidesToScroll: 1
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-				// arrows: false,
-				slidesToShow: 3,
-				slidesToScroll: 1
-				}
-			}
-			]
-		});
-        
-        jQuery('.favorites-slider1').slick({
-			dots: false,
-			arrows: true,
-			infinite: true,
-			speed: 300,
-			autoplay: false,
-			slidesToShow: 4,
-			slidesToScroll: 1,		
-			// appendArrows: $('#sm-slick-arrow'),
-			
-			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
-			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
-			responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-				slidesToShow: 3,
-				slidesToScroll: 1,
-				infinite: true,
-				dots: true
-				}
-			},
-			{
-				breakpoint: 768,
-				settings: {
-				slidesToShow: 2,
-				slidesToScroll: 1
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-				// arrows: false,
-				slidesToShow: 3,
-				slidesToScroll: 1
-				}
-			}
-			]
-		});
-        
 		jQuery('#top-ten-slider').slick({
 			slidesToShow: 1,
 			slidesToScroll: 1,
@@ -256,33 +209,45 @@ Index Of Script
 			]
 		});
 		jQuery('#top-ten-slider-nav').slick({
-			slidesToShow: 3,
+			slidesToShow: 6,
 			slidesToScroll: 1,
 			asNavFor: '#top-ten-slider',
 			dots: false,
 			arrows: true,
 			infinite: true,
-			vertical:true,
+			vertical: true,
 			verticalSwiping: true,
 			centerMode: false,
-			nextArrow:'<button class="NextArrow"><i class="ri-arrow-down-s-line"></i></button>',
-			prevArrow:'<button class="PreArrow"><i class="ri-arrow-up-s-line"></i></button>',
-			focusOnSelect: true,
-			responsive: [		    
+			nextArrow: '<button class="NextArrow"><i class="ri-arrow-down-s-line"></i></button>',
+			prevArrow: '<button class="PreArrow"><i class="ri-arrow-up-s-line"></i></button>',
+			focusOnSelect: false,
+			responsive: [
 				{
-				breakpoint: 1200,
-				settings: {
-					slidesToShow: 2,
-				}
+					breakpoint: 1024,
+					settings: {
+						slidesToShow: 5,
+						slidesToScroll: 1,
+						infinite: true,
+						dots: true,
+					}
 				},
 				{
 					breakpoint: 600,
 					settings: {
-						asNavFor: false,
+						slidesToShow: 5,
+						slidesToScroll: 1,
 					}
 				},
+				{
+					breakpoint: 480,
+					settings: {
+						slidesToShow: 5,
+						slidesToScroll: 1,
+					}
+				}
 			]
 		});
+		
 
 		jQuery('#episodes-slider2').slick({
 			dots: false,
@@ -426,7 +391,7 @@ Index Of Script
 			Owl Carousel
 		----------------------------------------------------------------------- */
 		jQuery('.episodes-slider1').owlCarousel({
-			loop:true,
+			loop:false,
 			margin:20,
 			nav:true,
 			navText: ["<i class='ri-arrow-left-s-line'></i>", "<i class='ri-arrow-right-s-line'></i>"],
@@ -593,282 +558,3 @@ Index Of Script
 
 	});
 })(jQuery);
-//lazzy loader//
-(function($, window, document, undefined) {
-    var $window = $(window);
-
-    $.fn.lazyload = function(options) {
-        var elements = this;
-        var $container;
-        var settings = {
-            threshold       : 0,
-            failure_limit   : 0,
-            event           : "scroll",
-            effect          : "show",
-            container       : window,
-            data_attribute  : "original",
-            skip_invisible  : true,
-            appear          : null,
-            load            : null,
-            placeholder     : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
-        };
-
-        function update() {
-            var counter = 0;
-
-            elements.each(function() {
-                var $this = $(this);
-                if (settings.skip_invisible && !$this.is(":visible")) {
-                    return;
-                }
-                if ($.abovethetop(this, settings) ||
-                    $.leftofbegin(this, settings)) {
-                        /* Nothing. */
-                } else if (!$.belowthefold(this, settings) &&
-                    !$.rightoffold(this, settings)) {
-                        $this.trigger("appear");
-                        /* if we found an image we'll load, reset the counter */
-                        counter = 0;
-                } else {
-                    if (++counter > settings.failure_limit) {
-                        return false;
-                    }
-                }
-            });
-
-        }
-
-        if(options) {
-            /* Maintain BC for a couple of versions. */
-            if (undefined !== options.failurelimit) {
-                options.failure_limit = options.failurelimit;
-                delete options.failurelimit;
-            }
-            if (undefined !== options.effectspeed) {
-                options.effect_speed = options.effectspeed;
-                delete options.effectspeed;
-            }
-
-            $.extend(settings, options);
-        }
-
-        /* Cache container as jQuery as object. */
-        $container = (settings.container === undefined ||
-                      settings.container === window) ? $window : $(settings.container);
-
-        /* Fire one scroll event per scroll. Not one scroll event per image. */
-        if (0 === settings.event.indexOf("scroll")) {
-            $container.bind(settings.event, function() {
-                return update();
-            });
-        }
-
-        this.each(function() {
-            var self = this;
-            var $self = $(self);
-
-            self.loaded = false;
-
-            /* If no src attribute given use data:uri. */
-            if ($self.attr("src") === undefined || $self.attr("src") === false) {
-                if ($self.is("img")) {
-                    $self.attr("src", settings.placeholder);
-                }
-            }
-
-            /* When appear is triggered load original image. */
-            $self.one("appear", function() {
-                if (!this.loaded) {
-                    if (settings.appear) {
-                        var elements_left = elements.length;
-                        settings.appear.call(self, elements_left, settings);
-                    }
-                    $("<img />")
-                        .bind("load", function() {
-
-                            var original = $self.attr("data-" + settings.data_attribute);
-                            $self.hide();
-                            if ($self.is("img")) {
-                                $self.attr("src", original);
-                            } else {
-                                $self.css("background-image", "url('" + original + "')");
-                            }
-                            $self[settings.effect](settings.effect_speed);
-
-                            self.loaded = true;
-
-                            /* Remove image from array so it is not looped next time. */
-                            var temp = $.grep(elements, function(element) {
-                                return !element.loaded;
-                            });
-                            elements = $(temp);
-
-                            if (settings.load) {
-                                var elements_left = elements.length;
-                                settings.load.call(self, elements_left, settings);
-                            }
-                        })
-                        .attr("src", $self.attr("data-" + settings.data_attribute));
-                }
-            });
-
-            /* When wanted event is triggered load original image */
-            /* by triggering appear.                              */
-            if (0 !== settings.event.indexOf("scroll")) {
-                $self.bind(settings.event, function() {
-                    if (!self.loaded) {
-                        $self.trigger("appear");
-                    }
-                });
-            }
-        });
-
-        /* Check if something appears when window is resized. */
-        $window.bind("resize", function() {
-            update();
-        });
-
-        /* With IOS5 force loading images when navigating with back button. */
-        /* Non optimal workaround. */
-        if ((/(?:iphone|ipod|ipad).*os 5/gi).test(navigator.appVersion)) {
-            $window.bind("pageshow", function(event) {
-                if (event.originalEvent && event.originalEvent.persisted) {
-                    elements.each(function() {
-                        $(this).trigger("appear");
-                    });
-                }
-            });
-        }
-
-        /* Force initial check if images should appear. */
-        $(document).ready(function() {
-            update();
-        });
-
-        return this;
-    };
-
-    /* Convenience methods in jQuery namespace.           */
-    /* Use as  $.belowthefold(element, {threshold : 100, container : window}) */
-
-    $.belowthefold = function(element, settings) {
-        var fold;
-
-        if (settings.container === undefined || settings.container === window) {
-            fold = (window.innerHeight ? window.innerHeight : $window.height()) + $window.scrollTop();
-        } else {
-            fold = $(settings.container).offset().top + $(settings.container).height();
-        }
-
-        return fold <= $(element).offset().top - settings.threshold;
-    };
-
-    $.rightoffold = function(element, settings) {
-        var fold;
-
-        if (settings.container === undefined || settings.container === window) {
-            fold = $window.width() + $window.scrollLeft();
-        } else {
-            fold = $(settings.container).offset().left + $(settings.container).width();
-        }
-
-        return fold <= $(element).offset().left - settings.threshold;
-    };
-
-    $.abovethetop = function(element, settings) {
-        var fold;
-
-        if (settings.container === undefined || settings.container === window) {
-            fold = $window.scrollTop();
-        } else {
-            fold = $(settings.container).offset().top;
-        }
-
-        return fold >= $(element).offset().top + settings.threshold  + $(element).height();
-    };
-
-    $.leftofbegin = function(element, settings) {
-        var fold;
-
-        if (settings.container === undefined || settings.container === window) {
-            fold = $window.scrollLeft();
-        } else {
-            fold = $(settings.container).offset().left;
-        }
-
-        return fold >= $(element).offset().left + settings.threshold + $(element).width();
-    };
-
-    $.inviewport = function(element, settings) {
-         return !$.rightoffold(element, settings) && !$.leftofbegin(element, settings) &&
-                !$.belowthefold(element, settings) && !$.abovethetop(element, settings);
-     };
-
-    /* Custom selectors for your convenience.   */
-    /* Use as $("img:below-the-fold").something() or */
-    /* $("img").filter(":below-the-fold").something() which is faster */
-
-    $.extend($.expr[":"], {
-        "below-the-fold" : function(a) { return $.belowthefold(a, {threshold : 0}); },
-        "above-the-top"  : function(a) { return !$.belowthefold(a, {threshold : 0}); },
-        "right-of-screen": function(a) { return $.rightoffold(a, {threshold : 0}); },
-        "left-of-screen" : function(a) { return !$.rightoffold(a, {threshold : 0}); },
-        "in-viewport"    : function(a) { return $.inviewport(a, {threshold : 0}); },
-        /* Maintain BC for couple of versions. */
-        "above-the-fold" : function(a) { return !$.belowthefold(a, {threshold : 0}); },
-        "right-of-fold"  : function(a) { return $.rightoffold(a, {threshold : 0}); },
-        "left-of-fold"   : function(a) { return !$.rightoffold(a, {threshold : 0}); }
-    });
-
-})(jQuery, window, document);
-
-document.addEventListener("DOMContentLoaded", function() {
-  var lazyloadImages;    
-
-  if ("IntersectionObserver" in window) {
-    lazyloadImages = document.querySelectorAll(".lazy");
-    var imageObserver = new IntersectionObserver(function(entries, observer) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          var image = entry.target;
-          image.src = image.dataset.src;
-          image.classList.remove("lazy");
-          imageObserver.unobserve(image);
-        }
-      });
-    });
-
-    lazyloadImages.forEach(function(image) {
-      imageObserver.observe(image);
-    });
-  } else {  
-    var lazyloadThrottleTimeout;
-    lazyloadImages = document.querySelectorAll(".lazy");
-    
-    function lazyload () {
-      if(lazyloadThrottleTimeout) {
-        clearTimeout(lazyloadThrottleTimeout);
-      }    
-
-      lazyloadThrottleTimeout = setTimeout(function() {
-        var scrollTop = window.pageYOffset;
-        lazyloadImages.forEach(function(img) {
-            if(img.offsetTop < (window.innerHeight + scrollTop)) {
-              img.src = img.dataset.src;
-              img.classList.remove('lazy');
-            }
-        });
-        if(lazyloadImages.length == 0) { 
-          document.removeEventListener("scroll", lazyload);
-          window.removeEventListener("resize", lazyload);
-          window.removeEventListener("orientationChange", lazyload);
-        }
-      }, 20);
-    }
-
-    document.addEventListener("scroll", lazyload);
-    window.addEventListener("resize", lazyload);
-    window.addEventListener("orientationChange", lazyload);
-  }
-})
-

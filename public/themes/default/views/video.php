@@ -2256,6 +2256,7 @@ $artists = [];
                     <script src="https://checkout.stripe.com/checkout.js"></script>
                     <div class="clear"></div>
                     <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $client_id; ?>"></script>
+                    <script src="https://js.stripe.com/v3/"></script>
 
                     <script>
 
@@ -2942,7 +2943,9 @@ $artists = [];
 
                     $(document).ready(function() {
 
+                       
                         $(".payment_btn").click(function() {
+
 
                             $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
 
@@ -2950,14 +2953,12 @@ $artists = [];
                             if (payment_gateway == "Stripe") {
 
                                 $('.Stripe_button').show();
-                                $('.Razorpay_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
-                                $('.payment_card_payment').hide();
+                                $('.Razorpay_button,.paystack_button,.cinetpay_button,.paypal_button,.payment_card_payment').hide();
 
                             } else if (payment_gateway == "Razorpay") {
 
-                                $('.paystack_button,.Stripe_button,.cinetpay_button,.paypal_button').hide();
+                                $('.paystack_button,.Stripe_button,.cinetpay_button,.paypal_button,.payment_card_payment').hide();
                                 $('.Razorpay_button').show();
-                                $('.payment_card_payment').hide();
 
                             } else if (payment_gateway == "Paystack") {
 
@@ -2971,10 +2972,19 @@ $artists = [];
                                 $('.payment_card_payment').hide();
                             }else if (payment_gateway == "PayPal") {
                                 $('.Stripe_button,.Razorpay_button,.paystack_button,.cinetpay_button').hide();
-                                $('.paypal_button').show();
-                                $('.payment_card_payment').show();
-                                // $('.paypal_button').hide();
+                                    var wasChecked = $(this).data('wasChecked') || false;
+                                    if (wasChecked) {
+                                        $('.paypal_button').hide();
+                                        $('.payment_card_payment').show();
+                                    } else {
+                                        $('.paypal_button').show();
+                                        $('.payment_card_payment').show();
+                                    }
+
+                                    $(this).data('wasChecked', $(this).prop('checked'));
                             }
+                            // $(".payment_btn").not(this).data('wasChecked', false);
+
                         });
                     });
                 </script>

@@ -436,26 +436,113 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
 
-                                            {{-- Ads Position --}}
-                    <div class="row mt-3">
-                        <div class="col-sm-6"  >
-                            <label class="m-0">Choose Ads Position</label>
-                            <select class="form-control" name="ads_position" id="ads_position" >
-                               <option value=" ">Select the Ads Position </option>
-                               <option value="pre">  Pre-Ads Position</option>
-                               <option value="mid">  Mid-Ads Position</option>
-                               <option value="post"> Post-Ads Position</option>
-                               <option value="all" > All Ads Position</option>
-                            </select>
-                        </div>
+                    @if( choosen_player() == 1  && ads_theme_status() == 1)    {{-- Video.Js Player--}}
 
-                        <div class="col-sm-6"  >
-                            <label class="">Choose Advertisement </label>
-                            <select class="form-control" name="live_ads" id="live_ads" >
-                               <option value=" ">Select the Advertisement </option>
-                            </select>
-                         </div>
-                    </div>
+                        @if ( admin_ads_pre_post_position() == 1  )
+
+                            <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
+
+                                <label> {{ ucwords( 'Choose the Pre / Post-Position Advertisement' ) }}    </label>
+                                
+                                <select class="form-control" name="pre_post_ads" >
+
+                                    <option value=" " > Select the Post / Pre-Position Advertisement </option>
+
+                                    <option value="random_ads"> Random Ads </option>
+
+                                    @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                        <option value="{{ $video_js_Advertisement->id }}"  > {{ $video_js_Advertisement->ads_name }}</option>
+                                    @endforeach
+                                
+                                </select>
+                            </div>
+                            
+                        @elseif ( admin_ads_pre_post_position() == 0 )
+
+                            <div class="row mt-3">
+
+                                <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                                    <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                                    
+                                    <select class="form-control" name="pre_ads" >
+
+                                        <option value=" " > Select the Pre-Position Advertisement </option>
+        
+                                        <option value="random_ads" > Random Ads </option>
+        
+                                        @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                            <option value="{{ $video_js_Advertisement->id }}" > {{ $video_js_Advertisement->ads_name }}</option>
+                                        @endforeach
+                                        
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
+                                    <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                                    
+                                    <select class="form-control" name="post_ads" >
+
+                                        <option value=" " > Select the Post-Position Advertisement </option>
+        
+                                        <option value="random_ads"> Random Ads </option>
+        
+                                        @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                            <option value="{{ $video_js_Advertisement->id }}" > {{ $video_js_Advertisement->ads_name }}</option>
+                                        @endforeach
+                                    
+                                    </select>
+                                </div>
+                            </div>
+
+                        @endif
+
+                        <div class="row">
+                            <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                                <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                                <select class="form-control" name="mid_ads" >
+
+                                    <option value=" " > Select the Mid-Position Advertisement Category </option>
+
+                                    <option value="random_category" > Random Category </option>
+
+                                    @foreach( $ads_category as $ads_category )
+                                    <option value="{{ $ads_category->id }}" > {{ $ads_category->name }}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
+                                <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                                <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="" >
+                            </div>
+
+                        </div>
+                        
+                                {{-- Ply.io --}}
+                    @else    
+
+                                                {{-- Ads Position --}}
+                        <div class="row mt-3">
+                            <div class="col-sm-6"  >
+                                <label class="m-0">Choose Ads Position</label>
+                                <select class="form-control" name="ads_position" id="ads_position" >
+                                <option value=" ">Select the Ads Position </option>
+                                <option value="pre">  Pre-Ads Position</option>
+                                <option value="mid">  Mid-Ads Position</option>
+                                <option value="post"> Post-Ads Position</option>
+                                <option value="all" > All Ads Position</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6"  >
+                                <label class="">Choose Advertisement </label>
+                                <select class="form-control" name="live_ads" id="live_ads" >
+                                <option value=" ">Select the Advertisement </option>
+                                </select>
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
@@ -669,6 +756,7 @@ border-radius: 0px 4px 4px 0px;
             $("#duration").mask("00:00:00");
             $("#free_duration").mask("00:00:00");
             $("#inputTag").tagsinput('items');
+            $("#video_js_mid_advertisement_sequence_time").mask("00:00:00");
         });
 
             // Live Stream Validation
@@ -813,6 +901,7 @@ border-radius: 0px 4px 4px 0px;
         rules: {
             title: "required",
             url_type: "required",
+            duration: "required",
             'language[]': {
                 required: true
             },

@@ -19,9 +19,9 @@
                                             <button class="playBTN"> <i class="fas fa-play"></i></button>
                                         </a>
 
-                                        <nav>
+                                        <!-- <nav>
                                             <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target= <?= "#Recommend_series-episode-videos-Modal-".$key ?> ><i class="fas fa-info-circle"></i><span>More info</span></button>
-                                        </nav>
+                                        </nav> -->
 
                                     </div>
                                     

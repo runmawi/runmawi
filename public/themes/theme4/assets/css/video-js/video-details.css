@@ -89,7 +89,7 @@
 .vpageBanner .content .right .utilities {
     color: #fff;
     opacity: 1;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     margin-bottom: 10px;
 }
@@ -382,7 +382,7 @@ li.breadcrumb-item a{
     }
 
     .vpageBanner .content .right .title {
-        font-size: 34px;
+        font-size: 25px;
         line-height: 44px;
     }
 
@@ -423,4 +423,8 @@ li.breadcrumb-item a{
         font-size: 14px;
         line-height: 24px;
     }
+}
+li.slide-item {
+    position: relative;
+    padding: 0 15px 0 15px;
 }

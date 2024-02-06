@@ -152,12 +152,12 @@ Index Of Script
 		});
 		jQuery('.favorites-slider').slick({
 			dots: false,
+			slidesToShow: 6,
+			slidesToScroll: 1,
 			arrows: true,
-			infinite: true,
+			infinite: false,
 			speed: 300,
-			autoplay: false,
-			slidesToShow: 4,
-			slidesToScroll: 1,		
+			autoplay: false,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
 			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
@@ -166,16 +166,16 @@ Index Of Script
 			{
 				breakpoint: 1200,
 				settings: {
-				slidesToShow: 3,
+				slidesToShow: 7,
 				slidesToScroll: 1,
 				infinite: true,
-				dots: true
+				dots: false,
 				}
 			},
 			{
 				breakpoint: 768,
 				settings: {
-				slidesToShow: 2,
+				slidesToShow: 4,
 				slidesToScroll: 1
 				}
 			},
@@ -209,33 +209,45 @@ Index Of Script
 			]
 		});
 		jQuery('#top-ten-slider-nav').slick({
-			slidesToShow: 3,
+			slidesToShow: 6,
 			slidesToScroll: 1,
 			asNavFor: '#top-ten-slider',
 			dots: false,
 			arrows: true,
 			infinite: true,
-			vertical:true,
+			vertical: true,
 			verticalSwiping: true,
 			centerMode: false,
-			nextArrow:'<button class="NextArrow"><i class="ri-arrow-down-s-line"></i></button>',
-			prevArrow:'<button class="PreArrow"><i class="ri-arrow-up-s-line"></i></button>',
-			focusOnSelect: true,
-			responsive: [		    
+			nextArrow: '<button class="NextArrow"><i class="ri-arrow-down-s-line"></i></button>',
+			prevArrow: '<button class="PreArrow"><i class="ri-arrow-up-s-line"></i></button>',
+			focusOnSelect: false,
+			responsive: [
 				{
-				breakpoint: 1200,
-				settings: {
-					slidesToShow: 2,
-				}
+					breakpoint: 1024,
+					settings: {
+						slidesToShow: 5,
+						slidesToScroll: 1,
+						infinite: true,
+						dots: true,
+					}
 				},
 				{
 					breakpoint: 600,
 					settings: {
-						asNavFor: false,
+						slidesToShow: 5,
+						slidesToScroll: 1,
 					}
 				},
+				{
+					breakpoint: 480,
+					settings: {
+						slidesToShow: 5,
+						slidesToScroll: 1,
+					}
+				}
 			]
 		});
+		
 
 		jQuery('#episodes-slider2').slick({
 			dots: false,

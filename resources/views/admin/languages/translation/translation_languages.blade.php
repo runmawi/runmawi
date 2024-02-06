@@ -23,6 +23,7 @@
             border-color: #66afe9;
             box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
             }
+            body.dark #translator-table_filter input[type="search"]{color: <?php echo GetLightText(); ?> !important;}
    </style>
 
 @section('content')

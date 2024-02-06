@@ -556,7 +556,7 @@ background-color: #000;padding: 10px!important;}
                 <div class="flick1">
                  <div class="small-heading text-white">{{ __('Step 2 of') }}  <span class="ml-2">2</span></div>
                     <p class="text-white">{{ __('Hello') }}, {{ $user_mail }}</p>
-                    <div class="medium-heading text-white"> {{  $signup_step2_title }} </div>
+                    <div class="medium-heading text-white"> {{  __($signup_step2_title) }} </div>
                     <div class="col-md-12 p-0 mt-2">
 
                                                 <!-- <h5> Payment Method</h5> -->
@@ -565,7 +565,7 @@ background-color: #000;padding: 10px!important;}
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                 <div class=" align-items-center ml-2">
                                     <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
-                                    <label class=" ml-2"> <p>{{ $stripe_lable }} </p></label> 
+                                    <label class=" ml-2"> <p>{{ __($stripe_lable) }} </p></label> 
                                 </div>
                             @endif
                            
@@ -573,7 +573,7 @@ background-color: #000;padding: 10px!important;}
                             @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
                                 <div class="align-items-center ml-2">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
-                                    <label class="ml-2" ><p> {{ $paystack_lable }} </p></label> 
+                                    <label class="ml-2" ><p> {{  __($paystack_lable) }} </p></label> 
                                 </div>
                             @endif
 
@@ -581,7 +581,7 @@ background-color: #000;padding: 10px!important;}
                             @if( !empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1 )
                                 <div class="align-items-center ml-2">
                                     <input type="radio" id="Razorpay_radio_button" class="payment_gateway" name="payment_gateway" value="Razorpay">
-                                    <label class="ml-2" ><p> {{ $Razorpay_lable }} </p></label> 
+                                    <label class="ml-2" ><p> {{  __($Razorpay_lable) }} </p></label> 
                                 </div>
                             @endif
 
@@ -589,7 +589,7 @@ background-color: #000;padding: 10px!important;}
                             @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
                                 <div class=" align-items-center ml-2">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
-                                    <label class="mt-2 ml-2" > <p>{{ $paypal_lable }} </p></label>
+                                    <label class="mt-2 ml-2" > <p>{{  __($paypal_lable) }} </p></label>
                                 </div>
                             @endif
 
@@ -597,7 +597,7 @@ background-color: #000;padding: 10px!important;}
                             @if(!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
                                 <div class=" align-items-center ml-2">
                                     <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay" >
-                                    <label class=" ml-2"> <p>{{ $CinetPay_lable }} </p></label> 
+                                    <label class=" ml-2"> <p>{{  __($CinetPay_lable) }} </p></label> 
                                 </div>
                             @endif
                            

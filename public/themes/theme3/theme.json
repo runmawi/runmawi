@@ -1,8 +1,8 @@
 {
-    "slug": "default",
-    "name": "Default",
-    "author": "John Doe",
-    "email": "johndoe@example.com",
+    "slug": "theme3",
+    "name": "theme3",
+    "author": "theme3",
+    "email": "",
     "description": "This is an example theme.",
     "web": "www.example.com",
     "license": "MIT",

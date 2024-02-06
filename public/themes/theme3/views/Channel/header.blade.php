@@ -61,7 +61,7 @@ $channel = Session::get('channel');
                               <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
                            </div>
                         </a>
-                        <a class="navbar-brand" href="#"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
                          
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
