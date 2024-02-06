@@ -4235,7 +4235,7 @@ public function verifyandupdatepassword(Request $request)
               'message'       => "Your Payment done Successfully!",
               'next_billing'  => $nextPaymentAttemptDate ,
               'Subscription'  => $Subscription ,
-              'user_details'  => $user ,
+              'users_role'    => User::where('id',$user_id)->pluck('role')->first() ,
               'user_id'       => $user->id,
             );
 
