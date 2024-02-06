@@ -25,6 +25,23 @@
     ul.list-inline.m-0 {
         height: 100%;
     }
+    input[type="text"] {
+        border-radius: 50px 0 0 50px;
+        border-right: none;
+        padding: 5px;
+        border:none;
+    }
+    input[type="text"]::placeholder{
+        color: #000;
+    }
+    button.join {
+        border-radius: 0 50px 50px 0;
+        border-left: none;
+        padding: 5px 22px;
+        border:none;
+    }
+
+
 </style>
 <footer class="mb-0">
         <div class="logo-content">
@@ -152,19 +169,19 @@
 
                     <h5><?= "Join the community" ?></h5>
                     <p><?= "For the latest news and offers signup below" ?></p>
-                    <!-- <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end">
                         <div class="row">
-                            <div class="col-lg-8">
+                            <div class="col-lg-8 col-md-8 col-sm-8 p-0">
                                 <input type="text" placeholder="Your Email">
                             </div>
-                            <div class="col-lg-4">
-                                <button class="join">Join</button>
+                            <div class="col-lg-4 col-md-4 col-sm-4 p-0">
+                                <button class="join btn-primary">Join</button>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
 
 
-                    <div class="d-flex">
+                    <!-- <div class="d-flex">
 
                         <?php if (!empty($settings->instagram_page_id)) { ?>
                             <a href="https://www.instagram.com/<?php echo InstagramId(); ?>" target="_blank" class="s-icon">
@@ -221,7 +238,7 @@
                                 <i class="ri-tiktok-fill"></i>
                             </a>
                         <?php } ?>
-                    </div>
+                    </div> -->
                     
                     <div class="d-flex">
                         <?php if (!empty($app_settings->android_url)) { ?>
