@@ -381,6 +381,8 @@ class AdminSeriesController extends Controller
         if(!empty($data['ppv_status'])){
 
             $ppv_status = $data['ppv_status'];
+            $access = 'ppv';
+
         }else{
             $ppv_status = 0;
         }
@@ -415,6 +417,7 @@ class AdminSeriesController extends Controller
         $series = Series::find($series->id);
         $series->slug = $series_slug;
         $series->ppv_status = $ppv_status;
+        $series->ppv_status = $access;
         $series->player_image = $player_image;
         $series->tv_image = $tv_image;
         $series->banner = empty($data['banner']) ? 0 : 1;
@@ -696,8 +699,13 @@ class AdminSeriesController extends Controller
         }else{
             $series_trailer = 0;
         }
+        if($data['ppv_status'] == 1){
+            $access = 'ppv';
+        }else{
+            $access = $data['access'];
 
-        
+        }
+        // dd($data);
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
         $series->player_image = $player_image;
@@ -710,6 +718,7 @@ class AdminSeriesController extends Controller
         }
         $series->player_image = $player_image;
         $series->slug = $data['slug'];
+        $series->access = $access;
         $series->ppv_status = $ppv_status;
         $series->details =($data['details']);
         $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : [];
@@ -1286,10 +1295,12 @@ class AdminSeriesController extends Controller
     public function Edit_season($id)
     {
         $season = SeriesSeason::where('id',$id)->first();
+        $series = Series::where('id',$season->series_id)->first();
         // dd($season);
         $data =array(
             'season' => $season,
             'InappPurchase' => InappPurchase::all(),
+            'series' => $series,
         );
 
         return View::make('admin/series/season/edit',$data);
