@@ -983,7 +983,7 @@ if (ppv_exits == 1) {
 
     var i = setInterval(function() {
         PPV_live_PurchaseUpdate();
-    }, 60 * 1000);
+    }, 10 * 1000);
 
     window.onload = unseen_expirydate_checking();
 
