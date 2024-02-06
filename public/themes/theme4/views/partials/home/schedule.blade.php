@@ -7,12 +7,12 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-name pl-5"><a href="{{ $order_settings_list[10]->url ? URL::to($order_settings_list[10]->url) : null }} ">{{ optional($order_settings_list[10])->header_name }}</a></h4>
+                        <h4 class="main-name mar-left"><a href="{{ $order_settings_list[10]->url ? URL::to($order_settings_list[10]->url) : null }} ">{{ optional($order_settings_list[10])->header_name }}</a></h4>
                         <h4 class="main-name"><a href="{{ $order_settings_list[10]->url ? URL::to($order_settings_list[10]->url) : null }} ">{{ 'View all' }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
-                            <ul id="trending-slider-nav" class="schedule-nav list-inline p-0 ml-5 row align-items-center">
+                            <ul id="trending-slider-nav" class="schedule-nav list-inline p-0 mar-left row align-items-center">
                                 @foreach ($data as $key => $video_details)
                                     <li>
                                         <a href="javascript:void(0);">
@@ -35,7 +35,7 @@
                                                     <div id="" class="overview-tab tab-pane fade active show">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                            <div class="caption pl-5">
+                                                            <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ strlen($video_details->name) > 17 ? substr($video_details->name, 0, 18) . '...' : $video_details->name }}</h2>
 
                                                                 <div class="p-btns">

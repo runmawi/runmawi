@@ -195,7 +195,7 @@ endif; ?>
 if(Route::current()->getName() == "home" || Route::current()->getName() == null  ){
 
 
-            $parentCategories = App\VideoCategory::where('banner',1)->get();
+            $parentCategories = App\VideoCategory::where('in_home',1)->where('banner',1)->get();
 
                 foreach($parentCategories as $category) {
                 

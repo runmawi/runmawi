@@ -661,7 +661,7 @@
                                              </a>
                                           </div>
 
-                                          <?php elseif( !Auth::guest() && Auth::user()->role == "subs"): ?>
+                                          <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
 
                                           <div class="iq-card-body p-0 pl-3 pr-3">
 
@@ -809,21 +809,23 @@
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
         <script>
-        $("#searchResult").validate({
-            errorClass: 'Search_error_class',
-            rules: {
-                search: {
-                    required: true,
-                },
-            },
+               $("#searchResult").validate({
+                     errorClass: 'Search_error_class',
+                     rules: {
+                        search: {
+                           required: true,
+                        },
+                     },
 
-            messages: {
-                search: {
-                    required: "This Search field is required",
-                }
-            }
-        });
-        </script>
+                     messages: {
+                        search: {
+                           required: "This Search field is required",
+                        }
+                     }
+               });
+               </script>
+
+         
 
         <style>
          .dropdown-toggle::after{
@@ -832,4 +834,56 @@
          ul.dropdown-menu.categ-head{
             overflow:hidden;
          }
+        .home-search li.list-group-item{
+            text-align:left;
+         }
+
+         /* loader style */
+         .fullpage-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity .5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .fullpage-loader__logo {
+            position: relative;
+            &:after {
+            // this is the sliding white part
+            content: '';
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
+            // opaque white slide
+            background: rgba(255,255,255,.8);
+            // gradient shine scroll
+            background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+            }
+            }
+            }
+            @keyframes shine {
+            0% {
+            transform: translateX(-100%) skew(-30deg);
+            }
+            100% {
+            transform: translateX(200%) skew(-30deg);
+            }
+            }
+            .fullpage-loader--invisible {
+            opacity: 0;
+            }
          </style>
+

@@ -89,7 +89,7 @@
 .vpageBanner .content .right .utilities {
     color: #fff;
     opacity: 1;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     margin-bottom: 10px;
 }
@@ -127,11 +127,11 @@
 }
 .genres .genre:last-child { border-right: 0px solid #848484; }
 
-.vpageBanner .content .right .row {
+.vpageBanner .content .right .watch_buttons .row {
     display: flex;
     align-items: center;
     gap: 25px;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
 }
 
 .circleRating {
@@ -355,6 +355,15 @@
 ul.breadcrumb.breadcrumb-csp{
     background-color: transparent !important;
 }
+.breadcrumb{
+    background-color: transparent;
+}
+li.breadcrumb-item a{
+    color: #fff;
+}
+.modal-dialog-centered .modal-content {
+    background: transparent;
+}
 
 @media only screen and (min-width: 768px) {
     .vpageBanner {
@@ -373,7 +382,7 @@ ul.breadcrumb.breadcrumb-csp{
     }
 
     .vpageBanner .content .right .title {
-        font-size: 34px;
+        font-size: 25px;
         line-height: 44px;
     }
 
@@ -414,4 +423,8 @@ ul.breadcrumb.breadcrumb-csp{
         font-size: 14px;
         line-height: 24px;
     }
+}
+li.slide-item {
+    position: relative;
+    padding: 0 15px 0 15px;
 }

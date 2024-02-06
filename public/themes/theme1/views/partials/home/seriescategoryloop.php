@@ -35,9 +35,9 @@
                     <h4 class="movie-title">
                         <?php
                         if (!empty($category->home_genre)) {
-                            echo __($category->home_genre);
+                            echo (__($category->home_genre));
                         } else {
-                            echo __($category->name);
+                            echo (__($category->name));
                         }
                         ?>
                     </h4>
@@ -78,69 +78,12 @@
                                 </div>
                                 <div class="block-description pt-3">
                                     <a href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
-                                        <?php if($ThumbnailSetting->title == 1) { ?>
-                                        <!-- Title -->
-                                        <h6>
-                                            <?php echo strlen($series_video->title) > 17 ? substr($series_video->title, 0, 18) . '...' : $series_video->title; ?>
-                                        </h6>
-                                        <?php } ?>
-                                        <div class="movie-time d-flex align-items-center pt-1">
-                                            
-                                            <?php if($ThumbnailSetting->duration == 1) { ?>
-                                            <!-- Duration -->
-                                             <span class="text-white">
-                                                   <i class="fa fa-clock-o"></i>
-                                                   <?= gmdate('H:i:s', $series_video->duration) ?>
-                                             </span>
-                                            <?php } ?>
-                                        </div>
-                                        <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
-                                        <div class="movie-time d-flex align-items-center pt-1">
-                                            <?php if($ThumbnailSetting->rating == 1) { ?>
-                                             <!--Rating  -->
-                                             <div class="badge badge-secondary p-1 mr-2">
-                                                   <span class="text-white">
-                                                      <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                      <?php echo __($series_video->rating); ?>
-                                                   </span>
-                                             </div>
-                                            <?php } ?>
-                                           
-                                            <?php if($ThumbnailSetting->featured == 1 && $series_video->featured == 1) { ?>
-                                                <!-- Featured -->
-                                                <div class="badge badge-secondary p-1 mr-2">
-                                                      <span class="text-white">
-                                                         <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                      </span>
-                                                </div>
-                                            <?php }?>
-                                        </div>
-                                        <?php } ?>
-                                        <div class="movie-time d-flex align-items-center pt-1">
-                                            <!-- Category Thumbnail  setting -->
-                                            <?php
-                                             $CategoryThumbnail_setting = App\SeriesCategory::join('series_genre', 'series_genre.id', '=', 'series_categories.category_id')
-                                                   ->where('series_categories.series_id', $category->id)
-                                                   ->pluck('series_genre.name');
-                                            ?>
-                                            <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                            <span class="text-white">
-                                                <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                <?php
-                                                $Category_Thumbnail = [];
-                                                foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
-                                                    $Category_Thumbnail[] = $CategoryThumbnail;
-                                                }
-                                                echo implode(',' . ' ', $Category_Thumbnail);
-                                                ?>
-                                            </span>
-                                            <?php } ?>
-                                        </div>
+                                       
                                         <div class="hover-buttons m-0">
                                             <a type="button" class="text-white d-flex align-items-center mb-5"
                                                 href="<?php echo URL::to('play_series'); ?><?= '/' . $series_video->slug ?>">
                                                 <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
-                                                    width="10%" height="10%" /> <?= __('Watch Now')  ?>
+                                                    width="10%" height="10%" /> 
                                             </a>
                                         </div>
                                     </a>

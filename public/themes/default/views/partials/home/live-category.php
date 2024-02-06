@@ -110,9 +110,9 @@
                                             </p>
                                         <?php } ?>
 
-                                        <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
+                                        <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
                                             <p class="published_on1"><?php echo $publish_day; ?> <span><?php echo $publish_time; ?></span></p>
-                                        <?php  } ?>
+                                        <?php  } ?> -->
                                     </div>
                                     </div>
 

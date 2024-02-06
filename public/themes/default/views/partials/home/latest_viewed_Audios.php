@@ -64,9 +64,9 @@
                                        
                                     <?php } ?>
 
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                         <p class="published_on1"><?= "Published"; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
                                
                             </div>
                             </div>

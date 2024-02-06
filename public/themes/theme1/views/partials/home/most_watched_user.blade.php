@@ -1,5 +1,5 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href=""><?= __('Most Watching Videos - User')  ?></a></h4>
+    <h4 class="main-title"><a href=""><?= (__('Most Watching Videos')).'-'. (__( 'User'))  ?></a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -17,6 +17,12 @@
                                 <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4" />
                             </video>-->
                         </a>
+                    </div>
+                    <div class="block-description">
+                        <div class="hover-buttons">
+                            <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                        </div>
+                    </div>
 
                         <!-- PPV price -->
                        
@@ -33,17 +39,13 @@
                                 <?php } ?>
                           
 
-                    </div>
+                    
                 </div>
-                <div class="block-description">
-                    <div class="hover-buttons">
-                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
-                    </div>
-                </div>
+                
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
+                    <h6><?php echo (mb_strlen($watchlater_video->title) > 17) ? mb_substr($watchlater_video->title, 0, 18).'...' : $watchlater_video->title; ?></h6>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>

@@ -534,6 +534,7 @@ $settings  = App\Setting::first();?>
 										<option value="ppv" >PPV  (Pay Per Season(Episodes))</option>   
 									@endif
 								</select>
+								<span class="ErrorText"> *User Access Series is set as Subscriber. </span>
                             </div>
                       
                             <div class="form-group" id="ppv_price">
@@ -578,7 +579,7 @@ $settings  = App\Setting::first();?>
 			
 			@foreach($seasons as $key=>$seasons_value)
 			<tr>
-				<td valign="bottom"><p>Season {{$key+1}}</p></td>
+				<td valign="bottom"><p> {{ optional($seasons_value)->series_seasons_name }}</p></td>
 				<td valign="bottom"><p>{{count($seasons[$key]['episodes'])}} Episodes</p></td>
 				<td>
 					<p>
@@ -604,11 +605,15 @@ $settings  = App\Setting::first();?>
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+
+
 <script type="text/javascript">
    $ = jQuery;
    $(document).ready(function($){
     $("#duration").mask("00:00:00");
    });
+   
+
 
 		$(document).ready(function(){
 
@@ -622,8 +627,22 @@ $settings  = App\Setting::first();?>
 				}
 			});
 
-			
+			$(document).ready(function () {
+						$('.ErrorText').hide();
+				$('#ppv_access').change(function () {
+					var series_access = '<?= @$series->access ?>';
+					if (series_access == 'subscriber' && $('#ppv_access').val() == "ppv") {
+						$('#ppv_price').hide();
+						$('.ErrorText').show();
+						$('#submit-new-cat').prop('disabled', true);
+					} else {
+						$('#submit-new-cat').prop('disabled', false);
+						$('.ErrorText').hide();
+					}
+				});
 
+
+			});
 		$('#titles').change(function(){
    		//  alert(($('#title').val()));
 
@@ -904,7 +923,10 @@ $('form[id="new-cat-form"]').validate({
 				required:true,
 				season_dimention:[1280,720]
 			},
+		series_seasons_name: {
+			required:true,
 		},
+	},
 	messages: {
 		trailer: 'This field is required',
 	},

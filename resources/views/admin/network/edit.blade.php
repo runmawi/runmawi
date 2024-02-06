@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <label>Display In Home :</label>
                             <input type="radio" id="in_home" id="in_home" name="in_home" value="1" {{ ($Series_Network->in_home == 1) ? 'checked' : '' }} >Yes
-                            <input type="radio" id="in_home" name="in_home" value="0" {{ ($Series_Network->in_home == 1) ? 'checked' : '' }}  >No
+                            <input type="radio" id="in_home" name="in_home" value="0" {{ ($Series_Network->in_home == 0) ? 'checked' : '' }}  >No
                         </div>
 
                         <div class="form-group">
@@ -67,7 +67,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="m-0">Banner Image:</label>
-                                    @if (!empty($Series_Network->image))
+                                    @if (!empty($Series_Network->banner_image))
                                         <img src="{{ $Series_Network->banner_image_url }}" class="movie-img" width="200" />
                                     @endif
                                 </div>

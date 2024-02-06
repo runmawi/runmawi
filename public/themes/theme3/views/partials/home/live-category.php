@@ -21,8 +21,7 @@
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 
                     <?php  if(isset($live_streams)) :
-                       foreach($live_streams as $livestream): 
-                       
+                       foreach($live_streams as $livestream):
                         if (!empty($livestream->publish_time))
                         {
                           $currentdate = date("M d , y H:i:s");
@@ -82,19 +81,21 @@
                                 $publish_day = '';
                               }
                           }
-                          ?>
+                           ?>
                         <li class="slide-item">
                             <a href="<?php echo URL::to('live') ?><?= '/' . $livestream->slug ?>">
                                 <div class="block-images position-relative">
                                                                 
                                     <div class="img-box">    <!-- block-images -->
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->image;  ?>" class="img-fluid w-100" alt="">
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->image;  ?>" class="img-fluid w-100" alt="live-c">
                                     
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                             <p class="p-tag1">
                                                 <?php if($livestream->access == 'subscriber' ){ ?>
-                                                     <i class="fas fa-crown" style='color:gold'></i>
-                                                    <?php }elseif(!empty($livestream->ppv_price)) {
+                                                    <i class="fas fa-crown" style='color:gold'></i> 
+                                                    <?php }elseif($livestream->access == 'registered'){?>
+                                                    <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                    <?php } elseif(!empty($livestream->ppv_price)) {
                                                     echo $currency->symbol.' '.$livestream->ppv_price ; 
                                                     } elseif(!empty($livestream->global_ppv) && $livestream->ppv_price == null) {
                                                         echo $currency->symbol .' '.$livestream->global_ppv;
@@ -107,15 +108,14 @@
                                         <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
                                             <p class="published_on1"><?php echo $publish_day; ?> <span><?php echo $publish_time; ?></span></p>
                                         <?php  } ?>
-
                                     </div>
 
                                     <div class="block-description">
                                         <a href="<?php echo URL::to('/') ?><?= '/live'.'/' . $livestream->slug ?>">
                                             <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                                    <h6>
+                                                    <p>
                                                         <?php  echo (strlen($livestream->title) > 17) ? substr($livestream->title,0,18).'...' : $livestream->title; ?>
-                                                    </h6>
+                                                    </p>
                                             <?php } ?>  
 
                                         <div class="movie-time d-flex align-items-center pt-1">
@@ -185,7 +185,7 @@
                                         <div class="hover-buttons">
                                             <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('/') ?><?= '/live'.'/' . $livestream->slug ?>">
-                                                <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                                <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%" alt="ply" /> Watch Now
                                             </a>
                                         </div>
                                     </a>

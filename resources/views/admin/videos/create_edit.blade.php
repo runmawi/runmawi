@@ -180,13 +180,16 @@ border-radius: 0px 4px 4px 0px;
 }
 .tags-input-wrapper .tag{
     display: inline-block;
-    background-color: #20222c;
-    color: white;
-    border-radius: 40px;
     padding: 0px 3px 0px 7px;
     margin-right: 5px;
     margin-bottom:5px;
-    box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7)
+    /* box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7) */
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+    color: #000;
+    font-size: 12px;
+    font-weight: 500;
 }
 .tags-input-wrapper .tag a {
     margin: 0 7px 3px;
@@ -206,6 +209,10 @@ border-radius: 0px 4px 4px 0px;
 	}
 }
  
+.gridContainer{
+   display: grid;
+   grid-template-columns: repeat(5, calc(100% / 5));
+}
 </style>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" /> -->
@@ -537,6 +544,16 @@ border-radius: 0px 4px 4px 0px;
                         <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" >
                     </div>
                 </div>
+
+               @if (videos_expiry_date_status() == 1)
+                  <div class="row">
+                     <div class="col-sm-4 form-group mt-3" id="">
+                        <label class="">Expiry Date & Time</label>
+                        <input type="datetime-local" class="form-control" id="expiry_date" name="expiry_date" value="@if(!empty($video->expiry_date)){{ $video->expiry_date }}@endif" >
+                     </div>
+                  </div>     
+               @endif
+
                </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                <button type="submit" style = "float: right;
     margin: 10px 5px 10px 0px;
@@ -641,7 +658,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="d-flex">
                               @foreach($Reels_videos as $reelsVideo)
                                  <video width="200" height="200" controls style="padding: 6px;">
-                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/' . $reelsVideo->reels_videos }}" type="video/mp4">
+                                    <source src="{{ URL::to('/') . '/public/uploads/reelsVideos/shorts/' . $reelsVideo->reels_videos }}" type="video/mp4">
                                  </video>
                               @endforeach
                            </div>
@@ -857,16 +874,27 @@ border-radius: 0px 4px 4px 0px;
                                         <label class="" for="featured">Enable this video as Featured:</label>
                                         <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                                    </div>
+
                                    <div class="clear"></div>
+
                                    <div>
                                        <label class="" for="active">Enable this Video:</label>
                                        <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                    </div>
+
                                     <div class="clear"></div>
                                    <div>
+
                                        <label class="" for="banner">Enable this Video as Slider:</label>
                                        <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                    </div>
+                                   <div class="clear"></div>
+
+                                    <div>
+                                       <label class="" for="banner">Enable this Today Top Video :</label>
+                                       <input type="checkbox" name="today_top_video" value={{ $video->today_top_video }}  {{ $video->today_top_video ? 'checked' : null }}/>
+                                    </div>
+
                                     <div class="clear"></div>
                                </div> 
                            </div>
@@ -891,6 +919,7 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="row">
                               <div class="col-sm-6 form-group">
+                                 <div id="VideoImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br />
                                  <input type="file" name="image" id="image" />
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1024 x 1024 pixels dimension or 9:16 ratio </p></span>
@@ -902,6 +931,7 @@ border-radius: 0px 4px 4px 0px;
                               </div>
 
                               <div class="col-sm-6 form-group">
+                                <div id="VideoPlayerImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br />
                                  <input type="file" name="player_image" id="player_image" />
                                  <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio </p></span>
@@ -918,6 +948,7 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="row">
                            <div class="col-sm-6 form-group">
+                              <div id="VideoTVImagesContainer" class="gridContainer mt-3"></div>
                               <label class="mb-1">  Video TV Thumbnail  </label><br>
                               <input type="file" name="video_tv_image" id="video_tv_image" >
                               <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1920 X 1080 pixels dimension or 16:9 ratio </p></span>
@@ -1055,9 +1086,10 @@ border-radius: 0px 4px 4px 0px;
                <fieldset id="ads_data">
                   <div class="form-card">
                      
+
                                  {{-- ADS Management --}}
                    
-                     @if( choosen_player() == 1 )    {{-- Video.Js Player--}}
+                     @if( choosen_player() == 1  )    {{-- Video.Js Player--}}
 
                         <div class="row">
                            
@@ -1187,6 +1219,10 @@ border-radius: 0px 4px 4px 0px;
                      <input type="hidden" id="type" name="type" value="{{ $video->type }}" />                                @endif
                      <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                      <!-- <input type="hidden" id="video_id" name="video_id" value=""> -->
+                     <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                     <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
+                     <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
+
                   </div>
                   <button type="submit" class="btn btn-primary mr-2" value="{{ $button_text }}">{{ $button_text }}</button>
                   <!-- <input type="button" name="next" class="next action-button" value="Submit" />  -->
@@ -1816,6 +1852,115 @@ $('#error_video_Category').hide();
    
 
    $(document).ready(function(){
+
+      $.ajax({
+        url: '{{ URL::to('admin/videos/extractedimage') }}',
+        type: "post",
+        data: {
+            _token: '{{ csrf_token() }}',
+            video_id : "{{ $video->id }}",
+        },
+        success: function(value) {
+            // console.log(value.ExtractedImage.length);
+
+            if (value && value.ExtractedImage.length > 0) {
+                $('#VideoImagesContainer').empty();
+                $('#VideoPlayerImagesContainer').empty();
+                var ExtractedImage = value.ExtractedImage;
+                var previouslySelectedElement = null;
+                var previouslySelectedVideoImag = null;
+                var previouslySelectedTVImage = null;
+
+                ExtractedImage.forEach(function(Image, index) {
+                    var imgElement = $('<div class="gridItem"><img src="' + Image.image_path + '" class="ajax-image m-1 w-100 h-100" /></div>');
+                    var VideoPlayerImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="video-image m-1 w-100 h-100" /></div>');
+                    var VideoTVImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="tv-video-image m-1 w-100 h-100" /></div>');
+
+                    imgElement.click(function() {
+                        $('.ajax-image').css('border', 'none');
+                        // Remove border from the previously selected image
+                        if (previouslySelectedElement) {
+                           previouslySelectedElement.css('border', 'none');
+                        }
+                        imgElement.css('border', '2px solid red');
+                        var clickedImageUrl = Image.image_path;
+
+                        var SelectedImageUrl = Image.image_original_name;
+                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                        previouslySelectedElement = $(this);
+
+                        $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    });
+                                    // Default selection for the first image
+                     // if (index === 0) {
+                     //       imgElement.click();
+                     // }
+                    $('#VideoImagesContainer').append(imgElement);
+
+                    VideoPlayerImagesContainer.click(function() {
+                        $('.video-image').css('border', 'none');
+                        if (previouslySelectedVideoImag) {
+                           previouslySelectedVideoImag.css('border', 'none');
+                        }
+                        VideoPlayerImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var VideoImageUrl = Image.image_original_name;
+                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                        previouslySelectedVideoImag = $(this);
+
+                        $('#videoImageUrlInput').val(VideoImageUrl);
+                    });
+
+                  //   if (index === 0) {
+                  //    VideoPlayerImagesContainer.click();
+                  //    }
+
+                    $('#VideoPlayerImagesContainer').append(VideoPlayerImagesContainer);
+
+                    VideoTVImagesContainer.click(function() {
+                        $('.tv-video-image').css('border', 'none');
+                        if (previouslySelectedTVImage) {
+                           previouslySelectedTVImage.css('border', 'none');
+                        }
+                        VideoTVImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var TVImageUrl = Image.image_original_name;
+                        previouslySelectedTVImage = $(this);
+
+                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                  });
+
+                  // if (index === 0) {
+                  //    VideoTVImagesContainer.click();
+                  // }
+
+                  $('#VideoTVImagesContainer').append(VideoTVImagesContainer);
+
+
+                });
+            } else {
+                     var SelectedImageUrl = '';
+
+                     $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+            }
+        },
+        error: function(error) {
+
+            var SelectedImageUrl = '';
+
+            $('#selectedImageUrlInput').val(SelectedImageUrl);
+            $('#videoImageUrlInput').val(SelectedImageUrl);
+            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+            console.error(error);
+        }
+    });
+
       // $('#player_data').hide();
       // $('#slug_validate').hide();
       // $('#videocategory_data').hide();

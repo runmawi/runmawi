@@ -133,26 +133,23 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 ?>
 
 <div id="myImage" class="container"
-    style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%); background-size: cover;  padding: 0px 0px 0px;">
+    style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%); background-size: cover;  padding: 0px 0px 0px;position:relative;z-index:1;">
     <div> </div>
     <div class="container-fluid pt-5">
         <div id="series_bg_dim" class="{{ ($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest())) ? '' : 'darker' }}"></div>
 
         <div class="row mt-3 align-items-center">
-            <?php if ( $ppv_exits > 0 || $video_access == 'free' ||
+            <?php  if ( $ppv_exits > 0 || $video_access == 'free' ||
                 ($series->access == 'guest' && $series->ppv_status != 1) ||
                 (($series->access == 'subscriber' || $series->access == 'registered') &&
                     !Auth::guest() &&
                     Auth::user()->subscribed() &&
                     $series->ppv_status != 1) ||
-                (!Auth::guest() &&
-                    (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) ||
-                (!Auth::guest() &&
-                    $series->access == 'registered' &&
-                    $settings->free_registration &&
-                    Auth::user()->role != 'registered' &&
-                    $series->ppv_status != 1)
-            ) : ?>
+                (!Auth::guest() &&  Auth::user()->role == 'admin') ||  Auth::user()->role == 'registered' 
+                ||  Auth::user()->role == 'subscriber' ||
+                (!Auth::guest() && $series->access == 'registered' &&
+                    $settings->free_registration && $series->ppv_status != 1)
+            ) :  ?>
 
             <div class="col-md-7 p-0">
                 <div id="series_title" class="show-movie">
@@ -293,142 +290,25 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                 </nav>
             </div> -->
 
-        <!-- $series->title -->
         <div class="container-fluid mt-5">
             <div class="favorites-contens">
-                <div class="col-md-3 p-0" style="width:150px">
-                    <select class="form-control" id="season_id" name="season_id" style="box-shadow: none;">
-                        @foreach ($season as $key => $seasons)
-                            <option data-key="<?= $key + 1 ?>" value="season_<?= $seasons->id ?>">Season
-                                <?= $key + 1 ?></option>
-                        @endforeach
-                    </select>
-                </div>
 
+                {{-- Season Depends Episode --}}
+
+                @if(($season)->isNotEmpty())
+
+                    <div class="col-md-3 p-0" style="width:150px">
+                        <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;">
+                            @foreach ($season as $key => $seasons)
+                                <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 
-                <!-- Season dropdown start -->
-                <div class="tab-container">
-                <div class="tab-navigation">              
-                    <select id="select-box">
-                    <option value="1">Season 1</option>
-                    <option value="2">Season 2</option>
-                    <option value="3">Season 3</option>
-                    </select>
-                </div>
-  
-                <!-- Season 1 Start Here -->
-                <div id="tab-1" class="tab-season">           
-                
-                <!-- Tablist -->
-
-                <div class="trending-custom-tab ">
-                     <div class="tab-title-info position-relative">
-                        <ul class="trending-pills nav nav-pills text-center iq-ltr-direction" role="tablist">
-                           <li class="nav-item">
-                              <a class="nav-link m-0 active show" data-toggle="pill" href="#episodes" role="tab" aria-selected="true">Episodes</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link m-0 " data-toggle="pill" href="#feature-clips" role="tab" aria-selected="false">FEATURED CLIPS</a>
-                           </li>
-                        </ul>
-                     </div>
-
-                     <div class="tab-content" id="nav-tabContent" style="display: block !important ;">
-                        
-                        <!-- Episode -->
-                        <div id="episodes" class="tab-pane animated fadeInUp">
-                           <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction ">
-                              
-                              <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                 <div class="block-image position-relative">
-                                    <a href="show-details.html">
-                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid transimga img-zoom" alt="" >
-                                    </a>
-                                    <div class="episode-number episodenum">S01E04</div>
-                                    <div class="episode-play-info">
-                                       <div class="episode-play">
-                                          <a href="show-details.html" tabindex="0"><i class="ri-play-fill"></i></a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="epi-desc p-3">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 22, 2020</span>
-                                       <span class="text-primary run-time" style="font-weight: 700">41min</span>
-                                    </div>
-                                    <a href="show-detail.html">
-                                       <h5 class="epi-name text-white mb-0">
-                                          The Reckless 4</h5>
-                                    </a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                        <!-- Features clips -->
-                        
-                        <div id="feature-clips" class="tab-pane animated fadeInUp active show">
-                           <div class="row episodes list-inline p-0 mb-0 iq-rtl-direction">
-                              
-                              
-                              <div class="e-item col-lg-3 col-sm-12 col-md-6">
-                                 <div class="block-image position-relative">
-                                    <a href="show-details.html">
-                                       <img src="https://templates.iqonic.design/streamit/frontend/html/images/tvthrillers/09.jpg" class="img-fluid img-zoom" alt="" >
-                                    </a>
-                                    <div class="episode-number episodenum">S01E02</div>
-                                    <div class="episode-play-info">
-                                       <div class="episode-play">
-                                          <a href="show-details.html" tabindex="0"><i class="ri-play-fill"></i></a>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="epi-desc p-3">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                       <span class="text-white rel-date">October 8, 2020</span>
-                                       <span class="text-primary run-time" style="font-weight: 700">35min</span>
-                                    </div>
-                                    <a href="show-detail.html">
-                                       <h5 class="epi-name text-white mb-0">
-                                          The Reckless 2 </h5>
-                                    </a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                </div>
-                <!-- Season 1 End Here -->
-
-
-                <!-- Season 2 Start Here -->
-                <div id="tab-2" class="tab-season">
-                    <p> Money Heist Season 2 </p>
-                </div>
-                <!-- Season 2 End Here -->
-
-                <!-- Season 3 Start Here -->
-                <div id="tab-3" class="tab-season">
-                    <p> Money Heist Season 3 </p>
-                </div>
-                <!-- Season 3 End Here -->
-
-
-                  </div>
-
-                  <script>
-                    $('.tab-season').hide();
-                    $('#tab-1').show();
-
-                    $('#select-box').change(function () {                   
-                    dropdown = $('#select-box').val();
-                    $('.tab-season').hide();
-                    $('#' + "tab-" + dropdown).show();                                    
-                    });
-                </script>
-                <!-- Season dropdwon end -->
-
+                    <div class="data">
+                        @partial('season_depends_episode_section')
+                    </div>
+                @endif
 
                 <ul class="category-page list-inline row p-3 mb-0">
                     <?php 
@@ -485,7 +365,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 
 <!-- Starring -->
 
-                    <div class="sectionArtists-Artists">   
+                    {{-- <div class="sectionArtists-Artists">   
                         <div class="Headingartist-artist">Starring</div>
                             <div class="listItems">
                                 <a href="https://dev-flick.webnexs.org/artist/The_Chainsmokers_-_Halsey">
@@ -501,7 +381,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                                 </a>
                                                   
                             </div>
-                    </div>
+                    </div> --}}
 
 
 
@@ -544,7 +424,6 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 <?php endif;?>
 <?php $payment_type = App\PaymentSetting::get(); ?>
 
-<?php include public_path('themes/theme6/views/footer.blade.php'); ?>
 
 
 <!-- Modal -->
@@ -1007,3 +886,26 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
         }, 3000);
     }
 </script>
+
+<script>
+    $(".season-depends-episode").change(function() {
+        
+        const season_id = $(this,':selected').val();
+
+        const series_id = $('#series_id').val();
+
+        $.ajax({
+            type: "get",
+            url: "{{ route('front-end.series.season-depends-episode') }}",
+            data: {
+                series_id: series_id ,
+                season_id: season_id ,
+            },
+            success: function(data) {
+                $(".data").html(data);
+            },
+        });
+    });
+</script>
+<?php include public_path('themes/theme6/views/footer.blade.php'); ?>
+

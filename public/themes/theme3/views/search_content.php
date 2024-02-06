@@ -9,7 +9,7 @@
 
     $latest_videos = $latest_videos->get();
 
-    $latest_livestreams =  App\LiveStream::limit('5')->latest()->get();
+    $latest_livestreams =  App\LiveStream::where('active',1)->limit('5')->latest()->get();
 
     $latest_audio =  App\Audio::where('active', '=', '1')->where('status', '=', '1')
                                 ->limit('5')->latest()->get();
@@ -261,9 +261,3 @@
         background: black;
     }
 </style>
-
-<script>
-    $( document ).ready(function() {
-        $(".home-search").hide();
-    });
-</script>

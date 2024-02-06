@@ -16,7 +16,7 @@ var options = {
     "currency": "INR",
     "name": "{{$respond['name']}}",
     "description": "{{$respond['description']}}",
-    "image": "{{ GetDarkLogourl() }}",
+    "image": "https://example.com/your_logo",
     "handler": function (response){
 
         document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;

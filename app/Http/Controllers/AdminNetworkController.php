@@ -12,6 +12,16 @@ use App\SeriesNetwork;
 
 class AdminNetworkController extends Controller
 {
+    public function __construct()
+    {
+        if(Series_Networks_Status() == 0 ){
+
+            $Error_msg = "Series Network Restricted";
+            $url = URL::to('/admin');
+            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+        }
+    }
+
     public function Network_index()
     {
         try {
@@ -53,12 +63,12 @@ class AdminNetworkController extends Controller
     
                 if(compress_image_enable() == 1){
     
-                    $filename   = 'series-Newwork-'.time().'.'.compress_image_format();
+                    $filename   = 'series-Network-'.time().'.'.compress_image_format();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename ,compress_image_resolution() );
     
                 }else{
     
-                    $filename   = 'series-Newwork-'.time().'.'.$file->getClientOriginalExtension();
+                    $filename   = 'series-Network-'.time().'.'.$file->getClientOriginalExtension();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename );
                 }
     
@@ -71,12 +81,12 @@ class AdminNetworkController extends Controller
     
                 if(compress_image_enable() == 1){
     
-                    $filename   = 'series-Newwork-'.time().'.'.compress_image_format();
+                    $filename   = 'series-Network-banner-'.time().'.'.compress_image_format();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename ,compress_image_resolution() );
     
                 }else{
     
-                    $filename   = 'series-Newwork-'.time().'.'.$file->getClientOriginalExtension();
+                    $filename   = 'series-Network-banner-'.time().'.'.$file->getClientOriginalExtension();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename );
                 }
     
@@ -103,7 +113,7 @@ class AdminNetworkController extends Controller
                 return $item;
             });
     
-            $SeriesNetwork =  SeriesNetwork::orderBy('order')->get()->map(function ($item) {
+            $SeriesNetwork =  SeriesNetwork::where('id',$request->id)->orderBy('order')->get()->map(function ($item) {
                 $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : default_vertical_image_url() ;
                 $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : default_horizontal_image_url();
                 return $item;
@@ -144,12 +154,12 @@ class AdminNetworkController extends Controller
     
                 if(compress_image_enable() == 1){
     
-                    $filename   = 'series-Newwork-'.time().'.'.compress_image_format();
+                    $filename   = 'series-Network-'.time().'.'.compress_image_format();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename ,compress_image_resolution() );
     
                 }else{
     
-                    $filename   = 'series-Newwork-'.time().'.'.$file->getClientOriginalExtension();
+                    $filename   = 'series-Network-'.time().'.'.$file->getClientOriginalExtension();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename );
                 }
     
@@ -162,12 +172,12 @@ class AdminNetworkController extends Controller
     
                 if(compress_image_enable() == 1){
     
-                    $filename   = 'series-Newwork-'.time().'.'.compress_image_format();
+                    $filename   = 'series-Network-banner-'.time().'.'.compress_image_format();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename ,compress_image_resolution() );
     
                 }else{
     
-                    $filename   = 'series-Newwork-'.time().'.'.$file->getClientOriginalExtension();
+                    $filename   = 'series-Network-banner-'.time().'.'.$file->getClientOriginalExtension();
                     Image::make($file)->save(base_path().'/public/uploads/seriesNetwork/'.$filename );
                 }
     

@@ -19,7 +19,7 @@
                         <form method="POST" action="{{ route('Choose-profile.store') }}" class="mt-4" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <h4>{{ __('New Profile') }} </h4>
+                                <h4> {{ __('New Profile') }}</h4>
                             </div>
 
                             <div class="form-group">  
@@ -51,7 +51,7 @@
 
                             <div class="row">
                                 <div class="col-md-9">
-                                         <p align="left" class="kid">{{ __('TV shows and movies for ages 12 and under ') }}<br>
+                                         <p align="left" class="kid">{{ __('TV shows and movies for ages 12 and under') }} <br>
                                              <a class="learn_more" href="">{{ __('Learn More') }} </a> 
                                          </p>
                                 </div>
@@ -59,8 +59,8 @@
                         </div>
 
                         <div class="row sumbit_btn">
-                            <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('Choose-profile')}}'" >{{ __('Cancel') }}</button>
-                            <button type="submit" class="btn btn-hover ab" >{{ __('Save Changes') }}</button>
+                            <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('choose-profile')}}'" >{{ __('Cancel') }}</button>
+                            <!-- <button type="submit" class="btn btn-hover ab" >{{ __('Save Changes') }}</button> -->
                         </div>
 
                         </form>

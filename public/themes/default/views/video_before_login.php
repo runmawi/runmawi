@@ -187,7 +187,7 @@
             <?php } ?>
          </div>
 
-      <?php  elseif($video->type == '' && $video->processed_low != 100 || $video->processed_low == null ): ?>
+      <?php  elseif($video->type == '' && $video->processed_low != 100 || $video->processed_low == null && $video->type != 'm3u8_url'): ?>
 
          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
             <video id="videoPlayer" <?= $autoplay ?>  class="adstime_url"  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
@@ -517,10 +517,11 @@
                                             <a class="black-text" href="<?php echo route('video_categories',[ $video_category_name->categories_slug ])?>">
                                                 <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                                             </a>
+                                             <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
                                         </li>
                                       <?php } ?>
 
-                                      <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
 
                                       <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
                                   </ol>
@@ -1211,9 +1212,11 @@
    var trailer_video_type =  <?php echo json_encode($video->trailer_type) ; ?> ;
    
    
-   if(trailer_video_type == "m3u8_url"){
+   if(trailer_video_type == "m3u8_urls"){
+
      (function () {
        var video = document.querySelector('#videoPlayer1');
+      //  alert(video);
    
        if (Hls.isSupported()) {
            var hls = new Hls();
@@ -1225,7 +1228,7 @@
        
      })();
    
-   }else if(trailer_video_type == "m3u8"){
+   }else if(trailer_video_type == "m3u8" || trailer_video_type == "m3u8_url" ){
    // alert(trailer_video_type);
    document.addEventListener("DOMContentLoaded", () => {
    const videos = document.querySelector('#videos');

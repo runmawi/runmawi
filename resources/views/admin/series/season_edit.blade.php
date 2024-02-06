@@ -72,6 +72,12 @@
         cursor: pointer;
     }
 </style>
+<style>
+    .admin-section-title {
+        height: 500px; /* Set a fixed height for your container */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
+</style>
 
 @section('css')
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -83,7 +89,7 @@
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
-            <div class="admin-section-title">
+            <div class="admin-section-titles">
                 @if(!empty($episodes->id))
                 <h4>{{ $episodes->title }}</h4>
                 <!-- {{ URL::to('episodes') . '/' . $episodes->id }} -->
@@ -149,6 +155,9 @@
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
+                            <div class="col-md-3">
+                                <div id="ImagesContainer" class="d-flex mt-3"></div>
+                            </div>
                             <div class="panel panel-primary" data-collapsed="0">
                                 <div class="panel-heading">
                                     <div class="panel-title"><label>Episode Image Cover</label></div>
@@ -167,6 +176,9 @@
                         </div>
                         
                         <div class="col-sm-6">
+                                <div class="col-md-3">
+                                    <div id="ajaxImagesContainer" class="d-flex mt-3"></div>
+                                    </div>
                             <label class="m-0">Episode Player Image</label>
                             <p class="p1">Select the player image ( 1280 X 720px or 16:9 Ratio )</p>
 
@@ -179,6 +191,10 @@
                         </div>
 
                         <div class="col-sm-6">
+                            <div class="col-md-3">
+                                <div id="TVImagesContainer" class="d-flex mt-3"></div>
+                                        {{-- Video TV Thumbnail --}}
+                                </div>
                             <label class="m-0">Episode TV Image</label>
                             <p class="p1">Select the player image ( 16:9 Ratio or 1920 X 1080 px)</p>
     
@@ -355,6 +371,93 @@
                                  </div>
                               </div>
                            </div>
+
+                           
+                @if( choosen_player() == 1 && ads_theme_status() == 1)    {{-- Video.Js Player--}}
+
+                    @if ( admin_ads_pre_post_position() == 1 )
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
+
+                            <label> {{ ucwords( 'Choose the Pre / Post-Position Advertisement' ) }}    </label>
+                            
+                            <select class="form-control" name="pre_post_ads" >
+
+                                <option value=" " > Select the Post / Pre-Position Advertisement </option>
+
+                                <option value="random_ads" > Random Ads </option>
+
+                                @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}" > {{ $video_js_Advertisement->ads_name }}</option>
+                                @endforeach
+                            
+                            </select>
+                        </div>
+                        
+                    @elseif ( admin_ads_pre_post_position() == 0 )
+
+                        <div class="row mt-3">
+
+                            <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                                <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                                
+                                <select class="form-control" name="pre_ads" >
+
+                                    <option value=" " > Select the Pre-Position Advertisement </option>
+
+                                    <option value="random_ads"> Random Ads </option>
+
+                                    @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                        <option value="{{ $video_js_Advertisement->id }}"  > {{ $video_js_Advertisement->ads_name }}</option>
+                                    @endforeach
+                                    
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
+                                <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                                
+                                <select class="form-control" name="post_ads" >
+
+                                    <option value=" " > Select the Post-Position Advertisement </option>
+
+                                    <option value="random_ads"> Random Ads </option>
+
+                                    @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                        <option value="{{ $video_js_Advertisement->id }}"> {{ $video_js_Advertisement->ads_name }}</option>
+                                    @endforeach
+                                
+                                </select>
+                            </div>
+                        </div>
+
+                    @endif
+
+                    <div class="row">
+                        <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                            <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                            <select class="form-control" name="mid_ads" >
+
+                                <option value=" " > Select the Mid-Position Advertisement Category </option>
+
+                                <option value="random_category"> Random Category </option>
+
+                                @foreach( $ads_category as $ads_category )
+                                    <option value="{{ $ads_category->id }}" > {{ $ads_category->name }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
+                            <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                            <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time"  >
+                        </div>
+
+                    </div>
+                
+                        {{-- Ply.io --}}
+                @else    
                     <div class="row mt-3">
                         <div class="col-sm-6"  >
                             <label class="m-0">Choose Ads Position</label>
@@ -374,6 +477,7 @@
                             </select>
                         </div>
                     </div>
+                @endif
 
                     <div class="clear"></div>
 
@@ -408,9 +512,9 @@
                                         <option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
                                         <option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
                                         <?php if($settings->ppv_status == 1){ ?>
-                                        <!-- <option value="ppv" >PPV Users (Pay per movie)</option>    -->
+                                        <option value="ppv" >PPV Users (Pay per movie)</option>   
                                         <?php } else{ ?>
-                                        <!-- <option value="ppv" >PPV Users (Pay per movie)</option>    -->
+                                        <option value="ppv" >PPV Users (Pay per movie)</option>   
                                         <?php } ?>
                                     </select>
                                     <div class="clear"></div>
@@ -485,9 +589,13 @@
 
                         @if(isset($episodes->id))
                         <input type="hidden" id="id" name="id" value="{{ $episodes->id }}" />
+                        <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                        <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
                         @endif
                         <input type="hidden" id="episode_id" name="episode_id" value="" />
-
+                        <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                        <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
+                        <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         <input type="hidden" id="season_id" name="season_id" value="{{ $season_id }}" />
                     </div>
@@ -721,20 +829,20 @@
             rules: {
                 title: "required",
 
-                image: {
-                    required: true,
-                    dimention:[1080,1920]
-                },
+                // image: {
+                //     required: true,
+                //     dimention:[1080,1920]
+                // },
 
-                player_image: {
-                    required: true,
-                    player_dimention:[1280,720]
-                },
+                // player_image: {
+                //     required: true,
+                //     player_dimention:[1280,720]
+                // },
 
-                tv_image: {
-                    required: true,
-                    tv_image_dimention:[1920,1080]
-                },
+                // tv_image: {
+                //     required: true,
+                //     tv_image_dimention:[1920,1080]
+                // },
             },
             messages: {
                 title: "This field is required",
@@ -755,7 +863,9 @@
                 $('#recap_end_time').mask("00:00:00");
                 $('#skip_intro').mask("00:00:00");
                 $('#skip_recap').mask("00:00:00");
+                $('#video_js_mid_advertisement_sequence_time').mask("00:00:00");
         });
+        
         $(document).ready(function () {
             $("#duration").mask("00:00:00");
             $("#tags").tagsInput();
@@ -867,6 +977,113 @@
             $("#Next").hide();
             $("#episode_video_data").show();
             $("#submit").show();
+            
+                $.ajax({
+                        url: '{{ URL::to('admin/episode/extractedimage') }}',
+                        type: "post",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            episode_id: $('#episode_id').val()
+                        },
+                        success: function(value) {
+                            // console.log(value.ExtractedImage.length);
+
+                            if (value && value.ExtractedImage.length > 0) {
+                                $('#ajaxImagesContainer').empty();
+                                $('#ImagesContainer').empty();
+                                var ExtractedImage = value.ExtractedImage;
+                                var ExtractedImage = value.ExtractedImage;
+
+                                var previouslySelectedElement = null;
+                                var previouslySelectedVideoImag = null;
+                                var previouslySelectedTVImage = null;
+                                
+                                ExtractedImage.forEach(function(Image,index ) {
+                                    var imgElement = $('<img src="' + Image.image_path + '" class="ajax-image m-1 w-100" />');
+                                    var ImagesContainer = $('<img src="' + Image.image_path + '" class="video-image m-1 w-100" />');
+                                    var TVImagesContainer = $('<img src="' + Image.image_path + '" class="tv-video-image m-1 w-100" />');
+
+                                    imgElement.click(function() {
+                                        $('.ajax-image').css('border', 'none');
+                                        if (previouslySelectedElement) {
+                                            previouslySelectedElement.css('border', 'none');
+                                        }
+                                        imgElement.css('border', '2px solid red');
+                                        var clickedImageUrl = Image.image_path;
+
+                                        var SelectedImageUrl = Image.image_original_name;
+                                        console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                                        previouslySelectedElement = $(this);
+
+                                        $('#selectedImageUrlInput').val(SelectedImageUrl);
+                                    });
+
+                                    if (index === 0) {
+                                        imgElement.click();
+                                    }
+                                    $('#ajaxImagesContainer').append(imgElement);
+
+                                    ImagesContainer.click(function() {
+                                        $('.video-image').css('border', 'none');
+                                        if (previouslySelectedVideoImag) {
+                                            previouslySelectedVideoImag.css('border', 'none');
+                                        }
+                                        ImagesContainer.css('border', '2px solid red');
+                                        
+                                        var clickedImageUrl = Image.image_path;
+
+                                        var VideoImageUrl = Image.image_original_name;
+                                        console.log('VideoImageUrl Image URL:', VideoImageUrl);
+                                        previouslySelectedVideoImag = $(this);
+
+                                        $('#videoImageUrlInput').val(VideoImageUrl);
+                                    });
+                                    if (index === 0) {
+                                        ImagesContainer.click();
+                                        }
+                                    $('#ImagesContainer').append(ImagesContainer);
+
+                                    TVImagesContainer.click(function() {
+                                        $('.tv-video-image').css('border', 'none');
+                                        if (previouslySelectedTVImage) {
+                                            previouslySelectedTVImage.css('border', 'none');
+                                        }
+                                        TVImagesContainer.css('border', '2px solid red');
+                                        
+                                        var clickedImageUrl = Image.image_path;
+
+                                        var TVImageUrl = Image.image_original_name;
+                                        previouslySelectedTVImage = $(this);
+
+                                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                                    });
+                                    
+                                    if (index === 0) {
+                                        TVImagesContainer.click();
+                                    }
+                                    $('#TVImagesContainer').append(TVImagesContainer);
+
+                                });
+                            } else {
+                                    var SelectedImageUrl = '';
+
+                                    $('#selectedImageUrlInput').val(SelectedImageUrl);
+                                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                            //  $('#ajaxImagesContainer').html('<p>No images available.</p>');
+                            }
+                        },
+                        error: function(error) {
+
+                            var SelectedImageUrl = '';
+
+                            $('#selectedImageUrlInput').val(SelectedImageUrl);
+                            $('#videoImageUrlInput').val(SelectedImageUrl);
+                            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+                            console.error(error);
+                        }
+                    });
+                
         });
     </script>
 
@@ -906,7 +1123,7 @@
                      _token :  "{{ csrf_token() }}",
                     },
             success:function(){
-                alert('Position changed successfully.');
+                // alert('Position changed successfully.');
                 location.reload();
             }
         })

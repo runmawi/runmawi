@@ -246,6 +246,11 @@ class AdminSettingsController extends Controller
         $settings->show_subtitle = $request['show_subtitle'];
         $settings->show_views = $request['show_views'];
 
+        $settings->search_title_status  = $request['search_title_status'];
+        $settings->search_category_status = $request['search_category_status'];
+        $settings->search_tags_status = $request['search_tags_status'];
+        $settings->search_description_status = $request['search_description_status'];
+        $settings->search_details_status = $request['search_details_status'];
 
         $settings->ppv_status = $request['ppv_status'];
 
@@ -508,6 +513,9 @@ class AdminSettingsController extends Controller
         $settings->video_clip_enable = !empty($request->video_clip_enable) ?  "1" : "0" ;
         $settings->enable_ppv_rent = !empty($request->enable_ppv_rent) ?  "1" : "0" ;
         $settings->series_networks_status = !empty($request->series_networks_status) ?  "1" : "0" ;
+        $settings->videos_expiry_status = !empty($request->videos_expiry_status) ?  "1" : "0" ;
+        $settings->epg_status           = !empty($request->epg_status) ?  "1" : "0" ;
+
         $settings->save();
 
         return Redirect::to('admin/settings')->with(['message' => 'Successfully Updated Site Settings!', 'note_type' => 'success']);
@@ -723,6 +731,8 @@ class AdminSettingsController extends Controller
         $playerui->watermar_link = $request['watermar_link'];
         $playerui->watermar_width = $request['watermar_width'];
         $playerui->video_watermark_enable = $request['video_watermark_enable'];
+        $playerui->ads_marker_status = $request['ads_marker_status'];
+
         // dd($request['video_watermark_enable']);
         $logopath = URL::to('/public/uploads/settings/');
         $path = public_path() . '/uploads/settings/';

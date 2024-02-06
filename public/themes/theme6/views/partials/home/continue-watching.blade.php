@@ -14,14 +14,15 @@
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
                             @foreach ($data as $key => $video_details)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('category/videos/'.$video_details->slug ) }}">
-                                        <div class="block-images position-relative">
+                                    <div class="block-images position-relative">
+                                        <a href="{{ URL::to('category/videos/'.$video_details->slug ) }}">
                                             <div class="img-box">
                                                 <img src="{{ $video_details->image ?  URL::to('public/uploads/images/'.$video_details->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
+
                                             <div class="block-description">
-                                                <h6> {{ strlen($video_details->title) > 17 ? substr($video_details->title, 0, 18) . '...' : $video_details->title }}
-                                                </h6>
+                                                <p> {{ strlen($video_details->title) > 17 ? substr($video_details->title, 0, 18) . '...' : $video_details->title }}</p>
+                                                
                                                 <div class="movie-time d-flex align-items-center my-2">
 
                                                     <div class="badge badge-secondary p-1 mr-2">
@@ -40,15 +41,22 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </a>
+                                        </a>
+
+                                        {{-- WatchLater & wishlist --}}
+
+                                        @php
+                                            $inputs = [
+                                                'source_id'     => $video_details->id ,
+                                                'type'          => 'channel',  // for videos - channel
+                                                'wishlist_where_column'    => 'video_id',
+                                                'watchlater_where_column'  => 'video_id',
+                                            ];
+                                        @endphp
+
+                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>

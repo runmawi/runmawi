@@ -407,7 +407,7 @@ $settings = App\Setting::first();
                          
                          <!-- -->
                   <div class="row align-items-center justify-content-center mb-3 mt-3">
-                     <div class=" text-center col-sm-4 ">
+                     <div class=" text-center col-sm-12 ">
                         <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('View Transaction Details') }}</a>
                      </div>
 
@@ -474,8 +474,8 @@ $settings = App\Setting::first();
                   <div class="col-sm-9 form-group p-0 mt-3">
                     <label><h5>{{ __('Preference Language') }}</h5></label>
                     <select id="" name="preference_language[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
-                        @foreach($preference_languages as $preference_language)
-                            <option value="{{ $preference_language->id }}" >{{$preference_language->name}}</option>
+                        @foreach ($preference_languages as $preference_language)
+                           <option value="{{ $preference_language->id }}" @if( !empty(json_decode($user->preference_language)) && in_array( $preference_language->id, json_decode($user->preference_language) ))selected='selected' @endif >{{ $preference_language->name }}</option>
                         @endforeach
                     </select>
                  </div>
@@ -483,8 +483,8 @@ $settings = App\Setting::first();
                  <div class="col-sm-9 form-group p-0 mt-3">
                     <label><h5>{{ __('Preference Genres') }}</h5></label>
                     <select id="" name="preference_genres[]" class="js-example-basic-multiple myselect" style="width: 100%;" multiple="multiple">
-                        @foreach($videocategory as $preference_genres)
-                            <option value="{{ $preference_genres->id }}" >{{$preference_genres->name}}</option>
+                        @foreach ($videocategory as $preference_genres)
+                           <option value="{{ $preference_genres->id }}" @if( !empty(json_decode($user->preference_genres)) && in_array( $preference_genres->id, json_decode($user->preference_genres) ))selected='selected' @endif >{{ $preference_genres->name }}</option>
                         @endforeach
                     </select>
                  </div>
@@ -607,14 +607,14 @@ $settings = App\Setting::first();
                   
                   <p class="text-white">{{ __('Tv Logged User List') }}</p>
        
-                               <div class="col-md-4">
+                               <div class="col-md-8 pl-0">
 
                                <table class="table  artists-table iq-card text-center p-0">
-                                          <tr class="r1">
-                                             <th><label> {{ __('S.No') }} </label></th>
-                                             <th><label> {{ __('Email') }} </label></th>
-                                             <th><label> {{ __('TV Code') }} </label></th>
-                                             <th><label> {{ __('Action') }} </label></th>
+                                          <tr class="r1 text-white">
+                                             <th class="text-white"><label> {{ __('S.No') }} </label></th>
+                                             <th class="text-white"><label> {{ __('Email') }} </label></th>
+                                             <th class="text-white"><label> {{ __('TV Code') }} </label></th>
+                                             <th class="text-white"><label> {{ __('Action') }} </label></th>
                                              
                                              @foreach($LoggedusersCode as $key=>$Logged_usersCode)
                                              <tr>
@@ -1009,6 +1009,30 @@ $('#submit-new-cat').click(function(){
     input.attr('type') === 'password' ? input.attr('type','text') : input.attr('type','password')
 });
 </script>
+
+<?php 
+$lastSegment = request()->segment(count(request()->segments()));
+?>
+<script>
+        var lastSegment =  <?php  echo json_encode( $lastSegment); ?>; 
+      // alert(lastSegment);
+      if(lastSegment == 'activationcode'){
+
+         $(".targetDiv").hide(); 
+        $(".targetDiv#div8").show();
+        $(".showSingle .dimg").hide();
+
+      }else{
+
+        $(".targetDiv").hide(); 
+        $(".targetDiv#div1").show();
+        $(".showSingle .dimg").hide();
+        
+      }
+</script>
+
+
+
 @php
 include(public_path('themes/default/views/footer.blade.php'));
 @endphp

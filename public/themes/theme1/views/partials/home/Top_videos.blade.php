@@ -1,5 +1,5 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href=""><?= __('Top Most Watching Videos')  ?> </a></h4>
+    <h4 class="main-title"><a href=""><?= (__('Top Most Watching Videos'))  ?> </a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -17,6 +17,14 @@
                                 <source src="<?php echo $most_watched_video->trailer;  ?>" type="video/mp4" />
                             </video>-->
                         </a>
+                    </div>
+                    <div class="block-description">
+                        <div class="hover-buttons">
+                            <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
+                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                            </a>
+                        </div>
+                    </div>
 
                         <!-- PPV price -->
                         
@@ -31,22 +39,16 @@
                                 <p class="p-tag"><?php echo __("Free"); ?></p>
                                 <?php } ?>
                                 <?php } ?>
-                            </div>
+                            
                         </div>
 
                   
 
-                <div class="block-description">
-                    <div class="hover-buttons">
-                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
-                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                        </a>
-                    </div>
-                </div>
+               
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($most_watched_video->title) > 17) ? substr($most_watched_video->title,0,18).'...' : $most_watched_video->title; ?></h6>
+                        <h6><?php echo (mb_strlen($most_watched_video->title) > 17) ? mb_substr($most_watched_video->title, 0, 18).'...' : $most_watched_video->title; ?></h6>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>

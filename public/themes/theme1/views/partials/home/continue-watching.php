@@ -2,7 +2,7 @@
 <?php  if(!Auth::guest() && !empty($data['password_hash'])) { 
  $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo URL::to('home') ?>"><?= __('Continue Watching')  ?></a></h4>
+    <h4 class="main-title"><a href="<?php echo URL::to('home') ?>"><?php echo (__('Continue watching')); ?></a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -15,7 +15,14 @@
                     <!-- block-images -->
                     <div class="img-box">
                         <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazyload w-100" alt="">
-                       <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" data-play="hover">
+                    </div>
+                        <div class="block-description">
+                            <div class="hover-buttons text-white">
+                                <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                            
+                            </div>
+                        </div>
+                        <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" data-play="hover">
                             <source src="<?php echo $cont_video->trailer;  ?>" type="video/mp4" />
                         </video>
                         
@@ -33,20 +40,15 @@
                                     <?php } ?>
                                     <?php } ?>
                              
-                    </div>
+                    
                 </div>
 
                 
-                <div class="block-description">
-                    <div class="hover-buttons text-white">
-                        <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
-                       
-                    </div>
-                </div>
+                
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($cont_video->title) > 17) ? substr($cont_video->title,0,18).'...' : $cont_video->title; ?></h6>
+                    <h6><?php  echo (mb_strlen($cont_video->title) > 17) ? mb_substr($cont_video->title,0,18).'...' : $cont_video->title; ?></h6>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>

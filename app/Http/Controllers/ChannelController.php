@@ -164,6 +164,10 @@ class ChannelController extends Controller
                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
                     $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
                 }
+                
+                if (videos_expiry_date_status() == 1 ) {
+                    $categoryVideos = $categoryVideos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                }
 
             $categoryVideos = $categoryVideos->latest('videos.created_at')->paginate($this->videos_per_page);
           
@@ -178,6 +182,10 @@ class ChannelController extends Controller
                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
                     $Most_watched_country = $Most_watched_country->whereNotIn('videos.id', Block_videos());
                 }
+
+                if (videos_expiry_date_status() == 1 ) {
+                    $Most_watched_country = $Most_watched_country->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                }
             
             $Most_watched_country = $Most_watched_country->where('recent_views.country_name', Country_name())
                             ->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$categoryVideo)->get()
@@ -190,20 +198,35 @@ class ChannelController extends Controller
                                                             ->implode(' , ');
     
                                 return $item;
-                });
+            });
 
+            // top_most_watched
 
             $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
-                            ->join('videos', 'videos.id', '=', 'recent_views.video_id')->where('videos.status', '=', '1')
-                            ->where('videos.draft', '=', '1')->where('videos.active', '=', '1')
-                            ->whereIn('videos.id',$categoryVideo)
-                            ->groupBy('video_id');
+                        ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')->groupBy('video_id')
+                        ->orderByRaw('count DESC');
 
-                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
-                                $top_most_watched = $Most_watched_country->whereNotIn('videos.id', Block_videos());
-                            }
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
+                    $top_most_watched = $top_most_watched->whereNotIn('videos.id', Block_videos());
+                }
 
-            $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(20)->get();
+                if (videos_expiry_date_status() == 1 ) {
+                    $top_most_watched = $top_most_watched->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                }
+            
+            $top_most_watched = $top_most_watched->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$categoryVideo)->get()
+                            ->map(function ($item) {
+
+                                $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
+                                                            ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                            ->where('video_id', $item->video_id )
+                                                            ->pluck('name') 
+                                                            ->implode(' , ');
+    
+                                return $item;
+            });
 
             $video_banners = Video::where('active', '=', '1')->whereIn('videos.id',$categoryVideo)
                                         ->where('draft', '1')->where('status', '1')
@@ -230,6 +253,10 @@ class ChannelController extends Controller
                     if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
                         $query->whereNotIn('videos.id', Block_videos());
                     }
+
+                    if (videos_expiry_date_status() == 1 ) {
+                        $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                    }
             
                     if ($check_Kidmode == 1) {
                         $query->whereBetween('videos.age_restrict', [0, 12]);
@@ -240,6 +267,10 @@ class ChannelController extends Controller
 
                             if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
                                 $videos->whereNotIn('videos.id', Block_videos());
+                            }
+
+                            if (videos_expiry_date_status() == 1 ) {
+                                $videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                             }
 
                             if ($check_Kidmode == 1) {
@@ -255,6 +286,10 @@ class ChannelController extends Controller
             
                     if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
                         $query->whereNotIn('videos.id', Block_videos());
+                    }
+
+                    if (videos_expiry_date_status() == 1 ) {
+                        $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
                     }
             
                     if ($check_Kidmode == 1) {
@@ -4020,7 +4055,7 @@ class ChannelController extends Controller
     private function videos_details_jsplayer( $slug )
     {
         try {
-           
+
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
@@ -4215,7 +4250,7 @@ class ChannelController extends Controller
 
         } catch (\Throwable $th) {
             
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
@@ -4233,16 +4268,26 @@ class ChannelController extends Controller
                 $item['pdf_files_url']      = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url']     = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
 
+                $item['video_skip_intro_seconds']        = $item->skip_intro  ? Carbon::parse($item->skip_intro)->secondsSinceMidnight() : null ;
+                $item['video_intro_start_time_seconds']  = $item->intro_start_time ? Carbon::parse($item->intro_start_time)->secondsSinceMidnight() : null ;
+                $item['video_intro_end_time_seconds']    = $item->intro_end_time ? Carbon::parse($item->intro_end_time)->secondsSinceMidnight() : null ;
+
+                $item['video_skip_recap_seconds']        = $item->skip_recap ? Carbon::parse($item->skip_recap)->secondsSinceMidnight() : null ;
+                $item['video_recap_start_time_seconds']  = $item->recap_start_time ? Carbon::parse($item->recap_start_time)->secondsSinceMidnight() : null ;
+                $item['video_recap_end_time_seconds']    = $item->recap_end_time ? Carbon::parse($item->recap_end_time)->secondsSinceMidnight() : null ;
+
                 // Videos URL 
 
                 switch (true) {
 
                     case $item['type'] == "mp4_url":
                     $item['videos_url'] =  $item->mp4_url ;
+                    $item['video_player_type'] =  'video/mp4' ;
                     break;
 
                     case $item['type'] == "m3u8_url":
                     $item['videos_url'] =  $item->m3u8_url ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
                     case $item['type'] == "embed":
@@ -4251,22 +4296,27 @@ class ChannelController extends Controller
                     
                     case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
                     $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
                     
                     case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
                     $item['videos_url']   = $item->mp4_url ;
+                    $item['video_player_type'] =  'video/mp4' ;
                     break;
 
                     case $item['type'] == " " && !is_null($item->transcoded_url) :
                     $item['videos_url']   = $item->transcoded_url ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
                     
                     case $item['type'] == null :
                     $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
                     default:
                     $item['videos_url']    = null ;
+                    $item['video_player_type'] = null ;
                     break;
                 }
 
@@ -4276,6 +4326,9 @@ class ChannelController extends Controller
             $data = array(
                 'videodetail' => $videodetail ,
             );
+
+
+            // dd($videodetail);
 
             return Theme::view('video-js-Player.video.videos', $data);
 
@@ -4355,7 +4408,7 @@ class ChannelController extends Controller
 
             $response = array(
                 'status'=> true,
-                'watchlater_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
+                'wishlist_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
                 'message'=> is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list"  ,
             );
 

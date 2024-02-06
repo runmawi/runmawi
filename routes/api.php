@@ -86,7 +86,14 @@ Route::group(
         Route::post('upgradesubscription', 'ApiAuthController@upgradesubscription');
         Route::post('cancelsubscription', 'ApiAuthController@cancelsubscription');
         Route::post('renewsubscription', 'ApiAuthController@renewsubscription');
+
+        // Stripe become_subscriber New
+        Route::post('stripe-become-subscriber', 'ApiAuthController@stripe_become_subscriber');
+        Route::post('retrieve_stripe_coupon', 'ApiAuthController@retrieve_stripe_coupon');
+
+        // Stripe become_subscriber Old 
         Route::post('becomesubscriber', 'ApiAuthController@becomesubscriber');
+
         Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
         Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
         Route::post('add_payperview', 'ApiAuthController@add_payperview');
@@ -296,6 +303,9 @@ Route::group(
         Route::post('Paystack-become-subscriber', 'ApiAuthController@Paystack_become_subscriber');
         Route::post('Paystack-liveRent-Paymentverify', 'ApiAuthController@Paystack_liveRent_Paymentverify')->name('Paystack_liveRent_Paymentverify');
         Route::post('Paystack-VideoRent-Paymentverify', 'ApiAuthController@Paystack_VideoRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
+        Route::post('Paystack-SeriesRent-Paymentverify', 'ApiAuthController@Paystack_SeriesRentRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
+        Route::post('Paystack-SerieSeasonRent-Paymentverify', 'ApiAuthController@Paystack_SerieSeasonRentRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
+        Route::post('Paystack-AudioRent-Paymentverify', 'ApiAuthController@Paystack_AudioRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
 
         // Ads
         Route::post('AdsView', 'ApiAuthController@AdsView');
@@ -648,5 +658,9 @@ Route::group(
             Route::post('tv_code_verifyToken', 'ApiAuthController@verifytokenCode');
             Route::post('CinetPaySubscription', 'ApiAuthController@CinetPaySubscription');
             Route::post('PayPalSubscription', 'ApiAuthController@PayPalSubscription');
+
+            Route::get('channels', 'ApiAuthController@Channels');
+            Route::post('channel-scheduled-videos', 'ApiAuthController@ChannelScheduledVideos');
+            Route::post('scheduled-programs', 'ApiAuthController@ChannelScheduledDataVideos');
 
         });

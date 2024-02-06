@@ -21,11 +21,13 @@ Route::get('/video-chat', function () {
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
 Route::get('/BunnyCDNStream', 'AdminDashboardController@BunnyCDNStream');
+Route::post('/profilePreference', 'AdminUsersController@profilePreference');
 
 Route::get('/paypal/create-payment', 'PayPalController@createPayment');
 Route::get('/paypal/execute-payment', 'PayPalController@executePayment');
 Route::post('paypal-ppv-video', 'PaymentController@paypalppvVideo');
 
+Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
 
 $router->get('tv_code/devices' , 'HomeController@tv_code_devices');
 
@@ -34,6 +36,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('auth/video_chat', 'VideoChatController@auth');
   });
 //   Route::get('/MusicAudioPlayer', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
+    Route::get('admin/video/combine-video', 'AdminVideosController@combinevideo');
 
   Route::get('MusicAudioPlayer/{slug}', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
   Route::get('/convertExcelToJson', 'HomeController@uploadExcel');
@@ -201,6 +204,8 @@ Route::get('/verify-request-sent', 'HomeController@VerifyRequestNotsent');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 
+
+
 // CheckAuthTheme5 & restrictIp Middleware
 Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('datafree/category/videos/{vid}', 'ChannelController@play_videos');
@@ -262,17 +267,27 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('channel-theme-mode', 'HomeController@ChannelThemeModeSave');
     Route::post('ads-theme-mode', 'HomeController@AdsThemeModeSave');
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('change-profile', 'HomeController@Multipleprofile');
 
     // Reels
     Route::get('/reels', 'AdminReelsVideo@index');
 
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
-    Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
+
+
     Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
+
+    Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
+    Route::get('networks/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('network_play_episode');
+
     Route::get('play_series/{name}/', 'TvshowsController@play_series')->name('play_series');
+    Route::get('networks/play_series/{name}/', 'TvshowsController@play_series')->name('network.play_series');
+
+    Route::get('play-series/season-depends-episode/', 'TvshowsController@season_depends_episode_section')->name('front-end.series.season-depends-episode');
+
     Route::get('datafree/play_series/{name}/', 'TvshowsController@play_series');
 
     // Route::get('play_series/{name}/{id}', 'TvshowsController@play_series');
@@ -466,9 +481,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/', 'AdminDashboardController@index');
     Route::get('/mobileapp', 'AdminUsersController@mobileapp');
-    Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
 
+    // Channel Schedule
+    Route::get('/channel/index', 'AdminEPGChannelController@index')->name('admin.Channel.index');
+    Route::get('/channel/create', 'AdminEPGChannelController@create')->name('admin.Channel.create');
+    Route::post('/channel/store', 'AdminEPGChannelController@store')->name('admin.Channel.store');
+    Route::get('/channel/edit/{id}', 'AdminEPGChannelController@edit')->name('admin.Channel.edit');
+    Route::post('/channel/update/{id}', 'AdminEPGChannelController@update')->name('admin.Channel.update');
+    Route::get('/channel/destroy/{id}', 'AdminEPGChannelController@destroy')->name('admin.Channel.destroy');
+    Route::get('/channel/validation', 'AdminEPGChannelController@slug_validation')->name('admin.Channel.slug_validation');
+
+    // EPG Schedule
+    Route::get('/epg/index', 'AdminEPGController@index')->name('admin.epg.index');
+    Route::get('/epg/create', 'AdminEPGController@create')->name('admin.epg.create');
+    Route::post('/epg/generate', 'AdminEPGController@generate')->name('admin.epg.generate');
+    Route::get('/epg/delete/{id}', 'AdminEPGController@delete')->name('admin.epg.delete');
+    
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
     Route::get('/mobile_app/Splash_destroy/{source}/{id}', 'AdminUsersController@Splash_destroy')->name('Splash_destroy');
@@ -485,7 +514,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/user/view/{id}', 'AdminUsersController@view');
     Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
     Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
-    Route::post('/profilePreference', 'AdminUsersController@profilePreference');
     Route::get('/email_exitsvalidation', 'AdminUsersController@email_exitsvalidation')->name('email_exitsvalidation');
     Route::get('/mobilenumber_exitsvalidation', 'AdminUsersController@mobilenumber_exitsvalidation')->name('mobilenumber_exitsvalidation');
     Route::get('/password_validation', 'AdminUsersController@password_validation')->name('password_validation');
@@ -577,6 +605,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/videos/categories/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideoCategoriesController@destroy']);
     Route::get('/videos/aws_editvideo/{id}', 'AdminVideosController@AWSEditvideo');
     Route::get('/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy']);
+    Route::post('/videos/extractedimage', 'AdminVideosController@ExtractedImage');
 
     // Admin PPV Functionality
     Route::get('/ppv', 'AdminPpvController@index');
@@ -689,6 +718,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/menu/order', ['before' => 'demo', 'uses' => 'AdminMenuController@order']);
     Route::post('menu/update-order', 'AdminMenuController@updateOrder');
     Route::get('/menu/delete/{id}', ['before' => 'demo', 'uses' => 'AdminMenuController@destroy']);
+
+    /* Page Premission settings*/
+
+    Route::get('/access-premission', 'AdminAccessPermissionController@Index');
+    Route::post('/access_premission/save', 'AdminAccessPermissionController@Store');
+
 
     /* theme settings*/
 
@@ -951,6 +986,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/episode/episode_edit/{id}', 'AdminSeriesController@EpisodeUploadEdit');
     Route::post('/EpisodeVideoUpload', 'AdminSeriesController@EpisodeVideoUpload');
     Route::get('/episode/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminSeriesController@subtitledestroy']);
+    Route::post('/episode/extractedimage', 'AdminSeriesController@ExtractedImage');
 
     Route::post('/AWSEpisodeUpload', 'AdminSeriesController@AWSEpisodeUpload');
     Route::get('/episode/AWSepisode_edit/{id}', 'AdminSeriesController@AWSEpisodeUploadEdit');
@@ -980,6 +1016,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/schedule/delete/{id}', 'AdminVideosController@ScheduledVideoDelete');
 
+    /*  Channel Videos Setting  */
+
+    Route::get('/video-scheduler', 'AdminChannelVideoController@ChannelVideoScheduler')->name('VideoScheduler');
+    Route::get('/filter-scheduler', 'AdminChannelVideoController@FilterVideoScheduler')->name('FilterScheduler');
+    Route::post('/drag-drop-Scheduler-videos', 'AdminChannelVideoController@DragDropSchedulerVideos');
+    Route::get('/Scheduled-videos', 'AdminChannelVideoController@ScheduledVideos');
+    Route::get('/get-channel-details/{videoId}', 'AdminChannelVideoController@GetChannelDetail');
+    Route::post('/Scheduler-UpdateTime', 'AdminChannelVideoController@SchedulerUpdateTime');
+    Route::post('/Scheduler-ReSchedule', 'AdminChannelVideoController@SchedulerReSchedule');
+    Route::post('/get-all-channel-details', 'AdminChannelVideoController@GetAllChannelDetails');
+    Route::post('/remove-scheduler', 'AdminChannelVideoController@RemoveSchedulers');
     /*  Videos Setting  */
 
     Route::get('/video-schedule', 'AdminVideosController@ScheduleVideo');
@@ -1048,6 +1095,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/ads_viewcount', 'AdminAdvertiserController@ads_viewcount');
     Route::post('/ads_viewcount_mid', 'AdminAdvertiserController@ads_viewcount_mid');
     Route::post('/ads_viewcount_Post', 'AdminAdvertiserController@ads_viewcount_Post');
+
+    Route::get('advertisement/ads-banners', 'AdminAdvertiserController@ads_banners')->name('admin.ads_banners');
+    Route::post('advertisement/ads-banners-update', 'AdminAdvertiserController@ads_banners_update')->name('admin.ads_banners_update');
+
 
     /*Ads Management ends*/
 
@@ -2213,6 +2264,10 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
 
     Route::get('series/category/{slug}', 'TvshowsController@SeriesCategory')->name('SeriesCategory');
     Route::get('SeriescategoryList', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
+    Route::get('Series/category/list', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
+
+    Route::get('networks/tv-shows/{slug}', 'TvshowsController@Specific_Series_Networks')->name('Specific_Series_Networks');
+    Route::get('networks/tv-shows', 'TvshowsController@Series_Networks_List')->name('Series_Networks_List');
 
     // Filter
     Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
@@ -2389,7 +2444,7 @@ Route::get('exchangeCurrency','AdminCurrencyConvert@Index');
 
 Route::get('PPV-Free-Duration-Logs', 'AdminLiveStreamController@PPV_Free_Duration_Logs')->name('PPV_Free_Duration_Logs');
 
-Route::get('video-fullplayer/{slug}', 'ChannelController@video_js_fullplayer')->name('video-js-fullplayer');
+Route::get('video-player/{slug}', 'ChannelController@video_js_fullplayer')->name('video-js-fullplayer');
 
 Route::post('video_js_watchlater', 'ChannelController@video_js_watchlater')->name('video-js.watchlater');
 
@@ -2398,3 +2453,19 @@ Route::post('video_js_wishlist', 'ChannelController@video_js_wishlist')->name('v
 Route::post('video_js_Like', 'ChannelController@video_js_Like')->name('video-js.like');
 
 Route::post('video_js_dislike', 'ChannelController@video_js_disLike')->name('video-js.dislike');
+
+Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
+
+Route::get('/channel-video-scheduler/{slug}', 'ChannelVideoSchedulerController@index')->name('Front-End.Channel-video-scheduler');
+
+Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@store')->name('Landing-page-email-capture');
+
+Route::get('activationcode', 'AdminUsersController@myprofile');
+
+Route::get('EPG_date_filter', 'HomeController@EPG_date_filter')->name('front-end.EPG_date_filter');
+
+// For theme6 
+
+Route::post('HomePage-watchlater', 'HomeController@Homepage_watchlater')->name('home-page.watchlater');
+
+Route::post('HomePage-wishlist', 'HomeController@Homepage_wishlist')->name('home-page.wishlist');

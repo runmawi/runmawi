@@ -7,6 +7,10 @@
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
             $query->whereNotIn('videos.id', Block_videos());
         }
+        
+        if (videos_expiry_date_status() == 1 ) {
+            $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+        }
 
         if ($check_Kidmode == 1) {
             $query->whereBetween('videos.age_restrict', [0, 12]);
@@ -14,13 +18,17 @@
     })
 
     ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
-        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type')
+        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type','videos.expiry_date')
             ->where('videos.active', 1)
             ->where('videos.status', 1)
             ->where('videos.draft', 1);
 
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
             $videos->whereNotIn('videos.id', Block_videos());
+        }
+
+        if (videos_expiry_date_status() == 1 ) {
+            $videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
         if ($check_Kidmode == 1) {
@@ -36,6 +44,10 @@
 
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
             $query->whereNotIn('videos.id', Block_videos());
+        }
+
+        if (videos_expiry_date_status() == 1 ) {
+            $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
         }
 
         if ($check_Kidmode == 1) {
@@ -65,18 +77,23 @@
                                         
                                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title pl-5"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
+                            <h4 class="main-title mar-left"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
                             <h4 class="main-title "><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ "view all" }}</a></h4>
                         </div>
 
                         <div class="trending-contens">
-                            <ul id="trending-slider-nav" class="{{ 'category-videos-slider-nav list-inline p-0 ml-5 row align-items-center' }}" data-key-id="{{$key}}">
+                            <ul id="trending-slider-nav" class="{{ 'category-videos-slider-nav list-inline p-0 mar-left row align-items-center' }}" data-key-id="{{$key}}">
 
                                 @foreach ($video_category->category_videos as $videos )
                                     <li>
                                         <a href="javascript:void(0);">
                                             <div class="movie-slick position-relative">
-                                                <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                                <img src="{{ $videos->image ?  URL::to('public/uploads/images/'.$videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" >
+                                                
+                                                @if (videos_expiry_date_status() == 1 && optional($videos)->expiry_date)
+                                                    <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
+                                                @endif
+                                            
                                             </div>
                                         </a>
                                     </li>
@@ -84,7 +101,7 @@
                             </ul>
 
                             <ul id="trending-slider" class= "{{ 'category-videos-slider list-inline p-0 m-0 align-items-center category-videos-'.$key }}" >
-                                @foreach ($video_category->category_videos as $videos )
+                                @foreach ($video_category->category_videos as $key => $videos )
                                     <li>
                                         <div class="tranding-block position-relative trending-thumbnail-image" >
                                             <button class="drp-close">×</button>
@@ -94,24 +111,23 @@
                                                     <div id="" class="overview-tab tab-pane fade active show">
                                                         <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                            <div class="caption pl-5">
+                                                            <div class="caption pl-4">
                                                                 <h2 class="caption-h2">{{ optional($videos)->title }}</h2>
 
-                                                                <!-- @if ( $videos->year != null && $videos->year != 0 )
-                                                                    <div class="d-flex align-items-center text-white text-detail">
-                                                                        <span class="trending">{{ ($videos->year != null && $videos->year != 0) ? $videos->year : null   }}</span>
-                                                                    </div>
-                                                                @endif -->
-                                                                                                                            
+                                                                @if (videos_expiry_date_status() == 1 && optional($videos)->expiry_date)
+                                                                    <ul class="vod-info">
+                                                                        <li>{{ "Expiry In ". Carbon\Carbon::parse($videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                                                    </ul>
+                                                                @endif
+
                                                                 @if ( optional($videos)->description )
-                                                                    <div class="trending-dec">{!! htmlspecialchars(substr(optional($videos)->description, 0, 100)) !!}</div>
-                                                                    
+                                                                    <p class="trending-dec">{!! html_entity_decode( optional($videos)->description) !!}</p>
                                                                 @endif
 
                                                                 <div class="p-btns">
                                                                     <div class="d-flex align-items-center p-0">
                                                                         <a href="{{ URL::to('category/videos/'.$videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                        <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                        <a class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-videos-based-category-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -130,9 +146,50 @@
                     </div>
                 </div>
             </div>
+
+
+            
         </section>
+            
+        @foreach ($video_category->category_videos as $key => $videos )
+            <div class="modal fade info_model" id="{{ "Home-videos-based-category-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                    <div class="container">
+                        <div class="modal-content" style="border:none; background:transparent;">
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <img  src="{{ $videos->player_image ?  URL::to('public/uploads/images/'.$videos->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                                    <h2 class="caption-h2">{{ optional($videos)->title }}</h2>
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            @if (optional($videos)->description)
+                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($videos)->description) !!}</div>
+                                            @endif
+
+                                            <a href="{{ URL::to('category/videos/'.$videos->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     @endforeach
-    
 @endif
 
 <script>

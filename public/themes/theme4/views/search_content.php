@@ -160,7 +160,7 @@
 
 <!-- Top Trending -->
 <?php if( (count($Most_view_videos) > 1) || (count($Most_view_live) > 1) || (count($Most_view_audios) > 1) ||  (count($Most_view_episode) > 1) ||  (count($Most_view_Series) > 1)   ){ ; ?>
-<ul class="list-group home-search" style="display: block; position: relative; z-index: 999999; margin-bottom: 0; border-radius: 0;background:#000;">
+<ul class="list-group home-search" style="display: block; position: relative; z-index: 999999; margin-bottom: 0; border-radius: 0;">
     <h6 style="margin: 0; text-align: left; padding: 10px;"><?php echo __('Trending  Video'); ?></h6>
 
     <?php foreach ($Most_view_videos as $row) { ?>

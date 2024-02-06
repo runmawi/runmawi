@@ -1,3 +1,30 @@
+
+@php
+
+$check_Kidmode = 0;
+    
+$data = App\Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image',
+                                'player_image','expiry_date')
+
+                        ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
+
+                        if( Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                            $data = $data->whereNotIn('videos.id',Block_videos());
+                        }
+
+                        if (videos_expiry_date_status() == 1 ) {
+                            $data = $data->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
+                        }
+                        
+                        if ($check_Kidmode == 1) {
+                            $data = $data->whereBetween('videos.age_restrict', [0, 12]);
+                        }
+
+$data = $data->latest()->limit(30)->get();
+                                                                    
+@endphp
+
+
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
@@ -6,17 +33,22 @@
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title pl-5"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[0]->url) : null }} ">{{ optional($order_settings_list[0])->header_name }}</a></h4>
+                        <h4 class="main-title mar-left"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[0]->url) : null }} ">{{ optional($order_settings_list[0])->header_name }}</a></h4>
                         <h4 class="main-title"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[0]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
                     <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="featured-videos-slider-nav list-inline p-0 ml-5 row align-items-center">
+                        <ul id="trending-slider-nav" class="featured-videos-slider-nav list-inline p-0 mar-left row align-items-center">
                             @foreach ($data as $featured_videos)
                                 <li>
                                     <a href="javascript:void(0);">
                                         <div class="movie-slick position-relative">
-                                            <img src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : default_vertical_image_url() }}" class="img-fluid" >
+                                            <img src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : default_vertical_image_url() }}" class="img-fluid position-relative" >
+                                        
+                                            @if (videos_expiry_date_status() == 1 && optional($featured_videos)->expiry_date)
+                                                <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
+                                            @endif
+
                                         </div>
                                     </a>
                                 </li>
@@ -34,14 +66,15 @@
                                                 <div id="" class="overview-tab tab-pane fade active show">
                                                     <div class="trending-info align-items-center w-100 animated fadeInUp">
 
-                                                        <div class="caption pl-5">
-                                                                <h2 class="caption-h2">{{ optional($featured_videos)->title }}</h2>
+                                                        <div class="caption pl-4">
 
-                                                            {{-- @if ( $featured_videos->year != null && $featured_videos->year != 0)
-                                                                <div class="d-flex align-items-center text-white text-detail">
-                                                                    <span class="trending">{{ ($featured_videos->year != null && $featured_videos->year != 0) ? $featured_videos->year : null   }}</span>
-                                                                </div>
-                                                            @endif  --}}
+                                                            <h2 class="caption-h2">{{ optional($featured_videos)->title }}</h2>
+                                                                
+                                                            @if (videos_expiry_date_status() == 1 && optional($featured_videos)->expiry_date)
+                                                                <ul class="vod-info">
+                                                                    <li>{{ "Expiry In ". Carbon\Carbon::parse($featured_videos->expiry_date)->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</li>
+                                                                </ul>
+                                                            @endif
 
                                                             @if (optional($featured_videos)->description)
                                                                 <div class="trending-dec">{!! html_entity_decode( optional($featured_videos)->description) !!}</div>
@@ -50,7 +83,7 @@
                                                             <div class="p-btns">
                                                                 <div class="d-flex align-items-center p-0">
                                                                     <a href="{{ URL::to('category/videos/'.$featured_videos->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                                    <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Trending-videoloop-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -70,6 +103,48 @@
                 </div>
             </div>
         </div>
+
+        @foreach ($data as $key => $featured_videos )
+            <div class="modal fade info_model" id="{{ "Home-Trending-videoloop-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                    <div class="container">
+                        <div class="modal-content" style="border:none; background:transparent;">
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <img  src="{{ $featured_videos->player_image ?  URL::to('public/uploads/images/'.$featured_videos->player_image) : default_horizontal_image_url() }}" alt="" width="100%">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                                    <h2 class="caption-h2">{{ optional($featured_videos)->title }}</h2>
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+
+                                            @if (optional($featured_videos)->description)
+                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($featured_videos)->description) !!}</div>
+                                            @endif
+
+                                            <a href="{{ URL::to('category/videos/'.$featured_videos->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+
     </section>
 @endif
 

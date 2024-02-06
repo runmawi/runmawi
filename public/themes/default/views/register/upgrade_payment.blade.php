@@ -495,7 +495,7 @@ i.fa.fa-google-plus {
     }
    
     .blk{
-        height: 200px;
+        height: 239px;
         padding: 10px;
     }
 .ambk{
@@ -536,7 +536,7 @@ background-color: #000;padding: 10px!important;}
     <div class="container">
         <div align="center"></div>
         <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-6 p-0">
+            <div class="col-lg-12 col-md-12 p-0">
                 <div class="flick1">
                  <div class="small-heading text-white">{{ __('Step 2 of') }}<span class="ml-2">2</span></div>
                      <p class="text-white" style="font-size: 16px;">{{ __('Welcome') }} {{ Auth::user()->username ? Auth::user()->username  : " "  }}, </p>
@@ -739,6 +739,7 @@ background-color: #000;padding: 10px!important;}
                         <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
                             {{ __('Pay Now') }}
                         </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
                   
                                             {{-- Paystack --}}
@@ -746,6 +747,7 @@ background-color: #000;padding: 10px!important;}
                             <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert" >
                                 {{ __('Pay Now') }}
                             </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
 
                                             {{-- Razorpay --}}
@@ -753,6 +755,7 @@ background-color: #000;padding: 10px!important;}
                         <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert" >
                             {{ __('Pay Now') }}
                         </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
                     
                     
@@ -762,6 +765,7 @@ background-color: #000;padding: 10px!important;}
                         <button  onclick="cinetpay_checkout()" data-subscription-price='100' type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button" >
                         {{ __('Pay Now') }}
                         </button>
+                        <a href="{{ URL::to('/myprofile') }}"><button class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('Cancel') }}</button></a>
                     </div>
 
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">{{ __('plan') }}Start Your Free Trial</button> --}}
@@ -1274,7 +1278,7 @@ background-color: #000;padding: 10px!important;}
                                 
                                 $.each( response.data.plans_data , function( index, plan_data ) {
                                     
-                                    html += '<div class="col-md-6 plan_details p-0"  data-plan-id="active'+ plan_data.id +'" data-plan-price="'+ plan_data.price +'"  data-plan_id="'+ plan_data.plan_id +'"  data-payment-type="'+ plan_data.payment_type +'" onclick="plan_details(this)">';
+                                    html += '<div class=" col-lg-4 col-md-6 plan_details p-0"  data-plan-id="active'+ plan_data.id +'" data-plan-price="'+ plan_data.price +'"  data-plan_id="'+ plan_data.plan_id +'"  data-payment-type="'+ plan_data.payment_type +'" onclick="plan_details(this)">';
                                         html += '<a href="#payment_card_scroll"> <div class="row dg align-items-center mb-4" id="active'+ plan_data.id +'" >';
                                             
                                             html +=   '<div class="col-md-12 ambk p-0 text-center">';

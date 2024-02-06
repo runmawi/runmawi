@@ -8,7 +8,7 @@
    <h4 class="main-title">
     <!-- Recently Added Series -->
     <a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>">
-      <?php if ($order_settings_list[4]->header_name) { echo __($order_settings_list[4]->header_name) ;} else { echo "" ; } ?>
+      <?php if ($order_settings_list[4]->header_name) { echo (__($order_settings_list[4]->header_name)) ; } else { echo "" ; } ?>
     </a>
   </h4>                      
 </div>
@@ -23,16 +23,18 @@
               <div class="img-box">
                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100" alt="">
               </div> 
-               </div>
               <div class="block-description">
                
-                <div class="hover-buttons d-flex">
-                  <a class="text-white " href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
-                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                  
-                  </a>
-                </div>
-              </div>
+               <div class="hover-buttons d-flex">
+                 <a class="text-white " href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
+                   <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                 
+                 </a>
+               </div>
+             </div>
+
+               </div>
+              
               
               <div class="mt-2">
                   

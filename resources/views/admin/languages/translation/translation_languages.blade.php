@@ -23,6 +23,7 @@
             border-color: #66afe9;
             box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
             }
+            body.dark #translator-table_filter input[type="search"]{color: <?php echo GetLightText(); ?> !important;}
    </style>
 
 @section('content')
@@ -55,7 +56,7 @@
                                 <input type="text" name="value" class="form-control" placeholder="Enter Value...">
                             </div>
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-success">Add</button>
+                                <button type="submit" class="btn btn-success mt-5">Add</button>
                             </div>
                         </div>
                     </form>
