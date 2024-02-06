@@ -4235,7 +4235,7 @@ public function verifyandupdatepassword(Request $request)
               'message'       => "Your Payment done Successfully!",
               'next_billing'  => $nextPaymentAttemptDate ,
               'Subscription'  => $Subscription ,
-              'user_details'  => $user_data ,
+              'user_details'  => $user ,
               'user_id'       => $user->id,
             );
 
