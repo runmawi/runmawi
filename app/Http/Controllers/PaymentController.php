@@ -1747,8 +1747,8 @@ public function UpgadeSubscription(Request $request){
               $data = array(
                 'status'      => "true",
                 'message'     => "A coupon for ".$coupon->percent_off."% off was successfully applied" ,
-                'discount_amt' =>  '$'.$discount_amt,
-                'promo_code_amt' => '$'.$promo_code_amt ,
+                'discount_amt' =>  currency_symbol().$discount_amt,
+                'promo_code_amt' => currency_symbol().$promo_code_amt ,
                 'color'       => "#008b00",
               );
             }
@@ -1759,7 +1759,7 @@ public function UpgadeSubscription(Request $request){
                 'message' => "Invalid Coupon! Please Enter the Valid Coupon Code"  ,
                 'discount_amt'=>  $request->plan_price,
                 'color'   => "#d70b0b",
-                'promo_code_amt' => '$0' ,
+                'promo_code_amt' => currency_symbol().'0' ,
               );
             }
         }

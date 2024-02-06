@@ -87,8 +87,12 @@ Route::group(
         Route::post('cancelsubscription', 'ApiAuthController@cancelsubscription');
         Route::post('renewsubscription', 'ApiAuthController@renewsubscription');
 
-        Route::post('becomesubscriber', 'ApiAuthController@becomesubscriber');
+        // Stripe become_subscriber New
+        Route::post('stripe-become-subscriber', 'ApiAuthController@stripe_become_subscriber');
         Route::post('retrieve_stripe_coupon', 'ApiAuthController@retrieve_stripe_coupon');
+
+        // Stripe become_subscriber Old 
+        Route::post('becomesubscriber', 'ApiAuthController@becomesubscriber');
 
         Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
         Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
