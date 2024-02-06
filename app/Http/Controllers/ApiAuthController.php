@@ -4096,6 +4096,160 @@ public function verifyandupdatepassword(Request $request)
       return response()->json($data, 200);
     }
 
+    
+    public function stripe_become_subscriber(Request $request)
+    {
+      try {
+            $stripe = new \Stripe\StripeClient(
+              env('STRIPE_SECRET')
+            );
+        
+            $paymentMethod = $request->get('py_id');
+            $plan          = $request->get('plan_id');
+            $apply_coupon  = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
+
+            $user_id      = $request->get('userid');
+            $user         = User::where('id',$user_id)->first();
+
+            $product_id =  $stripe->plans->retrieve($plan)->product;
+
+            if( subscription_trails_status() == 1 ){
+              
+                $subscription_details = $user->newSubscription( $product_id, $plan )->trialUntil( subscription_trails_day() )->withCoupon($apply_coupon)->create( $paymentMethod );
+
+            }else{
+
+                $subscription_details = $user->newSubscription( $product_id, $plan )->withCoupon($apply_coupon)->create( $paymentMethod );
+            }
+
+              // Retrieve Subscriptions
+            $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
+            
+            if( subscription_trails_status() == 1 ){
+
+              $subscription_days_count = $subscription['plan']['interval_count'];
+      
+              switch ($subscription['plan']['interval']) {
+    
+                case 'day':
+                  break;
+
+                case 'week':
+                  $subscription_days_count *= 7;
+                break;
+
+                case 'month':
+                  $subscription_days_count *= 30;
+                break;
+
+                case 'year':
+                  $subscription_days_count *= 365;
+                break;
+              }
+    
+              $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+              $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString(); 
+              $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString(); 
+
+            }else{
+
+              $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+              $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+              $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+
+            }
+    
+            $Subscription = Subscription::create([
+                'user_id'        =>  $user->id,
+                'name'           =>  $subscription->plan['product'],
+                'price'          =>  $subscription->plan['amount_decimal'] / 100,   // Amount Paise to Rupees
+                'stripe_id'      =>  $subscription['id'],
+                'stripe_status'  =>  $subscription['status'],
+                'stripe_plan'    =>  $subscription->plan['id'],
+                'quantity'       =>  $subscription['quantity'],
+                'countryname'    =>  Country_name(),
+                'regionname'     =>  Region_name(),
+                'cityname'       =>  city_name(),
+                'PaymentGateway' =>  'Stripe',
+                'trial_ends_at'  =>  $trial_ends_at,
+                'ends_at'        =>  $trial_ends_at,
+            ]);
+    
+            $user_data = array(
+                'role'                  =>  'subscriber',
+                'stripe_id'             =>  $subscription['customer'],
+                'subscription_start'    =>  $Sub_Startday,
+                'subscription_ends_at'  =>  $Sub_Endday,
+                'payment_type'          => 'recurring',
+                'payment_status'        => $subscription['status'],
+            );
+
+            if( subscription_trails_status()  == 1 ){
+                $user_data +=  ['Subscription_trail_status' => 1 ];
+                $user_data +=  ['Subscription_trail_tilldate' => subscription_trails_day() ];
+            }
+
+            User::where('id',$user_id)->update( $user_data );
+            
+            try {
+
+              $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+              $plandetail = SubscriptionPlan::where('plan_id','=',$plan)->first();
+
+              $nextPaymentAttemptDate =  Carbon::createFromTimeStamp( $subscription['current_period_end'] )->format('F jS, Y')  ;
+
+              \Mail::send('emails.subscriptionmail', array(
+
+                  'name'          => ucwords($user->username),
+                  'paymentMethod' => $paymentMethod,
+                  'plan'          => ucfirst($plandetail->plans_name),
+                  'price'         => $subscription->plan['amount_decimal'] / 100 ,
+                  'plan_id'       => $subscription['plan']['id'] ,
+                  'billing_interval'  => $subscription['plan']['interval'] ,
+                  'next_billing'      => $nextPaymentAttemptDate,
+                  'subscription_type' => 'recurring',
+                ), 
+
+                function($message) use ($request,$user,$email_subject){
+                  $message->from(AdminMail(),GetWebsiteName());
+                  $message->to($user->email, $user->username)->subject($email_subject);
+                });
+
+              $email_log      = 'Mail Sent Successfully from Become Subscription';
+              $email_template = "23";
+              $user_id = $user->id;
+  
+              Email_sent_log($user_id,$email_log,$email_template);
+
+          } catch (\Throwable $th) {
+
+              $email_log      = $th->getMessage();
+              $email_template = "23";
+              $user_id = $user->id;
+  
+              Email_notsent_log($user_id,$email_log,$email_template);
+          }
+
+            $data = array(
+              'status'        => "true",
+              'message'       => "Your Payment done Successfully!",
+              'next_billing'  => $nextPaymentAttemptDate ,
+              'Subscription'  => $Subscription ,
+              'user_details'  => $user ,
+              'user_id'       => $user->id,
+            );
+
+      } catch (\Throwable $th) {
+
+          $data = array(
+            'status'    => "false",
+            'message'   => $th->getMessage(),
+          );
+      }
+
+      return response()->json($data, 200);
+    }
+
     public function becomesubscriber(Request $request)
      {
 
