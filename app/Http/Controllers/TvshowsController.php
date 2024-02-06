@@ -226,7 +226,7 @@ class TvshowsController extends Controller
 
     public function play_episode($series_name, $episode_name)
     {
-        try {
+        // try {
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             
@@ -372,9 +372,11 @@ class TvshowsController extends Controller
             }
             // Free Interval Episodes
             if (!empty($ppv_price) && !empty($ppv_interval)) {
+
                 foreach ($season as $key => $seasons):
                     foreach ($seasons->episodes as $key => $episodes):
-                        if ($seasons->ppv_interval > $key):
+                        if ($seasons->ppv_interval > $key ):
+                              
                             $free_episode[$episodes->slug] = Episode::where('slug', '=', $episodes->slug)->count();
                         else:
                             $paid_episode[] = Episode::where('slug', '=', $episodes->slug)
@@ -383,13 +385,38 @@ class TvshowsController extends Controller
                         endif;
                     endforeach;
                 endforeach;
-                if (array_key_exists($episode_name, $free_episode)) {
+                // exit;
+                $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
+                                ->where('season_id', '=', $episode->season_id)
+                                ->count();
+                $SeriesPpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
+                                ->count();
+                $season_details = SeriesSeason::where('series_id', '=', $episode->series_id)
+                    ->first();
+                    if (!Auth::guest() ):
+                        if (array_key_exists($episode_name, $free_episode) && $series->access != 'subscriber' || Auth::user()->role == 'admin' ||  
+                        $season_details->access == 'free' && $series->access != 'registered' || 
+                        $season_details->access == 'free' && $series->access == 'guest' && Auth::user()->role == 'subscriber'  || 
+                        $season_details->access == 'free' && $series->access == 'registered' && Auth::user()->role == 'subscriber'  || 
+                        $series->access == 'subscriber' && Auth::user()->role == 'subscriber'  || 
+                        $series->access == 'guest' && $season_details->access == 'free' && Auth::user()->role == 'registered' ||
+                        $season_details->access == 'free' && $series->access == 'registered' && Auth::user()->role == 'registered'  ||
+                        Auth::user()->role == 'subscriber' &&  $season_details->access == 'free' ) {
+                        $free_episode = 1;
+                    } elseif($SeriesPpvPurchase > 0){
+                        $free_episode = 1;
+                    } elseif($PpvPurchase > 0){
+                        $free_episode = 1;
+                    }else {
+                        $free_episode = 0;
+                    }
+                elseif($series->access == 'guest' && $season_details->access == 'free' || $series->access == 'guest'):
                     $free_episode = 1;
-                } else {
+                else:
                     $free_episode = 0;
-                }
-            }
-    
+                endif;
+            //    dd( $free_episode); 
+            }   
             // Season Ppv Purchase exit check
             if (($ppv_price != 0 && !Auth::guest()) || ($ppv_price != null && !Auth::guest())) {
                 $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
@@ -456,24 +483,25 @@ class TvshowsController extends Controller
                     
                 }
                 $ppv_exits = 0;
+                $checkseasonppv_exits = 0;
             }
     
-            if (($series->ppv_status == 0 && $ppv_price == 0) || $ppv_price == null) {
+            if (($series->ppv_status == 0 && $ppv_price == 0) && @$seasons->access != 'ppv' || $ppv_price == null && @$seasons->access != 'ppv' ) {
                 $series_ppv_status = 0;
                 $free_episode = 1;
             } else {
                 $series_ppv_status = 1;
             }
     
-            if (!Auth::guest()) {
-                if (Auth::user()->role == 'admin') {
-                    $free_episode = 1;
-                } elseif (Auth::user()->role == 'registered') {
-                    $free_episode = 1;
-                } elseif (Auth::user()->role == 'subscriber') {
-                    $free_episode = 1;
-                }
-            }
+            // if (!Auth::guest()) {
+            //     if (Auth::user()->role == 'admin') {
+            //         $free_episode = 1;
+            //     } elseif (Auth::user()->role == 'registered') {
+            //         $free_episode = 1;
+            //     } elseif (Auth::user()->role == 'subscriber') {
+            //         $free_episode = 1;
+            //     }
+            // }
     
             if (!Auth::guest()):
     
@@ -605,7 +633,7 @@ class TvshowsController extends Controller
                     'video_access' => $video_access,
                     'free_episode' => $free_episode,
                     'ppv_exits' => $ppv_exits,
-                    'checkseasonppv_exits' => $checkseasonppv_exits,
+                    'checkseasonppv_exits' => 0,
                     'publishable_key' => $publishable_key,
                     'episode' => $episode,
                     'season' => $season,
@@ -646,6 +674,7 @@ class TvshowsController extends Controller
                     return Theme::view('episode', $data);
                 }
             } else {
+
                 $data = [
                     'currency' => $currency,
                     'video_access' => $video_access,
@@ -692,11 +721,11 @@ class TvshowsController extends Controller
             return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
         }
     
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
     
-            // return $th->getMessage();
-            return abort(404);
-        }
+        //     // return $th->getMessage();
+        //     return abort(404);
+        // }
     }
 
     public function handleViewCount($id)

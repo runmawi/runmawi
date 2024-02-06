@@ -364,7 +364,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             <input class="form-control" name="free_content_duration" id="free_content_duration" value="@if(!empty($episodes->free_content_duration)){{ gmdate('H:i:s', $episodes->free_content_duration) }}@endif" />
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <!-- <div class="col-sm-4">
                         <label class="m-0">User Access</label>
                         <p class="p1">Who is allowed to view this episode?</p>
 
@@ -374,14 +374,14 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                                     <option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
                                     <option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
                                     <?php if($settings->ppv_status == 1){ ?>
-                                    <!-- <option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>    -->
+                                    <option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
                                     <?php } else{ ?>
-                                    <!-- <option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>    -->
+                                    <option value="ppv" @if(!empty($episodes->access) && $episodes->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
                                     <?php } ?>
                             </select>
                             <div class="clear"></div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 @if( choosen_player() == 1  && ads_theme_status() == 1)    {{-- Video.Js Player--}}
