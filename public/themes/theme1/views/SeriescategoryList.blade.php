@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme1/views/header.php'));
 @endphp
     
 <section id="iq-favorites">
@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="vid-title">{{ "Category List" }}</h4>                     
+                    <h4 class="vid-title">{{ __("Category List") }}</h4>                     
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
@@ -21,10 +21,15 @@
                                         </div>
                             
                                         <div class="block-description" >
-                                                <a href="{{ URL::to('/series/category').'/'.$category_lists->slug   }}">
-                                                    <h6><?php  echo (strlen($category_lists->name) > 17) ? substr($category_lists->name,0,18).'...' : $category_lists->name; ?></h6>
+                                                <!-- <a href="{{ URL::to('/series/category').'/'.$category_lists->slug   }}">
+                                                    <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$category_lists->image;  ?>" class="img-fluid w-100" alt="">
+                                                </a> -->
+                                            <div class="hover-buttons">
+                                                <a class="text-white" href="{{ URL::to('/series/category').'/'.$category_lists->slug   }}">
+                                                    <i class="fa fa-play mr-1"></i>{{ __('watch now')}} 
                                                 </a>
-                                            <div class="hover-buttons"><div>
+                                               
+                                            <div>
                                         </div>
                                     </div>
                                     <div>
@@ -44,5 +49,5 @@
 </section>
 
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme1/views/footer.blade.php'));
 @endphp

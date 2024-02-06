@@ -51,18 +51,18 @@ letter-spacing: 0em;
     padding: 40px 60px 40px;!important;">
     
                     <div class="col-md-6 col-sm-6 " >
-                        <h2>Purchase Details</h2>
+                        <h2>{{ __('Purchase Details') }}</h2>
                         
                        <div class="mt-5 pt-5"> 
-                        <h2>STANDARD PLAN</h2>
+                        <h2>{{ __('STANDARD PLAN') }}</h2>
                         </div>
                         <div class="mt-3">
-                            <h4>FIRST 30 DAYS</h4>
+                            <h4>{{ __('FIRST 30 DAYS') }}</h4>
                             <div class="d-flex align-items-baseline">
                                  <p class="mt-2 price text-white" style=" text-decoration: line-through;">$799 </p><span class="hk text-white ml-2">$649</span></div>
-                            <h4>AFTER 30 DAYS</h4>
-                            <p class="price text-white">$649/month</p>
-                             <h4 class="mt-5">Expiry Date</h4>
+                            <h4>{{ __('AFTER 30 DAYS') }}</h4>
+                            <p class="price text-white">{{ __('$649/month') }}</p>
+                             <h4 class="mt-5">{{ __('Expiry Date') }}</h4>
                         </div>
                        <!-- <div class="overlay payment-loader">
                             <div class="panel-heading">
@@ -127,19 +127,19 @@ letter-spacing: 0em;
     
    
                     <div class="col-md-6 col-sm-6" >
-                        <h2>Enter your Payment Details</h2>
+                        <h2>{{ __('Enter your Payment Details') }}</h2>
                         <div class="row p-0 mt-5">
                             <div class="col-sm-6">
-                        <label>First Name</label>
+                        <label>{{ __('First Name') }}</label>
                         <input type="text" class="form-control">
                                  <div class="mt-3"> 
-                                      <label>Card Name</label>
-                                                    <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
+                                      <label>{{ __('Card Name') }}</label>
+                                                    <input id="card-holder-name" type="text" class="form-control" placeholder="{{ __('Card Holder Name') }}">
                                                 </div>
                                 <div class="mt-3">
                       
                             <div class="form-group">
-                                <label for="ccnumber">Card Number</label>
+                                <label for="ccnumber">{{ __('Card Number') }}</label>
                                 <div class="input-group">
                                     <input class="form-control" type="text" placeholder="0000 0000 0000 0000" autocomplete="email">
                                     <div class="input-group-append">
@@ -153,20 +153,20 @@ letter-spacing: 0em;
                     </div>
                             </div>
                             <div class="col-sm-6">
-                                  <label>Last Name</label>
+                                  <label>{{ __('Last Name') }}</label>
                         <input type="text" class="form-control">
                                 <div class="mt-3"> 
-                                      <label>Expriy Date</label>
-                                                    <input id="card-holder-name" type="text" class="form-control" placeholder="EXP">
+                                      <label>{{ __('Expriy Date') }}</label>
+                                                    <input id="card-holder-name" type="text" class="form-control" placeholder="{{ __('EXP') }}">
                                                 </div>
                                 <div class="mt-3">
                                     <div class="form-group">
-                                <label for="cvv">CVV/CVC</label>
+                                <label for="cvv">{{ __('CVV/CVC') }}</label>
                                 <input class="form-control" id="cvv" type="text" placeholder="123">
                             </div>
                                     <div class=" d-flex justify-content-end mt-4">
                                      <button id="card-button" class="btn btn-primary"  data-secret="{{ $intent->client_secret }}">
-                                                        Pay Now
+                                     {{ __('Pay Now') }}
                                     </button></div>
                                 </div>
                                 

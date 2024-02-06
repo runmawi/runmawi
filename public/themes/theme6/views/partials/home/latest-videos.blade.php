@@ -8,20 +8,24 @@
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[1])->header_name }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ 'view all' }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
                             @foreach ($data as $key => $latest_video)
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('category/videos/'.$latest_video->slug ) }}">
-                                        <div class="block-images position-relative">
+                                    <div class="block-images position-relative">
+                                        
+                                        <a href="{{ URL::to('category/videos/'.$latest_video->slug ) }}">
+
                                             <div class="img-box">
                                                 <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
+
                                             <div class="block-description">
-                                                <h6> {{ strlen($latest_video->title) > 17 ? substr($latest_video->title, 0, 18) . '...' : $latest_video->title }}
-                                                </h6>
+                                                <p> {{ strlen($latest_video->title) > 17 ? substr($latest_video->title, 0, 18) . '...' : $latest_video->title }}
+                                                </p>
                                                 <div class="movie-time d-flex align-items-center my-2">
 
                                                     <div class="badge badge-secondary p-1 mr-2">
@@ -40,15 +44,22 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="block-social-info">
-                                                <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </a>
+                                        </a>
+
+                                                {{-- WatchLater & wishlist --}}
+
+                                        @php
+                                            $inputs = [
+                                                'source_id'     => $latest_video->id ,
+                                                'type'          => 'channel',  // for videos - channel
+                                                'wishlist_where_column'    => 'video_id',
+                                                'watchlater_where_column'  => 'video_id',
+                                            ];
+                                        @endphp
+
+                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>

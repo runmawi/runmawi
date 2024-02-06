@@ -4,8 +4,9 @@
                      <h4 class="main-title"><a href="<?php if ($order_settings_list[5]->header_name) { echo URL::to('/').'/'.$order_settings_list[5]->url ;} else { echo "" ; } ?>">
 
                     <!-- Audios -->
-                    <?php if ($order_settings_list[5]->header_name) { echo $order_settings_list[5]->header_name ;} else { echo "" ; } ?>
-                  </a></h4>                      
+                    <?php if ($order_settings_list[5]->header_name) { echo __($order_settings_list[5]->header_name) ;} else { echo "" ; } ?>
+                  </a></h4>
+                  <h4 class="main-title"><a href="<?php if ($order_settings_list[5]->header_name) { echo URL::to('/').'/'.$order_settings_list[5]->url ;} else { echo "" ; } ?>"><?php echo (__('View All')); ?></a></h4>                      
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -29,7 +30,7 @@
                                     </a> -->
 
                                 <div class="hover-buttons text-white">
-                                <a class="epi-name mt-3 mb-0 text-center" href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                                <a class="epi-name mt-5 mb-0 text-center" href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
                         <i class="ri-play-fill"></i>                    
                                   
                                    <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">

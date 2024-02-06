@@ -162,6 +162,7 @@ border-radius: 0px 4px 4px 0px;
                   <th width="30px">#</th>
 				  <th><label>Image</label></th>
 				  <th><label>Name</label></th>
+				  <th><label>Active</label></th>
 				  <th><label>Action</label></th>
                 </tr>
               </thead>
@@ -172,6 +173,14 @@ border-radius: 0px 4px 4px 0px;
 
 					  <td><?php if($category->image != '') { ?><img src="{{ URL::to('/public/uploads/audios/') . '/'.$category->image }}" width="50"><?php }else{} ?></td>
     	              <td>{{ ucfirst($category->name) }}</td>
+					  <td valign="bottom">
+						<div class="mt-1">
+							<label class="switch">
+								<input name="active" class="active" id="{{ 'category_'.$category->id }}" type="checkbox" @if( $category->active == "1") checked  @endif data-category-id={{ $category->id }}  data-type="category" onchange="update_category(this)" >
+								<span class="slider round"></span>
+							</label>
+						</div>
+					</td>
                       <td>
 					<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" class="edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
 					<a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"  onclick="return confirm('Are you sure?')" ></a>
@@ -197,6 +206,59 @@ border-radius: 0px 4px 4px 0px;
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     
+	
+	<script>
+		function update_category(ele){
+
+		var category_id = $(ele).attr('data-category-id');
+		var status   = '#category_'+category_id;
+		var category_Status = $(status).prop("checked");
+
+		if(category_Status == true){
+			var status  = '1';
+			var check = confirm("Are you sure you want to active this Category?");  
+
+		}else{
+			var  status  = '0';
+			var check = confirm("Are you sure you want to remove this Category?");  
+		}
+
+
+		if(check == true){ 
+
+		$.ajax({
+					type: "POST", 
+					dataType: "json", 
+					url: "{{ url('admin/audio_category_active') }}",
+						data: {
+							_token  : "{{csrf_token()}}" ,
+							category_id: category_id,
+							status: status,
+					},
+					success: function(data) {
+						if(data.message == 'true'){
+							//  location.reload();
+						}
+						else if(data.message == 'false'){
+							swal.fire({
+							title: 'Oops', 
+							text: 'Something went wrong!', 
+							allowOutsideClick:false,
+							icon: 'error',
+							title: 'Oops...',
+							}).then(function() {
+								location.href = '{{ URL::to('admin/audios/categories') }}';
+							});
+						}
+					},
+				});
+		}else if(check == false){
+		$(status).prop('checked', true);
+
+		}
+		}
+	</script>
+
 	<script type="text/javascript">
 
       $(function () {

@@ -31,9 +31,10 @@ border-radius: 0px 4px 4px 0px;
 @section('content')
 <div id="content-page" class="content-page">
 		<div class="mt-5 d-flex">
-				<a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
-				<a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a>
-				<a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/Series/Genre') }}">Manage Series Genre</a>
+			<a class="black" href="{{ URL::to('admin/series-list') }}"> TV Shows List</a>
+			<a class="black" href="{{ URL::to('admin/series/create') }}"> Add New TV Shows</a>
+			<a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/Series/Genre') }}">Manage TV Shows Genre</a>
+			<a class="black" href="{{ route('admin.Network_index') }}">Manage TV Shows Network</a>
 		</div>
 
     <div class="container-fluid p-0">
@@ -41,7 +42,7 @@ border-radius: 0px 4px 4px 0px;
             <div class="iq-card">
                 <div class="row">
                     <div class="col-md-6">
-                        <h4><i class="entypo-archive"></i> Series Genre</h4>
+                        <h4><i class="entypo-archive"></i> TV Shows Genre</h4>
 
                         @if (Session::has('message'))
                             <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
@@ -67,7 +68,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title">New Series Genre</h4>
+                                <h4 class="modal-title">New TV Shows Genre</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
 
@@ -75,32 +76,27 @@ border-radius: 0px 4px 4px 0px;
                                 <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/Series_genre_store') }}" method="post" enctype="multipart/form-data">
                                    		<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
-										<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+										<div class="form-group">
 											<label>Name:</label>
 											<input type="text" id="name" name="name" value="" class="form-control" placeholder="Enter Name">
-											@if ($errors->has('name'))
-												<span class="text-red" role="alert">
-													<strong>{{ $errors->first('name') }}</strong>
-												</span>
-											@endif
 										</div>
 
-										<div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+										<div class="form-group ">
 											<label>Slug:</label>
 											<input type="text" id="slug" name="slug" value="" class="form-control" placeholder="Enter Slug">
-											@if ($errors->has('slug'))
-												<span class="text-red" role="alert">
-													<strong>{{ $errors->first('slug') }}</strong>
-												</span>
-											@endif
 										</div>  
 								
-										<div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+										<div class="form-group ">
 											<label>Display In Menu :</label>
 											<input type="radio" checked id="in_menu"  id="in_menu" name="in_menu" value="1">Yes
 											<input type="radio" id="in_menu" name="in_menu" value="0">No
 										</div>
 
+										<div class="form-group ">
+											<label>Display In Home :</label>
+											<input type="radio" checked id="in_home"  id="in_home" name="in_home" value="1">Yes
+											<input type="radio" id="in_home" name="in_home" value="0">No
+										</div>
 
 										<div class="form-group ">
 											<label>Display In Category List :</label>
@@ -108,12 +104,17 @@ border-radius: 0px 4px 4px 0px;
 											<input type="radio"  name="category_list_active" value="0" checked >No
 										</div>
 
-										<div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+										<div class="form-group">
 											<label>Image:</label>
 											<input type="file" multiple="true" class="form-control" name="image" id="image" />
 										</div>
+										
+										<div class="form-group ">
+											<label>Banner Image:</label>
+											<input type="file" multiple="true" class="form-control" name="banner_image" id="banner_image" />
+										</div>
 
-										<div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
+										<div class="form-group">
 												<label>{{ ucwords('genre:')  }}</label>
 												<select id="parent_id" name="parent_id" class="form-control">
 													<option value="0">Select</option>
@@ -121,11 +122,6 @@ border-radius: 0px 4px 4px 0px;
 															<option value="{{ $rows->id }}">{{ $rows->name }}</option>
 													@endforeach
 												</select>
-												@if ($errors->has('parent_id'))
-													<span class="text-red" role="alert">
-														<strong>{{ $errors->first('parent_id') }}</strong>
-													</span>
-												@endif
 										</div>
 
                                          <div class="modal-footer form-group">
@@ -143,7 +139,7 @@ border-radius: 0px 4px 4px 0px;
 							
 					<div class="panel-heading">
 						<div class="panel-title">
-							<p>Organize the Categories below: </p>
+							<p>Organize the Genre below: </p>
 						</div>
 						<div class="panel-options">
 							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
@@ -154,19 +150,30 @@ border-radius: 0px 4px 4px 0px;
 						<div id="nestable" class="nested-list dd with-margins">
 							<table class="table table-bordered iq-card text-center" id="categorytbl">
 								<tr class="table-header r1">
-									<th><label>Series Genre Image</label></th>
-									<th><label>Series Genre Name</label></th>
+									<th><label>S.No</label></th>
+									<th><label>TV Shows Genre Image</label></th>
+									<th><label>TV Shows Genre Name</label></th>
+                                    <th><label>TV Shows Active</label></th>          
 									<th><label>Operation</label></th>
 								</tr>
 
-								@foreach($allCategories as $category)
+								@foreach($allCategories as $key => $category)
 									<tr id="{{ $category->id }}">
-										<td valign="bottom" class=""><img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $category->image }}" width="50" height="50"></td>
+										<td valign="bottom" class="">{{ $key+1}}</td>
+										<td valign="bottom" class=""><img src="{{ $category->image_url }}" width="50" height="50"></td>
 										<td valign="bottom"><p>{{ $category->name }}</p></td>
+										<td valign="bottom">
+                                            <div class="mt-1">
+                                                <label class="switch">
+                                                    <input name="active" class="active" id="{{ 'category_'.$category->id }}" type="checkbox" @if( $category->in_menu == "1") checked  @endif data-category-id={{ $category->id }}  data-type="category" onchange="update_category(this)" >
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </td>
 										<td>
 											<div class=" align-items-center list-user-action">
 											<a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/series/category') . '/' . $category->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
+                                             data-original-title="View" href="{{ URL::to('/series/category/'. $category->slug) }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                      
 											<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
 																	data-original-title="Edit" href="{{ URL::to('admin/Series_genre/edit/') }}/{{$category->id}}" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> 
@@ -186,6 +193,61 @@ border-radius: 0px 4px 4px 0px;
 	</div>
 
 	@section('javascript')
+
+
+	
+	<script>
+		function update_category(ele){
+
+		var category_id = $(ele).attr('data-category-id');
+		var status   = '#category_'+category_id;
+		var category_Status = $(status).prop("checked");
+
+		if(category_Status == true){
+			var status  = '1';
+			var check = confirm("Are you sure you want to active this Category?");  
+
+		}else{
+			var  status  = '0';
+			var check = confirm("Are you sure you want to remove this Category?");  
+		}
+
+
+		if(check == true){ 
+
+		$.ajax({
+					type: "POST", 
+					dataType: "json", 
+					url: "{{ url('admin/series_category_active') }}",
+						data: {
+							_token  : "{{csrf_token()}}" ,
+							category_id: category_id,
+							status: status,
+					},
+					success: function(data) {
+						if(data.message == 'true'){
+							//  location.reload();
+						}
+						else if(data.message == 'false'){
+							swal.fire({
+							title: 'Oops', 
+							text: 'Something went wrong!', 
+							allowOutsideClick:false,
+							icon: 'error',
+							title: 'Oops...',
+							}).then(function() {
+								location.href = '{{ URL::to('admin/audios/categories') }}';
+							});
+						}
+					},
+				});
+		}else if(check == false){
+		$(status).prop('checked', true);
+
+		}
+		}
+	</script>
+
 
 	<script type="text/javascript">
 

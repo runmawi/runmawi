@@ -131,3 +131,18 @@
 @media (max-width:479px) {
   header .navbar ul li.list-inline-item a { padding-left: 20px; padding-right: 20px; }
 }
+
+/* Video page */
+
+.music-play-lists {
+  display: flex !important;
+  gap: 2px;
+}
+.share-icons.music-play-lists li {
+  display: inline-flex;
+  margin: 0 15px 0 0;
+  width: 40px;
+  height: 40px;
+  background: #5c5c5c54;
+  border-radius: 3px;
+}

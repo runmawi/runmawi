@@ -252,14 +252,14 @@ body.loading .overlay{
         <div class="container">
             <div class="row sig ">
                 <div class="col-md-4 mt-3 pt-3">
-                    <h4 class="main-title mb-4">My Account</h4>
-                    <p class="text-white">Edit your name or change<br>your password.</p>
+                    <h4 class="main-title mb-4">{{ __('My Account') }}</h4>
+                    <p class="text-white">{{ __('Edit your name or change') }}<br>{{ __('your password') }}.</p>
                     <ul class="edit p-0 mt-5">
                         
                         <li><div class="d-flex showSingle" target="2">
                                 <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="text-white">
                             <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
-                                    Plan
+                            {{ __('Plan') }} 
                                 </a>
 </div></li>
                         
@@ -270,29 +270,29 @@ body.loading .overlay{
                 <div class="col-md-8 targetDiv" id="div2">
                     <div class="d-flex justify-content-around text-white">
                         <div class="d-felx text-center">
-                        <p>Choose plan</p>
+                        <p>{{ __('Choose plan') }}</p>
                         <input type="radio">
                             <ul>
                                 <li class="btn_prd_up_22"></li>
                             </ul>
                         </div>
                         <div class="d-felx text-center">
-                        <p>Make payment</p>
+                        <p>{{ __('Make payment') }}</p>
                             <input type="radio">
                              <ul>
                                 <li class="btn_prd_up_33"></li>
                             </ul>
                         </div>
                         <div class="d-felx text-center">
-                        <p>Confirmation</p>
+                        <p>{{ __('Confirmation') }}</p>
                             <input type="radio"></div>
                     </div>
                 <div class="col-md-12 mt-3">
                     <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
                         <div class="container ">
                           
-                        <p>SAVE $594</p>
-                        <h1><span class="dl">$</span>1197 <span class="dl1">for 9 months</span></h1></div>
+                        <p>{{ __('SAVE $594') }}</p>
+                        <h1><span class="dl">$</span>1197 <span class="dl1">{{ __('for 9 months') }}</span></h1></div>
                         </div>
                         
                     </div>
@@ -301,8 +301,8 @@ body.loading .overlay{
                     <div class="bg-col" onclick="jQuery('#add-new').modal('show');" >
                        <div class="container ">
                            
-                        <p>SAVE $300</p>
-                        <h1><span class="dl">$</span>894 <span class="dl1">for 6 months</span></h1></div> </div>
+                        <p>{{ __('SAVE $300') }}</p>
+                        <h1><span class="dl">$</span>894 <span class="dl1">{{ __('for 6 months') }}</span></h1></div> </div>
                       
                     </div>
             
@@ -311,8 +311,8 @@ body.loading .overlay{
                        <div class="container ">
                            
                                 
-                        <p>SAVE $99</p>
-                        <h1><span class="dl">$</span>498 <span class="dl1">for 3 months</span></h1></div></div>
+                        <p>{{ __('SAVE $99') }}</p>
+                        <h1><span class="dl">$</span>498 <span class="dl1">{{ __('for 3 months') }}</span></h1></div></div>
                         
                     </div>
            
@@ -321,7 +321,7 @@ body.loading .overlay{
                         <div class="container ">
                           
                         <p></p>
-                                <h1><span class="dl">$</span>198 <span class="dl1">for 1 months</span></h1></div></div>
+                                <h1><span class="dl">$</span>198 <span class="dl1">{{ __('for 1 months') }}</span></h1></div></div>
                         
                     </div>
                 </div>
@@ -424,7 +424,7 @@ body.loading .overlay{
 		<div class="modal-dialog">
 			<div class="modal-content">				
 				<div class="modal-header">
-                    <h4 class="modal-title" style="color: #000">You are one step away from purchasing subscription Gate Way</h4>
+                    <h4 class="modal-title" style="color: #000">{{ __('You are one step away from purchasing subscription Gate Way') }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
@@ -468,8 +468,8 @@ body.loading .overlay{
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">{{ __('Close') }}</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">{{ __('Continue') }}</button>
 				</div>
 			</div>
 		</div>
@@ -503,7 +503,7 @@ body.loading .overlay{
     <div id="paypal_pg" class="tabcontent" >
         <label for="chkPassports">
                     <input type="checkbox" id="chkPassports" />
-                     Click here for Recurring subscription!
+                    {{ __('Click here for Recurring subscription!') }}
         </label>
         <form action="<?php echo URL::to('/').'/paypal_subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data">
       
@@ -530,10 +530,10 @@ body.loading .overlay{
 						</h4>
 					</div>
 					<div class="plan-details">
-						<p>Grab this plan for your best Movies to Watch.</p>
+						<p>{{ __('Grab this plan for your best Movies to Watch') }}.</p>
                        
                         <div class="mt-4">
-							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >{{ __('Pay Now') }}</button>
 						</div>
 <!--
 						<div class="text-right mt-4">
@@ -579,9 +579,9 @@ body.loading .overlay{
                                                 </h4>
                                             </div>
                                             <div class="plan-details">
-                                                <p>Grab this plan and watch unlimited movies</p>
+                                                <p>{{ __('Grab this plan and watch unlimited movies') }}</p>
                                                 <div class="text-right mt-4">
-                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
+                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >{{ __('Pay Now') }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -596,7 +596,7 @@ body.loading .overlay{
                         <div id="paypal-button-container"></div>
                 </div>
                  <div class="col-sm-2 hide-box" style="margin-top: 4%;text-align: center;">
-                      <span class=" text-center">(OR)</span>
+                      <span class=" text-center">{{ __('(OR)') }}</span>
                 </div>
                  <div class="col-sm-4 hide-box" style="margin-top: 2%;">
                         <div class="text-center  pull-left" style="width: 100%;">

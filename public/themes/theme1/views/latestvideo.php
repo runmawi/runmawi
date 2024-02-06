@@ -5,7 +5,7 @@
  <!-- MainContent -->
 <section id="iq-favorites">
    <?php if( (isset($latestvideo['latest_videos']) && count($latestvideo['latest_videos']) > 0 )) {?>
-      <h3 class="vid-title text-center mt-4 mb-5">Latest Videos</h3> 
+      <h3 class="vid-title text-center mt-4 mb-5"><?= __('Latest Videos') ?></h3> 
             <div class="container-fluid" style="padding: 0px 40px!important;background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);">
                <div class="row">
                   <div class="col-sm-12 page-height">
@@ -122,7 +122,7 @@
             </div>
    <?php } else{?>
       <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                    <p ><h3 class="text-center">No Latest Video Available</h3>
+                    <p ><h3 class="text-center"><?= __('No Latest Video Available') ?></h3>
                 </div>
    <?php } ?>
 

@@ -92,7 +92,7 @@ class LiveStreamController extends Controller
     
     public function Play($vid)
     {
-      try {
+      // try {
 
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
@@ -264,6 +264,73 @@ class LiveStreamController extends Controller
                   
             $free_duration_condition = $live_purchase_status == 0 && ( ( $categoryVideos->access == "ppv" && Auth::check() == true && Auth::user()->role != "admin" ) || ( $categoryVideos->access == "subscriber" && ( Auth::guest() || Auth::user()->role == "registered"))) && $categoryVideos->free_duration_status == 1 && $categoryVideos->free_duration !== null ? 1 : 0;
 
+            // video Js
+
+            $Livestream_details = LiveStream::where('id',$vid)->get()->map( function ($item)   {
+
+              $item['Thumbnail']  =   !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+              $item['Player_thumbnail'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+              $item['TV_Thumbnail'] = !is_null($item->video_tv_image)  ? URL::to('public/uploads/images/'.$item->video_tv_image)  : default_horizontal_image_url() ;
+
+                  //  Livestream URL
+          
+              switch (true) {
+
+                  case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                      $item['livestream_URL'] =  $item->mp4_url ;
+                      $item['livestream_player_type'] =  'video/mp4' ;
+                  break;
+
+                  case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
+                    $item['livestream_URL'] =  $item->mp4_url ;
+                    $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                  break;
+
+                  case $item['url_type'] == "embed":
+                      $item['livestream_URL'] =  $item->embed_url ;
+                      $item['livestream_player_type'] =  'video/mp4' ;
+                  break;
+
+                  case $item['url_type'] == "live_stream_video":
+                      $item['livestream_URL'] = $item->live_stream_video ;
+                      $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                  break;
+
+                  case $item['url_type'] == "m3u_url":
+                      $item['livestream_URL'] =  $item->m3u_url ;
+                      $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                  break;
+
+                  case $item['url_type'] == "Encode_video":
+                      $item['livestream_URL'] =  $item->hls_url ;
+                      $item['livestream_player_type'] =  'application/x-mpegURL'  ;
+                  break;
+
+                  case $item['url_type'] == "acc_audio_url":
+                    $item['livestream_URL'] =  $item->acc_audio_url ;
+                    $item['livestream_player_type'] =  'audio/aac' ;
+                  break;
+    
+                  case $item['url_type'] == "acc_audio_file":
+                      $item['livestream_URL'] =  $item->acc_audio_file ;
+                      $item['livestream_player_type'] =  'audio/aac' ;
+                  break;
+                  
+                  case $item['url_type'] == "aws_m3u8":
+                    $item['livestream_URL'] =  $item->hls_url ;
+                    $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                  break;
+
+                  default:
+                      $item['livestream_URL'] =  null ;
+                      $item['livestream_player_type'] =  null ;
+                  break;
+              }
+
+              return $item;
+
+          })->first();
+          
            $data = array(
                  'currency' => $currency,
                  'video_access' => $video_access,
@@ -290,6 +357,7 @@ class LiveStreamController extends Controller
                  'category_name'   => $category_name ,
                  'live_purchase_status' => $live_purchase_status ,
                  'free_duration_condition' => $free_duration_condition ,
+                 'Livestream_details'      => $Livestream_details ,
            );
 
            return Theme::view('livevideo', $data);
@@ -298,11 +366,11 @@ class LiveStreamController extends Controller
 
           //   return view('auth.login',compact('system_settings'));
           // }
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
 
-          // return $th->getMessage();
-            return abort(404);
-        }
+        //   // return $th->getMessage();
+        //     return abort(404);
+        // }
         }
 
 
@@ -315,6 +383,7 @@ class LiveStreamController extends Controller
           $countryName = $geoip->getCountry();
           $ThumbnailSetting = ThumbnailSetting::first();
           $parentCategories = LiveCategory::where('slug',$cid)->first();
+
           if(!empty($parentCategories)){
             $parentCategories_id = $parentCategories->id;
             $parentCategories_name = $parentCategories->name;
@@ -337,12 +406,11 @@ class LiveStreamController extends Controller
                     'ThumbnailSetting' => $ThumbnailSetting,
                     'live_videos' => $live_videos,
                     'parentCategories_name' => $parentCategories_name,
+                    'parentCategories'     => $parentCategories ,
                 );
            return Theme::view('livecategoryvids',$data);
             
         } 
-
-
 
 
         public function EmbedLivePlay($vid)

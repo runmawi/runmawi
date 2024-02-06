@@ -135,6 +135,8 @@ use App\TVSetting as TVSetting;
 use App\TvSearchData ;
 use App\Currency ;
 use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
+use App\ChannelVideoScheduler as ChannelVideoScheduler;
+use App\AdminEPGChannel as AdminEPGChannel;
 
 
 class ApiAuthController extends Controller
@@ -558,6 +560,55 @@ class ApiAuthController extends Controller
 
               }
 
+            }elseif( $paymentMode == "PayPal" ){
+              
+              try {
+                           
+                $email = User::where('email',$request->email)->pluck('email')->first();
+                $user_id = User::where('email',$request->email)->pluck('id')->first();
+
+                $plandetail = SubscriptionPlan::where('plan_id',$request->plan_id)->first();
+                $current_date = date('Y-m-d h:i:s');    
+                $next_date = $plandetail->days;
+                $ends_at = Carbon::now()->addDays($plandetail->days);
+
+                    Subscription::create([
+                      'user_id'        =>  $user_id,
+                      'name'           =>  $request->username,
+                      'price'          =>  $plandetail->price ,   // Amount Paise to Rupees
+                      'stripe_id'      =>  $request->plan_id ,
+                      'stripe_status'  =>  'active' ,
+                      'stripe_plan'    =>  $request->plan_id,
+                      'quantity'       =>  null,
+                      'countryname'    =>  $request->country,
+                      'regionname'     =>  $request->state,
+                      'cityname'       =>  $request->city,
+                      'PaymentGateway' =>  'PayPal',
+                      'trial_ends_at'  =>  $ends_at,
+                      'ends_at'        =>  $ends_at,
+                  ]);
+
+                  User::where('id',$request->user_id)->update([
+                      'role'                 =>  'subscriber',
+                      'stripe_id'            =>  $request->plan_id ,
+                      'subscription_start'   =>  Carbon::now(),
+                      'subscription_ends_at' =>  $ends_at,
+                      'payment_gateway'      =>  'PayPal',
+                  ]);
+
+                return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
+                
+              } catch (\Throwable $th) {
+
+                $response = array(
+                  'status'=>'false',
+                  'message'=> $th->getMessage() ,
+                );  
+
+                return response()->json($response, 200);
+
+              }
+
             }
             else{
                      $payment_type = $input['payment_type'];
@@ -813,8 +864,8 @@ class ApiAuthController extends Controller
           ->where('subscriptions.user_id',Auth::user()->id)
           ->orderBy('subscriptions.created_at', 'desc')->first();
 
-          $plans_name = $Subscription->plans_name;
-          $plan_ends_at = $Subscription->ends_at;
+          $plans_name   = !is_null($Subscription) ? $Subscription->plans_name :null ;
+          $plan_ends_at = !is_null($Subscription) ? $Subscription->ends_at : null ;
 
         }else{
           $plans_name = '';
@@ -1484,11 +1535,18 @@ public function verifyandupdatepassword(Request $request)
               $item['videos_url']   = $item->mp4_url ;
               break;
 
+            case $item['type'] == null :
+                $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+                break;
+
+            case $item['type'] == " " && !is_null($item->transcoded_url) :
+              $item['videos_url']   = $item->transcoded_url ;
+              break;
+
             default:
               $item['videos_url']    = null ;
               break;
           }
-
           return $item;
         });
 
@@ -1715,14 +1773,6 @@ public function verifyandupdatepassword(Request $request)
               $languages = "";
             }
   
-  
-      if(\App\AdsVideo::where('video_id',$videoid)->exists()){
-          $ads_id = \App\AdsVideo::where('video_id',$videoid)->first()->ads_id;
-          $videoads = \App\Advertisement::find($ads_id)->ads_path;
-      }else{
-          $videoads = '';
-      }
-
       $video = Video::find( $request->videoid);
       
       $AdsVideosPre = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
@@ -1825,7 +1875,6 @@ public function verifyandupdatepassword(Request $request)
         'videossubtitles' => $moviesubtitles,
         'main_genre' => $main_genre,
         'languages' => $languages,
-        'videoads' => $videoads,
         'Ads_videos_Pre' => $AdsVideosPre,
         'Ads_videos_Mid' => $AdsVideosMid,
         'Ads_videos_post' => $AdsVideosPost,
@@ -2152,12 +2201,20 @@ public function verifyandupdatepassword(Request $request)
               return $item;
         });
 
+        $audio_banner = Audio::where('active','=',1)->where('banner',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+          $item['source'] = "audio_slider";
+          return $item;
+        });
+
         $slider_array  =  array ( 'sliders'       => $sliders);
         $videos_array  =  array ( 'video_banners' => $video_banners);
         $live_array    =  array ( 'live_banner'   => $live_banner);
         $series_array  =  array ( 'series_banner' => $series_banner);
+        $audio_array   =  array ( 'audio_banner' => $audio_banner );
 
-        $combine_sliders[] =  array_merge($slider_array,$videos_array,$live_array,$series_array);
+        $combine_sliders[] =  array_merge($slider_array,$videos_array,$live_array,$series_array,$audio_array);
 
         $response = array(
           'status' => 'true',
@@ -3082,6 +3139,7 @@ public function verifyandupdatepassword(Request $request)
     $episode_id = $request->episode_id;
     $season_id = $request->season_id;
     $series_id = $request->series_id;
+    $audio_id = $request->audio_id;
     $user_id = $request->user_id;
     $daten = date('Y-m-d h:i:s a', time());
     $setting = Setting::first();
@@ -3100,8 +3158,9 @@ public function verifyandupdatepassword(Request $request)
     if($charge != ''){
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
       // print_r($live_ppv_count);exit;
-      if ( $ppv_count == 0 || $live_ppv_count == 0 ) {
+      if ( $ppv_count == 0 || $live_ppv_count == 0 || $audio_ppv_count == 0) {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->insert(
             ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $request->amount, ]
@@ -3114,10 +3173,19 @@ public function verifyandupdatepassword(Request $request)
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
+        }else if(!empty($audio_id) && $audio_id != ''){
+          DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'audio_id' => $audio_id,'to_time' => $date, ]
+          );
+          send_password_notification('Notification From '. GetWebsiteName(),'You have rented a Audio','You have rented a Audio','',$user_id);
+  
         }
       } else {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+
+        }else if(!empty($audio_id) && $audio_id != ''){
+          DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
@@ -3139,6 +3207,8 @@ public function verifyandupdatepassword(Request $request)
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $serie_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
+      $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
+      $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
@@ -3170,6 +3240,26 @@ public function verifyandupdatepassword(Request $request)
         ->where('user_id', $user_id)
         ->update(['to_time' => $date]);
       }
+    
+      if ( $live_ppv_count == 0 ) {
+        DB::table('live_purchases')->insert(
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
+        );
+        
+      } else {
+        DB::table('live_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
+        );
+      }
+  
+      if ( $audio_ppv_count == 0 ) {
+        DB::table('ppv_purchases')->insert(
+          ['user_id' => $user_id ,'audio_id' => $audio_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
+        );
+      } else {
+        DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+      }
+      
       $response = array(
         'status' => 'true',
         'message' => "video has been added"
@@ -3951,6 +4041,215 @@ public function verifyandupdatepassword(Request $request)
     return response()->json($response, 200);
     }
 
+    public function retrieve_stripe_coupon(Request $request)
+    {
+      try {
+        
+        $this->validate($request, [
+          'coupon_code'  => 'required' ,
+          'plan_price'  => 'required'
+        ]);
+          
+        $stripe = new \Stripe\StripeClient(
+          env('STRIPE_SECRET')
+        );
+
+        $coupon = $stripe->coupons->retrieve( $request->coupon_code , []);
+      
+        if($coupon->amount_off != null){
+  
+          $plan_price = preg_replace('/[^0-9. ]/', ' ', $request->plan_price);
+  
+          $promo_code_amt = $coupon->amount_off / 100 ;
+  
+          $discount_amt = $plan_price - $promo_code_amt ;
+    
+        }
+        elseif( $coupon->percent_off != null ){
+  
+            $percentage = $coupon->percent_off;
+  
+            $plan_price = preg_replace('/[^0-9. ]/', ' ', $request->plan_price);
+
+            $promo_code_amt = (($percentage / 100) * $plan_price);
+  
+            $discount_amt = $plan_price -  $promo_code_amt ;
+        }
+
+          
+        $data = array(
+          'status' => 'true' ,
+          'message' => 'Retrieve stripe coupon',
+          'plan_price'     => $plan_price ,
+          'promo_code_amt' => $promo_code_amt ,
+          'discount_amt'   => $discount_amt ,
+        );
+
+      } catch (\Throwable $th) {
+        
+        $data = array(
+          'status' => 'false' ,
+          'message' => $th->getMessage(),
+        );
+      }
+
+      return response()->json($data, 200);
+    }
+
+    
+    public function stripe_become_subscriber(Request $request)
+    {
+      try {
+            $stripe = new \Stripe\StripeClient(
+              env('STRIPE_SECRET')
+            );
+        
+            $paymentMethod = $request->get('py_id');
+            $plan          = $request->get('plan_id');
+            $apply_coupon  = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
+
+            $user_id      = $request->get('userid');
+            $user         = User::where('id',$user_id)->first();
+
+            $product_id =  $stripe->plans->retrieve($plan)->product;
+
+            if( subscription_trails_status() == 1 ){
+              
+                $subscription_details = $user->newSubscription( $product_id, $plan )->trialUntil( subscription_trails_day() )->withCoupon($apply_coupon)->create( $paymentMethod );
+
+            }else{
+
+                $subscription_details = $user->newSubscription( $product_id, $plan )->withCoupon($apply_coupon)->create( $paymentMethod );
+            }
+
+              // Retrieve Subscriptions
+            $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
+            
+            if( subscription_trails_status() == 1 ){
+
+              $subscription_days_count = $subscription['plan']['interval_count'];
+      
+              switch ($subscription['plan']['interval']) {
+    
+                case 'day':
+                  break;
+
+                case 'week':
+                  $subscription_days_count *= 7;
+                break;
+
+                case 'month':
+                  $subscription_days_count *= 30;
+                break;
+
+                case 'year':
+                  $subscription_days_count *= 365;
+                break;
+              }
+    
+              $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+              $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString(); 
+              $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString(); 
+
+            }else{
+
+              $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+              $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+              $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+
+            }
+    
+            $Subscription = Subscription::create([
+                'user_id'        =>  $user->id,
+                'name'           =>  $subscription->plan['product'],
+                'price'          =>  $subscription->plan['amount_decimal'] / 100,   // Amount Paise to Rupees
+                'stripe_id'      =>  $subscription['id'],
+                'stripe_status'  =>  $subscription['status'],
+                'stripe_plan'    =>  $subscription->plan['id'],
+                'quantity'       =>  $subscription['quantity'],
+                'countryname'    =>  Country_name(),
+                'regionname'     =>  Region_name(),
+                'cityname'       =>  city_name(),
+                'PaymentGateway' =>  'Stripe',
+                'trial_ends_at'  =>  $trial_ends_at,
+                'ends_at'        =>  $trial_ends_at,
+            ]);
+    
+            $user_data = array(
+                'role'                  =>  'subscriber',
+                'stripe_id'             =>  $subscription['customer'],
+                'subscription_start'    =>  $Sub_Startday,
+                'subscription_ends_at'  =>  $Sub_Endday,
+                'payment_type'          => 'recurring',
+                'payment_status'        => $subscription['status'],
+            );
+
+            if( subscription_trails_status()  == 1 ){
+                $user_data +=  ['Subscription_trail_status' => 1 ];
+                $user_data +=  ['Subscription_trail_tilldate' => subscription_trails_day() ];
+            }
+
+            User::where('id',$user_id)->update( $user_data );
+            
+            try {
+
+              $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+              $plandetail = SubscriptionPlan::where('plan_id','=',$plan)->first();
+
+              $nextPaymentAttemptDate =  Carbon::createFromTimeStamp( $subscription['current_period_end'] )->format('F jS, Y')  ;
+
+              \Mail::send('emails.subscriptionmail', array(
+
+                  'name'          => ucwords($user->username),
+                  'paymentMethod' => $paymentMethod,
+                  'plan'          => ucfirst($plandetail->plans_name),
+                  'price'         => $subscription->plan['amount_decimal'] / 100 ,
+                  'plan_id'       => $subscription['plan']['id'] ,
+                  'billing_interval'  => $subscription['plan']['interval'] ,
+                  'next_billing'      => $nextPaymentAttemptDate,
+                  'subscription_type' => 'recurring',
+                ), 
+
+                function($message) use ($request,$user,$email_subject){
+                  $message->from(AdminMail(),GetWebsiteName());
+                  $message->to($user->email, $user->username)->subject($email_subject);
+                });
+
+              $email_log      = 'Mail Sent Successfully from Become Subscription';
+              $email_template = "23";
+              $user_id = $user->id;
+  
+              Email_sent_log($user_id,$email_log,$email_template);
+
+          } catch (\Throwable $th) {
+
+              $email_log      = $th->getMessage();
+              $email_template = "23";
+              $user_id = $user->id;
+  
+              Email_notsent_log($user_id,$email_log,$email_template);
+          }
+
+            $data = array(
+              'status'        => "true",
+              'message'       => "Your Payment done Successfully!",
+              'next_billing'  => $nextPaymentAttemptDate ,
+              'Subscription'  => $Subscription ,
+              'users_role'    => User::where('id',$user_id)->pluck('role')->first() ,
+              'user_id'       => $user->id,
+            );
+
+      } catch (\Throwable $th) {
+
+          $data = array(
+            'status'    => "false",
+            'message'   => $th->getMessage(),
+          );
+      }
+
+      return response()->json($data, 200);
+    }
+
     public function becomesubscriber(Request $request)
      {
 
@@ -3960,6 +4259,7 @@ public function verifyandupdatepassword(Request $request)
         $user = User::find($user_id);
         $paymentMethod = $request->get('py_id');
 
+        
       $user->newSubscription('test', $plan)->create($paymentMethod);
 
        if ( $user->subscribed('test') ) {
@@ -5161,6 +5461,7 @@ return response()->json($response, 200);
   {
     $season_id = $request->season_id;
     $episode_id = $request->episode_id;
+    $user_id = $request->user_id;
 
     $episode = Episode::where('id','=',$episode_id)->first();
     // $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
@@ -5174,6 +5475,8 @@ return response()->json($response, 200);
   // echo "<pre>";
   // print_r($season);exit;
   // Free Interval Episodes
+  $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('season_id','=',$season_id)
+  ->where('user_id','=',$user_id)->count();
 
   if(!empty($ppv_price) && !empty($ppv_interval)){
       foreach($season as $key => $seasons):
@@ -5185,7 +5488,9 @@ return response()->json($response, 200);
                   endif;
           endforeach;
       endforeach;
-      if (array_key_exists($episode_id,$free_episode)){
+      if($PpvPurchaseCount > 0){
+        $free_episode = 'guest';
+      }else if (array_key_exists($episode_id,$free_episode)){
         $free_episode = 'guest';
       }else{
         $free_episode = 'PPV';
@@ -5201,7 +5506,7 @@ return response()->json($response, 200);
     $response = array(
       'status' => 'true',
       'access' => $free_episode,
-      'episode' => $episode,
+      'episode' => Episode::where('id','=',$episode_id)->get(),
       'season' => $season,
     );
 
@@ -5895,8 +6200,9 @@ return response()->json($response, 200);
     {
 
         $audio_id = $request->audio_id;
+        $user_id = $request->user_id;
         $current_date = date('Y-m-d h:i:s a', time());
-        $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item)  use ($user_id)  {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['audio_duration'] = $item->duration >= "3600" ?  gmdate('H:i:s', $item->duration  ) :  gmdate('i:s', $item->duration  ) ;
@@ -5906,6 +6212,21 @@ return response()->json($response, 200);
               $item['lyrics_json'] = null  ;
             }
 
+            $PpvPurchaseCount = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',$user_id)->count();
+      
+            if($item->access == 'ppv' && ($PpvPurchaseCount > 0)){
+              $item->access = 'guest';
+            }else if($item->access == 'ppv' && ($PpvPurchaseCount == 0)){
+              $item->access = 'ppv';
+            }else{
+              $item->access = $item->access;
+            }
+            
+            if($item->lyrics_json != null){
+              $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+            }else{
+              $item['lyrics_json'] = null  ;
+            }
             return $item;
         });
 
@@ -5954,7 +6275,7 @@ return response()->json($response, 200);
          $main_genre = $audio_cat[0]->name;
         }else{
           $main_genre = '';
-        }
+        }        
 
         $response = array(
             'status' => $status,
@@ -6265,6 +6586,11 @@ return response()->json($response, 200);
           ->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            if($item->lyrics_json != null){
+              $item['lyrics_json'] = json_decode($item->lyrics_json)  ;
+            }else{
+              $item['lyrics_json'] = null  ;
+            }
             return $item;
           });
 
@@ -8409,14 +8735,14 @@ public function Adstatus_upate(Request $request)
       return $item;
     });
     
-    $series_banner = Series::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    $series_banner = Series::where('active','=',1)->where('banner',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       $item['source'] = "series_slider";
       return $item;
     });
 
-    $audio_banner = Audio::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    $audio_banner = Audio::where('active','=',1)->where('banner',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       $item['source'] = "audio_slider";
@@ -8850,7 +9176,7 @@ public function Adstatus_upate(Request $request)
     ->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['video_url'] = URL::to('/').'/storage/app/public/';
-      $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/'.$item->reelvideo;
+      $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/shorts/'.$item->reelvideo;
       $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
       $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
       $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
@@ -9843,7 +10169,17 @@ $cpanel->end();
               ->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')
               ->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                $item['video_url'] = URL::to('/').'/storage/app/public/';
+
+                if($item['type'] == 'mp4_url'){
+                  $item['video_url'] = $item['mp4_url'];
+                }elseif($item['type'] == 'm3u8_url'){
+                  $item['video_url'] = $item['m3u8_url'];
+                }elseif($item['type'] == ''){
+                  $item['video_url'] = URL::to('/').'/storage/app/public/'.$item['path'].'.m3u8';
+                }else{
+                  $item['video_url'] = URL::to('/').'/storage/app/public/';
+                }
+
                 $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                 $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
 
@@ -9891,7 +10227,16 @@ $cpanel->end();
                 $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                 $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
 
-                $item['video_url'] = URL::to('/').'/storage/app/public/';
+                if($item['type'] == 'mp4_url'){
+                  $item['video_url'] = $item['mp4_url'];
+                }elseif($item['type'] == 'm3u8_url'){
+                  $item['video_url'] = $item['m3u8_url'];
+                }elseif($item['type'] == ''){
+                  $item['video_url'] = URL::to('/').'/storage/app/public/'.$item['path'].'.m3u8';
+                }else{
+                  $item['video_url'] = URL::to('/').'/storage/app/public/';
+                }
+
                 $details = html_entity_decode($item->description);
                 $description = strip_tags($details);
                 $item['description'] = str_replace("\r", '', $description);
@@ -9911,7 +10256,17 @@ $cpanel->end();
               $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
               $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
 
-              $item['video_url'] = URL::to('/').'/storage/app/public/';
+             
+              if($item['type'] == 'mp4_url'){
+                $item['video_url'] = $item['mp4_url'];
+              }elseif($item['type'] == 'm3u8_url'){
+                $item['video_url'] = $item['m3u8_url'];
+              }elseif($item['type'] == ''){
+                $item['video_url'] = URL::to('/').'/storage/app/public/'.$item['path'].'.m3u8';
+              }else{
+                $item['video_url'] = URL::to('/').'/storage/app/public/';
+              }
+
               $details = html_entity_decode($item->description);
               $description = strip_tags($details);
               $item['description'] = str_replace("\r", '', $description);
@@ -9946,6 +10301,16 @@ $cpanel->end();
                 $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                 $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
 
+                if($item['type'] == 'mp4_url'){
+                  $item['video_url'] = $item['mp4_url'];
+                }elseif($item['type'] == 'm3u8_url'){
+                  $item['video_url'] = $item['m3u8_url'];
+                }elseif($item['type'] == ''){
+                  $item['video_url'] = URL::to('/').'/storage/app/public/'.$item['path'].'.m3u8';
+                }else{
+                  $item['video_url'] = URL::to('/').'/storage/app/public/';
+                }
+                
                 $item['artist_name'] = Videoartist::join('artists','artists.id','=','video_artists.artist_id')
                                         ->where('video_artists.video_id', $item->video_id)->pluck('artist_name') ;
 
@@ -10409,6 +10774,7 @@ $cpanel->end();
           $LiveStream = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            $item['source'] = 'livestream';
             return $item;
           });
 
@@ -10419,6 +10785,7 @@ $cpanel->end();
           $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            $item['source'] = 'audios';
             return $item;
           });
 
@@ -10429,6 +10796,7 @@ $cpanel->end();
         if ($albums_count > 0) {
           $albums = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
+        $item['source'] = 'audios_album';
         return $item;
         });
 
@@ -10440,6 +10808,7 @@ $cpanel->end();
               $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+          $item['source'] = 'videos';
           return $item;
         });
 
@@ -10451,7 +10820,7 @@ $cpanel->end();
           $series = Series::where('title', 'LIKE', '%'.$search_value.'%')->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-
+          $item['source'] = 'series';
           return $item;
         });
 
@@ -10476,6 +10845,7 @@ $cpanel->end();
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['video_url'] = URL::to('/').'/storage/app/public/';
             $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+            $item['source'] = 'videos';
             return $item;
           });
           $videoData[] = array(
@@ -10493,6 +10863,7 @@ $cpanel->end();
           ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['video_url'] = URL::to('/').'/storage/app/public/';
+            $item['source'] = 'videos';
             return $item;
           });
           $videoData[] = array(
@@ -10509,7 +10880,8 @@ $cpanel->end();
           ->where('video_artists.artist_id',$videoartistid)
           ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-            $item['video_url'] = URL::to('/').'/storage/app/public/';
+            $item['video_url'] = URL::to('/').'/storage/app/public/'; 
+            $item['source'] = 'videos';
             return $item;
           });
           $videoData[] = array(
@@ -10542,7 +10914,7 @@ $cpanel->end();
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             // $item['auido_url'] = URL::to('/').'/storage/app/public/';
             $item['category_name'] = AudioCategory::where('id',$item->category_id)->pluck('slug')->first();
-
+            $item['source'] = 'audios';
             return $item;
           });
         $audioData[] = array(
@@ -10558,6 +10930,7 @@ $cpanel->end();
         ->where('audio_languages.language_id',$audiolanguageid)
         ->where('active','=',1)->where('status','=',1)->orderBy('audio.created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['source'] = 'audios';
           return $item;
         });
         $audioData[] = array(
@@ -10574,6 +10947,7 @@ $cpanel->end();
         ->where('audio_artists.artist_id',$audioartistid)
         ->where('active','=',1)->where('status','=',1)->orderBy('audio.created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['source'] = 'audios';
           return $item;
         });
         $audioData[] = array(
@@ -10609,7 +10983,7 @@ $cpanel->end();
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         // $item['auido_url'] = URL::to('/').'/storage/app/public/';
         $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
-
+        $item['source'] = 'series';
         return $item;
       });
     $seriesData[] = array(
@@ -10625,6 +10999,7 @@ $cpanel->end();
     ->where('series_languages.language_id',$serieslanguageid)
     ->where('active','=',1)->orderBy('series.created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['source'] = 'series';
       return $item;
     });
     $seriesData[] = array(
@@ -10641,6 +11016,7 @@ $cpanel->end();
     ->where('series_artists.artist_id',$seriesartistid)
     ->where('active','=',1)->orderBy('series.created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['source'] = 'series';
       return $item;
     });
     $seriesData[] = array(
@@ -10676,6 +11052,7 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
 
         $item['category_name'] = LiveCategory::where('id',$item->category_id)->pluck('slug')->first();
         $item['category_order'] = LiveCategory::where('id',$item->category_id)->pluck('order')->first();
+        $item['source'] = 'livestream';
 
         return $item;
       });
@@ -10693,6 +11070,8 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
       ->where('live_languages.language_id',$livelanguageid)
       ->where('active','=',1)->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['source'] = 'livestream';
+
         return $item;
       });
       $liveData[] = array(
@@ -11083,7 +11462,7 @@ public function Paystack_VideoRent_Paymentverify ( Request $request )
           else {                      // Success
               $response = array(
                   "status"  => 'true' ,
-                  "message" => "Payment done! Successfully for PPV video-id = " .$request->video_id ,
+                  "message" => "Payment done! Successfully" ,
               );
           }
 
@@ -19798,7 +20177,8 @@ public function IOS_ShowVideo_favorite(Request $request) {
         public function social_network_setting(Request $request) {
 
           try {
-            $socail_networl_setting = Setting::select('facebook_page_id','google_page_id','twitter_page_id','instagram_page_id','linkedin_page_id','whatsapp_page_id','skype_page_id','youtube_page_id')->get();
+            $socail_networl_setting = Setting::select('facebook_page_id','google_page_id','twitter_page_id','instagram_page_id',
+                    'linkedin_page_id','whatsapp_page_id','skype_page_id','youtube_page_id','email_page_id')->get();
             $response = array(
               'status' => "true",
               'socail_networl_setting'=> $socail_networl_setting,
@@ -22392,4 +22772,487 @@ public function TV_login(Request $request)
     }
 
 
+    
+    public function PayPalSubscription(Request $request)
+    {
+
+        try{
+
+          $data = $request->all();
+          $email = User::where('id',$request->user_id)->pluck('email')->first();
+          $userdetail = User::where('id',$request->user_id)->first();
+  
+          $plandetail = SubscriptionPlan::where('plan_id',$request->plan_id)->first();
+          $current_date = date('Y-m-d h:i:s');    
+          $next_date = $plandetail->days;
+          $ends_at = Carbon::now()->addDays($plandetail->days);
+          $amount = $plandetail->price;
+            Subscription::create([
+                'user_id'        =>  $userdetail->id,
+                'name'           =>  $userdetail->username,
+                'price'          =>  $amount ,   // Amount Paise to Rupees
+                'stripe_id'      =>  $request->plan_id ,
+                'stripe_status'  =>  'active' ,
+                'stripe_plan'    =>  $request->plan_id,
+                'quantity'       =>  null,
+                'countryname'    =>  $request->country,
+                'regionname'     =>  $request->state,
+                'cityname'       =>  $request->city,
+                'PaymentGateway' =>  'PayPal',
+                'trial_ends_at'  =>  $ends_at,
+                'ends_at'        =>  $ends_at,
+            ]);
+
+            User::where('id',$request->user_id)->update([
+                'role'                 =>  'subscriber',
+                'stripe_id'            =>  $request->plan_id ,
+                'subscription_start'   =>  Carbon::now(),
+                'subscription_ends_at' =>  $ends_at,
+                'payment_gateway'      =>  'PayPal',
+            ]);
+
+            // Success 
+            $response = array(
+                "status"  => true ,
+                "message" => "Payment done! Successfully", 
+            );
+       
+    
+
+    } catch (\Exception $e) {
+
+        $response = array(
+            "status"  => false , 
+            "message" => $e->getMessage(), 
+       );
+    }
+        try {
+            $user = User::where('id',$request->user_id)->first();
+            $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+
+            \Mail::send('emails.subscriptionmail', array(
+                'name' => ucwords($user->username),
+                'uname' => $user->username,
+                'paymentMethod' => 'PayPal',
+                'plan' => ucfirst($plandetail->plans_name),
+                'price' => $plandetail->price,
+                'plan_id' => $plandetail->plan_id,
+                'billing_interval' => $plandetail->billing_interval,
+                'next_billing' => $ends_at,
+                'subscription_type' => 'One Time',
+
+            ), function($message) use ($request,$user,$email_subject){
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($user->email, $user->username)->subject($email_subject);
+            });
+
+            $email_log      = 'Mail Sent Successfully from Register Subscription';
+            $email_template = "23";
+            $user_id = $user->id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        } catch (\Throwable $th) {
+
+            $user = User::where('id',$request->user_id)->first();
+
+            $email_log      = $th->getMessage();
+            $email_template = "23";
+            $user_id = $user->id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+    
+    return response()->json($response, 200);
+
+    }
+
+
+    public function Paystack_SeriesRentRent_Paymentverify( Request $request )
+    {
+        try {
+  
+            $setting = Setting::first();
+            $ppv_hours = $setting->ppv_hours;
+  
+            $to_time = ppv_expirytime_started();
+  
+                 // Verify Payment
+  
+            $reference_code = $request->reference_id;
+  
+            $curl = curl_init();
+  
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+  
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+  
+            $Series = Series::where('id','=',$request->series_id)->first();
+  
+            if(!empty($Series)){
+            $moderators_id = $Series->user_id;
+            }
+  
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();
+                $total_amount     = $setting->ppv_price;
+                $title            =  $Series->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage;
+                $ppv_price        = $setting->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $setting->ppv_price;
+                $title          =  $Series->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null;
+                $ppv_price       = $setting->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+  
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  $request->user_id ;
+            $purchase->series_id       =  $request->series_id ;
+            $purchase->total_amount  =  $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+  
+            if ($err) {                 // Error
+                $response = array(
+                    "status"  => 'false' ,
+                    "message" => $err
+                );
+            }
+            else {                      // Success
+                $response = array(
+                    "status"  => 'true' ,
+                    "message" => "Payment done! Successfully" ,
+                );
+            }
+  
+        } catch (\Exception $e) {
+  
+            $response = array(
+                "status"  => 'false' ,
+                "message" => $e->getMessage(),
+           );
+        }
+        return response()->json($response, 200);
+    }
+
+    public function Paystack_SerieSeasonRentRent_Paymentverify( Request $request )
+    {
+        try {
+  
+            $setting = Setting::first();
+            $ppv_hours = $setting->ppv_hours;
+  
+            $to_time = ppv_expirytime_started();
+  
+                 // Verify Payment
+  
+            $reference_code = $request->reference_id;
+  
+            $curl = curl_init();
+  
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+  
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+  
+            $SeriesSeason = SeriesSeason::where('id','=',$request->season_id)->first();
+  
+            if(!empty($SeriesSeason)){
+            $moderators_id = $SeriesSeason->user_id;
+            }
+  
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();
+                $total_amount     = $SeriesSeason->ppv_price;
+                $title            =  $SeriesSeason->series_seasons_name;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage;
+                $ppv_price        = $SeriesSeason->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $SeriesSeason->ppv_price;
+                $title          =  $SeriesSeason->series_seasons_name;
+                $commssion      = VideoCommission::first();
+                $percentage     = null;
+                $ppv_price       = $SeriesSeason->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+  
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  $request->user_id ;
+            $purchase->series_id       =  $request->series_id ;
+            $purchase->season_id       =  $request->season_id ;
+            $purchase->total_amount  =  $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+  
+            if ($err) {                 // Error
+                $response = array(
+                    "status"  => 'false' ,
+                    "message" => $err
+                );
+            }
+            else {                      // Success
+                $response = array(
+                    "status"  => 'true' ,
+                    "message" => "Payment done! Successfully" ,
+                );
+            }
+  
+        } catch (\Exception $e) {
+  
+            $response = array(
+                "status"  => 'false' ,
+                "message" => $e->getMessage(),
+           );
+        }
+        return response()->json($response, 200);
+    }
+  
+    
+    public function Paystack_AudioRent_Paymentverify( Request $request )
+    {
+        try {
+  
+            $setting = Setting::first();
+            $ppv_hours = $setting->ppv_hours;
+  
+            $to_time = ppv_expirytime_started();
+  
+                 // Verify Payment
+  
+            $reference_code = $request->reference_id;
+  
+            $curl = curl_init();
+  
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+  
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+  
+            $Audio = Audio::where('id','=',$request->audio_id)->first();
+  
+            if(!empty($Audio)){
+            $moderators_id = $Audio->user_id;
+            }
+  
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();
+                $total_amount     = $Audio->ppv_price;
+                $title            =  $Audio->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage;
+                $ppv_price        = $Audio->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $Audio->ppv_price;
+                $title          =  $Audio->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null;
+                $ppv_price       = $Audio->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+  
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  $request->user_id ;
+            $purchase->audio_id       =  $request->audio_id ;
+            $purchase->total_amount  =  $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+            if ($err) {                 // Error
+                $response = array(
+                    "status"  => 'false' ,
+                    "message" => $err
+                );
+            }
+            else {                      // Success
+                $response = array(
+                    "status"  => 'true' ,
+                    "message" => "Payment done! Successfully" ,
+                );
+            }
+  
+        } catch (\Exception $e) {
+  
+            $response = array(
+                "status"  => 'false' ,
+                "message" => $e->getMessage(),
+           );
+        }
+        return response()->json($response, 200);
+    }
+
+    
+    public function Channels( Request $request ){
+      
+      try {
+        
+        $Admin_EPG_Channel =  AdminEPGChannel::get()->map(function ($item) {
+              $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+              $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+              $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+              return $item;
+          });
+
+        $response = array(
+          "status"  => 'true' ,
+          "Channels" => $Admin_EPG_Channel ,
+          "message" => "Retrieved Channels Successfully" ,
+        );
+        
+      } catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $e->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+
+    }
+
+    public function ChannelScheduledVideos( Request $request ){
+
+      try {
+
+        $channe_id = $request->channe_id;
+        $date = !empty($request->date) ? $request->date : date('m-d-Y');
+        $time_zone = $request->time_zone;
+        $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $date);
+        $choosed_date = $carbonDate->format('n-j-Y');
+        $Channel_videos =  AdminEPGChannel::get()->map(function ($item) use ($request,$choosed_date) {
+            $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+            $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+            $item['scheduled_videos'] = ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date',$choosed_date)->get();
+          return $item;
+        });
+
+        $response = array(
+          "status"  => 'true' ,
+          "Channel_videos" => $Channel_videos ,
+          "message" => "Retrieved Channels Videos Successfully" ,
+        );
+        
+      } catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+
+    }
+    
+
+    
+    public function ChannelScheduledDataVideos( Request $request ){
+
+      try {
+
+        $channe_id = $request->channe_id;
+        $date = !empty($request->date) ? $request->date : date('m-d-Y');
+        $time_zone = $request->time_zone;
+        $carbonDate = \Carbon\Carbon::createFromFormat('m-d-Y', $date);
+        $choosed_date = $carbonDate->format('n-j-Y');
+
+        $ChannelVideoScheduler = ChannelVideoScheduler::where('channe_id',$channe_id)
+            ->where('choosed_date',$choosed_date)->get()->map(function ($item) use ($request,$choosed_date) {
+            $item['image_url'] = $item->image != null ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url() ;
+          return $item;
+        });
+
+       
+        $response = array(
+          "status"  => 'true' ,
+          "Channel_videos" => $ChannelVideoScheduler ,
+          "message" => "Retrieved Channels Videos Successfully" ,
+        );
+        
+      } catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+
+    }
+    
 }

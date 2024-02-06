@@ -3,7 +3,7 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
         <h4 class="main-title"><a href="<?php 
             if ($order_settings_list[8]->header_name) { echo URL::to('/').'/'.$order_settings_list[8]->url ;} else { echo "" ; } ?>">
-                 <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[8]->header_name ;} else { echo "" ; } ?>
+                 <?php if ($order_settings_list[1]->header_name) { echo (__($order_settings_list[8]->header_name)) ;} else { echo "" ; } ?>
             </a>
         </h4>  
 </div>
@@ -21,14 +21,15 @@
                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist_details->image;  ?>" class="img-fluid w-100 loading" alt=""> 
                         </a>
                     </div>
-                </div>
-                <div class="block-description">
-                    <div class="hover-buttons">
-                        <a class="text-white btn-cl" href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
-                             <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                        </a>
+                    <div class="block-description">
+                        <div class="hover-buttons">
+                            <a class="text-white btn-cl" href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
+                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                            </a>
+                        </div>
                     </div>
                 </div>
+                
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>

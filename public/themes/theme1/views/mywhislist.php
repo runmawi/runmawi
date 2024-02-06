@@ -13,7 +13,7 @@
      </div>
      <section class="movie-detail ">
         <?php if((count($channelwatchlater) > 0) ||(count($livevideos) > 0) ): ?>
-            <h4 class="main-title">Videos</h4>       
+            <h4 class="main-title"><?= __('Videos') ?></h4>       
         <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
              <?php if(count($channelwatchlater) > 0):
@@ -57,7 +57,7 @@
             </ul>
          </div>
 
-         <h4 class="main-title">Live Videos</h4>  
+         <h4 class="main-title"><?= __('Live Videos') ?></h4>  
          <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
             <?php if(count($livevideos) > 0): ?>
@@ -108,8 +108,8 @@
            
                 <div class="col-md-12 text-center mt-4" style="margin-left:30%;">
             <img class=""  src="<?php echo  URL::to('/assets/img/sub.png')?>" >
-                      <p class="med">No Media in My WishLists</p>
-                     <a class="mb-5 text-white pag">Please refresh your page to retry</a>
+                      <p class="med"><?= (__('No Media in My WishLists')) ?></p>
+                     <a class="mb-5 text-white pag"><?= (__('Please refresh your page to retry')) ?></a>
         </div>
         <?php endif; ?>
         

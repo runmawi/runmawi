@@ -81,12 +81,15 @@
         .sign-user_card {
             padding: 20px;
         }
+        .sign-in-page {
+            background: #000;
+        }
     </style>
 </head>
 
 <body>
 
-    <section class="sign-in-page" style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat;background-size: cover;">
+    <section class="sign-in-page" >
         <div class="container  page-height">
             <div class="row justify-content-around">
                 <div class="col-lg-7 col-12 align-self-center">
@@ -143,7 +146,7 @@
                                         <p class="reset-help text-center">We will send you an email with instructions on
                                             how to reset your password.</p>
 
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary ml-4">
                                             {{ __('Send Password Reset Link') }}
                                         </button>
                                     </form>

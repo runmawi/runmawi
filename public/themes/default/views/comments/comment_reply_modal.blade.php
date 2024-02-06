@@ -4,7 +4,7 @@
             <form method="get" action="<?= route('comments.reply', $comment->id ) ?>">
                 
                 <div class="modal-header">
-                    <h5 class="modal-title">Reply to Comment</h5>
+                    <h5 class="modal-title"><?= ( __('Reply to Comment')) ?></h5>
                     <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                     </button>
@@ -22,8 +22,8 @@
                 </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm bd" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-sm bd">Reply</button>
+                    <button type="button" class="btn btn-sm bd" data-dismiss="modal"><?= ( __('Cancel')) ?></button>
+                    <button type="submit" class="btn btn-sm bd"><?= ( __('Reply')) ?></button>
                 </div>
             </form>
         </div>

@@ -6,7 +6,6 @@
 
 @section('content')
 
-    <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
     </script>
     <style>
 
@@ -554,8 +553,8 @@ background-color: #000;padding: 10px!important;}
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-7">
                 <div class="flick1">
-                 <div class="small-heading text-white">Step 2 of  <span class="ml-2">2</span></div>
-                    <p class="text-white">Hello, {{ $user_mail }}</p>
+                 <div class="small-heading text-white">{{ __('Step 2 of') }}  <span class="ml-2">2</span></div>
+                    <p class="text-white">{{ __('Hello') }}, {{ $user_mail }}</p>
                     <div class="medium-heading text-white"> {{  $signup_step2_title }} </div>
                     <div class="col-md-12 p-0 mt-2">
 
@@ -618,7 +617,7 @@ background-color: #000;padding: 10px!important;}
                                         <div class="col-md-12 ambk p-0 text-center" >
                                             <div>
                                                 <h6 class=" font-weight-bold"> {{ $plan->plans_name  }} </h6>
-                                                <p class="text-white mb-0"> {{ ($CurrencySetting == 1) ? Currency_Convert($plan->price) : $plan->price }} Membership</p>
+                                                <p class="text-white mb-0"> {{ ($CurrencySetting == 1) ? Currency_Convert($plan->price) : $plan->price }} {{ __('Membership') }}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-12 blk" >
@@ -642,14 +641,14 @@ background-color: #000;padding: 10px!important;}
                                 <div class="row dg align-items-center mb-4" >
                                     <div class="col-md-7 p-0">
                                         <h4 class="text-black font-weight-bold"> {{ $AdminLifeTimeSubscription  ? $AdminLifeTimeSubscription->name : " " }} </h4>
-                                        <p> {{ $AdminLifeTimeSubscription  ? $AdminLifeTimeSubscription->name : " " . " Membership " }} </p>
+                                        <p> {{ $AdminLifeTimeSubscription  ? $AdminLifeTimeSubscription->name : " " . " __('Membership') " }} </p>
                                     </div>
                                     <div class="vl "></div>
                                     <div class="col-md-4 p-2" >
                                         <h4 class="text-black"> {{ currency_symbol().$AdminLifeTimeSubscription->price }}  </h4>
-                                        <p class="mb-0">Billed as {{ $AdminLifeTimeSubscription  ? currency_symbol().$AdminLifeTimeSubscription->price : " "  }} </p>
+                                        <p class="mb-0">{{ __('Billed as') }} {{ $AdminLifeTimeSubscription  ? currency_symbol().$AdminLifeTimeSubscription->price : " "  }} </p>
                                         <div class="text-center">
-                                            <button  type="submit" class="btn1 btn-lg  text-white " style="font-size:10px !important ; padding:5px 20px ;" >Pay Now</button>
+                                            <button  type="submit" class="btn1 btn-lg  text-white " style="font-size:10px !important ; padding:5px 20px ;" >{{ __('Pay Now') }}</button>
                                        </div>
                                     </div>
                                 </div>
@@ -670,11 +669,11 @@ background-color: #000;padding: 10px!important;}
       
                          <div class="d-flex justify-content-between align-items-center">
                              <div>
-                                 <h3>Payment</h3>
+                                 <h3>{{ __('Payment') }}</h3>
                              </div>
 
                              <div>
-                                 <label for="fname">Accepted Cards</label>
+                                 <label for="fname">{{ __('Accepted Cards') }}</label>
                                  <div class="icon-container">
                                      <i class="fa fa-cc-visa" style="color: navy;"></i>
                                      <i class="fa fa-cc-amex" style="color: blue;"></i>
@@ -686,30 +685,30 @@ background-color: #000;padding: 10px!important;}
 
                      <div class="mt-3"></div>
 
-                     <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+                     <label for="fname"><i class="fa fa-user"></i> {{ __('Full Name') }}</label>
 
-                     <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
+                     <input id="card-holder-name" type="text" class="form-control" placeholder="{{ __('Verify') }}Card Holder Name">
 
                      <!-- Stripe Elements Placeholder -->
-                     <label for="ccnum"> Card Number</label>
+                     <label for="ccnum"> {{ __('Card Number') }}</label>
                      <div id="card-element" style=""></div>
 
                      @if( get_coupon_code() == 1)
                                     <!-- Add Promotion Code -->
                         <div class="mt-3">
-                            <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
+                            <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> {{ __('Add Promotion Code') }} </label>
                             <div class="collapse show" id="collapseExample">
                                 <div class="row p-0">
                                     <div class="col-lg-6 p-0" >
-                                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code" >
+                                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="{{ __('Add Promotion Code') }}" >
                                         <input id="final_coupon_code_stripe" name="final_coupon_code_stripe" type="hidden" >
                                         </div>
-                                    <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">Apply</a></div>
+                                    <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">{{ __('Apply') }}</a></div>
                                     <span id="coupon_message"></span>
 
                                                 {{-- Coupon Code from backend(admin) --}}
                                     @if( NewSubscriptionCouponCode() != '0' )
-                                        <span id="">  {{ "Recommend a Coupon Code for you - " . NewSubscriptionCouponCode() }} </span>
+                                        <span id="">  {{ __('Recommend a Coupon Code for you')}} {{ " - " . NewSubscriptionCouponCode() }} </span>
                                     @endif
                                     
                                 </div>
@@ -719,16 +718,16 @@ background-color: #000;padding: 10px!important;}
 
                  </div>
                 
-                 <h4>Summary</h4>
+                 <h4>{{ __('Summary') }}</h4>
 
                  <div class="bg-white mt-4 dgk">
-                    <h4> Due today: <span class='plan_price'> {{ $SubscriptionPlan ? currency_symbol().$SubscriptionPlan->price : currency_symbol().'0:0' }} </span> </h4>
+                    <h4> {{ __('Due today') }}: <span class='plan_price'> {{ $SubscriptionPlan ? currency_symbol().$SubscriptionPlan->price : currency_symbol().'0:0' }} </span> </h4>
                     
                     @if( get_coupon_code() == 1)
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <div class="stripe_payment">
-                                <p> Amount Deducted for Promotion Code   </p>
-                                <p> Payable Amount    </p>
+                                <p> {{ __('Amount Deducted for Promotion Code') }}   </p>
+                                <p> {{ __('Payable Amount') }}    </p>
                             </div>
                             
                             <div class="stripe_payment">
@@ -740,7 +739,7 @@ background-color: #000;padding: 10px!important;}
 
                      {{-- <div class="d-flex justify-content-between align-items-center mt-2">
                          <div>
-                             <p>Annual Membership</p>
+                             <p>{{ __('Annual Membership') }}</p>
                          </div>
                          <div>
                              <p > {{ $SubscriptionPlan ? '$'.$SubscriptionPlan->price * 12 : '$0:0' }} </p>
@@ -748,10 +747,11 @@ background-color: #000;padding: 10px!important;}
                      </div> --}}
 
                      <hr/>
-                     {{-- <h6 class="text-black text-center font-weight-bold">You will be charged $56.99 for an annual membership on 05/18/2022. Cancel anytime.</h6> --}}
-                     <p class="text-center mt-3">All state sales taxes apply</p>
+                     {{-- <h6 class="text-black text-center font-weight-bold">{{ __('You will be charged $56.99 for an annual membership on 05/18/2022. Cancel anytime') }}.</h6> --}}
+                     <p class="text-center mt-3">{{ __('All state sales taxes apply') }}</p>
                  </div>
-
+                 <div class="col-md-12 mt-5" id="paypal_card_payment">
+                </div>
                  <p class="text-white mt-3 dp">
                          {{ $signup_payment_content ? $signup_payment_content : "By Clicking on Paynow & Start" }}
                  </p>
@@ -760,21 +760,21 @@ background-color: #000;padding: 10px!important;}
                                             {{-- Stripe --}}
                     <div class="col-md-12 stripe_payment">
                         <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
-                            Pay Now
+                        {{ __('Pay Now') }}
                         </button>
                     </div>
                   
                                             {{-- Paystack --}}
                     <div class="col-md-12 paystack_payment">
                         <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert" >
-                            Pay Now
+                        {{ __('Pay Now') }}
                         </button>
                     </div>
 
                                              {{-- Razorpay --}}
                     <div class="col-md-12 Razorpay_payment">
                         <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert" >
-                            Pay Now
+                        {{ __('Pay Now') }}
                         </button>
                     </div>
 
@@ -782,7 +782,7 @@ background-color: #000;padding: 10px!important;}
                     
                     <div class="col-md-12 cinetpay_payment">
                         <button  onclick="cinetpay_checkout()" data-subscription-price='100' type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button" >
-                            Pay Now
+                        {{ __('Pay Now') }}
                         </button>
                     </div>
                     
@@ -794,11 +794,11 @@ background-color: #000;padding: 10px!important;}
                     
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h3>Payment</h3>
+                            <h3>{{ __('Payment') }}</h3>
                         </div>
 
                         <div>
-                            <label for="fname">Accepted Cards</label>
+                            <label for="fname">{{ __('Accepted Cards') }}</label>
                             <div class="icon-container">
                                 <i class="fa fa-cc-visa" style="color: navy;"></i>
                                 <i class="fa fa-cc-amex" style="color: blue;"></i>
@@ -810,7 +810,6 @@ background-color: #000;padding: 10px!important;}
 
                     <div class="mt-3"></div>
 
-                    <div id="paypal-button-container-P-6XA79361YH9914942MMPN3BQ"></div>
 
                 </div> 
 
@@ -835,6 +834,7 @@ background-color: #000;padding: 10px!important;}
 
     jQuery(document).ready(function($){
         // Add New Category
+        $('#paypal_card_payment').hide();
         $('#submit-new-cat').click(function(){
             $('#payment-form').submit();
         });
@@ -844,7 +844,7 @@ background-color: #000;padding: 10px!important;}
    
          <div class="form-group row">
                 <div class="col-md-12 text-center">
-                    <p class="mt-3 text-white">OR</p>
+                    <p class="mt-3 text-white">{{ __('OR') }}</p>
 				      <div class="mt-4 sign-up-buttons">
                    <a type="button" href="<?php echo URL::to('/').'/registerUser';?>" class="btn btn-secondary">
                             <?php echo __('Skip');?>
@@ -1020,6 +1020,7 @@ for (var i = 0; i < btns.length; i++) {
             var plan_price  = $(ele).attr('data-plan-price');
             var plan_id_class = $(ele).attr('data-plan-id');
             let currency_symbols  =  document.getElementById("currency_symbol").value ;
+            var selectedOption = $('input[name="payment_gateway"]:checked').val();
 
             $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
             $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
@@ -1033,6 +1034,63 @@ for (var i = 0; i < btns.length; i++) {
             $('.dg' ).removeClass('actives');
             $('#'+plan_id_class ).addClass('actives');
 
+              
+    //   PayPal Payment Gateway
+
+        if (selectedOption == 'paypal') {
+            $('#paypal_card_payment').show();
+
+            var dynamicPlanId = plans_id;
+            var dynamicContainerId = 'paypal-button-container-' + dynamicPlanId;
+            $('#paypal_card_payment').empty();
+            var newContainerDiv = $('<div id="' + dynamicContainerId + '"></div>');
+            // Append the new container to the specified parent container
+            $('#paypal_card_payment').append(newContainerDiv);
+
+            paypal.Buttons({
+                style: {
+                    shape: 'rect',
+                    color: 'gold',
+                    layout: 'vertical',
+                    label: 'subscribe'
+                },
+                createSubscription: function (data, actions) {
+                    return actions.subscription.create({
+                        /* Creates the subscription */
+                        plan_id: dynamicPlanId
+                    });
+                },
+                onApprove: function (data, actions) {
+                    // alert(data.subscriptionID); 
+                    var subId = data.subscriptionID;
+
+                    $.ajax({
+                        url: '{{ URL::to('submitpaypal') }}',
+                        method: 'post',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            plan_id: dynamicPlanId,
+                            subId: subId,
+                        },
+                        success: (response) => {
+                            alert("You have done  Payment !");
+                            console.log("Server response:", response);
+
+                            setTimeout(function() {
+                                window.location.replace(base_url+'/login');
+                        }, 2000);
+
+                        },
+                        error: (error) => {
+                            swal(error);
+                        }
+                    })
+                  
+                }
+            }).render('#' + dynamicContainerId); 
+        }else{
+            $('#paypal_card_payment').hide();
+        }
     }   
     var base_url = $('#base_url').val();
     const stripe = Stripe('{{ env('STRIPE_KEY') }}');
@@ -1240,7 +1298,7 @@ for (var i = 0; i < btns.length; i++) {
 <!-- paypay script -->
 
 
-<script src="https://www.paypal.com/sdk/js?client-id=AVGcAgzu_FN6jiaO8AAqyaXxFPeVfWMBG9OK2CJbnbgqDpnAsNqEpOQ12-Sor5eK0NRduzL4RddazjoV&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AbYa86-3ocJ93QPyd8cPMyrg0VByi0x0wfEvLFrVKW8HML-aszlPlOd5Q0jnVut_-a1yo-4Pt_UGTi74&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 
 <script>
 

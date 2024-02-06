@@ -1,5 +1,5 @@
 <div class="iq-main-header ">
-    <h4 class="main-title"> Episode </h4>
+    <h4 class="main-title"><?= __('Episode') ?> </h4>
 </div>
 
 <div class="col-sm-12 overflow-hidden">
@@ -24,11 +24,11 @@
                                 <p class="date" style="color:#fff;font-size:14px;">
                                     <?= date('F jS, Y', strtotime($episodes->created_at)) ?>
                                     <?php if($episodes->access == 'guest'): ?>
-                                    <span class="label label-info">Free</span>
+                                    <span class="label label-info"><?= __('Free') ?></span>
                                     <?php elseif($episodes->access == 'subscriber'): ?>
-                                    <span class="label label-success">Subscribers Only</span>
+                                    <span class="label label-success"><?= __('Subscribers Only') ?></span>
                                     <?php elseif($episodes->access == 'registered'): ?>
-                                    <span class="label label-warning">Registered Users</span>
+                                    <span class="label label-warning"><?= __('Registered Users') ?></span>
                                     <?php endif; ?>
                                 </p>
                             <?php endif; ?>
@@ -37,7 +37,7 @@
                                 <a
                                     href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
                                     <span class="text-white"> <i class="fa fa-play mr-1"
-                                            aria-hidden="true"></i> Play Now </span>
+                                            aria-hidden="true"></i> <?= __('Play Now') ?> </span>
                                 </a>
                             </div>
                         </div>

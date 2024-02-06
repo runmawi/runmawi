@@ -16,17 +16,23 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 class AdminSeriesGenreController extends Controller
 {
     public function index()
     {
 
-        $genre = SeriesGenre::orderBy('order')->get();
+        $genre = SeriesGenre::orderBy('order')->get()->map( function($item){
+            $item['image_url'] = !is_null($item->image )? URL::to('public/uploads/videocategory/'.$item->image) : default_vertical_image_url() ;
+            return $item;
+        });
           
         $data = array (
           'allCategories'=>$genre
         );
+        
 
         return view('admin.genre.index',$data);
 
@@ -34,55 +40,57 @@ class AdminSeriesGenreController extends Controller
 
     public function Series_genre_store(Request $request)
     {
-        $input = $request->all();
+        $inputs = array(
+            'parent_id' => $request->parent_id,
+            'name'      => $request->name, 
+            'slug'      => $request->slug ? Str::slug($request->slug) : Str::slug($request->name) ,
+            'in_home'   => $request->in_home ,
+            'footer'    => $request->footer,
+            'banner'    => $request->banner,
+            'in_menu'   => $request->in_menu ,
+            'order'     => SeriesGenre::max('order') + 1 ,
+            'category_list_active' => $request->category_list_active ,
+        );
 
-        $input['parent_id'] = empty($input['parent_id']) ? 0 : $input['parent_id'];
+        if($request->hasFile('image')){
+    
+            $file = $request->image;
 
-        $slug = $request['slug']; 
+            if(compress_image_enable() == 1){
 
-        $in_menu = $request['in_menu']; 
+                $filename   = 'series-Genre-'.time().'.'.compress_image_format();
+                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
 
-        $in_home = $request['in_home']; 
+            }else{
 
-        $input['category_list_active']= $request['category_list_active']; 
-
-        if ( $slug != '') {
-            $input['slug']  =  str_replace(' ', '_',  $request['slug']);
-        } else {
-             $input['slug']  = str_replace(' ', '_', $request['name']);
-        } 
-
-        if ( $in_home != '') {
-            $input['in_home']  = $request['in_home'];
-        } else {
-             $input['in_home']  = $request['in_home'];
-        }
-
-
-        $path = public_path().'/uploads/videocategory/';
-
-        $image = $request['image']; 
-        if($image != '') {   
-            if($image != ''  && $image != null){
-                     $file_old = $path.$image;
-                if (file_exists($file_old)){
-                     unlink($file_old);
-                }
+                $filename   = 'series-Genre-'.time().'.'.$file->getClientOriginalExtension();
+                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
             }
-            $file = $image;
-            $input['image'] = str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move($path, $input['image']);
-        } 
-        else {
-                 $input['image']  = 'default.jpg';
+
+            $inputs +=  ['image' => $filename ];
         }
 
-        $SeriesGenre = SeriesGenre::create($input);
-        $SeriesGenre->order = $SeriesGenre->id;
-        $SeriesGenre->save();
+        if($request->hasFile('banner_image')){
+
+            $file = $request->banner_image;
+
+            if(compress_image_enable() == 1){
+
+                $filename   = 'series-Genre-banner-'.time().'.'.compress_image_format();
+                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
+
+            }else{
+
+                $filename   = 'series-Genre-banner-'.time().'.'.$file->getClientOriginalExtension();
+                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
+            }
+
+            $inputs +=  ['banner_image' => $filename ];
+        }
+
+        $SeriesGenre = SeriesGenre::create($inputs);
 
         return back()->with('message', 'New Genre added successfully.');
-
     }
 
     public function Series_genre_edit($id)
@@ -97,46 +105,98 @@ class AdminSeriesGenreController extends Controller
 
     public function Series_genre_update(Request $request)
     {
-        $input = $request->all();
-        $path = public_path().'/uploads/videocategory/';
+
+        // $input = $request->all();
+        // $path = public_path().'/uploads/videocategory/';
 
         $id = $request['id'];
-        $category = SeriesGenre::find($id);
+        // $category = SeriesGenre::find($id);
 
-        if (isset($request['image']) && !empty($request['image'])){
-               $image = $request['image']; 
-            } else {
-                $request['image'] = $category->image;
-         }
+        // if (isset($request['image']) && !empty($request['image'])){
+        //        $image = $request['image']; 
+        //     } else {
+        //         $request['image'] = $category->image;
+        //  }
 
-         if( isset($image) && $image!= '') {   
-            if ($image != ''  && $image != null) {
-                $file_old = $path.$image;
-                if (file_exists($file_old)){
-                       unlink($file_old);
-                }
-            }
-                $file = $image;
-                $category->image = str_replace(' ', '_', $file->getClientOriginalName());
-                $file->move($path,$category->image);
-            } 
+        //  if( isset($image) && $image!= '') {   
+        //     if ($image != ''  && $image != null) {
+        //         $file_old = $path.$image;
+        //         if (file_exists($file_old)){
+        //                unlink($file_old);
+        //         }
+        //     }
+        //         $file = $image;
+        //         $category->image = str_replace(' ', '_', $file->getClientOriginalName());
+        //         $file->move($path,$category->image);
+        //     } 
 
-         $category->name = $request['name'];
-         $category->slug = $request['slug'];
-         $category->parent_id = $request['parent_id'];
-         $category->in_menu = $request['in_menu']; 
-         $category->category_list_active = $request['category_list_active']; 
+        //  $category->name = $request['name'];
+        //  $category->slug = $request['slug'];
+        //  $category->parent_id = $request['parent_id'];
+        //  $category->in_menu = $request['in_menu']; 
+        //  $category->category_list_active = $request['category_list_active']; 
 
-         if ( $category->slug != '') {
-            $category->slug  =str_replace(' ', '_',  $request['slug']);
-          } else {
-             $category->slug  = str_replace(' ', '_', $request['name']);
-          }
+        //  if ( $category->slug != '') {
+        //     $category->slug  =str_replace(' ', '_',  $request['slug']);
+        //   } else {
+        //      $category->slug  = str_replace(' ', '_', $request['name']);
+        //   }
 
-          $category->save();
+        //   $category->save();
           
-          return Redirect::to('admin/Series/Genre')->with(array('message' => 'Successfully Updated Genre', 'note_type' => 'success') );
+        //   return Redirect::to('admin/Series/Genre')->with(array('message' => 'Successfully Updated Genre', 'note_type' => 'success') );
 
+
+        $inputs = array(
+            'parent_id' => $request->parent_id,
+            'name'      => $request->name, 
+            'slug'      => $request->slug ? Str::slug($request->slug) : Str::slug($request->name) ,
+            'in_home'   => $request->in_home ,
+            'footer'    => $request->footer,
+            'banner'    => $request->banner,
+            'in_menu'   => $request->in_menu ,
+            'category_list_active' => $request->category_list_active ,
+        );
+
+        if($request->hasFile('image')){
+    
+            $file = $request->image;
+
+            if(compress_image_enable() == 1){
+
+                $filename   = 'series-Genre-'.time().'.'.compress_image_format();
+                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
+
+            }else{
+
+                $filename   = 'series-Genre-'.time().'.'.$file->getClientOriginalExtension();
+                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
+            }
+
+            $inputs +=  ['image' => $filename ];
+        }
+
+        if($request->hasFile('banner_image')){
+
+            $file = $request->banner_image;
+
+            if(compress_image_enable() == 1){
+
+                $filename   = 'series-Genre-banner-'.time().'.'.compress_image_format();
+                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
+
+            }else{
+
+                $filename   = 'series-Genre-banner-'.time().'.'.$file->getClientOriginalExtension();
+                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
+            }
+
+            $inputs +=  ['banner_image' => $filename ];
+        }
+
+        SeriesGenre::find($id)->update($inputs);
+          
+        return Redirect::to('admin/Series/Genre')->with(array('message' => 'Successfully Updated Genre', 'note_type' => 'success') );
     }
 
     public function Series_genre_delete(Request $request,$id)
@@ -160,4 +220,19 @@ class AdminSeriesGenreController extends Controller
         }
         return 1;
     }
+
+    public function series_category_active(Request $request)
+    {
+        try {
+            $category = SeriesGenre::where('id',$request->category_id)->update([
+                'in_menu' => $request->status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
 }

@@ -1,6 +1,10 @@
 <?php
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
 ?>
 <html>
 <head>
@@ -9,7 +13,7 @@ $system_settings = App\SystemSetting::find(1);
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Login | <?php echo $settings->website_name ; ?></title>
+      <title>{{ __('Login') }} | <?php echo $settings->website_name ; ?></title>
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->

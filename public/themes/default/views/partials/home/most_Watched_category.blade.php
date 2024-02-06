@@ -38,9 +38,10 @@
                          $setting= \App\HomeSetting::first();
                             if($setting['Recommendation'] !=null && $setting['Recommendation'] != 0 ):
 
-                         echo __('Most watched videos from '.$category->name.' Genre');?>
+                         echo (__('Most watched videos from').__($category->name).__('Genre'));?>
             </h4>
         </a>
+        <h4 class="main-title"><a href="<?php echo URL::to('/category/').'/'.$category->slug;?>"><?php echo (__('View All')); ?></a></h4>
     </div>
     <div class="favorites-contens">
         <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -66,7 +67,7 @@
                         <?php if($category_video->access == 'subscriber' ){ ?>
                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                             <?php }elseif($category_video->access == 'registered'){?>
-                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                             <?php } elseif(!empty($category_video->ppv_price)) { 
                              echo $currency->symbol.' '.$category_video->ppv_price ; 
                             } 
@@ -90,7 +91,7 @@
                         <?php if($category_video->access == 'subscriber' ){ ?>
                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                             <?php }elseif($category_video->access == 'registered'){?>
-                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                             <?php } elseif(!empty($category_video->ppv_price)) { 
                              echo $currency->symbol.' '.$category_video->ppv_price ; 
                             } 
@@ -106,7 +107,7 @@
                         <?php if($category_video->access == 'subscriber' ){ ?>
                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                             <?php }elseif($category_video->access == 'registered'){?>
-                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                             <?php } elseif(!empty($category_video->ppv_price)) { 
                              echo $currency->symbol.' '.$category_video->ppv_price ; 
                             } 

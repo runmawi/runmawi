@@ -302,15 +302,21 @@ hr {
         font-size: 1rem;
         line-height: 1.5;
     }
-
-    .btn2 {
-        padding: 13px 45px !important;
-        font-weight: 400;
-
+    .btn2{
+          font-weight: 400;
+           border: 1px solid;
+           padding: 13px 45px !important;
         border: 1px solid;
-
-
-    }
+        width: 100%;
+        background-color: orange;
+        color: white;
+        font-size: 20px;
+   
+   
+      }
+      .Stripe_button{
+        width:100%;
+      }
 
     .subsc-video {
         font-size: 18px !important;
@@ -420,13 +426,14 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
     if(!Auth::guest()) {
 
-        if( !empty($ppv_video_play) || $video_access == 'free' || Auth::user()->role == 'registered' || 
+        if( !empty($ppv_video_play) || settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $video->access == 'ppv' || $video_access == 'free' || Auth::user()->role == 'registered' || 
             $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'
             || $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
-                if ( $ppv_exist > 0 || $video_access == 'free' || Auth::user()->subscribed() && $video->type != "" || 
+                if ( $ppv_exist > 0 || settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $video->access == 'ppv' || $video_access == 'free' || Auth::user()->subscribed() && $video->type != "" || 
                 Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="subscriber" && $video->type != ""
-                || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { ?>
+                || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { 
+                    ?>
 
                     <div id="video_bg">
                         <div class="col-sm-12 intro_skips">
@@ -448,9 +455,9 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                     <div class=" page-height">
                         <?php $paypal_id = Auth::user()->paypal_id;
 
-                        $paypal_subscription = !empty($paypal_id) && !empty(PaypalSubscriptionStatus() ) ? PaypalSubscriptionStatus() : " ";
+                        // $paypal_subscription = !empty($paypal_id) && !empty(PaypalSubscriptionStatus() ) ? PaypalSubscriptionStatus() : " ";  || $paypal_subscription =='CANCE'
 
-                        if($ppv_exist > 0  || $video_access == 'free' || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
+                        if($ppv_exist > 0  || settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $video->access == 'ppv' || $video_access == 'free' || Auth::user()->subscribed()  || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
                             
                             <?php if($video->type == 'embed'): ?>
                                 <div id="video_container" class="fitvid">
@@ -612,20 +619,20 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo $video->description; ?></p>
 
-                                <h4>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h4>
+                                <h4><?php echo __('Sorry, this video is only available to'); ?> <?php if($video->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?></h4>
                                 <div class="clear"></div>
 
                                     <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
 
                                         <form method="get" action="<?= URL::to('/') ?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
-                                            <button id="button">Become a subscriber to watch this video</button>
+                                            <button id="button"><?php echo __('Become a subscriber to watch this video'); ?></button>
                                         </form>
 
                                     <?php else: ?>
 
                                         <form method="get" action="<?= URL::to('signup') ?>">
-                                            <button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($video->access == 'registered'): ?>for
-                                                Free!<?php endif; ?></button>
+                                            <button id="button"><?php echo __('Signup Now'); ?> <?php if($video->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?><?php elseif($video->access == 'registered'): ?><?php echo __('for Free!'); ?>
+                                                <?php endif; ?></button>
                                         </form>
 
                                     <?php endif; ?>
@@ -679,10 +686,10 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                 <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
                                 </div>
 
-                                <h4 class="mb-3">Sorry, this video is only available to  Subscribers / PPV Rent </h4>
+                                <h4 class="mb-3"><?php echo __('Sorry, this video is only available to  Subscribers / PPV Rent'); ?> </h4>
                                 
                                 <div>
-                                <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscriber to watch this video</a> 
+                                <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" ><?php echo __('Become a Subscriber to watch this video'); ?></a> 
                                 </div>
                             </div>
                         </div>
@@ -776,29 +783,29 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                 </div>
 
                                 <h4>
-                                    Sorry, this video is only available to Subscribers or PPV users
-                                    <?php if($video->access == 'subscriber'): ?><?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?>
+                                <?php echo __('Sorry, this video is only available to Subscribers or PPV users'); ?>
+                                    <?php if($video->access == 'subscriber'): ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?>
                                 </h4>
 
                                 <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
                                     
                                     <div class="d-flex align-items-baseline">
                                         <form class="text-center" method="get" action="<?= route('payment_becomeSubscriber') ?>">
-                                            <button style="margin-top: 0%;" class="btn btn-primary"id="button"> subscribe to watch this video</button>
+                                            <button style="margin-top: 0%;" class="btn btn-primary"id="button"> <?php echo __('subscribe to watch this video'); ?></button>
                                         </form>
 
                                 <?php }elseif(Auth::guest()){ ?>
 
                                     <form method="get" action="<?= URL::to('signup') ?>">
-                                        <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video
-                                            <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+                                        <button id="button" style="margin-top: 0%;"><?php echo __('Signup Now'); ?> <?php if($video->access == 'subscriber'): ?><?php echo __('to Purchase this video'); ?>
+                                            <?php elseif($video->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
                                     </form>
 
                                 <?php } ?>
 
                                 <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
                                     <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                        <?php echo __('Purchase Now'); ?> 
+                                        <?php echo __('Rent Now'); ?> 
                                     </button>
                                 <?php } ?>
                             </div>
@@ -820,21 +827,21 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                         <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
 
                         <h6>
-                            <p style="margin-left:14%">Sorry, this video is only available to</p>
-                            <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?>
+                            <p style="margin-left:14%"><?php echo __('Sorry, this video is only available to'); ?></p>
+                            <?php if($video->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?>
                         </h6>
                         
                         <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
                             <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-                                <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button">Purchase to
-                                    watch this video</button>
+                                <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button"><?php echo __('Purchase to watch this video'); ?>
+                                    </button>
                             </form>
 
                         <?php }elseif(Auth::guest()){ ?>
                             <form method="get" action="<?= URL::to('signup') ?>">
                                 <button id="button" style="margin-top: 0%;">
-                                    Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video
-                                    <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?>
+                                <?php echo __('Signup Now'); ?> <?php if($video->access == 'subscriber'): ?><?php echo __('to Purchase this video'); ?>
+                                    <?php elseif($video->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?>
                                 </button>
                             </form>
                         <?php } ?>
@@ -854,13 +861,13 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                             <h4 class="text-center"><?php echo $video->title; ?></h4>
                             <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
                             <h2>
-                                <p style="margin-left:14%">Purchase to watch this PPV video</p>
+                                <p style="margin-left:14%"><?php echo __('Purchase to watch this PPV video'); ?></p>
                             </h2>
                             <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
                                 
                                 <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
                                     <button style="margin-left: 27%;margin-top: 0%;"
-                                        class="btn btn-primary"id="button">Purchase to watch this video
+                                        class="btn btn-primary"id="button"><?php echo __('Purchase to watch this video'); ?>
                                     </button>
                                 </form>
 
@@ -872,8 +879,8 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                             <?php }else{ ?>
 
                                 <form method="get" action="<?= URL::to('signup') ?>">
-                                    <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase
-                                        this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?>
+                                    <button id="button" style="margin-top: 0%;"><?php echo __('Signup Now'); ?> <?php if($video->access == 'subscriber'): ?><?php echo __('to Purchase this video'); ?>
+                                         <?php elseif($video->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?>
                                     </button>
                                 </form>
                                 
@@ -893,10 +900,10 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                         <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
                                         </div>
 
-                                        <h4 class="mb-3"> / PPV Rent </h4>
+                                        <h4 class="mb-3">  <?php echo __('PPV Rent'); ?> </h4>
                                         
                                         <div>
-                                        <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" >Become a Subscriber to watch this vide</a> 
+                                        <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" ><?php echo __('Become a Subscriber to watch this video'); ?></a> 
                                         </div>
                                     </div>
                                 </div>
@@ -979,88 +986,99 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                     } else {  ?>
 
 
-                    <div id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
+                    <div id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
                         <div id="subscribers_only">
                             <div class="clear"></div>
-                            <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
-                                <h4 class="text-center"><?php echo $video->title; ?></h4>
-                                <p class="text-center text-white col-lg-8" style="margin:0 auto";>
-                                    <?php echo $video->description; ?>
-                                </p>
+                            <div class="container-fluid">
 
-                                <h2>
-                                    <p style="margin-left:14%">Sorry, this video is only available to</p>
-                                    <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered
-                                    Users<?php endif; ?>
-                                </h2>
-
-                                <?php if(!Auth::guest() && $video->access == 'subscriber'  ){ ?>
-                                    <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-                                        <button style="margin-left: 27%;margin-top: 0%;"
-                                            class="btn btn-primary"id="button">Purchase to watch this
-                                            video</button>
-                                    </form>
-
-                                <?php }elseif(Auth::guest()){ ?>
-                                    <form method="get" action="<?= URL::to('signup') ?>">
-                                        <button id="button" style="margin-top: 0%;">Signup Now
-                                            <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for
-                                            Free!<?php endif; ?></button>
-                                    </form>
-                                <?php }
-
-                                if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-                                    <button style="margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                        <?php echo __('Purchase Now'); ?> 
-                                    </button>
-                                <?php } 
-            } ?>
+                                <div style="padding-top:8%;">
+                                    <h4 class=""><?php echo $video->title; ?></h4>
+                                    <div class="text-white col-lg-7 p-0">
+                                        <p class=" " style="margin:0 auto";><?php echo $video->description; ?></p>
                                     </div>
+
+
+                                    <h4>
+                                        <p><?php echo __('Sorry, this video is only available to'); ?></p>
+                                        <?php if($video->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?>
+                                        <?php endif; ?>
+                                    </h4>
+
+                                    <?php if(!Auth::guest() && $video->access == 'subscriber'  ){ ?>
+                                        <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                                            <button style="margin-top: 0%;"
+                                                class="btn btn-primary"id="button"><?php echo __('Purchase to watch this video'); ?>
+                                            </button>
+                                        </form>
+
+                                    <?php }elseif(Auth::guest()){ ?>
+                                        <form method="get" action="<?= URL::to('signup') ?>">
+                                            <button id="button" style="margin-top: 0%;"><?php echo __('Signup Now'); ?>
+                                                <?php if($video->access == 'subscriber'): ?><?php echo __('to Purchase this video'); ?> <?php elseif($video->access == 'registered'): ?><?php echo __('for Free!'); ?>
+                                                <?php endif; ?></button>
+                                        </form>
+                                    <?php }
+
+                                    if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                                        <button style="margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                            <?php echo __('Purchase Now'); ?> 
+                                        </button>
+                                    <?php } 
+                } ?>
                                 </div>
                             </div>
+                        </div>
+                    </div>
         <?php }
     }
 
     elseif($video->access == 'subscriber' && Auth::user()->role == 'registered' || $video->access == 'ppv' && Auth::user()->role == 'registered'){  ?>
             <div id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
-                <div id="subscribers_only">
-                    <h4 class="text-center"><?php echo $video->title; ?></h4>
-
-                    <p class="text-center text-white col-lg-8" style="margin:0 auto";>
-                        <?php echo $video->description; ?>
-                    </p>
-
-                    <h2 style="margin-left:14%">Sorry, this video is only available to
-                        <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered
-                        Users<?php endif; ?>
-                    </h2>
-
+              <div id="subscribers_only">
                     <div class="clear"></div>
-                    <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
-                        <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
-                            <button style="margin-left: 27%;" id="button">Become a subscriber to watch this
-                                video</button>
-                        </form>
-                    <?php else: ?>
-                    
-                        <form method="get" action="<?= URL::to('signup') ?>">
-                            <button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a
-                                Subscriber<?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
-                        </form>
-                    <?php endif; ?>
+                    <div class="container-fluid">
 
-                    <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-                        <button style="margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                            <?php echo __('Purchase Now'); ?>
-                            </button>
-                    <?php } ?>
+                        <div style="padding-top:8%;">
+                            <h4 class=""><?php echo $video->title; ?></h4>
+                            <div class="text-white col-lg-7 p-0">
+                                <p class=" " style="margin:0 auto";><?php echo $video->description; ?></p>
+                            </div>
+
+                            <h4>
+                                <p><?php echo __('Sorry, this video is only available to'); ?></p>
+                                <?php if($video->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?>
+                                <?php endif; ?>
+                            </h4>
+
+                            <div class="clear"></div>
+                            <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
+                                <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                                    <button style="margin-left: 27%;" id="button"><?php echo __('Become a subscriber to watch this video'); ?>
+                                    </button>
+                                </form>
+                            <?php else: ?>
+                            
+                                <form method="get" action="<?= URL::to('signup') ?>">
+                                    <button id="button"><?php echo __('Signup Now'); ?> <?php if($video->access == 'subscriber'): ?><?php echo __('Become a Subscriber'); ?>to 
+                                        <?php elseif($video->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+                                </form>
+                            <?php endif; ?>
+
+                            <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                                <button style="margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                    <?php echo __('Purchase Now'); ?>
+                                    </button>
+                            <?php } ?>
+                        </div>
+                    </div>
                 </div>
+            </div>
     <?php }
 
 }elseif(!empty($new_date)){ ?>
         <div id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0.5),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 550px; margin-top: 20px;padding-top:100px;">
             
-            <h2> COMING SOON </h2>
+            <h2> <?php echo __('COMING SOON'); ?> </h2>
 
                 <?php if(!empty($video->description) && $settings->show_description == 1 ) : ?>
                     <div class="text-white col-lg-7 text-center" style="margin:0 auto;">
@@ -1277,36 +1295,42 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                 
                 <?php else: ?>
 
-                    <div id="subscribers_only">
-                        <h4 class="text-center"><?php echo $video->title; ?></h4>
+                        <div id="subscribers_only">
+                            <div class="clear"></div>
+                            <div class="container-fluid">
 
-                        <p class="text-center text-white col-lg-8" style="margin:0 auto";>
-                            <?php echo $video->description; ?>
-                        </p>
+                                <div style="padding-top:8%;">
+                                    <h4 class=""><?php echo $video->title; ?></h4>
+                                    <div class="text-white col-lg-7 p-0">
+                                        <p class=" " style="margin:0 auto";><?php echo $video->description; ?></p>
+                                    </div>
 
-                        <h2>Sorry, this video is only available to
-                            <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered
-                            Users<?php elseif($video->access == 'ppv' ): ?>PPV<?php endif; ?>
-                        </h2>
+                                    <h4>
+                                        <p><?php echo __('Sorry, this video is only available to'); ?></p>
+                                        <?php if($video->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($video->access == 'registered' ): ?><?php echo __('Registered Users'); ?>
+                                        <?php elseif($video->access == 'ppv' ): ?><?php echo __('PPV'); ?><?php endif; ?>
+                                    </h4>
 
-                        <div class="clear"></div>
-                            <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
-                                <form method="get"
-                                    action="<?= URL::to('/') ?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
-                                    <button id="button">Become a subscriber to watch this video</button>
-                                </form>
-                            <?php else: ?>
-                                <form method="get" action="<?= URL::to('signup') ?>">
-                                </form>
-                            <?php endif; ?>
+                                    <div class="clear"></div>
+                                    <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
+                                        <form method="get"
+                                            action="<?= URL::to('/') ?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
+                                            <button id="button"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                                        </form>
+                                    <?php else: ?>
+                                        <form method="get" action="<?= URL::to('signup') ?>">
+                                        </form>
+                                    <?php endif; ?>
 
-                            <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-                                <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal"
-                                    data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                    <?php echo __('Purchase Now'); ?> 
-                                </button>
-                            <?php } ?>
-                    </div>
+                                    <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                                        <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal"
+                                            data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                            <?php echo __('Purchase Now'); ?> 
+                                        </button>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
                 <?php endif; ?>
             </div>
 <?php }  ?>
@@ -1378,7 +1402,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                         <div class="col-md-12">
                                             <div class="bc-icons-2">
                                                 <ol class="breadcrumb">
-                                                    <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                                                    <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords( __('videos')) ?></a>
                                                     <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                                     </li>
 
@@ -1388,10 +1412,11 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                         <a class="black-text" href="<?= route('video_categories',[ $video_category_name->categories_slug ])?>">
                                                             <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                                                         </a>
+                                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+
                                                     </li>
                                                     <?php } ?>
 
-                                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
 
                                                     <li class="breadcrumb-item"><a class="black-text"><?php echo (strlen($video->title) > 50) ? ucwords(substr($video->title,0,120).'...') : ucwords($video->title); ?> </a></li>
                                                 </ol>
@@ -1685,7 +1710,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                                 data-keyboard="false">
                                                                 <span class="text-white">
                                                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                    Play Now
+                                                                    <?php echo __('Play Now'); ?>
                                                                 </span>
                                                             </a>
                                                         </div>
@@ -1713,24 +1738,15 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                     data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
                                                     type="video/mp4" src="<?php echo $video->trailer; ?>">
                                                 </video>
-                                                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
+                                                <?php }elseif($video->trailer_type !=null && ($video->trailer_type == "m3u8" ||  $video->trailer_type == "m3u8_url" )){ ?>
 
-                                                <video id="videos" class=""
-                                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                                    controls
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    type="application/x-mpegURL">
-                                                    <source type="application/x-mpegURL" src="<?php echo $video->trailer; ?>">
-                                                </video>
-
-                                                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
-
-                                                <video id="videoPlayer1" class=""
-                                                    poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                                    controls
-                                                    data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                    type="application/x-mpegURL">
-                                                </video>
+                                                    <video id="videos" class=""
+                                                        poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                                                        controls
+                                                        data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
+                                                        type="application/x-mpegURL">
+                                                        <source type="application/x-mpegURL" src="<?php echo $video->trailer; ?>">
+                                                    </video>
 
                                                 <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
 
@@ -1756,7 +1772,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                     <div class="col-md-7 p-0" style="margin-top: 2%;">
 
                                         <?php if(!empty($video->description) && $settings->show_description == 1 ) : ?>
-                                          <h4>Description</h4>
+                                          <h4><?php echo __('Description'); ?></h4>
                                         <?php endif; ?>
 
                                         <div class="text-white">
@@ -1771,7 +1787,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                       <!-- Artists -->
                                             <?php if( $settings->show_artist == 1 ):?>
                                                 <?php  if(count($artists) > 0 ) { ?>
-                                                  <p class="trending-dec w-100 mb-0 text-white mt-2">Starring :
+                                                  <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __('Starring'); ?> :
                                                       <?php  
                                                         $numartists = count($artists);
                                                         $k = 0;
@@ -1795,7 +1811,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                                         <!-- Genres -->
                                             <?php if( $settings->show_genre == 1 ) : ?>
-                                              <p class="trending-dec w-100 mb-0 text-white mt-2">Genres :
+                                              <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __('Genres'); ?> :
                                                   <?php 
                                                       $numItems = count($category_name);
                                                       $i = 0;
@@ -1817,7 +1833,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                                       <!-- Languages -->
                                             <?php if( $settings->show_languages == 1 ) : ?>
-                                              <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :
+                                              <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __('This Movie is'); ?> :
                                                   <?php 
                                                     $numItems = count($Movie_name);
                                                     $i = 0;
@@ -1839,7 +1855,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                                             <!-- subtitles -->
                                             <?php if($settings->show_subtitle == 1 ): ?>
-                                              <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles :
+                                              <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __('Subtitles'); ?> :
                                                   <?php echo $subtitles_name; ?></p>
                                             <?php endif; ?>
                                          
@@ -1850,7 +1866,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <?php if(!empty($video->details) && $settings->show_Links_and_details == 1 ) { ?>
 
-                                    <h4>Links & details</h4>
+                                    <h4><?php echo __('Links & details'); ?></h4>
 
                                     <div class="col-md-7 text-white p-0" style="font-size:18px;width:80%;">
                                         <?php $details = html_entity_decode($video->details);
@@ -1860,8 +1876,8 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                 <?php  }?>
 
                                 <?php if(!empty($video->pdf_files) ) { ?>
-                                <h4>E-Paper:</h4>
-                                <p class="p1">Download the E-Paper</p>
+                                <h4><?php echo __('E-Paper'); ?>:</h4>
+                                <p class="p1"><?php echo __('Download the E-Paper'); ?></p>
                                 <div class="text-white">
                                     <a href="<?php echo __(URL::to('/') . '/public/uploads/videoPdf/' . $video->pdf_files); ?>" style="font-size:48px; color: #a51212 !important;"
                                         class="fa fa-file-pdf-o video_pdf" width="" height=""
@@ -1876,7 +1892,7 @@ $artists = [];
 
 }
  if(count($artists) > 0 ) { ?>
-                                <h4>Cast & crew</h4>
+                                <h4><?php echo __('Cast & crew'); ?></h4>
 
                                 <div class="row">
                                     <div class="favorites-contens">
@@ -1920,7 +1936,7 @@ $artists = [];
 
                                             <div class="modal-header">
                                                 <h4 class="modal-title text-center" id="exampleModalLongTitle"
-                                                    style="">Rent Now</h4>
+                                                    style=""><?php echo __('Rent Now'); ?></h4>
 
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
@@ -1955,12 +1971,12 @@ $artists = [];
                                                             class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration); ?></span><br>
 
                                                         <a type="button" class="mb-3 mt-3" data-dismiss="modal"
-                                                            style="font-weight:400;">Amount: <span class="pl-2"
+                                                            style="font-weight:400;"><?php echo __('Amount'); ?>: <span class="pl-2"
                                                                 style="font-size:20px;font-weight:700;">
-                                                                <?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$video->ppv_price)); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo __(@$video->ppv_price) ; } ?></span></a><br>
+                                                                <?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$video->ppv_price)); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo $currency->symbol .' '.__(@$video->ppv_price) ; } ?></span></a><br>
                                                         <label class="mb-0 mt-3 p-0" for="method">
                                                             <h5 style="font-size:20px;line-height: 23px;"
-                                                                class="font-weight-bold text-black mb-2">Payment Method
+                                                                class="font-weight-bold text-black mb-2"><?php echo __('Payment Method'); ?>
                                                                 : </h5>
                                                         </label>
 
@@ -2084,16 +2100,26 @@ $artists = [];
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="modal-footer">
+                                            <div class="payment_card_payment">
+                                                <div id="paypal-button-container"></div>
+                                            </div>
+                                            <div class="modal-footer" style="display:block;">
                                                 <div class="Stripe_button">
                                                     <!-- Stripe Button -->
                                                     <!-- Currency_Convert(@$video->ppv_price) -->
                                                     <a onclick="pay(<?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($video->ppv_price); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo __(@$video->ppv_price) ; } ?>)">
                                                         <button type="button"
-                                                            class="btn2  btn-outline-primary">Continue</button>
+                                                            class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button>
                                                     </a>
                                                 </div>
+                                                    <!-- PayPal Button -->
+
+                                                <?php if( $video->ppv_price !=null &&  $video->ppv_price != " " || $video->ppv_price !=null  || $video->global_ppv == 1){ ?>
+                                    
+                                                <div class="paypal_button">
+                                                    <button onclick="paypal_checkout()" class="btn2 btn-outline-primary"><?php echo __('Continue'); ?></button>
+                                                </div>
+                                                <?php }?>
 
                                                 <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
                                                 <div class="Razorpay_button">
@@ -2101,7 +2127,7 @@ $artists = [];
                                                     <button
                                                         onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . $video->id . '/' . $video->ppv_price) ?>' ;"
                                                         id="" class="btn2  btn-outline-primary">
-                                                        Continue</button>
+                                                        <?php echo __('Continue'); ?></button>
                                                 </div>
                                                 <?php }?>
 
@@ -2112,7 +2138,7 @@ $artists = [];
                                                     <button
                                                         onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $video->id, 'amount' => $video->ppv_price]) ?>' ;"
                                                         id="" class="btn2  btn-outline-primary">
-                                                        Continue</button>
+                                                        <?php echo __('Continue'); ?></button>
                                                 </div>
                                                 <?php }?>
 
@@ -2120,7 +2146,7 @@ $artists = [];
                                                 <div class="cinetpay_button">
                                                     <!-- CinetPay Button -->
                                                     <button onclick="cinetpay_checkout()" id=""
-                                                        class="btn2  btn-outline-primary">Continue</button>
+                                                        class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button>
                                                 </div>
                                                 <?php }?>
 
@@ -2199,15 +2225,97 @@ $artists = [];
 
 
                     </div>
+                    <?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1)
+                    { 
+                        $ppv_price =  PPV_CurrencyConvert($video->ppv_price); 
+                    }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0)
+                    { $ppv_price = (@$video->ppv_price) ; 
+                    }else{
+                        $ppv_price = @$video->ppv_price;
+                    } 
+                    ?>
+
+                    <?php 
+                            if(!empty($PayPalpayment) && $PayPalpayment->live_mode == 0 )
+                            { 
+                                $client_id =  $PayPalpayment->test_paypal_signature; 
+                            }
+                            else if(!empty($PayPalpayment) && $PayPalpayment->live_mode == 1)
+                            {
+                                $client_id = $PayPalpayment->live_paypal_signature ; 
+                            }else{
+                                $client_id = '';
+                            } 
+                    ?>
 
                     <input type="hidden" id="publishable_key" name="publishable_key"
                         value="<?php echo $publishable_key; ?>">
-
                     <script type="text/javascript">
                         // videojs('videoPlayer').videoJsResolutionSwitcher(); 
                     </script>
                     <script src="https://checkout.stripe.com/checkout.js"></script>
                     <div class="clear"></div>
+                    <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $client_id; ?>"></script>
+                    <script src="https://js.stripe.com/v3/"></script>
+
+                    <script>
+
+                            function paypal_checkout() {
+
+
+                                $('.paypal_button').hide();
+
+                                var amount = "<?php echo $ppv_price; ?>";
+                                paypal.Buttons({
+                                    createOrder: function (data, actions) {
+                                        // Set up the transaction
+                                        return actions.order.create({
+                                            purchase_units: [{
+                                                amount: {
+                                                    value: amount, // Replace with the amount you want to charge
+                                                    // currency_code: 'USD'
+                                                }
+                                            }]
+                                        });
+                                    },
+                                    onApprove: function (data, actions) {
+                                        // alert("You have done  Payment !");
+                                        return actions.order.capture().then(function (details) {
+                                            // Handle the successful payment
+                                            console.log(details);
+                                            // You can redirect or perform other actions here
+                                            $.ajax({
+                                                url: '<?php echo URL::to('paypal-ppv-video') ?>',
+                                                method: 'post',
+                                                data: {
+                                                    _token: '<?= csrf_token() ?>',
+                                                    amount: amount,
+                                                    video_id: '<?= @$video->id ?>',
+                                                },
+                                                success: (response) => {
+                                                    console.log("Server response:", response);
+
+                                                    setTimeout(function() {
+                                                        location.reload();
+                                                    }, 2000);
+
+
+                                                },
+                                                error: (error) => {
+                                                    swal('error');
+                                                }
+                                            });
+
+                                        });
+                                        
+                                    },
+                                    onError: function (err) {
+                                        // Handle errors
+                                        console.error(err);
+                                    }
+                                }).render('#paypal-button-container');
+                            }
+                        </script>
 
 
                     <script>
@@ -2829,36 +2937,54 @@ $artists = [];
 
                 <script>
                     window.onload = function() {
-                        $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button').hide();
+                        $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.paypal_button').hide();
                     }
+                    $('.payment_card_payment').hide();
 
                     $(document).ready(function() {
 
+                       
                         $(".payment_btn").click(function() {
 
-                            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
+
+                            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
 
                             let payment_gateway = $('input[name="payment_method"]:checked').val();
-                            // alert(payment_gateway);
                             if (payment_gateway == "Stripe") {
 
                                 $('.Stripe_button').show();
-                                $('.Razorpay_button,.paystack_button,.cinetpay_button').hide();
+                                $('.Razorpay_button,.paystack_button,.cinetpay_button,.paypal_button,.payment_card_payment').hide();
 
                             } else if (payment_gateway == "Razorpay") {
 
-                                $('.paystack_button,.Stripe_button,.cinetpay_button').hide();
+                                $('.paystack_button,.Stripe_button,.cinetpay_button,.paypal_button,.payment_card_payment').hide();
                                 $('.Razorpay_button').show();
 
                             } else if (payment_gateway == "Paystack") {
 
-                                $('.Stripe_button,.Razorpay_button,.cinetpay_button').hide();
+                                $('.Stripe_button,.Razorpay_button,.cinetpay_button,.paypal_button').hide();
                                 $('.paystack_button').show();
+                                $('.payment_card_payment').hide();
                             } else if (payment_gateway == "CinetPay") {
 
-                                $('.Stripe_button,.Razorpay_button,.paystack_button').hide();
+                                $('.Stripe_button,.Razorpay_button,.paystack_button,.paypal_button').hide();
                                 $('.cinetpay_button').show();
+                                $('.payment_card_payment').hide();
+                            }else if (payment_gateway == "PayPal") {
+                                $('.Stripe_button,.Razorpay_button,.paystack_button,.cinetpay_button').hide();
+                                    var wasChecked = $(this).data('wasChecked') || false;
+                                    if (wasChecked) {
+                                        $('.paypal_button').hide();
+                                        $('.payment_card_payment').show();
+                                    } else {
+                                        $('.paypal_button').show();
+                                        $('.payment_card_payment').show();
+                                    }
+
+                                    $(this).data('wasChecked', $(this).prop('checked'));
                             }
+                            // $(".payment_btn").not(this).data('wasChecked', false);
+
                         });
                     });
                 </script>
@@ -2891,20 +3017,7 @@ $artists = [];
                     var trailer_video_type = <?php echo json_encode($video->trailer_type); ?>;
 
 
-                    if (trailer_video_type == "m3u8_url") {
-                        (function() {
-                            var video = document.querySelector('#videoPlayer1');
-
-                            if (Hls.isSupported()) {
-                                var hls = new Hls();
-                                hls.loadSource(trailer_video_m3u8);
-                                hls.attachMedia(video);
-                                hls.on(Hls.Events.MANIFEST_PARSED, function() {});
-                            }
-
-                        })();
-
-                    } else if (trailer_video_type == "m3u8") {
+                    if (trailer_video_type == "m3u8" || trailer_video_type == "m3u8_url" ) {
                         // alert(trailer_video_type);
                         document.addEventListener("DOMContentLoaded", () => {
                             const videos = document.querySelector('#videos');
@@ -2976,7 +3089,6 @@ $artists = [];
                         });
 
                     }
-
 
                     // Trailer - Modal
                     $(document).ready(function() {

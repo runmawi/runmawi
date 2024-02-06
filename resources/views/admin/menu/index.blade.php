@@ -67,6 +67,17 @@
 					</div>
 										   <br />
 
+						<label for="name">Show In-Side Menu</label>
+							<div class="mt-1 d-flex align-items-center justify-content-around">
+								<div class="mr-2">OFF</div>
+								<label class="switch mt-2">
+									<input  type="checkbox"  name="in_side_menu">
+									<span class="slider round"></span>
+								</label>
+							<div class="ml-2">ON</div>
+						</div>
+										   <br />
+
 						<label for="name">Menu Item URL</label>
 						<select name="select_url" id="select_url" class="form-control">
 							<option value="">Select URL</option>
@@ -87,8 +98,14 @@
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="videos" /> Video Categories 
                         <input type="radio" class="menu-dropdown-radio" name="type" value="audios" /> Audio Categories
                         <input type="radio" class="menu-dropdown-radio" name="type" value="live" /> Live Categories
+				        <input type="radio" class="menu-dropdown-radio" name="type" value="series" /> Tv Shows Categories
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="posts" /> Post Categories
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="tv_show" /> Tv Shows
+						
+						@if (Series_Networks_Status() == 1)
+							<input type="radio" class="menu-dropdown-radio" name="type" value="networks" />Tv Shows Networks
+						@endif
+
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 				    </form>
 				</div>
@@ -133,6 +150,7 @@
                 <tr class="r1 ">
                   <th width="30px">#</th>
                   <th>Name</th>
+                  <th>Active</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -141,6 +159,14 @@
     	            <tr class="row1" data-id="{{ $menu_item->id }}">
     	              <td class="pl-3"><i class="fa fa-sort"></i>{{ $menu_item->id }}</td>
     	              <td>{{ $menu_item->name }}</td>
+					  <td valign="bottom">
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="active" class="active" id="{{ 'menu_'.$menu_item->id }}" type="checkbox" @if( $menu_item->in_home == "1") checked  @endif data-menu-id={{ $menu_item->id }}  data-type="menu" onchange="update_menu(this)" >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </td>
                       <td><a href="{{ URL::to('/admin/menu/edit/') }}/{{ $menu_item->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                     data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-danger ml-2" data-toggle="tooltip" data-placement="top" title=""
                     data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>" onclick="return confirm('Are you sure?')" ></a></td>
@@ -168,6 +194,62 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     
+
+	
+	<script>
+		function update_menu(ele){
+
+		var in_home = $(ele).attr('data-menu-id');
+		var status   = '#menu_'+in_home;
+		var menu_Status = $(status).prop("checked");
+
+		if(menu_Status == true){
+			var status  = '1';
+			var check = confirm("Are you sure you want to active this Menu?");  
+
+		}else{
+			var  status  = '0';
+			var check = confirm("Are you sure you want to remove this Menu?");  
+		}
+
+
+		if(check == true){ 
+
+		$.ajax({
+					type: "POST", 
+					dataType: "json", 
+					url: "{{ url('admin/menus_active') }}",
+						data: {
+							_token  : "{{csrf_token()}}" ,
+							in_home: in_home,
+							status: status,
+					},
+					success: function(data) {
+						if(data.message == 'true'){
+							//  location.reload();
+						}
+						else if(data.message == 'false'){
+							swal.fire({
+							title: 'Oops', 
+							text: 'Something went wrong!', 
+							allowOutsideClick:false,
+							icon: 'error',
+							title: 'Oops...',
+							}).then(function() {
+								location.href = '{{ URL::to('admin/audios/categories') }}';
+							});
+						}
+					},
+				});
+		}else if(check == false){
+		$(status).prop('checked', true);
+
+		}
+		}
+	</script>
+
+
+
 	<script type="text/javascript">
 
       $(function () {

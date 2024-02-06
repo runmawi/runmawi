@@ -7,7 +7,7 @@
   <div class="col-sm-12 overflow-hidden">
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h4 class="main-title"><a href="#">Rental Videos</a></h4>                      
+                    <h4 class="main-title"><a href="#"><?= __('Rental Videos') ?></a></h4>                      
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -38,7 +38,7 @@
             }
             elseif ($watchlater_video->global_ppv == null && $watchlater_video->ppv_price == null)
             { ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <p class="p-tag"><?php echo __("Free"); ?></p>
                                             <?php
             } ?>
                                       
@@ -58,7 +58,7 @@
                                        <a class="text-white" href="<?php echo URL::to('category') ?><?='/videos/' . $watchlater_video->slug ?>" >
                                     
                                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                      Watch Now
+                                      <?= __('Watch Now') ?>
                                       
                                        </a>
                                        <div >
@@ -92,7 +92,7 @@
   <div class="col-sm-12 overflow-hidden">
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h4 class="main-title"><a href="#">Rental Live Videos</a></h4>                      
+                    <h4 class="main-title"><a href="#"><?= __('Rental Live Videos') ?></a></h4>                      
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -144,14 +144,14 @@
                                        <a class="text-white" href="<?php echo URL::to('category') ?><?='/videos/' . $watchlater_video->slug ?>" >
                                     
                                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                      Watch Now
+                                      <?= __('Watch Now') ?>
                                       
                                        </a>
                                        <div class="hover-buttons">
                           <span style="color: white;"class="livemywishlist <?php if (isset($mywishlisted->id)): ?>active<?php
             endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$watchlater_video->id ?>"><i style="" <?php if (isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php
             else: ?> class="ri-heart-line " <?php
-            endif; ?> style="" ></i><span id="addwatchlist"> Add to Watchlist </span> </span>
+            endif; ?> style="" ></i><span id="addwatchlist"> <?= __('Add to Watchlist') ?> </span> </span>
 
                                     </div>
                               
@@ -163,7 +163,7 @@
     endif; 
    else:
    ?>
-   <p><h2>No Rented in Video</h2></p>
+   <p><h2><?= __('No Rented in Video') ?></h2></p>
                  <div class="col-md-12 text-center mt-4">
              <img class="w-50" src="<?php echo  URL::to('/assets/img/sub.png')?>">
          </div>

@@ -19,7 +19,7 @@
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">CPP Sign Up</h3>
+                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">{{ __('CPP Sign Up') }}</h3>
                       </div>
                       <div class="clear"></div>
                       @if (Session::has('message'))
@@ -38,7 +38,7 @@
                             <div class="form-group">
 
                                 <div class="col-md-12">
-                                    <input id="username" type="text"  class="form-control alphaonly  @error('name') is-invalid @enderror" name="username" value="{{ old('name') }}" placeholder="Username" required autocomplete="off" autofocus>
+                                    <input id="username" type="text"  class="form-control alphaonly  @error('name') is-invalid @enderror" name="username" value="{{ old('name') }}" placeholder="{{ __('Username') }}" required autocomplete="off" autofocus>
 
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">
@@ -47,7 +47,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-12">
-                                <input id="email_id" type="email" placeholder="Email Address"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
+                                <input id="email_id" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -85,13 +85,13 @@
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
                                  </div>
                                  <div class="col-md-12">
-                                <label for="" style="color: white;">Intro Video :</label>
+                                <label for="" style="color: white;">{{ __('Intro Video') }} :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video" />
                                  </div>
                                  <div class="col-md-12">
                                      <div class="row">
                                      <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                <input id="password" type="password" placeholder="{{ __('Password') }}" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
                                          </div>
                                          <div >
                                 <span class="input-group-btn" id="eyeSlash">
@@ -111,7 +111,7 @@
                             <div class="col-md-12">
                                 <div class="row">
                                      <div class="col-md-12">
-                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required autocomplete="new-password">
                                     </div>
                                     <div >
                               <span class="input-group-btn" id="eyeSlash1">
@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
     
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
+                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">{{ __('(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)') }}</span>
                             </div>
                                  
                             </div>
@@ -135,7 +135,7 @@
 								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
                             <div class="sign-up-buttons col-md-12" align="right">
-                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
+                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> {{ __('Verify Profile') }}</button>
                                   <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                         </div>
@@ -155,7 +155,7 @@
                </div>    
                <div class="mt-3">
                   <div class="d-flex justify-content-center links">
-                     Already have an account? <a href="<?= URL::to('/cpp/login')?>" class="text-primary ml-2">Sign In</a>
+                  {{ __('Already have an account?') }}<a href="<?= URL::to('/cpp/login')?>" class="text-primary ml-2">{{ __('Sign In') }}</a>
                   </div>                        
                </div>
             </div>

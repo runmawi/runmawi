@@ -24,6 +24,11 @@
                             <h4 class="card-title">Add New Landing Page</h4>
                         </div>
                     </div>
+
+                    @if (Session::has('error-message'))
+                         <div id="successMessage" class=" col-md-12 alert alert-danger">{{ Session::get('error-message') }}</div>
+                    @endif 
+                  
                     <div class="iq-card-body table-responsive">
                         <form  accept-charset="UTF-8" action="{{ route('landing_page_store') }}" method="post" >
                         @csrf
@@ -203,28 +208,50 @@
                 ++i;
                 $('#sections_1').prop('checked', true);
                 $("#section_1").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_1[]" class="form-control mt-2" id= '+ 'ck_editor_section1-' + i  +' placeholder="" > </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td> </tr>');
-                CKEDITOR.replace( 'ck_editor_section1-'+ i );
+                // CKEDITOR.replace( 'ck_editor_section1-'+ i );
+
+                CKEDITOR.replace('ck_editor_section1-'+ i, {
+                    filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                    filebrowserUploadMethod: 'form'
+
+                });
+
             });
 
         $(".Section_2").click(function(){
                 ++i;
                 $('#sections_2').prop('checked', true);
                 $("#Section_2").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_2[]" class="form-control mt-2" id= '+ 'ck_editor_section2-' + i  +' /> </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
-                CKEDITOR.replace( 'ck_editor_section2-'+ i );
+                // CKEDITOR.replace( 'ck_editor_section2-'+ i );
+                CKEDITOR.replace('ck_editor_section2-'+ i, {
+                    filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                    filebrowserUploadMethod: 'form'
+
+                });
             });
 
        $(".Section_3").click(function(){
            ++i;
            $('#sections_3').prop('checked', true);
            $("#Section_3").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_3[]" class="form-control mt-2" id= '+ 'ck_editor_section3-' + i  +' /> </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
-           CKEDITOR.replace( 'ck_editor_section3-'+ i );
+        //    CKEDITOR.replace( 'ck_editor_section3-'+ i );
+            CKEDITOR.replace('ck_editor_section3-'+ i, {
+                filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: 'form'
+
+            });
         });
 
        $(".Section_4").click(function(){
            ++i;
            $('#sections_4').prop('checked', true);
            $("#Section_4").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_4[]" class="form-control mt-2" id= '+ 'ck_editor_section4-' + i  +' /> </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
-           CKEDITOR.replace( 'ck_editor_section4-'+ i );
+        //    CKEDITOR.replace( 'ck_editor_section4-'+ i );
+            CKEDITOR.replace('ck_editor_section4-'+ i, {
+                filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: 'form'
+
+            });
         });
 
       
@@ -244,14 +271,11 @@
                 toolbar : 'simple'
         });
 
+        $(document).ready(function(){
+
+            setTimeout(function() {
+                $('#successMessage').fadeOut('fast');
+            }, 3000);
+        });
+
 </script>
-
-
-
-
-
-
-
-
-
-

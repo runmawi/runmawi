@@ -5,8 +5,14 @@
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
   <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
-    $jsondata = json_decode($jsonString, true); ?>
-@extends('moderator.header')
+    $jsondata = json_decode($jsonString, true);
+    @$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+ ?>
+
+@php
+    include(public_path('themes/theme1/views/Channel/header.blade.php'));
+@endphp
 
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
@@ -15,7 +21,7 @@
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Channel Sign Up</h3>
+                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">{{ __('Channel Sign Up') }}</h3>
                       </div>
                       <div class="clear"></div>
                       @if (Session::has('message'))
@@ -34,7 +40,7 @@
                             <div class="form-group">
 
                                 <div class="col-md-12">
-                                    <input id="channel_name" type="text"  class="form-control alphaonly  @error('channel_name') is-invalid @enderror" name="channel_name" value="{{ old('name') }}" placeholder="Channel Name" required autocomplete="off" autofocus>
+                                    <input id="channel_name" type="text"  class="form-control alphaonly  @error('channel_name') is-invalid @enderror" name="channel_name" value="{{ old('name') }}" placeholder="{{ __('Channel Name') }}" required autocomplete="off" autofocus>
 
                                     @error('channel_name')
                                         <span class="invalid-feedback" role="alert">
@@ -43,7 +49,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-12">
-                                <input id="email_id" type="email" placeholder="Email Address"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
+                                <input id="email_id" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -56,7 +62,7 @@
                                
                             <div class="col-sm-4">
                               <select class="phselect" name="ccode" id="ccode" >
-                              <option>Select Country</option>
+                              <option>{{ __('Select Country') }}</option>
                                 @foreach($jsondata as $code)
                                 <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 @endforeach
@@ -77,18 +83,18 @@
                                 </div>
 
                             <div class="col-md-12">
-                                <label for="" style="color: white;">Upload Home Page Image  :</label>
+                                <label for="" style="color: white;">{{ __('Upload Home Page Image') }}  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;"  name="image" id="image"/>
                             </div>
 
                             <div class="col-md-12">
-                                <label for="" style="color: white;">Upload your best work ( Intro Video )  :</label>
+                                <label for="" style="color: white;">{{ __('Upload your best work ( Intro Video )') }}  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video"/>
                             </div>
                                  <div class="col-md-12">
                                      <div class="row">
                                      <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                <input id="password" type="password" placeholder="{{ __('Password') }}" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
                                          </div>
                                          <div >
                                 <span class="input-group-btn" id="eyeSlash">
@@ -108,7 +114,7 @@
                             <div class="col-md-12">
                                 <div class="row">
                                      <div class="col-md-12">
-                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required autocomplete="new-password">
                                     </div>
                                     <div >
                               <span class="input-group-btn" id="eyeSlash1">
@@ -120,7 +126,7 @@
                                     </div>
                                 </div>
     
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
+                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">{{ __('(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)') }}</span>
                             </div>
                                  
                             </div>
@@ -132,7 +138,7 @@
 								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
                             <div class="sign-up-buttons col-md-12" align="right">
-                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
+                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> {{ __('Verify Profile') }}</button>
                                   <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                         </div>
@@ -152,7 +158,7 @@
                </div>    
                <div class="mt-3">
                   <div class="d-flex justify-content-center links">
-                     Already have an account? <a href="<?= URL::to('/channel/login')?>" class="text-primary ml-2">Sign In</a>
+                  {{ __('Already have an account') }}? <a href="<?= URL::to('/channel/login')?>" class="text-primary ml-2">{{ __('Sign In') }}</a>
                   </div>                        
                </div>
             </div>

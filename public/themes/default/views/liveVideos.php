@@ -79,7 +79,7 @@
                           <span class="text-white"><?= ucfirst($video->title); ?></span>
                        </div>
                        <a href="<?= URL::to('/') ?><?= '/live'.'/'. $video->slug ?>">
-                          <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> Live Now</h6>
+                          <h6 class="epi-name text-white mb-0"><i class="fa fa-clock-o"></i> <?php echo __('Live Now'); ?></h6>
                        </a>
                     </div>
                  </div>

@@ -8,7 +8,7 @@
                          $setting= \App\HomeSetting::first();
                             if($setting['Recommendation'] !=null && $setting['Recommendation'] != 0 ):
 
-                         echo __('Most watched videos from '.$category->name.' Genre');?>
+                         echo (__(('Most watched videos from')) .' ' . (__($category->name)).' '. (__('Genre')));?>
                 </h4>
             </a>
         </div>
@@ -24,9 +24,17 @@
                 <li class="slide-item">
                     <div class="block-images position-relative">
                         <!-- block-images -->
-                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid w-100" alt=""> 
+                        <div class="img-box">
+                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
+                                            class="img-fluid w-100" alt=""> 
+                            </a>
+                        </div>
+                        <div class="block-description">
+                            <div class="hover-buttons">
+                                <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                            </div>
+                        </div>
                            <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" data-play="hover">
                                 <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4" />
                             </video>
@@ -41,12 +49,12 @@
                                     <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
                                     <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
                                     <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
-                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <p class="p-tag"><?php echo __("Free"); ?></p>
                                     <?php } ?>
                                     <?php } ?>
                                 
                             
-                        </a>
+                        
                     </div>
                     <div class="block-description">
                         <div class="hover-buttons">
@@ -74,7 +82,7 @@
 
                     <div class="mt-2 d-flex justify-content-between p-0">
                         <?php if($ThumbnailSetting->title == 1) { ?>
-                        <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
+                        <h6><?php echo (mb_strlen($category_video->title) > 17) ? mb_substr($category_video->title, 0, 18).'...' : $category_video->title; ?></h6>
                         <?php } ?>
     
                         <?php if($ThumbnailSetting->age == 1) { ?>

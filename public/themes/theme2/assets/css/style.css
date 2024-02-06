@@ -800,9 +800,7 @@ footer, .home footer {
 }
 */
 @media (min-width: 411px){
-.d-flex {
-   flex-wrap: wrap;
-}
+
 .btn-danger:hover{
     color: #fff;
     background-color: !important;

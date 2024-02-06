@@ -2,13 +2,56 @@
     $settings = App\Setting::first();
     $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
     $theme = App\SiteTheme::first();
+
+    
+    $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
+    @$translate_language = App\Setting::pluck('translate_language')->first();
+
+        if(Auth::guest()){
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+            if(!empty($UserTranslation)){
+                $translate_language = $UserTranslation->translate_language;
+            }else{
+                $translate_language = 'en';
+            }
+        }else if(!Auth::guest()){
+
+            $subuser_id=Session::get('subuser_id');
+            if($subuser_id != ''){
+                $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+                if(!empty($Subuserranslation)){
+                    $translate_language = $Subuserranslation->translate_language;
+                }else{
+                    $translate_language = 'en';
+                }
+            }else if(Auth::user()->id != ''){
+                $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+                if(!empty($UserTranslation)){
+                    $translate_language = $UserTranslation->translate_language;
+                }else{
+                    $translate_language = 'en';
+                }
+            }else{
+                $translate_language = 'en';
+            }
+
+        }else{
+            $translate_language = 'en';
+        }
+
+    \App::setLocale(@$translate_language);
+
 ?>
 
 <html>
 
 <head>
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
-    <title> Reset Password | <?php echo $settings->website_name; ?></title>
+    <title> {{ __('Reset Password') }} | <?php echo $settings->website_name; ?></title>
     <link rel="shortcut icon" href="<?= getFavicon() ?>" />
 
     <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/font-awesome.min.css') ?>" />
@@ -16,7 +59,7 @@
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css" />
 
-    <link rel="stylesheet" href="<?= URL::to('/assets/css/style.css') ?>" />
+    <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css'); ?>" rel="stylesheet" />
     <link rel="stylesheet" href="<?= URL::to('/assets/css/bootstrap.min.css') ?>" />
     <link rel="stylesheet" href="<?= URL::to('/assets/css/typography.css') ?>" />
     <link rel="stylesheet" href="<?= URL::to('/assets/css/responsive.css') ?>" />
@@ -48,9 +91,9 @@
             padding: 0;
         }
 
-        i.fa.fa-google-plus {
+        /* i.fa.fa-google-plus {
             padding: 10px !important;
-        }
+        } */
 
         .container-fluid {}
 
@@ -80,12 +123,18 @@
         .sign-user_card {
             padding: 20px;
         }
+        .sign-in-page{
+            background: #000;
+        }
+        footer{
+            background: #161617 !important;
+        }
     </style>
 </head>
 
 <body>
 
-    <section class="sign-in-page" style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat;background-size: cover;">
+    <section class="sign-in-page" /*style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat;background-size: cover;"*/>
         <div class="container  page-height">
             <div class="row justify-content-around">
                 <div class="col-lg-7 col-12 align-self-center">
@@ -128,19 +177,18 @@
 
                                         <input id="email" type="email"
                                             class="form-control @error('email') is-invalid @enderror" name="email"
-                                            placeholder="email@example.com" value="{{ old('email') }}" required
+                                            placeholder="{{ __('email@example.com') }}" value="{{ old('email') }}" required
                                             autocomplete="email" autofocus>
 
                                             @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <div class="alert alert-danger status_message">
-                                                    {{ 'Email address is invalid! Please Provide the registered email address' }}
+                                                    {{ __('Email address is invalid! Please Provide the registered email address') }}
                                                 </div>
                                             </span>
                                         @enderror
 
-                                        <p class="reset-help text-center">We will send you an email with instructions on
-                                            how to reset your password.</p>
+                                        <p class="reset-help text-center">{{ __('We will send you an email with instructions on how to reset your password') }}.</p>
 
                                         <button type="submit" class="btn btn-primary">
                                             {{ __('Send Password Reset Link') }}
@@ -163,7 +211,7 @@
         })
     </script>
 
-    @php include(public_path('themes/default/views/footer.blade.php')); @endphp
+<?php include(public_path('themes/theme1/views/footer.blade.php'));  ?>
 
 </body>
 

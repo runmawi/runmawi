@@ -160,6 +160,14 @@
     display: inline-block;
     cursor: pointer;
 } 
+.gridContainer{
+   display: grid;
+   grid-template-columns: repeat(5, calc(100% / 5));
+}
+.gridItem{
+   padding:5px;
+}
+
 
 </style>
 <div id=" content_videopage" class="content-page">
@@ -212,6 +220,29 @@
                         <button class="btn btn-primary"  id="submit_embed">Submit</button>
                      </div>
                   </div>
+                  
+                                    <!-- BunnyCDN Video -->        
+                  <div id="bunnycdnvideo" style="">
+                     <div class="new-audio-file mt-3">
+                        <label for="bunny_cdn_linked_video">BunnyCDN URL:</label>
+                        <!-- videolibrary -->
+                        <select class="phselect form-control" name="videolibrary" id="videolibrary" >
+                                 <option>{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                                    @foreach($videolibrary as $library)
+                                    <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                                    @endforeach
+                           </select>  
+                     </div>
+                           
+                     <div class="new-audio-file mt-3">
+                        <select class="form-control" id="bunny_cdn_linked_video" name="bunny_cdn_linked_video">
+                           <!-- <option selected  value="0">Choose Videos from Bunny CDN</option> -->
+                        </select>
+                     </div>
+                     <div class="new-audio-file mt-3">
+                        <button class="btn btn-primary"  id="submit_bunny_cdn">Submit</button>
+                     </div>
+                  </div>
                   <!-- MP4 Video -->        
                   <div id="video_mp4" style="">
                      <div class="new-audio-file mt-3" >
@@ -230,7 +261,7 @@
                         <form action="{{ $post_dropzone_url }}" method= "post" class='dropzone' ></form>
                         <div class="row justify-content-center">
                            <div class="col-md-9 text-center">
-                           <p class="c1" style="margin-left: 25%;">Trailers Can Be Uploaded From Video Edit Screen</p>
+                           <p class="c1" >Trailers Can Be Uploaded From Video Edit Screen</p>
                            </div>
                            <!-- <div class="col-md-3" style="display: flex;" >
                            <p id="speed">speed: 0kbs</p>&nbsp;&nbsp;&nbsp;
@@ -255,20 +286,80 @@
                      <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile"> m3u8 Url &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
-                     <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code              
+                     <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code   
+                  @if(@$theme_settings->enable_bunny_cdn == 1):
+                     <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="videofile"> Bunny CDN Videos              
+                  @endif
                   </div>
                </div>
          </div>
           
       </div>
+
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script>
+
+         $(document).ready(function() {
+            $('#bunny_cdn_linked_video').select2();
+         });
+
          $(document).ready(function(){
+
+            $('#videolibrary').on('change', function() {
+                  
+                  var videolibrary_id = this.value;
+                  $("#bunny_cdn_linked_video").html('');
+                     $.ajax({
+                     url:"{{url::to('admin/bunnycdn_videolibrary')}}",
+                     type: "POST",
+                     data: {
+                     videolibrary_id: videolibrary_id,
+                     _token: '{{csrf_token()}}' 
+                     },
+                     dataType : 'json',
+                     success: function(result){
+                        // alert();
+                  // var streamUrl = '{{$streamUrl}}' ;
+                  var streamvideos = result.streamvideos;
+                  var PullZoneURl = result.PullZoneURl;
+                  var decodedStreamVideos = JSON.parse(streamvideos);
+
+                  // console.log(decodedStreamVideos);
+
+
+                  $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
+
+                     $.each(decodedStreamVideos.items, function(key, value) {
+                        console.log(value.title);
+                        var videoUrl = PullZoneURl + '/' + value.guid + '/playlist.m3u8';
+                        $("#bunny_cdn_linked_video").append('<option value="' + videoUrl + '">' + value.title + '</option>');
+                        // $("#bunny_cdn_linked_video").append('<option value="'+videoUrl+'">'+value.title+'</option>');
+                     });
+
+                  // old code 
+                     // $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
+                     // $.each(result.items,function(key,value){
+                     //    console.log(value.title);
+                     //    $("#bunny_cdn_linked_video").append('<option value="'+streamUrl+'/'+value.guid+'/'+'playlist.m3u8'+'">'+value.title+'</option>');
+
+                     // // $("#bunny_cdn_linked_video").append('<option value="'+value.title+'">'+value.title+'</option>');
+                     // });
+                     }
+                  });
+
+               }); 
+
+
          	$('#video_upload').show();
          	$('#video_mp4').hide();
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
-         
+         	$('#bunnycdnvideo').hide();
          
          
          $('#videoupload').click(function(){
@@ -276,10 +367,12 @@
          	$('#video_mp4').hide();
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
+         	$('#bunnycdnvideo').hide();
          
          	$("#video_upload").addClass('collapse');
          	$("#video_mp4").removeClass('collapse');
          	$("#embed_video").removeClass('collapse');
+         	$("#bunny_cdn_video").removeClass('collapse');
          	$("#m3u8").removeClass('m3u8');
          
          
@@ -289,10 +382,12 @@
          	$('#video_mp4').show();
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
+         	$('#bunnycdnvideo').hide();
          
          	$("#video_upload").removeClass('collapse');
          	$("#video_mp4").addClass('collapse');
          	$("#embed_video").removeClass('collapse');
+         	$("#bunny_cdn_video").removeClass('collapse');
          	$("#m3u8").removeClass('m3u8');
          
          
@@ -302,10 +397,12 @@
          	$('#video_mp4').hide();
          	$('#embedvideo').show();
          	$('#m3u8_url').hide();
+         	$('#bunnycdnvideo').hide();
          
          	$("#video_upload").removeClass('collapse');
          	$("#video_mp4").removeClass('collapse');
          	//$("#embed_video").addClass('collapse');
+         	$("#bunny_cdn_video").removeClass('collapse');
          	$("#m3u8").removeClass('m3u8');
          
          
@@ -315,14 +412,34 @@
          	$('#video_mp4').hide();
          	$('#embedvideo').hide();
          	$('#m3u8_url').show();
+         	$('#bunnycdnvideo').hide();
+
          	$("#video_upload").removeClass('collapse');
          	$("#video_mp4").removeClass('collapse');
          	$("#embed_video").removeClass('collapse');
+         	$("#bunny_cdn_video").removeClass('collapse');
          	$("#m3u8").addClass('m3u8');
          
          })
+
+            $('#bunny_cdn_video').click(function(){
+
+               $('#video_upload').hide();
+               $('#video_mp4').hide();
+               $('#embedvideo').hide();
+               $('#m3u8_url').hide();
+               $('#bunnycdnvideo').show();
+
+               $("#video_upload").removeClass('collapse');
+               $("#video_mp4").removeClass('collapse');
+               $("#embed_video").removeClass('collapse');
+               // $("#bunny_cdn_video").removeClass('collapse');
+               $("#m3u8").addClass('m3u8');
+            
+            })
          });
          
+
       </script>
    </div>
 </div>
@@ -417,6 +534,25 @@
        });
    })
    
+
+      $('#submit_bunny_cdn').click(function(){
+   	// alert($('#embed_code').val());
+   	$.ajax({
+           url: '{{ URL::to('/admin/stream_bunny_cdn_video') }}',
+           type: "post",
+   data: {
+                  _token: '{{ csrf_token() }}',
+                  bunny_cdn_linked_video: $('#bunny_cdn_linked_video').val()
+   
+            },        success: function(value){
+   			console.log(value);
+               $('#Next').show();
+              $('#video_id').val(value.video_id);
+   
+           }
+       });
+   })
+
    });
    	// http://localhost/flicknexs/public/uploads/audios/23.mp3
 </script>
@@ -625,6 +761,16 @@ border-radius: 0px 4px 4px 0px;
                                  <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" >
                               </div>
                            </div>
+
+                           @if (videos_expiry_date_status() == 1)
+                              <div class="row">
+                                 <div class="col-sm-4 form-group mt-3" id="">
+                                    <label class="">Expiry Date & Time</label>
+                                    <input type="datetime-local" class="form-control" id="expiry_date" name="expiry_date" >
+                                 </div>
+                              </div>
+                           @endif
+
                         </div>
                         <input type="button" name="next" class="next action-button" id="next2" value="Next" />
                      </fieldset>
@@ -868,6 +1014,14 @@ border-radius: 0px 4px 4px 0px;
                                           <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                        </div>
                                        <div class="clear"></div>
+
+                                       <div>
+                                          <label class="" for="banner">Enable this Today Top Video :</label>
+                                          <input type="checkbox" name="today_top_video" @if(!empty($video->today_top_video) && $video->today_top_video == 1){{ 'checked="checked"' }}@elseif(!isset($video->today_top_video)){{ 'checked="checked"' }}@endif name="today_top_video" value="1" id="today_top_video" />
+                                       </div>
+
+                                       <div class="clear"></div>
+
                                     </div>
                                  </div>
                               </div>
@@ -893,6 +1047,7 @@ border-radius: 0px 4px 4px 0px;
 
                            <div class="row">
                               <div class="col-sm-6 form-group">
+                                 <div id="ImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                                  <input type="file" name="image" id="image" >
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or ratio 9:16 </p></span>
@@ -902,6 +1057,7 @@ border-radius: 0px 4px 4px 0px;
                               </div>
 
                               <div class="col-sm-6 form-group">
+                                <div id="ajaxImagesContainer" class="gridContainer mt-3"></div>
                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
                                  <input type="file" name="player_image" id="player_image" >
                                  <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or ratio 16:9 </p></span>
@@ -909,12 +1065,12 @@ border-radius: 0px 4px 4px 0px;
                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100" />
                                  @endif
                               </div>
-                           </div>
-
-                                       {{-- Video TV Thumbnail --}}
+                           </div>                              
 
                            <div class="row">
                               <div class="col-sm-6 form-group">
+                                <div id="TVImagesContainer" class="gridContainer mt-3"></div>
+                                        {{-- Video TV Thumbnail --}}
                                  <label class="mb-1">  Video TV Thumbnail  </label><br>
                                  <input type="file" name="video_tv_image" id="video_tv_image" >
                                  <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1920  x 1080  pixels dimension or 16:9 ratio </p></span>
@@ -1114,6 +1270,9 @@ border-radius: 0px 4px 4px 0px;
 
                <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                <input type="hidden" id="video_id" name="video_id" value="">
+               <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+               <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
+               <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
 
             </div> 
 
@@ -1885,6 +2044,7 @@ $(document).ready(function($){
      Dropzone.autoDiscover = false;
      var myDropzone = new Dropzone(".dropzone",{ 
        //   maxFilesize: 900,  // 3 mb
+         parallelUploads: 10,
          maxFilesize: 150000000,
          acceptedFiles: "video/mp4,video/x-m4v,video/*",
      });
@@ -1942,7 +2102,7 @@ $(document).ready(function($){
    //          var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+`-=[]\{}|;':,./<>?", //random data prevents gzip effect
    //              iterations = sizeInMb * 1024 * 1024, //get byte count
    //              result = '';
-   //          for( var index = 0; index < iterations; index++ ) {
+   //          for( var index = 0; index <div iterations; index++ ) {
    //              result += chars.charAt( Math.floor( Math.random() * chars.length ) );
    //          };     
    //          return result;
@@ -1956,6 +2116,7 @@ $(document).ready(function($){
    $('#video_upload').hide();
    $('#video_mp4').hide();
    $('#embedvideo').hide();
+   $('#bunnycdnvideo').hide();
    $('#optionradio').hide();
    $('.content_videopage').hide();
    $('#content_videopage').hide();
@@ -1963,6 +2124,115 @@ $(document).ready(function($){
    
    $('#Next').hide();
    $('#video_details').show();
+
+   $.ajax({
+        url: '{{ URL::to('admin/videos/extractedimage') }}',
+        type: "post",
+        data: {
+            _token: '{{ csrf_token() }}',
+            video_id: $('#video_id').val()
+        },
+        success: function(value) {
+            // console.log(value.ExtractedImage.length);
+
+            if (value && value.ExtractedImage.length > 0) {
+                $('#ajaxImagesContainer').empty();
+                $('#ImagesContainer').empty();
+                var ExtractedImage = value.ExtractedImage;
+                var previouslySelectedElement = null;
+                var previouslySelectedVideoImag = null;
+                var previouslySelectedTVImage = null;
+
+                ExtractedImage.forEach(function(Image, index) {
+                    var imgElement = $('<div class="gridItem"><img src="' + Image.image_path + '" class="ajax-image m-1 w-100 h-100" /></div>');
+                    var ImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="video-image m-1 w-100 h-100" /></div>');
+                    var TVImagesContainer = $('<div class="gridItem"><img src="' + Image.image_path + '" class="tv-video-image m-1 w-100 h-100" /></div>');
+
+                    imgElement.click(function() {
+                        $('.ajax-image').css('border', 'none');
+                        // Remove border from the previously selected image
+                        if (previouslySelectedElement) {
+                           previouslySelectedElement.css('border', 'none');
+                        }
+                        imgElement.css('border', '2px solid red');
+                        var clickedImageUrl = Image.image_path;
+
+                        var SelectedImageUrl = Image.image_original_name;
+                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                        previouslySelectedElement = $(this);
+
+                        $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    });
+                                    // Default selection for the first image
+                     if (index === 0) {
+                           imgElement.click();
+                     }
+                    $('#ajaxImagesContainer').append(imgElement);
+
+                    ImagesContainer.click(function() {
+                        $('.video-image').css('border', 'none');
+                        if (previouslySelectedVideoImag) {
+                           previouslySelectedVideoImag.css('border', 'none');
+                        }
+                        ImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var VideoImageUrl = Image.image_original_name;
+                        // console.log('SelectedImageUrl Image URL:', SelectedImageUrl);
+                        previouslySelectedVideoImag = $(this);
+
+                        $('#videoImageUrlInput').val(VideoImageUrl);
+                    });
+
+                    if (index === 0) {
+                     ImagesContainer.click();
+                     }
+
+                    $('#ImagesContainer').append(ImagesContainer);
+
+                    TVImagesContainer.click(function() {
+                        $('.tv-video-image').css('border', 'none');
+                        if (previouslySelectedTVImage) {
+                           previouslySelectedTVImage.css('border', 'none');
+                        }
+                        TVImagesContainer.css('border', '2px solid red');
+                        
+                        var clickedImageUrl = Image.image_path;
+
+                        var TVImageUrl = Image.image_original_name;
+                        previouslySelectedTVImage = $(this);
+
+                        $('#SelectedTVImageUrlInput').val(TVImageUrl);
+                  });
+
+                  if (index === 0) {
+                     TVImagesContainer.click();
+                  }
+
+                  $('#TVImagesContainer').append(TVImagesContainer);
+
+
+                });
+            } else {
+                     var SelectedImageUrl = '';
+
+                     $('#selectedImageUrlInput').val(SelectedImageUrl);
+                    $('#videoImageUrlInput').val(SelectedImageUrl);
+                    $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+               //  $('#ajaxImagesContainer').html('<p>No images available.</p>');
+            }
+        },
+        error: function(error) {
+
+            var SelectedImageUrl = '';
+
+            $('#selectedImageUrlInput').val(SelectedImageUrl);
+            $('#videoImageUrlInput').val(SelectedImageUrl);
+            $('#SelectedTVImageUrlInput').val(SelectedImageUrl);
+            console.error(error);
+        }
+    });
    
    });
      

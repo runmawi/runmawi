@@ -57,3 +57,11 @@
     max-height: 150px;
     overflow-y: scroll;
 }
+.drag-container {
+    text-align: center;
+    border: 1px solid #cecece;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px #747474;
+}
+.drag-container img {object-fit: contain;height: auto !important;}
+.drag-container .form-control:disabled, .drag-container .form-control[readonly] {background-color: transparent !important;padding: 10px 0;font-size: 14px;}

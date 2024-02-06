@@ -1,12 +1,12 @@
 <?php
 
-if(isset($videodetail)):
-    $media_title = $videodetail->title;
+if(isset($video)):
+    $media_title = $video->title;
     $url = URL::to('/category/videos');
     $embed_url = URL::to('/category/videos/embed');
-    $media_url = $url . '/' . $videodetail->slug;
-    $embed_media_url = $embed_url . '/' . $videodetail->slug;
-    $hidden = '<input type="hidden" value="'.$videodetail->id.'" id="videoid">';
+    $media_url = $url . '/' . $video->slug;
+    $embed_media_url = $embed_url . '/' . $video->slug;
+    $hidden = '<input type="hidden" value="'.$video->id.'" id="videoid">';
 elseif(isset($audio)):
     $media_title = $audio->title;
     $url = URL::to('/');
@@ -53,7 +53,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
 <!-- Buttons start here. Copy this ul to your document. -->
 <ul class="list-inline p-0 m-0 share-icons music-play-lists">
                                         <!-- Share -->
-                                <li class="share">
+                                <li class="share sharemobres">
                                     <span >
                                     <i class="fal fa-external-link-alt"></i>
                                     </span>
@@ -85,7 +85,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
     <span><i <?php if((isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 )): ?> class="ri-thumb-down-fill" <?php else: ?> class="ri-thumb-down-line" <?php endif; ?>  class="ri-thumb-down-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike"></i></span>
 </li>
 
-<?php if($videodetail->access != 'ppv') { ?>
+<?php if($video->access != 'ppv') { ?>
 <li>
     <a href="#"onclick="EmbedCopy();" class="share-ico"><span><i class="ri-links-fill mt-1"></i></span></a>
 </li> -->

@@ -1,5 +1,10 @@
 <?php include('header.php'); ?>
 <style type="text/css">
+  body{
+    height:auto;
+    min-height:660px; 
+    max-height:1000px;
+  }
 	.nav-pills li a {color: #fff !important;}
     nav{
        margin: 0 auto;
@@ -71,6 +76,52 @@
             background-color: transparent !important  ;
             font-size: revert;
       }
+
+      .modal-header {
+        padding: 10px !important;
+
+    }
+
+    .modal-title {
+        color: #000;
+        font-weight: 700;
+        font-size: 24px !important;
+        line-height: 33px;
+
+    }
+    .modal-body {
+        border-top: 1px solid rgba(0, 0, 0, 0.2) !important;
+        border: none;
+    }
+
+    .modal-footer {
+
+        border-top: 1px solid rgba(0, 0, 0, 0.2) !important;
+        border: none;
+    }
+    .modal-body a {
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 30px;
+        color: #000 !important;
+    }
+
+    .modal-content {
+        /* background-color: #fff; */
+        border: 0px solid #F1F1F1;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        padding: 0;
+    }
+
+    .modal-dialog {
+        max-width: 695px !important;
+    }
+
+    .modal {
+        top: 2%;
+    }
+    
 </style>
 
 <?php 
@@ -79,19 +130,20 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
  $ThumbnailSetting = App\ThumbnailSetting::first();
  // dd($series);
  ?>
-     <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain;padding:0px 0px 20px; ">
-<div class="container-fluid pt-5" >
+     <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; ">
+     <div class="container-fluid pl-5" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
-	<div class="row mt-3 align-items-center">
-		<?php if( $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
+     <div class="row mt-3 align-items-center">
+		<?php if( Auth::guest() && $series->access == 'guest' || $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
 		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
-		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) ):  ?>
-		<div class="col-md-7">
+		$settings->free_registration && !Auth::guest() && Auth::user()->role != 'registered' && $series->ppv_status != 1) 
+    || $series->access == 'subscriber' && !Auth::guest() && Auth::user()->role == 'subscriber'):  ?>
+		<div class="col-md-7 p-0">
 			<div id="series_title">
 				<div class="container">
-					 <h3><?= $series->title ?></h3>
+					 <h1><?= $series->title ?></h1>
                   
 					<!--<div class="col-md-6 p-0">
 						<select class="form-control" id="season_id" name="season_id">
@@ -102,11 +154,48 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 					</div>-->
 					<div class="row p-2 text-white">
                         <div class="col-md-7">
-                        Season  <span class="sea"> 1 </span> - U/A English
-                            <p  style="color:#fff!important;"><?php echo $series->details;?></p>
-						<b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
+                        <?= __('Season') ?>  <span class="sea"> 1 </span> -<?= __('U/A English') ?> 
+                            <!-- <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p> -->
+                            <!-- <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p> -->
+                              
+
+                           
+
+                                <?php
+                                  $description = $series->description;
+
+                                  if (strlen($description) > 200) {
+                                      $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                                  } else {
+                                      $shortDescription = html_entity_decode($description);
+                                  }
+                                  ?>
+
+                                  <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                      <?php echo $shortDescription; ?>
+                                  </div>
+
+                                    <script>
+                                        function toggleDescription() {
+                                            var descriptionContainer = document.querySelector('.description-container');
+                                            var moreText = descriptionContainer.querySelector('.more-text');
+                                            var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                            if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                                moreText.style.display = 'inline';
+                                                seeMoreButton.innerText = ' See Less ';
+                                            } else {
+                                                moreText.style.display = 'none';
+                                                seeMoreButton.innerText = ' See More ';
+                                            }
+                                        }
+                                    </script>
+
+                                
+
+						                <!-- <p class="desc" style="color:#fff;"><?php echo $series->description;?></p> -->
                             <div class="row p-0 mt-3 align-items-center">
-                                <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                <div class="col-md-2 trailerbutton">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                           <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
                               <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
                                 <div class="col-md-1 pls  d-flex text-center mt-2">
@@ -123,7 +212,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                   class="ri-links-fill"></i></a>
        </div>
     </div>
-</li>Share
+</li><?= __('Share') ?>
                                     </ul></div>
                                           
                                           
@@ -132,11 +221,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
 
                             </div>
-                            <div class="modal fade modal-xl" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal fade modal-xl videoModal" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
             <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <div class="modal-body">
+        <div class="modal-body videoModalbody">
         
             
          <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" >
@@ -190,12 +279,12 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                         <!-- BREADCRUMBS -->
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                            href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
@@ -214,13 +303,13 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                 </ol>
             </div>
         </div>
-                  </div>
+      </div> -->
 
 		<div class="row">
 			<div class="col-md-12 mt-4">
-				<nav class="nav-justified">
+				<nav class="nav-justified pl-3">
 					<div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
-                        <h4 class="ml-3">Episode</h4>
+                        <h4 class="ml-3"><?php echo __('Episode'); ?></h4>
 						<!--<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
 						<!--<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Related</a>
 						<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Detail</a>-->
@@ -229,11 +318,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
             </div>
 <!-- $series->title -->
 						<div class="container-fluid">
-				<div class="favorites-contens">
+				<div class="favorites-contens pl-5">
                     <div class="col-md-3 p-0">
                     <select class="form-control" id="season_id" name="season_id">
 							<?php foreach($season as $key => $seasons): ?>
-								<option data-key="<?= $key+1 ;?>" value="season_<?= $seasons->id;?>" >Season <?= $key+1; ?></option>
+								<option data-key="<?= $key+1 ;?>" value="season_<?= $seasons->id;?>" ><?php echo __('Season'); ?> <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select></div>
           <ul class="category-page list-inline row p-3 mb-0">
@@ -248,20 +337,26 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                            <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
-                                  <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
-                                   
-                                         <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
-                                                 <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
-                                          <?php }elseif(!empty($seasons->ppv_price)){?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
-                                               <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
-                                          <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
-                                            <?php } ?>
-                                    <?php } ?>
+                                    </div>
+                                    <div class="block-description" >
+                                      <!-- <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>" >
+                                        <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/>  Watch Now
+                                      </a> -->
+                                    </div>
+                                      <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                    
+                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                              <p class="p-tag"><?php echo __("Free"); ?></p>
+                                                  <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
+                                            <?php }elseif(!empty($seasons->ppv_price)){?>
+                                              <p class="p-tag"><?php echo __("Free"); ?></p>
+                                                <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
+                                            <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                              <p class="p-tag"><?php echo __("Free"); ?></p>
+                                              <?php } ?>
+                                      <?php } ?>
 
-                               </div></div>
+                               </div>
                                  
                                <div class="block-description" ></div>
                                     
@@ -284,7 +379,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                  
                                  </div>
                                         </div>-->
-                                    
+                                        <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
+                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                              Watch Now
+                                              </a>
                                 
                               </a>
                             </li>
@@ -296,24 +394,68 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
                                    
-                                  <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
-                                   
-                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                          <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                      
+                                              <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                              <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                                              <?php }elseif(!empty($seasons->ppv_price)){?>
+                                              <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
+                                              <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                                <p class="p-tag"><?php echo __("Free"); ?></p>
+                                                <?php } ?>
+                                          <?php } ?>
+                                     </div>
+                                    </div>
+                                 
+                                  <div class="block-description" >
+                                    <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
+                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->player_image;  ?>" class=" img-fluid w-100" >
+                                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                          
+                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                                           <?php }elseif(!empty($seasons->ppv_price)){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <p class="p-tag"><?php echo __("Free"); ?></p>
                                             <?php } ?>
-                                      <?php } ?>
-                                     </div></div>
-                                 
-                                  <div class="block-description" ></div>
+                                        <?php } ?>
+                                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
+                                          
+                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
+                                          <?php }elseif(!empty($seasons->ppv_price)){?>
+                                          <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
+                                          <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                            <p class="p-tag"><?php echo __("Free"); ?></p>
+                                            <?php } ?>
+                                        <?php } ?>
+
+                                        <div class="hover-buttons text-white">
+                                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
+                                                <p class="epi-name text-left m-0">
+                                                  <?php echo __($episodes->title); ?>
+                                                </p>
+                                                  
+                                                  <div class="movie-time d-flex align-items-center my-2">
+                                                    <div class="badge badge-secondary p-1 mr-2"><?php echo $episodes->age_restrict.' '.'+' ?></div>
+                                                    <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate("H:i:s", $episodes->duration); ?></span>
+                                                  </div>
+                                            </a>
+
+                                        
+                                              <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
+                                                  <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                Watch Now
+                                                </a>
+                                          </div>
+                                  
+                                  </div>
                                     
-                                         <h6><?= $episodes->title; ?></h6>
+                                         <!-- <h6><?= $episodes->title; ?></h6> -->
 										<!--<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>-->
                                        <!-- <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>-->
-										<p class="text-white desc mb-0"><?= gmdate("H:i:s", $episodes->duration); ?></p>
+										<!-- <p class="text-white desc mb-0"><?= gmdate("H:i:s", $episodes->duration); ?></p> -->
                                
 
                                    
@@ -344,9 +486,134 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 				</div> 
 
           <!-- <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
-			<div class="col-sm-12">
-					<div id="ppv">
-				<h2 class="text-center" style="margin-top:80px;">Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+			<div class="col-md-7 p-0">
+				<div id="series_title">
+            <div class="container">
+              <h3><?= $series->title ?></h3>
+              <div class="row p-2 text-white">
+                <div class="col-md-7">
+                          <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
+
+
+                          <?php
+                            $description = $series->description;
+
+                            if (strlen($description) > 200) {
+                                $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                            } else {
+                                $shortDescription = html_entity_decode($description);
+                            }
+                            ?>
+
+                            <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                <?php echo $shortDescription; ?>
+                            </div>
+
+                              <script>
+                                  function toggleDescription() {
+                                      var descriptionContainer = document.querySelector('.description-container');
+                                      var moreText = descriptionContainer.querySelector('.more-text');
+                                      var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                      if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                          moreText.style.display = 'inline';
+                                          seeMoreButton.innerText = ' See Less ';
+                                      } else {
+                                          moreText.style.display = 'none';
+                                          seeMoreButton.innerText = ' See More ';
+                                      }
+                                  }
+                              </script>
+
+
+
+
+                              <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+                                <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
+                                  <div class="row p-0 mt-3 align-items-center">
+                                      <!-- <div class="col-md-2"> 
+                                         <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div> -->
+                                            <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
+                                              <div class="col-md-1 pls  d-flex text-center mt-2">
+                                                  <div></div>
+                                                  <ul>
+                                                    <li class="share">
+                                                      <span><i class="ri-share-fill"></i></span>
+                                                        <div class="share-box">
+                                                          <div class="d-flex align-items-center"> 
+                                                          <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
+                                                                  class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                                              <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
+                                                                  class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                                              <a href="#"onclick="Copy();" class="share-ico"><i
+                                                                      class="ri-links-fill"></i></a>
+                                                          </div>
+                                                        </div>
+                                                    </li>Share                      
+                                                  </ul>
+                                                </div>
+
+                                        <div class="modal fade modal-xl" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                  <div class="modal-body">
+                                                    <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" >
+                                                    </video>
+                                                    <video  id="videos" class=""  
+                                                      poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>"
+                                                                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                                                                        type="application/x-mpegURL">
+
+                                                                        <source id="m3u8urlsource"
+                                                                          type="application/x-mpegURL" 
+                                                                          src=""
+                                                                        >
+
+                                        </video>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                                  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+                                  
+                                  <script>  const player = new Plyr('#videoPlayer1'); </script>
+
+
+                                  </div>
+
+
+              </div>
+              </div>
+
+            </div>
+
+              <h2 class="text" style="margin-top:80px;"> 
+              <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
+              <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+          <?php elseif($series->access == 'registered'): ?>
+            <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary">
+                    <?php echo __('Become a Registered User to watch this video'); ?></button>
+              </form>
+          <?php elseif($series->ppv_status == 1): ?>
+          <div class="d-flex">
+            <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+
+            <form method="get" action="<?= URL::to('signup') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary">
+                    <?php echo __('Purchase Now'); ?></button>
+              </form>
+          </div>
+            <?php endif; ?></h2>
+
+
+				
 				<div class="clear"></div>
 				</div> 
 				<!-- </div>  -->
@@ -368,68 +635,510 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
             </div>
         </div>
         </div>
-		</section>
-		
+				<?php elseif(!Auth::guest() && $series->ppv_status == 1 ||!Auth::guest() && Auth::User()->role == "subscriber"  || !Auth::guest() && Auth::User()->role == "registered" ):  ?>
+
+          <div class="col-md-7 p-0">
+				    <div id="series_title">
+              <div class="container">
+                <h3><?= $series->title ?></h3>
+                  <div class="row p-2 text-white">
+                    <div class="col-md-7">
+                      <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
+
+                      <?php
+                        $description = $series->description;
+
+                        if (strlen($description) > 200) {
+                            $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                        } else {
+                            $shortDescription = html_entity_decode($description);
+                        }
+                        ?>
+
+                        <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                            <?php echo $shortDescription; ?>
+                        </div>
+
+                          <script>
+                              function toggleDescription() {
+                                  var descriptionContainer = document.querySelector('.description-container');
+                                  var moreText = descriptionContainer.querySelector('.more-text');
+                                  var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                  if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                      moreText.style.display = 'inline';
+                                      seeMoreButton.innerText = ' See Less ';
+                                  } else {
+                                      moreText.style.display = 'none';
+                                      seeMoreButton.innerText = ' See More ';
+                                  }
+                              }
+                          </script>
+
+
+
+                        <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+                        <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
+                        <div class="row p-0 mt-3 align-items-center">
+                                        <!-- <div class="col-md-2">
+                                          <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                          </a>
+                                        </div> -->
+                                            <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
+                                          <div class="col-md-1 pls  d-flex text-center mt-2">
+                                            <div></div>
+                                            <ul>
+                                              <li class="share">
+                                                <span><i class="ri-share-fill"></i></span>
+                                                <div class="share-box">
+                                                  <div class="d-flex align-items-center"> 
+                                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                                    <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                                    <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+                                                  </div>
+                                                </div>
+                                              </li>Share                      
+                                            </ul>
+                                          </div>
+
+                                          <div class="modal fade modal-xl" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                  <div class="modal-body">
+                                                    <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" > </video>
+                                                    <video  id="videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                                                                                        type="application/x-mpegURL">
+
+                                                                                        <source id="m3u8urlsource"
+                                                                                          type="application/x-mpegURL" 
+                                                                                          src=""
+                                                                                        >
+
+                                                    </video>
+                                                  </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+                                          <script>  const player = new Plyr('#videoPlayer1'); </script>
+                        </div>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+
+
+        <h2 class="text" > 
+              <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
+          <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                  <button id="button" class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+              <?php elseif($series->ppv_status == 1 &&  Auth::User()->role == "subscriber" ): ?>
+            <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+                    class="view-count rent-video btn btn-primary">
+                    <?php echo __('Purchase Now'); ?> </button>
+            <?php elseif($series->ppv_status == 1 ): ?>
+
+              <div class="d-flex">
+              <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                  <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+              </form>
+              <form action="">
+                  <button  data-toggle="modal" data-target="#exampleModalCenter"
+                    class="view-count rent-video btn btn-primary">
+                    <?php echo __('Purchase Now'); ?> </button>
+                    </form>
+                    </div>
+            <?php endif; ?></h2>
+          </div>
+          </div>
+         
+          <?php elseif(Auth::guest() && $series->ppv_status == 1  || Auth::guest() && $series->access == "registered" ):  ?>
+
+              <div class="col-md-7 p-0">
+                <div id="series_title">
+                  <div class="container">
+                    <h3><?= $series->title ?></h3>
+                      <div class="row p-2 text-white">
+                        <div class="col-md-7">
+                          <?php echo __('Season'); ?>  <span class="sea"> 1 </span> - <?php echo __('U/A English'); ?>
+
+                          <?php
+                            $description = $series->description;
+
+                            if (strlen($description) > 200) {
+                                $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                            } else {
+                                $shortDescription = html_entity_decode($description);
+                            }
+                            ?>
+
+                            <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                <?php echo $shortDescription; ?>
+                            </div>
+
+                              <script>
+                                  function toggleDescription() {
+                                      var descriptionContainer = document.querySelector('.description-container');
+                                      var moreText = descriptionContainer.querySelector('.more-text');
+                                      var seeMoreButton = descriptionContainer.querySelector('.see-more');
+
+                                      if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                          moreText.style.display = 'inline';
+                                          seeMoreButton.innerText = ' See Less ';
+                                      } else {
+                                          moreText.style.display = 'none';
+                                          seeMoreButton.innerText = ' See More ';
+                                      }
+                                  }
+                              </script>
+
+                            <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+                            <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
+                            <div class="row p-0 mt-3 align-items-center">
+                                            <!-- <div class="col-md-2">
+                                              <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                              </a>
+                                            </div> -->
+                                                <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
+                                              <div class="col-md-1 pls  d-flex text-center mt-2">
+                                                <div></div>
+                                                <ul>
+                                                  <li class="share">
+                                                    <span><i class="ri-share-fill"></i></span>
+                                                    <div class="share-box">
+                                                      <div class="d-flex align-items-center"> 
+                                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                                        <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                                        <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+                                                      </div>
+                                                    </div>
+                                                  </li>Share                      
+                                                </ul>
+                                              </div>
+
+                                              <div class="modal fade modal-xl" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                  <div class="modal-content">
+                                                    <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                      <div class="modal-body">
+                                                        <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" > </video>
+                                                        <video  id="videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                                                                                            type="application/x-mpegURL">
+
+                                                                                            <source id="m3u8urlsource"
+                                                                                              type="application/x-mpegURL" 
+                                                                                              src=""
+                                                                                            >
+
+                                                        </video>
+                                                      </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+                                              <script>  const player = new Plyr('#videoPlayer1'); </script>
+                            </div>
+                        </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+              <h2 class="text" > 
+                  <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
+              <form method="get" action="<?= URL::to('/signup') ?>">
+                      <button id="button" class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                  </form>
+                  <?php elseif($series->ppv_status == 1 &&  $series->access == 'subscriber'): ?>
+                    <div class="d-flex">
+
+                    <form method="get" action="<?= URL::to('/signup') ?>">
+                      <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                  </form>
+
+                  <form action="<?= URL::to('/signup') ?>">
+                <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+                        class="view-count rent-video btn btn-primary">
+                        <?php echo __('Purchase Now'); ?> </button>
+                        </form>
+                        </div>
+
+                <?php elseif($series->ppv_status == 1 &&  $series->access == 'registered' ): ?>
+
+                  <div class="d-flex">
+                  <form method="get" action="<?= URL::to('/signup') ?>">
+                      <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a Registered User to watch this video'); ?></button>
+                  </form>
+                  <form action="<?= URL::to('/signup') ?>">
+                      <button  data-toggle="modal" data-target="#exampleModalCenter"
+                        class="view-count rent-video btn btn-primary">
+                        <?php echo __('Purchase Now'); ?> </button>
+                        </form>
+                        </div>
+
+                        <?php elseif($series->ppv_status == 1 &&  $series->access == 'subscriber'): ?>
+                    <div class="d-flex">
+
+                    <form method="get" action="<?= URL::to('/signup') ?>">
+                      <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                  </form>
+
+                  <form action="<?= URL::to('/signup') ?>">
+                <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+                        class="view-count rent-video btn btn-primary">
+                        <?php echo __('Purchase Now'); ?> </button>
+                        </form>
+                        </div>
+
+                        <?php elseif($series->ppv_status == 0 &&  $series->access == 'registered' ): ?>
+
+                        <div class="d-flex">
+                        <form method="get" action="<?= URL::to('/signup') ?>">
+                            <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a Registered User to watch this video'); ?></button>
+                        </form>
+                              </div>
+                <?php endif; ?></h2>
+              </div>
+              </div>
+
 				<?php endif;?>
-				<?php $payment_type = App\PaymentSetting::get(); ?>
+        </div>
+        </div>
 
+		</section>
 <?php include('footer.blade.php');?>
+		
+				<?php $payment_type = App\PaymentSetting::get(); 
+              $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
+              $Paystack_payment_settings = App\PaymentSetting::where('payment_type', 'Paystack')->first();
+              $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
+              $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
+
+          ?>
 
 
-				          <!-- Modal -->
-   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-     <div class="modal-dialog modal-dialog-centered" role="document">
-       <div class="modal-content">
-         <div class="modal-header">
-           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
-         </div>
-         <div class="modal-body">
-             <div class="row">
-                 <div class="col-sm-2" style="width:52%;">
-                   <span id="paypal-button"></span> 
-                 </div>
-                <?php $payment_type = App\PaymentSetting::get(); ?>
-                 
-                 <div class="col-sm-4">
-                 <label for="method"><h3>Payment Method</h3></label>
-                <label class="radio-inline">
-				<?php  foreach($payment_type as $payment){
-                          if($payment->stripe_status == 1 || $payment->paypal_status == 1){ 
-                          if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">        
-		        <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
-				</label>
-                <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
-                <label class="radio-inline">
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">			
-				<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
-			</label>
-                <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
-                <input type="radio" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}">
-                <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
-				<br>
-                          <?php 
-						 }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
-                <input type="radio" id="important" name="payment_method" value="{{ $payment->payment_type }}">
-				<?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
-			
-						<?php  } }else{
-                            echo "Please Turn on Payment Mode to Purchase";
-                            break;
-                         }
-                         }?>
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
 
-                 </div>
-             </div>                    
-         </div>
-         <div class="modal-footer">
-         <a onclick="pay(<?php echo $settings->ppv_price ;?>)">
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
-                   </a>
-           <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
-         </div>
-       </div>
- </div></div>
+                                            <div class="modal-header">
+                                                <h4 class="modal-title text-center" id="exampleModalLongTitle"
+                                                    style=""><?php echo __('Rent Now'); ?></h4>
+
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <div class="row justify-content-between">
+                                                    <div class="col-sm-4 p-0" style="">
+                                                        <img class="img__img w-100" src="<?php echo URL::to('/') . '/public/uploads/images/' . $series->image; ?>"
+                                                            class="img-fluid" alt="">
+                                                    </div>
+
+                                                    <div class="col-sm-8">
+                                                        <h4 class=" text-black movie mb-3"><?php echo __($series->title); ?> ,
+                                                            <span
+                                                                class="trending-year mt-2"><?php if ($series->year == 0) {
+                                                                    echo '';
+                                                                } else {
+                                                                    echo $series->year;
+                                                                } ?></span>
+                                                        </h4>
+                                                        <span
+                                                            class="badge badge-secondary   mb-2"><?php // echo __($series->age_restrict) . ' ' . '+'; ?></span>
+                                                        <span
+                                                            class="badge badge-secondary  mb-2"><?php // echo __(isset($series->categories->name)); ?></span>
+                                                        <span
+                                                            class="badge badge-secondary  mb-2"><?php // echo __(isset($series->languages->name)); ?></span>
+                                                        <span
+                                                            class="badge badge-secondary  mb-2 ml-1"><?php echo __($series->duration); ?></span><br>
+
+                                                        <a type="button" class="mb-3 mt-3" data-dismiss="modal"
+                                                            style="font-weight:400;"><?php echo __('Amount'); ?>: <span class="pl-2"
+                                                                style="font-size:20px;font-weight:700;">
+                                                                <?php if($series->ppv_status == 1 && $settings->ppv_price != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$settings->ppv_price)); }else if($series->ppv_status == 1 && $settings->ppv_price != null && $CurrencySetting == 0){ echo __(@$settings->ppv_price) .' '.$currency->symbol ; } ?></span></a><br>
+                                                        <label class="mb-0 mt-3 p-0" for="method">
+                                                            <h5 style="font-size:20px;line-height: 23px;"
+                                                                class="font-weight-bold text-black mb-2"><?php echo __('Payment Method'); ?>
+                                                                : </h5>
+                                                        </label>
+
+                                                        <?php $payment_type = App\PaymentSetting::get(); ?>
+
+                                                        <!-- RENT PAYMENT Stripe,Paypal,Paystack,Razorpay,CinetPay -->
+
+                                                        <?php  //foreach($payment_type as $payment){
+                                        $Stripepayment = App\PaymentSetting::where('payment_type', 'Stripe')->first();
+                                        $PayPalpayment = App\PaymentSetting::where('payment_type', 'PayPal')->first();
+
+                                              if( @$Razorpay_payment_settings->payment_type == "Razorpay"  || @$Stripepayment->payment_type == "Stripe" ||  @$PayPalpayment->payment_type == "PayPal" 
+                                              || @$CinetPay_payment_settings->payment_type == "CinetPay" ||  @$Paystack_payment_settings->payment_type == "Paystack" ){ 
+
+                                                  if( $Stripepayment != null && $Stripepayment->live_mode == 1 && $Stripepayment->stripe_status == 1){ ?>
+                                                        <!-- Stripe -Live Mode -->
+
+                                                        <label
+                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                            <input type="radio" class="payment_btn"
+                                                                id="tres_important" name="payment_method"
+                                                                value=<?= $Stripepayment->payment_type ?>
+                                                                data-value="stripe">
+                                                            <?php if (!empty($Stripepayment->stripe_lable)) {
+                                                                echo $Stripepayment->stripe_lable;
+                                                            } else {
+                                                                echo $Stripepayment->payment_type;
+                                                            } ?>
+                                                        </label> <?php }
+
+                              elseif( $Stripepayment != null && $Stripepayment->live_mode == 0 && $Stripepayment->stripe_status == 1){ ?>
+                                                        <!-- Stripe - Test Mode -->
+
+                                                        <label
+                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                            <input type="radio" class="payment_btn"
+                                                                id="tres_important" name="payment_method"
+                                                                value="<?= $Stripepayment->payment_type ?>"
+                                                                data-value="stripe">
+                                                            <!--<img class="" height="20" width="40" src="<?php echo URL::to('/assets/img/stripe.png'); ?>" style="margin-top:-5px" >-->
+                                                            <?php if (!empty($Stripepayment->stripe_lable)) {
+                                                                echo $Stripepayment->stripe_lable;
+                                                            } else {
+                                                                echo $Stripepayment->payment_type;
+                                                            } ?>
+                                                        </label> <?php }
+                  
+                              if(  $PayPalpayment != null &&  $PayPalpayment->paypal_live_mode == 1 && $PayPalpayment->paypal_status == 1){ ?>
+                                                        <!-- paypal - Live Mode -->
+
+                                                        <label
+                                                            class="radio-inline mb-0 mt-3 d-flex align-items-center">
+                                                            <input type="radio" class="payment_btn" id="important"
+                                                                name="payment_method"
+                                                                value="<?= $PayPalpayment->payment_type ?>"
+                                                                data-value="paypal">
+                                                            <?php if (!empty($PayPalpayment->paypal_lable)) {
+                                                                echo $PayPalpayment->paypal_lable;
+                                                            } else {
+                                                                echo $PayPalpayment->payment_type;
+                                                            } ?>
+                                                        </label> <?php }
+
+                              elseif( $PayPalpayment != null &&  $PayPalpayment->paypal_live_mode == 0 && $PayPalpayment->paypal_status == 1){ ?>
+                                                        <!-- paypal - Test Mode -->
+
+                                                        <label
+                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                            <input type="radio" class="payment_btn" id="important"
+                                                                name="payment_method"
+                                                                value="<?= $PayPalpayment->payment_type ?>"
+                                                                data-value="paypal">
+                                                            <?php if (!empty($PayPalpayment->paypal_lable)) {
+                                                                echo $PayPalpayment->paypal_lable;
+                                                            } else {
+                                                                echo $PayPalpayment->payment_type;
+                                                            } ?>
+                                                        </label> <?php  } ?>
+
+                                                        <!-- Razorpay -->
+                                                        <?php if( $Razorpay_payment_settings != null && $Razorpay_payment_settings->payment_type == "Razorpay" && $Razorpay_payment_settings->status == 1){?>
+                                                        <label
+                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                            <input type="radio" class="payment_btn" id="important"
+                                                                name="payment_method"
+                                                                value="<?= $Razorpay_payment_settings->payment_type ?>"
+                                                                data-value="Razorpay">
+                                                            <?php echo $Razorpay_payment_settings->payment_type; ?>
+                                                        </label>
+                                                        <?php } 
+                                                                              // <!-- Paystack -->
+                              if ( $Paystack_payment_settings != null && $Paystack_payment_settings->payment_type == 'Paystack'  && $Paystack_payment_settings->status == 1 ){  ?>
+
+                                                        <label
+                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                            <input type="radio" class="payment_btn" id=""
+                                                                name="payment_method"
+                                                                value="<?= $Paystack_payment_settings->payment_type ?>"
+                                                                data-value="Paystack">
+                                                            <?= $Paystack_payment_settings->payment_type ?>
+                                                        </label>
+                                                        <?php } 
+                                                                        // <!-- CinetPay -->
+                              if ( $CinetPay_payment_settings != null && $CinetPay_payment_settings->payment_type == 'CinetPay'  && $CinetPay_payment_settings->status == 1 ){  ?>
+
+                                                        <label
+                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                            <input type="radio" class="payment_btn" id="" name="payment_method"  
+                                                                name="payment_method"
+                                                                value="<?= $CinetPay_payment_settings->payment_type ?>"
+                                                                data-value="CinetPay">
+                                                            <?= $CinetPay_payment_settings->payment_type ?>
+                                                        </label>
+                                                        <?php }
+                              }
+                          else{
+                                echo "<small>Please Turn on Payment Mode to Purchase</small>";
+                                // break;
+                          // }
+                      }?>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <div class="Stripe_button">
+                                                    <!-- Stripe Button -->
+                                                    <!-- Currency_Convert(@$settings->ppv_price) -->
+                                                    <a onclick="pay(<?php if($series->ppv_status == 1 && $CurrencySetting == 1){ echo PPV_CurrencyConvert($settings->ppv_price); }else if($series->ppv_status == 1 && $settings->ppv_price != null && $CurrencySetting == 0){ echo __(@$settings->ppv_price) ; } ?>)">
+                                                        <button type="button"
+                                                            class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button>
+                                                    </a>
+                                                </div>
+
+                                                <?php if( $series->ppv_status == 1   ){ ?>
+                                                <div class="Razorpay_button">
+                                                    <!-- Razorpay Button -->
+                                                    <button
+                                                        onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . $series->id . '/' . $settings->ppv_price) ?>' ;"
+                                                        id="" class="btn2  btn-outline-primary">
+                                                        <?php echo __('Continue'); ?></button>
+                                                </div>
+                                                <?php }?>
+
+
+                                                <?php if( $series->ppv_status == 1   ){ ?>
+                                                <div class="paystack_button">
+                                                    <!-- Paystack Button -->
+                                                    <button
+                                                        onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $series->id, 'amount' => $settings->ppv_price]) ?>' ;"
+                                                        id="" class="btn2  btn-outline-primary">
+                                                        <?php echo __('Continue'); ?></button>
+                                                </div>
+                                                <?php }?>
+
+                                                <?php if( $series->ppv_status == 1 ){ ?>
+                                                <div class="cinetpay_button">
+                                                    <!-- CinetPay Button -->
+                                                    <button onclick="cinetpay_checkout()" id=""
+                                                        class="btn2  btn-outline-primary"><?php echo __('Continue'); ?></button>
+                                                </div>
+                                                <?php }?>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
    <input type="hidden" name="publishable_key" id="publishable_key" value="<?= $publishable_key ?>">
    <input type="hidden" name="series_id" id="series_id" value="<?= $series->id ?>">
@@ -446,6 +1155,45 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
+
+
+
+<script>
+    window.onload = function() {
+        $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button').hide();
+    }
+
+    $(document).ready(function() {
+
+        $(".payment_btn").click(function() {
+
+            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
+
+            let payment_gateway = $('input[name="payment_method"]:checked').val();
+            // alert(payment_gateway);
+            if (payment_gateway == "Stripe") {
+
+                $('.Stripe_button').show();
+                $('.Razorpay_button,.paystack_button,.cinetpay_button').hide();
+
+            } else if (payment_gateway == "Razorpay") {
+
+                $('.paystack_button,.Stripe_button,.cinetpay_button').hide();
+                $('.Razorpay_button').show();
+
+            } else if (payment_gateway == "Paystack") {
+
+                $('.Stripe_button,.Razorpay_button,.cinetpay_button').hide();
+                $('.paystack_button').show();
+            } else if (payment_gateway == "CinetPay") {
+
+                $('.Stripe_button,.Razorpay_button,.paystack_button').hide();
+                $('.cinetpay_button').show();
+            }
+        });
+    });
+</script>
+
 
 <script type="text/javascript">
 var purchase_series = $('#purchase_url').val();

@@ -332,5 +332,19 @@ public function category_order(Request $request){
     }
     
     
-    
+    public function video_category_active(Request $request)
+    {
+        try {
+            $category = VideoCategory::where('id',$request->category_id)->update([
+                'in_menu' => $request->status,
+            ]);
+            print_r($request->category_id .$request->status );
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
+
 }

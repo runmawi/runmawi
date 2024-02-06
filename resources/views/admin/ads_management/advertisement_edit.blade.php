@@ -131,8 +131,8 @@
                                             {{-- Ads Redirection URL --}}
                             <div class="form-group col-md-4 ads_video_upload" style="{{ $advertisement->ads_upload_type == 'ads_video_upload' ? 'display:block;' : 'display:none;' }}" >
                                 <label> Ads Redirection URL:</label>
-                                <input type="url" id="ads_redirection_url" name="ads_redirection_url"  
-                                        placeholder="https://example.com"  class="form-control" value="{{ $advertisement->ads_redirection_url }}" />
+                                <input type="text" id="ads_redirection_url" name="ads_redirection_url"  class="form-control"
+                                        placeholder="https://example.com"  value={{ $advertisement->ads_redirection_url ? $advertisement->ads_redirection_url : null }} />
                             </div>
                         </div>
 
@@ -191,7 +191,7 @@
 
                                             {{-- Footer --}}
                         <div class="modal-footer">
-                            <input type="submit" class="btn btn-primary" id="submit-update-cat" value="Update" />
+                            <input type="submit" class="btn btn-primary"  value="Update" />
                             <a type="button" class="btn btn-danger" data-dismiss="modal"  href="{{ URL::to('admin/ads_list') }}">Close</a>
                         </div>
 
@@ -266,5 +266,3 @@
 
     </script>
 @stop
-
-

@@ -1,8 +1,8 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h4 class="main-title">
         <a href="">
-            Most Watching Videos in
-            <?php echo $countryName;?>
+        <?= (__('Most Watching Videos in'))  ?>
+            <?php echo (__($countryName));?>
         </a>
     </h4>
 </div>
@@ -22,6 +22,15 @@
                                 <source src="<?php echo $Most_watched_countries->trailer;  ?>" type="video/mp4" />
                             </video>-->
                         </a>
+                    </div>
+                    <div class="block-description">
+                        <div class="hover-buttons">
+                            <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                            <div>
+                                <!-- <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $Most_watched_countries->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
+                            </div>
+                        </div>
+                    </div>
 
                         <!-- PPV price -->
                        
@@ -33,25 +42,18 @@
                                     <?php }elseif( !empty($Most_watched_countries->global_ppv || !empty($Most_watched_countries->global_ppv) && $Most_watched_countries->ppv_price == null)){ ?>
                                     <p class="p-tag1"><?php echo $Most_watched_countries->global_ppv.' '.$currency->symbol; ?></p>
                                     <?php }elseif($Most_watched_countries->global_ppv == null && $Most_watched_countries->ppv_price == null ){ ?>
-                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <p class="p-tag"><?php echo __("Free"); ?></p>
                                     <?php } ?>
                                     <?php } ?>
                                 
 
-                    </div>
+                    
                 </div>
-                <div class="block-description">
-                    <div class="hover-buttons">
-                        <a class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
-                        <div>
-                            <!-- <a href="<?php echo URL::to('category') ?><?= '/wishlist/' . $Most_watched_countries->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
-                        </div>
-                    </div>
-                </div>
+                
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($Most_watched_countries->title) > 17) ? substr($Most_watched_countries->title,0,18).'...' : $Most_watched_countries->title; ?></h6>
+                    <h6><?php  echo (mb_strlen($Most_watched_countries->title) > 17) ? mb_substr($Most_watched_countries->title,0,18).'...' : $Most_watched_countries->title; ?></h6>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>

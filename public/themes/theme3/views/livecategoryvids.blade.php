@@ -1,7 +1,6 @@
 <!-- Header -->
 <?php 
 $currency = App\CurrencySetting::first();
-
 // include('header.php'); 
 ?><!-- Header End -->
     @php
@@ -11,13 +10,13 @@ $currency = App\CurrencySetting::first();
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 
-      <div class="main-content">
-         <section id="iq-favorites">
-            <div class="container">
+      <div class="main-content ">
+         <section id="iq-favorites ">
+            <div class="container-fluid">
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header align-items-center">
-                        <h2 class=""><?php echo __($parentCategories_name);?></h2>
+                        <h4 class=""><?php echo __($parentCategories_name);?></h4>
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
@@ -27,7 +26,7 @@ $currency = App\CurrencySetting::first();
                                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
                                                 
                                           <?php  if(!empty($category_video->ppv_price)){?>
                                           <p class="p-tag1" ><?php echo $currency->symbol.' '.$category_video->ppv_price; ?></p>
@@ -37,8 +36,8 @@ $currency = App\CurrencySetting::first();
                                                     <p class="p-tag"><?php echo "Free"; ?></p>
                                                     <?php } ?>
                                                
-                                        </div>
-                                                <!-- </div> -->
+                                                </div>
+                                             
 
                                             <div class="block-description">
                                                     

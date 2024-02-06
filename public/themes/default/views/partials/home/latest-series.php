@@ -13,7 +13,7 @@
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
   <?php if ($order_settings_list[4]->header_name) 
       {
-        echo $order_settings_list[4]->header_name ;
+        echo __($order_settings_list[4]->header_name) ;
         }
         else {
             echo "" ; 
@@ -21,6 +21,8 @@
   ?>
   </a>
   </h4>  
+  <h4 class="main-title"><a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>"> <?php echo (__('View All')); ?></a> </h4>
+
 </div>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -40,13 +42,13 @@
                     <?php if($latest_serie->access == 'subscriber' ){ ?>
                         <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                         <?php }elseif($latest_serie->access == 'registered'){?>
-                        <p class="p-tag"><?php echo "Register Now"; ?></p>
+                        <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                         <?php } elseif(!empty($latest_serie->ppv_status)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                     <?php }elseif(!empty($latest_serie->ppv_status || !empty($latest_serie->ppv_status) && $latest_serie->ppv_status == null)){ ?>
                       <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_status; ?></p>
                       <?php }elseif($latest_serie->ppv_status == null && $latest_serie->ppv_price == null ){ ?>
-                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <p class="p-tag"><?php echo (__('Free')); ?></p>
                       <?php } ?>
                       <?php } ?>
                  
@@ -62,13 +64,13 @@
                     <?php if($latest_serie->access == 'subscriber' ){ ?>
                         <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                         <?php }elseif($latest_serie->access == 'registered'){?>
-                        <p class="p-tag"><?php echo "Register Now"; ?></p>
+                        <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                         <?php } elseif(!empty($latest_serie->ppv_status)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                     <?php }elseif(!empty($latest_serie->ppv_status || !empty($latest_serie->ppv_status) && $latest_serie->ppv_status == null)){ ?>
                       <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_status; ?></p>
                       <?php }elseif($latest_serie->ppv_status == null && $latest_serie->ppv_price == null ){ ?>
-                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <p class="p-tag"><?php echo (__('Free')); ?></p>
                       <?php } ?>
                       <?php } ?>
                       </a>
@@ -76,13 +78,13 @@
                     <?php if($latest_serie->access == 'subscriber' ){ ?>
                         <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                         <?php }elseif($latest_serie->access == 'registered'){?>
-                        <p class="p-tag"><?php echo "Register Now"; ?></p>
+                        <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                         <?php } elseif(!empty($latest_serie->ppv_status)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                     <?php }elseif(!empty($latest_serie->ppv_status || !empty($latest_serie->ppv_status) && $latest_serie->ppv_status == null)){ ?>
                       <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_status; ?></p>
                       <?php }elseif($latest_serie->ppv_status == null && $latest_serie->ppv_price == null ){ ?>
-                      <p class="p-tag"><?php echo "Free"; ?></p>
+                      <p class="p-tag"><?php echo (__('Free')); ?></p>
                       <?php } ?>
                       <?php } ?>
 
@@ -107,7 +109,7 @@
                 </a>
 
                
-                  <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
+                  <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Watch Series
                   </a>

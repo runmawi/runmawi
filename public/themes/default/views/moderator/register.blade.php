@@ -2,6 +2,10 @@
 <?php
 $settings = App\Setting::find(1);
 $system_settings = App\SystemSetting::find(1);
+
+@$translate_language = App\Setting::pluck('translate_language')->first();
+\App::setLocale(@$translate_language);
+
 ?>
 
 @extends('moderator.header')
@@ -26,7 +30,7 @@ $system_settings = App\SystemSetting::find(1);
                   <div class="sign-in-from w-100 m-auto text-center">
                       <div>
                           <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       
-                          <h3 class="mb-3 text-center">Content Partner Sign Up</h3>
+                          <h3 class="mb-3 text-center">{{ __('Content Partner Sign Up') }}</h3>
                       </div>
                       <div class="clear"></div>
                       @if (Session::has('message'))
@@ -44,7 +48,7 @@ $system_settings = App\SystemSetting::find(1);
                         @csrf
                             <div class="form-group">
                                 <div class="col-md-12 p-0">
-                                    <input id="username" type="text"  class="form-control alphaonly  @error('name') is-invalid @enderror" name="username" value="{{ old('name') }}" placeholder="Username" required autocomplete="off" autofocus>
+                                    <input id="username" type="text"  class="form-control alphaonly  @error('name') is-invalid @enderror" name="username" value="{{ old('name') }}" placeholder="{{ __('Username') }}" required autocomplete="off" autofocus>
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -52,7 +56,7 @@ $system_settings = App\SystemSetting::find(1);
                                     @enderror
                                 </div>
                                 <div class="col-md-12 p-0">
-                                <input id="email_id" type="email" placeholder="Email Address"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
+                                <input id="email_id" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -63,7 +67,7 @@ $system_settings = App\SystemSetting::find(1);
                                 <div class="row">
                                     <div class="col-sm-5 ">
                                         <select class="form-control" name="ccode" id="ccode" style="">
-                                        <option>Select Country</option>
+                                        <option>{{ __('Select Country') }}</option>
                                         @foreach($jsondata as $code)
                                         <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                         @endforeach
@@ -83,12 +87,12 @@ $system_settings = App\SystemSetting::find(1);
                                 
                                 
                             <div class="col-md-12 p-0 text-left">
-                                <label for="" style="color: white;">Upload Picture  :</label>
+                                <label for="" style="color: white;">{{ __('Upload Picture') }}  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
                             </div>
 
                             <div class="col-md-12 p-0 text-left">
-                                <label for="" style="color: white;">Upload your best work  :</label>
+                                <label for="" style="color: white;">{{ __('Upload your best work') }}  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video" />
                             </div>
                             <div class="col-md-12 p-0">
@@ -97,11 +101,11 @@ $system_settings = App\SystemSetting::find(1);
                                         <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
                                     </div>
                                 <div >
-                                <span class="input-group-btn" id="eyeSlash">
-                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important "><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                <span class="input-group-btn pl-4" id="eyeSlash">
+                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button" ><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                                 </span>
-                                <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important ;"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                <span class="input-group-btn pl-4" id="eyeShow" style="display: none;">
+                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button" ><i class="fa fa-eye" aria-hidden="true"></i></button>
                                 </span>
                             </div>
                             @error('password')
@@ -114,14 +118,14 @@ $system_settings = App\SystemSetting::find(1);
                     <div class="col-md-12 p-0">
                         <div class="row">
                             <div class="col-md-12">
-                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         <div >
-                        <span class="input-group-btn" id="eyeSlash1">
-                            <button class="btn btn-default reveal" onclick="visibility2()" type="button" style=" background: transparent !important; color:#ff0000!important ; "><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                        <span class="input-group-btn pl-4" id="eyeSlash1">
+                            <button class="btn btn-default reveal" onclick="visibility2()" type="button" ><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                         </span>
-                        <span class="input-group-btn" id="eyeShow1" style="display: none;">
-                            <button class="btn btn-default reveal" onclick="visibility2()" type="button"  style=" background: transparent !important; color:#ff0000!important ; "><i class="fa fa-eye" aria-hidden="true"></i></button>
+                        <span class="input-group-btn pl-4" id="eyeShow1" style="display: none;">
+                            <button class="btn btn-default reveal" onclick="visibility2()" type="button"  ><i class="fa fa-eye" aria-hidden="true"></i></button>
                         </span>
                     </div>
                 </div>
@@ -137,13 +141,13 @@ $system_settings = App\SystemSetting::find(1);
 								<label for="password-confirm" class="col-form-label text-md-right" style="display:inline-block;"><a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;font-size: 12px;">{{ __('Yes') }} , {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
                             <div class="sign-up-buttons col-md-12 p-0">
-                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
+                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> {{ __('Verify Profile') }}</button>
                                   <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                         </div>
                          <div class="mt-3">
                   <div class="d-flex justify-content-center links">
-                     Already have an account? <a href="<?= URL::to('/cpp/login')?>" class="text-primary ml-2">Sign In</a>
+                  {{ __('Already have an account?') }} <a href="<?= URL::to('/cpp/login')?>" class="text-primary ml-2">{{ __('Sign In   ') }}</a>
                   </div>                        
                </div>
                        

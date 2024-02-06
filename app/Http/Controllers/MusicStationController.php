@@ -316,8 +316,17 @@ class MusicStationController extends Controller
                 $ppv_status = 0 ;
             }
             $OtherMusicStation = MusicStation::where('id','!=', $MusicStation_id)->get();
+            // $merged_audios_lyrics = [];
+            if(count($merged_audios_lyrics) > 0){
+                $first_album_image = @$merged_audios_lyrics[0]->image;
+            }else{
+                $first_album_image = null;
+            }
 
-            // dd($merged_audios_lyrics);
+            
+            // $test = (count($merged_audios_lyrics) > 0) ?  $merged_audios_lyrics->first()->image : null ;
+            // dd($test);
+            // $merged_audios_lyrics[0]->image
             $data = array(
                 'audioppv' => $audioppv,
                 'album' => $MusicStation,
@@ -337,10 +346,15 @@ class MusicStationController extends Controller
                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
                 'songs' => (array("songs" => $merged_audios_lyrics)),
-                'playlist_name' => 'Related Station Songs',
+                'playlist_name' => 'Songs in '.@$MusicStation->station_name,
                 'playlist_station' => 1,
                 'OtherMusicStation' => $OtherMusicStation,
                 'show_station_button' => 1,
+                'first_album_image' => $first_album_image ,
+                'recommended_audios' => [] ,
+                'OtherMusicStation' => $OtherMusicStation ,
+                'Otheralbum'        => [],
+                'Otherplaylist'        => [],   
             );
             
             // dd( $data);

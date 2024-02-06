@@ -470,6 +470,9 @@
     body.light-theme .media-body h6 {
         color: <?php echo GetLightText(); ?>;
     }
+    body.light-theme #translator-table_filter input[type="search"]{
+        color: <?php echo GetLightText(); ?>;
+    }
 
     body.light-theme header .navbar ul li {
         font-weight: 400;
@@ -557,6 +560,23 @@
 
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <div class="menu-main-menu-container">
+
+
+
+                                <div class="col-sm-12 d-flex justify-content-around pt-2 proflogbtn" style="color:white; list-style:none">
+                                <li class="col-sm-6 ">
+                                    <a class="navbar-brand mb-0 logout_mobile_view menu-item " style="float:right;" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a> 
+                                </li>      
+                                <li class="dropdown menu-item col-sm-6">
+                                    <div class="btn-close" data-toggle="collapse">
+                                        <a type="button" class="navbar-toggler c-toggler  border-0" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border-top: none; float:right">
+                                            <i class="fa fa-times" style="font-size: 20px;color: white;"></i>
+                                        </a>
+                                    </div>
+                                </li>      
+                            </div>
+
+
                                     <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
                                  <li class="menu-item">
                                     <a href="<?php echo URL::to('home'); ?>">Home</a>
@@ -584,13 +604,13 @@
                                         if ( $menu->in_menu == "video") { 
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                           ?>
-                                        <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"
+                                        <li class="dropdown menu-item dskdflex">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"
                                                 data-toggle="dropdown">
-                                                <a class="d-flex justify-content-between" href="<?php echo URL::to('/categoryList'); ?>">
+                                                <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/categoryList'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
-                                                </a>
+                                                <!-- </a> -->
                                             </a>
 
 
@@ -618,13 +638,13 @@
                                         <?php } elseif ( $menu->in_menu == "movies") { 
                                         $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                         ?>
-                                        <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"
+                                        <li class="dropdown menu-item dskdflex">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"
                                                 data-toggle="dropdown">
-                                                <a class="d-flex justify-content-between" href="<?php echo URL::to('/Movie-list'); ?>">
+                                                <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Movie-list'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
-                                                </a>
+                                                <!-- </a> -->
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                                 <?php foreach ( $languages as $language){ ?>
@@ -640,13 +660,13 @@
                                        //  $LiveCategory = App\LiveCategory::all();
                                        $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                         ?>
-                                        <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"
+                                        <li class="dropdown menu-item dskdflex">
+                                            <a class="dropdown-toggle justify-content-between" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"
                                                 data-toggle="dropdown">
-                                                <a class="d-flex justify-content-between" href="<?php echo URL::to('/Live-list'); ?>">
+                                                <!-- <a class="d-flex justify-content-between" href="<?php echo URL::to('/Live-list'); ?>"> -->
                                                     <?php echo __($menu->name); ?>
                                                     <i class="ri-arrow-down-s-line"></i>
-                                                </a>
+                                                <!-- </a> -->
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                                 <?php foreach ( $LiveCategory as $category){ ?>
@@ -718,6 +738,63 @@
                                             </a>
                                         </li>
                                         <?php } } ?>
+
+
+                            <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
+                                <div class="row ">
+                                    <?php if(!Auth::guest()){                                                              
+                                        $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
+                                        $Channel = App\Channel::where('email', Auth::User()->email)->first();
+                                        }
+                                        if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
+                                            <div class="iq-search-bar ml-auto ">
+                                                <form method="POST" action="<?php echo URL::to('cpp/home'); ?>" class="mt-4">
+                                                    <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                                    <input id="email" type="hidden" name="email" value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
+                                                    <input id="password" type="hidden" name="password" value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
+                                                    <div class="logout_mobile_view menu-item col-sm-6 channel_contentpr">
+                                                        <button type="submit" class="btn btn-primary ">Visit CPP Portal </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        <div class="col-sm-6 logout_mobile_view menu-item pt-3">
+                                            <li class="logout_mobile_view menu-item ">
+                                                <a class="btn btn-primary" style="float:right;" href="<?php echo URL::to('/logout'); ?>">                                                       
+                                                    <?php echo __('Logout');?>
+                                                </a>
+                                            </li> 
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 d-flex justify-content-around channel_contentpr mt-2">
+                                <div class="row ">
+                                    <?php }if(!Auth::guest() && !empty($Channel)){ ?>
+                                        <div class="iq-search-bar ml-auto ">
+                                            <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
+                                                <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                                <input id="email" type="hidden" name="email" value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
+                                                <input id="password" type="hidden" name="password"value="<?= @$Channel->unhased_password ?>" autocomplete="current-password">
+                                                <div class="logout_mobile_view menu-item col-sm-6 channel_contentpr">
+                                                    <button type="submit" class="btn btn-hover">Visit Channel Portal </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    <?php } ?>
+
+                                    <li class="logout_mobile_view menu-item col-sm-12 myp">
+                                        <a class="btn btn-primary" style="float:right;" href="<?php echo URL::to('myprofile') ?>">
+                                            <?php echo __('My Profile');?>
+                                        </a> 
+                                    </li>  
+                                </div>
+                            </div>
+
+
+
+                                        
+
+
                                         <!-- <li class="nav-item dropdown menu-item"> -->
                                         <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">   -->
                                         <!-- Movies <i class="fa fa-angle-down"></i> -->
@@ -785,7 +862,7 @@
                         $Channel = App\Channel::where('email', Auth::User()->email)->first();
                         }
                         if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
-                            <div class="iq-search-bar ml-auto">
+                            <div class="iq-search-bar ml-auto cppporrr">
                                 <form method="POST" action="<?php echo URL::to('cpp/home'); ?>" class="mt-4">
                                     <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden" name="email"

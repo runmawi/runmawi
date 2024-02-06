@@ -28,7 +28,7 @@ endif; ?>
 <div class="clear"></div>
 <?php 
  if(count($watchlater_movies) > 0) : ?>
-  <h3 class="vid-title"> Purchased Movies. </h3>
+  <h3 class="vid-title"> <?= __('Purchased Movies') ?>. </h3>
 
 <?php 
 
@@ -68,7 +68,7 @@ echo $movie_time;
             <p class="movie-title padding"><?php echo $watchlater_movie->title; ?></p>
             <?php if ($daten > $movie_time ) { ?>
     
-                <div class="thriller"> <p>Expired</p></div>
+                <div class="thriller"> <p><?= __('Expired') ?></p></div>
           <?php } ?>
             
         </div>
@@ -84,7 +84,7 @@ endif; ?>
 	<div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
         <?php 
         if(count($watchlater_audeos) > 0) :?>
-         <h3 class="vid-title"> Purchased Audios. </h3>
+         <h3 class="vid-title"> <?= __('Purchased Audios') ?>. </h3>
 		<?php
 			foreach($watchlater_audeos as $audio): 
         
@@ -169,5 +169,5 @@ foreach($watchlater_episodes as $watchlater_episode): ?>
 <?php endforeach;
 endif; ?>
 <?php if(count($watchlater_movies) == 0 && count($watchlater_audeos) == 0){
-    echo "<h3>No Data Found</h3>";
+    echo __("No Data Found");
 }?>

@@ -4,7 +4,7 @@ include public_path('themes/theme1/views/header.php');
 
 <section id="iq-favorites">
     @if (isset($audios) && count($audios) > 0)
-        <h3 class="vid-title text-center mt-4 mb-5"> Audios </h3>
+        <h3 class="vid-title text-center mt-4 mb-5"> {{ __('Audios') }} </h3>
         <div class="container-fluid"
             style="padding: 0px 40px!important;background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);">
             <div class="row">
@@ -125,7 +125,7 @@ include public_path('themes/theme1/views/header.php');
         <div class="col-md-12 text-center mt-4"
             style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
             <p>
-            <h3 class="text-center">No Live stream Video Available</h3>
+            <h3 class="text-center">{{ __('No Live stream Video Available') }}</h3>
         </div>
     @endif
 

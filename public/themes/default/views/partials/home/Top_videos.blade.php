@@ -1,5 +1,6 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href=""> Top Most Watched Videos</a></h4>                      
+    <h4 class="main-title"><a href=""><?php echo (__('Top Most Watched Videos')); ?> </a></h4>   
+    <h4 class="main-title"><a href=""><?php echo (__('View All')); ?></a></h4>                   
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -24,13 +25,13 @@
                                         <?php  if($most_watched_video->access == 'subscriber' ){ ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <?php }elseif($most_watched_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                             <?php } elseif(!empty($most_watched_video->ppv_price)){?>
                                             <p class="p-tag1"><?php echo $currency->symbol.' '.$most_watched_video->ppv_price; ?></p>
                                         <?php }elseif( !empty($most_watched_video->global_ppv || !empty($most_watched_video->global_ppv) && $most_watched_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $most_watched_video->global_ppv.' '.$currency->symbol; ?></p>
                                         <?php }elseif($most_watched_video->global_ppv == null && $most_watched_video->ppv_price == null ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Free')); ?></p>
                                         <?php } ?>
                                     <?php } ?>
                                    
@@ -49,13 +50,13 @@
                                         <?php  if($most_watched_video->access == 'subscriber' ){ ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <?php }elseif($most_watched_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                             <?php } elseif(!empty($most_watched_video->ppv_price)){?>
                                             <p class="p-tag1"><?php echo $currency->symbol.' '.$most_watched_video->ppv_price; ?></p>
                                         <?php }elseif( !empty($most_watched_video->global_ppv || !empty($most_watched_video->global_ppv) && $most_watched_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $most_watched_video->global_ppv.' '.$currency->symbol; ?></p>
                                         <?php }elseif($most_watched_video->global_ppv == null && $most_watched_video->ppv_price == null ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Free')); ?></p>
                                         <?php } ?>
                                     <?php } ?>
                                     </a>
@@ -65,13 +66,13 @@
                                         <?php  if($most_watched_video->access == 'subscriber' ){ ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <?php }elseif($most_watched_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                             <?php } elseif(!empty($most_watched_video->ppv_price)){?>
                                             <p class="p-tag1"><?php echo $currency->symbol.' '.$most_watched_video->ppv_price; ?></p>
                                         <?php }elseif( !empty($most_watched_video->global_ppv || !empty($most_watched_video->global_ppv) && $most_watched_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $most_watched_video->global_ppv.' '.$currency->symbol; ?></p>
                                         <?php }elseif($most_watched_video->global_ppv == null && $most_watched_video->ppv_price == null ){ ?>
-                                            <p class="p-tag"><?php echo "Free"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Free')); ?></p>
                                         <?php } ?>
                                     <?php } ?>
 
@@ -81,7 +82,9 @@
                                 <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $most_watched_video->slug ?>">
                                 <?php if($ThumbnailSetting->title == 1) { ?>  
                                               <!-- Title -->
-                                        <p class="epi-name text-left m-0"><?php  echo (strlen($most_watched_video->title) > 17) ? substr($most_watched_video->title,0,18).'...' : $most_watched_video->title; ?></p>
+                                        <p class="epi-name text-left m-0">
+                                            <?php  echo (strlen($most_watched_video->title) > 17) ? substr($most_watched_video->title,0,18).'...' : $most_watched_video->title; ?>
+                                    </p>
                                     
                                  <?php } ?>  
 

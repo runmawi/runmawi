@@ -30,11 +30,16 @@
         } ?>">
 
             <?php if ($order_settings_list[17]->header_name) {
-                echo $order_settings_list[17]->header_name;
+                echo __($order_settings_list[17]->header_name);
             } else {
                 echo '';
             } ?></a>
     </h4>
+    <h4 class="main-title"><a href="<?php if ($order_settings_list[17]->header_name) {
+            echo URL::to('/') . '/' . $order_settings_list[17]->url;
+        } else {
+            echo '';
+        } ?>"><?php echo (__('View All')); ?></a></h4>
 </div>
 
 <div class="favorites-contens">
@@ -59,9 +64,9 @@
                                        
                                     <?php } ?>
 
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                         <p class="published_on1"><?= "Published"; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
                                
                             </div>
                             </div>
@@ -132,7 +137,7 @@
                                 </a>
 
                                  
-                                        <a class="epi-name mt-3 mb-0 btn"
+                                        <a class="epi-name mt-5 mb-0 btn"
                                             href="<?= URL::to('audio/'. $latest_view_audio->slug ); ?>">
                                             <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
                                                 height="10%" /> Play Now

@@ -59,6 +59,9 @@ use App\StorageSetting as StorageSetting;
 use App\Advertisement;
 use App\Playerui as Playerui;
 use App\SeriesSubtitle as SeriesSubtitle;
+use App\SeriesNetwork;
+use App\Adscategory;
+use App\VideoExtractedImages;
 
 
 class AdminSeriesController extends Controller
@@ -116,14 +119,8 @@ class AdminSeriesController extends Controller
 
           $search_value = $request->get('s');
         
-            if(!empty($search_value)):
-                $series = Series::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
-            else:
-                $series = Series::orderBy('created_at', 'DESC')->paginate(9);
-            endif;
+            $series = Series::latest()->get();
         
-       // $series = Series::orderBy('created_at', 'DESC')->paginate(9);
-       
         $user = Auth::user();
 
         $data = array(
@@ -185,23 +182,27 @@ class AdminSeriesController extends Controller
 
             return View::make('admin.expired_storage', $data);
         }else{
-        $data = array(
-            'settings ' => $settings,
-            'headline' => '<i class="fa fa-plus-circle"></i> New Series',
-            'post_route' => URL::to('admin/series/store'),
-            'button_text' => 'Add New Series',
-            'admin_user' => Auth::user(),
-            'series_categories' => SeriesGenre::all(),
-            'video_categories' => VideoCategory::all(),
-            'languages' => Language::all(),
-            'artists' => Artist::all(),
-            'series_artist' => [],
-            'category_id' => [],
-            'languages_id' => [],
-            'InappPurchase' => InappPurchase::all(),
-            
+
+            $data = array(
+                'settings ' => $settings,
+                'headline' => '<i class="fa fa-plus-circle"></i> New Series',
+                'post_route' => URL::to('admin/series/store'),
+                'button_text' => 'Add New TV Shows',
+                'admin_user' => Auth::user(),
+                'series_categories' => SeriesGenre::all(),
+                'video_categories' => VideoCategory::all(),
+                'languages' => Language::all(),
+                'artists' => Artist::all(),
+                'series_artist' => [],
+                'category_id' => [],
+                'languages_id' => [],
+                'series_networks_id' => [],
+                'InappPurchase' => InappPurchase::all(),
+                'SeriesNetwork' => SeriesNetwork::all(),
+                'Header_name' => "Edit TV Shows "
             );
-        return View::make('admin.series.create_edit', $data);
+
+           return View::make('admin.series.create_edit', $data);
         }
     }
 
@@ -380,6 +381,8 @@ class AdminSeriesController extends Controller
         if(!empty($data['ppv_status'])){
 
             $ppv_status = $data['ppv_status'];
+            $access = 'ppv';
+
         }else{
             $ppv_status = 0;
         }
@@ -414,6 +417,7 @@ class AdminSeriesController extends Controller
         $series = Series::find($series->id);
         $series->slug = $series_slug;
         $series->ppv_status = $ppv_status;
+        $series->ppv_status = $access;
         $series->player_image = $player_image;
         $series->tv_image = $tv_image;
         $series->banner = empty($data['banner']) ? 0 : 1;
@@ -421,6 +425,7 @@ class AdminSeriesController extends Controller
         $series->details =($data['details']);
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
+        $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : null;
         $series->save();  
 
 
@@ -516,16 +521,19 @@ class AdminSeriesController extends Controller
             'settings' => $settings,
             'seasons' => $seasons,
             'post_route' => URL::to('admin/series/update'),
-            'button_text' => 'Update Series',
+            'button_text' => 'Update TV Shows',
             'admin_user' => Auth::user(),
             'series_categories' => SeriesGenre::all(),
             'videos_categories' => VideoCategory::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
-            'category_id' => SeriesCategory::where('series_id', $id)->pluck('category_id')->toArray(),
+            'category_id'   => SeriesCategory::where('series_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray(),
             'InappPurchase' => InappPurchase::all(),
+            'SeriesNetwork' => SeriesNetwork::all(),
+            'series_networks_id' => !empty($series->network_id) ? json_decode($series->network_id): [],
+            'Header_name' => "Edit TV Shows "
             );
 
         return View::make('admin.series.create_edit', $data);
@@ -542,7 +550,7 @@ class AdminSeriesController extends Controller
         $input = $request->all();
         $id = $input['id'];
         $series = Series::findOrFail($id);
-       
+
         $data = $input;
 
         if(isset($data['duration'])){
@@ -691,8 +699,13 @@ class AdminSeriesController extends Controller
         }else{
             $series_trailer = 0;
         }
+        if($data['ppv_status'] == 1){
+            $access = 'ppv';
+        }else{
+            $access = $data['access'];
 
-        
+        }
+        // dd($data);
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
         $series->player_image = $player_image;
@@ -705,8 +718,10 @@ class AdminSeriesController extends Controller
         }
         $series->player_image = $player_image;
         $series->slug = $data['slug'];
+        $series->access = $access;
         $series->ppv_status = $ppv_status;
         $series->details =($data['details']);
+        $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : [];
         $series->save();
 
         if(!empty($data['artists'])){
@@ -1259,6 +1274,8 @@ class AdminSeriesController extends Controller
         $series->ppv_interval = $ppv_interval;
         $series->ios_product_id = $ios_ppv_price;
         $series->landing_mp4_url = $data['landing_mp4_url'];
+        $series->series_seasons_name = $data['series_seasons_name'];
+        $series->series_seasons_slug =  Str::slug($data['series_seasons_name']) ;
         $series->save();
         
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 0) {
@@ -1278,10 +1295,12 @@ class AdminSeriesController extends Controller
     public function Edit_season($id)
     {
         $season = SeriesSeason::where('id',$id)->first();
+        $series = Series::where('id',$season->series_id)->first();
         // dd($season);
         $data =array(
             'season' => $season,
             'InappPurchase' => InappPurchase::all(),
+            'series' => $series,
         );
 
         return View::make('admin/series/season/edit',$data);
@@ -1535,6 +1554,8 @@ class AdminSeriesController extends Controller
         $series_season->ppv_interval = $ppv_interval;
         $series_season->ios_product_id = $ios_ppv_price;
         $series_season->landing_mp4_url = $data['landing_mp4_url'];
+        $series_season->series_seasons_name = $data['series_seasons_name'];
+        $series_season->series_seasons_slug =  Str::slug($data['series_seasons_name']) ;
         $series_season->save();
 
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1  && $StorageSetting->aws_storage == 0) {
@@ -1610,10 +1631,11 @@ class AdminSeriesController extends Controller
                 File::delete($file);
             }
           
-             SeriesSeason::destroy($id);
+            SeriesSeason::destroy($id);
+             
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
 
             return abort (404);
         }
@@ -1638,6 +1660,8 @@ class AdminSeriesController extends Controller
             $dropzone_url =  URL::to('admin/episode_upload');
         }
 
+        $video_js_Advertisements = Advertisement::where('status',1)->get() ;
+
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season '.$season_id.' : '.$series->title,
                 'episodes' => $episodes,
@@ -1651,6 +1675,8 @@ class AdminSeriesController extends Controller
                 'InappPurchase' => InappPurchase::all(),
                 'post_dropzone_url' => $dropzone_url,
                 "subtitles" => Subtitle::all(),
+                'video_js_Advertisements' => $video_js_Advertisements ,
+                "ads_category" => Adscategory::all(),
 
             );
 
@@ -1662,7 +1688,6 @@ class AdminSeriesController extends Controller
     {
         
         $data = $request->all();
-
         $settings =Setting::first();
 
         if(!empty($data['ppv_price'])){
@@ -1719,11 +1744,12 @@ class AdminSeriesController extends Controller
 
             $data['image'] = $episode_image ;
 
+        }else if (!empty($request->video_image_url)) {
+            $data["image"] = $request->video_image_url;
         } else {
 
             $data['image'] = 'placeholder.jpg';
         }
-
         
         $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
 
@@ -1752,7 +1778,9 @@ class AdminSeriesController extends Controller
 
            $player_image  = $episode_player_image ;
 
-         } else {
+         }else if (!empty($request->selected_image_url)) {
+            $player_image  = $request->selected_image_url;
+        } else {
             $player_image = "default_horizontal_image.jpg";
          }
 
@@ -1773,6 +1801,8 @@ class AdminSeriesController extends Controller
 
             $episodes->tv_image = $Episode_tv_filename;
 
+        }else if (!empty($request->selected_tv_image_url)) {
+            $episodes->tv_image  = $request->selected_tv_image_url;
         }
 
         if(!empty($data['searchtags'])){
@@ -1903,10 +1933,33 @@ class AdminSeriesController extends Controller
             $episodes->ppv_price =  $ppv_price;
             $episodes->ppv_status =  $data['ppv_status'];
             $episodes->status =  1;
-            $episodes->ads_position =  $request->ads_position;
-            $episodes->episode_ads =  $request->episode_ads;
-            $episodes->save();
+            
+            // {{-- Video.Js Player--}}
 
+            if( choosen_player() == 1  && ads_theme_status() == 1){
+
+                if( admin_ads_pre_post_position() == 1){
+                    
+                    $episodes->pre_post_ads =  $data['pre_post_ads'];
+                    $episodes->post_ads     =  $data['pre_post_ads'];
+                    $episodes->pre_ads      =  $data['pre_post_ads'];
+                }
+                else{
+                    
+                    $episodes->pre_ads      =  $data['pre_ads'];
+                    $episodes->post_ads     =  $data['post_ads'];
+                    $episodes->mid_ads      =  $data['mid_ads'];
+                    $episodes->pre_post_ads =  null ;
+                }
+
+                $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+            }
+            else{
+                $episodes->ads_position =  $data['ads_position'];
+                $episodes->episode_ads  =  $data['episode_ads'];
+            }
+
+            $episodes->save();
 
             $shortcodes = $request["short_code"];
             $languages = $request["sub_language"];
@@ -1997,7 +2050,9 @@ class AdminSeriesController extends Controller
         }
 
         $SeriesSubtitle = SeriesSubtitle::where('episode_id', $id)->get();
-        // dd($SeriesSubtitle);
+
+        $video_js_Advertisements = Advertisement::where('status',1)->get() ;
+
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Episode '.$episodes->title,
                 'episodes' => $episodes,
@@ -2010,6 +2065,8 @@ class AdminSeriesController extends Controller
                 // "subtitles" => $subtitles,
                 "SeriesSubtitle" => $SeriesSubtitle ,
                 "subtitlescount" => $subtitlescount,
+                "ads_category" => Adscategory::all(),
+                "video_js_Advertisements" => $video_js_Advertisements ,
             );
 
         return View::make('admin.series.edit_episode', $data);
@@ -2061,7 +2118,7 @@ class AdminSeriesController extends Controller
         }
 
         $data = $request->all();
-          
+
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
         if(empty($data['ppv_status'])){
@@ -2114,6 +2171,8 @@ class AdminSeriesController extends Controller
 
                 $data['image'] = $episode_image ;
 
+            }else if (!empty($request->video_image_url)) {
+                $data["image"] = $request->video_image_url;
             } else {
                 $data['image'] = $episode->image ;
             }
@@ -2144,10 +2203,13 @@ class AdminSeriesController extends Controller
 
                $player_image  = $episode_player_image;
 
-             } else {
+             }else if (!empty($request->selected_image_url)) {
+                $player_image  = $request->selected_image_url;
+            } else if(!empty($episode->player_image)) {
                 $player_image = $episode->player_image;
-
-             }
+             }else{
+                $player_image = "default_horizontal_image.jpg";
+            }
 
              if($request->hasFile('tv_image')){
 
@@ -2169,8 +2231,9 @@ class AdminSeriesController extends Controller
                 }
 
                 $episode->tv_image = $Episode_tv_filename;
+            }else if (!empty($request->selected_tv_image_url)) {
+                $episode->tv_image  = $request->selected_tv_image_url;
             }
-             
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -2244,9 +2307,35 @@ class AdminSeriesController extends Controller
         $episode->slug =  $data['slug'];
         $episode->episode_description =  $data['episode_description'];
         $episode->status =  1;
-        $episode->ads_position =  $data['ads_position'];
-        $episode->episode_ads =  $data['episode_ads'];
+
+
+            // {{-- Video.Js Player--}}
+
+        if( choosen_player() == 1  && ads_theme_status() == 1 ){
+
+            if( admin_ads_pre_post_position() == 1){
+
+                $episode->pre_post_ads =  $data['pre_post_ads'];
+                $episode->post_ads     =  $data['pre_post_ads'];
+                $episode->pre_ads      =  $data['pre_post_ads'];
+            }
+            else{
+                
+                $episode->pre_ads      =  $data['pre_ads'];
+                $episode->mid_ads      =  $data['mid_ads'];
+                $episode->post_ads     =  $data['post_ads'];
+                $episode->pre_post_ads =  null ;
+            }
+
+            $episode->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+        }
+        else{
+            $episode->ads_position =  $data['ads_position'];
+            $episode->episode_ads  =  $data['episode_ads'];
+        }
+
         $episode->save();
+
         $shortcodes = $request["short_code"];
         $languages = $request["sub_language"];
         if (!empty($subtitles != "" && $subtitles != null)) {
@@ -2329,6 +2418,59 @@ class AdminSeriesController extends Controller
                 $episode->save(); 
 
                 $episode_id = $episode->id;
+                
+                // $outputFolder = storage_path('app/public/frames');
+
+                // if (!is_dir($outputFolder)) {
+                //     mkdir($outputFolder, 0755, true);
+                // }
+                if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                for ($i = 1; $i <= 5; $i++) {
+                   
+                    $imagePortraitPath = public_path("uploads/images/{$episode_id}_{$randportrait}_{$i}.jpg");
+                    $imagePath = public_path("uploads/images/{$episode_id}_{$rand}_{$i}.jpg");
+
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->socure_type = 'Episode';
+                        $VideoExtractedImage->video_id = $episode_id;
+                        $VideoExtractedImage->image_original_name = $episode_id;
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $episode_id . '_' . $rand . '_' . $i . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $episode_id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->image_original_name = $episode_id . '_' . $rand . '_' . $i . '.jpg';
+                        $VideoExtractedImage->save();
+                
+                
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                }
+                
                 $episode_title = Episode::find($episode_id);
                 $title =$episode_title->title; 
             
@@ -2383,6 +2525,58 @@ class AdminSeriesController extends Controller
                 $video->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
                 $video->duration = $Video_duration;
                 $video->save();
+                
+                $episode_id = $video->id;
+                
+                $outputFolder = storage_path('app/public/frames');
+
+                if (!is_dir($outputFolder)) {
+                    mkdir($outputFolder, 0755, true);
+                }
+                if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($Video_storepath);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                for ($i = 1; $i <= 5; $i++) {
+                    $imagePortraitPath = public_path("uploads/images/{$episode_id}_{$randportrait}_{$i}.jpg");
+                    $imagePath = public_path("uploads/images/{$episode_id}_{$rand}_{$i}.jpg");
+
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($i * 5))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->socure_type = 'Episode';
+                        $VideoExtractedImage->video_id = $episode_id;
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $episode_id . '_' . $rand . '_' . $i . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $episode_id . '_' . $randportrait . '_' . $i . '.jpg');
+                        $VideoExtractedImage->image_original_name = $episode_id . '_' . $rand . '_' . $i . '.jpg';
+                        $VideoExtractedImage->save();
+                
+                
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                }
 
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
@@ -3529,6 +3723,28 @@ class AdminSeriesController extends Controller
                 );
             }
             return response()->json($response, 200);
+        }
+
+        public function ExtractedImage(Request $request)
+        {
+            try {
+                // print_r($request->all());exit;
+                $value = [];
+    
+                $ExtractedImage =  VideoExtractedImages::where('video_id',$request->episode_id)->where('socure_type','Episode')->get();
+               
+                $value["success"] = 1;
+                $value["message"] = "Uploaded Successfully!";
+                $value["episode_id"] = $request->episode_id;
+                $value["ExtractedImage"] = $ExtractedImage;
+    
+    
+                return $value;
+    
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+    
         }
 
 }

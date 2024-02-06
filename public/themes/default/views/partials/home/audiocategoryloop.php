@@ -33,12 +33,13 @@
                     <h4 class="movie-title">
                         <?php
                         if (!empty($category->name)) {
-                            echo $category->name;
+                            echo __($category->name);
                         } else {
-                            echo $category->name;
+                            echo __($category->name);
                         }
                         ?>
                     </h4>
+                    <h4 class="main-title"><a href="<?php echo URL::to('/audios/category') . '/' . $category->slug; ?>"><?php echo (__('View All')); ?></a></h4>
                 </a>
             </div>
             <div class="favorites-contens">
@@ -66,7 +67,7 @@
                                         <?php  if($audio->access == 'subscriber' ){ ?></p>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                     <?php }elseif($audio->access == 'registered'){?>
-                                          <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                          <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                           <?php }
                                        elseif(!empty($audio->ppv_price)) {
                                           echo $currency->symbol.' '.$audio->ppv_price ; 
@@ -90,7 +91,7 @@
                                         <?php  if($audio->access == 'subscriber' ){ ?></p>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                     <?php }elseif($audio->access == 'registered'){?>
-                                          <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                          <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                           <?php }
                                        elseif(!empty($audio->ppv_price)) {
                                           echo $currency->symbol.' '.$audio->ppv_price ; 
@@ -106,7 +107,7 @@
                                         <?php  if($audio->access == 'subscriber' ){ ?></p>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                     <?php }elseif($audio->access == 'registered'){?>
-                                          <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                          <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                           <?php }
                                        elseif(!empty($audio->ppv_price)) {
                                           echo $currency->symbol.' '.$audio->ppv_price ; 
@@ -181,7 +182,7 @@
                                         </a>
 
                                        
-                                            <a type="button" class="epi-name mt-3 mb-0 btn"
+                                            <a type="button" class="epi-name mt-5 mb-0 btn"
                                                 href="<?php echo URL::to('audio'); ?><?= '/' . $audio->slug ?>">
                                                 <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
                                                     width="10%" height="10%" /> Watch Now

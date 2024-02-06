@@ -35,13 +35,14 @@
                     <h4 class="movie-title">
                         <?php
                         if (!empty($category->home_genre)) {
-                            echo $category->home_genre;
+                            echo __($category->home_genre);
                         } else {
-                            echo $category->name;
+                            echo __($category->name);
                         }
                         ?>
                     </h4>
                 </a>
+                <h4 class="main-title"><a href="<?php echo URL::to('/series/category') . '/' . $category->slug; ?>"><?php echo (__('View All')); ?></a></h4>
             </div>
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -67,7 +68,7 @@
                                         <?php  if($series_video->access == 'subscriber' ){ ?>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                     <?php }elseif($series_video->access == 'registered'){?>
-                                    <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                    <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                     <?php } 
                                        elseif(!empty($series_video->ppv_price)) {
                                           echo $currency->symbol.' '.$series_video->ppv_price ; 
@@ -94,7 +95,7 @@
                                         <?php  if($series_video->access == 'subscriber' ){ ?>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                     <?php }elseif($series_video->access == 'registered'){?>
-                                    <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                    <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                     <?php } 
                                        elseif(!empty($series_video->ppv_price)) {
                                           echo $currency->symbol.' '.$series_video->ppv_price ; 
@@ -112,7 +113,7 @@
                                         <?php  if($series_video->access == 'subscriber' ){ ?>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                     <?php }elseif($series_video->access == 'registered'){?>
-                                    <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                    <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                     <?php } 
                                        elseif(!empty($series_video->ppv_price)) {
                                           echo $currency->symbol.' '.$series_video->ppv_price ; 

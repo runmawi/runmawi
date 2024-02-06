@@ -88,7 +88,7 @@ class AdminMenuController extends Controller
     }
 
     public function store(Request $request){
-        
+
         $input = $request->all();
         
         $validatedData = $request->validate([
@@ -129,6 +129,8 @@ class AdminMenuController extends Controller
         }
         $request['order'] = $new_menu_order;
         $input['in_home'] = $request->in_home  == "on"  ? 1 : 0 ;
+        $input['in_side_menu'] = $request->in_side_menu  == "on"  ? 1 : 0 ;
+        $input['in_menu'] = $request->type  ;
         // dd($input);
         $menu= Menu::create($input);
         if(isset($menu->id)){
@@ -221,6 +223,8 @@ class AdminMenuController extends Controller
         }
 
         $input['in_home'] = $request->in_home  == "on"  ? 1 : 0 ;
+        $input['in_side_menu'] = $request->in_side_menu  == "on"  ? 1 : 0 ;
+
         $menu = Menu::find($input['id'])->update($input);
         if(isset($menu)){
             return Redirect::to('admin/menu')->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );
@@ -302,4 +306,21 @@ class AdminMenuController extends Controller
     
 
     }
+
+    
+    public function menus_active(Request $request)
+    {
+
+        try {
+            $status = Menu::where('id',$request->in_home)->update([
+                'in_home' => $request->status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
 }

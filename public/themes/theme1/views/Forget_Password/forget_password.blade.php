@@ -2,18 +2,63 @@
     $settings = App\Setting::first();
     $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
     $theme = App\SiteTheme::first();
+
+    
+    
+    $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
+    @$translate_language = App\Setting::pluck('translate_language')->first();
+
+        if(Auth::guest()){
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+            if(!empty($UserTranslation)){
+                $translate_language = $UserTranslation->translate_language;
+            }else{
+                $translate_language = 'en';
+            }
+        }else if(!Auth::guest()){
+
+            $subuser_id=Session::get('subuser_id');
+            if($subuser_id != ''){
+                $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+                if(!empty($Subuserranslation)){
+                    $translate_language = $Subuserranslation->translate_language;
+                }else{
+                    $translate_language = 'en';
+                }
+            }else if(Auth::user()->id != ''){
+                $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+                if(!empty($UserTranslation)){
+                    $translate_language = $UserTranslation->translate_language;
+                }else{
+                    $translate_language = 'en';
+                }
+            }else{
+                $translate_language = 'en';
+            }
+
+        }else{
+            $translate_language = 'en';
+        }
+
+    \App::setLocale(@$translate_language);
+
 ?>
 
 <html>
 
 <head>
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
-    <title>Reset Password | <?php echo $settings->website_name; ?></title>
+    <title>{{ __('Reset Password') }} | <?php echo $settings->website_name; ?></title>
     <link rel="shortcut icon" href="<?= getFavicon() ?>" />
 
+    <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css'); ?>" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css" />
-    <link rel="stylesheet" href="<?= URL::to('/assets/css/style.css') ?>" />
+    
     <link rel="stylesheet" href="<?= URL::to('/assets/css/bootstrap.min.css') ?>" />
     <link rel="stylesheet" href="<?= URL::to('/assets/css/typography.css') ?>" />
     <link rel="stylesheet" href="<?= URL::to('/assets/css/responsive.css') ?>" />
@@ -130,9 +175,9 @@
         padding-right: 150px !important;
     }
 
-    i.fa.fa-google-plus {
+    /* i.fa.fa-google-plus {
         padding: 10px !important;
-    }
+    } */
 
     option {
         background: #474644 !important;
@@ -159,10 +204,13 @@
         color: brown;
         font-family: 'remixicon';
     }
+    footer{
+        background: #161617 !important;
+    }
 </style>
 
 <body>
-    <section style="background:url('<?php echo URL::to('/public/uploads/settings/' . $settings->login_content); ?>') no-repeat scroll 0 0;;background-size: cover;">
+    <section /*style="background:url('<?php echo URL::to('/public/uploads/settings/' . $settings->login_content); ?>') no-repeat scroll 0 0;;background-size: cover;"*/>
         <div class="container">
             <div class="row justify-content-center align-items-center height-self-center">
                 <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
@@ -181,7 +229,7 @@
                                         <img  src="<?php echo URL::to('public/uploads/settings/'. $settings->logo) ; ?>" style="margin-bottom:1rem;">
                                     <?php } ?>
 
-                                    <h3 class="mb-3 text-center"> Reset Password </h3>
+                                    <h3 class="mb-3 text-center"> {{ __('Reset Password') }} </h3>
                                 </div>
 
                                   @if (session('status_message'))
@@ -203,7 +251,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <input id="password" type="password" placeholder="Password" class="form-control" name="password" required>
+                                                    <input id="password" type="password" placeholder="{{ __('Password') }}" class="form-control" name="password" required>
                                                 </div>
 
                                                 <div>
@@ -223,7 +271,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <input id="password_confirmation" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required>
+                                                    <input id="password_confirmation" type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required>
                                                 </div>
 
                                                 <div class="">
@@ -241,8 +289,8 @@
 
                                             <span
                                                 style="color: var(--iq-white);font-size: 14px;font-style: italic;">
-                                                (Password should be at least 8 characters in length and should include at least
-                                                one upper case letter, one number, and one special character.)
+                                                {{ __('(Password should be at least 8 characters in length and should include at least
+                                                one upper case letter, one number, and one special character.)') }}
                                             </span>
                                         </div>
                                     </div>
@@ -320,6 +368,6 @@
         });
     </script>
 
-    @php include(public_path('themes/default/views/footer.blade.php')); @endphp
+    @php include(public_path('themes/theme1/views/footer.blade.php')); @endphp
 
 </body>

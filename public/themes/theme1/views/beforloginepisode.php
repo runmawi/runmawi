@@ -72,7 +72,7 @@ if (Auth::guest())
                     srclang="<?= $episodesubtitles_file->sub_language ?>"
                     label="<?= $episodesubtitles_file->shortcode ?>" default>
                 <?php } } } ?>
-							<p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
+							<p class="vjs-no-js"><?= __('To view this series please enable JavaScript, and consider upgrading to a web browser that') ?> <a href="http://videojs.com/html5-video-support/" target="_blank"><?= __('supports HTML5 series') ?></a></p>
 						</video>
 						</div>
             <?php  elseif($episode->type == 'm3u8'): ?>
@@ -142,21 +142,21 @@ if (Auth::guest())
         <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
       <h4 class=""><?php echo $episode->title ; ?></h4>
       <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
-         <h2 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?><?php
-            elseif ($series->access == 'registered'): ?>Registered Users<?php
+         <h2 class=""><?= __('Subscribe to view more') ?><?php if ($series->access == 'subscriber'): ?><?php
+            elseif ($series->access == 'registered'): ?><?= __('Registered Users') ?><?php
             endif; ?></h2>
          <div class="clear"></div>
          <?php if (!Auth::guest() && $series->access == 'subscriber'): ?>
          <form method="get" action="<?=URL::to('/') ?>/user/<?=Auth::user()->username ?>/upgrade_subscription">
              <div class="">
-             <button id="button">Become a subscriber to watch this episode</button></div>
+             <button id="button"><?= __('Become a subscriber to watch this episode') ?></button></div>
          </form>
          <?php
             else: ?>
          <form method="get" action="<?=URL::to('signup') ?>">
              <div class=" mt-3">
-            <button id="button" class="btn btn-primary">Subscribe to view more <?php if ($series->access == 'subscriber'): ?><?php
-               elseif ($series->access == 'registered'): ?>for Free!<?php
+            <button id="button" class="btn btn-primary"><?= __('Subscribe to view more') ?> <?php if ($series->access == 'subscriber'): ?><?php
+               elseif ($series->access == 'registered'): ?><?= __('for Free!') ?><?php
                endif; ?></button></div>
          </form>
          <?php
@@ -221,7 +221,7 @@ if (Auth::guest())
         <div class="bc-icons-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                            href="<?= route('series.tv-shows') ?>"><?= __(ucwords('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
@@ -230,18 +230,23 @@ if (Auth::guest())
                     <li class="breadcrumb-item">
                         <a class="black-text"
                             href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
-                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                            <?= __(ucwords($series_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                         </a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
                     <?php } ?>
 
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    
 
-                    <li class="breadcrumb-item"><a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> </a></li>
+                    <li class="breadcrumb-item">
+                      <a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? __(ucwords(substr(@$series->title, 0, 120) . '...')) : __(ucwords(@$series->title)); ?>
+                     </a>
+                     <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    </li>
 
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    
 
-                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? ucwords(substr(@$episode->title, 0, 120) . '...') : ucwords($episode->title); ?> </a></li>
+                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? __(ucwords(substr(@$episode->title, 0, 120) . '...')) : __(ucwords($episode->title)); ?> </a></li>
                 </ol>
         </div>  
     </div>
@@ -257,9 +262,9 @@ if (Auth::guest())
 else
 { ?>
 			<div class="col-md-6">
-			<span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the Series:</span>
-			<?php if ($series->access == 'subscriber'): ?>Subscribers<?php
-    elseif ($series->access == 'registered'): ?>Registered Users<?php
+			<span class="text-white" style="font-size: 129%;font-weight: 700;"><?= __('Purchase to Watch the Series') ?>:</span>
+			<?php if ($series->access == 'subscriber'): ?><?= __('Subscribers') ?><?php
+    elseif ($series->access == 'registered'): ?><?= __('Registered Users') ?><?php
     endif; ?>
 			</p>
 		
@@ -271,7 +276,7 @@ else
 		<input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
 
 			<button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)" >
-			Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+			<?= __('Purchase For') ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
 	</div>
 	<?php
     }
@@ -280,10 +285,17 @@ else
 	<br>
 	<br>
                 <div class="col-md-5">
-			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span>
-      <p style=";font-size: 130%;color: white;"><?php if(!empty($series)){ echo 'Series'.' '.$series->id.' ';}
-			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} 
-			if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
+			<span class="text-white" style="font-size: 129%;font-weight: 700;"><?= __("You're watching") ?>:</span>
+      <p style=";font-size: 130%;color: white;"><?php $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
+			foreach($seasons as $key=>$seasons_value){ ?>
+                        <?php
+			if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo __('Season').' '. ($key+1)   .' ';}  }
+			$Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
+			foreach($Episode as $key=>$Episode_value){  ?>
+                        <?php if (!empty($episode) && $episode->id == $Episode_value->id) {
+                            echo __('Episode') . ' ' . $episode->episode_order . ' ';
+                        } ?>
+                        <?php } ?>
        <p style=";font-size: 130%;color: white;"><?=$episode->title
 ?></p>
 		
@@ -295,19 +307,19 @@ else
 
 		</h3>-->
 		
-			<div class="col-md-2 text-center text-white">
+			<!-- <div class="col-md-2 text-center text-white">
 			<span class="view-count " style="float:right;">
 			<i class="fa fa-eye"></i> 
 			<?php if (isset($view_increment) && $view_increment == true): ?><?=$episode->views + 1 ?>
 			<?php
 else: ?><?=$episode->views ?><?php
-endif; ?> Views 
+endif; ?><?= __('Views') ?>  
 			</span>
-			</div>
+			</div> -->
 
       <div class="col-md-5 text-right">
-        <div class="watchlater btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" >  Watch Later </div>
-        <div class="mywishlist btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" > Add  Wishlist </div>
+        <div class="watchlater btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" ><?= __('Watch Later') ?>   </div>
+        <div class="mywishlist btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" ><?= __('Add Wishlist') ?>  </div>
     </div>
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") {
@@ -323,7 +335,7 @@ endif; ?> Views
 <!-- <div class="clear" style="display:flex;justify-content: space-between;
     align-items: center;">
     <div> -->
-		<h2 id="tags">Tags: 
+		<h2 id="tags"><?= __('Tags') ?>: 
 		<?php if (isset($episode->tags))
 {
     foreach ($episode->tags as $key => $tag): ?>
@@ -365,7 +377,7 @@ elseif (isset($episodeprev))
                         <!-- Comment Section -->
                
                         <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
-       <div class="row">
+       <div class="">
            <div class=" container-fluid video-list you-may-like overflow-hidden">
                <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                <?php include('comments/index.blade.php');?>
@@ -373,8 +385,8 @@ elseif (isset($episodeprev))
        </div>
       <?php endif; ?>
 
-		<div class="iq-main-header container d-flex align-items-center justify-content-between">
-  <h4 class="main-title">Season</h4>                      
+		<div class="iq-main-header container-fluid d-flex align-items-center justify-content-between">
+  <h4 class="main-title"><?= ('Season') ?></h4>                      
 </div>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -394,13 +406,13 @@ foreach ($season as $key => $seasons):
               <div class="block-contents">
 			  <p class="date" style="color:#fff;"><?=date("F jS, Y", strtotime($episodes->created_at)); ?>
 				<?php if ($episodes->access == 'guest'): ?>
-				<span class="label label-info">Free</span>
+				<span class="label label-info"><?= __('Free') ?></span>
 				<?php
             elseif ($episodes->access == 'subscriber'): ?>
-				<span class="label label-success">Subscribers Only</span>
+				<span class="label label-success"><?= __('Subscribers Only') ?></span>
 				<?php
             elseif ($episodes->access == 'registered'): ?>
-				<span class="label label-warning">Registered Users</span>
+				<span class="label label-warning"><?= __('Registered Users') ?></span>
 				<?php
             endif; ?>
 				</p>
@@ -476,7 +488,7 @@ $Auth = Auth::guest();
      <div class="modal-dialog modal-dialog-centered" role="document">
        <div class="modal-content">
          <div class="modal-header">
-           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
+           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;"><?= __('Rent Now') ?></h4>
            <img src="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" alt=""width="50" height="60">
          </div>
          <div class="modal-body">
@@ -572,9 +584,9 @@ else
          </div>
          <div class="modal-footer">
          <a onclick="pay(<?php echo $episode->ppv_price; ?>)">
-					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat"><?= __('Continue') ?></button>
                    </a>
-           <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
+           <button type="button" class="btn btn-primary"  data-dismiss="modal"><?= __('Close') ?></button>
          </div>
        </div>
      </div>

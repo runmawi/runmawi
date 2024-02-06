@@ -9,6 +9,30 @@
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:contain;background-position:right; ">
+                <div class="our-video" style="position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 100%;">
+                    <?php if (!empty($slider_video->trailer) && ($slider_video->trailer_type == 'video_mp4')): ?> 
+                        <video class="myvideos" controls loop autoplay muted src="<?php echo $slider_video->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+                    <?php elseif (!empty($slider_video->trailer) && ($slider_video->trailer_type == 'm3u8')): 
+                        $url = $slider_video->trailer;
+
+                        // Get the path information of the URL
+                        $pathInfo = pathinfo($url);
+                        
+                        // Replace the extension with 'mp4'
+                        $newUrl = str_replace($pathInfo['extension'], 'mp4', $url);
+                        
+                        ?>
+
+                        <input type="hidden" class="trailer_type" value="<?= $slider_video->trailer_type  ?>" >
+                            <video class="myvideos" controls loop autoplay muted src="<?php echo $newUrl;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+    
+
+                        <!-- <video class="myvideos" controls loop autoplay muted src="<?php echo $slider_video->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video> -->
+                    <?php else: ?>
+                        <!-- If trailer is not available, show the banner image -->
+                        <img src="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>" alt="Banner Image" style="width: 100%; height: auto;">
+                    <?php endif; ?>
+                </div>
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
 
@@ -28,9 +52,9 @@ echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'..
 <span class="fa fa-star"></span></div>
                             <div class="p-0">
                      <a href="<?php echo $slider_video->link; ?>"
-                        class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
+                        class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play Now')  ?></a>
                              <a href="<?php echo $slider_video->link; ?>"
-                        class="btn bd ml-2"><i class="fa fa-play ml-2" aria-hidden="true"></i> Watch Trailer</a></div>
+                        class="btn bd ml-2"><i class="fa fa-play ml-2" aria-hidden="true"></i> <?= __('Watch Trailer')  ?></a></div>
                 </div>
                         <div class="col-xl-2 col-lg-12 col-md-6 mt-5 pt-5 b2">
                         <div class="justify align-items-left r-mb-23 mt-5" >
@@ -59,6 +83,30 @@ endif; ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right;  ">
+                <div class="our-video" style="position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 100%;">
+                    <?php if (!empty($slider_video->trailer) && ($slider_video->trailer_type == 'video_mp4')): ?> 
+                        <video class="myvideos" controls loop autoplay muted src="<?php echo $slider_video->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+                    <?php elseif (!empty($slider_video->trailer) && ($slider_video->trailer_type == 'm3u8')): 
+                        $url = $slider_video->trailer;
+
+                        // Get the path information of the URL
+                        $pathInfo = pathinfo($url);
+                        
+                        // Replace the extension with 'mp4'
+                        $newUrl = str_replace($pathInfo['extension'], 'mp4', $url);
+                        
+                        ?>
+
+                        <input type="hidden" class="trailer_type" value="<?= $slider_video->trailer_type  ?>" >
+                            <video class="myvideos" controls loop autoplay muted src="<?php echo $newUrl;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+    
+
+                        <!-- <video class="myvideos" controls loop autoplay muted src="<?php echo $slider_video->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video> -->
+                    <?php else: ?>
+                        <!-- If trailer is not available, show the banner image -->
+                        <img src="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>" alt="Banner Image" style="width: 100%; height: auto;">
+                    <?php endif; ?>
+                </div>
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -96,9 +144,9 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
 <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
 data-delay-in="1.2">
 <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
-    class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+    class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play')  ?></a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> <?= __('More details')  ?></a>
 </div>
 </div>
 </div>
@@ -136,6 +184,30 @@ endif; ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
                 style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$live_event_banner->player_image;?>') no-repeat;background-size:cover;background-position:right;  ">
+                    <div class="our-video" style="position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 100%;">
+                        <?php if (!empty($live_event_banner->trailer) && ($live_event_banner->trailer_type == 'video_mp4')): ?> 
+                            <video class="myvideos" controls loop autoplay muted src="<?php echo $live_event_banner->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+                        <?php elseif (!empty($live_event_banner->trailer) && ($live_event_banner->trailer_type == 'm3u8')): 
+                            $url = $live_event_banner->trailer;
+
+                            // Get the path information of the URL
+                            $pathInfo = pathinfo($url);
+                            
+                            // Replace the extension with 'mp4'
+                            $newUrl = str_replace($pathInfo['extension'], 'mp4', $url);
+                            
+                            ?>
+
+                            <input type="hidden" class="trailer_type" value="<?= $live_event_banner->trailer_type  ?>" >
+                                <video class="myvideos" controls loop autoplay muted src="<?php echo $newUrl;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+        
+
+                            <!-- <video class="myvideos" controls loop autoplay muted src="<?php echo $slider_video->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video> -->
+                        <?php else: ?>
+                            <!-- If trailer is not available, show the banner image -->
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>" alt="Banner Image" style="width: 100%; height: auto;">
+                        <?php endif; ?>
+                    </div>
                 <div class="container position-relative h-100">
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
@@ -166,9 +238,9 @@ endif; ?>
                                 <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                                     data-delay-in="1.2">
                                     <a href="<?= route('live_event_play',$live_event_banner->slug)  ?>"
-                                        class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play
+                                        class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play')  ?>
                                     </a>
-                                    <a class="btn bd ml-2" href="<?= route('live_event_play',$live_event_banner->slug)  ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+                                    <a class="btn bd ml-2" href="<?= route('live_event_play',$live_event_banner->slug)  ?>"><i class="fa fa-info" aria-hidden="true"></i> <?= __('More details')  ?></a>
                                 </div>
                             </div>
                         </div>
@@ -187,6 +259,33 @@ endif; ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>') no-repeat;background-size:contain;background-position:right; ">
+            <div class="our-video" style="position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 100%;">
+                <?php if (!empty($videos->trailer) && ($videos->trailer_type == 'video_mp4')): ?> 
+                    <video class="myvideos" controls loop autoplay muted src="<?php echo $videos->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+                <?php elseif (!empty($videos->trailer) && ($videos->trailer_type == 'm3u8')): 
+                    $url = $videos->trailer;
+
+                    // Get the path information of the URL
+                    $pathInfo = pathinfo($url);
+                    
+                    // Replace the extension with 'mp4'
+                    $newUrl = str_replace($pathInfo['extension'], 'mp4', $url);
+                    
+                    ?>
+
+                    <input type="hidden" class="trailer_type" value="<?= $videos->trailer_type  ?>" >
+                        <video class="myvideos" controls loop autoplay muted src="<?php echo $newUrl;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+ 
+
+                    <!-- <video class="myvideos" controls loop autoplay muted src="<?php echo $videos->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video> -->
+                <?php else: ?>
+                    <!-- If trailer is not available, show the banner image -->
+                    <img src="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>" alt="Banner Image" style="width: 100%; height: auto;">
+                <?php endif; ?>
+            </div>
+                <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+                    <video class="myvideos" controls loop autoplay muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+                </div>    -->
             <div class="container-fluid position-relative h-100" style="padding:0px 100px;">
                 <div class="slider-inner h-100">
 
@@ -219,9 +318,9 @@ endif; ?>
 
                                               <!-- Trailer  -->
                             <div class="justify r-mb-23  p-0" >
-                                <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"  class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
+                                <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"  class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play Now')  ?></a>
                                     <a href="#theme1-trailer"  class="theme1-trailer btn bd ml-2" data-trailer-url="<?= $videos->trailer ?>" data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_video(this)" >
-                                        <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
+                                        <i class="fa fa-info" aria-hidden="true"></i> <?= __('Watch Trailer')  ?>
                                     </a>
                             </div>
                             
@@ -276,7 +375,31 @@ if(Route::current()->getName() == "home"){
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
                      style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>') no-repeat;background-size:inherit;background-position:right 10%; ">
-                <div class="container position-relative h-100">
+                        <div class="our-video" style="position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 100%;">
+                            <?php if (!empty($videos->trailer) && ($videos->trailer_type == 'video_mp4')): ?> 
+                                <video class="myvideos" controls loop autoplay muted src="<?php echo $videos->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+                            <?php elseif (!empty($videos->trailer) && ($videos->trailer_type == 'm3u8')): 
+                                $url = $videos->trailer;
+
+                                // Get the path information of the URL
+                                $pathInfo = pathinfo($url);
+                                
+                                // Replace the extension with 'mp4'
+                                $newUrl = str_replace($pathInfo['extension'], 'mp4', $url);
+                                
+                                ?>
+
+                                <input type="hidden" class="trailer_type" value="<?= $videos->trailer_type  ?>" >
+                                    <video class="myvideos" controls loop autoplay muted src="<?php echo $newUrl;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+            
+
+                                <!-- <video class="myvideos" controls loop autoplay muted src="<?php echo $videos->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video> -->
+                            <?php else: ?>
+                                <!-- If trailer is not available, show the banner image -->
+                                <img src="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>" alt="Banner Image" style="width: 100%; height: auto;">
+                            <?php endif; ?>
+                        </div>
+                     <div class="container position-relative h-100">
                     <div class="slider-inner h-100">
 
                     <div class="row align-items-center bl h-100">
@@ -308,9 +431,9 @@ if(Route::current()->getName() == "home"){
 
                                               <!-- Trailer  -->
                             <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp"  data-delay-in="1.2">
-                                <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"  class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
+                                <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"  class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i><?= __('Play Now')  ?> </a>
                                     <a href="#theme1-trailer"  class="theme1-trailer btn bd ml-2" data-trailer-url="<?= $videos->trailer ?>" data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_video(this)" >
-                                        <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
+                                        <i class="fa fa-info" aria-hidden="true"></i><?= __('Watch Trailer')  ?> 
                                     </a>
                             </div>
                             
@@ -346,6 +469,31 @@ if(Route::current()->getName() == "home"){
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:center center; ">
+            
+                    <div class="our-video" style="position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 100%;">
+                        <?php if (!empty($slider_video->trailer) && ($slider_video->trailer_type == 'video_mp4')): ?> 
+                            <video class="myvideos" controls loop autoplay muted src="<?php echo $slider_video->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+                        <?php elseif (!empty($slider_video->trailer) && ($slider_video->trailer_type == 'm3u8')): 
+                            $url = $slider_video->trailer;
+
+                            // Get the path information of the URL
+                            $pathInfo = pathinfo($url);
+                            
+                            // Replace the extension with 'mp4'
+                            $newUrl = str_replace($pathInfo['extension'], 'mp4', $url);
+                            
+                            ?>
+
+                            <input type="hidden" class="trailer_type" value="<?= $slider_video->trailer_type  ?>" >
+                                <video class="myvideos" controls loop autoplay muted src="<?php echo $newUrl;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+        
+
+                            <!-- <video class="myvideos" controls loop autoplay muted src="<?php echo $slider_video->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video> -->
+                        <?php else: ?>
+                            <!-- If trailer is not available, show the banner image -->
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>" alt="Banner Image" style="width: 100%; height: auto;">
+                        <?php endif; ?>
+                    </div>
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -385,9 +533,9 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
 <div class="justify r-mb-23" data-animation-in="fadeInUp"
 data-delay-in="1.2">
 <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"
-    class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+    class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play')  ?></a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="btn bd" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <a class="btn bd" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> <?= __('More details')  ?></a>
 </div>
 </div>
 </div>
@@ -403,7 +551,7 @@ data-delay-in="1.2">
         <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
         stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
     </svg>
-    <span class="w-trailor">Watch Trailer</span>
+    <span class="w-trailor"><?= __('Watch Trailer')  ?></span>
 </a>
 </div>
 </div>
@@ -423,7 +571,32 @@ endif; ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
                  style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$series_slider->player_image;?>') no-repeat;background-size:cover;background-position:right;  ">
-                <div class="container position-relative h-100">
+                
+                    <div class="our-video" style="position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 100%;">
+                        <?php if (!empty($series_slider->trailer) && ($series_slider->trailer_type == 'video_mp4')): ?> 
+                            <video class="myvideos" controls loop autoplay muted src="<?php echo $series_slider->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+                        <?php elseif (!empty($series_slider->trailer) && ($series_slider->trailer_type == 'm3u8')): 
+                            $url = $series_slider->trailer;
+
+                            // Get the path information of the URL
+                            $pathInfo = pathinfo($url);
+                            
+                            // Replace the extension with 'mp4'
+                            $newUrl = str_replace($pathInfo['extension'], 'mp4', $url);
+                            
+                            ?>
+
+                            <input type="hidden" class="trailer_type" value="<?= $series_slider->trailer_type  ?>" >
+                                <video class="myvideos" controls loop autoplay muted src="<?php echo $newUrl;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video>
+        
+
+                            <!-- <video class="myvideos" controls loop autoplay muted src="<?php echo $series_slider->trailer;?>" width="100%" height="auto" alt="" style="transform: scale(1.42);"></video> -->
+                        <?php else: ?>
+                            <!-- If trailer is not available, show the banner image -->
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/' .$series_slider->player_image;?>" alt="Banner Image" style="width: 100%; height: auto;">
+                        <?php endif; ?>
+                    </div>
+                 <div class="container position-relative h-100">
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-5 col-lg-12 col-md-12">
@@ -455,12 +628,12 @@ endif; ?>
                                 <div class="d-flex justify-content-evenly align-items-center r-mb-23" >
                         
                                     <a href="<?= URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>"  class="btn bd">
-                                        <i class="fa fa-play mr-2" aria-hidden="true"></i> Play
+                                        <i class="fa fa-play mr-2" aria-hidden="true"></i> <?= __('Play')  ?>
                                     </a>
 
                                     <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>">
                                         <i class="fa fa-info" aria-hidden="true"></i>
-                                        More details
+                                        <?= __('More details')  ?>
                                     </a>
                                 </div>
                             </div>
@@ -472,37 +645,3 @@ endif; ?>
 
 <?php endforeach; endif; ?>
 
-
-<!-- <script type="application/javascript">
-
-function trailer_series_slider(ele) 
-	{
-        var trailer_url   = $(ele).attr('data-trailer-url');
-        var trailer_type = $(ele).attr('data-trailer-type');
-
-        if(trailer_type == "embed_url"){
-            
-            $('#videoPlayer').replaceWith('<div class="plyr__video-embed" id="videoPlayer" >  <iframe  src="'+ trailer_url +'" allowfullscreen allowtransparency allow="autoplay"></iframe></div>');
-
-        }else if(trailer_type == "mp4_url" || trailer_type == "video_mp4"  ){
-            
-            $('#videoPlayer').attr('src', trailer_url);
-            // $('#videoPlayer').empty();
-
-            // $('#videoPlayer').replaceWith('<video id="videoPlayer" controls src="'+ trailer_url +'"  type="application/x-mpegURL" > </video>');
-
-        }
-
-         $('.theme1-trailer').magnificPopup({
-            type: 'inline',
-            fixedContentPos: false,
-            fixedBgPos: true,
-            overflowY: 'auto',
-            closeBtnInside: true,
-            preloader: false,
-            midClick: true,
-            removalDelay: 300,
-        }).magnificPopup('open');
-}
-
-</script> -->

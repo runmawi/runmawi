@@ -35,9 +35,9 @@
                     <h4 class="movie-title">
                         <?php
                         if (!empty($category->home_genre)) {
-                            echo $category->home_genre;
+                            echo __($category->home_genre);
                         } else {
-                            echo $category->name;
+                            echo __($category->name);
                         }
                         ?>
                     </h4>
@@ -102,21 +102,21 @@
                                         <?php  if($category_video->access == 'subscriber' ){ ?>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                     <?php }elseif($category_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                             <?php } 
                                        elseif(!empty($category_video->ppv_price)) {
                                           echo $currency->symbol.' '.$category_video->ppv_price ; 
                                           } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                              echo $currency->symbol .' '.$category_video->global_ppv;
                                           } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo "Free"; 
+                                             echo __("Free"); 
                                           }
                                        ?>
                                     </p>
                                     <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
                                 </div>
                                 </div>
 
@@ -130,42 +130,42 @@
                                         <?php  if($category_video->access == 'subscriber' ){ ?>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                     <?php }elseif($category_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                             <?php } 
                                        elseif(!empty($category_video->ppv_price)) {
                                           echo $currency->symbol.' '.$category_video->ppv_price ; 
                                           } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                              echo $currency->symbol .' '.$category_video->global_ppv;
                                           } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo "Free"; 
+                                             echo __("Free"); 
                                           }
                                        ?>
                                     </p>
                                     <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
                                     </a>
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
                                         <?php  if($category_video->access == 'subscriber' ){ ?>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                     <?php }elseif($category_video->access == 'registered'){?>
-                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                            <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                             <?php } 
                                        elseif(!empty($category_video->ppv_price)) {
                                           echo $currency->symbol.' '.$category_video->ppv_price ; 
                                           } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                              echo $currency->symbol .' '.$category_video->global_ppv;
                                           } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) {
-                                             echo "Free"; 
+                                             echo __("Free"); 
                                           }
                                        ?>
                                     </p>
                                     <?php } ?>
-                                    <?php if($ThumbnailSetting->published_on == 1) { ?>
+                                    <!-- <?php if($ThumbnailSetting->published_on == 1) { ?>
                                     <p class="published_on1"><?php echo $publish_time; ?></p>
-                                    <?php  } ?>
+                                    <?php  } ?> -->
 
 
                                     <div class="hover-buttons text-white">
@@ -246,7 +246,7 @@
                                             <a type="button" class="epi-name mt-3 mb-0 btn"
                                                 href="<?php echo URL::to('category'); ?><?= '/videos/' . $category_video->slug ?>">
                                                 <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>"
-                                                    width="10%" height="10%" /> Watch Now
+                                                    width="10%" height="10%" /> <?= __('Watch Now')  ?> 
                                             </a>
                                         </div>
                                 </div>
@@ -325,7 +325,7 @@
                                             <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('episode'); ?><?= '/' . @$Episode_video->series_slug . '/' . $Episode_video->slug ?>">
                                                 <img class="ply mr-1" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
-                                                    height="10%" /> Watch Now
+                                                    height="10%" /> <?= __('Watch Now')  ?>
                                             </a>
                                         </div>
                                     </a>

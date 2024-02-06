@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @include('/header')
 @section('content')
-<?// dd($plans_data); ?>
+
     <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
     </script>
     <style>
@@ -131,18 +131,23 @@
    
 ?>
     <div class="row justify-content-center" id="signup-form">
-    @if (Session::has('message'))
-        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-    @endif
+            <!-- @if(session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session()->get('message') }}
+                </div>
+            @endif -->
+            @if (Session::has('message'))
+            <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                @endif
 
-    @if(count($errors) > 0)
-        @foreach( $errors->all() as $message )
-            <div class="alert alert-danger display-hide" id="successMessage" >
-                <button id="successMessage" class="close" data-close="alert"></button>
-                <span>{{ $message }}</span>
-            </div>
-        @endforeach
-    @endif
+                @if(count($errors) > 0)
+                    @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                            <button id="successMessage" class="close" data-close="alert"></button>
+                            <span>{{ $message }}</span>
+                        </div>
+                    @endforeach
+                @endif
         <div class="col-md-10 col-sm-offset-1">
 			<div class="login-block">
                 <div class="panel-heading"><h1>Choose Your Plan</h1></div>

@@ -284,21 +284,139 @@
                           </div>
                       </a>
 
-                      <a class="navbar-brand" href="index.html"> <img class="img-fluid logo"
-                              src="<?= front_end_logo() ?>"
-                              alt="" /> </a>
+                      <a class="navbar-brand" href="<?php URL::to('/home'); ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
+
                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
                           <div class="menu-main-menu-container">
-                              <ul id="top-menu" class="navbar-nav ml-auto">
+                              <ul id="top-menu" class=" mt-2 nav navbar-nav ">
+
+                                 <?php  
+
+                                    $video_category = App\VideoCategory::orderBy('order', 'asc')->where('in_menu',1)->get();
+
+                                    $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
+
+                                    $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
+
+                                    $tv_shows_series = App\Series::where('active',1)->get();
+
+                                    $languages = App\Language::all();
+
+                                 ?>
+
+                                 <?php foreach ($menus as $menu) { 
+
+                                    if ( $menu->in_menu == "video" ) {  ?>
+
+                                       <li class="dropdown menu-item dskdflex">
+                                          <a class="dropdown-toggle justify-content-between " id="dn" href="<?= URL::to($menu->url) ?>" data-toggle="dropdown">
+                                             <?= $menu->name ?> <i class="fa fa-angle-down"></i>
+                                          </a>
+                                          <ul class="dropdown-menu categ-head">
+                                             <?php foreach ( $video_category as $category) : ?>
+                                                <li>
+                                                   <a class="dropdown-item cont-item" href="<?php echo URL::to('category/'.$category->slug)?>">
+                                                      <?= $category->name;?>
+                                                   </a>
+                                                </li>
+                                             <?php endforeach ; ?>
+                                          </ul>
+                                       </li>
+
+                                    <?php } elseif ( $menu->in_menu == "movies") {  ?>
+
+                                       <li class="dropdown menu-item dskdflex">
+                                          <a class="dropdown-toggle justify-content-between " id="dn" href="<?= URL::to($menu->url) ?>" data-toggle="dropdown">
+                                                <?= ($menu->name);?> <i class="fa fa-angle-down"></i>
+                                          </a>
+
+                                          <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $languages as $language): ?>
+                                                <li>
+                                                      <a class="dropdown-item cont-item" href="<?= URL::to('language/'.$language->id.'/'.$language->name);?>">
+                                                         <?= $language->name;?>
+                                                      </a>
+                                                </li>
+                                                <?php endforeach; ?>
+                                          </ul>
+                                       </li>
+
+                                    <?php }elseif ( $menu->in_menu == "live") { ?>
+
+                                       <li class="dropdown menu-item dskdflex">
+                                          <a class="dropdown-toggle  justify-content-between " id="dn" href="<?= URL::to($menu->url) ?>" data-toggle="dropdown">
+                                                <?= $menu->name ?> <?php if(count($LiveCategory) < 0 ){ echo '<i class="fa fa-angle-down"></i>'; } ?> 
+                                          </a>
+
+                                          <?php if(count($LiveCategory) < 0 ): ?>
+                                             <ul class="dropdown-menu categ-head">
+                                                   <?php foreach ( $LiveCategory as $category): ?>
+                                                   <li>
+                                                         <a class="dropdown-item cont-item" href="<?= URL::to('/live/category/'.$category->name) ?>">
+                                                            <?= $category->name ?></a>
+                                                   </li>
+                                                   <?php endforeach; ?>
+                                             </ul>
+                                          <?php endif; ?>
+                                       </li>
+
+                                    <?php }elseif ( $menu->in_menu == "audios") { ?>
+
+                                       <li class="dropdown menu-item dskdflex">
+                                          <a class="dropdown-toggle  justify-content-between " id="dn" href="<?= URL::to('/').$menu->url;?>"
+                                                data-toggle="dropdown">
+                                                <?= ($menu->name);?> <i class="fa fa-angle-down"></i>
+                                          </a>
+                                          <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $AudioCategory as $category): ?>
+                                                <li>
+                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('audio/'.$category->name);?>">
+                                                         <?= $category->name;?>
+                                                      </a>
+                                                </li>
+                                                <?php endforeach; ?>
+                                          </ul>
+                                       </li>
+
+                                    <?php }elseif ( $menu->in_menu == "tv_show") { ?>
+                                          
+                                       <li class="dropdown menu-item ">
+
+                                          <a href="<?php echo URL::to('$menu->url')?>">
+                                                <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
+                                          </a>
+
+                                          <?php if(count($tv_shows_series) > 0 ){ ?>
+                                             <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series): ?>
+                                                <li>
+                                                      <?php if($key < 5): ?>
+                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('play_series/'.$tvshows_series->slug );?>">
+                                                            <?= $tvshows_series->title;?>
+                                                      </a>
+                                                      <?php else: ?>
+                                                      <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>">
+                                                            <?php echo 'More...';?>
+                                                      </a>
+                                                      <?php endif; ?>
+                                                </li>
+                                                <?php endforeach; ?>
+                                             </ul>
+                                          <?php } ?>
+                                       </li>
+
+                                    <?php } else { ?>
+                                       <li class="menu-item">
+                                          <a
+                                                href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to( $menu->url ); }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
+                                                <?php echo __($menu->name);?>
+                                          </a>
+                                       </li>
+
+                                    <?php  } ?>
+
+                                 <?php } ?>
                                  
-                                 <?php  foreach ($menus as $key =>  $menu) : ?> 
-
-                                    <li class="menu-item">
-                                       <a href="<?= URL::to($menu->url) ?>"> <?= $menu->name ?></a>
-                                    </li>
-
-                                 <?php endforeach ;?>
-                                  
                               </ul>
                           </div>
                       </div>
@@ -465,14 +583,6 @@
                                                 </div>
                                              </a>
                                              
-                                             <a href="<?= URL::to('/admin/subscription-plans') ?>" class="iq-sub-card setting-dropdown">
-                                                <div class="media align-items-center">
-                                                      <div class="right-icon"><i class="ri-settings-4-line text-primary"></i></div>
-                                                      <div class="media-body ml-3">
-                                                         <h6 class="mb-0 ">Pricing Plan</h6>
-                                                      </div>
-                                                </div>
-                                             </a>
 
                                              <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
                                                 <div class="media align-items-center">
@@ -551,7 +661,7 @@
                                              </a>
                                           </div>
 
-                                          <?php elseif( !Auth::guest() && Auth::user()->role == "subs"): ?>
+                                          <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
 
                                           <div class="iq-card-body p-0 pl-3 pr-3">
 
@@ -699,18 +809,81 @@
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
         <script>
-        $("#searchResult").validate({
-            errorClass: 'Search_error_class',
-            rules: {
-                search: {
-                    required: true,
-                },
-            },
+               $("#searchResult").validate({
+                     errorClass: 'Search_error_class',
+                     rules: {
+                        search: {
+                           required: true,
+                        },
+                     },
 
-            messages: {
-                search: {
-                    required: "This Search field is required",
-                }
+                     messages: {
+                        search: {
+                           required: "This Search field is required",
+                        }
+                     }
+               });
+               </script>
+
+         
+
+        <style>
+         .dropdown-toggle::after{
+            display:none;
+         }
+         ul.dropdown-menu.categ-head{
+            overflow:hidden;
+         }
+        .home-search li.list-group-item{
+            text-align:left;
+         }
+
+         /* loader style */
+         .fullpage-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity .5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .fullpage-loader__logo {
+            position: relative;
+            &:after {
+            // this is the sliding white part
+            content: '';
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
+            // opaque white slide
+            background: rgba(255,255,255,.8);
+            // gradient shine scroll
+            background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
             }
-        });
-        </script>
+            }
+            }
+            @keyframes shine {
+            0% {
+            transform: translateX(-100%) skew(-30deg);
+            }
+            100% {
+            transform: translateX(200%) skew(-30deg);
+            }
+            }
+            .fullpage-loader--invisible {
+            opacity: 0;
+            }
+         </style>
+

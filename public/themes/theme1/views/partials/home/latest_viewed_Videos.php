@@ -31,7 +31,7 @@
         } ?>">
 
             <?php if ($order_settings_list[15]->header_name) {
-                echo $order_settings_list[15]->header_name;
+                echo (__($order_settings_list[15]->header_name));
             } else {
                 echo '';
             } ?></a>
@@ -102,6 +102,16 @@
                         <a href="<?php echo URL::to('category/videos/'.$latest_view_video->slug ); ?>">
                             <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_video->image; ?>" class="img-fluid w-100" alt="">
                         </a>
+                    </div>
+                    <div class="block-description">
+                        <div class="hover-buttons">
+                            <a class="" href="<?php echo URL::to('category'); ?><?= '/videos/' . $latest_view_video->slug ?>"> <img
+                            class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" /> </a>
+                            <div class="hover-buttons d-flex">
+
+                            </div>
+                        </div>
+                    </div>
 
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                             <?php  if($latest_view_video->access == 'subscriber' ){ ?>
@@ -111,25 +121,17 @@
                             <?php }elseif( !empty($latest_view_video->global_ppv || !empty($latest_view_video->global_ppv) && $latest_view_video->ppv_price == null)){ ?>
                                 <p class="p-tag1"><?php echo $latest_view_video->global_ppv . ' ' . $currency->symbol; ?></p>
                             <?php }elseif($latest_view_video->global_ppv == null && $latest_view_video->ppv_price == null ){ ?>
-                                <p class="p-tag"><?php echo 'Free'; ?></p>
+                                <p class="p-tag"><?php echo __('Free'); ?></p>
                             <?php } ?>
                         <?php } ?>
 
                         <?php if($ThumbnailSetting->published_on == 1) { ?>
                             <p class="published_on1"><?php echo $publish_time; ?></p>
                         <?php  } ?>
-                    </div>
+                    
                 </div>
 
-                <div class="block-description">
-                    <div class="hover-buttons">
-                        <a class="" href="<?php echo URL::to('category'); ?><?= '/videos/' . $latest_view_video->slug ?>"> <img
-                          class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" /> </a>
-                        <div class="hover-buttons d-flex">
-
-                        </div>
-                    </div>
-                </div>
+                
 
                 <div class="p-0">
                     <div class="mt-2 d-flex justify-content-between p-0">

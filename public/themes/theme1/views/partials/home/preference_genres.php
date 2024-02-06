@@ -1,5 +1,5 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="">Preference By Genres </a></h4>
+    <h4 class="main-title"><a href=""><?= (__('Preference By Genres'))  ?> </a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -28,7 +28,7 @@
                                     <?php }elseif( !empty($preference_genre->global_ppv || !empty($preference_genre->global_ppv) && $preference_genre->ppv_price == null)){ ?>
                                     <p class="p-tag1"><?php echo $preference_genre->global_ppv.' '.$currency->symbol; ?></p>
                                     <?php }elseif($preference_genre->global_ppv == null && $preference_genre->ppv_price == null ){ ?>
-                                    <p class="p-tag"><?php echo "Free"; ?></p>
+                                    <p class="p-tag"><?php echo __("Free"); ?></p>
                                     <?php } ?>
                                     <?php } ?>
                               

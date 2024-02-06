@@ -22,6 +22,7 @@ class SiteThemeTableseeder extends Seeder
                     'light_mode_logo' => "trail-logo.png", 
                     'button_bg_color' => "#006AFF",
                     'signup_step2_title' => 'Subscribe us and Enjoy our premium shows',
+                    'signup_theme' => 1,
                     'created_at' => Carbon::now(),
                     'updated_at' => null,),
                 );

@@ -126,7 +126,7 @@ padding-top: 20px;
 <audio id="myAudio" ontimeupdate="onTimeUpdate()">
   <!-- <source src="audio.ogg" type="audio/ogg"> -->
   <source id="source-audio" src="" type="audio/mpeg">
-  Your browser does not support the audio element.
+  <?php echo __('Your browser does not support the audio element'); ?>.
 </audio>
 
 <div class="player-ctn">

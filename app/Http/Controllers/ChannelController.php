@@ -91,6 +91,59 @@ class ChannelController extends Controller
         return view('channels', compact('parentCategories'));
     }
 
+    public function Parent_video_categories($category_slug)
+    {
+        try {
+
+            $VideoCategory           = VideoCategory::where('slug', $category_slug)->first();
+            $Parent_video_categories = VideoCategory::query()->where('parent_id',$VideoCategory->id)->get();
+            $Parent_video_categories_id = VideoCategory::query()->where('parent_id',$VideoCategory->id)->pluck('id')->toArray();
+
+            $categories_id = ($Parent_video_categories_id);
+            array_push($categories_id,$VideoCategory->id );
+
+            $check_Kidmode = 0 ; 
+
+            $categoryVideo_id = CategoryVideo::whereIn('category_id',$categories_id)->groupBy('video_id')->pluck('video_id');
+
+            $video_categories_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
+                            'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
+
+                        ->whereIn('id',$categoryVideo_id)->where('active',1)->where('status', 1)->where('draft',1)
+                        ->where(function ($query)  {
+                            
+                            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                                $videos->whereNotIn('videos.id', Block_videos());
+                            }
+
+                        })->where(function ($query) use ($check_Kidmode) {
+                           
+                            if ($check_Kidmode == 1) {
+                                $videos->whereBetween('videos.age_restrict', [0, 12]);
+                            }
+                        })->latest()->limit(30)->get()->map(function ($item) {
+                            $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                            $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url();
+                            $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url();
+                            $item['source_type']        = "Videos" ;
+                            return $item;
+            });
+
+
+            $data = [
+                'Parent_videos_categories'  => $Parent_video_categories ,
+                'video_categories_videos' => $video_categories_videos ,
+                'VideosCategory' => $VideoCategory
+            ];
+
+            return Theme::view('videos-Categories', $data);
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
+        }
+    }
+
     public function channelVideos($cid)
     {
         try {
@@ -111,6 +164,10 @@ class ChannelController extends Controller
                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
                     $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
                 }
+                
+                if (videos_expiry_date_status() == 1 ) {
+                    $categoryVideos = $categoryVideos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                }
 
             $categoryVideos = $categoryVideos->latest('videos.created_at')->paginate($this->videos_per_page);
           
@@ -125,6 +182,10 @@ class ChannelController extends Controller
                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
                     $Most_watched_country = $Most_watched_country->whereNotIn('videos.id', Block_videos());
                 }
+
+                if (videos_expiry_date_status() == 1 ) {
+                    $Most_watched_country = $Most_watched_country->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                }
             
             $Most_watched_country = $Most_watched_country->where('recent_views.country_name', Country_name())
                             ->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$categoryVideo)->get()
@@ -137,20 +198,35 @@ class ChannelController extends Controller
                                                             ->implode(' , ');
     
                                 return $item;
-                });
+            });
 
+            // top_most_watched
 
             $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
-                            ->join('videos', 'videos.id', '=', 'recent_views.video_id')->where('videos.status', '=', '1')
-                            ->where('videos.draft', '=', '1')->where('videos.active', '=', '1')
-                            ->whereIn('videos.id',$categoryVideo)
-                            ->groupBy('video_id');
+                        ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')->groupBy('video_id')
+                        ->orderByRaw('count DESC');
 
-                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
-                                $top_most_watched = $Most_watched_country->whereNotIn('videos.id', Block_videos());
-                            }
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
+                    $top_most_watched = $top_most_watched->whereNotIn('videos.id', Block_videos());
+                }
 
-            $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(20)->get();
+                if (videos_expiry_date_status() == 1 ) {
+                    $top_most_watched = $top_most_watched->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                }
+            
+            $top_most_watched = $top_most_watched->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$categoryVideo)->get()
+                            ->map(function ($item) {
+
+                                $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
+                                                            ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                                                            ->where('video_id', $item->video_id )
+                                                            ->pluck('name') 
+                                                            ->implode(' , ');
+    
+                                return $item;
+            });
 
             $video_banners = Video::where('active', '=', '1')->whereIn('videos.id',$categoryVideo)
                                         ->where('draft', '1')->where('status', '1')
@@ -167,17 +243,85 @@ class ChannelController extends Controller
                 ->latest('episodes.created_at')
                 ->paginate($this->videos_per_page);
 
+                // for Theme4, theme6 , default
+
+                $check_Kidmode = 0 ;
+
+                $video_categories = VideoCategory::query()->whereIn('id',$category_id)->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+                    $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+            
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $query->whereNotIn('videos.id', Block_videos());
+                    }
+
+                    if (videos_expiry_date_status() == 1 ) {
+                        $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                    }
+            
+                    if ($check_Kidmode == 1) {
+                        $query->whereBetween('videos.age_restrict', [0, 12]);
+                    }
+                })->with(['category_videos' => function ($videos) use ($check_Kidmode) {
+                    $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type')
+                        ->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+
+                            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                                $videos->whereNotIn('videos.id', Block_videos());
+                            }
+
+                            if (videos_expiry_date_status() == 1 ) {
+                                $videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                            }
+
+                            if ($check_Kidmode == 1) {
+                                $videos->whereBetween('videos.age_restrict', [0, 12]);
+                            }
+    
+                    $videos->latest('videos.created_at')->get();
+                }])
+                ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
+                ->where('video_categories.in_home', 1)
+                ->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+                    $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+            
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $query->whereNotIn('videos.id', Block_videos());
+                    }
+
+                    if (videos_expiry_date_status() == 1 ) {
+                        $query->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                    }
+            
+                    if ($check_Kidmode == 1) {
+                        $query->whereBetween('videos.age_restrict', [0, 12]);
+                    }
+                })
+                ->orderBy('video_categories.order')
+                ->get()
+                ->map(function ($category) {
+                    $category->category_videos->map(function ($video) {
+                        $video->image_url = URL::to('/public/uploads/images/'.$video->image);
+                        $video->Player_image_url = URL::to('/public/uploads/images/'.$video->player_image);
+                        $video->description  = $video->description ;
+                        $video->source  = "Videos";
+                        return $video;
+                    });
+                    $category->source =  "category_videos" ;
+                    return $category;
+                });
+
             $data = [
-                'currency' => CurrencySetting::first(),
-                'category_title' => $category_title,
-                'categoryVideos' =>  $categoryVideos,
-                'ppv_gobal_price' => $ppv_gobal_price,
-                'ThumbnailSetting' => $ThumbnailSetting,
-                'age_categories' => AgeCategory::get(),
-                'Episode_videos' => $Episode_videos,
+                'currency'          => CurrencySetting::first(),
+                'category_title'    => $category_title,
+                'categoryVideos'    =>  $categoryVideos,
+                'ppv_gobal_price'   => $ppv_gobal_price,
+                'ThumbnailSetting'  => $ThumbnailSetting,
+                'age_categories'    => AgeCategory::get(),
+                'Episode_videos'    => $Episode_videos,
                 'Most_watched_country' => $Most_watched_country ,
                 'top_most_watched'  => $top_most_watched ,
                 'video_banners'     => $video_banners ,
+                'video_categories'  => $video_categories ,
             ];
 
             return Theme::view('categoryvids', ['categoryVideos' => $data]);
@@ -3911,7 +4055,7 @@ class ChannelController extends Controller
     private function videos_details_jsplayer( $slug )
     {
         try {
-           
+
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
@@ -3921,6 +4065,7 @@ class ChannelController extends Controller
                 $item['image_url']          = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();
                 $item['player_image_url']   = $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
                 $item['Title_Thumbnail'] =   $item->video_title_image != null ? URL::to('public/uploads/images/'.$item->video_title_image) : default_vertical_image_url();     
+                $item['Reels_Thumbnail'] =   $item->reels_thumbnail != null ? URL::to('public/uploads/images/'.$item->reels_thumbnail) : default_vertical_image_url();     
                 $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
                 $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
 
@@ -3968,6 +4113,41 @@ class ChannelController extends Controller
                                                     }
                                                 })->first();
 
+                $item['Like_exist'] = LikeDislike::where('video_id', $video_id)->where('liked',1)
+                                                    ->where(function ($query) use ($geoip) {
+                                                        if (!Auth::guest()) {
+                                                            $query->where('user_id', Auth::user()->id);
+                                                        } else {
+                                                            $query->where('users_ip_address', $geoip->getIP());
+                                                        }
+                                                    })->latest()->first();
+
+                $item['dislike_exist'] = LikeDislike::where('video_id', $video_id)->where('disliked',1)
+                                                ->where(function ($query) use ($geoip) {
+                                                    if (!Auth::guest()) {
+                                                        $query->where('user_id', Auth::user()->id);
+                                                    } else {
+                                                        $query->where('users_ip_address', $geoip->getIP());
+                                                    }
+                                                })->latest()->first();
+
+                    // Reels Videos
+
+                $item['Reels_videos'] = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')
+                                                ->where('videos.id', $video_id)->get();
+
+                $item['view_increment'] = $this->handleViewCount_movies($video_id);
+
+                // Rent Video Exits
+
+                if($item['access'] == 'ppv' && !Auth::guest()){
+                    $item['PPV_Exits'] = PpvPurchase::where('video_id', $item['id'])
+                                            ->where('user_id', Auth::user()->id)->count();
+                }else{
+                    $item['PPV_Exits'] = 0 ;
+                }
+
+
                     //  Video URL
 
                 switch (true) {
@@ -4002,40 +4182,69 @@ class ChannelController extends Controller
 
                 switch (true) {
 
-                    case $item['trailer_type'] == "mp4_url":
+                    case $item['trailer_type'] === "mp4_url":
                         $item['trailer_videos_url']  =  $item->trailer ;
                         $item['trailer_video_player_type'] =  'video/mp4' ;
                     break;
 
-                    case $item['trailer_type'] == "m3u8_url" || "m3u8" :
+                    case $item['trailer_type'] === (("m3u8_url") || ("m3u8")) :
                         $item['trailer_videos_url']  =  $item->trailer ;
                         $item['trailer_video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
-                    case $item['trailer_type'] == "embed_url":
+                    case $item['trailer_type'] === "embed_url":
+                        $item['trailer_videos_url']  =  $item->trailer ;
+                        $item['trailer_video_player_type'] =  'video/mp4' ;
+                    break;
+
+                    case $item['trailer_type'] === "video_mp4":
                         $item['trailer_videos_url']  =  $item->trailer ;
                         $item['trailer_video_player_type'] =  'video/mp4' ;
                     break;
 
                     default:
-                        $item['videos_url']    = null ;
-                        $item['video_player_type']   =  null ;
+                        $item['trailer_videos_url']    = null ;
+                        $item['trailer_video_player_type']   =  null ;
                     break;
                 }
 
                 return $item;
             })->first();
 
+
+            // Payment Gateway Stripe 
+
+            $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->first();
+
+            $mode = $Stripepayment->live_mode;
+
+            if ($mode == 0) {
+
+                $secret_key = $Stripepayment->test_secret_key;
+                $publishable_key = $Stripepayment->test_publishable_key;
+
+            } elseif ($mode == 1) {
+
+                $secret_key = $Stripepayment->live_secret_key;
+                $publishable_key = $Stripepayment->live_publishable_key;
+                
+            } else {
+                $secret_key = null;
+                $publishable_key = null;
+            }
+
             $data = array(
                 'videodetail'    => $videodetail ,
+                'video'          => $videodetail ,   // Videos - Working Social Login
                 'setting'        => Setting::first(),
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,
                 'commentable_type' => 'play_videos',
                 'ThumbnailSetting' => ThumbnailSetting::first() ,
                 'currency'         => CurrencySetting::first(),
+                'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
+                'publishable_key'    => $publishable_key ,
             );
-
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
@@ -4056,36 +4265,58 @@ class ChannelController extends Controller
 
                 $item['image_url']          = URL::to('public/uploads/images/'.$item->image );
                 $item['player_image_url']   = URL::to('public/uploads/images/'.$item->player_image );
-                $item['pdf_files_url']  = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
-                $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+                $item['pdf_files_url']      = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
+                $item['transcoded_url']     = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+
+                $item['video_skip_intro_seconds']        = $item->skip_intro  ? Carbon::parse($item->skip_intro)->secondsSinceMidnight() : null ;
+                $item['video_intro_start_time_seconds']  = $item->intro_start_time ? Carbon::parse($item->intro_start_time)->secondsSinceMidnight() : null ;
+                $item['video_intro_end_time_seconds']    = $item->intro_end_time ? Carbon::parse($item->intro_end_time)->secondsSinceMidnight() : null ;
+
+                $item['video_skip_recap_seconds']        = $item->skip_recap ? Carbon::parse($item->skip_recap)->secondsSinceMidnight() : null ;
+                $item['video_recap_start_time_seconds']  = $item->recap_start_time ? Carbon::parse($item->recap_start_time)->secondsSinceMidnight() : null ;
+                $item['video_recap_end_time_seconds']    = $item->recap_end_time ? Carbon::parse($item->recap_end_time)->secondsSinceMidnight() : null ;
 
                 // Videos URL 
 
                 switch (true) {
 
                     case $item['type'] == "mp4_url":
-                        $item['videos_url']  =  $item->mp4_url ;
-                        $item['video_player_type'] =  'video/mp4' ;
+                    $item['videos_url'] =  $item->mp4_url ;
+                    $item['video_player_type'] =  'video/mp4' ;
                     break;
 
                     case $item['type'] == "m3u8_url":
-                        $item['videos_url']  =  $item->m3u8_url ;
-                        $item['video_player_type'] =  'application/x-mpegURL' ;
+                    $item['videos_url'] =  $item->m3u8_url ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
                     case $item['type'] == "embed":
-                        $item['videos_url']  =  $item->embed_code ;
-                        $item['video_player_type'] =  'video/webm' ;
+                    $item['videos_url'] =  $item->embed_code ;
                     break;
                     
                     case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-                        $item['videos_url']    =   URL::to('/storage/app/public/'.$item->path.'.m3u8');
-                        $item['video_player_type']   =  'application/x-mpegURL' ;
+                    $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
+                    break;
+                    
+                    case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
+                    $item['videos_url']   = $item->mp4_url ;
+                    $item['video_player_type'] =  'video/mp4' ;
+                    break;
+
+                    case $item['type'] == " " && !is_null($item->transcoded_url) :
+                    $item['videos_url']   = $item->transcoded_url ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
+                    break;
+                    
+                    case $item['type'] == null :
+                    $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+                    $item['video_player_type'] =  'application/x-mpegURL' ;
                     break;
 
                     default:
-                        $item['videos_url']    = null ;
-                        $item['video_player_type']   =  null ;
+                    $item['videos_url']    = null ;
+                    $item['video_player_type'] = null ;
                     break;
                 }
 
@@ -4095,6 +4326,9 @@ class ChannelController extends Controller
             $data = array(
                 'videodetail' => $videodetail ,
             );
+
+
+            // dd($videodetail);
 
             return Theme::view('video-js-Player.video.videos', $data);
 
@@ -4174,8 +4408,115 @@ class ChannelController extends Controller
 
             $response = array(
                 'status'=> true,
-                'watchlater_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
+                'wishlist_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
                 'message'=> is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list"  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]); 
+    }
+
+    public function video_js_Like(Request $request)
+    {
+        try {
+            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'video_id' => $request->video_id,
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                'disliked'   => 0 ,
+            ];
+
+            $check_Like_exist = LikeDislike::where('video_id', $request->video_id)->where('liked',1)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            $inputs += [ 'liked'  => is_null($check_Like_exist) ? 1 : 0 , ];
+
+            
+            $Like_exist = LikeDislike::where('video_id', $request->video_id)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            !is_null($Like_exist) ? $Like_exist->find($Like_exist->id)->update($inputs) : LikeDislike::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'like_status' => is_null($check_Like_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($check_Like_exist) ? "You liked this video." : "You removed from liked this video."  ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status'=> false,
+                'message'=> $th->getMessage(),
+              );
+        }
+
+        return response()->json(['data' => $response]); 
+    }
+
+    public function video_js_disLike(Request $request)
+    {
+        try {
+            
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+
+            $inputs = [
+                'video_id' => $request->video_id,
+                'user_id' => !Auth::guest() ? Auth::user()->id : null,
+                'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
+                'liked'      => 0 ,
+            ];
+
+            $check_dislike_exist = LikeDislike::where('video_id', $request->video_id)->where('disliked',1)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+            $inputs += [ 'disliked'  => is_null($check_dislike_exist) ? 1 : 0 , ];
+
+
+            $dislike_exists = LikeDislike::where('video_id', $request->video_id)
+                                        ->where(function ($query) use ($geoip) {
+                                            if (!Auth::guest()) {
+                                                $query->where('user_id', Auth::user()->id);
+                                            } else {
+                                                $query->where('users_ip_address', $geoip->getIP());
+                                            }
+                                        })->first();
+
+        
+            !is_null($dislike_exists) ? $dislike_exists->find($dislike_exists->id)->update($inputs) : LikeDislike::create( $inputs ) ;
+
+            $response = array(
+                'status'=> true,
+                'dislike_status' => is_null($check_dislike_exist) ? "Add" : "Remove "  ,
+                'message'=> is_null($check_dislike_exist) ? "You disliked this video" : "You removed from disliked this video."  ,
             );
 
         } catch (\Throwable $th) {

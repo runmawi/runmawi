@@ -662,6 +662,7 @@ class CPPAdminAudioController extends Controller
         $user_id = $user->id;
         $audio_upload = $request->file('file');
         $ext = $audio_upload->extension();
+        $settings =Setting::first();
                
           
                 $file = $request->file->getClientOriginalName();
@@ -708,7 +709,8 @@ class CPPAdminAudioController extends Controller
                     $update_url->mp3_url = $data['mp3_url'];
                     $update_url->user_id = $user_id;
                     $update_url->uploaded_by = 'CPP';
-        
+                    $update_url->image = $settings->default_video_image;
+                    $update_url->player_image = $settings->default_horizontal_image;
                     $update_url->save();  
                     $user = Session::get('user'); 
                     $user_id = $user->id;

@@ -36,7 +36,7 @@
                                 <a type="button" class="text-white"
                                 href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                Watch Now
+                                <?= __('Watch Now') ?>
                                 </a>
                                 <div>
                                     <a style="color: white;"class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>">
@@ -58,9 +58,8 @@
           <!--  <h2>No Media in My Watchlater</h2>-->
                  <div class="col-md-12 text-center mt-4">
              <img class=" text-center w-100" src="<?php echo  URL::to('/assets/img/watch.png')?>" >
-                     <p class="text-white text-center med">We are having a temporary playback issue,we are <br>working on it and 
-                                         will be back very soon!</p>
-                     <a class="mb-5 text-white pag">Please refresh your page to retry</a>
+                     <p class="text-white text-center med"> <?= (__('We are having a temporary playback issue,we are')) ?> <br> <?= (__('working on it and will be back very soon!')) ?></p>
+                     <a class="mb-5 text-white pag"> <?= (__('Please refresh your page to retry')) ?></a>
          </div>
         <?php endif; ?>
          </div>

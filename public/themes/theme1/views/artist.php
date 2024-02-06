@@ -10,7 +10,7 @@
                 <i  class="fa fa-play-circle-o" aria-hidden="true" style="color:#fff!important;"></i>
             </div>
             <div class="flw">
-                <button type="button" class="btn btn-outline-secondary">Follow</button>
+                <button type="button" class="btn btn-outline-secondary"> <?= __('Follow') ?></button>
 
             </div>
             <div class="flw">
@@ -24,7 +24,7 @@
                 <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt="" width="250" >
             </div>
             <div class="abu p-2">
-                <h2>About</h2>
+                <h2> <?= __('About') ?></h2>
                 <p><?php echo $artist->description;?></p>
             </div>
         </div>
@@ -34,7 +34,7 @@
 
     <?php if(count($latest_audios) > 0) { ?>
         <div class="m-4 mt-3">
-            <h2>Lastest Release</h2>
+            <h2> <?= __('Lastest Release') ?></h2>
         </div>
 
         <div class="container">
@@ -66,7 +66,7 @@
 
     <?php if(count($albums) > 0) { ?>
         <div class="m-4 mt-3">
-            <h2>Album</h2>
+            <h2> <?= __('Album') ?></h2>
         </div>
 
         <div class="container">
@@ -98,7 +98,7 @@
     <?php if(count($artist_audios) > 0) { ?>
 
         <div class="m-4 mt-3">
-            <h2>Audio</h2>
+            <h2> <?= __('Audio') ?></h2>
         </div>
 
         <div class="container">
@@ -132,7 +132,7 @@
     <?php if(count($artist_series) > 0) { ?>
 
         <div class="m-4 mt-3">
-            <h2>Series</h2>
+            <h2> <?= __('Series') ?></h2>
         </div>
 
         <div class="container">
@@ -165,7 +165,7 @@
     <?php if(count($artist_videos) > 0) { ?>
 
         <div class="m-4 mt-3">
-            <h2>Videos</h2>
+            <h2> <?= __('Videos') ?></h2>
         </div>
 
         <div class="container">

@@ -106,7 +106,7 @@
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box "><p class="">{{ TotalRevenue() }}</p></div>
+                                       <div class="iq-user-box "><p class="">{{ currency_symbol() }}  {{ TotalRevenue() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total 
                                           Revenue
@@ -120,7 +120,7 @@
                               <div class="">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
-                                       <div class="iq-user-box "><p class="">{{ TotalMonthlyRevenue() }}</p></div>
+                                       <div class="iq-user-box "><p class="">{{ currency_symbol() }}  {{ TotalMonthlyRevenue() }}</p></div>
                                        <div class="media-body text-white">
                                           <p class="mb-0 font-size-14 line-height"> Total 
                                           Monthly Revenue

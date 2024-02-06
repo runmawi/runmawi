@@ -1,3 +1,7 @@
+
+
+
+
 <!-- Sliders -->
 
 <?php if(isset($sliders)) :
@@ -6,6 +10,9 @@
     echo 'active';
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $slider_video->slider; ?>" style="background-position: right;    ">
+        <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+        </div> -->
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -35,6 +42,9 @@ endif; ?>
     echo 'active';
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>" style="background-position: right;   ">
+        <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+        </div>     -->
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -89,6 +99,9 @@ endif; ?>
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $live_event_banner->player_image; ?>"
         style="background-position: right;   ">
+        <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+        </div> -->
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -133,6 +146,9 @@ endif; ?>
     echo 'active';
 } ?> header-image">
     <div class="slide  slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>" style="background-position: right;">
+        <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+        </div>     -->
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -179,7 +195,7 @@ endif; ?>
 if(Route::current()->getName() == "home" || Route::current()->getName() == null  ){
 
 
-            $parentCategories = App\VideoCategory::where('banner',1)->get();
+            $parentCategories = App\VideoCategory::where('in_home',1)->where('banner',1)->get();
 
                 foreach($parentCategories as $category) {
                 
@@ -204,7 +220,9 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>"
         style="background-position: right;">
-
+        <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+        </div> -->
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -262,6 +280,10 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>"
         style="background-position: right;  ">
+        
+        <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+            <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+        </div> -->
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -345,11 +367,20 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
     ->first();
 ?>
 
-<div class="item <?php if ($key == 0) {
-    echo 'active';
-} ?> header-image">
-    <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $series_slider->player_image; ?>"
-        style="background-position: right;">
+    <div class="item <?php if ($key == 0) {
+                    echo 'active';
+    } ?> header-image">
+      <div class="slide slick-bg s-bg-1 lazyload"
+    data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $series_slider->player_image; ?>"
+    style="background-position: right;"
+    id="image-container"
+>
+    <!-- <div class="our-video" style="position: absolute; bottom: 0; left:0; right:0; width:100%; height: 100%;">
+        <video class="myvideos" controls loop muted src="http://vjs.zencdn.net/v/oceans.mp4" width="100%" height="auto" alt="" style="transform: scale(1.35);"></video>
+    </div> -->
+                   
+
+
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -491,3 +522,22 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
     </div>
 </div>
 <?php endforeach;  endif; ?>
+
+<!-- <script>
+        $(document).ready(function () {
+            const imageContainer = document.getElementById("image-container");
+            const video = document.querySelector(".myvideos");
+            video.style.opacity = 0;
+
+            // Function to play the video after 5 seconds
+            function playVideoAfterDelay() {
+                setTimeout(function () {
+                    video.play();
+                    video.style.opacity = 1;
+                }, 5000); // 5000 milliseconds (5 seconds)
+            }
+
+            // Call the function to play the video after a delay
+            playVideoAfterDelay();
+        });
+    </script> -->

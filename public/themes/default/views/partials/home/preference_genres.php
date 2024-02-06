@@ -1,5 +1,6 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-        <h4 class="main-title"><a href="">Preference By Genres </a></h4>                      
+        <h4 class="main-title"><a href=""><?php echo (__('Preference By Genres')); ?> </a></h4>   
+        <h4 class="main-title"><a href=""><?php echo (__('View All')); ?></a></h4>                   
 </div>
     <div class="favorites-contens">
         <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -24,11 +25,11 @@
                                             <?php }elseif(!empty($preference_genre->ppv_price)){ ?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_genre->ppv_price; ?></p>
                                             <?php }elseif($preference_genre->access == 'registered'){ ?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                 <?php } elseif( !empty($preference_genre->global_ppv || !empty($preference_genre->global_ppv) && $preference_genre->ppv_price == null)){ ?>
                                                 <p class="p-tag1"><?php echo $preference_genre->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($preference_genre->global_ppv == null && $preference_genre->ppv_price == null ){ ?>
-                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Free')); ?></p>
                                             <?php } ?>
                                         <?php } ?>
                                 </div>
@@ -47,11 +48,11 @@
                                             <?php }elseif(!empty($preference_genre->ppv_price)){ ?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_genre->ppv_price; ?></p>
                                             <?php }elseif($preference_genre->access == 'registered'){ ?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                 <?php } elseif( !empty($preference_genre->global_ppv || !empty($preference_genre->global_ppv) && $preference_genre->ppv_price == null)){ ?>
                                                 <p class="p-tag1"><?php echo $preference_genre->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($preference_genre->global_ppv == null && $preference_genre->ppv_price == null ){ ?>
-                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Free')); ?></p>
                                             <?php } ?>
                                         <?php } ?>
                                         </a>
@@ -62,11 +63,11 @@
                                             <?php }elseif(!empty($preference_genre->ppv_price)){ ?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_genre->ppv_price; ?></p>
                                             <?php }elseif($preference_genre->access == 'registered'){ ?>
-                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Register Now')); ?></p>
                                                 <?php } elseif( !empty($preference_genre->global_ppv || !empty($preference_genre->global_ppv) && $preference_genre->ppv_price == null)){ ?>
                                                 <p class="p-tag1"><?php echo $preference_genre->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($preference_genre->global_ppv == null && $preference_genre->ppv_price == null ){ ?>
-                                                <p class="p-tag"><?php echo "Free"; ?></p>
+                                                <p class="p-tag"><?php echo (__('Free')); ?></p>
                                             <?php } ?>
                                         <?php } ?>
 

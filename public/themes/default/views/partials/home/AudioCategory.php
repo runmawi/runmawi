@@ -24,7 +24,8 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="movie-title">Audio Genre <?php echo @$CategoryAudio->name ?></h4>
+                    <h4 class="movie-title"><?php echo (__('Audio Genre ')); ?> <?php echo __(@$CategoryAudio->name) ?></h4>
+                   
                 </div>
 
                 <!-- BREADCRUMBS -->
@@ -77,7 +78,7 @@
                                                 <?php  echo (strlen(@$Audio_Category->title) > 17) ? substr(@$Audio_Category->title,0,18).'...' : @$Audio_Category->title; ?>
                                             </p>
                                         </a>
-                                            <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('/audio'.'/'.$Audio_Category->slug  ) ?> ">
+                                            <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/audio'.'/'.$Audio_Category->slug  ) ?> ">
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                 Visit Audio Player
                                             </a>

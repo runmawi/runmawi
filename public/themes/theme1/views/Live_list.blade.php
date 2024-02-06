@@ -23,7 +23,7 @@
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                             <div class="iq-main-header d-flex align-items-center justify-content-between">
-                                <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
+                                <a href="<?php echo URL::to('/LiveCategory/').'/'.$category->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
                                     <h4 class="movie-title"> {{ $category->name }} </h4>
                                 </a>
                             </div>
@@ -57,7 +57,7 @@
                                                         </p>
                                                     @elseif($category_video->global_ppv == null && $category_video->ppv_price == null )
                                                         <p class="p-tag" > 
-                                                            {{  "Free"}} 
+                                                             {{ __("Free")}} 
                                                         </p>
                                                     @endif
                                                 @endif 
@@ -144,7 +144,7 @@
         <?php } else:?>
 
         <div class="col-md-12 text-center mt-4">
-            <h1 class="text-white text-center med">Coming Soon......</h1>
+            <h1 class="text-white text-center med">{{ __('Coming Soon') }}......</h1>
             <img class=" text-center w-100" src="<?php echo  URL::to('/assets/img/watch.png')?>" >
         </div>
 
