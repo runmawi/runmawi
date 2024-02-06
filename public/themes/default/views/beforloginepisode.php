@@ -46,7 +46,7 @@
          
              if ($free_episode > 0 )
              {
-                  dd($free_episode);
+                  // dd($free_episode);
                   if ($series->access == 'guest' ||  $free_episode > 0): 
                      ?>
       <?php if ($episode->type == 'embed'): ?>
