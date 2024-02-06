@@ -82,158 +82,185 @@ border-radius: 15px;
 border: 2px dashed #51bce8;
 text-align: left;
 }    
+.sign-user_card .row.justify-content-center {
+    padding: 21px;
+    background-color: #111111;
+    border-radius: 15px;
+}
+.sign-user_card{
+    width: 40%;
+    background:none;
+}
+.sign-user_card input{
+    background-color: #000 !important;
+    border:none !important;
+}
+.sign-in-page{
+    background:none;
+}
+button.btn.btn-default.reveal {
+    background: transparent !important;
+}
+.sign-in-page .btn{
+    padding: 5px;
+}
+@media (max-width:600px){
+    .sign-user_card{
+        width:100%;
+    }
+}
 </style>
     </head>
 
 <body>
-<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section class="sign-in-page" >
    <div class="container">
       <div class="row mb-4  align-items-center height-self-center">
-          <div class="col-lg-7  col-12">
+          <!-- <div class="col-lg-7  col-12">
              
               <h1 class="km"><?php echo $settings->login_text; ?></h1>
                 
-          </div>
-         <div class="col-lg-5 col-12 col-md-12 align-self-center">
+          </div> -->
+         <div class="d-flex align-items-center justify-content-center w-100">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
-                  <div class="sign-in-from  m-auto" align="center">
-                      <div class="row justify-content-center">
-                          <div class="col-md-12">
-
-                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
-                            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
-                            <?php }else { ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
-                            <?php } ?>
-
-                      <?php if($settings->demo_mode == 1) { ?>
-                        <div class="demo_cred">
-                            <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">Demo Login</p>
-                            <p class="links"><strong>Email</strong>: admin@admin.com</p>
-                            <p class="links mb-0"><strong>Password</strong>: Webnexs123!@#</p>
-                        </div>
-                      <?php } else  { ?>
-                      <?php } ?>
-                       @if (Session::has('message'))
-                            <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
-                        @endif
-                        
-
-                        @if(count($errors) > 0)
-                        @foreach( $errors->all() as $message )
-                        <div class="alert alert-danger display-hide" id="successMessage" >
-                        <button id="successMessage" class="close" data-close="alert"></button>
-                        <span>{{ $message }}</span>
-                        </div>
-                        @endforeach
-                        @endif
-                     <form method="POST" action="{{ route('login') }}" class="mt-4">
-                         @csrf
-						   <input type="hidden" name="previous" value="{{ url()->previous() }}">
-						@error('email')
-							<span class="invalid-feedback" role="alert">
-								<strong>{{ $message }}</strong>
-							</span>
-						@enderror
-						
-						@error('password')
-							<span class="invalid-feedback" role="alert">
-								<strong>{{ $message }}</strong>
-							</span>
-						@enderror
-                        <div class="form-group">  
-                          <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}"  autocomplete="email" autofocus>
-                        </div>
-                        <div class="form-group" style="  margin-top: 30px;">                                 
-                           <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
-                            								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password"  autocomplete="current-password" >
-                        </div>
-<div class="position-relative">
-                                 <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                                 </span>
-                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                 </span>
-                            </div>
-                        
-                         <div class="d-flex justify-content-end links">
-                                    <a href="{{ route('Reset_Password') }}" class="f-link">Forgot your password?</a>
-                        </div>
-                        
-                                         {{-- reCAPTCHA  --}}
-                        @if( get_enable_captcha()  == 1)   
-                            <div class="form-group text-left" style="  margin-top: 30px;">
-                                {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
-                                {!! NoCaptcha::display() !!}
-                            </div>
-                        @endif
-                        
-                        <div class="sign-info">
-                            <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>                     
-                        </div> 
-
-                         <div class="mt-3" align="left" style="" >
-                                 <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
-                                 
-                                 <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
-                                  <input class="" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-								<label class="form-check-label text-white" for="remember">
-									{{ __('Keep me signed in') }}
-								</label>
-                            
-                              </div>  
-                          <hr style="color:#1e1e1e;">
-                         <!-- <h5 class="mb-3 text-center">Sign in by using</h5>
-                         <div class="form-group row mb-0">
-						@if ( config('social.google') == 1 )
-                           
-                            <div class="col-md-3 ">
-                            <a href="{{ url('/auth/redirect/google') }}" style="background-color:#ea4335;border:none;color:#fff;"  class="btn signup-desktop"><i class="fa fa-google"></i> Google</a>
-                            </div>
-                        @endif  
-						@if ( config('social.facebook') == 1 )
-                            <div class="col-md-3 offset-md-3">
-                                <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="background-color:#3f5c9a;border:none;color:#fff;"><i class="fa fa-facebook"></i> Facebook</a>
-                            </div>
-						@endif 
-						</div>-->
-                        <div class="soc mb-3">
-                            <div class="d-flex align-items-center">
-                                <?php if($system_settings != null){ ?>
-                                    <div>
-                                        <p class="links">Login with using:</p>
-                                    </div>
-                                <?php } ?>
-                               <?php if($system_settings != null && $system_settings->facebook == 1){ ?>
-                                <div>
-                                    <a href="{{ url('/auth/redirect/facebook') }}" class="" >
-                                    <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
+                    <div class="sign-in-from  m-auto" align="center">
+                        <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                            <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                        <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                            <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                        <?php }else { ?> 
+                            <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                        <?php } ?>
+                    <div class="row justify-content-center">
+                        <h4><?= "Login to your Cad3nce account" ?></h4>
+                        <div class="col-md-12">
+                            <?php if($settings->demo_mode == 1) { ?>
+                                <div class="demo_cred">
+                                    <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">Demo Login</p>
+                                    <p class="links"><strong>Email</strong>: admin@admin.com</p>
+                                    <p class="links mb-0"><strong>Password</strong>: Webnexs123!@#</p>
                                 </div>
-                               <?php } ?>
-                                <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
-                                    <div>
-                                        <a href="{{ url('/auth/redirect/google') }}" class="" >
-                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">
-                                        </a>
+                            <?php } else  { ?>
+                            <?php } ?>
+                            @if (Session::has('message'))
+                                <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
+                            @endif
+
+                            @if(count($errors) > 0)
+                            @foreach( $errors->all() as $message )
+                                <div class="alert alert-danger display-hide" id="successMessage" >
+                                    <button id="successMessage" class="close" data-close="alert"></button>
+                                    <span>{{ $message }}</span>
+                                </div>
+                            @endforeach
+                            @endif
+                            <form method="POST" action="{{ route('login') }}" class="mt-4">
+                                @csrf
+                                <input type="hidden" name="previous" value="{{ url()->previous() }}">
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                <div class="form-group">  
+                                    <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('Email') }}" value="{{ old('email') }}"  autocomplete="email" autofocus>
+                                </div>
+                                <div class="form-group">                                 
+                                    <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password"  autocomplete="current-password" >
+                                </div>
+                                <div class="position-relative">
+                                    <span class="input-group-btn" id="eyeSlash">
+                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                    </span>
+                                    <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                    </span>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end links">
+                                            <a href="{{ route('Reset_Password') }}" class="f-link">Forgot your password?</a>
+                                </div>
+                                
+                                                {{-- reCAPTCHA  --}}
+                                @if( get_enable_captcha()  == 1)   
+                                    <div class="form-group text-left" style="  margin-top: 30px;">
+                                        {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                                        {!! NoCaptcha::display() !!}
                                     </div>
-                                <?php  } ?>
-                            </div>
-                         </div>
-                     </form>
-                       <div class="">
-                  <div class="text -left links">
-                     Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2">Sign Up here!</a>
+                                @endif
+                                
+                                <div class="sign-info">
+                                    <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">LOGIN</button>                     
+                                </div> 
+
+                                <div class="mt-3" align="left" style="" >
+                                    <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
+                                    
+                                    <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
+                                    <input class="" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+
+                                    <label class="form-check-label text-white" for="remember">
+                                        {{ __('Keep me signed in') }}
+                                    </label>
+                                
+                                </div>  
+                                <hr style="color:#1e1e1e;">
+                                <!-- <h5 class="mb-3 text-center">Sign in by using</h5>
+                                <div class="form-group row mb-0">
+                                @if ( config('social.google') == 1 )
+                                
+                                    <div class="col-md-3 ">
+                                    <a href="{{ url('/auth/redirect/google') }}" style="background-color:#ea4335;border:none;color:#fff;"  class="btn signup-desktop"><i class="fa fa-google"></i> Google</a>
+                                    </div>
+                                @endif  
+                                @if ( config('social.facebook') == 1 )
+                                    <div class="col-md-3 offset-md-3">
+                                        <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="background-color:#3f5c9a;border:none;color:#fff;"><i class="fa fa-facebook"></i> Facebook</a>
+                                    </div>
+                                @endif 
+                                </div>-->
+                                <!-- <div class="soc mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <?php if($system_settings != null){ ?>
+                                            <div>
+                                                <p class="links">Login with using:</p>
+                                            </div>
+                                        <?php } ?>
+                                        <?php if($system_settings != null && $system_settings->facebook == 1){ ?>
+                                            <div>
+                                                <a href="{{ url('/auth/redirect/facebook') }}" class="" >
+                                                <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
+                                            </div>
+                                        <?php } ?>
+                                        <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
+                                            <div>
+                                                <a href="{{ url('/auth/redirect/google') }}" class="" >
+                                                    <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                                </a>
+                                            </div>
+                                        <?php  } ?>
+                                    </div>
+                                </div> -->
+                            </form>
+                            <!-- <div class="">
+                                <div class="text -left links">
+                                    Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2">Sign Up here!</a>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="text-center links mt-3">
+                        Not having an account? click <a href="{{ route('signup') }}" class="text-primary ml-2">here</a> to sign up!
                   </div>
-                  
-               </div>
-                  </div>
-               </div>
               
             </div>
          </div>

@@ -162,7 +162,7 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-        margin-left: -60px;
+        margin-left: -102px;
         height: 45px !important;
         background: transparent !important;
         color: #fff !important;
@@ -186,8 +186,17 @@ i.fa.fa-google-plus {
         color-scheme: dark;
     }
 </style>
+<style>
+    .sign-user_card{
+        background-color: #111;
+        border-radius: 15px;
+    }
+    button.btn.btn-default.reveal {
+        background: transparent !important;
+    }
+</style>
 
-<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section >
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -200,9 +209,9 @@ i.fa.fa-google-plus {
     // dd($SignupMenu);
 ?>
 
-<div class="container loginbackground">
+<div class="container loginbackground mt-0">
       <div class="row justify-content-center align-items-center height-self-center">
-         <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
+         <div class="col-sm-9 col-md-7 col-lg-5 text-center align-self-center">
 
                             {{-- recaptcha --}}
                 <div class="col-md-12">
@@ -213,27 +222,32 @@ i.fa.fa-google-plus {
                      @endif
                 </div>
 
+                <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                    <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
+                <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                    <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
+                <?php }else { ?> 
+                    <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                <?php } ?>
+
+
+
+
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
 
                       <div align="center">
                                       
-                            <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
-                            <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
-                            <?php }else { ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
-                            <?php } ?>
+                            
 
-                          <h3 class="mb-3 text-center">Sign Up</h3>
+                          <h4 class="mb-3 text-center"><?= "Sign up to your Cad3nce account" ?></h4>
                       </div>
                       <form onsubmit="return ValidationEvent()" action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">
                             
-                                @if (!empty($SignupMenu) && $SignupMenu->username == 1)
+                                <!-- @if (!empty($SignupMenu) && $SignupMenu->username == 1)
                                     <div class="col-md-12">
                                         <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
 
@@ -243,21 +257,21 @@ i.fa.fa-google-plus {
                                             </span>
                                         @enderror
                                     </div>
-                                    @endif
+                                @endif -->
                                 
                                 
                                 @if(!empty($SignupMenu) && $SignupMenu->email == 1)
                                     <div class="col-md-12">
-                                    <input id="email" type="email" placeholder="Email Address"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
-                                    <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
-                                    </span>
-
-                                    @error('email')
-                                        <span class="invalid-feedback" id="email_error" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                        <input id="email" type="email" placeholder="Email"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                        <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
                                         </span>
-                                    @enderror
-                                </div>
+
+                                        @error('email')
+                                            <span class="invalid-feedback" id="email_error" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 @endif
                             
                             
@@ -298,35 +312,35 @@ i.fa.fa-google-plus {
                                  </div>
                                  @endif
                            
-                                 @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
-                                <div class="col-md-12" style="postion:relative;">
-                                <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="Choose DOB"  >
+                                 <!-- @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
+                                    <div class="col-md-12" style="postion:relative;">
+                                        <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="Choose DOB"  >
 
-                                <!-- <input type="date" name="dob"  id ='dob' class="form-control">
-                                <label id="fileLabel">Choose Profile DOB</label> -->
-                                 </div>
-                                 @endif
+                                        <input type="date" name="dob"  id ='dob' class="form-control">
+                                        <label id="fileLabel">Choose Profile DOB</label>
+                                    </div>
+                                 @endif -->
 
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
-                                 <div class="col-md-12">
-                                     <div class="row">
-                                     <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
-                                         </div>
-                                         <div >
-                                <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                                 </span>
-                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                 </span>
-                                         </div>
-                                        <span class="text-danger error_password" id='error_password' style='padding-left: 22px' >
-                                            <strong>Password Not matching.</strong>
-                                        </span>
-                                     
-                                         </div>
-                            </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                            </div>
+                                            <div >
+                                                <span class="input-group-btn" id="eyeSlash">
+                                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                                </span>
+                                                <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                </span>
+                                            </div>
+                                            <span class="text-danger error_password" id='error_password' style='padding-left: 22px' >
+                                                <strong>Password Not matching.</strong>
+                                            </span>
+                                        
+                                        </div>
+                                    </div>
                                 @endif
                             
                             
@@ -351,66 +365,66 @@ i.fa.fa-google-plus {
                             </div>            
                                 @endif
                             
-                                @if(!empty($SignupMenu) && $SignupMenu->country == 1)
-                                <div class="col-md-12" style="postion:relative;">
-                                    <select class="phselect form-control" name="country" id="country" >
-                                        <option>Select Country</option>
-                                            @foreach($AllCountry as $code)
+                                <!-- @if(!empty($SignupMenu) && $SignupMenu->country == 1)
+                                    <div class="col-md-12" style="postion:relative;">
+                                        <select class="phselect form-control" name="country" id="country" >
+                                            <option>Select Country</option>
+                                                @foreach($AllCountry as $code)
+                                                <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
+                                                @endforeach
+                                        </select>  
+                                    </div>
+                                 @endif -->
+                            
+                                 <!-- @if (!empty($SignupMenu) && $SignupMenu->state == 1)
+                                    <div class="col-md-12">
+                                        <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus>
+                                        <select class="phselect form-control" name="state" id="state-dropdown" >
+                                            <option>Select State</option>
+                                            @foreach($State as $code)
                                             <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
                                             @endforeach
-                                    </select>  
-                                </div>
-                                 @endif
-                            
-                                 @if (!empty($SignupMenu) && $SignupMenu->state == 1)
-                                    <div class="col-md-12">
-                                        <!-- <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus> -->
-                                        <select class="phselect form-control" name="state" id="state-dropdown" >
-                                        <option>Select State</option>
-                                            <!-- @foreach($State as $code)
-                                            <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
-                                            @endforeach -->
-                                    </select>  
+                                        </select>  
                                         @error('state')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                    @endif
+                                @endif -->
 
                                     
-                                @if (!empty($SignupMenu) && $SignupMenu->city == 1)
+                                <!-- @if (!empty($SignupMenu) && $SignupMenu->city == 1)
                                     <div class="col-md-12">
-                                        <!-- <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus> -->
+                                        <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus>
                                         <select class="phselect form-control" name="city" id="city-dropdown" >
-                                        <option>Select City</option>
-                                            <!-- @foreach($State as $code)
+                                            <option>Select City</option>
+                                            @foreach($State as $code)
                                             <option value="{{  $code['name'] }}">{{ $code['name'] }}</option>
-                                            @endforeach -->
-                                    </select>  
+                                            @endforeach
+                                        </select>  
                                         @error('city')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                    @endif
+                                @endif -->
 
                                     
-                                @if(!empty($SignupMenu) && $SignupMenu->support_username == 1)
-                                <div class="col-md-12" style="postion:relative;">
-                                    <select class="phselect form-control" name="support_username" id="support_username" >
-                                        <option>Select Support Musician</option>
-                                            @foreach($Artists as $Artist)
-                                            <option value="{{  $Artist['artist_name'] }}">{{ $Artist['artist_name'] }}</option>
-                                            @endforeach
-                                    </select>  
-                                </div>
-                                 @endif
+                                <!-- @if(!empty($SignupMenu) && $SignupMenu->support_username == 1)
+                                    <div class="col-md-12" style="postion:relative;">
+                                        <select class="phselect form-control" name="support_username" id="support_username" >
+                                            <option>Select Support Musician</option>
+                                                @foreach($Artists as $Artist)
+                                                <option value="{{  $Artist['artist_name'] }}">{{ $Artist['artist_name'] }}</option>
+                                                @endforeach
+                                        </select>  
+                                    </div>
+                                 @endif -->
                             
-                       <div class="form-group row">
-                        </div>
+                       <!-- <div class="form-group row">
+                        </div> -->
                             <?php if ( isset($ref)) { ?>
                                 <div class="form-group row">
                                     <label for="password-confirm" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Referrer ID') }} <span style="color:#4895d1"></span>
@@ -447,16 +461,19 @@ i.fa.fa-google-plus {
                         
                         
                     </form>
-                       <div class="mt-3">
-                  <div class="d-flex justify-content-center links">
-                     Already have an account? <a href="<?= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
-                  </div>                        
-               </div>
+                    <!-- <div class="mt-3">
+                        <div class="d-flex justify-content-center links">
+                            Already have an account? <a href="<?= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
+                        </div>                        
+                    </div> -->
                   </div>
                   
                </div>    
                
             </div>
+            <div class="d-flex justify-content-center links mt-2">
+                     Already have an account? <a href="<?= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
+                  </div>
          </div>
       </div>
    </div>
