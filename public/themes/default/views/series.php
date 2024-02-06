@@ -339,9 +339,9 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
                                     </div>
                                     <div class="block-description" >
-                                      <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>" >
+                                      <!-- <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>" >
                                         <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/>  Watch Now
-                                      </a>
+                                      </a> -->
                                     </div>
                                       <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                     
@@ -379,7 +379,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                  
                                  </div>
                                         </div>-->
-                                    
+                                        <a class="epi-name mt-3 mb-0 btn" href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?> ">
+                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                              Watch Now
+                                              </a>
                                 
                               </a>
                             </li>

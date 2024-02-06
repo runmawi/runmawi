@@ -15,7 +15,7 @@
                             </a>
                         </h4>
                     </div>
-                    <div class="tvthrillers-contens">
+                    <div class="favorites-contens">
                         <ul class="favorites-slider list-inline row p-0 mb-0">
                             @foreach ($data as $series_details)
                                 <li class="slide-item">

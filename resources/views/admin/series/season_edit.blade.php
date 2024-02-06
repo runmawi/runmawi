@@ -512,9 +512,9 @@
                                         <option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
                                         <option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
                                         <?php if($settings->ppv_status == 1){ ?>
-                                        <!-- <option value="ppv" >PPV Users (Pay per movie)</option>    -->
+                                        <option value="ppv" >PPV Users (Pay per movie)</option>   
                                         <?php } else{ ?>
-                                        <!-- <option value="ppv" >PPV Users (Pay per movie)</option>    -->
+                                        <option value="ppv" >PPV Users (Pay per movie)</option>   
                                         <?php } ?>
                                     </select>
                                     <div class="clear"></div>
