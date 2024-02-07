@@ -104,10 +104,49 @@ button.btn.btn-default.reveal {
 .sign-in-page .btn{
     padding: 5px;
 }
+button.btn.btn-default.reveal{
+    margin-right:15px;
+}
+iframe {
+    height: 60px;
+}
+@media (max-width:992px){
+    .sign-user_card{
+        width:80%;
+    }
+}
+@media (max-width:768px){
+    .sign-user_card{
+        width:80%;
+    }
+}
 @media (max-width:600px){
     .sign-user_card{
         width:100%;
     }
+}
+@media screen and (max-width: 767px) {
+  /* Styles for screens up to 767px wide (typically mobile devices) */
+  .col-md-4.recaptcha {
+    width: 100%; /* Make it full width for smaller screens */
+    margin-bottom: 10px; /* Add some spacing between elements if needed */
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  /* Styles for screens between 768px and 991px wide (typically tablets) */
+  .col-md-4.recaptcha {
+    width: 50%; /* Adjust the width as needed */
+    /* Add any other styles for this screen size */
+  }
+}
+
+@media screen and (min-width: 992px) {
+  /* Styles for screens 992px wide and above (typically desktops) */
+  .col-md-4.recaptcha {
+    width: 33.33%; /* Adjust the width as needed */
+    /* Add any other styles for this screen size */
+  }
 }
 </style>
     </head>
@@ -124,7 +163,7 @@ button.btn.btn-default.reveal {
          <div class="d-flex align-items-center justify-content-center w-100">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
-                    <div class="sign-in-from  m-auto" align="center">
+                    <div class="sign-in-from  m-auto p-0" align="center">
                         <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
                             <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                         <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
@@ -132,6 +171,7 @@ button.btn.btn-default.reveal {
                         <?php }else { ?> 
                             <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                         <?php } ?>
+                        <p class="text-center text-white mb-3" style="font-size:11px;margin:0;"> <?= 'Created by Music Fans for Music Fans' ?></p>
                     <div class="row justify-content-center">
                         <h4><?= "Login to your Cad3nce account" ?></h4>
                         <div class="col-md-12">
@@ -187,8 +227,10 @@ button.btn.btn-default.reveal {
                                 </div>
                                 
                                 <div class="d-flex justify-content-end links">
-                                            <a href="{{ route('Reset_Password') }}" class="f-link">Forgot your password?</a>
+                                
+                                            <a href="{{ route('Reset_Password') }}" class="f-link m-0">Forgot your password?</a>
                                 </div>
+                                <div class="col-md-4 recaptcha" id="g-recaptcha1"></div> 
                                 
                                                 {{-- reCAPTCHA  --}}
                                 @if( get_enable_captcha()  == 1)   
@@ -212,7 +254,8 @@ button.btn.btn-default.reveal {
                                         {{ __('Keep me signed in') }}
                                     </label>
                                 
-                                </div>  
+                                </div> 
+                                
                                 <hr style="color:#1e1e1e;">
                                 <!-- <h5 class="mb-3 text-center">Sign in by using</h5>
                                 <div class="form-group row mb-0">
@@ -267,6 +310,21 @@ button.btn.btn-default.reveal {
       </div>
    </div>
 </section>
+
+
+<script>
+    setTimeout(function() {
+  
+  $('.recaptcha').each(function() {
+    grecaptcha.render(this.id, {
+      'sitekey': '6LdVkwkUAAAAACeeETRX--v9Js0vWyjQOTIZxxeB',
+      "theme":"light"
+    });
+  });
+  
+}, 2000);
+</script>
+
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>                
 <script>
