@@ -1042,7 +1042,7 @@ div#main_nav {
                <div class="col-lg-6 col-md-6 col-sm-6">
                   <div class="text-center">
                      <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
-                     <p style="font-size:11px;"> <?= 'Created by Music Fans for Music Fans' ?></p>
+                     <p style="font-size:11px;margin:0;"> <?= 'Created by Music Fans for Music Fans' ?></p>
                   </div>
                </div>
 
