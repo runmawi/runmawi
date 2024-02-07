@@ -146,7 +146,7 @@
                     <div class="row">  
                             @if ( $videodetail->PPV_Exits == 1 && $videodetail->access == 'ppv' ||  !Auth::guest() && Auth::user()->role =="admin" 
                             || !Auth::guest() &&  settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' 
-                            || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'subscriber' )  
+                            || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'subscriber' || $videodetail->access == 'guest')  
                                 <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
                                             <div class="playbtn" style="gap:5px">    {{-- Play --}}
                                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
