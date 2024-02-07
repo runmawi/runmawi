@@ -505,7 +505,7 @@ class LiveStreamController extends Controller
           try {
               $current_time = Carbon::now()->format('Y-m-d H:i:s');
 
-              $unseen_expiry_date = LivePurchase::where('video_id',$request->live_id)->where('livestream_view_count',0)->where('user_id',Auth::user()->id)->pluck('unseen_expiry_date')->first();
+              $unseen_expiry_date = LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->pluck('unseen_expiry_date')->first();
 
               if(  $unseen_expiry_date != null && $unseen_expiry_date <= $current_time ){
 

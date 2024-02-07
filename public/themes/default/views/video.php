@@ -2256,6 +2256,7 @@ $artists = [];
                     <script src="https://checkout.stripe.com/checkout.js"></script>
                     <div class="clear"></div>
                     <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $client_id; ?>"></script>
+                    <script src="https://js.stripe.com/v3/"></script>
 
                     <script>
 

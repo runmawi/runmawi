@@ -60,17 +60,19 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
     <div class="">
         <?php 
 			   if(!Auth::guest()){  
-			      if( $free_episode > 0 && $checkseasonppv_exits == 0 ||  $ppv_exits > 0 && $checkseasonppv_exits == 0
-                   || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber' ||  Auth::guest() && $checkseasonppv_exits == 0){ 
-                  if($episode_PpvPurchase > 0 && Auth::user()->role == 'registered' && $episode->access == 'ppv' || $episode->access == 'guest' ||  ( ($episode->access == 'subscriber' ||
-                    $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'registered' ||
-                    $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'guest'  ||
-                    $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'guest'  ||
-                    $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'subscriber'
-                    || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed())
-                    || (!Auth::guest() && (Auth::user()->role == 'demo'  || Auth::user()->role == 'admin')) || 
-                    (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration 
-                    && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'): 
+
+                if( $free_episode > 0){
+                    
+                    if( $free_episode > 0):
+
+			    //   if( $free_episode > 0 ||  $ppv_exits > 0 && @$checkseasonppv_exits == 0
+                //    || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber'){ 
+                    // dd($free_episode);
+                //   if($free_episode > 0  || $free_episode > 0 && Auth::user()->role == 'registered' 
+                //     || $episode->access == 'registered' && !Auth::guest() && Auth::user()->subscribed()
+                //     || (!Auth::guest() && (Auth::user()->role == 'demo'  || Auth::user()->role == 'admin')) || 
+                //     (!Auth::guest()  && $settings->free_registration 
+                //     && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'): 
                   ?>
 
         <?php if($episode->type == 'embed'): ?>
@@ -175,13 +177,13 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
             <div class="container-fluid">
                 <h4 class=""><?php echo $episode->title; ?></h4>
                 <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
-                <h4 class=""><?php if ($episode->access == 'subscriber'): ?><?php echo __('Subscribe to view more'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
+                <h4 class=""><?php if ($SeriesSeason->access == 'subscriber'): ?><?php echo __('Subscribe to view more'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                     <?php endif; ?></h4>
                 <div class="clear"></div>
             </div>
-            <?php if( !Auth::guest() && $episode->access == 'ppv'):  ?>
+            <?php if( !Auth::guest() && $SeriesSeason->access == 'ppv'):  ?>
             <div class=" mt-3">
-                <a onclick="pay(<?php if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($episode->ppv_price); }else if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 0){ echo __(@$episode->ppv_price) ; } ?>)">
+                <a onclick="pay(<?php if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($SeriesSeason->ppv_price); }else if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0){ echo __(@$SeriesSeason->ppv_price) ; } ?>)">
                 <button type="button"
                     class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
                 </a>
@@ -189,7 +191,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                     <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
                 </form> -->
             </div>
-            <?php elseif( !Auth::guest() && $episode->access == 'subscriber'):  ?>
+            <?php elseif( !Auth::guest() && $SeriesSeason->access == 'subscriber'):  ?>
             <div class=" mt-3">
             <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                     <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
@@ -207,7 +209,8 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         </div>
 
         <?php endif; 
-			}else if($checkseasonppv_exits == 0){  ?>
+			}else if(@$checkseasonppv_exits == 0 && $free_episode > 0){ 
+                 ?>
 
         <div id="series_container">
             <video id="videoPlayer" muted autoplay class="video-js vjs-default-skin" controls preload="auto"
@@ -242,7 +245,45 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
    <div>
    </div> -->
 
-            <?php } } ?>
+            <?php } else{   ?>
+                
+                <div
+                id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+                <div class="container-fluid">
+                    <h4 class=""><?php echo $episode->title; ?></h4>
+                    <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
+                    <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
+                        <?php endif; ?></h4>
+                    <div class="clear"></div>
+                </div>
+                <?php if( !Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber'):  ?>
+                <div class=" mt-3">
+                    <a onclick="pay(<?php if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($SeriesSeason->ppv_price); }else if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0){ echo __(@$SeriesSeason->ppv_price) ; } ?>)">
+                    <button type="button"
+                        class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
+                    </a>
+                    <!-- <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
+                    </form> -->
+                </div>
+                <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
+                <div class=" mt-3">
+                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
+                    </form>
+                </div>
+                <?php else: ?>
+                <div class=" mt-3">
+                    <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
+                        <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
+                            <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+                    </form>
+                </div>
+                <?php endif; ?>
+        
+            </div>
+        
+                <?php      }  } ?>
         </div>
     </div>
 
@@ -617,7 +658,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a onclick="pay(<?php echo $episode->ppv_price; ?>)">
+                    <a onclick="pay(<?php echo $SeriesSeason->ppv_price; ?>)">
                         <button type="button" class="btn btn-primary" id="submit-new-cat"><?php echo __('Continue'); ?></button>
                     </a>
                     <button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo __('Close'); ?></button>
