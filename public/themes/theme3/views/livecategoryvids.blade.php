@@ -26,15 +26,15 @@ $currency = App\CurrencySetting::first();
                                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
+                                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
                                                 
-                                          <?php  if(!empty($category_video->ppv_price)){?>
-                                          <p class="p-tag1" ><?php echo $currency->symbol.' '.$category_video->ppv_price; ?></p>
-                                          <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
-                                            <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
+                                                    <!-- <?php  if(!empty($category_video->ppv_price)){?>
+                                                        <p class="p-tag1" ><?php echo $currency->symbol.' '.$category_video->ppv_price; ?></p>
+                                                    <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
+                                                        <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$currency->symbol; ?></p>
                                                     <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
-                                                    <p class="p-tag"><?php echo "Free"; ?></p>
-                                                    <?php } ?>
+                                                        <p class="p-tag"><?php echo "Free"; ?></p>
+                                                    <?php } ?> -->
                                                
                                                 </div>
                                              
