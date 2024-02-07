@@ -1,16 +1,12 @@
-/public/uploads/*
-/storage/app/*
-/dev/*
-/trial/*
-/google8691d50d4a0e5c5c.html
-/cpp/*
-/.env
-/.htaccess
-/pma/*
-/public/multiprofile/*
-/resources/lang/*
-/resources/lang/*.json
-/resources/lang/en.json
-/resources/lang/fr.json
-/resources/lang/it.json
-/resources/lang/pl.json
+# IDE Files
+#-------------------------
+/nbproject/
+.idea/*
+
+## Sublime Text cache files
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+
