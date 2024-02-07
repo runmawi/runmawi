@@ -7,6 +7,7 @@ $series = App\series::first();
 $series = App\series::where('id', $episode->series_id)->first();
 $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
+
 ?>
 
 <style>
@@ -577,6 +578,8 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
     $free_content_duration = $episode->free_content_duration;
     $user_access = $episode->access;
     $Auth = Auth::guest();
+    $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
+
     ?>
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
