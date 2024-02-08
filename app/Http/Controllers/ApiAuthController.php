@@ -15010,11 +15010,9 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function albums_Pagelist(){
 
-    $query = AudioAlbums::query()->latest()->get();
-
-      $data->transform(function ($item) {
-        $item['image_url'] = URL::to('/public/uploads/albums/'.$item->image);
-        $item['Player_image_url'] = URL::to('/public/uploads/albums/'.$item->image);
+    $data = AudioAlbums::query()->latest()->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/public/uploads/albums/'.$item->album);
+        $item['Player_image_url'] = URL::to('/public/uploads/albums/'.$item->album);
         $item['source']    = "albums";
         return $item;
       });
