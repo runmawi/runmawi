@@ -469,7 +469,7 @@ i.fa.fa-google-plus {
         }
     .cont{
         background-color: #232c30;
-    padding: 36px 47px 70px;
+    padding: 36px 47px 20px;
     margin-bottom: 35px;
     }
     #card-button{
@@ -685,6 +685,9 @@ background-color: #000;padding: 10px!important;}
                         <!-- Stripe Elements Placeholder -->
                         <label for="ccnum"> {{ __('Card Number') }}</label>
                         <div id="card-element" style=""></div>
+                        <p class="text-white mt-3 dp">
+                            {{ $signup_payment_content ? $signup_payment_content : " " }}
+                        </p>
 
                         @if( get_coupon_code() == 1)
                                         <!-- Add Promotion Code -->
@@ -737,9 +740,10 @@ background-color: #000;padding: 10px!important;}
                 </div>
                 <div class="col-md-12 mt-5" id="paypal_card_payment">
                 </div>
-                 <p class="text-white mt-3 dp">
+                 <!-- <p class="text-white mt-3 dp">
+                    <a href=""> terms</a>
                          {{ $signup_payment_content ? $signup_payment_content : " " }}
-                 </p>
+                 </p> -->
             </div>
                                             {{-- Stripe --}}
                     <div class="col-md-12 stripe_payment">

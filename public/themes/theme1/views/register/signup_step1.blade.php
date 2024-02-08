@@ -229,6 +229,13 @@ i.fa.fa-google-plus {
         background:rgba(11, 11, 11,1);
         font-size: 12px;
     }
+    button.close {
+        color: #fff;
+        opacity: 1;
+    }
+    .close:not(:disabled):not(.disabled):hover{
+        color: red;
+    }
 </style>
 
 <section /*style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;"*/>
@@ -496,8 +503,8 @@ i.fa.fa-google-plus {
       <!-- Modal content-->
       <div class="modal-content" >
         <div class="modal-header" style="border:none;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color:#000;"><?php echo __('Terms and Conditions');?></h4>
+            <h4 class="modal-title"><?php echo __('Terms and Conditions');?></h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
         </div>
         <div class="modal-body" >
             <?php
