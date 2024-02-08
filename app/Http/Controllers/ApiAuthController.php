@@ -14600,9 +14600,9 @@ public function QRCodeMobileLogout(Request $request)
                   $Page_List_Name = 'Recommended_videos_users_Pagelist';
                   break;
 
-              case 'albums':
-                    $data = $this->albums_Pagelist();
-                    $Page_List_Name = 'albums_Pagelist';
+              case 'Audios_album':
+                    $data = $this->Audios_albums_Pagelist();
+                    $Page_List_Name = 'Audios_albums_Pagelist';
                     break;
 
               case 'audios':
@@ -15008,7 +15008,7 @@ public function QRCodeMobileLogout(Request $request)
       return $data;
   }
 
-  private static function albums_Pagelist(){
+  private static function Audios_albums_Pagelist(){
 
     $data = AudioAlbums::query()->latest()->get()->map(function ($item) {
         $item['image_url'] = URL::to('/public/uploads/albums/'.$item->album);
