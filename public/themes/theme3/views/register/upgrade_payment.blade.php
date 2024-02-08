@@ -501,6 +501,89 @@ i.fa.fa-google-plus {
     }
 .ambk{
 background-color: #000;padding: 10px!important;}
+
+</style>
+
+
+<!-- stepper -->
+<style>
+    .steps-wrapper {
+        display: flex;
+        flex-direction: row-resize;
+        justify-content: end;
+        align-items: center;
+        direction: rtl;
+
+        padding: 8px;
+    }
+
+    .steps-wrapper .step {
+        display: flex;
+        align-items: center;
+
+        transition: all ease-in-out 0.2s;
+    }
+
+    .step .step-circle {
+        width: 25px;
+        height: 25px;
+
+        border-radius: 50%;
+        border: 6px solid #FF26F6;
+
+        background-color: #fff;
+    }
+
+    .step.complete .step-circle {
+        background-color: #FF26F6;
+    }
+
+    .step.complete ~ .step .step-circle {
+        background-color: #FF26F6;
+    }
+
+    .step .step-line {
+        width: 50px;
+        border: 3px solid #FF26F6;
+    }
+    .plan-card{
+        margin-top:5rem;
+    }
+    .plan-card .card {
+        border-radius: 1.25rem;
+        background-color: #FF26F6;
+        border: 3px solid #fff;
+        height: 160px;
+    }
+    a.text-primary {
+        background: #fff;
+        padding: 0px 28px;
+        border-radius: 26px;
+    }
+    .input-details{
+        width:100%;
+        border-radius:35px !important;
+        padding:0 27px !important;
+    }
+    .input-details::placeholder{
+        color: #000 !important;
+    }
+    .details-fields .row{
+        margin-bottom:20px;
+    }
+    .about-plan p{
+        font-size:18px;
+        line-height:30px;
+    }
+    .col-sm-4.submit-button button {
+        width: 100%;
+        border-radius: 35px;
+        padding: 14px;
+        font-size: 21px;
+    }
+    .steps-wrapper.payment-sec.pl-0 {
+        margin-top: 10rem;
+    }
 </style>
 
 <script>
@@ -533,10 +616,132 @@ background-color: #000;padding: 10px!important;}
     $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
 @endphp
 
-<section class="flick p-4">
-    <div class="container">
+
+<section>
+    
+    <div class="container-fluid mb-5">
+        <div class="steps-wrapper pl-0 mb-3">
+            <div class="step complete" data-step="3">
+                <div class="step-circle" style="background:transparent;"></div>
+                <div class="step-line"></div>
+            </div>
+
+            <div class="step" data-step="2">
+                <div class="step-circle"></div>
+                <div class="step-line"></div>
+            </div>
+
+            <div class="step" data-step="1">
+                <div class="step-circle"></div>
+            </div>
+        </div>
+
+        <h4><?= "Choose the right plan for you" ?></h4>
+
+        <div class="plan-card">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card" >
+                        <div class="card-body">
+                            <h5 class="card-title"><?= "Pay Monthly" ?></h5>
+                            <p class="card-text"><?= "Rolling month to month" ?></p>
+                            <div class="d-flex justify-content-between align-items-end mt-3">
+                                <h5>{{ '$7.99' }}</h5>
+                                <a href="#payment_card_scroll_dummy" class="text-primary">choose</a>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card" >
+                        <div class="card-body">
+                            <h5 class="card-title">Pay annually</h5>
+                            <p class="card-text"><?= "Full year subscription" ?></p>
+                            <div class="d-flex justify-content-between align-items-end mt-3">
+                                <span>
+                                    <h5>{{ '$7.99' }}</h5>
+                                    <p class="font-size-12 m-0">{{ "single payment" }}</p>
+                                </span>
+                                <a href="#payment_card_scroll_dummy" class="text-primary">choose</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="steps-wrapper payment-sec pl-0 mb-3" id="payment_card_scroll_dummy">
+            <div class="step complete" data-step="3">
+                <div class="step-circle"></div>
+                <div class="step-line"></div>
+            </div>
+
+            <div class="step" data-step="2">
+                <div class="step-circle"></div>
+                <div class="step-line"></div>
+            </div>
+
+            <div class="step" data-step="1">
+                <div class="step-circle"></div>
+            </div>
+        </div>
+        <h4><?= "Choose the right plan for you" ?></h4>
+        <div class="details-fields mt-5 mb-5">
+            <div class="row">
+                <div class="col-sm-4">
+                    <input class="input-details" type="text" placeholder="First name">
+                </div>
+                <div class="col-sm-4">
+                    <input class="input-details" type="text" placeholder="Expiry date (MM/YY)">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input class="input-details" type="text" placeholder="Last name">
+                </div>
+                <div class="col-sm-4">
+                    <input class="input-details" type="text" placeholder="Security code(CVV)">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input class="input-details" type="text" placeholder="Card Number">
+                </div>
+                <div class="col-sm-4">
+                    <input class="input-details" type="text" >
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-8 mb-5">
+            <div class="about-plan">
+                <p>{{ "A subscription plan is a purchase option. A subscription plan lets you choose how often a product can be delivered. This is called “delivery frequency” For example, weekly delivery. A subscription plan also gives you the ability to add a percentage discount." }}</p>
+            </div>
+        </div>
+
+        <div class="col-sm-4 submit-button">
+            <button class="btn-primary" type="submit">{{ "Start paid membership" }}</button>
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+
+
+
+
+<section class="flick">
+    <div class="container-fluid">
         <div align="center"></div>
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-lg-8 col-md-6 p-0">
                 <div class="flick1">
                  <div class="small-heading text-white">Step 2 of<span class="ml-2">2</span></div>
