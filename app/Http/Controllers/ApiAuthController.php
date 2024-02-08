@@ -14585,11 +14585,6 @@ public function QRCodeMobileLogout(Request $request)
                   $Page_List_Name = 'Series_Pagelist';
                   break;
       
-              case 'audios':
-                  $data = $this->Audios_Pagelist();
-                  $Page_List_Name = 'Audios_Pagelist';
-                  break;
-      
               case 'Recommended_videos_site':
                   $data = $this->Recommended_videos_site_Pagelist();
                   $Page_List_Name = 'Recommended_videos_site_Pagelist';
@@ -14607,6 +14602,11 @@ public function QRCodeMobileLogout(Request $request)
 
               case 'albums':
                     $data = $this->albums_Pagelist();
+                    $Page_List_Name = 'albums_Pagelist';
+                    break;
+
+              case 'audios':
+                    $data = $this->Audios_Pagelist();
                     $Page_List_Name = 'Audios_Pagelist';
                     break;
 
@@ -15008,6 +15008,18 @@ public function QRCodeMobileLogout(Request $request)
       return $data;
   }
 
+  private static function albums_Pagelist(){
+
+    $data = AudioAlbums::query()->latest()->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/public/uploads/albums/'.$item->album);
+        $item['Player_image_url'] = URL::to('/public/uploads/albums/'.$item->album);
+        $item['source']    = "albums";
+        return $item;
+      });
+
+    return $data;
+  }
+
   private static function Recommended_videos_site_Pagelist(){
 
     $check_Kidmode = 0 ;
@@ -15108,23 +15120,6 @@ public function QRCodeMobileLogout(Request $request)
     });
 
     return $data;
-  }
-
-  private static function albums_Pagelist(){
-
-    $query = AudioAlbums::query();
-
-    $data = $query->latest()->get();
-
-    $data->transform(function ($item) {
-      $item['image_url'] = asset('public/uploads/albums/'.$item->album);
-      $item['Player_image_url'] = asset('public/uploads/albums/'.$item->album); // Note - No Player Image for Albums
-      $item['source'] = "Audios_album";
-      return $item;
-    });
-
-    return $data;
-
   }
 
   private static function Specific_Audio_Playlist_Pagelist( $user_id ){
