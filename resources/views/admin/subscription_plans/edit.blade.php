@@ -102,7 +102,7 @@
 
                 @foreach($devices as $val)
                     <div class="col-md-7 p-0 d-flex justify-content-between align-items-center" style="float:left;">                                           
-                        <div>  <label  style="color:#000000!important;">{{ $val->devices_name }}</label></div>
+                        <div>  <label  >{{ $val->devices_name }}</label></div>
                         <div>
                             <label class="switch">
                                 <input class="form-check-input" type="checkbox" name="devices[]" value="{{ $val->id }}" {{ (in_array($val->id, $user_devices)) ? ' checked' : '' }}> 

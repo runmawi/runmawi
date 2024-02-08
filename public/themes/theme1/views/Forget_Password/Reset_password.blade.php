@@ -149,11 +149,11 @@
                             <div class="sign-in-from w-100 m-auto" align="center">
 
                                 <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                    <img  src="<?php echo URL::to('public/uploads/settings/'. $theme->light_mode_logo) ; ?>"  style="margin-bottom:1rem;">
+                                    <a href="<?php echo URL::to('home'); ?>"><img  src="<?php echo URL::to('public/uploads/settings/'. $theme->light_mode_logo) ; ?>"  style="margin-bottom:1rem;"></a>
                                 <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                    <img  src="<?php echo URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ; ?>"  style="margin-bottom:1rem;">
+                                    <a href="<?php echo URL::to('home'); ?>"><img  src="<?php echo URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ; ?>"  style="margin-bottom:1rem;"></a>
                                 <?php }else { ?> 
-                                    <img  src="<?php echo URL::to('public/uploads/settings/'. $settings->logo) ; ?>" style="margin-bottom:1rem;">
+                                    <a href="<?php echo URL::to('home'); ?>"><img  src="<?php echo URL::to('public/uploads/settings/'. $settings->logo) ; ?>" style="margin-bottom:1rem;"></a>
                                 <?php } ?>
 
                                 <h2 class="mb-3 text-center h">{{ __('Forgot Password') }}</h2>

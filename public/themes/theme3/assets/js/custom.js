@@ -152,7 +152,7 @@ Index Of Script
 		});
 		jQuery('.favorites-slider').slick({
 			dots: false,
-			slidesToShow: 6,
+			slidesToShow: 9,
 			slidesToScroll: 1,
 			arrows: true,
 			infinite: false,
@@ -166,7 +166,7 @@ Index Of Script
 			{
 				breakpoint: 1200,
 				settings: {
-				slidesToShow: 7,
+				slidesToShow: 5,
 				slidesToScroll: 1,
 				infinite: true,
 				dots: false,
@@ -183,7 +183,15 @@ Index Of Script
 				breakpoint: 480,
 				settings: {
 				// arrows: false,
-				slidesToShow: 1,
+				slidesToShow: 2,
+				slidesToScroll: 1
+				}
+			},
+			{
+				breakpoint: 320,
+				settings: {
+				// arrows: false,
+				slidesToShow: 3,
 				slidesToScroll: 1
 				}
 			}
