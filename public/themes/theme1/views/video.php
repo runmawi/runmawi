@@ -900,7 +900,32 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               echo __($value->categories_name). ',';  
             }
              ?></span>
-
+          <?php if(!Auth::guest()) { ?>
+              <div class="row">
+                  <div class="col-sm-6 col-md-6 col-xs-12">
+                      <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                          <!-- Watchlater -->
+                          <li><span
+                                  class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>"
+                                  data-authenticated="<?= !Auth::guest() ?>"
+                                  data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?>
+                                      class="ri-add-circle-fill" <?php else: ?>
+                                      class="ri-add-circle-line"
+                                      <?php endif; ?>></i></span></li>
+                          <!-- Wishlist -->
+                          <li><span
+                                  class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>"
+                                  data-authenticated="<?= !Auth::guest() ?>"
+                                  data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?>
+                                      class="ri-heart-fill" <?php else: ?>
+                                      class="ri-heart-line" <?php endif; ?>></i></span>
+                          </li>
+                          <!-- Social Share, Like Dislike -->
+                          <?php include 'partials/social-share.php'; ?>
+                      </ul>
+                  </div>
+                  <?php } ?>
+              </div>
 
             <!-- Trailer Description -->
 
@@ -966,8 +991,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div> -->
                        <?php } ?>
-                        <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i><?= __('Remove Whislist') ?>   <?php else: ?><?= __('Add to Wishlist') ?>  <?php endif; ?>
-                        </div>
+                        <!-- <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer add_data_test mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i><?= __('Remove Whislist') ?>   <?php else: ?><?= __('Add to Wishlist') ?>  <?php endif; ?>
+                        </div> -->
 
                         <?php
                            $user = Auth::user(); 
@@ -989,7 +1014,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                          <!-- Watchlater -->
                         <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
                          <!-- Wishlist -->
-                        <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
+                        <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?> add_data_test" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
                          <!-- Social Share, Like Dislike -->
                             <?php include('partials/social-share.php'); ?>                     
                      </ul>
@@ -1370,7 +1395,7 @@ $artists = [];
           // Play Trailer
             $('#videoplay').click(function(){
               // alert('test');
-              $('#video_container').hide();
+              // $('#video_container').hide();
               const player = new Plyr('.videoPlayers');
               $('#watch_trailer').show();
               $('#videoplay').hide();
@@ -1493,37 +1518,40 @@ location.reload();
      // });
 
      //My Wishlist
-     $('.mywishlist').click(function(){
-       if($(this).data('authenticated')){
-         $.post('<?= URL::to('mywishlist') ?>', { video_id : $(this).data('videoid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-         $(this).toggleClass('active');
-         $(this).html("");
-             if($(this).hasClass('active')){
-              $(this).html('<i class="fa fa-minus-circle" aria-hidden="true" ></i> Remove wishlist');
-            
-              $(".add_data_test").empty();
-              $(".add_data_test").append("<div>Remove from Wishlist</div> ");
-               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
-               setTimeout(function() {
-                $('.add_watch').slideUp('fast');
-               }, 3000);
-             }else{
-              $(this).html('+ Add to Whislist');
-              $(".add_data_test").empty();
-              //  $(this).html('<i class="ri-heart-line"></i>');
-               $(".add_data_test").append("<div>Added to  Wishlist</div> ");
-              $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
-               setTimeout(function() {
-                $('.remove_watch').slideUp('fast');
-               }, 3000);
+     $('.mywishlist').click(function () {
+                if ($(this).data('authenticated')) {
+                    $.post('<?= URL::to('mywishlist') ?>', {
+                        video_id: $(this).data('videoid'),
+                        _token: '<?= csrf_token(); ?>'
+                    }, function (data) {
+                        // Handle the response data if needed
+                    });
 
-             }
-             
-       } else {
-         window.location = '<?= URL::to('login') ?>';
-       }
-     });
+                    $(this).toggleClass('active');
+                    $(this).html("");
 
+                    if ($(this).hasClass('active')) {
+                        $(this).html('<i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Wishlist');
+                        $(".add_data_test").empty();
+                        $(".add_data_test").append("<div>Remove from Wishlist</div> ");
+                        $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Media added to wishlist</div>');
+                        setTimeout(function () {
+                            $('.add_watch').slideUp('fast');
+                        }, 3000);
+                    } else {
+                        $(this).html('<i class="fa fa-heart" aria-hidden="true"></i> Add to Wishlist');
+                        $(".add_data_test").empty();
+                        $(".add_data_test").append("<div>Added to Wishlist</div> ");
+                        $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Media removed from wishlist</div>');
+                        setTimeout(function () {
+                            $('.remove_watch').slideUp('fast');
+                        }, 3000);
+                    }
+                } else {
+                    window.location = '<?= URL::to('login') ?>';
+                }
+            });
+        
 
      $('.watchlater').click(function(){
        if($(this).data('authenticated')){
