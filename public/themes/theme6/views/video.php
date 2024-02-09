@@ -638,6 +638,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                             </div></div>
 
                         <?php endif; ?>
+                        <div class="logo_player"> </div>
                     </div>
 
 
@@ -815,7 +816,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                 <div  id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
                 <div id="subscribers_only">
                     <div class="clear"></div>
-                    <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+                    <div class="container" style="padding-top:5rem;text-align:center;">
                         <h4 class="text-center"><?php echo $video->title; ?></h4>
                         <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
 
@@ -850,21 +851,21 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                     <div id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
                     <div id="subscribers_only">
                         <div class="clear"></div>
-                        <div style="margin-left: -20%;position: absolute;top: 20%;left: 20%;width: 100%;">
+                        <div class="container" style="padding-top:5rem;text-align:center;">
                             <h4 class="text-center"><?php echo $video->title; ?></h4>
                             <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
                             <h2>
-                                <p style="margin-left:14%">Purchase to watch this PPV video</p>
+                                <p>Purchase to watch this PPV video</p>
                             </h2>
                             <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
                                 
-                                <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+                                <!-- <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
                                     <button style="margin-left: 27%;margin-top: 0%;"
                                         class="btn btn-primary"id="button">Purchase to watch this video
                                     </button>
-                                </form>
+                                </form> -->
 
-                                <button style="margin-left: 46%;margin-top: 0%;" data-toggle="modal"
+                                <button  data-toggle="modal"
                                     data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
                                     <?php echo __('Purchase Now'); ?> 
                                 </button>
@@ -982,7 +983,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                     <div id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
                         <div id="subscribers_only">
                             <div class="clear"></div>
-                            <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+                            <div class="container" style="padding-top:5rem;text-align:center;">
                                 <h4 class="text-center"><?php echo $video->title; ?></h4>
                                 <p class="text-center text-white col-lg-8" style="margin:0 auto";>
                                     <?php echo $video->description; ?>
@@ -1315,7 +1316,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                         <!-- logo In player -->
 
-                        <div class="logo_player"> </div>
+                        <!-- <div class="logo_player"> </div> -->
 
                         <!-- url link -->
 
@@ -2772,7 +2773,7 @@ $artists = [];
     if($player_ui == 1){
 ?>
                     <style>
-                        .logo_player {
+                        .page-height .logo_player {
                             position: absolute;
                             top: 70%;
                             left: 80%;

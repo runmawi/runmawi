@@ -288,10 +288,10 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         value="<?= $episode->genre_id ?>">
     <br>
 
-    <div class="">
-        <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+    <div class="container-fluid">
+        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
             <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb p-0">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
@@ -325,8 +325,8 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         </div>
     <div>
 
-    <div class="container-fluid series-details">
-        <div id="series_title" style="padding-left:15px;">
+    <div class="series-details">
+        <div id="series_title">
             <!-- <div class="">
             <?php if($free_episode > 0 && Auth::user()->role != 'admin' || @$checkseasonppv_exits > 0 && Auth::user()->role != 'admin' ||  $ppv_exits > 0 && Auth::user()->role != 'admin' ||  Auth::guest()){
 
@@ -367,7 +367,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                     <?php	} } ?>
 
                     </div> -->
-                    <div class="col-md-12">
+                    <div class="col-md-12 p-0">
                         <span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
                         <p class="mb-0" style=";font-size: 80%;color: white;">
                             <?php 
@@ -422,7 +422,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                 $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '"  allowfullscreen></iframe>';
                 ?>
 
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                         <li>
                             <?php if($episode_watchlater == null){ ?>
@@ -515,7 +515,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                 <div class="row align-items-center justify-content-between">
                     <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
                }else{ ?>
-                    <div class="col-md-6 p-0">
+                    <div class="col-md-6">
                         <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the
                             Series:</span>
                         <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?>
