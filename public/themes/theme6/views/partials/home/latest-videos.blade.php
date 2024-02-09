@@ -28,9 +28,9 @@
                                                 </p>
                                                 <div class="movie-time d-flex align-items-center my-2">
 
-                                                    <div class="badge badge-secondary p-1 mr-2">
+                                                    <!-- <div class="badge badge-secondary p-1 mr-2">
                                                         {{ optional($latest_video)->age_restrict.'+' }}
-                                                    </div>
+                                                    </div> -->
 
                                                     <span class="text-white">
                                                         {{ $latest_video->duration != null ? gmdate('H:i:s', $latest_video->duration) : null }}

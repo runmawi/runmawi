@@ -24,7 +24,11 @@
                                 <img src="{{ $item->image ?  URL::to('public/uploads/images/' . $item->image ) : default_vertical_image_url() }}" class="img-fluid transimga img-zoom" alt="">
                             </a>
 
-                            <div class="episode-number episodenum">{{ 'S'.$item->season_id.'E'.$item->episode_order }}</div>
+                                @php
+                                    $series_season = App\SeriesSeason::where('id',$item->season_id)->first(); 
+                                @endphp
+
+                            <div class="episode-number episodenum">{{ $series_season->series_seasons_name.' E'.$item->episode_order }}</div>
 
                             <div class="episode-play-info">
                                 <div class="episode-play">
