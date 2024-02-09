@@ -768,9 +768,9 @@
       color: <?php echo GetDarkText(); ?>;
    }
    
-.side-colps:not(.show){
+/* .side-colps:not(.show){
    display:block;
-}
+} */
 .navbar-collapse.offcanvas-collapse.pt-2.open li.menu-item.d-flex.align-items-center {
     border-bottom: 1px solid rgba(85, 85, 85, 0.3) !important;
     margin-right:0;
@@ -789,6 +789,9 @@ header#main-header.menu-sticky{
 .navbar-collapse.offcanvas-collapse.pt-2.open{
    height:100vh;
    position:absolute;
+}
+nav.navbar.navbar-expand-lg.navbar-light.p-0 button#navToggle{
+   display:none !important;
 }
 </style>
 
@@ -894,6 +897,12 @@ header#main-header.menu-sticky{
    .navbar-collapse.offcanvas-collapse.pt-2.open{
       top:77px;
    }
+   .iq-main-slider {
+      padding-top: 0px!important;
+   }
+   #home-slider .slick-bg {
+      padding: 0;
+   }
 }
 @media only screen and (max-width: 600px) {
    .navbar-collapse.offcanvas-collapse.pt-2.open{
@@ -910,15 +919,41 @@ header#main-header.menu-sticky{
     padding-left:6px;
 }
 }
-@media (max-width: 768px) {
-   ul.navbar-nav.top-colps {
-    display:none !important;
+@media (max-width: 850px) {
+   nav.navbar.navbar-expand-lg.navbar-light.p-0 button#navToggle{
+      display:block !important;
+   }
+   nav.navbar.navbar-expand-lg.navbar-light.p-0 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* text-align: left; */
+    width: 300px;
+    height: auto;
 }
+header .navbar ul.navbar-nav{
+   display:block !important;
+}
+.navbar>.container, .navbar>.container-fluid{
+   flex-direction:column;
+   align-items:start;
+}
+div#main_nav {
+    padding-left: 0;
+}
+.container-fluid.p-0  {
+   display:none;
+}
+
+
 }
 
 @media (min-width:992px){
    .mob_res{
       display:none !important;
+   }
+   .iq-main-slider{
+      padding-top:0 !important;
    }
 }
 
@@ -961,9 +996,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
     /* color: white !important; */
 }
 
-div#main_nav {
+/* div#main_nav {
    display: block !important;
-}
+} */
 .search-box {
     position: absolute;
     left: 25px !important;
@@ -1286,6 +1321,7 @@ div#main_nav {
 
                        <!-- ============= COMPONENT ============== -->
                         <nav class="navbar navbar-expand-lg navbar-light p-0">
+                           <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
                            
                            <div class="container-fluid p-0">
 
@@ -1297,7 +1333,7 @@ div#main_nav {
                               <!-- <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="50%"/> </a> -->
 
 
-                              <div class="collapse navbar-collapse side-colps" id="main_nav">
+                              <div class="side-colps navbar navbar-expand-lg navbar-light" id="main_nav">
 
                                                       <!-- Header Top Position  -->
                                  <?php if($theme->header_top_position == 1): ?>
@@ -2452,7 +2488,19 @@ div#main_nav {
       });
         
    </script>
+   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  // Function to toggle the visibility of the container
+  function toggleContainer() {
+    var container = document.querySelector('.container-fluid.p-0');
+    container.style.display = (container.style.display === 'none') ? 'block' : 'none';
+  }
 
+  // Function to change the icon (assuming it's defined in your JavaScript)
+  function changeIcon(icon) {
+    // Add logic to change the icon if needed
+  }
+</script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
 
    <script>
@@ -2653,4 +2701,3 @@ window.onload = function () {
    };
 
 </script>
-    

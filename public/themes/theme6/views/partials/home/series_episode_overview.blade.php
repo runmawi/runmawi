@@ -56,7 +56,12 @@ $data = App\Series::where('active', '=', '1')
         return $item;
     });
 ?>
-
+<style>
+    .slidebtns #trending-slider-nav .slick-arrow{
+        display: block !important;
+        padding-top: 6px;
+    }
+</style>
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid">
@@ -65,8 +70,8 @@ $data = App\Series::where('active', '=', '1')
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title"><a href="show-category.html">Trending</a></h4>
                     </div>
-                    <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center">
+                    <div class="trending-contens slidebtns">
+                        <ul id="trending-slider-nav" class="list-inline p-0 mb-0 row align-items-center ">
                             @foreach ($data as $series_details)
                                 <li>
                                     <a href="javascript:void(0);">
