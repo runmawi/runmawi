@@ -284,7 +284,7 @@
                           </div>
                       </a>
 
-                      <a class="navbar-brand" href="<?php URL::to('/home'); ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
+                      <a href="<?php echo URL::to('/home'); ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
 
                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
                           <div class="menu-main-menu-container">
