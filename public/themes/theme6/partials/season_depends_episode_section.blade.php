@@ -28,7 +28,7 @@
                                     $series_season = App\SeriesSeason::where('id',$item->season_id)->first(); 
                                 @endphp
 
-                            <div class="episode-number episodenum">{{ $series_season->series_seasons_name.' E'.$item->episode_order }}</div>
+                            <div class="episode-number episodenum">{{ (strlen($series_season->series_seasons_name) > 17 ? substr($series_season->series_seasons_name, 0, 18) . '...' : $series_season->series_seasons_name).' E'.$item->episode_order }}</div>
 
                             <div class="episode-play-info">
                                 <div class="episode-play">
