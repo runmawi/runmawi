@@ -385,6 +385,7 @@ class AdminSeriesController extends Controller
 
         }else{
             $ppv_status = 0;
+            $access = $data['access'];
         }
 
         if(!empty($data['season_trailer'])){
