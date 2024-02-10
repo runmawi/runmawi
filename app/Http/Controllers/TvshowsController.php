@@ -389,7 +389,6 @@ class TvshowsController extends Controller
             
                // Free Interval Episodes
             if (!Auth::guest() &&  !empty($ppv_price) && !empty($ppv_interval) || !Auth::guest() && $ppv_price > 0 || !Auth::guest() &&  $ppv_price < 0 ) {
-                // dd($ppv_interval);
                 foreach ($season as $key => $seasons):
                     foreach ($seasons->episodes as $key => $episodes):
                         if ($seasons->ppv_interval > $key ):
@@ -422,16 +421,21 @@ class TvshowsController extends Controller
                         $season_details->access == 'free' && $series->access == 'registered' && Auth::user()->role == 'registered'  ||
                         Auth::user()->role == 'subscriber' &&  $season_details->access == 'free' ) {
                     $free_episode = 1;
+                    }elseif( $series->access == 'guest' || $series->access == 'registered' && Auth::user()->role == 'registered' 
+                        || $series->access == 'registered' && Auth::user()->role == 'subscriber' || $series->access == 'subscriber' && Auth::user()->role == 'subscriber'){
+                        $free_episode = 1;
+                            // dd( $series->access );
                     } elseif($SeriesPpvPurchase > 0){
                         $free_episode = 1;
                     } elseif($PpvPurchase > 0){
                     $free_episode = 1;
                     }else {
+
                         $free_episode = 0;
                     }
-                elseif($series->access == 'guest' && $season_details->access == 'free' 
+                elseif($series->access == 'guest' && $season_details->access == 'free' || $series->access == 'guest' || $series->access == 'registered' && Auth::user()->role == 'registered' 
+                || $series->access == 'registered' && Auth::user()->role == 'subscriber' || $series->access == 'subscriber' && Auth::user()->role == 'subscriber'
                         ):
-                    dd($free_episode);
                     $free_episode = 1;
                 else:
                     $free_episode = 0;

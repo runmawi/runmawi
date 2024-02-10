@@ -60,18 +60,10 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
     <div class="">
         <?php 
 			   if(!Auth::guest()){ ;
-                if( $free_episode > 0 && @$checkseasonppv_exits == 0 ||  $ppv_exits > 0 && @$checkseasonppv_exits == 0
-                    || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber' ||  Auth::guest() && @$checkseasonppv_exits == 0){ 
-              
-                if($episode_PpvPurchase > 0 && Auth::user()->role == 'registered' && $episode->access == 'ppv' || $episode->access == 'guest' ||  ( ($episode->access == 'subscriber' ||
-                    $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'registered' ||
-                    $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'guest'  ||
-                    $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'guest'  ||
-                    $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'subscriber'
-                    || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed())
-                    || (!Auth::guest() && (Auth::user()->role == 'demo'  || Auth::user()->role == 'admin')) || 
-                    (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration 
-                    && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'): 
+                if( $free_episode > 0){
+                    
+                    if( $free_episode > 0):
+
                   ?>
 
         <?php if($episode->type == 'embed'): ?>
