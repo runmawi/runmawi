@@ -431,7 +431,7 @@ class TvshowsController extends Controller
                     }
                 elseif($series->access == 'guest' && $season_details->access == 'free' 
                         ):
-                    dd($free_episode);
+                    // dd($free_episode);
                     $free_episode = 1;
                 else:
                     $free_episode = 0;
