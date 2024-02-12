@@ -793,6 +793,7 @@ header#main-header.menu-sticky{
 nav.navbar.navbar-expand-lg.navbar-light.p-0 button#navToggle{
    display:none !important;
 }
+
 </style>
 
 <style type="text/css">
@@ -941,11 +942,19 @@ header .navbar ul.navbar-nav{
 div#main_nav {
     padding-left: 0;
 }
-.container-fluid.p-0  {
-   display:none;
+.container-fluid.p-0 {
+      display: none;
+    }
+
 }
-
-
+@media (min-width:851px) {
+   /* .container-fluid.p-0 {
+      display: block !important;
+    } */
+    .fa-bar-screen{
+      display:none;
+    }
+   
 }
 
 @media (min-width:992px){
@@ -956,6 +965,7 @@ div#main_nav {
       padding-top:0 !important;
    }
 }
+
 
 
 /* Sidebar */
@@ -1025,8 +1035,22 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
     font-size: 0.6rem;
     padding: 6px;
 }
+.list-group-item{
+   text-align:left;
+}
 </style>
+<script>
+  function toggleContainer(x) {
+    var container = document.querySelector('.container-fluid.p-0');
+    if (window.innerWidth <= 850) {
+      container.style.display = (container.style.display === 'none' || container.style.display === '') ? 'block' : 'none';
+    } else {
+      // Set the display to 'block' for larger screens
+      container.style.display = 'flex';
+    }
 
+  }
+</script>
 
 <body class="dark-theme">
     <!-- loader Start -->
@@ -1321,7 +1345,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                        <!-- ============= COMPONENT ============== -->
                         <nav class="navbar navbar-expand-lg navbar-light p-0">
-                           <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu" type="button" id="navToggle"  data-bs-dismiss="offcanvas" ><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button>
+                           <button class="fa-bar-screen"><i class="fa fa-bars" onclick="toggleContainer(this)" aria-hidden="true"></i></button>
                            
                            <div class="container-fluid p-0">
 
