@@ -11114,10 +11114,33 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
     public function TVQRLogin(Request $request)
     {
 
-      $email =  $request['email'];
-      $password =  $request['password'];
+      $email      =  $request['email'];
+      $password   =  $request['password'];
+      $tv_code    =  $request['tv_code '];
+      $uniqueId   =  $request['uniqueId'];
 
       try{
+
+        $TVLoginCode = TVLoginCode::where('uniqueId',$uniqueId)->count();
+
+        if($TVLoginCode > 0){
+          
+              TVLoginCode::create([
+                'email'       => $request->email,
+                'uniqueId'    => $request->uniqueId,
+                'tv_code'     => $request->tv_code,
+                'type'        => 'Code',
+                'status'      => 0,
+            ]);
+      }else{
+            TVLoginCode::where('uniqueId',$uniqueId)->orderBy('created_at', 'DESC')->first()
+            ->update([
+              'email'       => $request->email,
+              'uniqueId'    => $request->uniqueId,
+              'tv_code'     => $request->tv_code,
+              'type'        => 'Code',
+            ]);
+      }
 
         $user = User::where('email',$email)->first();
 
