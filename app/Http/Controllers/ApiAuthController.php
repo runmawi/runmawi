@@ -11114,10 +11114,20 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
     public function TVQRLogin(Request $request)
     {
 
-      $email =  $request['email'];
-      $password =  $request['password'];
+      $email      =  $request['email'];
+      $password   =  $request['password'];
+      $tv_code    =  $request['tv_code '];
+      $uniqueId   =  $request['uniqueId'];
 
       try{
+
+        TVLoginCode::create([
+          'uniqueId'    => $request->uniqueId,
+          'tv_code'     => $request->tv_code,
+          'type'        => 'Code',
+          'status'      => 0,
+       ]);
+
 
         $user = User::where('email',$email)->first();
 
