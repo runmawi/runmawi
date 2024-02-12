@@ -34,7 +34,7 @@
   </script>
 <style>
 .reveal{
-margin-left: -57px;
+margin-left: -68px;
 height: 45px !important;
 background: #ED553B !important;
 color: #fff !important;
@@ -230,7 +230,7 @@ iframe {
                                 
                                             <a href="{{ route('Reset_Password') }}" class="f-link m-0">Forgot your password?</a>
                                 </div>
-                                <div class="col-md-4 recaptcha pl-0" id="g-recaptcha1"></div> 
+                                <!-- <div class="col-md-4 recaptcha pl-0" id="g-recaptcha1"></div>  -->
                                 
                                                 {{-- reCAPTCHA  --}}
                                 @if( get_enable_captcha()  == 1)   

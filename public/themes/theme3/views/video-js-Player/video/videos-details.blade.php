@@ -74,9 +74,12 @@
 
 <section>
     <div class="vpageSection">
-        <div class="backdrop-img" style="background-image: url('{{ optional($videodetail)->player_image_url }}');">  {{-- Background image --}}
+        <div class="backdrop-img" style="background-image: linear-gradient(90deg, rgba(20, 20, 20, 1) 0%, rgba(36, 36, 36, 1) 35%, rgba(83, 100, 141, 0) 100%),
+        url('{{ optional($videodetail)->player_image_url }}');background-size:cover;background-repeat:no-repeat;">  {{-- Background image --}}
             <div class="col-sm-8 vpageContent">
-                <h2>{{ optional($videodetail)->title }}</h2>
+                <h2>
+                    {{ strlen($videodetail->title) > 40 ? substr($videodetail->title, 0, 40) . '...' : $videodetail->title }}
+                </h2>
                 <div class="like-dislike">
                     <ul class="list-inline p-0 share-icons music-play-lists">
                         <li>
@@ -161,69 +164,11 @@
                                                 <a class="playTrailer" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
                                                     <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->image) }}">
                                                 </a>
-                                                                
-                                                     
-                                                <!-- @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                    @if ($recommended_video->access == 'subscriber')
-                                                        <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
-                                                    @elseif($recommended_video->access == 'registered')
-                                                        <p class="p-tag"> {{ 'Register Now' }} </p>
-                                                    @elseif(!empty($recommended_video->ppv_price))
-                                                        <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
-                                                    @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
-                                                        <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
-                                                    @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                        <p class="p-tag">{{ 'Free' }} </p>
-                                                    @endif
-                                                @endif
-
-                                                @if ($ThumbnailSetting->published_on == 1)
-                                                <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                @endif -->
                                             </div>
                                         </div>
                                                 
                                         <div class="block-description">
-                                            <!-- <a class="playTrailer" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-                                                <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->player_image) }}">
-                                                            
-                                                            
-                                                    @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                        @if ($recommended_video->access == 'subscriber')
-                                                            <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
-                                                        @elseif($recommended_video->access == 'registered')
-                                                            <p class="p-tag"> {{ 'Register Now' }} </p>
-                                                        @elseif(!empty($recommended_video->ppv_price))
-                                                            <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
-                                                        @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
-                                                            <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
-                                                        @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                            <p class="p-tag">{{ 'Free' }} </p>
-                                                        @endif
-                                                    @endif
-
-                                                    @if ($ThumbnailSetting->published_on == 1)
-                                                    <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                    @endif
-                                            </a>
-                                                    PPV price
-                                                    @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                        @if ($recommended_video->access == 'subscriber')
-                                                            <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
-                                                        @elseif($recommended_video->access == 'registered')
-                                                            <p class="p-tag"> {{ 'Register Now' }} </p>
-                                                        @elseif(!empty($recommended_video->ppv_price))
-                                                            <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
-                                                        @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
-                                                            <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
-                                                        @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                            <p class="p-tag">{{ 'Free' }} </p>
-                                                        @endif
-                                                    @endif
-
-                                                    @if ($ThumbnailSetting->published_on == 1)
-                                                    <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                    @endif -->
+                                            
                                             <div class="hover-buttons text-white">
                                                 <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
 
