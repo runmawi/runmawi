@@ -42,6 +42,7 @@ use Auth;
 use Hash;
 use App\PPVFreeDurationLogs;
 use App\Channel;
+use App\LivePurchase;
 
 class AdminLiveStreamController extends Controller
 {
@@ -1968,9 +1969,6 @@ class AdminLiveStreamController extends Controller
        dd($videos);
     }
 
-
-
-    
     public function PurchasedLiveAnalytics()
     {
 
@@ -2019,12 +2017,8 @@ class AdminLiveStreamController extends Controller
             (!empty($package) && $package == "Business")
         ) {
             $settings = Setting::first();
-            $total_content = LiveStream::join(
-                "ppv_purchases",
-                "ppv_purchases.live_id",
-                "=",
-                "live_streams.id"
-            )
+            
+            $total_content = LiveStream::join("ppv_purchases", "ppv_purchases.live_id","=","live_streams.id")
                 ->join("users", "users.id", "=", "ppv_purchases.user_id")
                 ->groupBy("ppv_purchases.id")
 
@@ -2039,10 +2033,14 @@ class AdminLiveStreamController extends Controller
                         "MONTHNAME(ppv_purchases.created_at) as month_name"
                     ),
                 ]);
-            // dd($total_content);
+       
             $total_contentss = $total_content->groupBy("month_name");
 
-            // dd($total_content);
+            $Livestream_purchase = LiveStream::join("live_purchases", "live_purchases.video_id","=","live_streams.id")
+                                                ->join("users", "users.id", "=", "live_purchases.user_id")
+                                                ->groupBy("live_purchases.id")
+                                                ->get();
+
 
             $data = [
                 "settings" => $settings,
@@ -2050,6 +2048,7 @@ class AdminLiveStreamController extends Controller
                 "total_video_count" => count($total_content),
                 "total_contentss" => $total_contentss,
                 "currency" => CurrencySetting::first(),
+                "Livestream_purchase" => $Livestream_purchase ,
             ];
             return view("admin.analytics.live_purchased_analytics", $data);
         } else {

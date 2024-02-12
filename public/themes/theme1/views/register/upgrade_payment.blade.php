@@ -469,7 +469,7 @@ i.fa.fa-google-plus {
         }
     .cont{
         background-color: #232c30;
-    padding: 36px 47px 70px;
+    padding: 36px 47px 20px;
     margin-bottom: 35px;
     }
     #card-button{
@@ -609,13 +609,13 @@ background-color: #000;padding: 10px!important;}
                                         <div  class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
                                             <div class="col-md-12 ambk p-0 text-center">
                                                 <div>
-                                                    <h6 class=" font-weight-bold"> {{ $plan->plans_name  }} </h6>
+                                                    <h6 class=" font-weight-bold"> {{ __($plan->plans_name) }} </h6>
                                                     <p class="text-white mb-0"> {{ ($CurrencySetting == 1) ? Currency_Convert($plan->price) : $plan->price }} {{ __('plan') }}Membership</p>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-md-12 blk" >
-                                                 <p>@php echo ($plan->plan_content) @endphp</p>
+                                                <p>{!! __(html_entity_decode($plan->plan_content)) !!}</p>
                                             </div>
                                         </div>
 
@@ -685,6 +685,9 @@ background-color: #000;padding: 10px!important;}
                         <!-- Stripe Elements Placeholder -->
                         <label for="ccnum"> {{ __('Card Number') }}</label>
                         <div id="card-element" style=""></div>
+                        <p class="text-white mt-3 dp">
+                            {{ $signup_payment_content ? $signup_payment_content : " " }}
+                        </p>
 
                         @if( get_coupon_code() == 1)
                                         <!-- Add Promotion Code -->
@@ -737,9 +740,10 @@ background-color: #000;padding: 10px!important;}
                 </div>
                 <div class="col-md-12 mt-5" id="paypal_card_payment">
                 </div>
-                 <p class="text-white mt-3 dp">
+                 <!-- <p class="text-white mt-3 dp">
+                    <a href=""> terms</a>
                          {{ $signup_payment_content ? $signup_payment_content : " " }}
-                 </p>
+                 </p> -->
             </div>
                                             {{-- Stripe --}}
                     <div class="col-md-12 stripe_payment">

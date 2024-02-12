@@ -60,18 +60,10 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
     <div class="">
         <?php 
 			   if(!Auth::guest()){ ;
-                if( $free_episode > 0 && $checkseasonppv_exits == 0 ||  $ppv_exits > 0 && $checkseasonppv_exits == 0
-                    || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber' ||  Auth::guest() && $checkseasonppv_exits == 0){ 
-              
-                if($episode_PpvPurchase > 0 && Auth::user()->role == 'registered' && $episode->access == 'ppv' || $episode->access == 'guest' ||  ( ($episode->access == 'subscriber' ||
-                    $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'registered' ||
-                    $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'guest'  ||
-                    $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'guest'  ||
-                    $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'subscriber'
-                    || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed())
-                    || (!Auth::guest() && (Auth::user()->role == 'demo'  || Auth::user()->role == 'admin')) || 
-                    (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration 
-                    && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'): 
+                if( $free_episode > 0){
+                    
+                    if( $free_episode > 0):
+
                   ?>
 
         <?php if($episode->type == 'embed'): ?>
@@ -208,7 +200,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         </div>
 
         <?php endif; 
-			}else if($checkseasonppv_exits == 0){  ?>
+			}else if(@$checkseasonppv_exits == 0 && $free_episode != 0){  ?>
 
         <div id="series_container">
             <video id="videoPlayer" muted autoplay class="video-js vjs-default-skin" controls preload="auto"
@@ -250,13 +242,13 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                         <div class="container-fluid">
                             <h4 class=""><?php echo $episode->title; ?></h4>
                             <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
-                            <h4 class=""><?php if ($episode->access == 'subscriber'): ?><?php echo __('Subscribe to view more'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
+                            <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Subscribe to view more'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                                 <?php endif; ?></h4>
                             <div class="clear"></div>
                         </div>
-                        <?php if( !Auth::guest() && $episode->access == 'ppv'):  ?>
+                        <?php if( !Auth::guest()  && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber'):  ?>
                         <div class=" mt-3">
-                            <a onclick="pay(<?php if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($episode->ppv_price); }else if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 0){ echo __(@$episode->ppv_price) ; } ?>)">
+                            <a onclick="pay(<?php if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($SeriesSeason->ppv_price); }else if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0){ echo __(@$SeriesSeason->ppv_price) ; } ?>)">
                             <button type="button"
                                 class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
                             </a>
@@ -264,7 +256,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                                 <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
                             </form> -->
                         </div>
-                        <?php elseif( !Auth::guest() && $episode->access == 'subscriber'):  ?>
+                        <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
                         <div class=" mt-3">
                         <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                                 <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
@@ -288,10 +280,10 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         value="<?= $episode->genre_id ?>">
     <br>
 
-    <div class="">
-        <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+    <div class="container-fluid">
+        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
             <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb p-0">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
@@ -325,10 +317,10 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         </div>
     <div>
 
-    <div class="container-fluid series-details">
-        <div id="series_title" style="padding-left:15px;">
+    <div class="series-details">
+        <div id="series_title">
             <!-- <div class="">
-            <?php if($free_episode > 0 && Auth::user()->role != 'admin' || $checkseasonppv_exits > 0 && Auth::user()->role != 'admin' ||  $ppv_exits > 0 && Auth::user()->role != 'admin' ||  Auth::guest()){
+            <?php if($free_episode > 0 && Auth::user()->role != 'admin' || @$checkseasonppv_exits > 0 && Auth::user()->role != 'admin' ||  $ppv_exits > 0 && Auth::user()->role != 'admin' ||  Auth::guest()){
 
 ?>
                 <div class="row align-items-center justify-content-between"  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
@@ -367,7 +359,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                     <?php	} } ?>
 
                     </div> -->
-                    <div class="col-md-12">
+                    <div class="col-md-12 p-0">
                         <span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
                         <p class="mb-0" style=";font-size: 80%;color: white;">
                             <?php 
@@ -422,7 +414,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                 $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '"  allowfullscreen></iframe>';
                 ?>
 
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                         <li>
                             <?php if($episode_watchlater == null){ ?>
@@ -515,7 +507,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                 <div class="row align-items-center justify-content-between">
                     <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
                }else{ ?>
-                    <div class="col-md-6 p-0">
+                    <div class="col-md-6">
                         <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the
                             Series:</span>
                         <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?>

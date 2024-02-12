@@ -157,7 +157,6 @@
    .modal {
       position: fixed;
       top: 0;
-      right: auto;
       bottom: 0;
       left: 0;
       z-index: 1050;
@@ -389,7 +388,7 @@ if(!Auth::guest()){
 
                         <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                             <div id="video_bg_dim"  class="darker" ></div>
-                            <div class="row justify-content-center pay-live">
+                            <div class="row justify-content-center pay-live m-0">
                                 <div class="col-md-4 col-sm-offset-4">
                                     <div class="ppv-block">
                                         <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
@@ -445,7 +444,7 @@ if(!Auth::guest()){
 
                         <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                             <div id="video_bg_dim"  class="darker" ></div>
-                            <div class="row justify-content-center pay-live">
+                            <div class="row justify-content-center pay-live m-0">
                                 <div class="col-md-4 col-sm-offset-4">
                                     <div class="ppv-block">
                                         <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
@@ -467,7 +466,7 @@ if(!Auth::guest()){
 
                         <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                             <div id="video_bg_dim"  class="darker" ></div>
-                            <div class="row justify-content-center pay-live">
+                            <div class="row justify-content-center pay-live m-0">
                                 <div class="col-md-4 col-sm-offset-4">
                                     <div class="ppv-block">
                                         <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
@@ -545,7 +544,7 @@ if(!Auth::guest()){
         <?php  } else {  ?>       
             <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                 <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
-                <div class="row justify-content-center pay-live">
+                <div class="row justify-content-center pay-live m-0">
                     <div class="col-md-4 col-sm-offset-4">
                         <div class="ppv-block">
                             <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
@@ -710,7 +709,7 @@ if(!Auth::guest()){
 
                         <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                             <div id="video_bg_dim"  class="darker" ></div>
-                            <div class="row justify-content-center pay-live">
+                            <div class="row justify-content-center pay-live m-0">
                                 <div class="col-md-4 col-sm-offset-4">
                                     <div class="ppv-block">
                                         <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
@@ -765,7 +764,7 @@ if(!Auth::guest()){
 
                         <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                             <div id="video_bg_dim"  class="darker" ></div>
-                            <div class="row justify-content-center pay-live">
+                            <div class="row justify-content-center pay-live m-0">
                                 <div class="col-md-4 col-sm-offset-4">
                                     <div class="ppv-block">
                                         <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
@@ -787,7 +786,7 @@ if(!Auth::guest()){
 
                         <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                             <div id="video_bg_dim"  class="darker" ></div>
-                            <div class="row justify-content-center pay-live">
+                            <div class="row justify-content-center pay-live m-0">
                                 <div class="col-md-4 col-sm-offset-4">
                                     <div class="ppv-block">
                                         <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
@@ -864,7 +863,7 @@ if(!Auth::guest()){
         <?php  } else { ?>       
             <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                 <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
-                <div class="row justify-content-center pay-live">
+                <div class="row justify-content-center pay-live m-0">
                     <div class="col-md-4 col-sm-offset-4">
                         <div class="ppv-block">
                             <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
@@ -1074,12 +1073,12 @@ if(!Auth::guest()){
                     <span class="badge badge-secondary   mb-2"><?php echo __($video->age_restrict).' '.'+';?></span>
                     <span class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration);?></span><br>
                 
-                    <a type="button" class="mb-3 mt-3"  data-dismiss="modal" style="font-weight:400;">Amount:   <span class="pl-2" style="font-size:20px;font-weight:700;"> <?php echo __($currency->symbol.' '.$video->ppv_price);?></span></a><br>
+                    <a type="button" class="mb-3 mt-3 text-black"  data-dismiss="modal" style="font-weight:400;">Amount:   <span class="pl-2" style="font-size:20px;font-weight:700;"> <?php echo __($currency->symbol.' '.$video->ppv_price);?></span></a><br>
                     <label class="mb-0 mt-3 p-0" for="method"><h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2">Payment Method : </h5></label>
                   
                                  <!-- Stripe Button -->
                             <?php if( $stripe_payment_setting != null && $stripe_payment_setting->payment_type == "Stripe" ){?>
-                                 <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                 <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-black" style="gap:5px;">
                                     <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value= <?= $stripe_payment_setting->payment_type ?>  data-value="stripe">
                                     <?php  echo $stripe_payment_setting->payment_type ;  ?>
                                 </label>      
@@ -1088,7 +1087,7 @@ if(!Auth::guest()){
                            
                                 <!-- Razorpay Button -->
                             <?php if( $Razorpay_payment_setting != null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
-                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-black" style="gap:5px;">
                                     <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?= $Razorpay_payment_setting->payment_type ?>"  data-value="Razorpay" >
                                     <?php  echo $Razorpay_payment_setting->payment_type ;  ?>
                                 </label>
@@ -1096,7 +1095,7 @@ if(!Auth::guest()){
 
                                 <!-- Paystack Button -->
                             <?php if( $Paystack_payment_setting != null && $Paystack_payment_setting->payment_type == "Paystack" ){?>
-                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-black" style="gap:5px;">
                                     <input type="radio" class="payment_btn" id="" name="payment_method" value="<?= $Paystack_payment_setting->payment_type ?>"  data-value="Paystack" >
                                     <?php  echo $Paystack_payment_setting->payment_type ;  ?>
                                 </label>
@@ -1105,7 +1104,7 @@ if(!Auth::guest()){
                             
                             <!-- CinetPay Button -->
                             <?php if( $CinetPay_payment_settings != null && $CinetPay_payment_settings->payment_type == "CinetPay" && $CinetPay_payment_settings->status == 1 ){?>
-                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-black" style="gap:5px;">
                                 <input type="radio" class="payment_btn" id="" name="payment_method" value="<?= $CinetPay_payment_settings->payment_type ?>"  data-value="CinetPay" >
                                 <?php  echo $CinetPay_payment_settings->payment_type ;  ?>
                             </label>
