@@ -11121,13 +11121,26 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
 
       try{
 
-        TVLoginCode::create([
-          'uniqueId'    => $request->uniqueId,
-          'tv_code'     => $request->tv_code,
-          'type'        => 'Code',
-          'status'      => 0,
-       ]);
+        $TVLoginCode = TVLoginCode::where('uniqueId',$uniqueId)->count();
 
+        if($TVLoginCode > 0){
+          
+              TVLoginCode::create([
+                'email'       => $request->email,
+                'uniqueId'    => $request->uniqueId,
+                'tv_code'     => $request->tv_code,
+                'type'        => 'Code',
+                'status'      => 0,
+            ]);
+      }else{
+            TVLoginCode::where('uniqueId',$uniqueId)->orderBy('created_at', 'DESC')->first()
+            ->update([
+              'email'       => $request->email,
+              'uniqueId'    => $request->uniqueId,
+              'tv_code'     => $request->tv_code,
+              'type'        => 'Code',
+            ]);
+      }
 
         $user = User::where('email',$email)->first();
 
