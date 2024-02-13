@@ -89,103 +89,21 @@
                                     <div class="img-box">    <!-- block-images -->
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->image;  ?>" class="img-fluid w-100" alt="live-c">
                                     
-                                        <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
-                                            <p class="p-tag1">
-                                                <?php if($livestream->access == 'subscriber' ){ ?>
-                                                    <i class="fas fa-crown" style='color:gold'></i> 
-                                                    <?php }elseif($livestream->access == 'registered'){?>
-                                                    <p class="p-tag"><?php echo "Register Now"; ?></p>
-                                                    <?php } elseif(!empty($livestream->ppv_price)) {
-                                                    echo $currency->symbol.' '.$livestream->ppv_price ; 
-                                                    } elseif(!empty($livestream->global_ppv) && $livestream->ppv_price == null) {
-                                                        echo $currency->symbol .' '.$livestream->global_ppv;
-                                                    } elseif(empty($livestream->global_ppv) && $livestream->ppv_price == null) {
-                                                        echo "Free"; 
-                                                    }
-                                                ?>
-                                            </p>
-                                        <?php } ?>
-                                        <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
-                                            <p class="published_on1"><?php echo $publish_day; ?> <span><?php echo $publish_time; ?></span></p>
-                                        <?php  } ?>
+                                        
                                     </div>
 
                                     <div class="block-description">
-                                        <a href="<?php echo URL::to('/') ?><?= '/live'.'/' . $livestream->slug ?>">
-                                            <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                                    <p>
-                                                        <?php  echo (strlen($livestream->title) > 17) ? substr($livestream->title,0,18).'...' : $livestream->title; ?>
-                                                    </p>
-                                            <?php } ?>  
-
-                                        <div class="movie-time d-flex align-items-center pt-1">
-                                            <?php if($ThumbnailSetting->age == 1) { ?>  <!-- Age -->
-                                                <!-- <div class="badge badge-secondary p-1 mr-2"><?php //echo $livestream->status.' '.'+' ?></div> -->
-                                            <?php } ?>
-
-                                        <?php if($ThumbnailSetting->duration == 1) { ?>  <!-- Duration -->
-                                            <span class="text-white">
-                                                <i class="fa fa-clock-o"></i>
-                                                <?= gmdate('H:i:s', $livestream->duration); ?>
-                                            </span>
-                                        <?php } ?>
-                                        </div>
-                                    
-                                        <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
-                                            <div class="movie-time d-flex align-items-center pt-1">
-                                                <?php if($ThumbnailSetting->rating == 1) { ?>    <!--Rating  -->
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        <span class="text-white">
-                                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                            <?php echo __($livestream->rating); ?>
-                                                        </span>
-                                                    </div>
-                                                <?php } ?>
-
-                                                <?php if($ThumbnailSetting->published_year == 1) { ?>  <!-- published_year -->
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        <span class="text-white">
-                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                            <?php echo __($livestream->year); ?>
-                                                        </span>
-                                                    </div>
-                                                <?php } ?>
-
-                                                <?php if($ThumbnailSetting->featured == 1 && $livestream->featured == 1) { ?>  <!-- Featured -->
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        <span class="text-white">
-                                                            <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                        </span>
-                                                    </div>
-                                                <?php }?>
-                                            </div>
-                                        <?php } ?>
-
-                                        <div class="movie-time d-flex align-items-center pt-1">  <!-- Category Thumbnail  setting -->
-                                        <?php
-                                            $CategoryThumbnail_setting =  App\CategoryLive::join('live_categories','live_categories.id','=','livecategories.category_id')
-                                                        ->where('livecategories.live_id',$livestream->id)
-                                                        ->pluck('live_categories.name');    
-                                                         
-                                        ?>
-                                        <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                            <span class="text-white">
-                                                <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                <?php
-                                                    $Category_Thumbnail = array();
-                                                        foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                                        $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                                        }
-                                                    echo implode(','.' ', $Category_Thumbnail);
-                                                ?>
-                                            </span>
-                                        <?php } ?>
-                                        </div>
+                                        
 
                                         <div class="hover-buttons">
-                                            <a type="button" class="text-white d-flex align-items-center"
-                                                href="<?php echo URL::to('/') ?><?= '/live'.'/' . $livestream->slug ?>">
-                                                <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%" alt="ply" /> Watch Now
+                                            <a class="" href="<?php echo URL::to('live') ?><?= '/' . $livestream->slug ?>">
+                                                <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                    <span class="text pr-2"> Play </span>
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                    </svg>
+                                                </div>
                                             </a>
                                         </div>
                                     </a>

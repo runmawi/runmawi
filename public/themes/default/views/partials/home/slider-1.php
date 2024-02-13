@@ -405,11 +405,11 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
                         </div>
 
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23">
-                            <a href="<?=  route('play_series', $series_slider->slug ) ?>" class="btn bd"><i
+                            <a href="<?= URL::to('/play_series' . '/' . $series_slider->slug)  ?>" class="btn bd"><i
                                     class="fa fa-play mr-2" aria-hidden="true"></i> Play
                             </a>
 
-                            <a class="btn bd ml-2" href="<?= route('play_series', $series_slider->slug )  ?>">
+                            <a class="btn bd ml-2" href="<?= URL::to('/play_series' . '/' . $series_slider->slug)  ?>">
                                 <i class="fa fa-info" aria-hidden="true"></i> More details
                             </a>
                         </div>

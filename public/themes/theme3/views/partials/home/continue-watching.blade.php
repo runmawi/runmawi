@@ -21,37 +21,21 @@
                                             </div>
 
                                             <div class="block-description">
-                                                <p> {{ strlen($video_details->title) > 17 ? substr($video_details->title, 0, 18) . '...' : $video_details->title }}</p>
                                                 
-                                                <div class="movie-time d-flex align-items-center my-2">
-
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($video_details)->age_restrict.'+' }}
-                                                    </div>
-
-                                                    <span class="text-white">
-                                                        {{ $video_details->duration != null ? gmdate('H:i:s', $video_details->duration) : null }}
-                                                    </span>
-                                                </div>
 
                                                 <div class="hover-buttons">
-
+                                                    <a class="" href="{{ URL::to('category/videos/'.$video_details->slug ) }}">
+                                                        <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                            <span class="text pr-2"> Play </span>
+                                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                                <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                                <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                            </svg>
+                                                        </div>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </a>
-
-                                        {{-- WatchLater & wishlist --}}
-
-                                        @php
-                                            $inputs = [
-                                                'source_id'     => $video_details->id ,
-                                                'type'          => 'channel',  // for videos - channel
-                                                'wishlist_where_column'    => 'video_id',
-                                                'watchlater_where_column'  => 'video_id',
-                                            ];
-                                        @endphp
-
-                                        {!! Theme::uses('theme6')->load('public/themes/theme3/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
 
                                     </div>
                                 </li>

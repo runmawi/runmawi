@@ -1,4 +1,4 @@
-<div class="iq-main-header ">
+<div class="iq-main-header pl-3 ">
     <h4 class="main-title"><?= __('Episode') ?> </h4>
 </div>
 
