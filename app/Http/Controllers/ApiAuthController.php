@@ -322,7 +322,7 @@ class ApiAuthController extends Controller
                     'username' => $userdata->username,
                     'website_name' => GetWebsiteName(),
                     'useremail' => $userdata->email,
-                    'password' => $userdata->password,
+                    'password' => $request->password,
                     'url' => URL::to('/'),
                   ), 
                 function($message) use ($data,$request,$userdata) {
