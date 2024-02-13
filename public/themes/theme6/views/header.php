@@ -256,7 +256,68 @@
       } ?>
 </head>
 
+<style>
+   @media (max-width:1100px){
+      img.img-fluid.logo{
+         width:56%;
+      }
+      header .navbar ul li.menu-item a{
+         font-size:12px;
+      }
+      .menu-right{
+         display:block;
+      }
+   }
+   @media(max-width:991px){
+      .screen-res-none{
+         display:none !important;
+      }
+      .screen-res-block form{
+         padding: 0 10px;
+      }
+      header .navbar ul.navbar-nav{
+         display:flex;
+      }
+      .iq-main-slider{
+         padding-top:0 !important;
+      }
+      .search-box{
+         top:70px;
+      }
+      .navbar-right .iq-sub-dropdown{
+         right:0
+      }
+      header .navbar ul li{
+         border-bottom:none;
+      }
+      .navbar-collapse{
+         padding-top:20px;
+      }
+      .c-logo{
+         width:50px;
+      }
+      .btn-close{
+         right:20% !important;
+         font-size:25px;
+      }
+   }
+   @media (min-width:991px){
+      .screen-res-block{
+         display:none !important;
+      }
+   }
+</style>
 
+<script>
+  $(document).ready(function(){
+    $(".btn-close").click(function(){
+      $(".navbar-collapse .show").removeClass("show");
+      $(".navbar-collapse").addClass("collapse");
+      $(".nav-overlay").css("opacity",'0');
+
+    });
+  });
+</script>
 <body>
     <!-- loader Start -->
     <?php if( get_image_loader() == 1 ) { ?>
@@ -274,20 +335,30 @@
               <div class="col-sm-12">
                   <nav class="navbar navbar-expand-lg navbar-light p-0">
                     
-                      <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
-                          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                          aria-expanded="false" aria-label="Toggle navigation">
-                          <div class="navbar-toggler-icon" data-toggle="collapse">
-                              <span class="navbar-menu-icon navbar-menu-icon--top"></span>
-                              <span class="navbar-menu-icon navbar-menu-icon--middle"></span>
-                              <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
-                          </div>
-                      </a>
+                     <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <div class="navbar-toggler-icon" data-toggle="collapse">
+                           <span class="navbar-menu-icon navbar-menu-icon--top"></span>
+                           <span class="navbar-menu-icon navbar-menu-icon--middle"></span>
+                           <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
+                        </div>
+                     </a>
 
-                      <a href="<?php echo URL::to('/home'); ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
+                     <a href="<?php echo URL::to('/home'); ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" /> </a>
 
-                      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                          <div class="menu-main-menu-container">
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                           <div class="row d-flex justify-content-between screen-res-block">
+                              <div class="col-6"><img src="<?= front_end_logo() ?>" class="c-logo" alt="<?=  $settings->website_name ; ?>"></div>
+                              <div class="col-6">
+                                 <a type="button" class="navbar-toggler btn-close c-toggler p-0 border-0" data-toggle="collapse"
+                                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                       <i class="fa fa-times"></i> 
+                                 </a>
+                              </div>
+                           </div>
+                           <div class="menu-main-menu-container">
                               <ul id="top-menu" class=" mt-2 nav navbar-nav ">
 
                                  <?php  
@@ -418,11 +489,40 @@
                                  <?php } ?>
                                  
                               </ul>
+                              <div class="d-flex p-2 screen-res-block">
+                                 <?php if (!Auth::guest()) {
+                                    $userEmail = Auth::user()->email;
+                                    $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
+                                    $channel = App\Channel::where('email', $userEmail)->first();
+
+                                    if (!empty($moderatorsUser)) { ?>
+                                          <div class="p-2" >
+                                             <form method="POST" action="<?= URL::to('cpp/home') ?>" >
+                                                <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                                <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                                                <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
+                                                <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
+                                             </form>
+                                          </div>
+                                    <?php }
+                                    
+                                    if (!empty($channel)) { ?>
+                                          <div class="p-2" >
+                                             <form method="POST" action="<?= URL::to('channel/home') ?>" >
+                                                <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                                <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                                                <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
+                                                <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                             </form>
+                                          </div>
+                                    <?php }
+                                 } ?>
+                              </div>
                           </div>
                       </div>
 
                       <!-- Channel and CPP Login -->
-                     <div class="d-flex p-2">
+                     <div class="d-flex p-2 screen-res-none">
                         <?php if (!Auth::guest()) {
                            $userEmail = Auth::user()->email;
                            $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
