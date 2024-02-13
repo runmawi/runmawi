@@ -194,7 +194,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                 <div class="clear"></div>
             </div>
             <?php if( !Auth::guest() && $SeriesSeason->access == 'ppv'):  ?>
-            <div class=" mt-3">
+            <div class="container-fluid mt-3">
                 <a onclick="pay(<?php if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($SeriesSeason->ppv_price); }else if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0){ echo __(@$SeriesSeason->ppv_price) ; } ?>)">
                 <button type="button"
                     class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
