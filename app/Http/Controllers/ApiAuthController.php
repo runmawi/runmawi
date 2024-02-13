@@ -5446,6 +5446,8 @@ return response()->json($response, 200);
         }else{
           $item['transcoded_url'] = '';
         }
+        $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
+        $item['render_site_url'] = URL::to('/').'/episode/'.$series_slug.'/'.$item->slug;
         return $item;
       });;
 
