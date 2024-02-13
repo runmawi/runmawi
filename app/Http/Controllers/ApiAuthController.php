@@ -309,6 +309,7 @@ class ApiAuthController extends Controller
               $userdata = User::where('email', '=', $request->get('email'))->first();
               $userid = $userdata->id;
 
+
                // welcome Email
                                   
                try {
@@ -318,14 +319,15 @@ class ApiAuthController extends Controller
                 );
 
                 Mail::send('emails.welcome', array(
-                    'username' => $name,
+                    'username' => $userdata->username,
                     'website_name' => GetWebsiteName(),
-                    'useremail' => $email,
-                    'password' => $get_password,
-                ), 
-                function($message) use ($data,$request) {
+                    'useremail' => $userdata->email,
+                    'password' => $userdata->password,
+                    'url' => URL::to('/'),
+                  ), 
+                function($message) use ($data,$request,$userdata) {
                     $message->from(AdminMail(),GetWebsiteName());
-                    $message->to($request->email, $request->name)->subject($data['email_subject']);
+                    $message->to($userdata->email, $userdata->username)->subject($data['email_subject']);
                 });
 
                 $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
