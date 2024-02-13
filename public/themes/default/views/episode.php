@@ -193,13 +193,13 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                 </form> -->
             </div>
             <?php elseif( !Auth::guest() && $SeriesSeason->access == 'subscriber'):  ?>
-            <div class=" mt-3">
+            <div class="container-fluid mt-3">
             <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                     <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
                 </form>
             </div>
             <?php else: ?>
-            <div class=" mt-3">
+            <div class="container-fluid mt-3">
                 <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                     <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
                         <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
@@ -251,14 +251,18 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                 <div
                 id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                 <div class="container-fluid">
-                    <h4 class=""><?php echo $episode->title; ?></h4>
-                    <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
-                    <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
-                        <?php endif; ?></h4>
+                    <div class="col-6 p-0">
+                        <h4 class=""><?php echo $episode->title; ?></h4>
+                        <p class=" text-white col-lg-8"><?php echo $episode->episode_description; ?></p>
+                    </div>
+                    <div class="col-6"></div>
+                    
+                    <!-- <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
+                        <?php endif; ?></h4> -->
                     <div class="clear"></div>
                 </div>
                 <?php if( !Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber'):  ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                     <a onclick="pay(<?php if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($SeriesSeason->ppv_price); }else if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0){ echo __(@$SeriesSeason->ppv_price) ; } ?>)">
                     <button type="button"
                         class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
@@ -268,13 +272,13 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                     </form> -->
                 </div>
                 <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                 <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                         <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
                     </form>
                 </div>
                 <?php else: ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                     <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                         <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
                             <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
@@ -292,10 +296,10 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         value="<?= $episode->genre_id ?>">
     <br>
 
-    <div class="row">
-        <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+    <div class="">
+        <div class="container-fluid " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb pl-3">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('series.tv-shows') ?>"><?= ucwords( __('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
@@ -478,7 +482,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                 <div class="row align-items-center justify-content-between">
                     <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
                }else{ ?>
-                    <div class="col-md-6 p-0">
+                    <div class="col-md-6 pl-4">
                         <span class="text-white" style="font-size: 129%;font-weight: 700;"><?php echo __('Purchase to Watch the Series'); ?>
                             :</span>
                         <?php if($series->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?>
@@ -540,12 +544,13 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
 
             <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
             <div class="row">
-                <div class=" container-fluid video-list you-may-like overflow-hidden">
+                <div class=" container-fluid pl-4 video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>
                     <?php include 'comments/index.blade.php'; ?>
                 </div>
             </div>
             <?php endif; ?>
+            
 
                      <!-- Remaing Episodes -->
 
