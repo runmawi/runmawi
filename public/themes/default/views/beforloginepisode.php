@@ -149,7 +149,7 @@
          <?php
             else: ?>
          <form method="get" action="<?=URL::to('signup') ?>">
-             <div class=" mt-3">
+             <div class="container-fluid mt-3">
             <button id="button" class="btn btn-primary"><?php echo __('Become a Subscribe to Watch This Episode'); ?> <?php if ($series->access == 'subscriber'): ?><?php
                elseif ($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php
                endif; ?></button></div>
@@ -178,15 +178,19 @@
          <div
                 id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                 <div class="container-fluid">
-                    <h4 class=""><?php echo $episode->title; ?></h4>
+                  <div class="col-12 col-md-6 col-sm-6 p-0">
+                     <h4 class=""><?php echo $episode->title; ?></h4>
                     <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
+                  </div>
+                  <div class="col-6"></div>
+                    
                     <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                         <?php endif; ?></h4>
                     <div class="clear"></div>
                 </div>
                 <?php if( Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber' 
                      || Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access == 'registered'  ):  ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                     <!-- <button type="button"
                         class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button> -->
                     <form method="get" action="<?= URL::to('/signup') ?>">
@@ -194,13 +198,13 @@
                     </form>
                 </div>
                 <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                 <form method="get" action="<?= URL::to('/signup') ?>">
                         <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
                     </form>
                 </div>
                 <?php else: ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                     <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                         <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
                             <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
@@ -222,9 +226,9 @@
 <br>
 
 <div class="row">
-        <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+        <div class=" container-fluid " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb pl-2">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('series.tv-shows') ?>"><?= ucwords(__('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
@@ -237,14 +241,15 @@
                             href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
                             <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                         </a>
+                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
                     <?php } ?>
 
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    
 
-                    <li class="breadcrumb-item"><a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> </a></li>
+                    <li class="breadcrumb-item"><a class="black-text" href="<?= route('play_series',[@$series->slug]) ?>"><?php echo strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title); ?> </a><i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i></li>
 
-                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                    
 
                     <li class="breadcrumb-item"><a class="black-text"><?php echo strlen(@$episode->title) > 50 ? ucwords(substr(@$episode->title, 0, 120) . '...') : ucwords($episode->title); ?> </a></li>
                 </ol>
@@ -424,7 +429,7 @@
                
       <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
        <div class="row">
-           <div class=" container-fluid video-list you-may-like overflow-hidden">
+           <div class="pl-3 video-list you-may-like overflow-hidden">
                <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                <?php include('comments/index.blade.php');?>
            </div>
@@ -435,7 +440,7 @@
          <h4 class="main-title"><?php echo __('Season'); ?></h4>
       </div>
 
-      <div class="col-sm-12 overflow-hidden">
+      <div class="col-sm-12 overflow-hidden p-0">
          <div class="favorites-contens ml-2">
             <ul class="favorites-slider list-inline row mb-0" >
                <?php  

@@ -40,6 +40,18 @@
         padding: 5px 22px;
         border:none;
     }
+    .music-text{
+        font-size:11px;
+    }
+    @media(max-width:420px){
+        .music-text{
+            display:none;
+        }
+        .logo-content .col-lg-3.col-md-3.col-sm-3.col-3{
+            display:flex;
+            align-items:center;
+        }
+    }
 
 
 </style>
@@ -47,16 +59,16 @@
         <div class="logo-content">
             
             <div class="row m-0">
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-3">
                     <div class="text-center">
                         <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
-                        <p style="font-size:11px;"> <?= 'Created by Music Fans for Music Fans' ?></p>
+                        <p class="music-text" style="font-size:11px;"> <?= 'Created by Music Fans for Music Fans' ?></p>
                     </div>
                     <!-- <a class="navbar-brand" href="<?php URL::to('/home'); ?>">
                         <img class="img-fluid logo" src="<?= front_end_logo() ?>" />
                     </a> -->
                 </div>
-                <div class="col-lg-9 text-right m-0">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-9 text-right m-0">
                     <ul class="list-inline m-0">
                         <?php if (!empty($settings->instagram_page_id)) { ?>
                             <li class="list-inline-item">
@@ -171,10 +183,10 @@
                     <p><?= "For the latest news and offers signup below" ?></p>
                     <div class="d-flex justify-content-end">
                         <div class="row">
-                            <div class="col-lg-8 col-md-8 col-sm-8 p-0">
+                            <div class="col-lg-8 col-md-8 col-sm-7 col-7 p-0">
                                 <input type="text" placeholder="Your Email">
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 p-0">
+                            <div class="col-lg-4 col-md-4 col-sm-3 col-3 p-0">
                                 <button class="join btn-primary">Join</button>
                             </div>
                         </div>
