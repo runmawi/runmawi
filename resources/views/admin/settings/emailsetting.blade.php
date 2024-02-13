@@ -24,7 +24,9 @@ border-radius: 0px 4px 4px 0px;
         color: rgba(66, 149, 210, 1);
 
     }
-   
+    .media-body{
+      border-left: 0px !important;
+    }
 </style>
 @section('css')
 	<style type="text/css">
@@ -249,9 +251,9 @@ border-radius: 0px 4px 4px 0px;
                                     <td>
                                        <div class="align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('admin/template/view') . '/' . $template->id }}"><i class="lar la-eye"></i></a>
+                                             data-original-title="View" href="{{ URL::to('admin/template/view') . '/' . $template->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/template/edit') . '/' . $template->id }}"><i class="ri-pencil-line"></i></a>
+                                             data-original-title="Edit" href="{{ URL::to('admin/template/edit') . '/' . $template->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>

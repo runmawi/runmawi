@@ -15,17 +15,17 @@
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
 
-                            <a href="#">
+                            <!-- <a href="#">
                                 <div class="channel-logo" data-animation-in="fadeInLeft">
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
-                            </a>
+                            </a> -->
 
                             <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
-                            <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1">
+                            <!-- <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1">
                                 <a href="{{ $item->link }}" class="btn btn-hover"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 

@@ -4765,6 +4765,28 @@ public function checkEmailExists(Request $request)
       $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+
+         
+         switch (true) {
+
+          case $item['type'] == "file":
+            $item['episode_url'] =  $item->mp4_url ;
+            break;
+
+            
+          case $item['type'] == "upload":
+            $item['episode_url'] =  $item->mp4_url ;
+            break;
+
+          case $item['type'] == 'm3u8' :
+              $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+              break;
+
+          default:
+            $item['episode_url']    = null ;
+            break;
+        }
+
          return $item;
        });
        if(count($episode) > 0){
@@ -5424,6 +5446,8 @@ return response()->json($response, 200);
         }else{
           $item['transcoded_url'] = '';
         }
+        $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
+        $item['render_site_url'] = URL::to('/').'/episode/'.$series_slug.'/'.$item->slug;
         return $item;
       });;
 
@@ -11121,13 +11145,30 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
 
       try{
 
+        $TVLoginCode = TVLoginCode::where('uniqueId',$uniqueId)->count();
+
+        if($TVLoginCode > 0){
+
+          TVLoginCode::where('uniqueId',$uniqueId)->orderBy('created_at', 'DESC')->first()
+          ->update([
+            'email'       => $request->email,
+            'uniqueId'    => $request->uniqueId,
+            'tv_code'     => $request->tv_code,
+            'type'        => 'Code',
+          ]);
+
+      }else{
+
         TVLoginCode::create([
+          'email'       => $request->email,
           'uniqueId'    => $request->uniqueId,
           'tv_code'     => $request->tv_code,
           'type'        => 'Code',
           'status'      => 0,
-       ]);
+      ]);
 
+
+      }
 
         $user = User::where('email',$email)->first();
 

@@ -1,4 +1,4 @@
-<div class="iq-main-header ">
+<div class="iq-main-header pl-3">
     <h4 class="main-title"> <?= __('Series') ?></h4>
 </div>
 
@@ -30,7 +30,7 @@
                                 </p>
                             <?php endif; ?>
 
-                            <div class="movie-time d-flex align-items-center my-2">
+                            <div class="movie-time align-items-center my-2">
                                 <div class="badge badge-secondary p-1 mr-2">
                                     <?php
                                         $SeriesSeason = App\SeriesSeason::where('series_id', $series_list->id)->count();
