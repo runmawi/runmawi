@@ -7064,83 +7064,102 @@ public function AddRecentAudio(Request $request){
 
 public function SubscriptionPayment(Request $request){
 
+    $user_id = $request->user_id;
+    $name    = $request->name;
+    $days    = $request->days;
+    $price   = $request->price;
+    $stripe_id     = $request->stripe_id;
+    $stripe_status = $request->stripe_status;
+    $stripe_plan   = $request->stripe_plan;
+    $created_at    = $request->created_at;
+    $countryname   = $request->countryname;
+    $regionname    = $request->regionname;
+    $cityname      = $request->cityname;
 
-  $user_id = $request->user_id;
-  $name = $request->name;
-  $days = $request->days;
-  $price = $request->price;
-  $stripe_id = $request->stripe_id;
-  $stripe_status = $request->stripe_status;
-  $stripe_plan = $request->stripe_plan;
-  $created_at = $request->created_at;
-  $countryname = $request->countryname;
-  $regionname = $request->regionname;
-  $cityname = $request->cityname;
+    if($request->stripe_plan != ''){
 
-  if($request->stripe_plan != ''){
-            $next_date = $days;
-            $current_date = date('Y-m-d h:i:s');
-            $date = Carbon::parse($current_date)->addDays($next_date);
-            $subscription = new Subscription;
-            $subscription->user_id  =  $user_id ;
-            $subscription->name  =  $name ;
-            $subscription->days  =  $days ;
-            $subscription->price  =  $price ;
-            $subscription->stripe_id  =  $stripe_id ;
-            $subscription->stripe_status   =  $stripe_status ;
-            $subscription->stripe_plan =  $stripe_plan;
-            $subscription->created_at =  $created_at;
-            $subscription->countryname = $countryname;
-            $subscription->regionname = $regionname;
-            $subscription->cityname = $cityname;
-            $subscription->ends_at = $date;
-            $subscription->ios_product_id = $request->product_id;
-            $subscription->save();
-            $user =  User::findOrFail($user_id);
-            $user->role = "subscriber";
-            $user->save();
-            $user_email = $user->email;
-          $plan_details = SubscriptionPlan::where('plan_id','=',$stripe_plan)->first();
-	          $template = EmailTemplate::where('id','=',23)->first();
-            $subject = $template->template_type;
+        $next_date = $days;
+        $current_date = date('Y-m-d h:i:s');
+        $date = Carbon::parse($current_date)->addDays($next_date);
+        $subscription = new Subscription;
+        $subscription->user_id  =  $user_id ;
+        $subscription->name  =  $name ;
+        $subscription->days  =  $days ;
+        $subscription->price  =  $price ;
+        $subscription->stripe_id  =  $stripe_id ;
+        $subscription->stripe_status   =  $stripe_status ;
+        $subscription->stripe_plan =  $stripe_plan;
+        $subscription->created_at =  $created_at;
+        $subscription->countryname = $countryname;
+        $subscription->regionname = $regionname;
+        $subscription->cityname = $cityname;
+        $subscription->ends_at = $date;
+        $subscription->ios_product_id = $request->product_id;
+        $subscription->save();
 
-            try {
-              Mail::send('emails.subscriptionpaymentmail', array(
-                'name'=>$name,
-                'days' => $days,
-                'price' => $price,
-                'ends_at' => $date,
-                'plan_names' => $plan_details->plans_name,
-                'created_at' => $current_date), function($message) use ($request,$user_id,$name,$subject,$user_email) {
-                                      $message->from(AdminMail(),GetWebsiteName());
-                                        $message->to($user_email, $name)->subject($subject);
-                });
+        $user =  User::findOrFail($user_id);
+        $user->role = "subscriber";
+        $user->save();
 
-                $mail_message = 'Mail send Sucessfully' ;
+        $user_email = $user->email;
+        $plan_details = SubscriptionPlan::where('plan_id',$stripe_plan)->first();
+        $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
 
-            } catch (\Throwable $th) {
+        try {
 
-              $mail_message = 'Mail Not Send!' ;
 
-            }
+          \Mail::send('emails.subscriptionmail', array(
+              'name' => ucwords($name),
+              'uname' => $name,
+              'paymentMethod' => 'Stripe',
+              'plan' => ucfirst($plan_details->plans_name),
+              'price' => $plan_details->price,
+              'plan_id' => $plan_details->plan_id,
+              'billing_interval' => $plan_details->billing_interval,
+              'next_billing' => $date,
+              'subscription_type' => 'recurring',
 
-            $message = "Added  to  Subscription";
-            $response = array(
-              "status" => "true",
-              'message'=> $message,
-              'Mail_message' => $mail_message ,
-            );
+          ), function($message) use ($request,$user,$email_subject){
+            $message->from(AdminMail(),GetWebsiteName());
+            $message->to($user->email, $user->username)->subject($email_subject);
+          });
+
+
+          $email_log      = 'Mail Sent Successfully from Register Subscription';
+          $email_template = "23";
+          $user_id = $user->id;
+
+          Email_sent_log($user_id,$email_log,$email_template);
+
+          $mail_message = 'Mail sent Sucessfully' ;
+
+      } catch (\Throwable $th) {
+
+          $email_log      = $th->getMessage();
+          $email_template = "23";
+          $user_id = $user->id;
+
+          Email_notsent_log($user_id,$email_log,$email_template);
+
+          $mail_message = 'Mail Not sent' ;
+
+      }
+
+        $response = array(
+          "status" => "true",
+          'message'=> "Added  to  Subscription",
+          'Mail_message' => $mail_message ,
+        );
+
     } else {
-      $message = "Not Added  to  Subscription";
 
       $response = array(
-        'status'=>'false',
+        'status'=> "Not Added  to  Subscription",
          'message'=> $message
-
       );
 
     }
-  return response()->json($response, 200);
+    return response()->json($response, 200);
 
   }
 
