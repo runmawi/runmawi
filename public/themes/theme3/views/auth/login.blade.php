@@ -34,7 +34,7 @@
   </script>
 <style>
 .reveal{
-margin-left: -57px;
+margin-left: -68px;
 height: 45px !important;
 background: #ED553B !important;
 color: #fff !important;
@@ -126,28 +126,28 @@ iframe {
     }
 }
 @media screen and (max-width: 767px) {
-  /* Styles for screens up to 767px wide (typically mobile devices) */
   .col-md-4.recaptcha {
-    width: 100%; /* Make it full width for smaller screens */
-    margin-bottom: 10px; /* Add some spacing between elements if needed */
+    width: 100%; 
   }
 }
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
-  /* Styles for screens between 768px and 991px wide (typically tablets) */
   .col-md-4.recaptcha {
-    width: 50%; /* Adjust the width as needed */
-    /* Add any other styles for this screen size */
+    width: 50%;
   }
 }
 
 @media screen and (min-width: 992px) {
-  /* Styles for screens 992px wide and above (typically desktops) */
   .col-md-4.recaptcha {
-    width: 33.33%; /* Adjust the width as needed */
-    /* Add any other styles for this screen size */
+    width: 33.33%;
   }
 }
+@media screen and (max-width: 370px) {
+    iframe {
+    width: 70%;
+  }
+}
+
 </style>
     </head>
 
@@ -230,7 +230,7 @@ iframe {
                                 
                                             <a href="{{ route('Reset_Password') }}" class="f-link m-0">Forgot your password?</a>
                                 </div>
-                                <div class="col-md-4 recaptcha" id="g-recaptcha1"></div> 
+                                <!-- <div class="col-md-4 recaptcha pl-0" id="g-recaptcha1"></div>  -->
                                 
                                                 {{-- reCAPTCHA  --}}
                                 @if( get_enable_captcha()  == 1)   
@@ -398,4 +398,3 @@ iframe {
       <script defer src="assets/js/jquery.lazy.min.js"></script>
 
 </html>
-

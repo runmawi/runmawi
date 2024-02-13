@@ -768,9 +768,9 @@
       color: <?php echo GetDarkText(); ?>;
    }
    
-.side-colps:not(.show){
+/* .side-colps:not(.show){
    display:block;
-}
+} */
 .navbar-collapse.offcanvas-collapse.pt-2.open li.menu-item.d-flex.align-items-center {
     border-bottom: 1px solid rgba(85, 85, 85, 0.3) !important;
     margin-right:0;
@@ -790,6 +790,10 @@ header#main-header.menu-sticky{
    height:100vh;
    position:absolute;
 }
+nav.navbar.navbar-expand-lg.navbar-light.p-0 button#navToggle{
+   display:none !important;
+}
+
 </style>
 
 <style type="text/css">
@@ -894,10 +898,53 @@ header#main-header.menu-sticky{
    .navbar-collapse.offcanvas-collapse.pt-2.open{
       top:77px;
    }
+   .iq-main-slider {
+      padding-top: 0px!important;
+   }
+   #home-slider .slick-bg {
+      padding: 0;
+   }
+}
+
+
+@media only screen and (min-width: 1024px) {
+   li.menu-item.d-flex.align-items-center {
+    padding-left:6px;
+}
+}
+@media (max-width: 850px) {
+   nav.navbar.navbar-expand-lg.navbar-light.p-0 button#navToggle{
+      display:block !important;
+   }
+   nav.navbar.navbar-expand-lg.navbar-light.p-0 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* text-align: left; */
+    width: 200px;
+    height: auto;
+    position:relative;
+    top:-50px;
+}
+@media only screen and (max-width: 768px) {
+   .logo-text{
+      font-size:10px !important;
+   }
+   .profile-icons{
+      padding: 0 10px;
+   }
 }
 @media only screen and (max-width: 600px) {
    .navbar-collapse.offcanvas-collapse.pt-2.open{
       top:68px;
+   }
+}
+@media only screen and (max-width: 528px) {
+   .profile-icons{
+      border:none !important;
+   }
+   .search-opacity{
+      opacity: 0;
    }
 }
 @media only screen and (max-width: 480px) {
@@ -905,22 +952,61 @@ header#main-header.menu-sticky{
       top:77px;
    }
 }
-@media only screen and (min-width: 1024px) {
-   li.menu-item.d-flex.align-items-center {
-    padding-left:6px;
+@media only screen and (max-width: 425px) {
+   nav.navbar.navbar-expand-lg.navbar-light.p-0{
+      top:-36px;
+   }
 }
+header .navbar ul.navbar-nav{
+   display:block !important;
 }
-@media (max-width: 768px) {
-   ul.navbar-nav.top-colps {
-    display:none !important;
+.navbar>.container, .navbar>.container-fluid{
+   flex-direction:column;
+   align-items:start;
 }
+div#main_nav {
+    padding-left: 0;
+}
+.container-fluid.p-0 {
+      display: none;
+    }
+    .search-display-none{
+      position:relative;
+      left:10%;
+    }
+
+}
+@media (min-width:851px) {
+    .fa-bar-screen{
+      display:none;
+    }
+   
+}
+@media (max-width:500px){
+   .my-account, .logo-text{
+      display:none;
+   }
+}
+@media (max-width:450px){
+   .search-display-none{
+      display:none;
+   }
+}
+@media (max-width:425px){
+   .top-nav-first{
+      padding:0 !important;
+   }
 }
 
 @media (min-width:992px){
    .mob_res{
       display:none !important;
    }
+   .iq-main-slider{
+      padding-top:0 !important;
+   }
 }
+
 
 
 /* Sidebar */
@@ -961,9 +1047,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
     /* color: white !important; */
 }
 
-div#main_nav {
+/* div#main_nav {
    display: block !important;
-}
+} */
 .search-box {
     position: absolute;
     left: 25px !important;
@@ -990,7 +1076,43 @@ div#main_nav {
     font-size: 0.6rem;
     padding: 6px;
 }
+.list-group-item{
+   text-align:left;
+}
+.top-nav-first{
+   padding:10px 3rem;
+}
+.profile-icons{
+   border: 1px solid;
+   border-radius: 25px;
+   padding: 0px 16px;
+}
+@media (max-width: 991px){
+   .menu-right {
+      display: block;
+   }
+}
 </style>
+<script>
+  function toggleContainer(iconElement) {
+    var container = document.querySelector('.container-fluid.p-0');
+    if (window.innerWidth <= 850) {
+      container.style.display = (container.style.display === 'none' || container.style.display === '') ? 'block' : 'none';
+    } else {
+      // Set the display to 'flex' for larger screens
+      container.style.display = 'flex';
+    }
+
+    // Toggle between "fa-bars" and "fa-times" classes based on the presence of 'fa-bars'
+    if (iconElement.classList.contains('fa-bars')) {
+      iconElement.classList.remove('fa-bars');
+      iconElement.classList.add('fa-times');
+    } else {
+      iconElement.classList.remove('fa-times');
+      iconElement.classList.add('fa-bars');
+    }
+  }
+</script>
 
 
 <body class="dark-theme">
@@ -1006,15 +1128,15 @@ div#main_nav {
 
    <header id="main-header">
       <div class="main-header">
-         <div class="col-lg-12 col-md-12 col-sm-12">
+         <div class="container-fluid top-nav-first">
             <div class="row">
-               <div class="col-lg-3 col-md-3 col-sm-3 d-flex align-items-center justify-content-center">
+               <div class="col-lg-3 col-md-3 col-sm-3 col-3 d-flex align-items-center justify-content-start search-display-none">
                   <div class="navbar-right menu-right">
                      <ul class="d-flex align-items-center list-inline m-0">
-                        <li class="nav-item nav-icon" style="border: 1px solid;border-radius: 25px;padding: 0px 16px;">
+                        <li class="nav-item nav-icon profile-icons search-opacity">
                               <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search" style="font-size:11px;">
                                  <i class="ri-search-line"></i>
-                                 <?= 'Search' ?>
+                                 <span class="my-account"><?= 'Search' ?></span>
                               </a>
 
                            <div class="search-box iq-search-bar d-search">
@@ -1039,24 +1161,24 @@ div#main_nav {
                   </div>
                </div>
 
-               <div class="col-lg-6 col-md-6 col-sm-6">
+               <div class="col-lg-6 col-md-6 col-sm-6 col-6">
                   <div class="text-center">
-                     <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
-                     <p style="font-size:11px;margin:0;"> <?= 'Created by Music Fans for Music Fans' ?></p>
+                     <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="130px"/> </a>
+                     <p class="logo-text" style="font-size:11px;margin:0;"> <?= 'Created by Music Fans for Music Fans' ?></p>
                   </div>
                </div>
 
-               <div class="col-lg-3 col-md-3 col-sm-3 d-flex align-items-center justify-content-center">
+               <div class="col-lg-3 col-md-3 col-sm-3 col-3 d-flex align-items-center justify-content-end">
                   <div class="navbar-right menu-right">
                      <ul class="d-flex align-items-center list-inline m-0">
-                        <li class="nav-item nav-icon" style="border: 1px solid;border-radius: 25px;padding: 0px 16px;">
+                        <li class="nav-item nav-icon profile-icons">
                               <?php if( !Auth::guest() ) : ?>
 
                                  <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center" style="font-size:11px;"
                                     data-toggle="search-toggle">
                                           <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme3/assets/images/user/user.jpg') ?>"
                                           class="img-fluid avatar-40 rounded-circle mr-2" alt="user">
-                                          <?= "My Account" ?>
+                                         <span class="my-account"><?= "My Account" ?></span> 
                                  </a>
 
                               <?php endif; ?>
@@ -1166,16 +1288,18 @@ div#main_nav {
 
                                     <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
 
-                                       <div class="toggle mt-2 ">
-                                          <i class="fas fa-moon"></i>
-                                             <label class="switch toggle mt-3">
-                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                                <span class="sliderk round"></span>
-                                             </label>
-                                          <i class="fas fa-sun"></i>
-                                       </div>
+                                       
 
                                        <div class="iq-card-body p-0 pl-3 pr-3">
+                                          <div class="toggle mt-2 text-left">
+                                             <i class="fas fa-moon"></i>
+                                                <label class="switch toggle mt-3">
+                                                   <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                   <span class="sliderk round"></span>
+                                                </label>
+                                             <i class="fas fa-sun"></i>
+                                          </div>
+                                          
                                           <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                    <div class="right-icon"><i class="ri-file-user-line text-primary"></i></div>
@@ -1215,16 +1339,17 @@ div#main_nav {
 
                                     <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
                                        
-                                       <div class="toggle mt-2 ">
-                                          <i class="fas fa-moon"></i>
-                                             <label class="switch toggle mt-3">
-                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
-                                                <span class="sliderk round"></span>
-                                             </label>
-                                          <i class="fas fa-sun"></i>
-                                       </div>
+                                       
 
                                        <div class="iq-card-body p-0 pl-3 pr-3">
+                                          <div class="toggle mt-2 text-left">
+                                             <i class="fas fa-moon"></i>
+                                                <label class="switch toggle mt-3">
+                                                   <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                                   <span class="sliderk round"></span>
+                                                </label>
+                                             <i class="fas fa-sun"></i>
+                                          </div>
 
                                           <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
@@ -1286,6 +1411,10 @@ div#main_nav {
 
                        <!-- ============= COMPONENT ============== -->
                         <nav class="navbar navbar-expand-lg navbar-light p-0">
+                           <button class="fa-bar-screen"><i class="fa fa-bars" onclick="toggleContainer(this)" aria-hidden="true"></i></button>
+                           <!-- <button class="fa-bar-screen">
+                              <i class="fa fa-bars" onclick="this.classList.toggle('fa-bars'); this.classList.toggle('fa-times')" aria-hidden="true"></i>
+                           </button> -->
                            
                            <div class="container-fluid p-0">
 
@@ -1297,7 +1426,7 @@ div#main_nav {
                               <!-- <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="50%"/> </a> -->
 
 
-                              <div class="collapse navbar-collapse side-colps" id="main_nav">
+                              <div class="side-colps navbar navbar-expand-lg navbar-light" id="main_nav">
 
                                                       <!-- Header Top Position  -->
                                  <?php if($theme->header_top_position == 1): ?>
@@ -2452,7 +2581,19 @@ div#main_nav {
       });
         
    </script>
+   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  // Function to toggle the visibility of the container
+  function toggleContainer() {
+    var container = document.querySelector('.container-fluid.p-0');
+    container.style.display = (container.style.display === 'none') ? 'block' : 'none';
+  }
 
+  // Function to change the icon (assuming it's defined in your JavaScript)
+  function changeIcon(icon) {
+    // Add logic to change the icon if needed
+  }
+</script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
 
    <script>
@@ -2653,4 +2794,3 @@ window.onload = function () {
    };
 
 </script>
-    

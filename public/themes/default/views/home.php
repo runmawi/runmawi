@@ -1533,3 +1533,10 @@
    ?>
 <?php include('footer.blade.php');?>
 <!-- End Of MainContent -->
+
+<style>
+   body{
+      overflow-x:hidden;
+      overflow-y:scroll;
+   }
+</style>

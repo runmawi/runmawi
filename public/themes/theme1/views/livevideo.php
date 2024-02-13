@@ -54,6 +54,8 @@
 .close {
     color: red;
     text-shadow: none;
+    opacity:1;
+    margin:-1rem -1rem -1rem auto !important;
 }
 
 .come-from-modal.left .modal-dialog,
@@ -210,7 +212,6 @@ h2 {
 .modal {
     position: fixed;
     top: 0;
-    right: auto;
     bottom: 0;
     left: 0;
     z-index: 1050;
@@ -602,8 +603,8 @@ else{
                             <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:black">Rent Now
                             </h4>
 
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin:0 !important;">
+                                <span aria-hidden="true"><i class="fa fa-times"></i></span>
                             </button>
 
                         </div>

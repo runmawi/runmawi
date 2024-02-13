@@ -609,13 +609,13 @@ background-color: #000;padding: 10px!important;}
                                         <div  class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
                                             <div class="col-md-12 ambk p-0 text-center">
                                                 <div>
-                                                    <h6 class=" font-weight-bold"> {{ $plan->plans_name  }} </h6>
+                                                    <h6 class=" font-weight-bold"> {{ __($plan->plans_name) }} </h6>
                                                     <p class="text-white mb-0"> {{ ($CurrencySetting == 1) ? Currency_Convert($plan->price) : $plan->price }} {{ __('plan') }}Membership</p>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-md-12 blk" >
-                                                 <p>@php echo ($plan->plan_content) @endphp</p>
+                                                <p>{!! __(html_entity_decode($plan->plan_content)) !!}</p>
                                             </div>
                                         </div>
 

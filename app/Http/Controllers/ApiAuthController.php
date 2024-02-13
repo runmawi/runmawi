@@ -4765,6 +4765,28 @@ public function checkEmailExists(Request $request)
       $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+
+         
+         switch (true) {
+
+          case $item['type'] == "file":
+            $item['episode_url'] =  $item->mp4_url ;
+            break;
+
+            
+          case $item['type'] == "upload":
+            $item['episode_url'] =  $item->mp4_url ;
+            break;
+
+          case $item['type'] == 'm3u8' :
+              $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+              break;
+
+          default:
+            $item['episode_url']    = null ;
+            break;
+        }
+
          return $item;
        });
        if(count($episode) > 0){
@@ -5424,6 +5446,8 @@ return response()->json($response, 200);
         }else{
           $item['transcoded_url'] = '';
         }
+        $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
+        $item['render_site_url'] = URL::to('/').'/episode/'.$series_slug.'/'.$item->slug;
         return $item;
       });;
 
@@ -11114,10 +11138,37 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
     public function TVQRLogin(Request $request)
     {
 
-      $email =  $request['email'];
-      $password =  $request['password'];
+      $email      =  $request['email'];
+      $password   =  $request['password'];
+      $tv_code    =  $request['tv_code '];
+      $uniqueId   =  $request['uniqueId'];
 
       try{
+
+        $TVLoginCode = TVLoginCode::where('uniqueId',$uniqueId)->count();
+
+        if($TVLoginCode > 0){
+
+          TVLoginCode::where('uniqueId',$uniqueId)->orderBy('created_at', 'DESC')->first()
+          ->update([
+            'email'       => $request->email,
+            'uniqueId'    => $request->uniqueId,
+            'tv_code'     => $request->tv_code,
+            'type'        => 'Code',
+          ]);
+
+      }else{
+
+        TVLoginCode::create([
+          'email'       => $request->email,
+          'uniqueId'    => $request->uniqueId,
+          'tv_code'     => $request->tv_code,
+          'type'        => 'Code',
+          'status'      => 0,
+      ]);
+
+
+      }
 
         $user = User::where('email',$email)->first();
 
@@ -14585,11 +14636,6 @@ public function QRCodeMobileLogout(Request $request)
                   $Page_List_Name = 'Series_Pagelist';
                   break;
       
-              case 'audios':
-                  $data = $this->Audios_Pagelist();
-                  $Page_List_Name = 'Audios_Pagelist';
-                  break;
-      
               case 'Recommended_videos_site':
                   $data = $this->Recommended_videos_site_Pagelist();
                   $Page_List_Name = 'Recommended_videos_site_Pagelist';
@@ -14605,8 +14651,13 @@ public function QRCodeMobileLogout(Request $request)
                   $Page_List_Name = 'Recommended_videos_users_Pagelist';
                   break;
 
-              case 'albums':
-                    $data = $this->albums_Pagelist();
+              case 'Audios_album':
+                    $data = $this->Audios_albums_Pagelist();
+                    $Page_List_Name = 'Audios_albums_Pagelist';
+                    break;
+
+              case 'audios':
+                    $data = $this->Audios_Pagelist();
                     $Page_List_Name = 'Audios_Pagelist';
                     break;
 
@@ -15008,6 +15059,18 @@ public function QRCodeMobileLogout(Request $request)
       return $data;
   }
 
+  private static function Audios_albums_Pagelist(){
+
+    $data = AudioAlbums::query()->latest()->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/public/uploads/albums/'.$item->album);
+        $item['Player_image_url'] = URL::to('/public/uploads/albums/'.$item->album);
+        $item['source']    = "albums";
+        return $item;
+      });
+
+    return $data;
+  }
+
   private static function Recommended_videos_site_Pagelist(){
 
     $check_Kidmode = 0 ;
@@ -15108,23 +15171,6 @@ public function QRCodeMobileLogout(Request $request)
     });
 
     return $data;
-  }
-
-  private static function albums_Pagelist(){
-
-    $query = AudioAlbums::query();
-
-    $data = $query->latest()->get();
-
-    $data->transform(function ($item) {
-      $item['image_url'] = asset('public/uploads/albums/'.$item->album);
-      $item['Player_image_url'] = asset('public/uploads/albums/'.$item->album); // Note - No Player Image for Albums
-      $item['source'] = "Audios_album";
-      return $item;
-    });
-
-    return $data;
-
   }
 
   private static function Specific_Audio_Playlist_Pagelist( $user_id ){
