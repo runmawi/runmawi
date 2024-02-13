@@ -23,6 +23,17 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
             background-color: transparent !important  ;
             font-size: revert;
       }
+      @media (max-width:768px){
+        .col-6 p{
+            font-size: 12px;
+        }
+        button#button {
+            font-size: 12px;
+        }
+        div#subscribers_only{
+            padding-top: 40px !important;
+        }
+      }
 </style>
 
 <?php if (Session::has('message')): ?>
@@ -251,7 +262,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                 <div
                 id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                 <div class="container-fluid">
-                    <div class="col-6 p-0">
+                    <div class="col-12 col-md-6 col-sm-6 p-0">
                         <h4 class=""><?php echo $episode->title; ?></h4>
                         <p class=" text-white col-lg-8"><?php echo $episode->episode_description; ?></p>
                     </div>
