@@ -149,7 +149,7 @@
          <?php
             else: ?>
          <form method="get" action="<?=URL::to('signup') ?>">
-             <div class=" mt-3">
+             <div class="container-fluid mt-3">
             <button id="button" class="btn btn-primary"><?php echo __('Become a Subscribe to Watch This Episode'); ?> <?php if ($series->access == 'subscriber'): ?><?php
                elseif ($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php
                endif; ?></button></div>
@@ -186,7 +186,7 @@
                 </div>
                 <?php if( Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber' 
                      || Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access == 'registered'  ):  ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                     <!-- <button type="button"
                         class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button> -->
                     <form method="get" action="<?= URL::to('/signup') ?>">
@@ -194,13 +194,13 @@
                     </form>
                 </div>
                 <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                 <form method="get" action="<?= URL::to('/signup') ?>">
                         <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
                     </form>
                 </div>
                 <?php else: ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                     <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                         <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
                             <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
