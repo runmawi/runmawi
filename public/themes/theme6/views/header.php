@@ -297,7 +297,7 @@
          width:50px;
       }
       .btn-close{
-         right:20%;
+         right:20% !important;
          font-size:25px;
       }
    }
