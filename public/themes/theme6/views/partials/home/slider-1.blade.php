@@ -9,6 +9,7 @@
                 {{-- Admin Slider  --}}
 @if (!empty($sliders) && $sliders->isNotEmpty())
     @foreach ($sliders as $item)
+    <div id="admin-slid">
         <div class="slide slick-bg s-bg-2" style="background: url('{{ URL::to('public/uploads/videocategory/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
@@ -21,7 +22,7 @@
                                 </div>
                             </a> -->
 
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <!-- <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1> -->
 
                             <!-- <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1">
                                 <a href="{{ $item->link }}" class="btn btn-hover"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
@@ -41,6 +42,7 @@
                 </div>
             </div>
         </div>
+    </div>
     @endforeach
 @endif
 
@@ -262,6 +264,7 @@
         </div>
     @endforeach
 @endif
+
 
 <!-- slider see more script -->
 <!-- <script>

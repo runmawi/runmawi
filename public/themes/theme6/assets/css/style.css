@@ -734,7 +734,9 @@ header .navbar ul li.menu-item a:hover {
     color:white;
 }
 #descriptionContainer p{margin:0;}
-
+#admin-slid .slick-bg:before{
+    background: transparent !important;
+}
 
 /*  Signup Page*/
 
