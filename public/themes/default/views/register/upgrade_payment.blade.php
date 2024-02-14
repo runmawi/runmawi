@@ -1115,23 +1115,24 @@ background-color: #000;padding: 10px!important;}
 
     window.onload = function(){
 
-        $("#stripe_radio_button").prop('checked', true);
-        $('.paystack_payment').hide();
-        $('.Razorpay_payment').hide();
-        $('.cinetpay_payment').hide();
-        $(".payment_gateway").trigger("click");
+        $("#stripe_radio_button").prop('checked', true).trigger("click");
 
+        $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_payment').hide();
+
+        if( $('input[name="payment_gateway"]:checked').val() == "stripe" ){
+            $('.stripe_payment').show();
+        }
 
         if( $('input[name="payment_gateway"]:checked').val() == "paystack" ){
-            $('.stripe_payment').hide();
+            $('.paystack_payment').show();
         }
 
         if( $('input[name="payment_gateway"]:checked').val() == "Razorpay" ){
-            $('.Razorpay_payment').hide();
+            $('.Razorpay_payment').show();
         }
 
         if( $('input[name="payment_gateway"]:checked').val() == "CinetPay" ){
-            $('.cinetpay_button').hide();
+            $('.cinetpay_button').show();
         }
     };
 
