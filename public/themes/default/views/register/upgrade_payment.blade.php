@@ -543,7 +543,7 @@ background-color: #000;padding: 10px!important;}
                      <div class="medium-heading text-white pb-3"> {{  $signup_step2_title  }} </div>
 
                     <div class="col-md-12 p-0">
-                        <p class="meth"> {{ __('plan') }}Payment Method</p>
+                        <p class="meth"> {{ __('Plan Payment Method ') }} </p>
 <div class="d-flex">
                                                 <!-- Stripe -->
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
