@@ -142,15 +142,6 @@
                             </li>
                         <?php } ?>
 
-                        <li class="list-inline-item">
-                            <i class="ri-facebook-fill"></i>
-                        </li>
-                        <li class="list-inline-item">
-                            <i class="fa fa-google-plus"></i>
-                        </li>
-                        <li class="list-inline-item">
-                            <i class="ri-youtube-fill"></i>
-                        </li>
                     </ul>
                 </div>
             </div>
