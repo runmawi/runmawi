@@ -128,7 +128,7 @@
 						</div>
 					</div>
                  </div></div>
-                 <div class="col-sm-12 mt-2"> 
+                 <div class="col-sm-6 mt-2"> 
 					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 						<!--<div class="panel-title">User Active Status</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 						<div class="panel-body" style="display: block;"> 
@@ -137,7 +137,21 @@
 						</div>
 					</div>
 				</div>
-             </div>
+			 <div class="col-md-6 mt-2" id="SubscriptionPlan">
+                 <div class="panel panel-primary mt-2" data-collapsed="0"> <div class="panel-heading"> 
+				<!--<div class="panel-title">Mobile</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-body" style="display: block;"> 
+                      
+					<label class="mb-1">Choose Subscriber Plan :</label>
+                    <div class="row">
+                       <div class="col-sm-12">
+                        <select name="plan" class="form-control mb-3" >
+                            @foreach($SubscriptionPlan as $plan)
+                            <option value="{{ $plan->plan_id }}" > {{ $plan->plans_name .'- '.$plan->type }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+				</div>
             </div>
             <!-- row -->
 <div class="mt-3"></div>
@@ -177,6 +191,15 @@
 
 	$(document).ready(function(){
 
+		$('#SubscriptionPlan').hide();
+		
+		$('#role').change(function() {
+			if($(this).val() == 'subscriber') {
+				$('#SubscriptionPlan').show();
+		    } else {
+				$('#SubscriptionPlan').hide();
+		    }
+		});
 		$('#active, #disabled').change(function() {
 			if($(this).is(":checked")) {
 		    	$(this).val(1);
