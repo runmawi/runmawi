@@ -1210,7 +1210,7 @@ background-color: #000;padding: 10px!important;}
 
         var Razorpay_plan_id = $("#plan_name").val();
 
-        alert(Razorpay_plan_id);
+        // alert(Razorpay_plan_id);
 
         $.ajax({
             url:  "{{ route('Razorpay_authorization_url') }}",
