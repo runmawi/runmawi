@@ -10,7 +10,7 @@
 @if (!empty($sliders) && $sliders->isNotEmpty())
     @foreach ($sliders as $item)
     <div id="admin-slid">
-        <div class="slide slick-bg s-bg-2" style="background: url('{{ URL::to('public/uploads/videocategory/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;" >
+        <div class="slide slick-bg s-bg-2 admin-slide1" style="background: url('{{ URL::to('public/uploads/videocategory/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;" >
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
