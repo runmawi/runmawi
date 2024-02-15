@@ -14249,7 +14249,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (video Categories status) is turned off in the admin panel
       else:
 
-          $data =  VideoCategory::where('in_home',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
+          $data =  VideoCategory::where('in_home',1)->limit(30)->orderBy('order')->get()->map(function ($item) use ($Setting) {
                           $item['image_url'] = $item->banner_image ?  URL::to('public/uploads/videocategory/'.$item->image) : URL::to('/').'/public/uploads/images/'.$Setting->default_video_image;
                           $item['Player_image_url'] = $item->banner_image ? URL::to('public/uploads/videocategory/'.$item->banner_image) : URL::to('/').'/public/uploads/images/'.$Setting->default_horizontal_image;
                           $item['description'] = null ;
