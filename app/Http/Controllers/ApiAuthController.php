@@ -10777,10 +10777,10 @@ $cpanel->end();
       $page_id = $request->page_id;
      $pages = Page::where('id', '=', $page_id)->where('active', '=', 1)->get()->map(function ($item) {
        $item['page_url'] = URL::to('page').'/'.$item->slug;
-       $details = html_entity_decode($item->body);
-       $description = strip_tags($details);
-       $str_replace = str_replace("\r", '', $description);
-       $item['body'] = str_replace("\n", '', $str_replace);
+      //  $details = html_entity_decode($item->body);
+      //  $description = strip_tags($details);
+      //  $str_replace = str_replace("\r", '', $description);
+      //  $item['body'] = str_replace("\n", '', $str_replace);
        return $item;
      });
      $response = array(
@@ -14249,8 +14249,8 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
           $data =  VideoCategory::where('in_home',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
-                          $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image);
-                          $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->banner_image);
+                          $item['image_url'] = $item->banner_image ?  URL::to('public/uploads/videocategory/'.$item->image) : URL::to('/').'/public/uploads/images/'.$Setting->default_video_image;
+                          $item['Player_image_url'] = $item->banner_image ? URL::to('public/uploads/videocategory/'.$item->banner_image) : URL::to('/').'/public/uploads/images/'.$Setting->default_horizontal_image;
                           $item['description'] = null ;
                           $item['source']    = "VideoCategory"; 
                           return $item;
