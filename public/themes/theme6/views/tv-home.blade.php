@@ -22,14 +22,14 @@
 
                 {{-- Slider --}}
 
-<section id="home" class="iq-main-slider p-0">
-    <div id="home-slider" class="slider m-0 p-0">
-       {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/slider-1', [
-                'series_sliders' => App\Series::where('active', '=', '1')->where('banner','=','1')
-                                        ->latest()->get() ,
-            ])->content() !!}
-    </div>
- </section>
+    <!-- <section id="home" class="iq-main-slider p-0">
+        <div id="home-slider" class="slider m-0 p-0">
+        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/slider-1', [
+                    'series_sliders' => App\Series::where('active', '=', '1')->where('banner','=','1')
+                                            ->latest()->get() ,
+                ])->content() !!}
+        </div>
+    </section> -->
 
 <section>
     <div class="main-content">
