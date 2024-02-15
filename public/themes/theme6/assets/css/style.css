@@ -796,6 +796,9 @@ header .navbar ul li.menu-item a:hover {
     .slide.slick-bg.s-bg-2.admin-slide1 {
         height: 50vh !important;
     }
+    .descript{
+        display:none;
+    }
 }
 @media (max-width: 426px){
     .trending-pills.nav-pills .nav-item a{
