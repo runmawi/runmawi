@@ -108,7 +108,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 #home-slider .slick-dots li.slick-active button { background: var(--iq-primary); }
 #home-slider li { position: relative; }
 .slider-description { position: absolute; top: 15%; left: 80px; }
-#home-slider h1.slider-text { font-size: 70px; margin: 15px 0; }
+#home-slider h1.slider-text { font-size: 55px; margin: 15px 0; }
 #home-slider p {
     margin: 20px 0 5px 0;
     width: 75%;
@@ -736,6 +736,9 @@ header .navbar ul li.menu-item a:hover {
 .admin-slide1:before{
     background: transparent !important;
 }
+img.c-logo {
+    width: 30%;
+}
 
 /* Screen responsive */
 @media (max-width: 1199px){
@@ -818,6 +821,12 @@ header .navbar ul li.menu-item a:hover {
     }
     .slide.slick-bg.s-bg-2.admin-slide1 {
         height: 30vh !important;
+    }
+    #home-slider h1.slider-text{
+        font-size:20px !important;
+    }
+    .r-mb-23{
+        margin-top:10px;
     }
 }
 @media (max-width:375px){
