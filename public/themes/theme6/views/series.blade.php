@@ -133,7 +133,8 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 ?>
 
 <div id="myImage" class="container"
-    style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%); background-size: cover;  padding: 0px 0px 0px;position:relative;z-index:1;">
+style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 50%), url({{ URL::to('public/uploads/images/' . $series->player_image) }}) right no-repeat; background-size: cover; padding: 0px 0px 0px; position: relative; z-index: 1;">
+
     <div> </div>
     <div class="container-fluid pt-5">
         <div id="series_bg_dim" class="{{ ($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest())) ? '' : 'darker' }}"></div>
