@@ -102,9 +102,11 @@ class RazorpayController extends Controller
 
         if($users_details != null){
             $user_details =Auth::User();
+            $redirection_back = URL::to('/becomesubscriber'); 
         }else{
             $userEmailId = $request->session()->get('register.email');
             $user_details =User::where('email',$userEmailId)->first();
+            $redirection_back = URL::to('/register2'); 
         }
 
         $plan_Id =Crypt::decryptString($Plan_Id);
@@ -134,6 +136,7 @@ class RazorpayController extends Controller
             'regionName'     =>  $regionName,
             'cityName'       =>  $cityName,
             'PaymentGateway' =>  'razorpay',
+            'redirection_back' => $redirection_back ,
         );
 
         return Theme::view('Razorpay.checkout',compact('respond'),$respond);
