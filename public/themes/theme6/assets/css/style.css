@@ -733,12 +733,16 @@ header .navbar ul li.menu-item a:hover {
 .slide-item a:hover{
     color:white;
 }
-#descriptionContainer p{margin:0;}
-#admin-slid .slick-bg:before{
+.admin-slide1:before{
     background: transparent !important;
 }
 
 /* Screen responsive */
+@media (max-width: 1199px){
+    .slide.slick-bg.s-bg-2.admin-slide1 {
+        height: 80vh !important;
+    }
+}
 @media (max-width: 768px){
     .trending-pills {
         flex-direction: row !important;
@@ -789,6 +793,9 @@ header .navbar ul li.menu-item a:hover {
     .trending- p{
         font-size: 10px;
     }
+    .slide.slick-bg.s-bg-2.admin-slide1 {
+        height: 50vh !important;
+    }
 }
 @media (max-width: 426px){
     .trending-pills.nav-pills .nav-item a{
@@ -805,6 +812,9 @@ header .navbar ul li.menu-item a:hover {
     }
     #home-slider .slick-bg{
         padding:0 !important;
+    }
+    .slide.slick-bg.s-bg-2.admin-slide1 {
+        height: 40vh !important;
     }
 }
 @media (max-width:375px){
