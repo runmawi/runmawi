@@ -31,7 +31,9 @@ var options = {
 
             if (pop_close_confirm === true) {
                 let redirection_back = "{{ $respond['redirection_back'] }}";
-                window.location.href = redirection_back ;
+                window.location.href = redirection_back;
+            } else {
+                location.reload();
             }
         }
     },
