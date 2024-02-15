@@ -163,31 +163,38 @@ Index Of Script
 			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
 			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
 			responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-				slidesToShow: 7,
-				slidesToScroll: 1,
-				infinite: true,
-				dots: false,
+				{
+					breakpoint: 1200,
+					settings: {
+					slidesToShow: 5,
+					slidesToScroll: 1,
+					infinite: true,
+					dots: false,
+					}
+				},
+				{
+					breakpoint: 768,
+					settings: {
+					slidesToShow: 4,
+					slidesToScroll: 1
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+					// arrows: false,
+					slidesToShow: 2,
+					slidesToScroll: 1
+					}
+				},
+				{
+					breakpoint: 320,
+					settings: {
+					slidesToShow: 2,
+					slidesToScroll: 1
+					}
 				}
-			},
-			{
-				breakpoint: 768,
-				settings: {
-				slidesToShow: 4,
-				slidesToScroll: 1
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-				// arrows: false,
-				slidesToShow: 1,
-				slidesToScroll: 1
-				}
-			}
-			]
+				]
 		});
 
 		jQuery('#top-ten-slider').slick({
