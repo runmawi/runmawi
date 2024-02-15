@@ -814,7 +814,7 @@ header .navbar ul li.menu-item a:hover {
         padding:0 !important;
     }
     .slide.slick-bg.s-bg-2.admin-slide1 {
-        height: 40vh !important;
+        height: 30vh !important;
     }
 }
 @media (max-width:375px){
