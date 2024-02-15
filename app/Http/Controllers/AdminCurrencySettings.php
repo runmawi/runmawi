@@ -176,17 +176,19 @@ class AdminCurrencySettings extends Controller
         $Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
 
         $default_Currency = Currency::where('country',@$allCurrency->country)->pluck('code')->first();
-
          try {
-
-            $response = \Http::get("https://api.exchangerate.host/latest?base=".$default_Currency."&symbols=".$default_Currency."");
+            // https://open.er-api.com/v6/latest/usd
+            // https://api.exchangerate.host/latest
+            $response = \Http::get("https://open.er-api.com/v6/latest?base=".$default_Currency."&symbols=".$default_Currency."");
             $responseBody = json_decode($response->getBody());
+            // dd($responseBody);
             $current_rate = $responseBody->rates->$default_Currency;
       
         } catch (\Throwable $th) {
             // throw $th;
             $current_rate = '';
         }
+        // dd($current_rate);
 
         // $client = new Client();
         // $url = "https://api.exchangerate.host/latest";
@@ -213,7 +215,7 @@ class AdminCurrencySettings extends Controller
          
          try {
 
-            $response = \Http::get("https://api.exchangerate.host/latest?base=".$default_Currency."");
+            $response = \Http::get("https://open.er-api.com/v6/latest?base=".$default_Currency."");
             $responseBody = json_decode($response->getBody());
             $all_current_rate = $responseBody->rates;
 
