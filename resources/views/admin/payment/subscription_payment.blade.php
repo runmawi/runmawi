@@ -4,10 +4,21 @@
         background: #fff!important;
     }
 </style>
+
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">  
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+
 @section('content')
 
      <div id="content-page" class="content-page">
@@ -29,7 +40,7 @@
                      </div>
                      <div class="iq-card-body table-responsive p-0">
                         <div class="table-view">
-                           <table class="table table-striped table-bordered table movie_table  text-center iq-card" style="width:100%">
+                           <table class="table table-striped table-bordered table movie_table  text-center iq-card" style="width:100%" id="subscription_payment">
                               <thead>
                                  <tr class="r1">
                                     <th>ID</th>
@@ -51,14 +62,14 @@
                                  <td> <p class="mb-0">{{ $i++ }}</p></td>
                                  <td> <p class="mb-0"></p>{{ $payment->username }}</td>
                                  <td> <p class="mb-0"></p>{{ $payment->email }}</td>
-                                 <td> <p class="mb-0">{{ $payment->user_type }}</p></td>
-                                 <td> <p class="mb-0">{{ $payment->stripe_id }}</p></td>
-                                 <td> <p class="mb-0">{{ $payment->card_type }}</p></td>
+                                 <td> <p class="mb-0">{{ @$payment->subscription_plans_name }}</p></td>
+                                 <td> <p class="mb-0">{{ $payment->stripe_id ? ($payment->stripe_id) : "Cus_ Not Available" }}</p></td>
+                                 <td> <p class="mb-0">{{ $payment->subscription_plans_type }}</p></td>
 
                                     <td>
                                        <div class="media align-items-center">
                                           <div class="media-body text-white text-left ml-3">
-                                             <p class="mb-0">₹ {{ $payment->price }}</p>
+                                             <p class="mb-0"> {{ currency_symbol().' '.$payment->price }}</p>
                                           </div>
                                        </div>
                                     </td>
@@ -91,8 +102,18 @@
             </div>
          </div>
       
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+
          <script>
 $(document).ready(function(){
+
+   $(document).ready(function() {
+    $('#subscription_payment').DataTable();
+});
 
  fetch_customer_data();
 
