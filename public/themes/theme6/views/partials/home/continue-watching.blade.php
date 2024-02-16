@@ -7,7 +7,8 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="#">{{ ucwords('continue watching') }}</a></h4>
+                        <h4 class="main-title"><a href="{{ route( 'ContinueWatchingList' ) }}">{{ ucwords('continue watching') }}</a></h4>
+                        <h4 class="main-title"><a href="{{ route( 'ContinueWatchingList' ) }}">{{ ucwords('view all') }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">

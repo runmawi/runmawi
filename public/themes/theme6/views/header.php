@@ -561,7 +561,7 @@
                                   </a>
 
                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" >
+                                    <form method="get" action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" >
                                     <input name="_token" type="hidden" value="<?= csrf_token(); ?>" />
                                        <div class="form-group position-relative">
                                           <input type="text" class="text search-input font-size-12 searches"

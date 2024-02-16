@@ -995,13 +995,16 @@ class TvshowsController extends Controller
                                             ->where('series_id',$request->series_id)->where('season_id',$request->season_id)
                                             ->orderBy('episode_order')->get();
 
+        $redirect_url = 'public/themes/' . $Theme . '/partials/season_depends_episode_section';
+
         $data = [
             'series_data' => $series,
             'season_depends_episode' => $season_depends_episode ,
             'featured_season_depends_episode' => $featured_season_depends_episode ,
         ];
 
-        return $theme->load('public\themes\theme6\partials\season_depends_episode_section',  $data )->render();
+
+        return $theme->load($redirect_url,  $data )->render();
     }
 
     public function PlayEpisode($episode_name)
