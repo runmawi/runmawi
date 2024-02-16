@@ -67,10 +67,6 @@ $settings = App\Setting::first();
      padding: 10px 10px;
      cursor: pointer;
   }
-    /* .rounded-circle {
-    height: 150px;
-    width: 150px;
-} */
     .fa-fw{
         position: absolute;
     right: 0px;
@@ -78,7 +74,6 @@ $settings = App\Setting::first();
         color: #000;
     background-color: #578cea;
     padding: 12px 22px;
-    /* width: 100%; */
     display: flex;
     justify-content: center;
     }
@@ -101,6 +96,22 @@ $settings = App\Setting::first();
          margin-bottom: 0.5rem;
       }
       .modal-header{padding:1rem 1rem 0 1rem;}
+      .container-fluid{
+         padding:0;
+      }
+      .sign-user_card {
+         width: 100%;
+      }
+      .container{
+         max-width:100%;
+      }
+      .col-lg-4.mb-3.bdr, .col-lg-7.mb-3{ 
+         background: var(--iq-bg1); 
+      }
+      .sign-user_card .row.align-items-center{
+         gap:10px;
+      }
+      
 </style>
 
 <body>
@@ -244,7 +255,7 @@ $settings = App\Setting::first();
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-8 mb-3">
+            <div class="col-lg-7 mb-3">
                 <div class="targetDiv" id="div1">
                 <div class=" d-flex justify-content-between mb-3">
                 <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 

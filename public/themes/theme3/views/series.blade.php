@@ -116,6 +116,15 @@
         line-height: calc(1.5em + 1.2em);
         padding-left: 0.625em;
     }
+    header#main-header.menu-sticky{
+        position:unset !important;
+    }
+    .nav-link .active{
+        border-color: red !important;
+        border-style: solid !important;
+        border-width: 0 0px 2px 0px !important;
+        border-radius: 0;
+    }
 </style>
 
 <?php
@@ -131,6 +140,32 @@ $Series_Category = App\SeriesCategory::select('category_id', 'series_id', 'name'
 $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('series_id',$series->id)->latest()->first();
 
 ?>
+        <div id="home-slider">
+            <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $series->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
+                <div class="container-fluid position-relative h-100" style="padding:0 100px;">
+                    <div class="slider-inner h-100">
+                        <div class="row align-items-center  h-100">
+                            <div class="col-xl-6 col-lg-12 col-md-12">
+                                <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }} </h1>
+                                <div class="col-md-3 p-0" style="width:150px;">
+                                    <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;border-radius:9px;">
+                                        @foreach ($season as $key => $seasons)
+                                            <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($series)->details) !!} </p>
+                                <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
+                                    <span >{{ optional($series)->year }}</span>
+                                    <span class="trending-year"> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 <div id="myImage" class="container"
     style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%); background-size: cover;  padding: 0px 0px 0px;position:relative;z-index:1;">
@@ -145,8 +180,8 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                     !Auth::guest() &&
                     Auth::user()->subscribed() &&
                     $series->ppv_status != 1) ||
-                (!Auth::guest() &&  Auth::user()->role == 'admin') ||  Auth::user()->role == 'registered' 
-                ||  Auth::user()->role == 'subscriber' ||
+                (!Auth::guest() &&  Auth::user()->role == 'admin') ||  (!Auth::guest() && Auth::user()->role == 'registered') 
+                || (!Auth::guest() && Auth::user()->role == 'subscriber') ||
                 (!Auth::guest() && $series->access == 'registered' &&
                     $settings->free_registration && $series->ppv_status != 1)
             ) :  ?>

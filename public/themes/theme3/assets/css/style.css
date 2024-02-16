@@ -525,7 +525,7 @@ video { display: block; width: 100%; height: 100%; }
 /*---------------------------*/
 .m-profile { padding-top: 120px; padding-bottom: 60px;}
 .manage-p{height:100vh;}
-.m-profile .sign-user_card { background: var(--iq-bg1); }
+/* .m-profile .sign-user_card { background: var(--iq-bg1); } */
 .m-profile .iq-custom-select .select2-container--bootstrap4 .select2-selection, .m-profile .select2-dropdown { border: 1px solid var(--iq-body-text); background: transparent; }
 .m-profile .form-group { margin-bottom: 1.2rem; }
 .m-profile .sign-user_card { padding: 30px; }

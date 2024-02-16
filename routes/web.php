@@ -343,7 +343,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('/getCity', 'SignupController@GetCity');
     // search
     Route::get('search', 'HomeController@search');
-    Route::post('searchResult', 'HomeController@searchResult')->name('searchResult');
+    Route::get('searchResult', 'HomeController@searchResult')->name('searchResult');
     Route::get('search-videos/{videos_search_value}', 'HomeController@searchResult_videos')->name('searchResult_videos');
     Route::get('search-livestream/{livestreams_search_value}', 'HomeController@searchResult_livestream')->name('searchResult_livestream');
     Route::get('search-series/{series_search_value}', 'HomeController@searchResult_series')->name('searchResult_series');
@@ -2382,7 +2382,7 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
 
     // Series
     Route::get('/series/list', 'AllVideosListController@all_series')->name('all_series');
-    Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList');
+    Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList')->name('ContinueWatchingList');
 });
 
 // Razorpay
