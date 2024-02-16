@@ -24,6 +24,7 @@ class LanguageTranslationController extends Controller
     {
    	  $languages = DB::table('translation_languages')->get();
 
+         $Setting_website_name =  Setting::pluck('website_name')->first();
 
    	  $columns = [];
 	  $columnsCount = $languages->count();
@@ -37,8 +38,7 @@ class LanguageTranslationController extends Controller
 	            $columns[++$key] = ['data'=>$this->openJSONFile($language->code), 'lang'=>$language->code];
 	        }
 	    }
-
-
+        
         return view('admin.languages.translation.translation_languages', compact('languages','columns','columnsCount'));
     }   
     /**
@@ -52,12 +52,17 @@ class LanguageTranslationController extends Controller
 		    'value' => 'required',
 		]);
 
-
-		$data = $this->openJSONFile('en');
+        $filename = GetWebsiteName().'en';
+        if (!file_exists($filename)) {
+            // If the file doesn't exist, create it with an empty array
+            $this->saveJSONFile($filename, []);
+        }
+    
+		$data = $this->openJSONFile(GetWebsiteName().'en');
         $data[$request->key] = $request->value;
 
 
-        $this->saveJSONFile('en', $data);
+        $this->saveJSONFile(GetWebsiteName().'en', $data);
 
 
         return redirect()->route('languages');
@@ -75,9 +80,9 @@ class LanguageTranslationController extends Controller
 
         if($languages->count() > 0){
             foreach ($languages as $language){
-                $data = $this->openJSONFile($language->code);
+                $data = $this->openJSONFile(GetWebsiteName().$language->code);
                 unset($data[$key]);
-                $this->saveJSONFile($language->code, $data);
+                $this->saveJSONFile(GetWebsiteName().$language->code, $data);
             }
         }
         return response()->json(['success' => $key]);
@@ -90,8 +95,8 @@ class LanguageTranslationController extends Controller
     */
     private function openJSONFile($code){
         $jsonString = [];
-        if(File::exists(base_path('resources/lang/'.$code.'.json'))){
-            $jsonString = file_get_contents(base_path('resources/lang/'.$code.'.json'));
+        if(File::exists(base_path('resources/lang/'.GetWebsiteName().$code.'.json'))){
+            $jsonString = file_get_contents(base_path('resources/lang/'.GetWebsiteName().$code.'.json'));
             $jsonString = json_decode($jsonString, true);
         }
         return $jsonString;
@@ -114,11 +119,11 @@ class LanguageTranslationController extends Controller
      * @return Response
     */
     public function transUpdate(Request $request){
-        $data = $this->openJSONFile($request->code);
+        $data = $this->openJSONFile(GetWebsiteName().$request->code);
         $data[$request->pk] = $request->value;
 
 
-        $this->saveJSONFile($request->code, $data);
+        $this->saveJSONFile(GetWebsiteName().$request->code, $data);
         return response()->json(['success'=>'Done!']);
     }
 
@@ -133,11 +138,11 @@ class LanguageTranslationController extends Controller
 
         if($languages->count() > 0){
             foreach ($languages as $language){
-                $data = $this->openJSONFile($language->code);
+                $data = $this->openJSONFile(GetWebsiteName().$language->code);
                 if (isset($data[$request->pk])){
                     $data[$request->value] = $data[$request->pk];
                     unset($data[$request->pk]);
-                    $this->saveJSONFile($language->code, $data);
+                    $this->saveJSONFile(GetWebsiteName().$language->code, $data);
                 }
             }
         }
