@@ -19,34 +19,35 @@
          $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
 
          if(!empty($UserTranslation)){
-            $translate_language = $UserTranslation->translate_language;
+             $translate_language = GetWebsiteName().$UserTranslation->translate_language;
          }else{
-            $translate_language = 'en';
+             $translate_language = GetWebsiteName().'en';
          }
      }else if(!Auth::guest()){
 
          $subuser_id=Session::get('subuser_id');
          if($subuser_id != ''){
-            $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
-            if(!empty($Subuserranslation)){
-               $translate_language = $Subuserranslation->translate_language;
-            }else{
-               $translate_language = 'en';
-            }
+             $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+             if(!empty($Subuserranslation)){
+                 $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+             }else{
+                 $translate_language = GetWebsiteName().'en';
+             }
          }else if(Auth::user()->id != ''){
-            $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
-            if(!empty($UserTranslation)){
-               $translate_language = $UserTranslation->translate_language;
-            }else{
-               $translate_language = 'en';
-            }
+             $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+             if(!empty($UserTranslation)){
+                 $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+             }else{
+                 $translate_language = GetWebsiteName().'en';
+             }
          }else{
-            $translate_language = 'en';
+             $translate_language = GetWebsiteName().'en';
          }
 
      }else{
-         $translate_language = 'en';
+         $translate_language = GetWebsiteName().'en';
      }
+
       \App::setLocale(@$translate_language);
 
 
