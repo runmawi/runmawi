@@ -15406,8 +15406,14 @@ public function QRCodeMobileLogout(Request $request)
 
   
   public function relatedtvvideos(Request $request) {
-    
-    $videoid = $request->videoid;
+
+    try {
+
+      $this->validate($request, [
+        'videoid'  => 'required|integer' ,
+      ]);
+      
+      $videoid = $request->videoid;
    
       // Recomendeds
                 
@@ -15420,16 +15426,28 @@ public function QRCodeMobileLogout(Request $request)
       ->where('videos.draft',  1)
       ->orderBy('videos.created_at', 'desc')
       ->groupBy('videos.id')
-      ->limit(10)
-      ->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+      ->limit(20)
+      ->inRandomOrder()->get()->map(function ($item) {
+        $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+        $item['player_image_url'] = URL::to('public/uploads/images/'.$item->player_image);
         return $item;
       });
+
       $response = array(
-      'status'=>'true',
-      'channelrecomended' => $recomendeds
-    );
+        'status'=>'true',
+        'message' => 'Retrieved related tvvideos Successfully',
+        'channelrecomended' => $recomendeds
+      );
+
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message' => $th->getMessage(),
+        );
+
+    }
+    
     return response()->json($response, 200);
   }
 
