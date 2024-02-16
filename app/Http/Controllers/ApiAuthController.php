@@ -15416,16 +15416,17 @@ public function QRCodeMobileLogout(Request $request)
       ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
       ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
       ->where('videos.id', '!=', $videoid)
-      ->where('videos.active',  1)
-      ->where('videos.status',  1)
-      ->where('videos.draft',  1)
-      ->orderBy('videos.created_at', 'desc')
-      ->groupBy('videos.id')
+      ->where('videos.active', 1)
+      ->where('videos.status', 1)
+      ->where('videos.draft', 1)
       ->limit(20)
-      ->inRandomOrder()->get()->map(function ($item) {
-        $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-        $item['player_image_url'] = URL::to('public/uploads/images/'.$item->player_image);
-        return $item;
+      ->groupBy('videos.id')
+      ->inRandomOrder()
+      ->get()
+      ->map(function ($item) {
+          $item['image_url'] = URL::to('public/uploads/images/' . $item->image);
+          $item['player_image_url'] = URL::to('public/uploads/images/' . $item->player_image);
+          return $item;
       });
 
       $response = array(
