@@ -14245,10 +14245,11 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
           $data =  VideoCategory::where('in_home',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
+                          $item['title']     = $item->name ;
                           $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image);
                           $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->banner_image);
                           $item['description'] = null ;
-                          $item['source']    = "VideoCategory"; 
+                          $item['source']    = "category_videos"; 
                           return $item;
                         });
 
