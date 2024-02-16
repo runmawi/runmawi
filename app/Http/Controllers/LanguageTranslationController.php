@@ -58,11 +58,11 @@ class LanguageTranslationController extends Controller
             $this->saveJSONFile($filename, []);
         }
     
-		$data = $this->openJSONFile(GetWebsiteName().'en');
+		$data = $this->openJSONFile('en');
         $data[$request->key] = $request->value;
 
 
-        $this->saveJSONFile(GetWebsiteName().'en', $data);
+        $this->saveJSONFile('en', $data);
 
 
         return redirect()->route('languages');
@@ -80,9 +80,9 @@ class LanguageTranslationController extends Controller
 
         if($languages->count() > 0){
             foreach ($languages as $language){
-                $data = $this->openJSONFile(GetWebsiteName().$language->code);
+                $data = $this->openJSONFile($language->code);
                 unset($data[$key]);
-                $this->saveJSONFile(GetWebsiteName().$language->code, $data);
+                $this->saveJSONFile($language->code, $data);
             }
         }
         return response()->json(['success' => $key]);
@@ -110,7 +110,7 @@ class LanguageTranslationController extends Controller
     private function saveJSONFile($code, $data){
         ksort($data);
         $jsonData = json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
-        file_put_contents(base_path('resources/lang/'.$code.'.json'), stripslashes($jsonData));
+        file_put_contents(base_path('resources/lang/'.GetWebsiteName().$code.'.json'), stripslashes($jsonData));
     }
 
 
@@ -119,11 +119,11 @@ class LanguageTranslationController extends Controller
      * @return Response
     */
     public function transUpdate(Request $request){
-        $data = $this->openJSONFile(GetWebsiteName().$request->code);
+        $data = $this->openJSONFile($request->code);
         $data[$request->pk] = $request->value;
 
 
-        $this->saveJSONFile(GetWebsiteName().$request->code, $data);
+        $this->saveJSONFile($request->code, $data);
         return response()->json(['success'=>'Done!']);
     }
 
@@ -138,11 +138,11 @@ class LanguageTranslationController extends Controller
 
         if($languages->count() > 0){
             foreach ($languages as $language){
-                $data = $this->openJSONFile(GetWebsiteName().$language->code);
+                $data = $this->openJSONFile($language->code);
                 if (isset($data[$request->pk])){
                     $data[$request->value] = $data[$request->pk];
                     unset($data[$request->pk]);
-                    $this->saveJSONFile(GetWebsiteName().$language->code, $data);
+                    $this->saveJSONFile($language->code, $data);
                 }
             }
         }
