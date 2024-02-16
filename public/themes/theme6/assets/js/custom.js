@@ -119,8 +119,8 @@ Index Of Script
 			Slick Slider
 		----------------------------------------------------------------------- */
 		$('#home-slider').slick({
-			autoplay: false,
-			speed: 800,
+			autoplay: true,
+			speed: 1000,
 			lazyLoad: 'progressive',
 			arrows: true,
 			dots: false,
