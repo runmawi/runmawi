@@ -119,8 +119,8 @@ Index Of Script
 			Slick Slider
 		----------------------------------------------------------------------- */
 		$('#home-slider').slick({
-			autoplay: false,
-			speed: 800,
+			autoplay: true,
+			speed: 1000,
 			lazyLoad: 'progressive',
 			arrows: true,
 			dots: false,
@@ -163,31 +163,38 @@ Index Of Script
 			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
 			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
 			responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-				slidesToShow: 7,
-				slidesToScroll: 1,
-				infinite: true,
-				dots: false,
+				{
+					breakpoint: 1200,
+					settings: {
+					slidesToShow: 5,
+					slidesToScroll: 1,
+					infinite: true,
+					dots: false,
+					}
+				},
+				{
+					breakpoint: 768,
+					settings: {
+					slidesToShow: 4,
+					slidesToScroll: 1
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+					// arrows: false,
+					slidesToShow: 2,
+					slidesToScroll: 1
+					}
+				},
+				{
+					breakpoint: 320,
+					settings: {
+					slidesToShow: 2,
+					slidesToScroll: 1
+					}
 				}
-			},
-			{
-				breakpoint: 768,
-				settings: {
-				slidesToShow: 4,
-				slidesToScroll: 1
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-				// arrows: false,
-				slidesToShow: 1,
-				slidesToScroll: 1
-				}
-			}
-			]
+				]
 		});
 
 		jQuery('#top-ten-slider').slick({
@@ -340,21 +347,41 @@ Index Of Script
 			centerPadding:0,
 			focusOnSelect: true,
 			responsive: [
-			{
-				breakpoint: 1024,
-				settings: {
-				slidesToShow: 2,
-				slidesToScroll: 1,
+				{
+					breakpoint: 1200,
+					settings: {
+					slidesToShow: 5,
+					slidesToScroll: 1,
+					infinite: true,
+					dots: false,
+					}
+				},
+				{
+					breakpoint: 768,
+					settings: {
+					slidesToShow: 4,
+					slidesToScroll: 1,
+					dots: false,
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+					// arrows: false,
+					slidesToShow: 2,
+					slidesToScroll: 1,
+					dots: false,
+					}
+				},
+				{
+					breakpoint: 320,
+					settings: {
+					slidesToShow: 2,
+					slidesToScroll: 1,
+					dots: false,
+					}
 				}
-			},
-			{
-				breakpoint: 600,
-				settings: {
-				slidesToShow: 1,
-				slidesToScroll: 1
-				}
-			}
-			]
+				]
 		});
 		
 		jQuery('#tvshows-slider').slick({

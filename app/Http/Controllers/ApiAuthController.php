@@ -10777,6 +10777,10 @@ $cpanel->end();
       $page_id = $request->page_id;
      $pages = Page::where('id', '=', $page_id)->where('active', '=', 1)->get()->map(function ($item) {
        $item['page_url'] = URL::to('page').'/'.$item->slug;
+      //  $details = html_entity_decode($item->body);
+      //  $description = strip_tags($details);
+      //  $str_replace = str_replace("\r", '', $description);
+      //  $item['body'] = str_replace("\n", '', $str_replace);
        return $item;
      });
      $response = array(
@@ -14238,6 +14242,7 @@ public function QRCodeMobileLogout(Request $request)
   private static function All_Homepage_videoCategories(){
 
     $videoCategories_status = MobileHomeSetting::pluck('videoCategories')->first();
+    $Setting = Setting::first();
 
       if( $videoCategories_status == null || $videoCategories_status == 0 ): 
 

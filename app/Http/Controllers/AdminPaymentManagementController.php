@@ -155,12 +155,14 @@ class AdminPaymentManagementController extends Controller
         }else{
 
     //    $user = User::where('role', '!=' , 'admin')->get();
-       $subscription = Subscription::select('subscriptions.*','users.*')
+       $subscription = Subscription::select('subscriptions.*','users.*','subscription_plans.plans_name as subscription_plans_name','subscription_plans.type as subscription_plans_type')
        ->join('users', 'subscriptions.user_id', '=', 'users.id')
+       ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_id')
        ->where('users.role', '!=' , 'admin')
+       ->where('subscriptions.price', '!=' , '')
        ->get();
 
-        // dd($user);
+        // dd($subscription);
         $data = array(
             'subscription' => $subscription,
             );
