@@ -828,6 +828,9 @@ img.c-logo {
     .r-mb-23{
         margin-top:10px;
     }
+    header .navbar ul li{
+        margin-right:8px;
+    }
 }
 @media (max-width:375px){
     .trending-pills.nav-pills .nav-item a{
@@ -851,6 +854,9 @@ img.c-logo {
     }
     .d-flex.align-items-center.r-mb-23.fadeInUp.animated a{
         font-size: 10px;
+    }
+    header .navbar ul li a{
+        font-size:9px;
     }
 }
 
