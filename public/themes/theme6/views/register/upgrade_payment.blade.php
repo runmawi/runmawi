@@ -834,7 +834,6 @@
                 buttons: false,
                 closeOnClickOutside: false,
                 closeOnEsc: false,
-                imageSize: '100x100'
             });
 
             $.ajax({
@@ -983,6 +982,8 @@
                     $('.Paydunya_payment').show();
 
                 }
+
+                
             });
         });
     </script>
@@ -996,7 +997,7 @@
 
             $.ajax({
                 url: "{{ route('Stripe_authorization_url') }}",
-                type: "get",
+                type: "post",
                 data: {
                     _token: '{{ csrf_token() }}',
                     Stripe_Plan_id: Stripe_Plan_id,
@@ -1214,6 +1215,7 @@
                 });
         });
     </script>
+
 
     @php
         include public_path('themes/theme6/views/footer.blade.php');

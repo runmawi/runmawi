@@ -29,8 +29,8 @@ class StripePaymentController extends Controller
             
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
         
-            $success_url = URL::to('Stripe_payment_success?true&stripe_payment_session_id={CHECKOUT_SESSION_ID}') ;
-            $cancel_url = URL::to('Stripe_payment_failure?true&stripe_payment_session_id={CHECKOUT_SESSION_ID}');
+            $success_url = URL::to('Stripe_payment_success?stripe_payment_session_id={CHECKOUT_SESSION_ID}') ;
+            $cancel_url = URL::to('Stripe_payment_failure?stripe_payment_session_id={CHECKOUT_SESSION_ID}');
             
             $apply_coupon = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
 
@@ -245,6 +245,6 @@ class StripePaymentController extends Controller
 
     public function Stripe_payment_fails(Request $request)
     {
-      # code...
+      return redirect()->back();
     }
 }
