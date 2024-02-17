@@ -388,6 +388,11 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('retrieve_stripe_coupon', 'PaymentController@retrieve_stripe_coupon')->name('retrieve_stripe_coupon');
     Route::get('retrieve_stripe_invoice', 'PaymentController@retrieve_stripe_invoice')->name('retrieve_stripe_invoice');
 
+    Route::get('Stripe_authorization_url', 'StripePaymentController@Stripe_authorization_url')->name('Stripe_authorization_url');
+    Route::get('Stripe_payment_success', 'StripePaymentController@Stripe_payment_success')->name('Stripe_payment_success');
+    Route::get('Stripe_payment_failure', 'StripePaymentController@Stripe_payment_failure')->name('Stripe_payment_failure');
+
+
     Route::get('serieslist', ['uses' => 'ChannelController@series', 'as' => 'series']);
     // Route::get('series/category/{id}', 'ChannelController@series_genre' );
     Route::get('watchlater', 'WatchLaterController@show_watchlaters');

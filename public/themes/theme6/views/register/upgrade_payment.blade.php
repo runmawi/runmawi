@@ -8,7 +8,9 @@
 
     <script
         src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription"
-        data-sdk-integration-source="button-factory"></script>
+        data-sdk-integration-source="button-factory">
+    </script>
+
     <style>
         .round {
             background-color: #8a0303 !important;
@@ -168,14 +170,9 @@
             transition: .2s border ease-in-out;
         }
 
-        /*.sign-user_card {
-            background: none !important;
-        }*/
         #ck-button {
             margin: 4px;
-            /*    background-color:#EFEFEF;*/
             border-radius: 4px;
-            /*    border:1px solid #D0D0D0;*/
             overflow: auto;
             float: left;
         }
@@ -190,11 +187,9 @@
         }
 
         .sd {
-
             color: #8A0303 !important;
             font-weight: 500;
             text-decoration: underline !important;
-
         }
 
         p {
@@ -212,7 +207,6 @@
 
         #ck-button label input {
             position: absolute;
-            /*    top:-20px;*/
         }
 
         #ck-button input:checked+span {
@@ -235,7 +229,6 @@
             padding-left: 15px;
             letter-spacing: 42px;
             border: 0;
-            /* background-image: linear-gradient(to right, black 60%, rgb(120, 120, 120) 0%);*/
             background-position: bottom;
             background-size: 50px 1px;
             background-repeat: repeat-x;
@@ -246,9 +239,6 @@
             border: none;
         }
 
-        /*.sign-up-buttons{
-            margin-left: 40% !important;
-        }*/
         .verify-buttons {
             margin-left: 36%;
         }
@@ -321,9 +311,6 @@
         .dgk {
             color: #000 !important;
             padding: 30px 24px;
-
-
-
         }
 
         .dgk h4 {
@@ -382,21 +369,6 @@
             display: block;
         }
 
-        /* .form-control {
-        background-color: var(--iq-body-text) !important;
-        border: 1px solid transparent;
-        height: 46px;
-        position: relative;
-        color: var(--iq-body-bg) !important;
-        font-size: 16px;
-        width: 100%;
-        -webkit-border-radius: 6px;
-        border-radius: 6px;
-    }
-        a {
-        color: var(--iq-body-text);
-        text-decoration: none;
-    }*/
         .phselect {
             width: 100px !important;
             height: 45px !important;
@@ -411,11 +383,7 @@
             cursor: pointer;
         }
 
-        /*input[type="file"] {
-            display: none;
-        }
-
-        */ .catag {
+        .catag {
             padding-right: 150px !important;
         }
 
@@ -503,13 +471,10 @@
         }
 
         .dg {
-
             color: #000 !important;
             background-color: #fff;
             margin: 5px;
-
             border: 5px solid #ddd;
-
         }
 
         .actives {
@@ -518,7 +483,6 @@
         }
 
         .dg:hover {
-
             color: #000 !important;
             border: {{ '5px solid' . button_bg_color() . '!important' }};
             transition: 0.5s;
@@ -528,10 +492,6 @@
             background-color: #232c30;
             padding: 36px 47px 70px;
             margin-bottom: 35px;
-        }
-
-        #card-button {
-            background-color: {{ button_bg_color() . '!important' }};
         }
 
         #card-element {
@@ -567,16 +527,9 @@
         }
     </style>
 
-    <script>
-        $(function() {
-            $("#tabs").tabs();
-            $("tabs li:first").addClass("active");
-        });
-    </script>
 
     @php
         $SubscriptionPlan = App\SubscriptionPlan::first();
-        $AdminLifeTimeSubscription = App\AdminLifeTimeSubscription::first();
 
         $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
         $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
@@ -602,66 +555,59 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-6 p-0">
                     <div class="flick1">
+                        
                         <div class="small-heading text-white">Step 2 of<span class="ml-2">2</span></div>
-                        <p class="text-white" style="font-size: 16px;">Welcome
-                            {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
+
+                        <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
+                        
                         <div class="medium-heading text-white pb-3"> {{ $signup_step2_title }} </div>
 
                         <div class="col-md-12 p-0">
                             <p class="meth"> Payment Method</p>
                             <div class="d-flex">
-                                <!-- Stripe -->
+
+                                            <!-- Stripe -->
+
                                 @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                     <div class="align-items-center ">
-                                        <input type="radio" id="stripe_radio_button" class="payment_gateway"
-                                            name="payment_gateway" value="stripe">
-                                        <label class="ml-2">
-                                            <p> {{ $stripe_label }} </p>
-                                        </label> <br />
+                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe">
+                                        <label class="ml-2"><p> {{ $stripe_label }} </p> </label> <br />
                                     </div>
                                 @endif
+                                
+                                            <!-- Razorpay -->
 
-                                <!-- Paystack -->
-                                @if (!empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1)
-                                    <div class=" align-items-center ml-2">
-                                        <input type="radio" id="paystack_radio_button" class="payment_gateway"
-                                            name="payment_gateway" value="paystack">
-                                        <label class="mt-2 ml-2">
-                                            <p>{{ $paystack_label }} </p>
-                                        </label> <br />
-                                    </div>
-                                @endif
-
-                                <!-- Razorpay -->
                                 @if (!empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1)
                                     <div class="align-items-center  ml-2">
-                                        <input type="radio" id="Razorpay_radio_button" class="payment_gateway"
-                                            name="payment_gateway" value="Razorpay">
-                                        <label class="ml-2">
-                                            <p> {{ $Razorpay_label }} </p>
-                                        </label>
+                                        <input type="radio" id="Razorpay_radio_button" class="payment_gateway" name="payment_gateway" value="Razorpay">
+                                        <label class="ml-2"> <p> {{ $Razorpay_label }} </p></label><br />
                                     </div>
                                 @endif
 
-                                <!-- PayPal -->
+                                            <!-- Paystack -->
+
+                                @if (!empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1)
+                                    <div class=" align-items-center ml-2">
+                                        <input type="radio" id="paystack_radio_button" class="payment_gateway"  name="payment_gateway" value="paystack">
+                                        <label class="mt-2 ml-2"><p>{{ $paystack_label }} </p></label> <br />
+                                    </div>
+                                @endif
+
+                                            <!-- PayPal -->
+
                                 @if (!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
                                     <div class="align-items-center  ml-2">
-                                        <input type="radio" id="paypaul_radio_button" class="payment_gateway"
-                                            name="payment_gateway" value="paypal">
-                                        <label class="mt-2 ml-2">
-                                            <p>{{ $paypal_label }} </p>
-                                        </label> <br />
+                                        <input type="radio" id="paypaul_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
+                                        <label class="mt-2 ml-2"><p>{{ $paypal_label }} </p> </label> <br />
                                     </div>
                                 @endif
 
-                                <!-- CinetPay -->
+                                            <!-- CinetPay -->
+
                                 @if (!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
                                     <div class=" align-items-center ml-2">
-                                        <input type="radio" id="cinetpay_radio_button" class="payment_gateway"
-                                            name="payment_gateway" value="CinetPay">
-                                        <label class=" ml-2">
-                                            <p>{{ $CinetPay_lable }} </p>
-                                        </label>
+                                        <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay">
+                                        <label class=" ml-2"><p>{{ $CinetPay_lable }} </p></label><br />
                                     </div>
                                 @endif
                             </div>
@@ -671,15 +617,13 @@
                             <div class="col-md-12">
                                 <div class="data-plans row align-items-center m-0 p-0">
                                     @foreach ($plans_data_signup_checkout as $key => $plan)
+
                                         @php
                                             $plan_name = $plan->plans_name;
                                         @endphp
 
-                                        <div style="" class="col-md-4 plan_details p-0"
-                                            data-plan-id={{ 'active' . $plan->id }}
-                                            data-plan-price={{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $plan->price }}
-                                            data-plan_id={{ $plan->plan_id }} data-payment-type={{ $plan->payment_type }}
-                                            onclick="plan_details(this)">
+                                        <div style="" class="col-md-4 plan_details p-0" data-plan-id={{ 'active' . $plan->id }} data-plan-price={{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $plan->price }}
+                                            data-plan_id={{ $plan->plan_id }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
 
                                             <a href="#payment_card_scroll">
 
@@ -687,14 +631,12 @@
                                                     <div class="col-md-12 ambk p-0 text-center">
                                                         <div>
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
-                                                            <p class="text-white mb-0">
-                                                                {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $plan->price }}
-                                                                Membership</p>
+                                                            <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $plan->price }} Membership</p>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-12 blk">
-                                                        <p>@php echo ($plan->plan_content) @endphp</p>
+                                                        <p > {{ $plan->plan_content }} </p>
                                                     </div>
                                                 </div>
 
@@ -705,138 +647,28 @@
                                         </div>
                                     @endforeach
                                 </div>
-
-                                {{-- Life Time Subscription --}}
-
-                                @if ($AdminLifeTimeSubscription != null && $AdminLifeTimeSubscription->status == 1)
-                                    <div class="LifeTimeSubscription_div row align-items-center m-0 p-0"
-                                        id="LifeTimeSubscription_div"
-                                        data-subscription-price={{ $AdminLifeTimeSubscription->price }}
-                                        onclick="LifeTimeSubscription(this)">
-                                        <div style="" class="col-md-6 plan_details p-0 ">
-                                            <div class="row dg align-items-center mb-4">
-                                                <div class="col-md-7 p-0">
-                                                    <h4 class="text-black font-weight-bold">
-                                                        {{ $AdminLifeTimeSubscription ? $AdminLifeTimeSubscription->name : ' ' }}
-                                                    </h4>
-                                                    <p> {{ $AdminLifeTimeSubscription ? $AdminLifeTimeSubscription->name : ' ' . ' Membership ' }}
-                                                    </p>
-                                                </div>
-                                                <div class="vl "></div>
-                                                <div class="col-md-4 p-2">
-                                                    <h4 class="text-black">
-                                                        {{ currency_symbol() . $AdminLifeTimeSubscription->price }} </h4>
-                                                    <p class="mb-0">Billed as
-                                                        {{ $AdminLifeTimeSubscription ? currency_symbol() . $AdminLifeTimeSubscription->price : ' ' }}
-                                                    </p>
-                                                    <div class="text-center">
-                                                        <button type="submit" class="btn1 btn-lg  text-white "
-                                                            style="font-size:10px !important ; padding:5px 20px ;">Pay
-                                                            Now</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {{-- Stripe publishable Key --}}
-                                            <input type="hidden" id="Stripe_publishable_key" name="Stripe_publishable_key"
-                                                value="{{ env('STRIPE_KEY') }}">
-
-                                            <div class="d-flex justify-content-between align-items-center ">
-                                                <div class="bgk"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
                             </div>
 
-
+                                                {{-- Summary --}}
                             <div class="col-md-12 mt-5" id="payment_card_scroll">
-                                <div class="cont stripe_payment">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h3>Payment</h3>
-                                        </div>
-
-                                        <div>
-                                            <label for="fname">Accepted Cards</label>
-                                            <div class="icon-container">
-                                                <i class="fa fa-cc-visa" style="color: navy;"></i>
-                                                <i class="fa fa-cc-amex" style="color: blue;"></i>
-                                                <i class="fa fa-cc-mastercard" style="color: red;"></i>
-                                                <i class="fa fa-cc-discover" style="color: orange;"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-3"></div>
-
-                                    <label for="fname"><i class="fa fa-user"></i> Full Name</label>
-
-                                    <input id="card-holder-name" type="text" class="form-control"
-                                        placeholder="Card Holder Name">
-
-                                    <!-- Stripe Elements Placeholder -->
-                                    <label for="ccnum"> Card Number</label>
-                                    <div id="card-element" style=""></div>
-
-                                    @if (get_coupon_code() == 1)
-                                        <!-- Add Promotion Code -->
-                                        <div class="mt-3">
-                                            <label for="fname" style="float: right; " data-toggle="collapse"
-                                                href="#collapseExample" role="button" aria-expanded="false"
-                                                aria-controls="collapseExample" class="promo"> Add Promotion Code
-                                            </label>
-                                            <div class="collapse show" id="collapseExample">
-                                                <div class="row p-0">
-                                                    <div class="col-lg-6 p-0">
-                                                        <input id="coupon_code_stripe" type="text"
-                                                            class="form-control" placeholder="Add Promotion Code"
-                                                            style="height:41px;">
-                                                        <input id="final_coupon_code_stripe"
-                                                            name="final_coupon_code_stripe" type="hidden">
-                                                    </div>
-                                                    <div class="col-lg-6 p-0"><a type="button" id="couple_apply"
-                                                            class="btn round btn-lg">Apply</a></div>
-                                                    <span id="coupon_message"></span>
-
-                                                    {{-- Coupon Code from backend(admin) --}}
-                                                    @if (NewSubscriptionCouponCode() != '0')
-                                                        <span id="">
-                                                            {{ 'Recommend a Coupon Code for you - ' . NewSubscriptionCouponCode() }}
-                                                        </span>
-                                                    @endif
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                </div>
 
                                 <h4>Summary</h4>
 
                                 <div class="bg-white mt-4 dgk">
-                                    <h4> Due today: <span class='plan_price'>
-                                            {{ $SubscriptionPlan ? currency_symbol() . $SubscriptionPlan->price : currency_symbol() . '0:0' }}
-                                        </span> </h4>
+                                    <h4> Due today: 
+                                        <span class='plan_price'>
 
-                                    @if (get_coupon_code() == 1)
-                                        <div class="d-flex justify-content-between align-items-center mt-2">
-                                            <div class="stripe_payment">
-                                                <p> Amount Deducted for Promotion Code   </p>
-                                                <p> Payable Amount   </p>
-                                            </div>
+                                            @if (  $CurrencySetting == 1 && $SubscriptionPlan )
+                                                {{Currency_Convert($SubscriptionPlan->price) }}
+                                            @elseif($SubscriptionPlan )
+                                                {{  currency_symbol() . $SubscriptionPlan->price  }}
+                                            @else
+                                                {{'0:0'}}
+                                            @endif
 
-                                            <div class="stripe_payment">
-                                                <p id="promo_code_amt"> {{ currency_symbol() . '0' }} </p>
-                                                <p id="coupon_amt_deduction">
-                                                    {{ $SubscriptionPlan ? currency_symbol() . $SubscriptionPlan->price : currency_symbol() . '0:0' }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    @endif
-
+                                        </span> 
+                                    </h4>
                                     <hr />
-                                    {{-- <h6 class="text-black text-center font-weight-bold">You will be charged $56.99 for an annual membership on 05/18/2022. Cancel anytime.</h6> --}}
                                     <p class="text-center mt-3">All state sales taxes apply</p>
                                 </div>
 
@@ -844,11 +676,19 @@
                                     {{ $signup_payment_content ? $signup_payment_content : ' ' }}
                                 </p>
                             </div>
-                            {{-- Stripe --}}
+
+                                                {{-- Payment Buttons --}}
+                           
+                            {{-- Stripe --}}  
                             <div class="col-md-12 stripe_payment">
-                                <button id="card-button"
-                                    class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"
-                                    data-secret="{{ session()->get('intent_stripe_key') }}">
+                                <button type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 stripe_button processing_alert"> Pay Now</button>
+                            </div>
+                           
+
+                            {{-- Razorpay --}}
+                            <div class="col-md-12 Razorpay_payment">
+                                <button type="submit"
+                                    class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert">
                                     Pay Now
                                 </button>
                             </div>
@@ -861,17 +701,7 @@
                                 </button>
                             </div>
 
-                            {{-- Razorpay --}}
-                            <div class="col-md-12 Razorpay_payment">
-                                <button type="submit"
-                                    class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert">
-                                    Pay Now
-                                </button>
-                            </div>
-
-
                             {{-- CinetPay --}}
-
                             <div class="col-md-12 cinetpay_payment">
                                 <button onclick="cinetpay_checkout()" data-subscription-price='100' type="submit"
                                     class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button">
@@ -879,7 +709,6 @@
                                 </button>
                             </div>
 
-                            {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
                             <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">
                             <input type="hidden" id="currency_symbol" value="{{ currency_symbol() }}">
                         </div>
@@ -894,12 +723,17 @@
     <input type="hidden" value="<?php echo DiscountPercentage(); ?>" id="discount_percentage" class="discount_percentage">
     <input type="hidden" value="<?php echo NewSubscriptionCoupon(); ?>" id="discount_status" class="discount_status">
 
-
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <script>
+        $(function() {
+            $("#tabs").tabs();
+            $("tabs li:first").addClass("active");
+        });
+    </script>
 
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            // Add New Category
             $('#submit-new-cat').click(function() {
                 $('#payment-form').submit();
             });
@@ -912,10 +746,8 @@
 
 
     {{-- Stripe Payment --}}
-    <input type="hidden" id="plan_name" name="plan_name"
-        value={{ $SubscriptionPlan ? $SubscriptionPlan->plan_id : ' ' }}>
-    <input type="hidden" id="payment_type" name="payment_type"
-        value={{ $SubscriptionPlan ? $SubscriptionPlan->payment_type : ' ' }}>
+    <input type="hidden" id="plan_name" name="plan_name" value={{ $SubscriptionPlan ? $SubscriptionPlan->plan_id : ' ' }}>
+    <input type="hidden" id="payment_type" name="payment_type" value={{ $SubscriptionPlan ? $SubscriptionPlan->payment_type : ' ' }}>
     <input type="hidden" id="base_url" value="<?php echo URL::to('/'); ?>">
 
     <script src="https://js.stripe.com/v3/"></script>
@@ -927,192 +759,35 @@
 
     <script>
         function plan_details(ele) {
+
             var plans_id = $(ele).attr('data-plan_id');
             var plan_payment_type = $(ele).attr('data-payment-type');
             var plan_price = $(ele).attr('data-plan-price');
             var plan_id_class = $(ele).attr('data-plan-id');
             let currency_symbols = document.getElementById("currency_symbol").value;
 
-            $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' +
-                plan_payment_type + '">');
+            $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' + plan_payment_type + '">');
             $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
-            $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="' +
-                plan_price + '">');
+            $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="' + plan_price + '">');
             $('.plan_price').empty(plan_price);
-            $('.plan_price').append(currency_symbols + plan_price);
+            $('.plan_price').append( plan_price);
 
             $('#coupon_amt_deduction').empty(plan_price);
-            $('#coupon_amt_deduction').append(currency_symbols + plan_price);
+            $('#coupon_amt_deduction').append( plan_price);
 
             $('.dg').removeClass('actives');
             $('#' + plan_id_class).addClass('actives');
 
         }
+
         var base_url = $('#base_url').val();
-        const stripe = Stripe('{{ env('STRIPE_KEY') }}');
-        const elements = stripe.elements();
 
-        var style = {
-            base: {
-                iconColor: '#19337c',
-                color: '#141414',
-                fontSize: '16px',
-                fontFamily: '"Open Sans", sans-serif',
-                padding: '13px',
-                fontSmoothing: 'antialiased',
-                '::placeholder': {
-                    color: '#80828c',
-                },
-            },
-            CardNumberField: {
-                background: '#141414',
-                padding: '10px',
-                borderRadius: '4px',
-                transform: 'none',
-            },
-            invalid: {
-                color: '#fc0000',
-                ':focus': {
-                    color: '#fc0000',
-                },
-            },
-        };
-
-
-        var elementClasses = {
-            class: 'CardNumberField',
-            empty: 'empty',
-            invalid: 'invalid',
-        };
-
-        var cardElement = elements.create('card', {
-            style: style,
-            classes: elementClasses
-        });
-        cardElement.mount('#card-element');
-        const cardHolderName = document.getElementById('card-holder-name');
-        const cardButton = document.getElementById('card-button');
-        const clientSecret = cardButton.dataset.secret;
-
-        cardButton.addEventListener('click', async (e) => {
-            $("#card-button").html('Processing ...');
-
-            const {
-                setupIntent,
-                error
-            } = await stripe.confirmCardSetup(
-                clientSecret, {
-                    payment_method: {
-                        card: cardElement,
-                        billing_details: {
-                            name: cardHolderName.value
-                        }
-                    }
-                }
-            );
-
-            if (error) {
-                var plan_data = $("#plan_name").val();
-                var final_payment = $(".final_payment").val();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-
-                $(document).ready(function() {
-
-                    $.ajax({
-                        url: base_url + '/admin/Paymentfailed',
-                        type: "post",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            plan_data: plan_data,
-                            error: error,
-                            amount: final_payment,
-                        },
-                        success: function(data) {}
-                    });
-                });
-
-
-                if (swal({
-                        title: "Payment Failed!",
-                        text: "Your Payment is failed",
-                        type: "warning"
-                    }).then(function() {
-                        window.location = base_url + '/home';
-                    })) {}
-            } else {
-
-                var plan_data = $("#plan_name").val();
-                var final_coupon_code_stripe = $("#final_coupon_code_stripe").val();
-                var payment_type = $("#payment_type").val();
-                var final_payment = $(".final_payment").val();
-                var py_id = setupIntent.payment_method;
-
-                console.log(plan_data);
-
-                stripe.createToken(cardElement).then(function(result) {
-                    console.log(result.token.id);
-
-                    var stripToken = result.token.id;
-
-                    $.ajax({
-                        url: "{{ route('become_subscriber') }}",
-                        type: "get",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            py_id: py_id,
-                            plan: plan_data,
-                            amount: final_payment,
-                            stripToken: stripToken,
-                            payment_type: payment_type,
-                            coupon_code: final_coupon_code_stripe,
-                        },
-                        success: function(data) {
-                            if (data.status == "true") {
-                                $('#loader').css('display', 'block');
-                                swal({
-                                    title: "Subscription Purchased Successfully!",
-                                    text: data.message,
-                                    icon: payment_images +
-                                        '/Successful_Payment.gif',
-                                    buttons: false,
-                                    closeOnClickOutside: false,
-                                });
-                                $("#card-button").html('Pay Now');
-                                setTimeout(function() {
-                                    window.location.replace(base_url + '/login');
-                                }, 2500);
-                            } else {
-                                $('#loader').css('display', 'block');
-                                swal({
-                                    title: "Payment Failed!",
-                                    text: data.message,
-                                    icon: payment_images + '/fails_Payment.avif',
-                                    buttons: false,
-                                    closeOnClickOutside: false,
-                                });
-                                $("#card-button").html('Pay Now');
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 5000);
-                            }
-                        }
-                    });
-                });
-            }
-        });
-    </script>
-
-    <script>
         window.onload = function() {
             $('#active2').addClass('actives');
         }
 
         // Processing Alert 
+
         var payment_images = $('#payment_image').val();
 
         $(".processing_alert").click(function() {
@@ -1127,160 +802,8 @@
 
         });
 
-        // Couple validation 
-        $("#couple_apply").click(function() {
-
-            var coupon_code = $("#coupon_code_stripe").val();
-            var plan_price = $(".plan_price").text();
-
-            $.ajax({
-                url: "{{ route('retrieve_stripe_coupon') }}",
-                type: "get",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    coupon_code: coupon_code,
-                    plan_price: plan_price,
-                },
-
-                success: function(data) {
-                    console.log(data.message);
-                    $("#coupon_message").text(data.message);
-                    $("#coupon_message").css('color', data.color);
-                    $("#coupon_amt_deduction").text(data.discount_amt);
-                    $("#promo_code_amt").text(data.promo_code_amt);
-
-                    if (data.status == 'true') {
-                        var final_coupon_code = $('#coupon_code_stripe').val();
-                        $('#final_coupon_code_stripe').replaceWith(
-                            '<input type="hidden" name="final_coupon_code_stripe" id="final_coupon_code_stripe" value="' +
-                            final_coupon_code + '">');
-                    }
-                }
-            });
-        });
-    </script>
-
-    {{-- Radio button for payment Gateway  --}}
-    <script>
-        window.onload = function() {
-
-            $("#stripe_radio_button").attr('checked', true);
-            $('.paystack_payment').hide();
-            $('.Razorpay_payment').hide();
-            $('.cinetpay_button').hide();
-
-            if ($('input[name="payment_gateway"]:checked').val() == "paystack") {
-                $('.stripe_payment').hide();
-            }
-
-            if ($('input[name="payment_gateway"]:checked').val() == "Razorpay") {
-                $('.Razorpay_payment').hide();
-            }
-
-            if ($('input[name="payment_gateway"]:checked').val() == "CinetPay") {
-                $('.cinetpay_button').hide();
-            }
-
-        };
-
-        $(document).ready(function() {
-
-            $(".payment_gateway").click(function() {
-
-                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
-
-                let payment_gateway = $('input[name="payment_gateway"]:checked').val();
-
-                if (payment_gateway == "stripe") {
-
-                    $('.stripe_payment').show();
-
-                } else if (payment_gateway == "paystack") {
-
-                    $('.paystack_payment').show();
-
-                } else if (payment_gateway == "Razorpay") {
-
-                    $('.Razorpay_payment').show();
-
-                } else if (payment_gateway == "CinetPay") {
-
-                    $('.cinetpay_button').show();
-
-                }
-            });
-        });
-    </script>
-
-    {{-- Paystack Payment --}}
-    <script>
-        $(".paystack_button").click(function() {
-
-            var paystack_plan_id = $("#plan_name").val();
-
-            $.ajax({
-                url: "{{ route('Paystack_CreateSubscription') }}",
-                type: "post",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    paystack_plan_id: paystack_plan_id,
-                    async: false,
-                },
-
-                success: function(data, textStatus) {
-
-                    if (data.status == true) {
-                        window.location.href = data.authorization_url;
-                    } else if (data.status == false) {
-                        swal({
-                            title: "Payment Failed!",
-                            text: data.message,
-                            icon: "warning",
-                        }).then(function() {
-                            location.reload();
-                        })
-                    }
-                }
-            });
-        });
-    </script>
-
-    {{-- Razorpay Payment --}}
-    <script>
-        $(".Razorpay_button").click(function() {
-
-            var Razorpay_plan_id = $("#plan_name").val();
-
-            alert(Razorpay_plan_id);
-
-            $.ajax({
-                url: "{{ route('Razorpay_authorization_url') }}",
-                type: "post",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    Razorpay_plan_id: Razorpay_plan_id,
-                    async: false,
-                },
-
-                success: function(data, textStatus) {
-
-                    if (data.status == true) {
-                        window.location.href = data.authorization_url;
-                    } else if (data.status == false) {
-                        swal({
-                            title: "Payment Failed!",
-                            text: data.message,
-                            icon: "warning",
-                        }).then(function() {
-                            location.reload();
-                        })
-                    }
-                }
-            });
-        });
-    </script>
-
-    <script>
+        // BecomeSubscriber_Plans
+   
         $(".payment_gateway").click(function() {
 
             let payment_gateway = $('input[name="payment_gateway"]:checked').val();
@@ -1329,7 +852,7 @@
                             html += '<div class="col-md-12 ambk p-0 text-center">';
                             html += '<h6 class="font-weight-bold">  ' + plan_data.plans_name +
                                 '   </h6>';
-                            html += '<p class="text-white mb-0">' + currency_symbol + plan_data
+                            html += '<p class="text-white mb-0">'  + plan_data
                                 .price + ' Membership </p>';
                             html += '</div>';
 
@@ -1362,86 +885,168 @@
             });
         });
 
-        // Life Time Subscription
+    </script>
 
-        function LifeTimeSubscription(ele) {
+    {{-- Radio button for payment Gateway  --}}
 
-            let Stripe_publishable_key = document.getElementById("Stripe_publishable_key").value;
-            var subscription_price = $(ele).attr('data-subscription-price');
+    <script>
+        window.onload = function() {
 
-            var handler = StripeCheckout.configure({
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
 
-                key: Stripe_publishable_key,
-                locale: 'auto',
-                panelLabel: "Pay Now",
+            $("#stripe_radio_button").attr('checked', true);
 
-                token: function(token) {
-                    console.log(' Stripe token Created!!');
-                    console.log(token);
-                    $('#token_response').html(JSON.stringify(token));
+            if ($('input[name="payment_gateway"]:checked').val() == "stripe") {
+                $('.stripe_payment').show();
+            }
 
-                    $.ajax({
-                        url: '{{ route('stripe.lifetime_subscription') }}',
-                        method: 'post',
-                        data: {
-                            "_token": "<?= csrf_token() ?>",
-                            subscription_price: subscription_price,
-                            stripeToken: token.id,
-                            card_email: token.email,
-                            card_name: token.card.name,
-                            card_city: token.card.address_city,
-                            card_country: token.card.country,
-                            card_postal_code: token.card.address_zip,
-                            card_address_line1: token.card.address_line1,
+            if ($('input[name="payment_gateway"]:checked').val() == "paystack") {
+                $('.paystack_payment').show();
+            }
 
-                        },
+            if ($('input[name="payment_gateway"]:checked').val() == "Razorpay") {
+                $('.Razorpay_payment').show();
+            }
 
+            if ($('input[name="payment_gateway"]:checked').val() == "CinetPay") {
+                $('.cinetpay_button').show();
+            }
 
-                        success: function(response) {
+        };
 
-                            if (response.data.status == true) {
-                                swal({
-                                    title: "Subscription Purchased Successfully!",
-                                    text: "Your Payment done Successfully!",
-                                    icon: payment_images + '/Successful_Payment.gif',
-                                    buttons: false,
-                                    closeOnClickOutside: false,
-                                });
+        $(document).ready(function() {
 
-                                setTimeout(function() {
-                                    window.location.href = "{{ route('home') }}";
-                                }, 3000);
-                            } else if (response.data.status == false) {
+            $(".payment_gateway").click(function() {
 
-                                swal({
-                                    title: "Payment Failed!",
-                                    text: "Your Payment is failed",
-                                    type: "warning"
-                                }).then(function() {
-                                    location.reload();
-                                })
-                            }
+                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
 
-                        },
-                        error: (error) => {
-                            swal('error');
+                let payment_gateway = $('input[name="payment_gateway"]:checked').val();
 
-                        }
-                    })
+                if (payment_gateway == "stripe") {
+
+                    $('.stripe_payment').show();
+
+                } else if (payment_gateway == "paystack") {
+
+                    $('.paystack_payment').show();
+
+                } else if (payment_gateway == "Razorpay") {
+
+                    $('.Razorpay_payment').show();
+
+                } else if (payment_gateway == "CinetPay") {
+
+                    $('.cinetpay_button').show();
 
                 }
             });
-
-            handler.open({
-                name: '{{ GetWebsiteName() }}',
-                description: 'Life Time Subscription',
-                amount: subscription_price * 100
-            });
-        }
+        });
     </script>
 
+            {{-- Stripe Payment --}}
+            
+    <script>
+        $(".stripe_button").click(function() {
 
-    <!-- Cinetpay Payment -->
+            var Stripe_Plan_id = $("#plan_name").val();
+
+            $.ajax({
+                url: "{{ route('Stripe_authorization_url') }}",
+                type: "get",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    Stripe_Plan_id: Stripe_Plan_id,
+                    async: false,
+                },
+
+                success: function(data, textStatus) {
+
+                    if (data.status == true) {
+                        window.location.href = data.authorization_url;
+                    } else if (data.status == false) {
+                        swal({
+                            title: "Payment Failed!",
+                            text: data.message,
+                            icon: "warning",
+                        }).then(function() {
+                            location.reload();
+                        })
+                    }
+                }
+            });
+        });
+    </script>
+            
+
+            {{-- Razorpay Payment --}}
+    
+    <script>
+        $(".Razorpay_button").click(function() {
+
+            var Razorpay_plan_id = $("#plan_name").val();
+
+            $.ajax({
+                url: "{{ route('Razorpay_authorization_url') }}",
+                type: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    Razorpay_plan_id: Razorpay_plan_id,
+                    async: false,
+                },
+
+                success: function(data, textStatus) {
+
+                    if (data.status == true) {
+                        window.location.href = data.authorization_url;
+                    } else if (data.status == false) {
+                        swal({
+                            title: "Payment Failed!",
+                            text: data.message,
+                            icon: "warning",
+                        }).then(function() {
+                            location.reload();
+                        })
+                    }
+                }
+            });
+        });
+    </script>
+
+            {{-- Paystack Payment --}}
+
+    <script>
+        $(".paystack_button").click(function() {
+
+            var paystack_plan_id = $("#plan_name").val();
+
+            $.ajax({
+                url: "{{ route('Paystack_CreateSubscription') }}",
+                type: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    paystack_plan_id: paystack_plan_id,
+                    async: false,
+                },
+
+                success: function(data, textStatus) {
+
+                    if (data.status == true) {
+                        window.location.href = data.authorization_url;
+                    } else if (data.status == false) {
+                        swal({
+                            title: "Payment Failed!",
+                            text: data.message,
+                            icon: "warning",
+                        }).then(function() {
+                            location.reload();
+                        })
+                    }
+                }
+            });
+        });
+    </script>
+
+            <!-- Cinetpay Payment -->
 
     <script src="https://cdn.cinetpay.com/seamless/main.js"></script>
 
