@@ -41,6 +41,7 @@ use App\SiteTheme;
 use App\Channel;
 use CinetPay\CinetPay;
 use App\Audio;
+use App\CurrencySetting;
 
 
 class PaymentController extends Controller
@@ -862,8 +863,18 @@ public function RentPaypal(Request $request)
     {
       try {
 
-        $plans_data = SubscriptionPlan::where('type',$request->payment_gateway)->groupBy('plans_name')->get()->map(function ($item) {
+        $CurrencySetting = CurrencySetting::pluck('enable_multi_currency')->first();
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+
+        $plans_data = SubscriptionPlan::where('type',$request->payment_gateway)->groupBy('plans_name')->get()->map(function ($item) use ($CurrencySetting,$Theme){
           $item['plan_content'] = $item->plan_content != null ? $item->plan_content : "Plan Description";
+            
+          if($Theme == "theme6"){
+                $item['price'] = ($CurrencySetting == 1 ? Currency_Convert($item->price) : currency_symbol().($item->price)) ;
+          }else{
+              $item['price'] = $item->price ;
+          }
+
           return $item;
         });
 
@@ -912,24 +923,7 @@ public function RentPaypal(Request $request)
             $stripeCustomer = $user->createAsStripeCustomer();
           }
 
-          // if( $signup_checkout == 1 ){
-            
-          //   $stripe = new \Stripe\StripeClient('sk_test_51Ng98aG6SInHNoTWaOwzKVMVh4TrBoAph0udCI7jx53Ho2aaVMyAqWi2jyqg2tu4MYRXunb9Gcok0FTn0LDKtYWy00aHmPk4u7');
-
-          //   $dd = $stripe->checkout->sessions->create([
-          //     'success_url' => 'https://localhost/flicknexs/stripe_test_red?true&session_id={CHECKOUT_SESSION_ID}',
-
-          //     'line_items' => [
-          //       [
-          //         'price' => 'price_1OkUMJG6SInHNoTW0MKhoibq',
-          //         'quantity' => 1,
-          //       ],
-          //     ],
-          //     'mode' => 'subscription',
-          //     'customer_email' => 'manikandan@webnexs.com', // Pre-fill customer's email
-          //   ]);
-
-          // }
+          
           if($signup_checkout == 1){
 
             $intent_stripe = User::where("id","=",Auth::user()->id)->first();
@@ -2157,6 +2151,8 @@ public function UpgadeSubscription(Request $request){
           return response()->json(['error' => $ex->getMessage()], 500);
       }
   }
+
+
   
 }
 
