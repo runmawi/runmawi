@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use App\SubscriptionPlan;
+use App\CurrencySetting;
 use App\Subscription;
 use App\PaymentSetting;
 use App\HomeSetting;
@@ -18,10 +19,12 @@ use App\PpvPurchase;
 use App\LivePurchase;
 use App\LiveStream;
 use App\Setting;
-use App\User;
-use App\Video;
 use App\SeriesSeason;
 use App\Series;
+use App\Currency;
+use Carbon\Carbon;
+use App\User;
+use App\Video;
 use Theme;
 use Auth;
 use URL;
@@ -79,19 +82,66 @@ class PaydunyaPaymentController extends Controller
 
             if( $users_details != null ){
                 $user_email = User::where('id',Auth::user()->id)->pluck('email')->first();
+
+                $redirect_url  = URL::to('becomesubscriber') ;
             }
             else{
                 $userEmailId = $request->session()->get('register.email');
                 $user_email   = User::where('email',$userEmailId)->pluck('email')->first();
+
+                $redirect_url  = URL::to('home') ;
             }
 
                 // SubscriptionPlan Details 
 
             $SubscriptionPlan =  SubscriptionPlan::where('type','Paydunya')->where('plan_id',$request->Paydunya_plan_id)->first();
 
-            // 
-            dd('ss');
-            $Plan_amount = $SubscriptionPlan->price ;
+            $To_Currency_symbol = 'XOF';
+
+            $default_Currency = CurrencySetting::first();
+
+            $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+
+            $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
+
+            try {
+
+                $response = Http::get($api_url);
+            
+                $exchangeRates = $response->json();
+            
+                if (isset($exchangeRates['rates'])) {
+                    $targetCurrency = $To_Currency_symbol;
+            
+                    if (isset($exchangeRates['rates'][$targetCurrency])) {
+                        $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                        $convertedAmount = $SubscriptionPlan->price * $conversionRate;
+                    } else {
+                        $convertedAmount = null;
+
+                        return response()->json( array(
+                            "status"  => false ,
+                            "message" => "Error on Currency Conversation, Pls connect admin" ,
+                        ), 200);
+                    }
+                } else {
+                    $convertedAmount = null;
+
+                    return response()->json( array(
+                        "status"  => false ,
+                        "message" => "Error on Currency Conversation, Pls connect admin" ,
+                    ), 200);
+
+                }
+            
+            } catch (\Exception $e) {
+                $response = array(
+                    "status"  => false ,
+                    "message" => $e->getMessage() , 
+                );
+            }
+            
+            $Plan_amount = $convertedAmount ;
 
                 // Checkout Page Creation 
 
@@ -123,7 +173,7 @@ class PaydunyaPaymentController extends Controller
                 'authorization_url' => $authorization_url , 
                 'email_id'          => $user_email,
                 'amount'            => $Plan_amount ,
-                'redirect_url'      => URL::to('becomesubscriber'),
+                'redirect_url'      => $redirect_url,
             );
 
         } catch (\Throwable $th) {

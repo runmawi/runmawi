@@ -635,6 +635,7 @@
                                         <div style="" class="col-md-4 plan_details p-0" data-plan-id="{{ 'active' . $plan->id }}" data-plan-price="{{ $CurrencySetting == 1 ? (Currency_Convert($plan->price)) : currency_symbol().$plan->price }}"
                                             data-plan_id={{ $plan->plan_id }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
 
+
                                             <a href="#payment_card_scroll">
 
                                                 <div class="row dg align-items-center mb-4" id={{ 'active' . $plan->id }}>
@@ -826,6 +827,16 @@
             let payment_gateway = $('input[name="payment_gateway"]:checked').val();
             let currency_symbol = document.getElementById("currency_symbol").value;
 
+            swal({
+                title: "Loading...",
+                text: "Please wait",
+                icon: payment_images + '/Loading.gif',
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+                imageSize: '100x100'
+            });
+
             $.ajax({
                 url: "{{ route('BecomeSubscriber_Plans') }}",
                 type: "get",
@@ -890,7 +901,12 @@
 
                         $('.data-plans').empty('').append(html);
 
+                        swal.close();
+
                     } else if (response.data.status == false) {
+
+                        swal.close();
+
                         swal({
                             title: "No Plan Found !!",
                             icon: "warning",
