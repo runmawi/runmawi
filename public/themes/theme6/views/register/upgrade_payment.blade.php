@@ -539,6 +539,7 @@
         $Paystack_payment_settings = App\PaymentSetting::where('payment_type', 'Paystack')->first();
         $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
         $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
+        $Paydunya_payment_settings = App\PaymentSetting::where('payment_type','Paydunya')->first();
 
         // label
         $stripe_label = App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() : 'Stripe';
@@ -546,6 +547,8 @@
         $paystack_label = App\PaymentSetting::where('payment_type', 'Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type', 'Paystack')->pluck('paystack_lable')->first() : 'paystack';
         $Razorpay_label = App\PaymentSetting::where('payment_type', 'Razorpay')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type', 'Razorpay')->pluck('Razorpay_lable')->first() : 'Razorpay';
         $CinetPay_lable = App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() ? App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() : 'CinetPay';
+        $Paydunya_label = App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() ? App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() : "Paydunya";
+        
         $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first();
     @endphp
 
@@ -601,13 +604,20 @@
                                         <label class="mt-2 ml-2"><p>{{ $paypal_label }} </p> </label> <br />
                                     </div>
                                 @endif
-
                                             <!-- CinetPay -->
 
                                 @if (!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay">
                                         <label class=" ml-2"><p>{{ $CinetPay_lable }} </p></label><br />
+                                    </div>
+                                @endif
+                                
+                                     {{-- Paydunya --}}
+                                @if(!empty($Paydunya_payment_settings) && $Paydunya_payment_settings->paydunya_status == 1)
+                                    <div class=" align-items-center ml-2">
+                                        <input type="radio" id="paydunya_radio_button" class="payment_gateway" name="payment_gateway" value="Paydunya" >
+                                        <label class=" ml-2"> <p>{{ __($Paydunya_label) }} </p></label> 
                                     </div>
                                 @endif
                             </div>
@@ -622,7 +632,7 @@
                                             $plan_name = $plan->plans_name;
                                         @endphp
 
-                                        <div style="" class="col-md-4 plan_details p-0" data-plan-id="{{ 'active' . $plan->id }}" data-plan-price="{{ $CurrencySetting == 1 ? (Currency_Convert($plan->price)) : $plan->price }}"
+                                        <div style="" class="col-md-4 plan_details p-0" data-plan-id="{{ 'active' . $plan->id }}" data-plan-price="{{ $CurrencySetting == 1 ? (Currency_Convert($plan->price)) : currency_symbol().$plan->price }}"
                                             data-plan_id={{ $plan->plan_id }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
 
                                             <a href="#payment_card_scroll">
@@ -631,12 +641,12 @@
                                                     <div class="col-md-12 ambk p-0 text-center">
                                                         <div>
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
-                                                            <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $plan->price }} Membership</p>
+                                                            <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : currency_symbol(). $plan->price }} Membership</p>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-12 blk">
-                                                        <p > {{ $plan->plan_content }} </p>
+                                                        <p > {!! html_entity_decode($plan->plan_content) !!} </p>
                                                     </div>
                                                 </div>
 
@@ -656,7 +666,7 @@
 
                                 <div class="bg-white mt-4 dgk">
                                     <h4> Due today: 
-                                        <span class='plan_price'>
+                                        <span class='plan_price Summary'>
 
                                             @if (  $CurrencySetting == 1 && $SubscriptionPlan )
                                                 {{Currency_Convert($SubscriptionPlan->price) }}
@@ -706,6 +716,13 @@
                                 <button onclick="cinetpay_checkout()" data-subscription-price='100' type="submit"
                                     class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button">
                                     Pay Now
+                                </button>
+                            </div>
+
+                            {{-- Paydunya --}}
+                            <div class="col-md-12 Paydunya_payment">
+                                <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Paydunya_button processing_alert" >
+                                    {{ __('Pay Now') }}
                                 </button>
                             </div>
 
@@ -892,7 +909,8 @@
     <script>
         window.onload = function() {
 
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment').hide();
+            $('.Summary').empty();
 
             $("#stripe_radio_button").attr('checked', true);
 
@@ -912,13 +930,19 @@
                 $('.cinetpay_button').show();
             }
 
+            if ($('input[name="payment_gateway"]:checked').val() == "Paydunya") {
+                $('.Paydunya_payment').show();
+            }
+
         };
 
         $(document).ready(function() {
 
             $(".payment_gateway").click(function() {
 
-                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
+                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment').hide();
+                
+                $('.Summary').empty();
 
                 let payment_gateway = $('input[name="payment_gateway"]:checked').val();
 
@@ -937,6 +961,10 @@
                 } else if (payment_gateway == "CinetPay") {
 
                     $('.cinetpay_button').show();
+
+                } else if (payment_gateway == "Paydunya") {
+
+                    $('.Paydunya_payment').show();
 
                 }
             });
@@ -1131,6 +1159,44 @@
                 console.log(data);
             });
         }
+    </script>
+
+                    {{--  Paydunya Payment  --}}
+    <script>
+
+        $(".Paydunya_button").click(function(){
+
+            var Paydunya_plan_id = $("#plan_name").val();
+
+            $.ajax({
+                url: "{{ route('Paydunya_checkout') }}",
+                type: "post",
+                data: {
+                        _token: '{{ csrf_token() }}',
+                        Paydunya_plan_id : Paydunya_plan_id ,
+                        async: false,
+                    },       
+                    
+                    success: function( data ){
+
+                        console.log( data );
+
+                    if( data.status == true ){
+                        window.location.href = data.authorization_url ;
+                    }
+
+                    else if( data.status == false ){
+                        swal({
+                            title: "Payment Failed!",
+                            text: data.message,
+                            icon: "warning",
+                            }).then(function() {
+                                location.reload();
+                            })
+                        }
+                    } 
+                });
+        });
     </script>
 
     @php
