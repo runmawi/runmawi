@@ -587,6 +587,7 @@
         $Paystack_payment_settings = App\PaymentSetting::where('payment_type', 'Paystack')->first();
         $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
         $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
+        $Paydunya_payment_settings = App\PaymentSetting::where('payment_type','Paydunya')->first();
 
         // lable
         $stripe_lable = App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() : 'Stripe';
@@ -594,6 +595,8 @@
         $paystack_lable = App\PaymentSetting::where('payment_type', 'Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type', 'Paystack')->pluck('paystack_lable')->first() : 'paystack';
         $Razorpay_lable = App\PaymentSetting::where('payment_type', 'Razorpay_lable')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type', 'Razorpay')->pluck('Razorpay_lable')->first() : 'Razorpay';
         $CinetPay_lable = App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() ? App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() : 'CinetPay';
+        $Paydunya_label = App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() ? App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() : "Paydunya";
+        
         $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first();
 
     @endphp
@@ -616,59 +619,50 @@
                                 <!-- Stripe -->
                                 @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                     <div class=" align-items-center ml-2">
-                                        <input type="radio" id="stripe_radio_button" class="payment_gateway"
-                                            name="payment_gateway" value="stripe">
-                                        <label class=" ml-2">
-                                            <p>{{ $stripe_lable }} </p>
-                                        </label>
+                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" checked>
+                                        <label class=" ml-2"> <p>{{ $stripe_lable }} </p> </label>
                                     </div>
                                 @endif
 
-                                <!-- Razorpay -->
+                                  <!-- Razorpay -->
                                 @if (!empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1)
                                     <div class="align-items-center ml-2">
-                                        <input type="radio" id="Razorpay_radio_button" class="payment_gateway"
-                                            name="payment_gateway" value="Razorpay">
-                                        <label class="ml-2">
-                                            <p> {{ $Razorpay_lable }} </p>
-                                        </label>
+                                        <input type="radio" id="Razorpay_radio_button" class="payment_gateway" name="payment_gateway" value="Razorpay">
+                                        <label class="ml-2"><p> {{ $Razorpay_lable }} </p></label>
+                                    </div>
+                                @endif
+
+                                 <!-- PayPal -->
+                                @if (!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
+                                    <div class=" align-items-center ml-2">
+                                        <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
+                                        <label class="mt-2 ml-2"><p>{{ $paypal_lable }} </p></label>
                                     </div>
                                 @endif
 
                                 <!-- Paystack -->
                                 @if (!empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1)
                                     <div class="align-items-center ml-2">
-                                        <input type="radio" id="paystack_radio_button" class="payment_gateway"
-                                            name="payment_gateway" value="paystack">
-                                        <label class="ml-2">
-                                            <p> {{ $paystack_lable }} </p>
-                                        </label>
+                                        <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
+                                        <label class="ml-2"><p> {{ $paystack_lable }} </p></label>
                                     </div>
                                 @endif
 
-
-                                <!-- PayPal -->
-                                @if (!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
-                                    <div class=" align-items-center ml-2">
-                                        <input type="radio" id="paystack_radio_button" class="payment_gateway"
-                                            name="payment_gateway" value="paypal">
-                                        <label class="mt-2 ml-2">
-                                            <p>{{ $paypal_lable }} </p>
-                                        </label>
-                                    </div>
-                                @endif
-
-                                <!-- CinetPay -->
+                                  <!-- CinetPay -->
                                 @if (!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
                                     <div class=" align-items-center ml-2">
-                                        <input type="radio" id="cinetpay_radio_button" class="payment_gateway"
-                                            name="payment_gateway" value="CinetPay">
-                                        <label class=" ml-2">
-                                            <p>{{ $CinetPay_lable }} </p>
-                                        </label>
+                                        <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay">
+                                        <label class=" ml-2"><p>{{ $CinetPay_lable }} </p></label>
                                     </div>
                                 @endif
 
+                                  {{-- Paydunya --}}
+                                @if(!empty($Paydunya_payment_settings) && $Paydunya_payment_settings->paydunya_status == 1)
+                                    <div class=" align-items-center ml-2">
+                                        <input type="radio" id="paydunya_radio_button" class="payment_gateway" name="payment_gateway" value="Paydunya" >
+                                        <label class=" ml-2"> <p>{{ __($Paydunya_label) }} </p></label> 
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="row">
@@ -679,7 +673,7 @@
                                             $plan_name = $plan->plans_name;
                                         @endphp
 
-                                        <div style="" class="col-md-6 plan_details p-0" data-plan-id={{ 'active' . $plan->id }} data-plan-price={{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $plan->price }}
+                                        <div style="" class="col-md-6 plan_details p-0" data-plan-id={{ 'active' . $plan->id }} data-plan-price="{{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $plan->price }}"
                                             data-plan_id={{ $plan->plan_id }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
 
                                             <a href="#payment_card_scroll">
@@ -688,7 +682,7 @@
                                                         <div>
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
                                                             <p class="text-white mb-0">
-                                                                {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $plan->price }}
+                                                                {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : currency_symbol().$plan->price }}
                                                                 Membership</p>
                                                         </div>
                                                     </div>
@@ -712,7 +706,7 @@
                                 <h4>Summary</h4>
 
                                 <div class="bg-white mt-4 dgk">
-                                    <h4> Due today: <span class='plan_price'>
+                                    <h4> Due today: <span class='plan_price Summary'>
                                             {{ $SubscriptionPlan ? currency_symbol() . $SubscriptionPlan->price : currency_symbol() . '0:0' }}
                                         </span>
                                     </h4>
@@ -753,6 +747,13 @@
                                     <button onclick="cinetpay_checkout()" data-subscription-price='100' type="submit"
                                         class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button">
                                         Pay Now
+                                    </button>
+                                </div>
+
+                                {{-- Paydunya --}}
+                                <div class="col-md-12 Paydunya_payment">
+                                    <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Paydunya_button processing_alert" >
+                                        {{ __('Pay Now') }}
                                     </button>
                                 </div>
 
@@ -963,6 +964,7 @@
 
     <script>
         function plan_details(ele) {
+
             var plans_id = $(ele).attr('data-plan_id');
             var plan_payment_type = $(ele).attr('data-payment-type');
             var plan_price = $(ele).attr('data-plan-price');
@@ -972,8 +974,7 @@
             $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' + plan_payment_type + '">');
             $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
             $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="' + plan_price + '">');
-            $('.plan_price').empty(plan_price);
-            $('.plan_price').append(currency_symbols + plan_price);
+            $('.plan_price').empty(plan_price).append( plan_price);
 
             $('#coupon_amt_deduction').empty(plan_price);
             $('#coupon_amt_deduction').append(currency_symbols + plan_price);
@@ -1116,9 +1117,10 @@
     <script>
         window.onload = function() {
 
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment').hide();
+            $('.Summary').empty();
 
-            $("#stripe_radio_button").attr('checked', true);
+            $(".payment_gateway").trigger("click")
 
             if ($('input[name="payment_gateway"]:checked').val() == "stripe") {
                 $('.stripe_payment').show();
@@ -1136,16 +1138,21 @@
                 $('.cinetpay_button').show();
             }
 
+            if ($('input[name="payment_gateway"]:checked').val() == "Paydunya") {
+                $('.Paydunya_payment').show();
+            }
+
         };
 
         $(document).ready(function() {
 
             $(".payment_gateway").click(function() {
 
-                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
+                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment').hide();
+                $('.Summary').empty();
 
                 let payment_gateway = $('input[name="payment_gateway"]:checked').val();
-
+                
                 if (payment_gateway == "stripe") {
 
                     $('.stripe_payment').show();
@@ -1162,6 +1169,10 @@
 
                     $('.cinetpay_button').show();
 
+                } else if (payment_gateway == "Paydunya") {
+
+                    $('.Paydunya_payment').show();
+
                 }
             });
         });
@@ -1173,6 +1184,15 @@
 
             let payment_gateway = $('input[name="payment_gateway"]:checked').val();
             let currency_symbol = document.getElementById("currency_symbol").value;
+            
+            swal({
+                title: "Loading...",
+                text: "Please wait",
+                icon: payment_images + '/Loading.gif',
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+            });
 
             $.ajax({
                 url: "{{ route('BecomeSubscriber_Plans') }}",
@@ -1205,32 +1225,21 @@
                         $.each(response.data.plans_data, function(index, plan_data) {
 
                             html +=
-                                '<a href="#payment_card_scroll" > <div class="col-md-6 plan_details p-0"  data-plan-id="active' +
-                                plan_data.id + '" data-plan-price="' + plan_data.price +
-                                '"  data-plan_id="' + plan_data.plan_id +
-                                '"  data-payment-type="' + plan_data.payment_type +
-                                '" onclick="plan_details(this)">';
-                            html += '<div class="row dg align-items-center mb-4" id="active' +
-                                plan_data.id + '" >';
-
+                                '<a href="#payment_card_scroll" > <div class="col-md-6 plan_details p-0"  data-plan-id="active' + plan_data.id + '" data-plan-price="' + plan_data.price +
+                                '"  data-plan_id="' + plan_data.plan_id + '"  data-payment-type="' + plan_data.payment_type + '" onclick="plan_details(this)">';
+                            html += '<div class="row dg align-items-center mb-4" id="active' +plan_data.id + '" >';
 
                             html += '<div class="col-md-12 ambk p-0 text-center">';
-                            html += '<div>';
-                            html += '<h6 class="font-weight-bold">  ' + plan_data.plans_name +
-                                '   </h6>';
-                            html += '<p class="text-white mb-0">' + plan_data.plans_name +
-                                ' Membership </p>';
-                            html += '</div>';
+                                html += '<div>';
+                                    html += '<h6 class="font-weight-bold">  ' + plan_data.plans_name +'   </h6>';
+                                    html += '<p class="text-white mb-0">' + plan_data.price +' Membership </p>';
+                                html += '</div>';
                             html += '</div>';
 
-                            html += '<div class="col-md-12 blk" >';
-                            html += '<h4 class="text-black">' + plan_data.plan_content +
-                                ' </h4>';
-                            html += '</div>';
+                            html += '<div class="col-md-12 blk" >' + plan_data.plan_content + '</div>';
 
                             html += '</div>';
-                            html +=
-                                ' <div class="d-flex justify-content-between align-items-center " > <div class="bgk"></div> </div></a>';
+                            html +=' <div class="d-flex justify-content-between align-items-center " > <div class="bgk"></div> </div></a>';
                             html += ' </div>';
 
                         });
@@ -1239,7 +1248,12 @@
 
                         $('.data-plans').empty('').append(html);
 
+                        swal.close();
+
                     } else if (response.data.status == false) {
+
+                        swal.close();
+
                         swal({
                             title: "No Plan Found !!",
                             icon: "warning",
@@ -1357,7 +1371,6 @@
     <script>
         function cinetpay_checkout() {
 
-
             let Cinetpay_Price = $('#Cinetpay_Price').val();
             let plan_name = $("#plan_name").val();
             var user_name = '{{ @$intent_stripe->username }}';
@@ -1433,6 +1446,44 @@
                 console.log(data);
             });
         }
+    </script>
+
+               {{--  Paydunya Payment  --}}
+    <script>
+
+        $(".Paydunya_button").click(function(){
+
+            var Paydunya_plan_id = $("#plan_name").val();
+
+            $.ajax({
+                url: "{{ route('Paydunya_checkout') }}",
+                type: "post",
+                data: {
+                        _token: '{{ csrf_token() }}',
+                        Paydunya_plan_id : Paydunya_plan_id ,
+                        async: false,
+                    },       
+                    
+                    success: function( data ){
+
+                        console.log( data );
+
+                    if( data.status == true ){
+                        window.location.href = data.authorization_url ;
+                    }
+
+                    else if( data.status == false ){
+                        swal({
+                            title: "Payment Failed!",
+                            text: data.message,
+                            icon: "warning",
+                            }).then(function() {
+                                location.reload();
+                            })
+                        }
+                    } 
+                });
+        });
     </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
