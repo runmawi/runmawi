@@ -622,7 +622,7 @@
                                             $plan_name = $plan->plans_name;
                                         @endphp
 
-                                        <div style="" class="col-md-4 plan_details p-0" data-plan-id={{ 'active' . $plan->id }} data-plan-price={{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : $plan->price }}
+                                        <div style="" class="col-md-4 plan_details p-0" data-plan-id="{{ 'active' . $plan->id }}" data-plan-price="{{ $CurrencySetting == 1 ? (Currency_Convert($plan->price)) : $plan->price }}"
                                             data-plan_id={{ $plan->plan_id }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
 
                                             <a href="#payment_card_scroll">
