@@ -884,74 +884,69 @@ public function RentPaypal(Request $request)
       return response()->json(['data' => $response]);
     }
     
-      public function BecomeSubscriber()
-        {
+    public function BecomeSubscriber()
+    {
 
-        $signup_checkout = SiteTheme::pluck('signup_theme')->first();
+      $signup_checkout = SiteTheme::pluck('signup_theme')->first();
 
 
-          if(!Auth::guest()){
+        if(!Auth::guest()){
 
-            $Theme = HomeSetting::pluck('theme_choosen')->first();
-            Theme::uses(  $Theme );
+          $Theme = HomeSetting::pluck('theme_choosen')->first();
+          Theme::uses(  $Theme );
 
-            $uid = Auth::user()->id;
-            $user = User::where('id',$uid)->first();
+          $uid = Auth::user()->id;
+          $user = User::where('id',$uid)->first();
+          
+          $plans = SubscriptionPlan::get();
+          $plans_data = $plans->groupBy('plans_name');
+
+          $plans_data_signup_checkout = SubscriptionPlan::where('type','Stripe')->groupBy('plans_name')->get();
+
+          Session::put('plans_data ', $plans_data );
+
+          $devices = Devices::all();
+
+          if ($user->stripe_id == NULL)
+          {
+            $stripeCustomer = $user->createAsStripeCustomer();
+          }
+
+          // if( $signup_checkout == 1 ){
             
-            $plans = SubscriptionPlan::get();
-            $plans_data = $plans->groupBy('plans_name');
+          //   $stripe = new \Stripe\StripeClient('sk_test_51Ng98aG6SInHNoTWaOwzKVMVh4TrBoAph0udCI7jx53Ho2aaVMyAqWi2jyqg2tu4MYRXunb9Gcok0FTn0LDKtYWy00aHmPk4u7');
 
-            $plans_data_signup_checkout = SubscriptionPlan::where('type','Stripe')->groupBy('plans_name')->get();
+          //   $dd = $stripe->checkout->sessions->create([
+          //     'success_url' => 'https://localhost/flicknexs/stripe_test_red?true&session_id={CHECKOUT_SESSION_ID}',
 
-            Session::put('plans_data ', $plans_data );
-            // if(!empty($plans->devices)){
-              $devices = Devices::all();
-            //   $permission = $plans->devices;
-            //   $user_devices = explode(",",$permission);
-            //   foreach($devices as $key => $value){
-            //       if(in_array($value->id, $user_devices)){
-            //           $devices_name[] = $value->devices_name;
-            //       }
-            //   }
-            //  $plan_devices = implode(",",$devices_name);
-            //  if(!empty($plan_devices)){
-            //  $devices_name = $plan_devices;
-            //  }else{
-            //  $devices_name = "";
-            //  }
-            //  }
+          //     'line_items' => [
+          //       [
+          //         'price' => 'price_1OkUMJG6SInHNoTW0MKhoibq',
+          //         'quantity' => 1,
+          //       ],
+          //     ],
+          //     'mode' => 'subscription',
+          //     'customer_email' => 'manikandan@webnexs.com', // Pre-fill customer's email
+          //   ]);
 
-            if ($user->stripe_id == NULL)
-            {
-              $stripeCustomer = $user->createAsStripeCustomer();
-            }
-           /*return view('register.upgrade');*/
-
-
-           if($signup_checkout == 1){
+          // }
+          if($signup_checkout == 1){
 
             $intent_stripe = User::where("id","=",Auth::user()->id)->first();
             $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
             session()->put('intent_stripe_key',$intent_key);
 
             return Theme::view('register.upgrade_payment', compact(['plans_data_signup_checkout','intent_stripe']));
-
+          
           }else{
-                return Theme::view('register.upgrade', [
-                  'intent' => $user->createSetupIntent()
-                /* ,compact('register')*/
-                , compact('plans_data')
-                ,'plans_data' => $plans_data
-                ,'devices' => $devices
-
-                ]);
+                return Theme::view('register.upgrade', ['intent' => $user->createSetupIntent(), compact('plans_data'),'plans_data' => $plans_data ,'devices' => $devices]);
           }
 
-          }else{
-            return Redirect::route('login');
-          }
-
+        }else{
+          return Redirect::route('login');
         }
+    }
+
          public function TransactionDetails(){  
 
           $Theme = HomeSetting::pluck('theme_choosen')->first();

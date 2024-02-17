@@ -991,7 +991,7 @@ background-color: #000;padding: 10px!important;}
         text: "Your Payment is failed",
         type: "warning"
         }).then(function() {
-            window.location = base_url+'/home';
+            window.location = base_url+'/becomesubscriber';
         })
     ){ }
     } else {
