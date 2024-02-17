@@ -2415,6 +2415,23 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function () {
     Route::POST('/RazorpayChannelPayouts_Payment', 'RazorpayController@RazorpayChannelPayouts_Payment')->name('RazorpayChannelPayouts_Payment');
 });
 
+// Paydunya
+Route::group(['middleware' => []], function () {
+    Route::get('Paydunya-verify-request', 'PaydunyaPaymentController@Paydunya_verify_request')->name('Paydunya_verify_request');
+    Route::post('Paydunya-checkout', 'PaydunyaPaymentController@Paydunya_checkout')->name('Paydunya_checkout');
+    
+    Route::get('/Paydunya_live_checkout_Rent_payment/{live_id}/{amount}', 'PaydunyaPaymentController@Paydunya_live_checkout_Rent_payment')->name('Paydunya_live_checkout_Rent_payment');
+    Route::get('/Paydunya_live_Rent_payment_verify', 'PaydunyaPaymentController@Paydunya_live_Rent_payment_verify')->name('Paydunya_live_Rent_payment_verify');
+
+    Route::get('/Paydunya_video_checkout_Rent_payment/{video_id}/{amount}', 'PaydunyaPaymentController@Paydunya_video_checkout_Rent_payment')->name('Paydunya_video_checkout_Rent_payment');
+    Route::get('/Paydunya_video_Rent_payment_verify', 'PaydunyaPaymentController@Paydunya_video_Rent_payment_verify')->name('Paydunya_video_Rent_payment_verify');
+
+    Route::get('/Paydunya_SeriesSeason_checkout_Rent_payment/{SeriesSeason_id}/{amount}', 'PaydunyaPaymentController@Paydunya_SeriesSeason_checkout_Rent_payment')->name('Paydunya_SeriesSeason_checkout_Rent_payment');
+    Route::get('/Paydunya_SeriesSeason_Rent_payment_verify', 'PaydunyaPaymentController@Paydunya_SeriesSeason_Rent_payment_verify')->name('Paydunya_SeriesSeason_Rent_payment_verify');
+
+    Route::get('/PaydunyaCancelSubscriptions', 'PaydunyaPaymentController@PaydunyaCancelSubscriptions')->name('PaydunyaCancelSubscriptions');
+});
+
 // Reset Password
 
 Route::get('/Reset-Password', 'PasswordForgetController@Reset_Password')->name('Reset_Password');
