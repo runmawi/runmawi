@@ -10,7 +10,7 @@ class Subscription extends Model
 
     protected $fillable = [
         'user_id','name','days','price','stripe_id','stripe_status','stripe_plan','quantity',
-        'regionname','countryname','cityname','trial_ends_at','ends_at','created_at','updated_at','PaymentGateway'
+        'regionname','countryname','cityname','trial_ends_at','ends_at','created_at','updated_at','PaymentGateway','coupon_used'
     ];
 
     //
