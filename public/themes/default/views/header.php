@@ -1031,14 +1031,12 @@
                               <ul class="d-flex align-items-center justify-content-end list-inline m-0">
                                  <li class="hidden-xs">
                                     <div id="navbar-search-form">
-                                       <form id="" role="search" action="<?php echo URL::to('searchResult');?>" method="POST">
-                                          <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
-                                          <div>
-                                             <i class="fa fa-search">
-                                             </i>
-                                             <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
-                                          </div>
-                                       </form>
+                                    <form role="search" action="<?= route('searchResult') ?>" method="get">
+                                       <div>
+                                          <i class="fa fa-search"></i>
+                                          <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
+                                       </div>
+                                    </form>
                                     </div>
                                     <div id="search_list" class="search_list" style="position: absolute;">
                                     </div>
@@ -1083,8 +1081,7 @@
                               </a>
 
                               <div class="search-box iq-search-bar d-search">
-                                 <form id="searchResult" action="<?php echo URL::to("searchResult") ; ?>" method="post" class="searchbox">
-                                    <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
+                                 <form id="searchResult" action="<?php echo URL::to("searchResult") ; ?>" method="get" class="searchbox">
                                     <div class="form-group position-relative">
                                        <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
                                        <i class="search-link ri-search-line"></i>

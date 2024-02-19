@@ -1140,10 +1140,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                               </a>
 
                            <div class="search-box iq-search-bar d-search">
-                              <form action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" >
-                              <input name="_token" type="hidden" value="<?= csrf_token(); ?>" />
+                              <form action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" method="get" >
                                  <div class="form-group position-relative">
-                                    <input type="text" class="text search-input font-size-12 searches"
+                                    <input type="text" class="text search-input font-size-12 searches" name="search"
                                        placeholder="type here to search...">
                                     <i class="search-link ri-search-line"></i>
                                     <?php  include 'public/themes/theme3/partials/Search_content.php'; ?>
