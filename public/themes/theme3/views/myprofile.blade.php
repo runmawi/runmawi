@@ -22,9 +22,9 @@ $settings = App\Setting::first();
   } */
 
   /* profile */
-  .col-md-12.profile_image {
+  /* .col-md-12.profile_image {
      display: flex;
-  }
+  } */
 
   .profile-bg{
         height: 100px;
@@ -72,7 +72,6 @@ $settings = App\Setting::first();
     right: 0px;
     top: 34px;
         color: #000;
-    background-color: #578cea;
     padding: 12px 22px;
     display: flex;
     justify-content: center;
@@ -96,9 +95,7 @@ $settings = App\Setting::first();
          margin-bottom: 0.5rem;
       }
       .modal-header{padding:1rem 1rem 0 1rem;}
-      .container-fluid{
-         padding:0;
-      }
+      
       .sign-user_card {
          width: 100%;
       }
@@ -108,10 +105,47 @@ $settings = App\Setting::first();
       .col-lg-4.mb-3.bdr, .col-lg-7.mb-3{ 
          background: var(--iq-bg1); 
       }
-      .sign-user_card .row.align-items-center{
+      .sign-user_card .row{
          gap:10px;
       }
-      
+      .main-content{
+         padding-top:0;
+      }
+      .m-profile .sign-user_card {
+         padding: 0 30px;
+      }
+      .targetDiv{
+         padding:3rem;
+      }
+      .d-flex.justify-content-between.align-items-center.w-100{
+         border-bottom:1px solid;
+      }
+      input[type="text"]{
+         border-radius:50px !important;
+      }
+      .edit-butns a{
+         border-radius: 50px !important;
+         padding: 2px 40px;
+      }
+      @media (max-width:768px) {
+         ul.usk {
+            display: flex !important;
+            flex-wrap:wrap;
+         }
+         .usk li{
+            font-size:12px;
+            padding:5px;
+         }
+         section.m-profile.setting-wrapper.pt-0.p-3 {
+            padding: 0 !important;
+         }
+         .container{
+            padding: 0 !important;
+         }
+         .mt-5.text-white.p-0 {
+            margin-top: 0 !important;
+         }
+      }
 </style>
 
 <body>
@@ -236,9 +270,9 @@ $settings = App\Setting::first();
       @endif
 
          <div class="sign-user_card">
-        <div class="row align-items-center">
+        <div class="row">
            
-            <div class="col-lg-4 mb-3 bdr">
+            <div class="col-lg-4 col-md-4 mb-3 bdr">
                 <h3>Account Settings</h3>
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
@@ -255,94 +289,108 @@ $settings = App\Setting::first();
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-7 mb-3">
+            <div class="col-lg-7 col-md-7 mb-3">
                 <div class="targetDiv" id="div1">
-                <div class=" d-flex justify-content-between mb-3">
-                <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
-                    <img class="rounded-circle img-fluid d-block  mb-3"  src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;"/>
-                    <?php }else{ ?> 
-                    <img class="rounded-circle img-fluid d-block  mb-3"  src="<?=  $user->provider_avatar; ?>"  alt="profile-bg" style="height: 150px;width:150px;object-fit:cover;"/>
-                     <?php } ?>
-                    <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                   </div>
-                     <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
-                <div class="" id="personal_det">
-                <div class="" >
-                    <div class="d-flex align-items-baseline justify-content-between">
-                    <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
-                    <div><a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a>
-                        </div></div>
-                    </div>
-                    <div class="a-border"></div>
-                   <div class="a-border"></div>
-                      <div class="row jusitfy-content-center">
-                        <div class="col-md-3 mt-3">
-                            <h5>Account Details</h5>
+                     <div class=" d-flex align-items-center mb-3" style="gap:10px;">
+                        <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
+                           <img class="rounded-circle img-fluid d-block  mb-3"  src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height: 100px;width:100px;"/>
+                        <?php }else{ ?> 
+                           <img class="rounded-circle img-fluid d-block  mb-3"  src="<?=  $user->provider_avatar; ?>"  alt="profile-bg" style="height: 100px;width:100px;object-fit:cover;"/>
+                        <?php } ?>
+                        <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
+                     </div>
+                     <div class="row">
+                        <div class="col-4">
+                           <span class="text-light font-size-13">Email</span>
+                           <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
+                        </div>
+                        <div class="col-4">
+                           <span class="text-light font-size-13">Phone</span>
+                           <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
+                        </div>
+                        <div class="col-3">
+                           <span class="text-light font-size-13">DOB</span>
+                           <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
+                        </div>
+                        <div class="edit-butns col-3">
+                           <a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary">Edit</a>
+                        </div>
+                     </div>
+                     <div class="">
+                     <!-- <div class="" id="personal_det">
+                        <div class="" >
+                           <div class="d-flex align-items-baseline justify-content-between">
+                              <div><h5 class="mb-2 pb-3 ">Personal Details</h5></div>
+                              <div><a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change</a>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="a-border"></div>
+                        <div class="a-border"></div>
+                        <div class="row jusitfy-content-center">
+                           <div class="col-md-3 mt-3">
+                              <h5>Account Details</h5>
+                           </div>
+                           <div class="col-md-9">
+                              <div class="row align-items-center justify-content-end">
+                                 <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
+                                    <span class="text-light font-size-13">Email</span>
+                                    <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
+                                 </div>   
+                              </div>
+                              <div class="row align-items-center justify-content-end">
+                                 <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
+                                    <span class="text-light font-size-13">Username</span>
+                                    <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
+                                 </div>   
+                              </div>
+                              <div class="row align-items-center justify-content-end">
+                                    <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
+                                       <span class="text-light font-size-13">Password</span>
+                                       <p class="mb-0">***********</p>
+                                    </div>
+                              </div>
                           </div>
-                        <div class="col-md-9">
-                             <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">Email</span>
-                            <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
-                        </div>   
-                    </div>
-                    <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">Username</span>
-                            <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
-                        </div>   
-                    </div>
-                    <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">Password</span>
-                            <p class="mb-0">***********</p>
                         </div>
-                    </div>
-                    
+                        <div class="a-border"></div>
+                        <div class="row">
+                           <div class="col-md-3">
+                           </div>
+                           <div class="col-md-9">
+                              <div class="row align-items-center justify-content-end">
+                                 <div class="col-md-8 d-flex justify-content-between mt-2 mb-2">
+                                    <span class="text-light font-size-13">Phone</span>
+                                    <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
+                                 </div>
+                              </div> 
+                              <div class="row align-items-center justify-content-end">
+                                 <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
+                                    <span class="text-light font-size-13">DOB</span>
+                                    <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
+                                       
+                                 </div>
+                              </div>
                   
-                       
+                           </div>
+                        </div>
                    
-                          </div>
-                    </div>
-                      <div class="a-border"></div>
-                    <div class="row">
-                        <div class="col-md-3">
-                        </div>
-                        <div class="col-md-9">
-                             <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-2 mb-2">
-                            <span class="text-light font-size-13">Phone</span>
-                            <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
-                        </div>
-                    </div> 
-                    <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">DOB</span>
-                            <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
-                              
-                        </div>
-                    </div>
-                  
-                        </div>
-                    </div>
-                   
-                        </div>
-                          <div class="a-border"></div>
+                     </div> -->
+                          <!-- <div class="a-border"></div> -->
                          
                           <div class="mt-3 row align-items-center">
-                              <div class="col-md-3"> <h5 class="card-title mb-2">Update Profile</h5></div>
+                              <!-- <div class="col-md-3"> <h5 class="card-title mb-2">Update Profile</h5></div> -->
                               <div class="col-md-9"> 
                     <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                     @csrf
                         <div class="row align-items-center">
                             <div class="col-sm-6">
                                 <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                    <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
+                    <!-- <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" /> -->
                     <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
                             </div>
                             <div class="col-sm-6">
-                                 <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
-                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
+                                 <!-- <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
+                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>      -->
                             </div>
                         </div>
                                   
@@ -351,80 +399,28 @@ $settings = App\Setting::first();
                    
                       
                 </div>
-                    <!-- Add New Modal -->
-<div class="modal fade" id="add-profile">
-  <div class="modal-dialog">
-     <div class="modal-content">
-        
-        <div class="modal-header">
-                <h4 class="modal-title text-black">Update Profile</h4>
-           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-           
-        </div>
-        
-        <div class="modal-body">
-            <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
-              <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-              <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                            
-                  <div class="form-group">
-                          <label> Username:</label>
-                          <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
-                        </div>
-                    
-                        <div class="form-group">
-                          <label> Email:</label>
-                          <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
-                        </div> 
-                    
-                    
-                        <div class="form-group position-relative">
-                          <label>Password:</label><br>
-                          <input type="password" id="pass_log_id"  name="password"   placeholder="Password"  class="form-control"  >
-                            <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
-
-                      </div> 
-                    
-                    
-                        <div class="form-group">
-                           <label> Phone:</label>
-                           <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
-                        </div>
-                        <div class="form-group">
-                        <label> DOB:</label>
-                        <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
-                           <!-- <input type="text" id="DOB" name="DOB" value="" class="form-control" placeholder="DOB"> -->
-                        </div>
-
-            </form>
-        </div>
-        
-        <div class="modal-footer">
-           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-           <button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
-        </div>
-     </div>
-  </div>
-</div>
-                    </div>
+                  
+               </div>
 
          
-                <div class="col-sm-12 text-center targetDiv" id="div2">
-                <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
-                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height:150px;width:150px;object-fit:cover;"/></div>
-                        <?php }else{ ?> 
-                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= $user->provider_avatar; ?>"  alt="profile-bg" style="height:150px;width:150px;object-fit:cover;" /></div>
-                           <?php } ?>
-                    <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                      <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
-                      <h4 class="mb-3"></h4>
+                <div class="col-sm-12 targetDiv" id="div2">
+                  <div class=" d-flex align-items-center" style="gap:10px;">
+                     <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg" style="height:100px;width:100px;object-fit:cover;"/></div>
+                     <?php }else{ ?> 
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" src="<?= $user->provider_avatar; ?>"  alt="profile-bg" style="height:100px;width:100px;object-fit:cover;" /></div>
+                     <?php } ?>
+                     <p class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
+                  </div>
+                     <p class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></p>
+                     <p class="mb-3"></p>
                     
-      <div class="text-center">
+                  <div class="">
                    <?php  if($user_role == 'registered'){ ?>
-                          <h6><?php echo 'Registered'." " .'(Free)'; ?> Subscription</h6>                                       
+                          <p><?php echo 'Registered'." " .'(Free)'; ?> Subscription</p>                                       
                           <h6></h6>                                       
                        <?php }elseif($user_role == 'subscriber'){ ?>
-                          <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
+                          <p><?php echo $role_plan." " .'(Paid User)'; ?></p>
                           <br>       
                        <h5 class="card-title mb-0">Available Specification :</h5><br>
                        <h6> Video Quality : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
@@ -435,13 +431,13 @@ $settings = App\Setting::first();
                        </div>
                          
                          <!-- -->
-                  <div class="row align-items-center justify-content-center mb-3 mt-3">
-                     <div class=" text-center col-sm-12 col-md-12 col-lg-12 ">
+                  <div class="row align-items-center mb-3 mt-3">
+                     <div class=" col-sm-6 col-md-6 col-lg-6 ">
                         <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
                      </div>
 
                         
-                        <div class="col-sm-4 text-center mt-3">
+                        <div class="col-sm-4 text-center">
                            @if(Auth::user()->role == "subscriber")
                               <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
                            
@@ -466,10 +462,10 @@ $settings = App\Setting::first();
                 <div class="targetDiv" id="div3">
                     <div class="row align-items-center justify-content-between mb-3 mt-3">
                         <div class="col-sm-4">
-                   <?php  if($user_role == 'registered'){ ?>
+                        <?php  if($user_role == 'registered'){ ?>
                           <h6><?php echo 'Registered'." " .'(Free)'; ?></h6>                                       
                           <h6>Subscription</h6>                                       
-                       <?php }elseif($user_role == 'subscriber'){ ?>
+                        <?php }elseif($user_role == 'subscriber'){ ?>
                           <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
                           <br>       
                        <h5 class="card-title mb-0">Available Specification :</h5><br>
@@ -523,34 +519,32 @@ $settings = App\Setting::first();
               </div>
                 </div>
                 <div class="targetDiv" id="div6"><div class=" mb-3">
-           <h4 class="card-title mb-0 manage"> Profile</h4>
+           <h4 class="card-title mb-0 manage"> User Profile</h4>
               <div class="col-md-12 profile_image mt-3 p-0">                  
                   @forelse  ( $profile_details as $profile )
 
-                    <div class="">
-                        <div>
-                         <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
-
-                        <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                  <div class="row">
+                     <div class="d-flex justify-content-between align-items-center w-100">
+                        <div class="d-flex align-items-center">
+                           <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                           <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
                         </div>
-                        <div class=" text-center text-white">
-                            
+                        <div class="d-flex">
                            <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
-
                            @if($Multiuser == null)
                               <a class="ml-2"  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
                                  <i class="fa fa-trash"></i>
                               </a> 
                            @endif
-
                         </div>
-                    </div> 
+                     </div> 
+                  </div>
                   @empty
                     <div class="col-sm-6">  
                         <p class="name"> No Profile </p>  </div>
                   @endforelse
 
-                  <div class="col-md-6">
+                  <div class="col-md-6 mt-3">
                      <a  style="color: white !important; " href="{{ route('Multi-profile-create') }}" >
                         <i class="fa fa-plus-circle fa-100x"></i> <?= 'add profile' ?>
                      </a> 
@@ -665,6 +659,54 @@ $settings = App\Setting::first();
                                </div>
           </div>
             </div></div>
+              <!-- Add New Modal -->
+                  <div class="modal fade" id="add-profile">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+                           
+                           <div class="modal-header">
+                              <h4 class="modal-title text-black">Update Profile</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                           </div>
+                           <div class="modal-body">
+                              <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
+                                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                                 <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                                 <div class="form-group">
+                                    <label> Username:</label>
+                                    <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
+                                 </div>
+                                       
+                                 <div class="form-group">
+                                    <label> Email:</label>
+                                    <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="Email">
+                                 </div> 
+                                       
+                                 <div class="form-group position-relative">
+                                    <label>Password:</label><br>
+                                    <input type="password" id="pass_log_id"  name="password"   placeholder="Password"  class="form-control"  >
+                                    <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
+                                 </div> 
+                                 <div class="form-group">
+                                    <label> Phone:</label>
+                                    <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
+                                 </div>
+                                 <div class="form-group">
+                                    <label> DOB:</label>
+                                    <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
+                                       <!-- <input type="text" id="DOB" name="DOB" value="" class="form-control" placeholder="DOB"> -->
+                                 </div>
+
+                              </form>
+                           </div>
+                           
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
             
 <style>
 .form-control {
