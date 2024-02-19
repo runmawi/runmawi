@@ -373,10 +373,66 @@ class PaydunyaPaymentController extends Controller
             \Paydunya\Setup::setMode( $this->Paydunya_set_mode  ); 
 
                 // Checkout Page Creation 
+                
+            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
+
+                $To_Currency_symbol = 'XOF';
+
+                $default_Currency = CurrencySetting::first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+
+                $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
+
+                try {
+
+                    $response = Http::get($api_url);
+                
+                    $exchangeRates = $response->json();
+                
+                    if (isset($exchangeRates['rates'])) {
+                        $targetCurrency = $To_Currency_symbol;
+                
+                        if (isset($exchangeRates['rates'][$targetCurrency])) {
+                            $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                            $convertedAmount = $amount * $conversionRate;
+                        } else {
+                            $convertedAmount = null;
+
+                            return response()->json( array(
+                                "status"  => false ,
+                                "message" => "Error on Currency Conversation, Pls connect admin" ,
+                            ), 200);
+                        }
+                    } else {
+                        $convertedAmount = null;
+
+                        $video = LiveStream::where('id',$live_id)->first();
+
+                        $Error_msg = 'Error on Currency Conversation, Pls connect admin' ;
+                        $url = URL::to('live/'. $video->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                    }
+                
+                } catch (\Exception $e) {
+                        $video = LiveStream::where('id',$live_id)->first();
+
+                        $Error_msg = $e->getMessage();
+                        $url = URL::to('live/'. $video->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                }
+
+                $payment_amount = $convertedAmount ;
+
+            }else{
+
+                $payment_amount = $amount ;
+
+            }
 
             $invoice = new \Paydunya\Checkout\CheckoutInvoice();
-            $invoice->addItem("", 1, $amount , $amount );
-            $invoice->setTotalAmount($amount);
+            $invoice->addItem("", 1, $payment_amount , $payment_amount );
+            $invoice->setTotalAmount($payment_amount);
             
             if($invoice->create()) {
                 $authorization_url =  $invoice->getInvoiceUrl() ;
@@ -428,7 +484,7 @@ class PaydunyaPaymentController extends Controller
 
                 if(!empty($moderators_id)){
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-                    $total_amount        =  $video->ppv_price;
+                    $total_amount        =  $invoice->getTotalAmount();
                     $title               =  $video->title;
                     $commssion           =  VideoCommission::first();
                     $percentage          =  $commssion->percentage; 
@@ -437,7 +493,7 @@ class PaydunyaPaymentController extends Controller
                     $moderator_commssion =  $ppv_price - $percentage;
                     $moderator_id        =  $moderators_id;
                 }else{
-                    $total_amount       =   $video->ppv_price;
+                    $total_amount       =   $invoice->getTotalAmount();
                     $title              =   $video->title;
                     $commssion          =   VideoCommission::first();
                     $ppv_price          =   $video->ppv_price;
@@ -457,6 +513,8 @@ class PaydunyaPaymentController extends Controller
                     'to_time'    => $to_time,
                     'from_time'  => Carbon::now()->format('Y-m-d H:i:s'),
                     'moderator_id' => $moderator_id,
+                    'payment_gateway'  => 'Paydunya',
+                    'payment_in'       => 'website',
                 ]);
  
                 LivePurchase::create([
@@ -468,6 +526,8 @@ class PaydunyaPaymentController extends Controller
                     'from_time' => Carbon::now()->format('Y-m-d H:i:s'),
                     'unseen_expiry_date' => ppv_expirytime_notstarted(),
                     'status' => 1,
+                    'payment_gateway'  => 'Paydunya',
+                    'payment_in'       => 'website',
                 ]);
 
                 $respond = array(
@@ -590,6 +650,8 @@ class PaydunyaPaymentController extends Controller
                     'from_time'  => Carbon::now()->format('Y-m-d H:i:s a'),
                     'to_time'    => $to_time,
                     'moderator_id' => $moderator_id,
+                    'payment_gateway'  => 'Paydunya',
+                    'payment_in'       => 'website',
                 ]);
 
 
@@ -716,6 +778,8 @@ class PaydunyaPaymentController extends Controller
                     'from_time'  => Carbon::now()->format('Y-m-d H:i:s a'),
                     'to_time'    => $to_time,
                     'moderator_id' => $moderator_id,
+                    'payment_gateway'  => 'Paydunya',
+                    'payment_in'       => 'website',
                 ]);
 
 
