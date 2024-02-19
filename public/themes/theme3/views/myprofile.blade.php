@@ -135,6 +135,10 @@ $settings = App\Setting::first();
          .usk li{
             font-size:12px;
             padding:5px;
+            border-right: 1px solid;
+         }
+         .usk li:last-child{
+            border-right: 0px solid;
          }
          section.m-profile.setting-wrapper.pt-0.p-3 {
             padding: 0 !important;
@@ -144,6 +148,15 @@ $settings = App\Setting::first();
          }
          .mt-5.text-white.p-0 {
             margin-top: 0 !important;
+         }
+      }
+      @media (max-width:425px){
+         .targetDiv {
+            padding: 1rem;
+         }
+         .table td, .table th{
+            padding:0;
+            font-size:13px;
          }
       }
 </style>
