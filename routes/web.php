@@ -341,9 +341,12 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::post('/getState', 'SignupController@GetState');
     Route::post('/getCity', 'SignupController@GetCity');
+
     // search
     Route::get('search', 'HomeController@search');
-    Route::get('searchResult', 'HomeController@searchResult')->name('searchResult');
+    Route::get('/searchResult', 'HomeController@searchResult')->name('searchResult');
+    Route::post('/searchResult', 'HomeController@searchResult');
+
     Route::get('search-videos/{videos_search_value}', 'HomeController@searchResult_videos')->name('searchResult_videos');
     Route::get('search-livestream/{livestreams_search_value}', 'HomeController@searchResult_livestream')->name('searchResult_livestream');
     Route::get('search-series/{series_search_value}', 'HomeController@searchResult_series')->name('searchResult_series');
