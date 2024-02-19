@@ -375,7 +375,6 @@ function myFunction() {
  <script src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
  <!-- <script src="<? //URL::to('/'). '/assets/js/plyr-3-7.js';?>"></script> -->
  <script src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
- <script src="<?= URL::to('/'). '/assets/js/.js';?>"></script>
 <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
         
 <?php
