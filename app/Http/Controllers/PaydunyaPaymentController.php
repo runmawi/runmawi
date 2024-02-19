@@ -96,26 +96,36 @@ class PaydunyaPaymentController extends Controller
 
             $SubscriptionPlan =  SubscriptionPlan::where('type','Paydunya')->where('plan_id',$request->Paydunya_plan_id)->first();
 
-            $To_Currency_symbol = 'XOF';
+            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
 
-            $default_Currency = CurrencySetting::first();
+                $To_Currency_symbol = 'XOF';
 
-            $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+                $default_Currency = CurrencySetting::first();
 
-            $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
 
-            try {
+                $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
 
-                $response = Http::get($api_url);
-            
-                $exchangeRates = $response->json();
-            
-                if (isset($exchangeRates['rates'])) {
-                    $targetCurrency = $To_Currency_symbol;
-            
-                    if (isset($exchangeRates['rates'][$targetCurrency])) {
-                        $conversionRate = $exchangeRates['rates'][$targetCurrency];
-                        $convertedAmount = $SubscriptionPlan->price * $conversionRate;
+                try {
+
+                    $response = Http::get($api_url);
+                
+                    $exchangeRates = $response->json();
+                
+                    if (isset($exchangeRates['rates'])) {
+                        $targetCurrency = $To_Currency_symbol;
+                
+                        if (isset($exchangeRates['rates'][$targetCurrency])) {
+                            $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                            $convertedAmount = $SubscriptionPlan->price * $conversionRate;
+                        } else {
+                            $convertedAmount = null;
+
+                            return response()->json( array(
+                                "status"  => false ,
+                                "message" => "Error on Currency Conversation, Pls connect admin" ,
+                            ), 200);
+                        }
                     } else {
                         $convertedAmount = null;
 
@@ -123,25 +133,24 @@ class PaydunyaPaymentController extends Controller
                             "status"  => false ,
                             "message" => "Error on Currency Conversation, Pls connect admin" ,
                         ), 200);
+
                     }
-                } else {
-                    $convertedAmount = null;
-
-                    return response()->json( array(
+                
+                } catch (\Exception $e) {
+                    $response = array(
                         "status"  => false ,
-                        "message" => "Error on Currency Conversation, Pls connect admin" ,
-                    ), 200);
-
+                        "message" => $e->getMessage() , 
+                    );
                 }
-            
-            } catch (\Exception $e) {
-                $response = array(
-                    "status"  => false ,
-                    "message" => $e->getMessage() , 
-                );
+
+                $Plan_amount = $convertedAmount ;
+
+            }else{
+
+                $Plan_amount = $SubscriptionPlan->price ;
+
             }
             
-            $Plan_amount = $convertedAmount ;
 
                 // Checkout Page Creation 
 
