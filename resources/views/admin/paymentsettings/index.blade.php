@@ -114,7 +114,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="panel-title">Stripe Plan (<a href="https://stripe.com/docs/tutorials/dashboard" target="_blank">https://stripe.com/docs/tutorials/dashboard</a>)</div>
+                                <div class="panel-title">Stripe official Docs (<a href="https://stripe.com/docs/tutorials/dashboard" target="_blank">https://stripe.com/docs/tutorials/dashboard</a>)</div>
                                     <div class="panel-body" style="display: block;"> 
                                         <label>Name:</label> 
                                         <input type="text" class="form-control" name="plan_name" id="plan_name" placeholder="Test Secret Key" value="@if(!empty($payment_settings->plan_name)){{ $payment_settings->plan_name }}@endif" />
@@ -213,7 +213,7 @@
                                 </div>
                     
                                 <div class="col-md-6">
-                                    <div class="panel-title">Razorpay Plan (<a href="https://razorpay.com/" target="_blank"> https://razorpay.com/ </a>)</div>
+                                    <div class="panel-title">Razorpay official docs (<a href="https://razorpay.com/" target="_blank"> https://razorpay.com/ </a>)</div>
                                     <div class="panel-body" style="display: block;"> 
                                         <label>Name:</label> 
                                         <input type="text" class="form-control" name="Razorpay_plan_name" id="plan_name" placeholder="Razorpay Test Secret Key" value="@if(!empty($Razorpay_payment_setting->plan_name)){{ $Razorpay_payment_setting->plan_name }}@endif" />
@@ -291,7 +291,7 @@
 
                             <div class="col-md-6 mt-3">
                                 <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-                                    <div class="panel-title"><label>Paypal Payment API Keys (<a href="https://www.paypal.com/us/home" target="_blank">https://www.paypal.com/us/home</a>)</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                    <div class="panel-title"><label>Paypal official docs (<a href="https://www.paypal.com/us/home" target="_blank">https://www.paypal.com/us/home</a>)</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
                                     <div class="panel-body" style="display: block;"> 
                                         <label>Test PayPal Username:</label> 
                                         <input type="text" class="form-control" name="test_paypal_username" id="test_paypal_username" placeholder="Test PayPal Username" value="@if(!empty($paypal_payment_settings->test_paypal_username) && Auth::user()->role != 'demo'){{ $paypal_payment_settings->test_paypal_username }}@endif" />
@@ -333,7 +333,7 @@
                             </div>
                         @endif
 
-                        {{-- Razorpay --}}
+                        {{-- Paystack --}}
 
                         @if(!empty($paystack_payment_setting))
 
@@ -377,7 +377,7 @@
                                 </div>
                     
                                 <div class="col-md-6">
-                                    <div class="panel-title"> Paystack Plan (<a href="https://paystack.com/" target="_blank"> https://paystack.com/ </a>)</div>
+                                    <div class="panel-title"> Paystack official docs (<a href="https://paystack.com/" target="_blank"> https://paystack.com/ </a>)</div>
                                     <label>Name:</label> 
                                     <input type="text" class="form-control" name="paystack_name" id="paystack_name" placeholder="Paystack Name" value="@if(!empty($paystack_payment_setting->paystack_name)){{ $paystack_payment_setting->paystack_name }}@endif" />
                                 </div>
@@ -416,8 +416,6 @@
                             </div> <br><br>
                         @endif
 
-
-                        
                         {{-- CinetPay --}}
 
                         @if(!empty($Cinet_payment_setting))
@@ -445,7 +443,7 @@
                     
                     
                                 <div class="col-md-6">
-                                    <div class="panel-title"> Cinet Pay Login(<a href="https://app.cinetpay.com/" target="_blank"> https://app.cinetpay.com/ </a>)</div>
+                                    <div class="panel-title"> Cinet Pay official docs(<a href="https://app.cinetpay.com/" target="_blank"> https://app.cinetpay.com/ </a>)</div>
                                     <label>Name:</label> 
                                     <input type="text" class="form-control" name="CinetPay_Lable" id="CinetPay_Lable" placeholder="CinetPay Name" value="@if(!empty($Cinet_payment_setting->CinetPay_Lable)){{ $Cinet_payment_setting->CinetPay_Lable }}@endif" />
                                 </div>
@@ -467,6 +465,96 @@
 
                              
                             </div> <br><br>
+                        @endif
+
+                                    {{-- Paydunya --}}
+
+                        @if(!empty($Paydunya_payment_setting))
+
+                            <p><h3>Paydunya Payment</h3></p>
+                        
+                            <div class="row">
+                        
+                                <div class="col-md-6">
+                        
+                                    <label for="">Payment Mode</label>
+                        
+                                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                        <div style="color:red;">Disable</div>
+                                            <div class="mt-1">
+                                                <label class="switch">
+                                                    <input type="checkbox"  {{ $Paydunya_payment_setting->paydunya_status ?? $Paydunya_payment_setting->paydunya_status == 1 ? "checked" : null}}  name="paydunya_status" >
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        <div style="color:green;">Enable</div>
+                                    </div>
+                                    <div class="make-switch" data-on="success" data-off="warning"></div>
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label for="">Paydunya Mode</label>
+    
+                                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                        <div style="color:red;">OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox"  @if($Paydunya_payment_setting->live_mode == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="paydunya_live_mode" id="paydunya_live_mode">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div style="color:green;">ON</div>
+                                    </div>
+                                    <div class="make-switch" data-on="success" data-off="warning"></div>
+                                </div>
+                        
+                        
+                                <div class="col-md-6">
+                                    <div class="panel-title"> Paydunya official Docs(<a href="https://paydunya.com/" target="_blank"> https://paydunya.com/ </a>)</div>
+                                    <label>Name:</label> 
+                                    <input type="text" class="form-control" name="paydunya_label" id="paydunya_label" placeholder="Paydunya  Name" value="@if(!empty($Paydunya_payment_setting->paydunya_label)){{ $Paydunya_payment_setting->paydunya_label }}@endif" />
+                                </div>
+
+                                
+                                <div class="col-md-6 mt-3">
+                                    <label> Master Key: </label> 
+                                    <input type="text" class="form-control" name="paydunya_masterkey"  placeholder="Paydunya Master Key" value="@if( !empty($Paydunya_payment_setting->paydunya_masterkey ) && Auth::user()->role != 'demo'){{ $Paydunya_payment_setting->paydunya_masterkey }}@endif"  />
+                                </div>
+                                <br>
+                        
+                                <div class="col-md-6 mt-3">
+                                    <label> Test Publishable Key: </label> 
+                                    <input type="text" class="form-control" name="paydunya_test_PublicKey"  placeholder="Paydunya Test Publish Key" value="@if( !empty($Paydunya_payment_setting->paydunya_test_PublicKey ) && Auth::user()->role != 'demo'){{ $Paydunya_payment_setting->paydunya_test_PublicKey }}@endif"  />
+                                </div>
+                        
+                                <div class="col-md-6 mt-3">
+                                    <label> Test Secret Key: </label> 
+                                    <input type="text" class="form-control" name="paydunya_test_PrivateKey"  placeholder="Paydunya Test Sceret Key" value="@if(!empty($Paydunya_payment_setting->paydunya_test_PrivateKey) && Auth::user()->role != 'demo'){{ $Paydunya_payment_setting->paydunya_test_PrivateKey }}@endif" />
+                                </div>
+                                
+                                <div class="col-md-6 mt-3">
+                                    <label> Test Token Key: </label> 
+                                    <input type="text" class="form-control" name="paydunya_test_token"  placeholder="Paydunya Test Token Key" value="@if( !empty($Paydunya_payment_setting->paydunya_test_token ) && Auth::user()->role != 'demo'){{ $Paydunya_payment_setting->paydunya_test_token }}@endif"  />
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label> Live Publishable Key: </label> 
+                                    <input type="text" class="form-control" name="paydunya_live_PublicKey"  placeholder="Paydunya Live Publish Key" value="@if(!empty($Paydunya_payment_setting->paydunya_live_PublicKey) && Auth::user()->role != 'demo'){{ $Paydunya_payment_setting->paydunya_live_PublicKey }}@endif" />
+                                </div>
+                        
+                                <div class="col-md-6 mt-3">
+                                    <label> Live Secret Key: </label> 
+                                    <input type="text" class="form-control" name="paydunya_live_PrivateKey"  placeholder="Paydunya Live Sceret Key" value="@if(!empty($Paydunya_payment_setting->paydunya_live_PrivateKey) && Auth::user()->role != 'demo'){{ $Paydunya_payment_setting->paydunya_live_PrivateKey }}@endif" />
+                                </div>
+
+                                
+                                <div class="col-md-6 mt-3">
+                                    <label> Live Token Key: </label> 
+                                    <input type="text" class="form-control" name="paydunya_live_token"  placeholder="Paydunya Live Token Key" value="@if(!empty($Paydunya_payment_setting->paydunya_live_token) && Auth::user()->role != 'demo'){{ $Paydunya_payment_setting->paydunya_live_token }}@endif" />
+                                </div>
+                        
+                            </div> 
+                            <br><br>
                         @endif
 
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />

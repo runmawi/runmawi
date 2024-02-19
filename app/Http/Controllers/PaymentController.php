@@ -41,6 +41,7 @@ use App\SiteTheme;
 use App\Channel;
 use CinetPay\CinetPay;
 use App\Audio;
+use App\CurrencySetting;
 
 
 class PaymentController extends Controller
@@ -862,8 +863,18 @@ public function RentPaypal(Request $request)
     {
       try {
 
-        $plans_data = SubscriptionPlan::where('type',$request->payment_gateway)->groupBy('plans_name')->get()->map(function ($item) {
+        $CurrencySetting = CurrencySetting::pluck('enable_multi_currency')->first();
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+
+        $plans_data = SubscriptionPlan::where('type',$request->payment_gateway)->groupBy('plans_name')->get()->map(function ($item) use ($CurrencySetting,$Theme){
           $item['plan_content'] = $item->plan_content != null ? $item->plan_content : "Plan Description";
+            
+          if($Theme == "theme6"){
+                $item['price'] = ($CurrencySetting == 1 ? Currency_Convert($item->price) : currency_symbol().($item->price)) ;
+          }else{
+              $item['price'] = $item->price ;
+          }
+
           return $item;
         });
 
@@ -884,74 +895,52 @@ public function RentPaypal(Request $request)
       return response()->json(['data' => $response]);
     }
     
-      public function BecomeSubscriber()
-        {
+    public function BecomeSubscriber()
+    {
 
-        $signup_checkout = SiteTheme::pluck('signup_theme')->first();
-
-
-          if(!Auth::guest()){
-
-            $Theme = HomeSetting::pluck('theme_choosen')->first();
-            Theme::uses(  $Theme );
-
-            $uid = Auth::user()->id;
-            $user = User::where('id',$uid)->first();
-            
-            $plans = SubscriptionPlan::get();
-            $plans_data = $plans->groupBy('plans_name');
-
-            $plans_data_signup_checkout = SubscriptionPlan::where('type','Stripe')->groupBy('plans_name')->get();
-
-            Session::put('plans_data ', $plans_data );
-            // if(!empty($plans->devices)){
-              $devices = Devices::all();
-            //   $permission = $plans->devices;
-            //   $user_devices = explode(",",$permission);
-            //   foreach($devices as $key => $value){
-            //       if(in_array($value->id, $user_devices)){
-            //           $devices_name[] = $value->devices_name;
-            //       }
-            //   }
-            //  $plan_devices = implode(",",$devices_name);
-            //  if(!empty($plan_devices)){
-            //  $devices_name = $plan_devices;
-            //  }else{
-            //  $devices_name = "";
-            //  }
-            //  }
-
-            if ($user->stripe_id == NULL)
-            {
-              $stripeCustomer = $user->createAsStripeCustomer();
-            }
-           /*return view('register.upgrade');*/
+      $signup_checkout = SiteTheme::pluck('signup_theme')->first();
 
 
-           if($signup_checkout == 1){
+        if(!Auth::guest()){
+
+          $Theme = HomeSetting::pluck('theme_choosen')->first();
+          Theme::uses(  $Theme );
+
+          $uid = Auth::user()->id;
+          $user = User::where('id',$uid)->first();
+          
+          $plans = SubscriptionPlan::get();
+          $plans_data = $plans->groupBy('plans_name');
+
+          $plans_data_signup_checkout = SubscriptionPlan::where('type','Stripe')->groupBy('plans_name')->get();
+
+          Session::put('plans_data ', $plans_data );
+
+          $devices = Devices::all();
+
+          if ($user->stripe_id == NULL)
+          {
+            $stripeCustomer = $user->createAsStripeCustomer();
+          }
+
+          
+          if($signup_checkout == 1){
 
             $intent_stripe = User::where("id","=",Auth::user()->id)->first();
             $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
             session()->put('intent_stripe_key',$intent_key);
 
             return Theme::view('register.upgrade_payment', compact(['plans_data_signup_checkout','intent_stripe']));
-
+          
           }else{
-                return Theme::view('register.upgrade', [
-                  'intent' => $user->createSetupIntent()
-                /* ,compact('register')*/
-                , compact('plans_data')
-                ,'plans_data' => $plans_data
-                ,'devices' => $devices
-
-                ]);
+                return Theme::view('register.upgrade', ['intent' => $user->createSetupIntent(), compact('plans_data'),'plans_data' => $plans_data ,'devices' => $devices]);
           }
 
-          }else{
-            return Redirect::route('login');
-          }
-
+        }else{
+          return Redirect::route('login');
         }
+    }
+
          public function TransactionDetails(){  
 
           $Theme = HomeSetting::pluck('theme_choosen')->first();
@@ -2162,6 +2151,8 @@ public function UpgadeSubscription(Request $request){
           return response()->json(['error' => $ex->getMessage()], 500);
       }
   }
+
+
   
 }
 

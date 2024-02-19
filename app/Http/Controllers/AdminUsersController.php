@@ -108,6 +108,7 @@ class AdminUsersController extends Controller
         $user = $request->user();
         
         $total_subscription = Subscription::where('stripe_status', '=', 'active')->count();
+        $total_subscription = Subscription::count();
 
         $total_videos = Video::where('active', '=', 1)->count();
 

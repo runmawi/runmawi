@@ -5930,6 +5930,8 @@ class ModeratorsUserController extends Controller
                     !empty($each_user->audio_count)
                 ) {
                     $view_count = $each_user->audio_count;
+                }else{
+                    $view_count = 0 ;
                 }
                 fputcsv($handle, [
                     $key + 1,

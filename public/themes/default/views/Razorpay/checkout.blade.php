@@ -16,7 +16,7 @@ var options = {
     "currency": "INR",
     "name": "{{$respond['name']}}",
     "description": "{{$respond['description']}}",
-    "image": "https://example.com/your_logo",
+    "image": "{{ front_end_logo() }}",
     "handler": function (response){
 
         document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
@@ -24,6 +24,18 @@ var options = {
         document.getElementById('razorpay_signature').value = response.razorpay_signature;
 
         document.getElementById('razorpay_respond').click();
+    },
+    "modal": {
+        "ondismiss": function(){
+            let pop_close_confirm = confirm('Are you sure to close the Payment ?');
+
+            if (pop_close_confirm === true) {
+                let redirection_back = "{{ $respond['redirection_back'] }}";
+                window.location.href = redirection_back;
+            } else {
+                location.reload();
+            }
+        }
     },
     "prefill": {
         "name": "{{$respond['user_name']}}",
@@ -37,12 +49,9 @@ var options = {
 var rzp1 = new Razorpay(options);
 rzp1.on('payment.failed', function (response){
         alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
         alert(response.error.reason);
-        alert(response.error.metadata.order_id);
-        alert(response.error.metadata.payment_id);
+            // alert(response.error.metadata.order_id);
+            // alert(response.error.metadata.payment_id);
 });
 window.onload = function(){
     document.getElementById('rzp-button1').click();

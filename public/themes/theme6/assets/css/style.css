@@ -108,9 +108,8 @@ header .navbar ul li:last-child { margin-right: 0; }
 #home-slider .slick-dots li.slick-active button { background: var(--iq-primary); }
 #home-slider li { position: relative; }
 .slider-description { position: absolute; top: 15%; left: 80px; }
-#home-slider h1.slider-text { font-size: 70px; margin: 15px 0; }
+#home-slider h1.slider-text { font-size: 55px; margin: 15px 0; }
 #home-slider p {
-    margin: 20px 0 5px 0;
     width: 75%;
     max-height: 70px;
     overflow: hidden;
@@ -733,9 +732,131 @@ header .navbar ul li.menu-item a:hover {
 .slide-item a:hover{
     color:white;
 }
-#descriptionContainer p{margin:0;}
-#admin-slid .slick-bg:before{
+.admin-slide1:before{
     background: transparent !important;
+}
+img.c-logo {
+    width: 30%;
+}
+
+/* Screen responsive */
+@media (max-width: 1199px){
+    .slide.slick-bg.s-bg-2.admin-slide1 {
+        height: 80vh !important;
+    }
+}
+@media (max-width: 768px){
+    .trending-pills {
+        flex-direction: row !important;
+    }
+    #trending-slider-nav .slick-list{
+        padding-bottom: 0;
+    }
+    .trending-pills.nav-pills .nav-item a{
+        font-size:14px;
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+    #home-slider ul.slick-dots{
+        display:none !important;
+    }
+    .container{
+        max-width:100%;
+    }
+    .trending- p{
+        font-size: 14px;
+    }
+}
+@media (max-width: 620px){
+    .trending-pills.nav-pills .nav-item a{
+        font-size:12px;
+        margin-right: 0;
+        margin-left: 0;
+    }
+    #home-slider p{
+        margin: 0 !important;
+        font-size: 14px ;
+    }
+    p.slider-text.big-title.title.text-uppercase.fadeInLeft.animated {
+        font-size: 28px !important;
+    }
+    .badge{
+        font-size: 50%;
+    }
+    .channel-logo.fadeInLeft.animated{
+        width: 50%;
+    }
+    .channel-logo.fadeInLeft.animated img{
+        width: 30%;
+    }
+    .d-flex.align-items-center.r-mb-23.fadeInUp.animated a{
+        font-size: 13px;
+    }
+    .trending- p{
+        font-size: 10px;
+    }
+    .slide.slick-bg.s-bg-2.admin-slide1 {
+        height: 50vh !important;
+    }
+    .descript{
+        display:none;
+    }
+}
+@media (max-width: 426px){
+    .trending-pills.nav-pills .nav-item a{
+        font-size:9px;
+        margin-right: 0;
+        margin-left: 0;
+    }
+    #home-slider p{
+        margin: 0 !important;
+        font-size: 12px ;
+    }
+    p.slider-text.big-title.title.text-uppercase.fadeInLeft.animated {
+        font-size: 20px !important;
+    }
+    #home-slider .slick-bg{
+        padding:0 !important;
+    }
+    .slide.slick-bg.s-bg-2.admin-slide1 {
+        height: 30vh !important;
+    }
+    #home-slider h1.slider-text{
+        font-size:20px !important;
+    }
+    .r-mb-23{
+        margin-top:10px;
+    }
+    header .navbar ul li{
+        margin-right:8px;
+    }
+}
+@media (max-width:375px){
+    .trending-pills.nav-pills .nav-item a{
+        font-size:7px;
+        margin-right: 0;
+        margin-left: 0;
+    }
+}
+@media (max-width:320px){
+    #home-slider p{
+        font-size: 9px ;
+    }
+    .badge{
+        font-size: 45%;
+    }
+    .channel-logo.fadeInLeft.animated{
+        width: 50%;
+    }
+    .channel-logo.fadeInLeft.animated img{
+        width: 30%;
+    }
+    .d-flex.align-items-center.r-mb-23.fadeInUp.animated a{
+        font-size: 10px;
+    }
+    header .navbar ul li a{
+        font-size:9px;
+    }
 }
 
 /*  Signup Page*/

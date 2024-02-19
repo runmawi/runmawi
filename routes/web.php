@@ -343,7 +343,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('/getCity', 'SignupController@GetCity');
     // search
     Route::get('search', 'HomeController@search');
-    Route::post('searchResult', 'HomeController@searchResult')->name('searchResult');
+    Route::get('searchResult', 'HomeController@searchResult')->name('searchResult');
     Route::get('search-videos/{videos_search_value}', 'HomeController@searchResult_videos')->name('searchResult_videos');
     Route::get('search-livestream/{livestreams_search_value}', 'HomeController@searchResult_livestream')->name('searchResult_livestream');
     Route::get('search-series/{series_search_value}', 'HomeController@searchResult_series')->name('searchResult_series');
@@ -387,6 +387,11 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('become_subscriber', 'PaymentController@become_subscriber')->name('become_subscriber');
     Route::get('retrieve_stripe_coupon', 'PaymentController@retrieve_stripe_coupon')->name('retrieve_stripe_coupon');
     Route::get('retrieve_stripe_invoice', 'PaymentController@retrieve_stripe_invoice')->name('retrieve_stripe_invoice');
+
+    Route::post('Stripe_authorization_url', 'StripePaymentController@Stripe_authorization_url')->name('Stripe_authorization_url');
+    Route::get('Stripe_payment_success', 'StripePaymentController@Stripe_payment_success')->name('Stripe_payment_success');
+    Route::get('Stripe_payment_failure', 'StripePaymentController@Stripe_payment_failure')->name('Stripe_payment_failure');
+
 
     Route::get('serieslist', ['uses' => 'ChannelController@series', 'as' => 'series']);
     // Route::get('series/category/{id}', 'ChannelController@series_genre' );
@@ -2382,7 +2387,7 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
 
     // Series
     Route::get('/series/list', 'AllVideosListController@all_series')->name('all_series');
-    Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList');
+    Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList')->name('ContinueWatchingList');
 });
 
 // Razorpay
@@ -2408,6 +2413,23 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function () {
 
     Route::POST('/RazorpayChannelPayouts', 'RazorpayController@RazorpayChannelPayouts')->name('RazorpayChannelPayouts');
     Route::POST('/RazorpayChannelPayouts_Payment', 'RazorpayController@RazorpayChannelPayouts_Payment')->name('RazorpayChannelPayouts_Payment');
+});
+
+// Paydunya
+Route::group(['middleware' => []], function () {
+    Route::get('Paydunya-verify-request', 'PaydunyaPaymentController@Paydunya_verify_request')->name('Paydunya_verify_request');
+    Route::post('Paydunya-checkout', 'PaydunyaPaymentController@Paydunya_checkout')->name('Paydunya_checkout');
+    
+    Route::get('/Paydunya_live_checkout_Rent_payment/{live_id}/{amount}', 'PaydunyaPaymentController@Paydunya_live_checkout_Rent_payment')->name('Paydunya_live_checkout_Rent_payment');
+    Route::get('/Paydunya_live_Rent_payment_verify', 'PaydunyaPaymentController@Paydunya_live_Rent_payment_verify')->name('Paydunya_live_Rent_payment_verify');
+
+    Route::get('/Paydunya_video_checkout_Rent_payment/{video_id}/{amount}', 'PaydunyaPaymentController@Paydunya_video_checkout_Rent_payment')->name('Paydunya_video_checkout_Rent_payment');
+    Route::get('/Paydunya_video_Rent_payment_verify', 'PaydunyaPaymentController@Paydunya_video_Rent_payment_verify')->name('Paydunya_video_Rent_payment_verify');
+
+    Route::get('/Paydunya_SeriesSeason_checkout_Rent_payment/{SeriesSeason_id}/{amount}', 'PaydunyaPaymentController@Paydunya_SeriesSeason_checkout_Rent_payment')->name('Paydunya_SeriesSeason_checkout_Rent_payment');
+    Route::get('/Paydunya_SeriesSeason_Rent_payment_verify', 'PaydunyaPaymentController@Paydunya_SeriesSeason_Rent_payment_verify')->name('Paydunya_SeriesSeason_Rent_payment_verify');
+
+    Route::get('/PaydunyaCancelSubscriptions', 'PaydunyaPaymentController@PaydunyaCancelSubscriptions')->name('PaydunyaCancelSubscriptions');
 });
 
 // Reset Password

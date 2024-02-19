@@ -10777,6 +10777,10 @@ $cpanel->end();
       $page_id = $request->page_id;
      $pages = Page::where('id', '=', $page_id)->where('active', '=', 1)->get()->map(function ($item) {
        $item['page_url'] = URL::to('page').'/'.$item->slug;
+      //  $details = html_entity_decode($item->body);
+      //  $description = strip_tags($details);
+      //  $str_replace = str_replace("\r", '', $description);
+      //  $item['body'] = str_replace("\n", '', $str_replace);
        return $item;
      });
      $response = array(
@@ -14238,6 +14242,7 @@ public function QRCodeMobileLogout(Request $request)
   private static function All_Homepage_videoCategories(){
 
     $videoCategories_status = MobileHomeSetting::pluck('videoCategories')->first();
+    $Setting = Setting::first();
 
       if( $videoCategories_status == null || $videoCategories_status == 0 ): 
 
@@ -14245,10 +14250,11 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
           $data =  VideoCategory::where('in_home',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
+                          $item['title']     = $item->name ;
                           $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image);
                           $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->banner_image);
                           $item['description'] = null ;
-                          $item['source']    = "VideoCategory"; 
+                          $item['source']    = "category_videos"; 
                           return $item;
                         });
 
@@ -15401,8 +15407,14 @@ public function QRCodeMobileLogout(Request $request)
 
   
   public function relatedtvvideos(Request $request) {
-    
-    $videoid = $request->videoid;
+
+    try {
+
+      $this->validate($request, [
+        'videoid'  => 'required|integer' ,
+      ]);
+      
+      $videoid = $request->videoid;
    
       // Recomendeds
                 
@@ -15410,21 +15422,34 @@ public function QRCodeMobileLogout(Request $request)
       ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
       ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
       ->where('videos.id', '!=', $videoid)
-      ->where('videos.active',  1)
-      ->where('videos.status',  1)
-      ->where('videos.draft',  1)
-      ->orderBy('videos.created_at', 'desc')
+      ->where('videos.active', 1)
+      ->where('videos.status', 1)
+      ->where('videos.draft', 1)
+      ->limit(20)
       ->groupBy('videos.id')
-      ->limit(10)
-      ->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-        return $item;
+      ->inRandomOrder()
+      ->get()
+      ->map(function ($item) {
+          $item['image_url'] = URL::to('public/uploads/images/' . $item->image);
+          $item['player_image_url'] = URL::to('public/uploads/images/' . $item->player_image);
+          return $item;
       });
+
       $response = array(
-      'status'=>'true',
-      'channelrecomended' => $recomendeds
-    );
+        'status'=>'true',
+        'message' => 'Retrieved related tvvideos Successfully',
+        'channelrecomended' => $recomendeds
+      );
+
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message' => $th->getMessage(),
+        );
+
+    }
+    
     return response()->json($response, 200);
   }
 

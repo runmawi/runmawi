@@ -24,6 +24,7 @@ class LanguageTranslationController extends Controller
     {
    	  $languages = DB::table('translation_languages')->get();
 
+         $Setting_website_name =  Setting::pluck('website_name')->first();
 
    	  $columns = [];
 	  $columnsCount = $languages->count();
@@ -37,8 +38,7 @@ class LanguageTranslationController extends Controller
 	            $columns[++$key] = ['data'=>$this->openJSONFile($language->code), 'lang'=>$language->code];
 	        }
 	    }
-
-
+        
         return view('admin.languages.translation.translation_languages', compact('languages','columns','columnsCount'));
     }   
     /**
@@ -52,7 +52,12 @@ class LanguageTranslationController extends Controller
 		    'value' => 'required',
 		]);
 
-
+        $filename = GetWebsiteName().'en';
+        if (!file_exists($filename)) {
+            // If the file doesn't exist, create it with an empty array
+            $this->saveJSONFile($filename, []);
+        }
+    
 		$data = $this->openJSONFile('en');
         $data[$request->key] = $request->value;
 
@@ -90,8 +95,8 @@ class LanguageTranslationController extends Controller
     */
     private function openJSONFile($code){
         $jsonString = [];
-        if(File::exists(base_path('resources/lang/'.$code.'.json'))){
-            $jsonString = file_get_contents(base_path('resources/lang/'.$code.'.json'));
+        if(File::exists(base_path('resources/lang/'.GetWebsiteName().$code.'.json'))){
+            $jsonString = file_get_contents(base_path('resources/lang/'.GetWebsiteName().$code.'.json'));
             $jsonString = json_decode($jsonString, true);
         }
         return $jsonString;
@@ -105,7 +110,7 @@ class LanguageTranslationController extends Controller
     private function saveJSONFile($code, $data){
         ksort($data);
         $jsonData = json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
-        file_put_contents(base_path('resources/lang/'.$code.'.json'), stripslashes($jsonData));
+        file_put_contents(base_path('resources/lang/'.GetWebsiteName().$code.'.json'), stripslashes($jsonData));
     }
 
 
