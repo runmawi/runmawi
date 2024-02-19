@@ -191,7 +191,9 @@ if (!empty($data['password_hash'])) {
     body.dark .iq-arrow-right{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark .form-group{color: <?php echo GetAdminDarkText(); ?>;}
     body.dark p{color: <?php echo GetAdminDarkText(); ?>!important;}
-body.dark h1, body.dark .support a {color: <?php echo GetAdminDarkText(); ?>;}
+   body.dark h1, body.dark .support a {color: <?php echo GetAdminDarkText(); ?>;}
+   body.dark input {color: <?php echo GetAdminDarkText(); ?>;}
+   body.dark select {color: <?php echo GetAdminDarkText(); ?>; background-color: <?php echo GetAdminDarkBg(); ?> !important;}
 
 body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     body.light .list-group-item-action:active{background-color: <?php echo GetAdminLightBg(); ?>!important;} /* #9b59b6 */
@@ -258,7 +260,7 @@ body.light {background-color: <?php echo GetAdminLightBg(); ?>;} /* #9b59b6 */
     body.light .iq-arrow-right{color: <?php echo GetAdminLightText(); ?>;}
     body.light .form-group{color: <?php echo GetAdminLightText(); ?>;}
     body.light p{color: <?php echo GetAdminLightText(); ?>!important;}
-body.light h1, body.light .support a {color: <?php echo GetAdminLightText(); ?>;}
+   body.light h1, body.light .support a {color: <?php echo GetAdminLightText(); ?>;}
 
 
 
