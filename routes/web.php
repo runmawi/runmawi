@@ -341,9 +341,12 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::post('/getState', 'SignupController@GetState');
     Route::post('/getCity', 'SignupController@GetCity');
+
     // search
     Route::get('search', 'HomeController@search');
-    Route::get('searchResult', 'HomeController@searchResult')->name('searchResult');
+    Route::get('/searchResult', 'HomeController@searchResult')->name('searchResult');
+    Route::post('/searchResult', 'HomeController@searchResult');
+
     Route::get('search-videos/{videos_search_value}', 'HomeController@searchResult_videos')->name('searchResult_videos');
     Route::get('search-livestream/{livestreams_search_value}', 'HomeController@searchResult_livestream')->name('searchResult_livestream');
     Route::get('search-series/{series_search_value}', 'HomeController@searchResult_series')->name('searchResult_series');
@@ -388,11 +391,15 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('retrieve_stripe_coupon', 'PaymentController@retrieve_stripe_coupon')->name('retrieve_stripe_coupon');
     Route::get('retrieve_stripe_invoice', 'PaymentController@retrieve_stripe_invoice')->name('retrieve_stripe_invoice');
 
+    // Stripe Checkout Page - Multicurrency
     Route::post('Stripe_authorization_url', 'StripePaymentController@Stripe_authorization_url')->name('Stripe_authorization_url');
     Route::get('Stripe_payment_success', 'StripePaymentController@Stripe_payment_success')->name('Stripe_payment_success');
-    Route::get('Stripe_payment_failure', 'StripePaymentController@Stripe_payment_failure')->name('Stripe_payment_failure');
+    
+    // Stripe Live PPV Purchase
+    Route::get('Stripe_payment_live_PPV_Purchase/{live_id}/{amount}', 'StripePaymentController@Stripe_payment_live_PPV_Purchase')->name('Stripe_payment_live_PPV_Purchase');
+    Route::get('Stripe_payment_live_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{live_id}', 'StripePaymentController@Stripe_payment_live_PPV_Purchase_verify')->name('Stripe_payment_live_PPV_Purchase_verify');
 
-
+    
     Route::get('serieslist', ['uses' => 'ChannelController@series', 'as' => 'series']);
     // Route::get('series/category/{id}', 'ChannelController@series_genre' );
     Route::get('watchlater', 'WatchLaterController@show_watchlaters');
