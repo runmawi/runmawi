@@ -63,8 +63,11 @@
                 </div>
 
                 <div class="right">
-                    <div class="title">    {{--  Title & Year--}}
+                    <div class="title d-flex">    {{--  Title & Year--}}
                         {{ optional($videodetail)->title }} 
+                        @if($videodetail->access == 'ppv')
+                            <p class="font-size-20 pl-2">({{ 'Rental,'  . ' ' . $videodetail->ppv_price . '' . currency_symbol() }})</p> 
+                        @endif
                     </div>
 
                     <div class="utilities d-flex align-items-center">  
