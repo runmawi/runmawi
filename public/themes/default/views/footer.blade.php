@@ -133,9 +133,12 @@ $settings = App\Setting::first();
                     // CMS Pages
             $cmspages = App\Page::where('footer_active', 1)->get();
 
-            foreach($cmspages as $key => $page) {?>
+            foreach($cmspages as $key => $page) { 
+              if($page->slug == 'contact-us') { ?> 
+              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a> 
+              <?php }else{  ?>
               <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a> 
-            <?php } ?>
+            <?php } } ?>
           </p>
           <p class="text-center">
             <?php echo $settings->website_name . ' ' . '<i class="ri-copyright-line"></i>' . ' ' . Carbon::now()->year ; ?> <?php echo (__('All Rights Reserved')); ?> 
