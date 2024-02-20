@@ -41,15 +41,14 @@
 <div id="series_bg">
    <div class="">
       <?php
-         if (Auth::guest())
-         {
-         
-             if ($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' || Auth::guest())
-             {
-         
-                 if ($episode->access == 'guest' || (($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()
-                     ->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered')):
-         ?>
+               if (Auth::guest())
+               {
+               
+                   if ($free_episode > 0 )
+                   {
+               
+                     if ($series->access == 'guest' ||  $free_episode > 0): 
+               ?>
       <?php if ($episode->type == 'embed'): ?>
       <div id="series_container" class="fitvid">
          <?=$episode->embed_code

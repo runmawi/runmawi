@@ -2849,7 +2849,7 @@ class HomeController extends Controller
 
                             
                             ->when($settings->search_tags_status, function ($query) use ($request) {
-                                return $query->orwhere('series.search_tags', 'LIKE', '%' . $request->country . '%');
+                                return $query->orwhere('series.search_tag', 'LIKE', '%' . $request->country . '%');
                             })
 
                             ->when($settings->search_title_status, function ($query) use ($request) {
@@ -4137,7 +4137,7 @@ class HomeController extends Controller
     {
         try {
 
-            if($request->search != null  || $request->search != " " ){
+            if($request->search == null  || $request->search == " " ){
 
                 return redirect()->back()->withErrors("Please! Enter the valid search data")->withInput();
             }
@@ -4452,7 +4452,6 @@ class HomeController extends Controller
             return Theme::view('search', $data);
 
         } catch (\Exception $e) {
-            return $e->getMessage();
            return abort (404);
         }
     }

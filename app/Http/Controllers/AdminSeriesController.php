@@ -1530,7 +1530,7 @@ class AdminSeriesController extends Controller
         }else{
             $ppv_price = $series_season->ppv_price;
         }
-        if(!empty($data['ppv_interval'])){
+        if(!empty($data['ppv_interval']) || $data['ppv_interval'] == 0){
             $ppv_interval = $data['ppv_interval'];
         }else{
             $ppv_interval = $series_season->ppv_interval;
