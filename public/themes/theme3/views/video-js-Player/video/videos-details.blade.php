@@ -169,75 +169,17 @@
                                                 
                                         <div class="block-description">
                                             
-                                            <div class="hover-buttons text-white">
-                                                <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-
-                                                    @if ($ThumbnailSetting->title == 1)         <!-- Title -->
-                                                        <p class="epi-name text-left m-0"> {{ strlen($recommended_video->title) > 20 ? substr($recommended_video->title, 0, 21) . '...' : $recommended_video->title }} </p>
-                                                    @endif
-
-                                                    <div class="movie-time d-flex align-items-center pt-1">
-                                                        @if ($ThumbnailSetting->rating == 1)         <!--Rating  -->
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                                <span class="text-white"> <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                    {{ $recommended_video->rating }}
-                                                                </span>
-                                                            </div>
-                                                        @endif
-
-                                                        <!-- Category Thumbnail  setting -->
-                                                        <?php
-                                                            $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                                ->where('categoryvideos.video_id', $recommended_video->id)
-                                                                ->pluck('video_categories.name');
-                                                            ?>
-                                                            <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                                            <span class="text-white">
-                                                                <?php
-                                                                $Category_Thumbnail = [];
-                                                                foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
-                                                                    $Category_Thumbnail[] = $CategoryThumbnail;
-                                                                }
-                                                                echo implode(',' . ' ', $Category_Thumbnail);
-                                                                ?>
-                                                            </span>
-                                                            <?php } ?>
+                                        <div class="hover-buttons">
+                                                    <a class="" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
+                                                        <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                            <span class="text pr-2"> Play </span>
+                                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                                <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                                <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                            </svg>
                                                         </div>
-
-                                                    @if ($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->duration == 1)
-                                                        <div class="movie-time d-flex align-items-center pt-1 mb-3">
-
-                                                            @if ($ThumbnailSetting->duration == 1)  <!-- Duration -->
-                                                                <span class="text-white">
-                                                                    {{ gmdate('H:i:s', $recommended_video->duration) }}
-                                                                </span>
-                                                            @endif 
-
-                                                            @if ($ThumbnailSetting->age == 1)     <!-- Age -->
-                                                                <div class="badge badge-secondary p-1 mr-2"> {{ optional($recommended_video)->age_restrict . ' ' . '+' }}</div>
-                                                            @endif
-
-                                                            @if ($ThumbnailSetting->published_year == 1)   <!-- published_year -->
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white"> <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                        {{ $recommended_video->year }}
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-
-                                                            @if ($ThumbnailSetting->featured == 1 && $recommended_video->featured == 1)  <!-- Featured -->
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white"> <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                    @endif
-                                                </a>
-
-                                                <a class="epi-name text-white mb-0 btn btn-primary">Watch Now</a>
-
-                                            </div>
+                                                    </a>
+                                                </div>
                                         </div>
                                     </div>
                                 </li>
