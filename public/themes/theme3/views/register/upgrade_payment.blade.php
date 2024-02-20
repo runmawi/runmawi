@@ -489,7 +489,6 @@
         }
 
         .cont {
-            background-color: #232c30;
             padding: 36px 47px 70px;
             margin-bottom: 35px;
         }
@@ -498,6 +497,7 @@
             height: 50px;
             background: #f4f6f7;
             padding: 10px;
+            border-radius:50px;
         }
 
         .blk li {
@@ -599,11 +599,11 @@
         padding: 14px;
         font-size: 21px;
     }
-    .steps-wrapper.payment-sec.pl-0 {
-        margin-top: 10rem;
-    }
     .card-body ul li{
         color:white;
+    }
+    input[type="text"]{
+        border-radius:50px !important;
     }
 </style>
 
@@ -923,6 +923,93 @@
                                         <div class="step-circle"></div>
                                     </div>
                                 </div>
+                                
+                                
+                <div class="col-md-12 mt-5" id="payment_card_scroll">
+                    <div class="cont stripe_payment" >
+                        <div class="d-flex justify-content-between align-items-center">
+                             <div>
+                                 <h3>{{ __('Payment') }}</h3>
+                             </div>
+
+                            <div>
+                                <label for="fname">{{ __('Accepted Cards') }}</label>
+                                <div class="icon-container">
+                                     <i class="fa fa-cc-visa" style="color: navy;"></i>
+                                     <i class="fa fa-cc-amex" style="color: blue;"></i>
+                                     <i class="fa fa-cc-mastercard" style="color: red;"></i>
+                                     <i class="fa fa-cc-discover" style="color: orange;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-3"></div>
+
+                        <!-- <label for="fname"><i class="fa fa-user"></i> {{ __('Full Name') }}</label> -->
+
+                        <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
+
+                        <!-- Stripe Elements Placeholder -->
+                        <!-- <label for="ccnum"> {{ __('Card Number') }}</label> -->
+                        <div id="card-element" style=""></div>
+
+                        @if( get_coupon_code() == 1)
+                                        <!-- Add Promotion Code -->
+                            <div class="mt-3">
+                                <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> {{ __('Add Promotion Code') }} </label>
+                               <div class="collapse show" id="collapseExample">
+                                    <div class="row p-0">
+                                        <div class="col-lg-6 p-0">
+                                            <input id="coupon_code_stripe" type="text" class="form-control" placeholder="{{ __('Add Promotion Code') }}"  style="height:41px;">
+                                            <input id="final_coupon_code_stripe" name="final_coupon_code_stripe" type="hidden" >
+                                        </div>
+                                        <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round btn-lg">{{ __('Apply') }}</a></div>
+                                        <span id="coupon_message"></span>
+
+                                                    {{-- Coupon Code from backend(admin) --}}
+                                        @if( NewSubscriptionCouponCode() != '0' )
+                                            <span id="">  {{ "Recommend a Coupon Code for you - " . NewSubscriptionCouponCode() }} </span>
+                                        @endif
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                    </div>
+
+                
+                    <h4>{{ __('Summary') }}</h4>
+
+                    <div class="bg-white mt-4 dgk">
+                        <h4> {{ __('Due today') }}: <span class='plan_price'> {{ $SubscriptionPlan ? currency_symbol().$SubscriptionPlan->price : currency_symbol().'0:0' }} </span> </h4>
+                        
+                        @if( get_coupon_code() == 1)
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div class="stripe_payment">
+                                    <p> {{ __('Amount Deducted for Promotion Code') }}   </p>
+                                    <p> {{ __('Payable Amount') }}   </p>
+                                </div>
+
+                                <div class="stripe_payment" >
+                                    <p id="promo_code_amt" > {{  currency_symbol().'0'  }} </p>
+                                    <p id="coupon_amt_deduction"> {{ $SubscriptionPlan ? currency_symbol().$SubscriptionPlan->price : currency_symbol().'0:0'  }} </p>
+                                </div>
+                            </div>
+                        @endif
+
+                        <hr/>
+                        {{-- <h6 class="text-black text-center font-weight-bold">{{ __('You will be charged $56.99 for an annual membership on 05/18/2022. Cancel anytime.') }}</h6> --}}
+                        <p class="text-center mt-3">{{ __('All state sales taxes apply') }}</p>
+                    </div>
+                    <div class="col-md-12 mt-5" id="paypal_card_payment">
+                    </div>
+                    <p class="text-white mt-3 dp">
+                            {{ $signup_payment_content ? $signup_payment_content : " " }}
+                    </p>
+                </div>
+
+
 
                                                 {{-- Summary --}}
                             <div class="col-md-12 mt-5" id="payment_card_scroll">
@@ -1038,6 +1125,251 @@
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+
+    <script>
+    function plan_details(ele){
+        var plans_id          = $(ele).attr('data-plan_id');
+        var plan_payment_type = $(ele).attr('data-payment-type');
+        var plan_price        = $(ele).attr('data-plan-price');
+        var plan_id_class     = $(ele).attr('data-plan-id');
+        let currency_symbols  =  document.getElementById("currency_symbol").value ;
+        var selectedOption = $('input[name="payment_gateway"]:checked').val();
+
+        $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
+        $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
+        $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="'+ plan_price +'">');
+        $('.plan_price').empty(plan_price);
+        $('.plan_price').append( currency_symbols+plan_price );
+
+        $('#coupon_amt_deduction').empty(plan_price);
+        $('#coupon_amt_deduction').append( currency_symbols+plan_price );
+
+        $('.dg' ).removeClass('actives');
+        $('#'+plan_id_class ).addClass('actives');
+
+
+        
+    //   PayPal Payment Gateway
+
+        if (selectedOption == 'paypal') {
+            $('#paypal_card_payment').show();
+
+            var dynamicPlanId = getDynamicPlanId(selectedOption, plans_id);
+            var dynamicContainerId = 'paypal-button-container-' + dynamicPlanId;
+            $('#paypal_card_payment').empty();
+            var newContainerDiv = $('<div id="' + dynamicContainerId + '"></div>');
+            // Append the new container to the specified parent container
+            $('#paypal_card_payment').append(newContainerDiv);
+
+            paypal.Buttons({
+                style: {
+                    shape: 'rect',
+                    color: 'gold',
+                    layout: 'vertical',
+                    label: 'subscribe'
+                },
+                createSubscription: function (data, actions) {
+                    return actions.subscription.create({
+                        /* Creates the subscription */
+                        plan_id: dynamicPlanId
+                    });
+                },
+                onApprove: function (data, actions) {
+                    // alert(data.subscriptionID); 
+                    var subId = data.subscriptionID;
+
+                    $.ajax({
+                        url: '{{ URL::to('upgradepaypalsubscription') }}',
+                        method: 'post',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            plan_id: dynamicPlanId,
+                            subId: subId,
+                        },
+                        success: (response) => {
+                            alert("You have done  Payment !");
+                            console.log("Server response:", response);
+
+                            setTimeout(function() {
+                                window.location.replace(base_url+'/home');
+                        }, 2000);
+
+                        },
+                        error: (error) => {
+                            swal('error');
+                        }
+                    })
+                  
+                }
+            }).render('#' + dynamicContainerId); 
+        }else{
+            $('#paypal_card_payment').hide();
+        }
+      
+    }    
+
+    function getDynamicPlanId(selectedOption, plans_id) {
+       if (selectedOption === 'paypal') {
+        return plans_id;
+    } else {
+        return 'default_plan_id';
+    }
+}
+ 
+    var base_url = $('#base_url').val();
+    const stripe = Stripe('{{ env('STRIPE_KEY') }}');
+    const elements = stripe.elements();
+
+    var style = {
+        base: {
+            iconColor: '#19337c',
+            color: '#141414',
+            fontSize: '16px',
+            fontFamily: '"Open Sans", sans-serif',
+            padding: '13px',
+            fontSmoothing: 'antialiased',
+            '::placeholder': {
+            color: '#80828c',
+            },
+        },
+        CardNumberField : {
+            background: '#141414', 
+            padding: '10px',
+            borderRadius: '4px', 
+            transform: 'none',
+        },
+        invalid: {
+            color: '#fc0000',
+            ':focus': {
+            color: '#fc0000',
+            },
+    },
+    };
+    
+
+    var elementClasses = {
+        class : 'CardNumberField',
+        empty: 'empty',
+        invalid: 'invalid',
+    };
+
+    var cardElement = elements.create('card', {style: style, classes: elementClasses });
+    cardElement.mount('#card-element');
+    const cardHolderName = document.getElementById('card-holder-name');
+    const cardButton = document.getElementById('card-button');       
+    const clientSecret = cardButton.dataset.secret;
+
+    cardButton.addEventListener('click', async (e) => {
+    $("#card-button").html('Processing ...');
+ 
+    const { setupIntent, error } = await stripe.confirmCardSetup(
+    clientSecret, {
+         payment_method: {
+             card: cardElement,
+             billing_details: { name: cardHolderName.value }
+         }
+     }
+    );
+
+    if (error) {
+            var plan_data = $("#plan_name").val();
+            var final_payment = $(".final_payment").val();
+            $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+
+    $(document).ready(function(){
+
+    $.ajax({
+    url: base_url+'/admin/Paymentfailed',
+    type: "post",
+    data: {
+            _token: '{{ csrf_token() }}',
+            plan_data: plan_data,
+            error: error,
+            amount: final_payment,
+        },       
+         success: function(data){
+        } });
+    });
+
+	
+    if( swal({
+        title: "Payment Failed!",
+        text: "Your Payment is failed",
+        type: "warning"
+        }).then(function() {
+            window.location = base_url+'/becomesubscriber';
+        })
+    ){ }
+    } else {
+        	
+            var plan_data = $("#plan_name").val();
+            var final_coupon_code_stripe = $("#final_coupon_code_stripe").val();
+            var payment_type = $("#payment_type").val();
+            var final_payment = $(".final_payment").val();
+            var py_id = setupIntent.payment_method;
+                
+                console.log(plan_data);
+
+            stripe.createToken(cardElement).then(function(result) {
+                 console.log(result.token.id);
+
+            var stripToken = result.token.id;
+
+            $.ajax({
+                url: "{{ route('become_subscriber') }}",
+                type: "get",
+                data: {
+                        _token  : '{{ csrf_token() }}',
+                        py_id   :  py_id, 
+                        plan    : plan_data,
+                        amount  : final_payment,
+                        stripToken   : stripToken, 
+                        payment_type : payment_type, 
+                        coupon_code  : final_coupon_code_stripe,
+                    },       
+                    success: function(data){
+                        if(data.status == "true"){
+                            $('#loader').css('display','block');
+                                swal({
+                                    title: "Subscription Purchased Successfully!",
+                                    text: data.message,
+                                    icon: payment_images+'/Successful_Payment.gif',
+                                    buttons: false,      
+                                    closeOnClickOutside: false,
+                                });
+                                    $("#card-button").html('Pay Now');
+                                setTimeout(function() {
+                                    window.location.replace(base_url+'/login');
+                            }, 2500);
+                        }
+                        else{
+                            $('#loader').css('display','block');
+                                swal({
+                                    title: "Payment Failed!",
+                                    text: data.message,
+                                    icon: payment_images+'/fails_Payment.avif',
+                                    buttons: false,      
+                                    closeOnClickOutside: false,
+                                });
+                                    $("#card-button").html('Pay Now');
+                                setTimeout(function() {
+                                    location.reload();
+                            }, 5000);
+                        }
+                    } });
+            });
+        }
+    });
+
+</script>
+
+
 
     <script>
         function plan_details(ele) {
