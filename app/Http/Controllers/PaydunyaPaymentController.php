@@ -797,14 +797,14 @@ class PaydunyaPaymentController extends Controller
                         $convertedAmount = null;
 
                         $Error_msg = 'Error on Currency Conversation, Pls connect admin' ;
-                        $url = URL::to('play_series'.$series->slug);
+                        $url = URL::to('play_series/'.$series->slug);
                         echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
                     }
                 
                 } catch (\Exception $e) {
 
                         $Error_msg = $e->getMessage();
-                        $url = URL::to('play_series'.$series->slug);
+                        $url = URL::to('play_series/'.$series->slug);
                         echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
                 }
 
@@ -862,7 +862,6 @@ class PaydunyaPaymentController extends Controller
         
                 $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
                 $to_time = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
-    
                 
                 if(!empty($request->SeriesSeason_id)){
                     $moderators_id = $SeriesSeason->user_id;

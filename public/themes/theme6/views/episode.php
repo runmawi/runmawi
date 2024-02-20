@@ -805,46 +805,41 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 </div>
 
                 <div class="modal-footer">
-                    <div class="Stripe_button">
-                        <!-- Stripe Button -->
-                        <!-- Currency_Convert(@$video->ppv_price) -->
-                        <a onclick="pay(<?php if(@$SeriesSeason->access == 'ppv' && @$SeriesSeason->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert(@$SeriesSeason->ppv_price); }else if(@$SeriesSeason->access == 'ppv' && @$SeriesSeason->ppv_price != null && $CurrencySetting == 0){ echo __(currency_symbol() .@$SeriesSeason->ppv_price) ; } ?>)">
-                            <button type="button"
-                                class="btn2  btn-outline-primary">Continue</button>
-                        </a>
-                    </div>
 
                     <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
-                    <div class="Razorpay_button">
-                        <!-- Razorpay Button -->
-                        <button
-                            onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . @$SeriesSeason->id . '/' . @$SeriesSeason->ppv_price) ?>' ;"
-                            id="" class="btn2  btn-outline-primary">
-                            Continue</button>
-                    </div>
+
+                        <div class="Stripe_button">
+                                <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_series_season_PPV_Purchase/'.@$SeriesSeason->id.'/'.@$SeriesSeason->ppv_price) ?>' ;" > Continue </button>
+                        </div>
+                        
+                    <?php } ?>
+
+                    <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
+                        <div class="Razorpay_button">
+                            <!-- Razorpay Button -->
+                            <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . @$SeriesSeason->id . '/' . @$SeriesSeason->ppv_price) ?>' ;"
+                                id="" class="btn2  btn-outline-primary"> Continue</button>
+                        </div>
                     <?php }?>
 
 
                     <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
-                    <div class="paystack_button">
-                        <!-- Paystack Button -->
-                        <button
-                            onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => @$SeriesSeason->id, 'amount' => @$SeriesSeason->ppv_price]) ?>' ;"
-                            id="" class="btn2  btn-outline-primary">
-                            Continue</button>
-                    </div>
+                        <div class="paystack_button">
+                            <!-- Paystack Button -->
+                            <button
+                                onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => @$SeriesSeason->id, 'amount' => @$SeriesSeason->ppv_price]) ?>' ;"
+                                id="" class="btn2  btn-outline-primary"> Continue</button>
+                        </div>
                     <?php }?>
 
                     <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " " || @$SeriesSeason->ppv_price !=null  || @$SeriesSeason->global_ppv == 1){ ?>
-                    <div class="cinetpay_button">
-                        <!-- CinetPay Button -->
-                        <button onclick="cinetpay_checkout()" id=""
-                            class="btn2  btn-outline-primary">Continue</button>
-                    </div>
+                        <div class="cinetpay_button">
+                            <!-- CinetPay Button -->
+                            <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary">Continue</button>
+                        </div>
                     <?php }?>
 
                     <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
-
                         <div class="Paydunya_button">   <!-- Paydunya Button -->
                             <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Paydunya_SeriesSeason_checkout_Rent_payment/'.@$SeriesSeason->id.'/'.@$SeriesSeason->ppv_price) ?>' ;" > Continue </button>
                         </div>
@@ -930,60 +925,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             alert('Please Enable Any Payment Mode');
         });
 
-        function pay(amount) {
-            var publishable_key = $('#publishable_key').val();
-
-            var episode_id = $('#episode_id').val();
-            var season_id = $('#season_id').val();
-
-            // alert(video_id);
-            var handler = StripeCheckout.configure({
-
-                key: publishable_key,
-                locale: 'auto',
-                token: function(token) {
-                    // You can access the token ID with `token.id`.
-                    // Get the token ID to your server-side code for use.
-                    console.log('Token Created!!');
-                    console.log(token);
-                    $('#token_response').html(JSON.stringify(token));
-
-                    $.ajax({
-                        url: '<?php echo URL::to('purchase-episode'); ?>',
-                        method: 'post',
-                        data: {
-                            "_token": "<?= csrf_token() ?>",
-                            tokenId: token.id,
-                            amount: amount,
-                            episode_id: episode_id,
-                            season_id: season_id
-                        },
-                        success: (response) => {
-                            alert("You have done  Payment !");
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000);
-
-                        },
-                        error: (error) => {
-                            swal('error');
-                            //swal("Oops! Something went wrong");
-                            /* setTimeout(function() {
-                            location.reload();
-                            }, 2000);*/
-                        }
-                    })
-                }
-            });
-
-
-            handler.open({
-                name: '<?php $settings = App\Setting::first();
-                echo $settings->website_name; ?>',
-                description: 'Rent a Episode',
-                amount: amount * 100
-            });
-        }
+    
     </script>
     <script type="text/javascript">
         $(".free_content").hide();
