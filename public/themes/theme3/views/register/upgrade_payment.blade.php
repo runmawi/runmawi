@@ -489,7 +489,6 @@
         }
 
         .cont {
-            padding: 36px 47px 70px;
             margin-bottom: 35px;
         }
 
@@ -946,12 +945,19 @@
                         <div class="mt-3"></div>
 
                         <!-- <label for="fname"><i class="fa fa-user"></i> {{ __('Full Name') }}</label> -->
-
-                        <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
-
+                        <div class="d-flex col-12">
+                            <div class="col-6">
+                                <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
+                            </div>
+                            <div class="col-6">
+                                <div id="card-element" style=""></div>
+                            </div>
+                           
+                            
+                        </div>
                         <!-- Stripe Elements Placeholder -->
                         <!-- <label for="ccnum"> {{ __('Card Number') }}</label> -->
-                        <div id="card-element" style=""></div>
+                        <!-- <div id="card-element" style=""></div> -->
 
                         @if( get_coupon_code() == 1)
                                         <!-- Add Promotion Code -->
