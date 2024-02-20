@@ -399,6 +399,14 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Stripe_payment_live_PPV_Purchase/{live_id}/{amount}', 'StripePaymentController@Stripe_payment_live_PPV_Purchase')->name('Stripe_payment_live_PPV_Purchase');
     Route::get('Stripe_payment_live_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{live_id}', 'StripePaymentController@Stripe_payment_live_PPV_Purchase_verify')->name('Stripe_payment_live_PPV_Purchase_verify');
 
+        // Stripe Video PPV Purchase
+    Route::get('Stripe_payment_video_PPV_Purchase/{video_id}/{amount}', 'StripePaymentController@Stripe_payment_video_PPV_Purchase')->name('Stripe_payment_video_PPV_Purchase');
+    Route::get('Stripe_payment_video_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{video_id}', 'StripePaymentController@Stripe_payment_video_PPV_Purchase_verify')->name('Stripe_payment_video_PPV_Purchase_verify');
+
+        // Stripe Video PPV Purchase
+    Route::get('Stripe_payment_series_season_PPV_Purchase/{SeriesSeason_id}/{amount}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase')->name('Stripe_payment_series_season_PPV_Purchase');
+    Route::get('Stripe_payment_series_season_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{SeriesSeason_id}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase_verify')->name('Stripe_payment_series_season_PPV_Purchase_verify');
+    
     
     Route::get('serieslist', ['uses' => 'ChannelController@series', 'as' => 'series']);
     // Route::get('series/category/{id}', 'ChannelController@series_genre' );

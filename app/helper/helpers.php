@@ -540,9 +540,10 @@ function Country_name(){
     
     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
     $userIp = $geoip->getip();
-    $countryName = $geoip->getCountry();
+    $countryName = \Location::get($userIp)->countryName;
 
-    return $countryName;
+    return $countryName ;
+
 }
 
 function city_name(){
