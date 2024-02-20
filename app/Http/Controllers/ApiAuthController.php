@@ -8761,6 +8761,7 @@ public function Adstatus_upate(Request $request)
   {
     $sliders = Slider::where('active', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
+      $item['player_image'] = URL::to('/').'/public/uploads/videocategory/'.$item->player_image;
       $item['source'] = "Admin_slider";
       return $item;
     });

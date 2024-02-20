@@ -38,9 +38,18 @@
                                         <li class="slide-item">
                                             <div class="block-images position-relative">
                                                 <!-- block-images -->
+                                                <div class="img-box">
                                                 <a href="<?php echo URL::to('live') ?><?= '/' . $category_video->slug ?>">
                                                     <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt=""> 
                                                 </a>
+                                                </div>
+                                                <div class="block-description">
+                                                    <div class="hover-buttons">
+                                                        <a type="button" class="text-white btn-cl" href="<?php echo URL::to('live') ?><?= '/' . $category_video->slug ?>">
+                                                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             
                                                 @if($ThumbnailSetting->free_or_cost_label == 1) 
                                                     
@@ -63,13 +72,7 @@
                                                 @endif 
                                             </div>
 
-                                            <div class="block-description">
-                                                <div class="hover-buttons">
-                                                    <a type="button" class="text-white btn-cl" href="<?php echo URL::to('live') ?><?= '/' . $category_video->slug ?>">
-                                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                                                    </a>
-                                                </div>
-                                            </div>
+                                            
 
                                             <div class="mt-2 d-flex justify-content-between p-0">
                                                 @if($ThumbnailSetting->title == 1)          <!-- Title -->
