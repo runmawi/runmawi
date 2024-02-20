@@ -23,9 +23,6 @@
 
                             <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
-                            <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1">
-                                <a href="{{ $item->link }}" class="btn btn-hover"><i class="fa fa-play mr-2" aria-hidden="true"></i>Play Now</a>
-                            </div>
                         </div>
                     </div>
 
@@ -52,41 +49,10 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <!-- <a href="javascript:void(0);">
-                                <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
-                                </div>
-                            </a> -->
-                            <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
-
-                            <!-- <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-                                <span class="badge badge-secondary p-2"> {{ optional($item)->age_restrict.'+' }} </span>
-                                <span class="ml-3">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
-                            </div> -->
-
-                            <!-- <div data-animation-in="fadeInUp" data-delay-in="1.2"> -->
-                            <!-- <?php
-                                $description = $item->description;
-
-                                if (strlen($description) > 143) {
-                                    $shortDescription = html_entity_decode(substr($description, 0, 143)) . "<span class='more-text' style='display:none;'>" . substr($description, 143) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See more </span>";
-                                } else {
-                                    $shortDescription = html_entity_decode($description);
-                                }
-                                ?>
-
-                                <div id="descriptionContainer" class="description-container mb-1">
-                                    <?php echo $shortDescription; ?>
-                                </div> -->
-                                <!-- {!! strlen($item->description) > 100 ? html_entity_decode(substr($item->description, 0, 95)) . '...'. "  See more" : html_entity_decode($item->description) !!} -->
-                                 {!! html_entity_decode( optional($item)->description) !!}
-                            <!-- </div> -->
-
-                            <!-- <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                aria-hidden="true"></i>Play Now</a>
-                                {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
-                            </div> -->
+                            <p class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
+                            <div class="descp">
+                                <p> {!! html_entity_decode( optional($item)->description) !!}</p>
+                            </div>
                         </div>
                     </div>
 
@@ -115,39 +81,12 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <!-- <a href="javascript:void(0);">
-                                <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
-                                </div>
-                            </a> -->
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <h1 class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
-                            <!-- <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-                                <span class="ml-3"> {{ App\SeriesSeason::where('series_id', $item->id)->count() }} Seasons</span>
-                                <span class="ml-3"> {{ App\Episode::where('series_id', $item->id)->count() }} Episodes </span>
-                            </div> -->
-
-                            <!-- <?php
-                                $description = $item->details;
-
-                                if (strlen($description) > 143) {
-                                    $shortDescription = html_entity_decode(substr($description, 0, 143)) . "<span class='more-text' style='display:none;'>" . substr($description, 143) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See more </span>";
-                                } else {
-                                    $shortDescription = html_entity_decode($description);
-                                }
-                                ?>
-
-                                <div id="descriptionContainer" class="description-container mb-1">
-                                    <?php echo $shortDescription; ?>
-                                </div> -->
-
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p>
-
-                            <!-- <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                <a href="{{ URL::to('play_series/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                aria-hidden="true"></i>Play Now</a>
-                                {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
-                            </div> -->
+                            <div class="descp">
+                                <p  data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p>
+                            </div>
+                            
                         </div>
                     </div>
 
@@ -174,26 +113,14 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <!-- <a href="javascript:void(0);">
-                                <div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
-                                </div>
-                            </a> -->
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <h1 class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                 <span class="ml-1">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
-
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
-                            
-
-
-                            <!-- <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                aria-hidden="true"></i>Play Now</a>
-                                {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
-                            </div> -->
+                            <div class="descp">
+                                <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -215,29 +142,15 @@
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
                             </a>
-                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+                            <h1 class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                                 <span class="ml-1">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
                             </div>
-
-                            <!-- <?php
-                                $description = $item->description;
-
-                                if (strlen($description) > 143) {
-                                    $shortDescription = html_entity_decode(substr($description, 0, 143)) . "<span class='more-text' style='display:none;'>" . substr($description, 143) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See more </span>";
-                                } else {
-                                    $shortDescription = html_entity_decode($description);
-                                }
-                                ?>
-
-                                <div id="descriptionContainer" class="description-container mb-1">
-                                    <?php echo $shortDescription; ?>
-                                </div> -->
                                       
-
-                            <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
-
+                            <div class="descp">
+                                <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!} </p>
+                            </div>
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
                                 aria-hidden="true"></i>Play Now</a>
