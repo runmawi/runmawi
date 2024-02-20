@@ -309,6 +309,7 @@ class ApiAuthController extends Controller
               $userdata = User::where('email', '=', $request->get('email'))->first();
               $userid = $userdata->id;
 
+
                // welcome Email
                                   
                try {
@@ -318,14 +319,15 @@ class ApiAuthController extends Controller
                 );
 
                 Mail::send('emails.welcome', array(
-                    'username' => $name,
+                    'username' => $userdata->username,
                     'website_name' => GetWebsiteName(),
-                    'useremail' => $email,
-                    'password' => $get_password,
-                ), 
-                function($message) use ($data,$request) {
+                    'useremail' => $userdata->email,
+                    'password' => $request->password,
+                    'url' => URL::to('/'),
+                  ), 
+                function($message) use ($data,$request,$userdata) {
                     $message->from(AdminMail(),GetWebsiteName());
-                    $message->to($request->email, $request->name)->subject($data['email_subject']);
+                    $message->to($userdata->email, $userdata->username)->subject($data['email_subject']);
                 });
 
                 $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
@@ -7064,83 +7066,102 @@ public function AddRecentAudio(Request $request){
 
 public function SubscriptionPayment(Request $request){
 
+    $user_id = $request->user_id;
+    $name    = $request->name;
+    $days    = $request->days;
+    $price   = $request->price;
+    $stripe_id     = $request->stripe_id;
+    $stripe_status = $request->stripe_status;
+    $stripe_plan   = $request->stripe_plan;
+    $created_at    = $request->created_at;
+    $countryname   = $request->countryname;
+    $regionname    = $request->regionname;
+    $cityname      = $request->cityname;
 
-  $user_id = $request->user_id;
-  $name = $request->name;
-  $days = $request->days;
-  $price = $request->price;
-  $stripe_id = $request->stripe_id;
-  $stripe_status = $request->stripe_status;
-  $stripe_plan = $request->stripe_plan;
-  $created_at = $request->created_at;
-  $countryname = $request->countryname;
-  $regionname = $request->regionname;
-  $cityname = $request->cityname;
+    if($request->stripe_plan != ''){
 
-  if($request->stripe_plan != ''){
-            $next_date = $days;
-            $current_date = date('Y-m-d h:i:s');
-            $date = Carbon::parse($current_date)->addDays($next_date);
-            $subscription = new Subscription;
-            $subscription->user_id  =  $user_id ;
-            $subscription->name  =  $name ;
-            $subscription->days  =  $days ;
-            $subscription->price  =  $price ;
-            $subscription->stripe_id  =  $stripe_id ;
-            $subscription->stripe_status   =  $stripe_status ;
-            $subscription->stripe_plan =  $stripe_plan;
-            $subscription->created_at =  $created_at;
-            $subscription->countryname = $countryname;
-            $subscription->regionname = $regionname;
-            $subscription->cityname = $cityname;
-            $subscription->ends_at = $date;
-            $subscription->ios_product_id = $request->product_id;
-            $subscription->save();
-            $user =  User::findOrFail($user_id);
-            $user->role = "subscriber";
-            $user->save();
-            $user_email = $user->email;
-          $plan_details = SubscriptionPlan::where('plan_id','=',$stripe_plan)->first();
-	          $template = EmailTemplate::where('id','=',23)->first();
-            $subject = $template->template_type;
+        $next_date = $days;
+        $current_date = date('Y-m-d h:i:s');
+        $date = Carbon::parse($current_date)->addDays($next_date);
+        $subscription = new Subscription;
+        $subscription->user_id  =  $user_id ;
+        $subscription->name  =  $name ;
+        $subscription->days  =  $days ;
+        $subscription->price  =  $price ;
+        $subscription->stripe_id  =  $stripe_id ;
+        $subscription->stripe_status   =  $stripe_status ;
+        $subscription->stripe_plan =  $stripe_plan;
+        $subscription->created_at =  $created_at;
+        $subscription->countryname = $countryname;
+        $subscription->regionname = $regionname;
+        $subscription->cityname = $cityname;
+        $subscription->ends_at = $date;
+        $subscription->ios_product_id = $request->product_id;
+        $subscription->save();
 
-            try {
-              Mail::send('emails.subscriptionpaymentmail', array(
-                'name'=>$name,
-                'days' => $days,
-                'price' => $price,
-                'ends_at' => $date,
-                'plan_names' => $plan_details->plans_name,
-                'created_at' => $current_date), function($message) use ($request,$user_id,$name,$subject,$user_email) {
-                                      $message->from(AdminMail(),GetWebsiteName());
-                                        $message->to($user_email, $name)->subject($subject);
-                });
+        $user =  User::findOrFail($user_id);
+        $user->role = "subscriber";
+        $user->save();
 
-                $mail_message = 'Mail send Sucessfully' ;
+        $user_email = $user->email;
+        $plan_details = SubscriptionPlan::where('plan_id',$stripe_plan)->first();
+        $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
 
-            } catch (\Throwable $th) {
+        try {
 
-              $mail_message = 'Mail Not Send!' ;
 
-            }
+          \Mail::send('emails.subscriptionmail', array(
+              'name' => ucwords($name),
+              'uname' => $name,
+              'paymentMethod' => 'Stripe',
+              'plan' => ucfirst($plan_details->plans_name),
+              'price' => $plan_details->price,
+              'plan_id' => $plan_details->plan_id,
+              'billing_interval' => $plan_details->billing_interval,
+              'next_billing' => $date,
+              'subscription_type' => 'recurring',
 
-            $message = "Added  to  Subscription";
-            $response = array(
-              "status" => "true",
-              'message'=> $message,
-              'Mail_message' => $mail_message ,
-            );
+          ), function($message) use ($request,$user,$email_subject){
+            $message->from(AdminMail(),GetWebsiteName());
+            $message->to($user->email, $user->username)->subject($email_subject);
+          });
+
+
+          $email_log      = 'Mail Sent Successfully from Register Subscription';
+          $email_template = "23";
+          $user_id = $user->id;
+
+          Email_sent_log($user_id,$email_log,$email_template);
+
+          $mail_message = 'Mail sent Sucessfully' ;
+
+      } catch (\Throwable $th) {
+
+          $email_log      = $th->getMessage();
+          $email_template = "23";
+          $user_id = $user->id;
+
+          Email_notsent_log($user_id,$email_log,$email_template);
+
+          $mail_message = 'Mail Not sent' ;
+
+      }
+
+        $response = array(
+          "status" => "true",
+          'message'=> "Added  to  Subscription",
+          'Mail_message' => $mail_message ,
+        );
+
     } else {
-      $message = "Not Added  to  Subscription";
 
       $response = array(
-        'status'=>'false',
+        'status'=> "Not Added  to  Subscription",
          'message'=> $message
-
       );
 
     }
-  return response()->json($response, 200);
+    return response()->json($response, 200);
 
   }
 
@@ -8740,6 +8761,7 @@ public function Adstatus_upate(Request $request)
   {
     $sliders = Slider::where('active', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
+      $item['player_image'] = URL::to('/').'/public/uploads/videocategory/'.$item->player_image;
       $item['source'] = "Admin_slider";
       return $item;
     });
@@ -10756,6 +10778,10 @@ $cpanel->end();
       $page_id = $request->page_id;
      $pages = Page::where('id', '=', $page_id)->where('active', '=', 1)->get()->map(function ($item) {
        $item['page_url'] = URL::to('page').'/'.$item->slug;
+      //  $details = html_entity_decode($item->body);
+      //  $description = strip_tags($details);
+      //  $str_replace = str_replace("\r", '', $description);
+      //  $item['body'] = str_replace("\n", '', $str_replace);
        return $item;
      });
      $response = array(
@@ -14217,6 +14243,7 @@ public function QRCodeMobileLogout(Request $request)
   private static function All_Homepage_videoCategories(){
 
     $videoCategories_status = MobileHomeSetting::pluck('videoCategories')->first();
+    $Setting = Setting::first();
 
       if( $videoCategories_status == null || $videoCategories_status == 0 ): 
 
@@ -14224,10 +14251,11 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
           $data =  VideoCategory::where('in_home',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
+                          $item['title']     = $item->name ;
                           $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image);
                           $item['Player_image_url'] = URL::to('public/uploads/videocategory/'.$item->banner_image);
                           $item['description'] = null ;
-                          $item['source']    = "VideoCategory"; 
+                          $item['source']    = "category_videos"; 
                           return $item;
                         });
 
@@ -15380,8 +15408,14 @@ public function QRCodeMobileLogout(Request $request)
 
   
   public function relatedtvvideos(Request $request) {
-    
-    $videoid = $request->videoid;
+
+    try {
+
+      $this->validate($request, [
+        'videoid'  => 'required|integer' ,
+      ]);
+      
+      $videoid = $request->videoid;
    
       // Recomendeds
                 
@@ -15389,21 +15423,34 @@ public function QRCodeMobileLogout(Request $request)
       ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
       ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
       ->where('videos.id', '!=', $videoid)
-      ->where('videos.active',  1)
-      ->where('videos.status',  1)
-      ->where('videos.draft',  1)
-      ->orderBy('videos.created_at', 'desc')
+      ->where('videos.active', 1)
+      ->where('videos.status', 1)
+      ->where('videos.draft', 1)
+      ->limit(20)
       ->groupBy('videos.id')
-      ->limit(10)
-      ->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-        return $item;
+      ->inRandomOrder()
+      ->get()
+      ->map(function ($item) {
+          $item['image_url'] = URL::to('public/uploads/images/' . $item->image);
+          $item['player_image_url'] = URL::to('public/uploads/images/' . $item->player_image);
+          return $item;
       });
+
       $response = array(
-      'status'=>'true',
-      'channelrecomended' => $recomendeds
-    );
+        'status'=>'true',
+        'message' => 'Retrieved related tvvideos Successfully',
+        'channelrecomended' => $recomendeds
+      );
+
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message' => $th->getMessage(),
+        );
+
+    }
+    
     return response()->json($response, 200);
   }
 

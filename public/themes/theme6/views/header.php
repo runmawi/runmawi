@@ -561,11 +561,9 @@
                                   </a>
 
                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" >
-                                    <input name="_token" type="hidden" value="<?= csrf_token(); ?>" />
+                                    <form id="" role="search" action="<?php echo URL::to('searchResult');?>" method="get">
                                        <div class="form-group position-relative">
-                                          <input type="text" class="text search-input font-size-12 searches"
-                                             placeholder="type here to search...">
+                                          <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
                                           <i class="search-link ri-search-line"></i>
                                           <?php  include 'public/themes/theme6/partials/Search_content.php'; ?>
                                        </div>

@@ -795,7 +795,7 @@ background-color: #000;padding: 10px!important;}
 <input type="hidden" value="<?php echo NewSubscriptionCoupon();?>" id="discount_status" class="discount_status">
 
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="{{ URL::to('public/themes/theme1/assets/js/googleapi.js') }}" type="text/javascript"></script>
 
 <script type="text/javascript">
 
@@ -1002,7 +1002,7 @@ background-color: #000;padding: 10px!important;}
         text: "Your Payment is failed",
         type: "warning"
         }).then(function() {
-            window.location = base_url+'/home';
+            window.location = base_url+'/becomesubscriber';
         })
     ){ }
     } else {

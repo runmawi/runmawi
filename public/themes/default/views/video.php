@@ -1686,7 +1686,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <div class="col-sm-9 p-0">
                                     <div>
-                                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
+                                        <?php if($video->trailer != '' && $video->trailer_type != " " && $video->trailer_type != "null"   && $ThumbnailSetting->trailer == 1 ){ ?>
 
                                         <div class="img__wrap">
                                             <img class="img__img " src="<?php echo URL::to('/') . '/public/uploads/images/' . $video->player_image; ?>" class="img-fluid"
@@ -1730,7 +1730,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <div class="modal-body">
 
-                                                <?php  if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
+                                                <?php  if($video->trailer_type != null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
 
                                                 <video id="videoPlayer1" class=""
                                                     poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"

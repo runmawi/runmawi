@@ -28,11 +28,12 @@ class AdminPaymentSettingsController extends Controller
 			'admin_user' => Auth::user(),
 			'settings' => Setting::first(),
 			'payment_settings' => PaymentSetting::where('payment_type','=','Stripe')->first(),
-			'paypal_payment_settings' => PaymentSetting::where('payment_type','=','PayPal')->first(),
+			'paypal_payment_settings'  => PaymentSetting::where('payment_type','=','PayPal')->first(),
 			'Razorpay_payment_setting' =>  PaymentSetting::where('payment_type','=','Razorpay')->first(),
 			'paystack_payment_setting' =>  PaymentSetting::where('payment_type','=','Paystack')->first(),
-			'Cinet_payment_setting' =>  PaymentSetting::where('payment_type','=','CinetPay')->first(),
-			);
+			'Cinet_payment_setting'    =>  PaymentSetting::where('payment_type','=','CinetPay')->first(),
+			'Paydunya_payment_setting' =>  PaymentSetting::where('payment_type','=','Paydunya')->first(),
+		);
 
 		return View::make('admin.paymentsettings.index', $data);
 	}
@@ -308,6 +309,27 @@ class AdminPaymentSettingsController extends Controller
 		$CinetPay_payment_setting->paystack_lable 			 	 	= 	  $request['paystack_lable'] ?  $request['paystack_lable'] : null;
 		$CinetPay_payment_setting->payment_type 				 	=    "CinetPay";
         $CinetPay_payment_setting->save();
+	}
+
+		// Paydunya 
+
+	$Paydunya_payment_setting =  PaymentSetting::where('payment_type','=','Paydunya')->first();
+
+	if($Paydunya_payment_setting != null){
+
+		$Paydunya_payment_setting->live_mode        	    = empty($request['paydunya_live_mode']) ? 0 : 1 ;
+		$Paydunya_payment_setting->paydunya_status   	 	= empty($request['paydunya_status']) ? 0 : 1 ;
+		$Paydunya_payment_setting->status   	 		    = empty($request['paydunya_status']) ? 0 : 1 ;
+		$Paydunya_payment_setting->paydunya_masterkey   	= $request['paydunya_masterkey'] ?  $request['paydunya_masterkey'] : null;
+		$Paydunya_payment_setting->paydunya_test_PublicKey  = $request['paydunya_test_PublicKey'] ?  $request['paydunya_test_PublicKey'] : null;
+        $Paydunya_payment_setting->paydunya_test_PrivateKey = $request['paydunya_test_PrivateKey'] ?  $request['paydunya_test_PrivateKey'] : null;
+		$Paydunya_payment_setting->paydunya_test_token      = $request['paydunya_test_token'] ?  $request['paydunya_test_token'] :null;
+		$Paydunya_payment_setting->paydunya_live_PublicKey  = $request['paydunya_live_PublicKey'] ?  $request['paydunya_live_PublicKey'] : null;
+		$Paydunya_payment_setting->paydunya_live_PrivateKey = $request['paydunya_live_PrivateKey'] ?  $request['paydunya_live_PrivateKey'] : null;
+		$Paydunya_payment_setting->paydunya_live_token 		= $request['paydunya_live_token'] ?  $request['paydunya_live_token'] : null;
+		$Paydunya_payment_setting->payment_type 			= "Paydunya";
+		$Paydunya_payment_setting->paydunya_label 			= $request['paydunya_label'] ;
+        $Paydunya_payment_setting->save();
 	}
 
         return Redirect::to('admin/payment_settings')->with(array('note' => 'Successfully Updated Payment Settings!', 'note_type' => 'success') );

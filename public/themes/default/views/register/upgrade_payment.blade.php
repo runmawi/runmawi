@@ -543,7 +543,7 @@ background-color: #000;padding: 10px!important;}
                      <div class="medium-heading text-white pb-3"> {{  $signup_step2_title  }} </div>
 
                     <div class="col-md-12 p-0">
-                        <p class="meth"> {{ __('plan') }}Payment Method</p>
+                        <p class="meth"> {{ __('Plan Payment Method ') }} </p>
 <div class="d-flex">
                                                 <!-- Stripe -->
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
@@ -991,7 +991,7 @@ background-color: #000;padding: 10px!important;}
         text: "Your Payment is failed",
         type: "warning"
         }).then(function() {
-            window.location = base_url+'/home';
+            window.location = base_url+'/becomesubscriber';
         })
     ){ }
     } else {
@@ -1115,23 +1115,24 @@ background-color: #000;padding: 10px!important;}
 
     window.onload = function(){
 
-        $("#stripe_radio_button").prop('checked', true);
-        $('.paystack_payment').hide();
-        $('.Razorpay_payment').hide();
-        $('.cinetpay_payment').hide();
-        $(".payment_gateway").trigger("click");
+        $("#stripe_radio_button").prop('checked', true).trigger("click");
 
+        $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_payment').hide();
+
+        if( $('input[name="payment_gateway"]:checked').val() == "stripe" ){
+            $('.stripe_payment').show();
+        }
 
         if( $('input[name="payment_gateway"]:checked').val() == "paystack" ){
-            $('.stripe_payment').hide();
+            $('.paystack_payment').show();
         }
 
         if( $('input[name="payment_gateway"]:checked').val() == "Razorpay" ){
-            $('.Razorpay_payment').hide();
+            $('.Razorpay_payment').show();
         }
 
         if( $('input[name="payment_gateway"]:checked').val() == "CinetPay" ){
-            $('.cinetpay_button').hide();
+            $('.cinetpay_button').show();
         }
     };
 
@@ -1209,7 +1210,7 @@ background-color: #000;padding: 10px!important;}
 
         var Razorpay_plan_id = $("#plan_name").val();
 
-        alert(Razorpay_plan_id);
+        // alert(Razorpay_plan_id);
 
         $.ajax({
             url:  "{{ route('Razorpay_authorization_url') }}",
