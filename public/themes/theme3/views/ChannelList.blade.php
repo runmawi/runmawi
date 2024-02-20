@@ -3,7 +3,7 @@
     include(public_path('themes/theme3/views/header.php'));
 @endphp
      
-<section id="iq-favorites">
+<section id="">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 page-height">
@@ -11,7 +11,7 @@
                     <h4 class="main-title">{{ "All Channels" }}</h4>                     
                 </div>
 
-                <div class="favorites-contens">
+                <div class="favorites-content">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
                         @if(isset($channels)) 
                             @foreach($channels as $channel)
