@@ -2064,12 +2064,15 @@ $artists = [];
                                                 </div>
 
                                                 <div class="modal-footer">
-                                                    <div class="Stripe_button">
-                                                        <!-- Stripe Button -->
-                                                        <a onclick="pay(<?php if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($video->ppv_price); }else if($video->access == 'ppv' && $video->ppv_price != null && $CurrencySetting == 0){ echo __(@$video->ppv_price) ; } ?>)">
-                                                            <button type="button" class="btn2  btn-outline-primary">Continue</button>
-                                                        </a>
-                                                    </div>
+                                                        
+                                                    <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
+                                                        <div class="Stripe_button">
+                                                            <!-- Stripe Button -->
+                                                            <?php if( $Stripepayment != null && $Stripepayment->payment_type == "Stripe" ){?>
+                                                                <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_video_PPV_Purchase/'.$video->id.'/'.$video->ppv_price) ?>' ;" > Continue </button>
+                                                            <?php } ?>
+                                                        </div>
+                                                    <?php }?>
 
                                                     <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
                                                         <div class="Razorpay_button">

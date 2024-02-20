@@ -61,6 +61,8 @@ class PaydunyaPaymentController extends Controller
         Theme::uses($this->Theme);
     }
 
+    // subscription
+
     public function Paydunya_checkout(Request $request)
     {
         try {
@@ -355,6 +357,8 @@ class PaydunyaPaymentController extends Controller
         }
     }
 
+    // PPV Live
+
     public function Paydunya_live_checkout_Rent_payment(Request $request,$live_id,$amount)
     {
         try {
@@ -551,6 +555,8 @@ class PaydunyaPaymentController extends Controller
         return Theme::view('paydunya.Message',compact('respond'),$respond);
     }
 
+    // PPV Video
+
     public function Paydunya_video_checkout_Rent_payment(Request $request,$video_id,$amount)
     {
         try {
@@ -733,6 +739,8 @@ class PaydunyaPaymentController extends Controller
 
         return Theme::view('paydunya.Message',compact('respond'),$respond);
     }
+
+    // PPV Series Season
     
     public function Paydunya_SeriesSeason_checkout_Rent_payment(Request $request,$SeriesSeason_id,$amount)
     {
