@@ -568,11 +568,69 @@ class PaydunyaPaymentController extends Controller
             \Paydunya\Setup::setToken($this->Paydunya_token_key);
             \Paydunya\Setup::setMode( $this->Paydunya_set_mode  ); 
 
+               // Currency Conversation 
+                
+            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
+
+                $To_Currency_symbol = 'XOF';
+
+                $default_Currency = CurrencySetting::first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+
+                $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
+
+                try {
+
+                    $response = Http::get($api_url);
+                
+                    $exchangeRates = $response->json();
+                
+                    if (isset($exchangeRates['rates'])) {
+                        $targetCurrency = $To_Currency_symbol;
+                
+                        if (isset($exchangeRates['rates'][$targetCurrency])) {
+                            $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                            $convertedAmount = $amount * $conversionRate;
+                        } else {
+                            $convertedAmount = null;
+
+                            return response()->json( array(
+                                "status"  => false ,
+                                "message" => "Error on Currency Conversation, Pls connect admin" ,
+                            ), 200);
+                        }
+                    } else {
+                        $convertedAmount = null;
+
+                        $video = Video::where('id',$live_id)->first();
+
+                        $Error_msg = 'Error on Currency Conversation, Pls connect admin' ;
+                        $url = URL::to('live/'. $video->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                    }
+                
+                } catch (\Exception $e) {
+                        $video = Video::where('id',$live_id)->first();
+
+                        $Error_msg = $e->getMessage();
+                        $url = URL::to('live/'. $video->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                }
+
+                $payment_amount = (float)$convertedAmount ;
+
+            }else{
+
+                $payment_amount = (float) $amount ;
+
+            }
+
                 // Checkout Page Creation 
 
             $invoice = new \Paydunya\Checkout\CheckoutInvoice();
-            $invoice->addItem("", 1, $amount , $amount );
-            $invoice->setTotalAmount($amount);
+            $invoice->addItem("", 1, $payment_amount , $payment_amount );
+            $invoice->setTotalAmount($payment_amount);
 
             if($invoice->create()) {
                 $authorization_url =  $invoice->getInvoiceUrl() ;
@@ -610,7 +668,7 @@ class PaydunyaPaymentController extends Controller
 
             if ($invoice->confirm($token)) {
         
-                $video = Video::where('id','=',$request->video_id)->first();
+                $video = Video::where('id',$request->video_id)->first();
 
                 $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
                 $to_time = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
@@ -675,8 +733,6 @@ class PaydunyaPaymentController extends Controller
 
         return Theme::view('paydunya.Message',compact('respond'),$respond);
     }
-
-
     
     public function Paydunya_SeriesSeason_checkout_Rent_payment(Request $request,$SeriesSeason_id,$amount)
     {
@@ -697,6 +753,61 @@ class PaydunyaPaymentController extends Controller
             \Paydunya\Setup::setToken($this->Paydunya_token_key);
             \Paydunya\Setup::setMode( $this->Paydunya_set_mode  ); 
 
+              // Currency Conversation 
+                
+            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
+
+                $To_Currency_symbol = 'XOF';
+
+                $default_Currency = CurrencySetting::first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+
+                $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
+
+                try {
+
+                    $response = Http::get($api_url);
+                
+                    $exchangeRates = $response->json();
+                
+                    if (isset($exchangeRates['rates'])) {
+                        $targetCurrency = $To_Currency_symbol;
+                
+                        if (isset($exchangeRates['rates'][$targetCurrency])) {
+                            $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                            $convertedAmount = $amount * $conversionRate;
+                        } else {
+                            $convertedAmount = null;
+
+                            return response()->json( array(
+                                "status"  => false ,
+                                "message" => "Error on Currency Conversation, Pls connect admin" ,
+                            ), 200);
+                        }
+                    } else {
+                        $convertedAmount = null;
+
+                        $Error_msg = 'Error on Currency Conversation, Pls connect admin' ;
+                        $url = URL::to('live/'. $SeriesSeason->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                    }
+                
+                } catch (\Exception $e) {
+
+                        $Error_msg = $e->getMessage();
+                        $url = URL::to('live/'. $SeriesSeason->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                }
+
+                $payment_amount = (float)$convertedAmount ;
+
+            }else{
+
+                $payment_amount = (float) $amount ;
+
+            }
+
                 // Checkout Page Creation 
 
             $invoice = new \Paydunya\Checkout\CheckoutInvoice();
@@ -709,13 +820,14 @@ class PaydunyaPaymentController extends Controller
             }else{
                 
                 $Error_msg = $invoice->response_text ;
-                // $url = Redirect::back();
+                $url = URL::to('category/videos/'. $video->slug);
                 echo "<script type='text/javascript'>alert('$Error_msg'); window.location.reload(); </script>";
             }
 
         } catch (\Throwable $th) {
 
             $Error_msg = $th->getMessage() ; 
+            $url = URL::to('category/videos/'. $video->slug);
             echo "<script type='text/javascript'>alert('$Error_msg'); window.location.reload(); </script>";
         }
     }
