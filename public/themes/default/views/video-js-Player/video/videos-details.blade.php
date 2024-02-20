@@ -167,7 +167,7 @@
                                                     <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                                     <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
                                                 </svg>
-                                                <span class="text pr-2"> {{ __('Purchase Now') }} </span>
+                                                <span class="text pr-2"> {{ __('Rent Now') }} </span>
                                             </div>
                                     </a>
                             @elseif(  !Auth::guest() && Auth::user()->role != 'subscriber' && $videodetail->access == 'subscriber')
@@ -202,7 +202,7 @@
                                                 <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                                 <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
                                             </svg>
-                                            <span class="text pr-2"> {{ __('Purchase Now') }} </span>
+                                            <span class="text pr-2"> {{ __('Rent Now') }} </span>
                                         </div>
                                 </a>
 
@@ -254,7 +254,7 @@
 
                         <?php if (  $videodetail->global_ppv != null && $user->role!="admin" && $videodetail->ppv_price != null  && $user->role!="admin") { ?>
                             <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
-                                <?php echo __('Purchase Now'); ?> 
+                                <?php echo __('Rent Now'); ?> 
                             </button>
                         <?php } else { ?>
                             <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login'); ?>">
