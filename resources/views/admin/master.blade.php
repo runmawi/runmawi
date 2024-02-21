@@ -340,7 +340,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" >
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -590,7 +590,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" >
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -912,7 +912,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" >
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -1259,7 +1259,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" >
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
