@@ -28,7 +28,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 </style>
 
 <?php if (Session::has('message')): ?>
-    <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  echo Session::get('message') ?></div>
+    <!-- <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  // echo Session::get('message') ?></div> -->
 <?php endif ;?>
 
 <!-- free content - hide & show -->
