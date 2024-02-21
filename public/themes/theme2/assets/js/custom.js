@@ -123,15 +123,15 @@ Index Of Script
 			autoplay: false,
 			speed: 800,
 			lazyLoad: 'progressive',
-			arrows: false,
-			dots: true,
+			arrows: true,
+			dots: false,
 			prevArrow: '<div class="slick-nav prev-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			nextArrow: '<div class="slick-nav next-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			responsive: [
 				{
 					breakpoint: 992,
 					settings: {
-						dots: true,
+						dots: false,
 						arrows: false,
 					}
 				},
