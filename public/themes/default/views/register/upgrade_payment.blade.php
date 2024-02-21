@@ -784,7 +784,8 @@ background-color: #000;padding: 10px!important;}
 <input type="hidden" value="<?php echo NewSubscriptionCoupon();?>" id="discount_status" class="discount_status">
 
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<!-- <script src="public\themes\default\assets\js\googleapi.js" type="text/javascript"></script> -->
+<script src="{{ URL::to('public\themes\default\assets\js\googleapi.js') }}" type="text/javascript"></script>
 
 <script type="text/javascript">
 

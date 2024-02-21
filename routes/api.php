@@ -662,5 +662,9 @@ Route::group(
             Route::get('channels', 'ApiAuthController@Channels');
             Route::post('channel-scheduled-videos', 'ApiAuthController@ChannelScheduledVideos');
             Route::post('scheduled-programs', 'ApiAuthController@ChannelScheduledDataVideos');
+            Route::post('store-user-translation', 'ApiAuthController@ChooseTranslation');
+            Route::post('user-translation', 'ApiAuthController@UserTranslation');
+            Route::get('translation-language', 'ApiAuthController@LanguageTranslation');
+            Route::get('translation-checkout', 'ApiAuthController@TranslationEnable');
 
         });

@@ -137,6 +137,8 @@ use App\Currency ;
 use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
 use App\ChannelVideoScheduler as ChannelVideoScheduler;
 use App\AdminEPGChannel as AdminEPGChannel;
+use App\UserTranslation as UserTranslation;
+use App\TranslationLanguage as TranslationLanguage;
 
 
 class ApiAuthController extends Controller
@@ -4714,7 +4716,7 @@ public function checkEmailExists(Request $request)
                 $ppv_video_status = "pay_now";
           }
       $seasonfirst = SeriesSeason::where('series_id','=',$seriesid)->first();
-      $settings = Setting::first();
+      $settings = Setting::get();
       $response = array(
         'series' => $series,
         'seasonfirst' => $seasonfirst,
@@ -23347,5 +23349,212 @@ public function TV_login(Request $request)
         return response()->json($response, 200);
 
     }
+ 
     
+    public function ChooseTranslation( Request $request ){
+
+      try {
+
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $user_id = $request->user_id;
+            $subuser_id = $request->subuser_id;
+            $languageCode = $request->languageCode;
+            $mobile_address = $request->mobile_address;
+
+            if(!empty($user_id) || !empty($subuser_id)){
+
+                $Setting =  Setting::first();
+                $data = Session::all();
+                $subuser_id = (!empty($request->subuser_id)) ? $request->subuser_id : null ;
+                $Subuserranslation = UserTranslation::where('multiuser_id',$subuser_id)->first();
+                $UserTranslation = UserTranslation::where('user_id',$user_id)->first();
+
+                if($subuser_id != null){
+                    $Subuserranslation = UserTranslation::where('multiuser_id',$subuser_id)->first();
+                    if(!empty($Subuserranslation)){
+                        UserTranslation::where('multiuser_id',$subuser_id)->first()->update([
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                    }else{
+                        UserTranslation::create([
+                            'multiuser_id'        =>  $subuser_id,
+                            'translate_language'  => $request->languageCode ,
+                        ]);
+                    }
+                }else if(!empty($UserTranslation)){
+                    UserTranslation::where('user_id',$user_id)->first()->update([
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                }else{
+                    UserTranslation::create([
+                        'user_id'               =>  $user_id,
+                        'translate_language'    => $request->languageCode ,
+                    ]);
+                }
+            }else{
+
+                $UserTranslation = UserTranslation::where('ip_address',$mobile_address)->first();
+
+                if(!empty($UserTranslation)){
+                    UserTranslation::where('ip_address',$mobile_address)->first()->update([
+                    'translate_language'  => $request->languageCode ,
+                ]);
+                }else{
+                    UserTranslation::create([
+                        'ip_address'        =>  $mobile_address,
+                        'translate_language'  => $request->languageCode ,
+                    ]);
+                }
+
+            }
+
+            $response = array(
+              "status"  => 'true' ,
+              "message" => "Successfully Added Choosed Translation" ,
+            );
+
+          }catch (\Throwable $th) {
+            $response = array(
+              "status"  => 'false' ,
+              "message" => $th->getMessage(),
+          );
+        }
+          return response()->json($response, 200);
+    }
+
+    public function UserTranslation( Request $request ){
+
+      try {
+
+            $user_id = $request->user_id;
+            $subuser_id = $request->subuser_id;
+            $mobile_address = $request->mobile_address;
+
+            if(!empty($mobile_address)){
+
+              $UserTranslation = UserTranslation::where('ip_address',$mobile_address)->first();
+     
+              if(!empty($UserTranslation)){
+                  $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+                  $language_code = $UserTranslation->translate_language;
+              }else{
+                  $translate_language = GetWebsiteName().'en';
+                  $language_code = 'en';
+
+              }
+
+          }else if(!empty($user_id) && !empty($subuser_id)){
+     
+              if($subuser_id != ''){
+                  $Subuserranslation = UserTranslation::where('multiuser_id',$subuser_id)->first();
+                  if(!empty($Subuserranslation)){
+                      $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+                      $language_code = $Subuserranslation->translate_language;
+
+                  }else{
+                      $translate_language = GetWebsiteName().'en';
+                      $language_code = 'en';
+  
+                    }
+              }else{
+                  $translate_language = GetWebsiteName().'en';
+                  $language_code = 'en';
+
+              }
+     
+          }else if(!empty($user_id)){
+     
+            if($user_id != ''){
+              $UserTranslation = UserTranslation::where('user_id',$user_id)->where('multiuser_id',null)->first();
+              if(!empty($UserTranslation)){
+                    $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+                    $language_code = $UserTranslation->translate_language;
+
+                }else{
+                    $translate_language = GetWebsiteName().'en';
+                    $language_code = 'en';
+              }
+            }else{
+                $translate_language = GetWebsiteName().'en';
+                $language_code = 'en';
+            }
+   
+          }else{
+                $translate_language = GetWebsiteName().'en';
+                $language_code = 'en';
+          }
+          $translationFilePath = URL::to('resources/lang/' . $translate_language . '.json');
+          $context = stream_context_create(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]);
+          
+          // Use the @ symbol to suppress warnings/errors and handle the situation yourself
+          $jsonContent = @file_get_contents($translationFilePath, false, $context);
+          
+          if ($jsonContent === false) {
+              // File not found or error occurred, handle accordingly
+              $translationData = []; // Set default value to an empty array or any other default data
+          } else {
+              // File successfully loaded, decode the JSON content
+              $translationData = json_decode($jsonContent, true); // Set the second parameter to true for an associative array
+          }
+            // Decode the JSON content into a PHP array or object
+            $translationData = json_decode($jsonContent, true); // Set the second parameter to true for an associative array
+  
+            $response = array(
+              "status"  => 'true' ,
+              'language_code' => $language_code,
+              'User_language_code' => $translate_language,
+              'translationData' => $translationFilePath,
+              'translationFileURL' => $translationData,
+              "message" => "Successfully Retrived Data" ,
+            );
+
+          }catch (\Throwable $th) {
+            $response = array(
+              "status"  => 'false' ,
+              "message" => $th->getMessage(),
+          );
+        }
+          return response()->json($response, 200);
+    }
+    public function LanguageTranslation( Request $request ){
+      try{
+
+        $TranslationLanguage  = TranslationLanguage::where('status',1)->get(); 
+
+        $response = array(
+          "status"  => 'true' ,
+          'TranslationLanguage' => $TranslationLanguage,
+          "message" => "Successfully Retrived Data" ,
+        );
+
+        }catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+    }
+
+    public function TranslationEnable( Request $request ){
+      try{
+
+        $TranslateCheckout    = SiteTheme::pluck('translate_checkout')->first(); 
+
+        $response = array(
+          "status"  => 'true' ,
+          'TranslateCheckout' => $TranslateCheckout,
+          "message" => "Successfully Retrived Data" ,
+        );
+
+        }catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+    }
 }
