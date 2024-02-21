@@ -132,14 +132,6 @@
             }
         });
 
-        
-
-        player.controlBar.el().appendChild(Back_button);
-
-        Back_button.addEventListener('click', function() {
-            history.back();
-        });
-
 
         player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,
