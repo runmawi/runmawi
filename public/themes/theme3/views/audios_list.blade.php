@@ -3,12 +3,14 @@
 @endphp
 
 <div class="main-content">
-    <section id="iq-favorites">
-        <h2 class="text-center  mb-3"> {{ 'Audios' }} </h2>
+    <section id="">
+               
         <div class="container-fluid">
             <div class="row pageheight">
                 <div class="col-sm-12 overflow-hidden">
-
+                <div class="iq-main-header align-items-center justify-content-between">
+                    <h4 class="vid-title">{{ 'Audios' }}</h4>                     
+                </div>
                     <div class="data">
                         <div class="favorites-contens">
                             <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -21,32 +23,18 @@
                                                         <img src="{{ URL::to('public/uploads/images/' . $audios_data->image) }}" class="img-fluid" alt="">
                                                     </div>
                                                     <div class="block-description">
-                                                        <h6> {{ strlen($audios_data->title) > 17 ? substr($audios_data->title, 0, 18) . '...' : $audios_data->title }}
-                                                        </h6>
-                                                        <div class="movie-time d-flex align-items-center my-2">
-
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                                {{ $audios_data->age_restrict . ' ' . '+' }}
-                                                            </div>
-
-                                                            <span class="text-white">
-                                                                {{ $audios_data->duration != null ? gmdate('H:i:s', $audios_data->duration) : null }}
-                                                            </span>
-                                                        </div>
 
                                                         <div class="hover-buttons">
-                                                            <span class="btn btn-hover">
-                                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                Play Now
-                                                            </span>
+                                                            <a class="" href="{{ URL::to('audio/' . $audios_data->slug) }}">
+                                                                <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                                    <span class="text pr-2"> Play </span>
+                                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                                    </svg>
+                                                                </div>
+                                                            </a>
                                                         </div>
-                                                    </div>
-                                                    <div class="block-social-info">
-                                                        <ul class="list-inline p-0 m-0 music-play-lists">
-                                                            {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                            <li><span><i class="ri-heart-fill"></i></span></li>
-                                                            <li><span><i class="ri-add-line"></i></span></li>
-                                                        </ul>
                                                     </div>
                                                 </div>
                                             </a>

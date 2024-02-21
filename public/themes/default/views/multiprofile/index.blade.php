@@ -16,7 +16,7 @@
                             @foreach ($multiprofile as $profile)
                             <div>
                                 <div class="member">
-                                    <a  href="{{ route('Multiprofile.edit', $profile->id)}}">
+                                    <a  href="{{ route('Choose-profile.edit', $profile->id)}}">
                                         <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
                                     </a> 
 
@@ -29,7 +29,7 @@
                             </div>
                             @endforeach   
                             <li class=""> 
-                                <a class="fa fa-plus-circle fa-10x" href="{{route('Multiprofile.create') }}"></a>
+                                <a class="fa fa-plus-circle fa-10x" href="{{route('Choose-profile.create') }}"></a>
                             </li>  
                         </div>    
                         

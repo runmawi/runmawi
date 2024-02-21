@@ -353,7 +353,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         <p class="p1">Enter the episode duration in (HH : MM : SS)</p>
 
                         <div class="panel-body">
-                            <input class="form-control" name="duration" id="duration" value="@if(!empty($episodes->duration)){{ gmdate('H:i:s', $episodes->duration) }}@endif" />
+                            <input class="form-control" name="duration" id="duration" value="@if(!empty($episodes->duration)){{ gmdate('H:i:s', $episodes->duration) }}@endif" onblur="formatDuration(this)" />
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -578,6 +578,8 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+
+        
 
         <script>
 

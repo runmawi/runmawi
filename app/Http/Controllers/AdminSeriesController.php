@@ -385,6 +385,7 @@ class AdminSeriesController extends Controller
 
         }else{
             $ppv_status = 0;
+            $access = $data['access'];
         }
 
         if(!empty($data['season_trailer'])){
@@ -699,7 +700,7 @@ class AdminSeriesController extends Controller
         }else{
             $series_trailer = 0;
         }
-        if($data['ppv_status'] == 1){
+        if(!empty($data['ppv_status']) && $data['ppv_status'] == 1){
             $access = 'ppv';
         }else{
             $access = $data['access'];
@@ -1529,7 +1530,7 @@ class AdminSeriesController extends Controller
         }else{
             $ppv_price = $series_season->ppv_price;
         }
-        if(!empty($data['ppv_interval'])){
+        if(!empty($data['ppv_interval']) || $data['ppv_interval'] == 0){
             $ppv_interval = $data['ppv_interval'];
         }else{
             $ppv_interval = $series_season->ppv_interval;

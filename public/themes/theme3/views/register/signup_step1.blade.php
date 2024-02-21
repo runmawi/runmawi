@@ -194,6 +194,28 @@ i.fa.fa-google-plus {
     button.btn.btn-default.reveal {
         background: transparent !important;
     }
+    @media screen and (max-width: 767px) {
+  .col-md-4.recaptcha {
+    width: 100%; 
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .col-md-4.recaptcha {
+    width: 50%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .col-md-4.recaptcha {
+    width: 33.33%;
+  }
+}
+@media screen and (max-width: 370px) {
+    iframe {
+    width: 70%;
+  }
+}
 </style>
 
 <section >
@@ -229,7 +251,7 @@ i.fa.fa-google-plus {
                 <?php }else { ?> 
                     <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                 <?php } ?>
-
+                <p class="text-center text-white mb-3" style="font-size:11px;margin:0;"> <?= 'Created by Music Fans for Music Fans' ?></p>
 
 
 
@@ -247,7 +269,7 @@ i.fa.fa-google-plus {
                         @csrf
                             <div class="form-group">
                             
-                                <!-- @if (!empty($SignupMenu) && $SignupMenu->username == 1)
+                                @if (!empty($SignupMenu) && $SignupMenu->username == 1)
                                     <div class="col-md-12">
                                         <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
 
@@ -257,7 +279,7 @@ i.fa.fa-google-plus {
                                             </span>
                                         @enderror
                                     </div>
-                                @endif -->
+                                @endif
                                 
                                 
                                 @if(!empty($SignupMenu) && $SignupMenu->email == 1)
@@ -312,14 +334,14 @@ i.fa.fa-google-plus {
                                  </div>
                                  @endif
                            
-                                 <!-- @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
+                                 @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
                                     <div class="col-md-12" style="postion:relative;">
                                         <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="Choose DOB"  >
 
-                                        <input type="date" name="dob"  id ='dob' class="form-control">
-                                        <label id="fileLabel">Choose Profile DOB</label>
+                                        <!-- <input type="date" name="dob"  id ='dob' class="form-control">
+                                        <label id="fileLabel">Choose Profile DOB</label> -->
                                     </div>
-                                 @endif -->
+                                 @endif
 
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
                                     <div class="col-md-12">
@@ -359,13 +381,13 @@ i.fa.fa-google-plus {
                                  </span>
                                     </div>
                                 </div>
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
+                                <!-- <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span> -->
                             </div>
      
                             </div>            
                                 @endif
                             
-                                <!-- @if(!empty($SignupMenu) && $SignupMenu->country == 1)
+                                @if(!empty($SignupMenu) && $SignupMenu->country == 1)
                                     <div class="col-md-12" style="postion:relative;">
                                         <select class="phselect form-control" name="country" id="country" >
                                             <option>Select Country</option>
@@ -374,11 +396,11 @@ i.fa.fa-google-plus {
                                                 @endforeach
                                         </select>  
                                     </div>
-                                 @endif -->
+                                 @endif
                             
-                                 <!-- @if (!empty($SignupMenu) && $SignupMenu->state == 1)
+                                 @if (!empty($SignupMenu) && $SignupMenu->state == 1)
                                     <div class="col-md-12">
-                                        <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus>
+                                        <!-- <input id="state" type="text"  class="form-control alphaonly  @error('state') is-invalid @enderror" name="state" value="{{ old('state') }}" placeholder="state" required autocomplete="off" autofocus> -->
                                         <select class="phselect form-control" name="state" id="state-dropdown" >
                                             <option>Select State</option>
                                             @foreach($State as $code)
@@ -391,12 +413,12 @@ i.fa.fa-google-plus {
                                             </span>
                                         @enderror
                                     </div>
-                                @endif -->
+                                @endif
 
                                     
-                                <!-- @if (!empty($SignupMenu) && $SignupMenu->city == 1)
+                                @if (!empty($SignupMenu) && $SignupMenu->city == 1)
                                     <div class="col-md-12">
-                                        <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus>
+                                        <!-- <input id="city" type="text"  class="form-control alphaonly  @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" placeholder="city" required autocomplete="off" autofocus> -->
                                         <select class="phselect form-control" name="city" id="city-dropdown" >
                                             <option>Select City</option>
                                             @foreach($State as $code)
@@ -409,10 +431,10 @@ i.fa.fa-google-plus {
                                             </span>
                                         @enderror
                                     </div>
-                                @endif -->
+                                @endif
 
                                     
-                                <!-- @if(!empty($SignupMenu) && $SignupMenu->support_username == 1)
+                                @if(!empty($SignupMenu) && $SignupMenu->support_username == 1)
                                     <div class="col-md-12" style="postion:relative;">
                                         <select class="phselect form-control" name="support_username" id="support_username" >
                                             <option>Select Support Musician</option>
@@ -421,10 +443,10 @@ i.fa.fa-google-plus {
                                                 @endforeach
                                         </select>  
                                     </div>
-                                 @endif -->
+                                 @endif
                             
-                       <!-- <div class="form-group row">
-                        </div> -->
+                       <div class="form-group row">
+                        </div>
                             <?php if ( isset($ref)) { ?>
                                 <div class="form-group row">
                                     <label for="password-confirm" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Referrer ID') }} <span style="color:#4895d1"></span>
@@ -434,6 +456,7 @@ i.fa.fa-google-plus {
                                     </div>
                                 </div>
                             <?php } ?>
+                            <div class="col-md-4 recaptcha pl-0" id="g-recaptcha1"></div> 
                         
                         <div class="form-group" >
 	                             {{-- reCAPTCHA  --}}
@@ -549,6 +572,18 @@ i.fa.fa-google-plus {
   </div>
 </div>
     </section>
+<script>
+    setTimeout(function() {
+
+    $('.recaptcha').each(function() {
+    grecaptcha.render(this.id, {
+        'sitekey': '6LdVkwkUAAAAACeeETRX--v9Js0vWyjQOTIZxxeB',
+        "theme":"light"
+    });
+    });
+
+    }, 2000);
+</script>
   
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <!-- Include jQuery library -->

@@ -7,6 +7,9 @@ $series = App\series::first();
 $series = App\series::where('id', $episode->series_id)->first();
 $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
+$Paystack_payment_settings = App\PaymentSetting::where('payment_type', 'Paystack')->first();
+$Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
+$CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
 ?>
 
 <style>
@@ -25,7 +28,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
 </style>
 
 <?php if (Session::has('message')): ?>
-    <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  echo Session::get('message') ?></div>
+    <!-- <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;" ><?php  // echo Session::get('message') ?></div> -->
 <?php endif ;?>
 
 <!-- free content - hide & show -->
@@ -60,18 +63,10 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
     <div class="">
         <?php 
 			   if(!Auth::guest()){ ;
-                if( $free_episode > 0 && $checkseasonppv_exits == 0 ||  $ppv_exits > 0 && $checkseasonppv_exits == 0
-                    || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber' ||  Auth::guest() && $checkseasonppv_exits == 0){ 
-              
-                if($episode_PpvPurchase > 0 && Auth::user()->role == 'registered' && $episode->access == 'ppv' || $episode->access == 'guest' ||  ( ($episode->access == 'subscriber' ||
-                    $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'registered' ||
-                    $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'guest'  ||
-                    $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'guest'  ||
-                    $video_access == 'free' &&  Auth::user()->role == 'subscriber' && $episode->access == 'subscriber'
-                    || $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed())
-                    || (!Auth::guest() && (Auth::user()->role == 'demo'  || Auth::user()->role == 'admin')) || 
-                    (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration 
-                    && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'): 
+                if( $free_episode > 0){
+                    
+                    if( $free_episode > 0):
+
                   ?>
 
         <?php if($episode->type == 'embed'): ?>
@@ -176,7 +171,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
             <div class="container-fluid">
                 <h4 class=""><?php echo $episode->title; ?></h4>
                 <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
-                <h4 class=""><?php if ($episode->access == 'subscriber'): ?><?php echo __('Subscribe to view more'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
+                <h4 class=""><?php if ($episode->access == 'subscriber'): ?><?php echo __('Subscribe to watch'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                     <?php endif; ?></h4>
                 <div class="clear"></div>
             </div>
@@ -187,13 +182,13 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                     class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
                 </a>
                 <!-- <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
-                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
+                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to watch'); ?></button>
                 </form> -->
             </div>
             <?php elseif( !Auth::guest() && $episode->access == 'subscriber'):  ?>
-            <div class=" mt-3">
+            <div class="container-fluid mt-3">
             <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
+                    <button class="btn btn-primary" id="button"><?php echo __('Subscribe to watch'); ?></button>
                 </form>
             </div>
             <?php else: ?>
@@ -208,7 +203,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         </div>
 
         <?php endif; 
-			}else if($checkseasonppv_exits == 0){  ?>
+			}else if(@$checkseasonppv_exits == 0 && $free_episode != 0){  ?>
 
         <div id="series_container">
             <video id="videoPlayer" muted autoplay class="video-js vjs-default-skin" controls preload="auto"
@@ -250,24 +245,27 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                         <div class="container-fluid">
                             <h4 class=""><?php echo $episode->title; ?></h4>
                             <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
-                            <h4 class=""><?php if ($episode->access == 'subscriber'): ?><?php echo __('Subscribe to view more'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
+                            <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Subscribe to watch'); ?><?php elseif($episode->access == 'registered'): ?><?php echo __('Purchase to view Video'); ?>
                                 <?php endif; ?></h4>
                             <div class="clear"></div>
                         </div>
-                        <?php if( !Auth::guest() && $episode->access == 'ppv'):  ?>
+                        <?php if( !Auth::guest()  && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber'):  ?>
                         <div class=" mt-3">
-                            <a onclick="pay(<?php if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($episode->ppv_price); }else if($episode->access == 'ppv' && $episode->ppv_price != null && $CurrencySetting == 0){ echo __(@$episode->ppv_price) ; } ?>)">
+                            <!-- <a onclick="pay(<?php if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($SeriesSeason->ppv_price); }else if($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0){ echo __(@$SeriesSeason->ppv_price) ; } ?>)">
                             <button type="button"
                                 class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button>
-                            </a>
+                            </a> -->
+                            <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                            <?php echo __('Purchase Now'); ?> 
+                        </button>
                             <!-- <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
-                                <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
+                                <button class="btn btn-primary" id="button"><?php echo __('Subscribe to watch'); ?></button>
                             </form> -->
                         </div>
-                        <?php elseif( !Auth::guest() && $episode->access == 'subscriber'):  ?>
-                        <div class=" mt-3">
+                        <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
+                        <div class="container-fluid mt-3">
                         <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                <button class="btn btn-primary" id="button"><?php echo __('Subscribe to view more'); ?></button>
+                                <button class="btn btn-primary" id="button"><?php echo __('Subscribe to watch'); ?></button>
                             </form>
                         </div>
                         <?php else: ?>
@@ -288,10 +286,10 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         value="<?= $episode->genre_id ?>">
     <br>
 
-    <div class="">
-        <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+    <div class="container-fluid">
+        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
             <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb p-0">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
@@ -325,10 +323,10 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         </div>
     <div>
 
-    <div class="container-fluid series-details">
-        <div id="series_title" style="padding-left:15px;">
+    <div class="series-details">
+        <div id="series_title">
             <!-- <div class="">
-            <?php if($free_episode > 0 && Auth::user()->role != 'admin' || $checkseasonppv_exits > 0 && Auth::user()->role != 'admin' ||  $ppv_exits > 0 && Auth::user()->role != 'admin' ||  Auth::guest()){
+            <?php if($free_episode > 0 && Auth::user()->role != 'admin' || @$checkseasonppv_exits > 0 && Auth::user()->role != 'admin' ||  $ppv_exits > 0 && Auth::user()->role != 'admin' ||  Auth::guest()){
 
 ?>
                 <div class="row align-items-center justify-content-between"  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
@@ -367,7 +365,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                     <?php	} } ?>
 
                     </div> -->
-                    <div class="col-md-12">
+                    <div class="col-md-12 p-0">
                         <span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
                         <p class="mb-0" style=";font-size: 80%;color: white;">
                             <?php 
@@ -422,7 +420,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                 $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '"  allowfullscreen></iframe>';
                 ?>
 
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                         <li>
                             <?php if($episode_watchlater == null){ ?>
@@ -513,9 +511,9 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         <div id="series_title">
             <div class="">
                 <div class="row align-items-center justify-content-between">
-                    <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
+                    <!-- <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
                }else{ ?>
-                    <div class="col-md-6 p-0">
+                    <div class="col-md-6">
                         <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the
                             Series:</span>
                         <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?>
@@ -527,7 +525,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                         <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
                             Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
                     </div>
-                    <?php	} } ?>
+                    <?php	} } ?> -->
 
                     <!--<div class="col-md-2 text-center text-white">
                <span class="view-count  " style="float:right;">
@@ -619,97 +617,301 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
     $Auth = Auth::guest();
     ?>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title text-center" id="exampleModalLongTitle"
-                        style="color:#000;font-weight: 700;">Rent Now</h4>
-                    <img src="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"
-                        alt=""width="50" height="60">
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-2" style="width:52%;">
-                            <span id="paypal-button"></span>
-                        </div>
-                        <?php $payment_type = App\PaymentSetting::get(); ?>
-                        <div class="col-sm-4">
-                            <span class="badge badge-secondary p-2"><?php echo __($episodes->title); ?></span>
-                            <span class="badge badge-secondary p-2"><?php echo __($episodes->age_restrict) . ' ' . '+'; ?></span>
-                            <!-- <span class="badge badge-secondary p-2"><?php //echo __($video->categories->name);
-                            ?></span>
-                     <span class="badge badge-secondary p-2"><?php //echo __($video->languages->name);
-                     ?></span> -->
-                            <span class="badge badge-secondary p-2"><?php //echo __($video->duration);
-                            ?></span>
-                            <span class="trending-year"><?php if ($episode->year == 0) {
-                                echo '';
-                            } else {
-                                echo $episode->year;
-                            } ?></span>
-                            <button type="button" class="btn btn-primary"
-                                data-dismiss="modal"><?php echo __($currency->symbol . ' ' . $episodes->ppv_price); ?></button>
-                            <label for="method">
-                                <h3>Payment Method</h3>
-                            </label>
-                            <label class="radio-inline">
-                                <?php  foreach($payment_type as $payment){
-                     if($payment->live_mode == 1){ ?>
-                                <input type="radio" id="tres_important" checked name="payment_method"
-                                    value="{{ $payment->payment_type }}">
-                                <?php if (!empty($payment->stripe_lable)) {
-                                    echo $payment->stripe_lable;
-                                } else {
-                                    echo $payment->payment_type;
-                                } ?>
-                            </label>
-                            <?php }elseif($payment->paypal_live_mode == 1){ ?>
-                            <label class="radio-inline">
-                                <input type="radio" id="important" name="payment_method"
-                                    value="{{ $payment->payment_type }}">
-                                <?php if (!empty($payment->paypal_lable)) {
-                                    echo $payment->paypal_lable;
-                                } else {
-                                    echo $payment->payment_type;
-                                } ?>
-                            </label>
-                            <?php }elseif($payment->live_mode == 0){ ?>< <input type="radio" id="tres_important" checked
-                                name="payment_method" value="{{ $payment->payment_type }}">
-                                <?php if (!empty($payment->stripe_lable)) {
-                                    echo $payment->stripe_lable;
-                                } else {
-                                    echo $payment->payment_type;
-                                } ?>
-                                </label><br>
-                                <?php 
-                     }elseif( $payment->paypal_live_mode == 0){ ?>
-                                <input type="radio" id="important" name="payment_method"
-                                    value="{{ $payment->payment_type }}">
-                                <?php if (!empty($payment->paypal_lable)) {
-                                    echo $payment->paypal_lable;
-                                } else {
-                                    echo $payment->payment_type;
-                                } ?>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+
+    <div class="modal-header">
+        <h4 class="modal-title text-center" id="exampleModalLongTitle"
+            style="">Rent Now</h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+
+    <div class="modal-body">
+        <div class="row justify-content-between">
+            <div class="col-sm-4 p-0" style="">
+                <img class="img__img w-100" src="<?php echo URL::to('/') . '/public/uploads/images/' . $episode->image; ?>"
+                    class="img-fluid" alt="">
+            </div>
+
+            <div class="col-sm-8">
+                <h4 class=" text-black movie mb-3"><?php echo __($episode->title); ?> ,
+                    <span
+                        class="trending-year mt-2"><?php if ($episode->year == 0) {
+                            echo '';
+                        } else {
+                            echo $episode->year;
+                        } ?></span>
+                </h4>
+                <span
+                    class="badge badge-secondary   mb-2"><?php echo __($episode->age_restrict) . ' ' . '+'; ?></span>
+                <span
+                    class="badge badge-secondary  mb-2"><?php echo __(isset($episode->categories->name)); ?></span>
+                <span
+                    class="badge badge-secondary  mb-2"><?php echo __(isset($episode->languages->name)); ?></span>
+                <span
+                    class="badge badge-secondary  mb-2 ml-1"><?php echo __($episode->duration); ?></span><br>
+
+                <a type="button" class="mb-3 mt-3" data-dismiss="modal"
+                    style="font-weight:400;">Amount: <span class="pl-2"
+                        style="font-size:20px;font-weight:700;">
+                        <?php if(@$SeriesSeason->access == 'ppv' && @$SeriesSeason->ppv_price != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$SeriesSeason->ppv_price)); }else if(@$SeriesSeason->access == 'ppv' && @$SeriesSeason->ppv_price != null && $CurrencySetting == 0){ echo __(  currency_symbol() . @$SeriesSeason->ppv_price) ; } ?></span></a><br>
+                <label class="mb-0 mt-3 p-0" for="method">
+                    <h5 style="font-size:20px;line-height: 23px;"
+                        class="font-weight-bold text-black mb-2">Payment Method
+                        : </h5>
+                </label>
+
+                <?php $payment_type = App\PaymentSetting::get(); ?>
+
+                <!-- RENT PAYMENT Stripe,Paypal,Paystack,Razorpay,CinetPay -->
+
+                <?php  //foreach($payment_type as $payment){
+                     $Stripepayment = App\PaymentSetting::where('payment_type', 'Stripe')->first();
+                     $PayPalpayment = App\PaymentSetting::where('payment_type', 'PayPal')->first();
+                     $Paydunyapayment =  App\PaymentSetting::where('payment_type','=','Paydunya')->where('paydunya_status',1)->first();
+
+
+                          if( @$Razorpay_payment_settings->payment_type == "Razorpay"  || @$Stripepayment->payment_type == "Stripe" ||  @$PayPalpayment->payment_type == "PayPal" 
+                          || @$CinetPay_payment_settings->payment_type == "CinetPay" ||  @$Paystack_payment_settings->payment_type == "Paystack" ){ 
+
+                              if( $Stripepayment != null && $Stripepayment->live_mode == 1 && $Stripepayment->stripe_status == 1){ ?>
+                                                        <!-- Stripe -Live Mode -->
+
+                                                        <label
+                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                            <input type="radio" class="payment_btn"
+                                                                id="tres_important" name="payment_method"
+                                                                value=<?= $Stripepayment->payment_type ?>
+                                                                data-value="stripe">
+                                                            <?php if (!empty($Stripepayment->stripe_lable)) {
+                                                                echo $Stripepayment->stripe_lable;
+                                                            } else {
+                                                                echo $Stripepayment->payment_type;
+                                                            } ?>
+                                                        </label> <?php }
+
+                              elseif( $Stripepayment != null && $Stripepayment->live_mode == 0 && $Stripepayment->stripe_status == 1){ ?>
+                                                        <!-- Stripe - Test Mode -->
+
+                                                        <label
+                                                            class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                            <input type="radio" class="payment_btn"
+                                                                id="tres_important" name="payment_method"
+                                                                value="<?= $Stripepayment->payment_type ?>"
+                                                                data-value="stripe">
+                                                            <!--<img class="" height="20" width="40" src="<?php echo URL::to('/assets/img/stripe.png'); ?>" style="margin-top:-5px" >-->
+                                                            <?php if (!empty($Stripepayment->stripe_lable)) {
+                                                                echo $Stripepayment->stripe_lable;
+                                                            } else {
+                                                                echo $Stripepayment->payment_type;
+                                                            } ?>
+                                                        </label> <?php }
+                  
+                              if(  $PayPalpayment != null &&  $PayPalpayment->paypal_live_mode == 1 && $PayPalpayment->paypal_status == 1){ ?>
+                                                        <!-- paypal - Live Mode -->
+
+                                                        <label
+                                                            class="radio-inline mb-0 mt-3 d-flex align-items-center">
+                                                            <input type="radio" class="payment_btn" id="important"
+                                                                name="payment_method"
+                                                                value="<?= $PayPalpayment->payment_type ?>"
+                                                                data-value="paypal">
+                                                            <?php if (!empty($PayPalpayment->paypal_lable)) {
+                                                                echo $PayPalpayment->paypal_lable;
+                                                            } else {
+                                                                echo $PayPalpayment->payment_type;
+                                                            } ?>
+                                                        </label> <?php }
+
+                              elseif( $PayPalpayment != null &&  $PayPalpayment->paypal_live_mode == 0 && $PayPalpayment->paypal_status == 1){ ?>
+                                                        <!-- paypal - Test Mode -->
+
+                                    <label
+                                        class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="important"
+                                            name="payment_method"
+                                            value="<?= $PayPalpayment->payment_type ?>"
+                                            data-value="paypal">
+                                        <?php if (!empty($PayPalpayment->paypal_lable)) {
+                                            echo $PayPalpayment->paypal_lable;
+                                        } else {
+                                            echo $PayPalpayment->payment_type;
+                                        } ?>
+                            </label> <?php  } ?>
+
+                                                        <!-- Razorpay -->
+                                <?php if( $Razorpay_payment_settings != null && $Razorpay_payment_settings->payment_type == "Razorpay" && $Razorpay_payment_settings->status == 1){?>
+                                    <label
+                                        class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="important"
+                                            name="payment_method"
+                                            value="<?= $Razorpay_payment_settings->payment_type ?>"
+                                            data-value="Razorpay">
+                                        <?php echo $Razorpay_payment_settings->payment_type; ?>
+                                    </label>
+                                <?php } 
+                                                                              // <!-- Paystack -->
+                              if ( $Paystack_payment_settings != null && $Paystack_payment_settings->payment_type == 'Paystack'  && $Paystack_payment_settings->status == 1 ){  ?>
+
+                                    <label
+                                        class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id=""
+                                            name="payment_method"
+                                            value="<?= $Paystack_payment_settings->payment_type ?>"
+                                            data-value="Paystack">
+                                        <?= $Paystack_payment_settings->payment_type ?>
+                                    </label>
+                                <?php } 
+                                                                        // <!-- CinetPay -->
+                              if ( $CinetPay_payment_settings != null && $CinetPay_payment_settings->payment_type == 'CinetPay'  && $CinetPay_payment_settings->status == 1 ){  ?>
+
+                                <label
+                                    class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                    <input type="radio" class="payment_btn" id="" name="payment_method"  
+                                        value="<?= $CinetPay_payment_settings->payment_type ?>"
+                                        data-value="CinetPay">
+                                    <?= $CinetPay_payment_settings->payment_type ?>
                                 </label>
-                                <?php  } }?>
+                            <?php }
+
+                                if ( $Paydunyapayment != null && $Paydunyapayment->payment_type == 'Paydunya'  && $Paydunyapayment->status == 1 ){  ?>
+
+                                <label
+                                    class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                    <input type="radio" class="payment_btn"  name="payment_method"  value="<?= $Paydunyapayment->payment_type ?>" data-value="Paydunya">
+                                    <?= $Paydunyapayment->payment_type ?>
+                                </label>
+                            <?php }
+
+
+                              }
+                          else{
+                                echo "<small>Please Turn on Payment Mode to Purchase</small>";
+                                // break;
+                          // }
+                      }?>
                         </div>
                     </div>
                 </div>
+
                 <div class="modal-footer">
-                    <a onclick="pay(<?php echo $episode->ppv_price; ?>)">
-                        <button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
-                    </a>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                    <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
+
+                        <div class="Stripe_button">
+                                <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_series_season_PPV_Purchase/'.@$SeriesSeason->id.'/'.@$SeriesSeason->ppv_price) ?>' ;" > Continue </button>
+                        </div>
+                        
+                    <?php } ?>
+
+                    <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
+                        <div class="Razorpay_button">
+                            <!-- Razorpay Button -->
+                            <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . @$SeriesSeason->id . '/' . @$SeriesSeason->ppv_price) ?>' ;"
+                                id="" class="btn2  btn-outline-primary"> Continue</button>
+                        </div>
+                    <?php }?>
+
+
+                    <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
+                        <div class="paystack_button">
+                            <!-- Paystack Button -->
+                            <button
+                                onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => @$SeriesSeason->id, 'amount' => @$SeriesSeason->ppv_price]) ?>' ;"
+                                id="" class="btn2  btn-outline-primary"> Continue</button>
+                        </div>
+                    <?php }?>
+
+                    <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " " || @$SeriesSeason->ppv_price !=null  || @$SeriesSeason->global_ppv == 1){ ?>
+                        <div class="cinetpay_button">
+                            <!-- CinetPay Button -->
+                            <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary">Continue</button>
+                        </div>
+                    <?php }?>
+
+                    <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
+                        <div class="Paydunya_button">   <!-- Paydunya Button -->
+                            <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Paydunya_SeriesSeason_checkout_Rent_payment/'.@$SeriesSeason->id.'/'.@$SeriesSeason->ppv_price) ?>' ;" > Continue </button>
+                        </div>
+                    <?php }?>
                 </div>
             </div>
         </div>
     </div>
+
+
     <div class="clear"></div>
     <input type="hidden" id="episode_id" value="<?php echo $episode->id; ?>">
     <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key; ?>">
     <script src="https://checkout.stripe.com/checkout.js"></script>
+
+
+    
+    <script>
+                    window.onload = function() {
+                        $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+                    }
+
+                    $(document).ready(function() {
+
+                        $(".payment_btn").click(function() {
+
+                            $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                            let payment_gateway = $('input[name="payment_method"]:checked').val();
+                            // alert(payment_gateway);
+                            if (payment_gateway == "Stripe") {
+
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                $('.Stripe_button').show();
+
+
+                            } else if (payment_gateway == "Razorpay") {
+
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                $('.Razorpay_button').show();
+
+                            } else if (payment_gateway == "Paystack") {
+
+                                $('.Stripe_button,.Razorpay_button,.cinetpay_button').hide();
+                                $('.paystack_button').show();
+                            } else if (payment_gateway == "CinetPay") {
+
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                $('.cinetpay_button').show();
+
+                            } else if (payment_gateway == "CinetPay") {
+
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                $('.cinetpay_button').show();
+
+                            } else if (payment_gateway == "Paydunya") {
+
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+
+                                $('.Paydunya_button').show();
+
+                            }
+                        });
+                    });
+                </script>
+
+
+
     <script type="text/javascript">
         // videojs('videoPlayer').videoJsResolutionSwitcher(); 
         $(document).ready(function() {
@@ -723,60 +925,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
             alert('Please Enable Any Payment Mode');
         });
 
-        function pay(amount) {
-            var publishable_key = $('#publishable_key').val();
-
-            var episode_id = $('#episode_id').val();
-            var season_id = $('#season_id').val();
-
-            // alert(video_id);
-            var handler = StripeCheckout.configure({
-
-                key: publishable_key,
-                locale: 'auto',
-                token: function(token) {
-                    // You can access the token ID with `token.id`.
-                    // Get the token ID to your server-side code for use.
-                    console.log('Token Created!!');
-                    console.log(token);
-                    $('#token_response').html(JSON.stringify(token));
-
-                    $.ajax({
-                        url: '<?php echo URL::to('purchase-episode'); ?>',
-                        method: 'post',
-                        data: {
-                            "_token": "<?= csrf_token() ?>",
-                            tokenId: token.id,
-                            amount: amount,
-                            episode_id: episode_id,
-                            season_id: season_id
-                        },
-                        success: (response) => {
-                            alert("You have done  Payment !");
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000);
-
-                        },
-                        error: (error) => {
-                            swal('error');
-                            //swal("Oops! Something went wrong");
-                            /* setTimeout(function() {
-                            location.reload();
-                            }, 2000);*/
-                        }
-                    })
-                }
-            });
-
-
-            handler.open({
-                name: '<?php $settings = App\Setting::first();
-                echo $settings->website_name; ?>',
-                description: 'Rent a Episode',
-                amount: amount * 100
-            });
-        }
+    
     </script>
     <script type="text/javascript">
         $(".free_content").hide();
@@ -1312,3 +1461,5 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
     <?php
     include 'footer.blade.php';
     ?>
+
+    <!-- episode -->

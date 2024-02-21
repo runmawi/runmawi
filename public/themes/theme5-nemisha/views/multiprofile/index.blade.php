@@ -11,12 +11,12 @@
         <div class="col-md-12">
             <div class="">            
                     <div class="sign-in-from  m-auto" >
-                        <h3 class="manage">Manage Profile</h3>
+                        <h3 class="manage">{{ __('Manage Profile') }}</h3>
                         <div class="col-md-12">
                             @foreach ($multiprofile as $profile)
                             <div>
                                 <div class="member">
-                                    <a  href="{{ route('Multiprofile.edit', $profile->id)}}">
+                                    <a  href="{{ route('Choose-profile.edit', $profile->id)}}">
                                         <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
                                     </a> 
 
@@ -29,11 +29,11 @@
                             </div>
                             @endforeach   
                             <li class=""> 
-                                <a class="fa fa-plus-circle fa-10x" href="{{route('Multiprofile.create') }}"></a>
+                                <a class="fa fa-plus-circle fa-10x" href="{{route('Choose-profile.create') }}"></a>
                             </li>  
                         </div>    
                         
-                        {{-- <button type="button" class="btn btn-outline-light"> Done</button> --}}
+                        {{-- <button type="button" class="btn btn-outline-light"> {{ __('Done') }}</button> --}}
 
                     </div> 
              </div>
@@ -42,7 +42,6 @@
 </div>
 
 <?php include(public_path('themes/theme5-nemisha/views/footer.blade.php'));  ?>
-
  @endsection
 
  <style>

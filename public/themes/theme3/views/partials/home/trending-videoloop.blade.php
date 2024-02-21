@@ -1,59 +1,51 @@
 @if (!empty($data) && $data->isNotEmpty())
-    <section id="iq-topten">
+    <section id="iq-favorites">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title topten-title-sm"> {{ optional($order_settings_list[0])->header_name }} </h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[0])->header_name }}</a></h4>
                     </div>
-                    <div class="topten-contens">
-                        <h4 class="main-title topten-title"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[0])->header_name }}</a></h4>
-                        <ul id="top-ten-slider" class="list-inline p-0 m-0  d-flex align-items-center">
+
+                    <div class="favorites-contens">
+                        <ul class="favorites-slider list-inline  row p-0 mb-0">
                             @foreach ($data as $key => $featured_videos)
-                                <li>
-                                    <a href="{{ URL::to('category/videos/'.$featured_videos->slug ) }}">
-                                        <img src="{{ URL::to('public/uploads/images/' . $featured_videos->player_image) }}"
-                                            class="img-fluid w-100" alt="">
-                                    </a>
+                                <li class="slide-item">
+                                    <div class="block-images position-relative">
+                                        
+                                        <a href="{{ URL::to('category/videos/'.$featured_videos->slug ) }}">
+
+                                            <div class="img-box">
+                                                <img src="{{ $featured_videos->image ?  URL::to('public/uploads/images/'.$featured_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                            </div>
+                                            <div class="block-description">
+                                                
+
+                                                <div class="hover-buttons">
+                                                    <a class="" href="{{ URL::to('category/videos/'.$featured_videos->slug ) }}">
+                                                        <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                            <span class="text pr-2"> Play </span>
+                                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                                <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                                <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                            </svg>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            
+                                        </a>
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>
-                        <div class="vertical_s">
-                            <ul id="top-ten-slider-nav" class="list-inline p-0 m-0  d-flex align-items-center">
-
-                                @foreach ($data as $featured_videos)
-                                    <li>
-                                        <div class="block-images position-relative">
-                                            <a href="{{ URL::to('category/videos/'.$featured_videos->slug ) }}">
-                                                <img src="{{ URL::to('public/uploads/images/' . $featured_videos->image) }}"
-                                                    class="img-fluid w-100" alt="">
-                                            </a>
-                                            <div class="block-description">
-                                                <h5> {{ strlen($featured_videos->title) > 17 ? substr($featured_videos->title, 0, 18) . '...' : $featured_videos->title }}
-
-                                                    <div class="movie-time d-flex align-items-center my-2">
-                                                        <div class="badge badge-secondary p-1 mr-2">
-                                                            {{ optional($featured_videos)->age_restrict . '+' }}
-                                                        </div>
-                                                        <span class="text-white">
-                                                            {{ $featured_videos->duration !=null ? Carbon\CarbonInterval::seconds($featured_videos->duration)->cascade()->format('%im %ss') : null }}
-                                                        </span>
-                                                    </div>
-
-                                                    <div class="hover-buttons">
-                                                        <a href="{{ URL::to('category/videos/'.$featured_videos->slug ) }}" class="btn btn-hover"
-                                                            tabindex="0">
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now
-                                                        </a>
-                                                    </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                @endforeach
-
-                            </ul>
-                        </div>
                     </div>
+
+
+
+
                 </div>
             </div>
         </div>

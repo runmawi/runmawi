@@ -7424,6 +7424,20 @@ class AdminVideosController extends Controller
         $ffprobe = \FFMpeg\FFProbe::create();
         $duration = $ffprobe->format($Video_data->mp4_url)->get('duration');
         $video_duration = explode(".", $duration)[0];
+    }elseif(!empty($Video_data) && $Video_data->type == "m3u8_url"){
+
+        $m3u8_url = $Video_data->m3u8_url;
+            $command = ['ffprobe', '-v', 'error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', $m3u8_url, ];
+            $process = new Process($command);
+                $process->mustRun();
+                $duration = trim($process->getOutput());
+                $video_duration = round($duration);
+
+            if($duration == 'N/A'){
+                $duration = 3600;
+                $video_duration  = 3600;
+            }
+
     }else{
         $video_duration = $Video_data->duration;
     }
@@ -7433,7 +7447,6 @@ class AdminVideosController extends Controller
     date_default_timezone_set($time_zone);
     $now = date("Y-m-d h:i:s a", time());
     $current_time = date("h:i A", time());
-
     // Date Choosed By user  Calendar
 
     $Schedule_current_date = date("Y-m-d");
@@ -7539,23 +7552,49 @@ class AdminVideosController extends Controller
 
             if($sheduled_endtime < '12:00 AM' && $last_shedule_endtime < '12:00 AM' 
             && date("A", strtotime($now)) == 'AM'){
+                $TimeFormat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
+                $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
 
-                $shedule_endtime =
-                    $hours .
-                    ":" .
-                    $minutes .
-                    " " .
-                    date("A", strtotime($now));
-                $sheduled_endtime = $hours . ":" . $minutes;
+                $current_zone_time = date("A", time());
+                $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+                if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
+                $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
+                    $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
+                                   
+                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
+
+                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                        $starttime = $last_sheduled_endtime;
+                        $sheduled_starttime = $last_shedule_endtime;
+                }else{
+                                                       
+                    $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
+
+                    $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }
+                // print_r($shedule_endtime);exit;
+                
+                // $shedule_endtime =
+                //     $hours .
+                //     ":" .
+                //     $minutes .
+                //     " " .
+                //     date("A", strtotime($now));
+                // $sheduled_endtime = $hours . ":" . $minutes;
     
-                $starttime = date("h:i ", strtotime($store_current_time));
-                $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+                // $starttime = date("h:i ", strtotime($store_current_time));
+                // $sheduled_starttime = date("h:i A", strtotime($store_current_time));
     
                 }
                 else{
     
                     $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
-                    // print_r($TimeFormat);exit;
+                    $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
 
                     if(!empty($TimeFormat)){
         
@@ -7596,24 +7635,55 @@ class AdminVideosController extends Controller
 
             $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
             $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
+            // $time = explode(":", $sheduled_starttime);
+            // $sheduled_starttime = "03:00 PM";
 
-            // print_r($TimeFormatformat);
 
-            // exit;
  
             if(!empty($TimeFormat)){
 
-                $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
+                
+                $current_zone_time = date("A", time());
+                $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+                if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
+                $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
+                    $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
+                                   
+                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
 
-                $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
-                $starttime = $last_sheduled_endtime;
-                $sheduled_starttime = $last_shedule_endtime;
+                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                        $starttime = $last_sheduled_endtime;
+                        $sheduled_starttime = $last_shedule_endtime;
+                }else{
+                                                       
+                    $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " ."PM";
+
+                    $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }
+                
+
+
             }elseif(!empty($TimeFormatformat)){
-                $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " .$TimeFormatformat->format;
-
-                $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
-                $starttime = $last_sheduled_endtime;
-                $sheduled_starttime = $last_shedule_endtime;
+      
+                $current_zone_time = date("A", time());
+                $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+                if($current_zone_time == "AM" && $shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "AM"){
+                    $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."AM";
+                    $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }elseif($shedule_endtime <= "12:00" && $sheduled_starttime_zone_time == "PM"){
+                    $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " ."PM";
+                    $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                    $starttime = $last_sheduled_endtime;
+                    $sheduled_starttime = $last_shedule_endtime;
+                }
+                
 
                 $total_content = ScheduleVideos::where(
                     "shedule_date",
@@ -7624,29 +7694,42 @@ class AdminVideosController extends Controller
                     ->get();
                     
             }else{
-                $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+               
+                
+                $current_zone_time = date("A", time());
+                $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
+                
+                        $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " .$TimeFormatformat->format;
 
-                $sheduled_endtime = $hours . ":" . $minutes;
+                        $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                        $starttime = $last_sheduled_endtime;
+                        $sheduled_starttime = $last_shedule_endtime;
+                }
 
-                $starttime = date("h:i", strtotime($store_current_time));
-                $sheduled_starttime = date("h:i A", strtotime($store_current_time));
 
-            }
+
     
             $startTime = Carbon::createFromFormat('H:i a', '12:00 PM');
             $endTime = Carbon::createFromFormat('H:i a', '12:59 PM');
             $checkshedule_endtime = Carbon::createFromFormat('H:i a', $shedule_endtime);
 
+            $sheduled_starttime_zone_time = date("A", strtotime($sheduled_starttime));
             $check = $checkshedule_endtime->between($startTime, $endTime);
             // echo'<pre>'; print_r($check);    exit;
             if(empty($check) && $check == null){
-
-            }elseif(!empty($check) && $check == 1){
-            // echo'<pre>'; print_r($shedule_endtime);    exit;
-
-                $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
-                return $value;    
+                
+            }elseif($sheduled_starttime >= "11:00 PM" && $shedule_endtime >= "12:00 PM"  ||  $sheduled_starttime_zone_time == "PM" && $shedule_endtime >= "12:00 PM" ){
+                // echo'<pre>'; print_r($shedule_endtime);    exit;
+    
+                    $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
+                    return $value;    
             }
+            // elseif(!empty($check) && $check == 1 ){
+            // // echo'<pre>'; print_r($shedule_endtime);    exit;
+
+            //     $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
+            //     return $value;    
+            // }
             // echo'<pre>'; print_r('$check');    exit;
 
 
@@ -7661,7 +7744,6 @@ class AdminVideosController extends Controller
         // }
         //     exit; 
          }else{
-            // echo'<pre>'; print_r('testone');exit;     
             $last_shedule_endtime = @$ScheduleVideos->shedule_endtime;  // AM or PM
             $last_sheduled_endtime = @$ScheduleVideos->sheduled_endtime; // Just Time
             $lastsheduleendtime =  explode(" ", $last_shedule_endtime);
@@ -7796,7 +7878,6 @@ class AdminVideosController extends Controller
                 ->get();
 
     }else{
-        // print_r('$shedule_endtime'); print_r($sheduled_endtime);exit;
 
         // Time Format Calculation For video AM and PM Format 
 

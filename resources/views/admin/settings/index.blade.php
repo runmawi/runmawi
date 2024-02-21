@@ -1819,7 +1819,7 @@ border-radius: 0px 4px 4px 0px;
         $("#expiry_time_started").mask("00");
     })
 </script>
-	<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
+	<script src="{{ '/assets/admin/js/bootstrap-switch.min.js' }}"></script>
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>

@@ -708,7 +708,7 @@
    <!-- Trailer  -->
    <div class="col-sm-4 p-0">
       <div>
-         <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
+      <?php if($video->trailer != '' && $video->trailer_type != " " && $video->trailer_type != "null"   && $ThumbnailSetting->trailer == 1 ){ ?>
          <div class="img__wrap">
             <img class="img__img " src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid" alt="" height="200" width="300">
             <div class="img__description_layer">

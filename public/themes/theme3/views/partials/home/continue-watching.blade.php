@@ -7,7 +7,8 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="#">{{ ucwords('continue watching') }}</a></h4>
+                        <h4 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>">{{ (__(ucwords('continue watching'))) }}</a></h4>
+                        <h4 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>">{{ (__(ucwords('view all'))) }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
@@ -21,40 +22,21 @@
                                             </div>
 
                                             <div class="block-description">
-                                                <p> {{ strlen($video_details->title) > 17 ? substr($video_details->title, 0, 18) . '...' : $video_details->title }}</p>
                                                 
-                                                <div class="movie-time d-flex align-items-center my-2">
-
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        {{ optional($video_details)->age_restrict.'+' }}
-                                                    </div>
-
-                                                    <span class="text-white">
-                                                        {{ $video_details->duration != null ? gmdate('H:i:s', $video_details->duration) : null }}
-                                                    </span>
-                                                </div>
 
                                                 <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
-                                                    </span>
+                                                    <a class="" href="{{ URL::to('category/videos/'.$video_details->slug ) }}">
+                                                        <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                            <span class="text pr-2"> {{ (__('Play')) }} </span>
+                                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                                <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                                <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                            </svg>
+                                                        </div>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </a>
-
-                                        {{-- WatchLater & wishlist --}}
-
-                                        @php
-                                            $inputs = [
-                                                'source_id'     => $video_details->id ,
-                                                'type'          => 'channel',  // for videos - channel
-                                                'wishlist_where_column'    => 'video_id',
-                                                'watchlater_where_column'  => 'video_id',
-                                            ];
-                                        @endphp
-
-                                        {!! Theme::uses('theme6')->load('public/themes/theme3/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
 
                                     </div>
                                 </li>
@@ -66,3 +48,54 @@
         </div>
     </section>
 @endif
+
+<script>
+    $(document).ready(function(){
+    $('.favorites-slider').slick({
+        dots: false,
+			slidesToShow: 6,
+			slidesToScroll: 1,
+			arrows: true,
+			infinite: false,
+			speed: 300,
+			autoplay: false,		
+			// appendArrows: $('#sm-slick-arrow'),
+			
+			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',
+			prevArrow: '<a href="#" class="slick-arrow slick-prev"><i class= "fa fa-chevron-left"></i></a>',
+			responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				slidesToShow: 5,
+				slidesToScroll: 1,
+				infinite: true,
+				dots: false,
+				}
+			},
+			{
+				breakpoint: 768,
+				settings: {
+				slidesToShow: 4,
+				slidesToScroll: 1
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				// arrows: false,
+				slidesToShow: 2,
+				slidesToScroll: 1
+				}
+			},
+			{
+				breakpoint: 320,
+				settings: {
+				slidesToShow: 2,
+				slidesToScroll: 1
+				}
+			}
+			]
+    });
+});
+</script>

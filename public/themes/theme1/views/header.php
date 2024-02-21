@@ -31,9 +31,9 @@
             $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
 
             if(!empty($UserTranslation)){
-                $translate_language = $UserTranslation->translate_language;
+                $translate_language = GetWebsiteName().$UserTranslation->translate_language;
             }else{
-                $translate_language = 'en';
+                $translate_language = GetWebsiteName().'en';
             }
         }else if(!Auth::guest()){
 
@@ -41,23 +41,23 @@
             if($subuser_id != ''){
                 $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
                 if(!empty($Subuserranslation)){
-                    $translate_language = $Subuserranslation->translate_language;
+                    $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
                 }else{
-                    $translate_language = 'en';
+                    $translate_language = GetWebsiteName().'en';
                 }
             }else if(Auth::user()->id != ''){
                 $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
                 if(!empty($UserTranslation)){
-                    $translate_language = $UserTranslation->translate_language;
+                    $translate_language = GetWebsiteName().$UserTranslation->translate_language;
                 }else{
-                    $translate_language = 'en';
+                    $translate_language = GetWebsiteName().'en';
                 }
             }else{
-                $translate_language = 'en';
+                $translate_language = GetWebsiteName().'en';
             }
 
         }else{
-            $translate_language = 'en';
+            $translate_language = GetWebsiteName().'en';
         }
 
     \App::setLocale(@$translate_language);
@@ -962,10 +962,9 @@
 
                                             <li class="hidden-xs">
                                                 <div id="navbar-search-form">
-                                                    <form id="" role="search" action="<?php echo URL::to('searchResult'); ?>"
-                                                        method="POST">
-                                                        <input name="_token" type="hidden"
-                                                            value="<?php echo csrf_token(); ?>">
+                                                    <form id="" role="search" action="<?php echo URL::to('searchResult'); ?>" 
+                                                        method="get">
+                                                        
                                                         <div>
                                                             <i class="fa fa-search">
                                                             </i>
@@ -1018,8 +1017,7 @@
                                     <li class="nav-item nav-icon">
 
                                         <div class="search-box iq-search-bar d-search">
-                                            <form id="searchResult" action="<?php echo URL::to('searchResult'); ?>" method="post" class="searchbox">
-                                                <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
+                                            <form id="searchResult" action="<?php echo URL::to('searchResult'); ?>" method="get" class="searchbox">
                                                 <div class="form-group position-relative">
                                                     <input type="text" name="search"
                                                         class="text search-input font-size-12 searches"

@@ -108,6 +108,7 @@ class AdminUsersController extends Controller
         $user = $request->user();
         
         $total_subscription = Subscription::where('stripe_status', '=', 'active')->count();
+        $total_subscription = Subscription::count();
 
         $total_videos = Video::where('active', '=', 1)->count();
 
@@ -282,6 +283,7 @@ class AdminUsersController extends Controller
             'post_route' => URL::to('admin/user/store') ,
             'admin_user' => Auth::user() ,
             'button_text' => 'Create User',
+            'SubscriptionPlan' => SubscriptionPlan::all(),
         );
 
         return \View::make('admin.users.create_edit', $data);
@@ -315,7 +317,7 @@ class AdminUsersController extends Controller
         $validatedData = $request->validate(['email' => 'required|max:255', 'username' => 'required|max:255', ]);
 
         $input = $request->all();
-       
+
 
         if(empty($input['active'])){
             $active = 0 ;
@@ -360,20 +362,71 @@ class AdminUsersController extends Controller
 
         $password = Hash::make($request['passwords']);
 
-        DB::table('users')->insert(
-            [
-                'username' => $request['username'],
-                'email' => $request['email'],
-                'mobile' => $request['mobile'],
-                'ccode' => $request['ccode'],
-                'role' => $request['role'],
-                'activation_code' => $string,
-                'active' => $active,
-                'avatar' =>  $avatar ,
-                //  terms = $request['terms'],
-                'password' => $password,
-        ]);
+        if($input['role'] == 'subscriber' && !empty($input['plan'])  
+        || $input['role'] == 'registered' || $input['role'] == 'admin'){
 
+            $User = new User();
+            $User->username = $request['username'];
+            $User->email = $request['email'];
+            $User->mobile = $request['mobile'];
+            $User->ccode = $request['ccode'];
+            $User->role = $request['role'];
+            $User->activation_code = $string;
+            $User->active = $active;
+            $User->avatar = $avatar;
+            $User->password = $password;
+            $User->save();
+            $User_id = $User->id;
+
+        }else{
+
+            return Redirect::to('admin/user/create')->with(array(
+                'note' => 'Need to Add Plan',
+                'note_type' => 'failed'
+            ));
+        }
+        // DB::table('users')->insert(
+        //     [
+        //         'username' => $request['username'],
+        //         'email' => $request['email'],
+        //         'mobile' => $request['mobile'],
+        //         'ccode' => $request['ccode'],
+        //         'role' => $request['role'],
+        //         'activation_code' => $string,
+        //         'active' => $active,
+        //         'avatar' =>  $avatar ,
+        //         //  terms = $request['terms'],
+        //         'password' => $password,
+        // ]);
+
+        $SubscriptionPlan = SubscriptionPlan::where('plan_id',$input['plan'])->first();
+        if($input['role'] == 'subscriber' && !empty($input['plan']) && !empty($User_id)){
+            $current_date = date('Y-m-d h:i:s');    
+            $next_date = $SubscriptionPlan->days;
+            $date = Carbon::parse($current_date)->addDays($next_date);
+
+            $subscription = new Subscription();
+            $subscription->name = $User->username;
+            $subscription->price = $SubscriptionPlan->price;
+            $subscription->user_id = $User_id;
+            $subscription->stripe_id = $SubscriptionPlan->plan_id;
+            $subscription->stripe_plan = $SubscriptionPlan->plan_id;
+            $subscription->stripe_status  = 'active';
+            $subscription->name = $user->username;
+            $subscription->days = $SubscriptionPlan->days;
+            $subscription->regionname = Region_name();
+            $subscription->countryname = Country_name();
+            $subscription->cityname = city_name();
+            $subscription->PaymentGateway =  $SubscriptionPlan->type;
+            $subscription->ends_at = $date;
+            $subscription->save();
+
+        }else{
+            return Redirect::to('admin/user/create')->with(array(
+                'message' => 'Need to Add Plan',
+                'note_type' => 'failed'
+            ));
+        }
 
 
         $settings = Setting::first();
@@ -553,6 +606,60 @@ class AdminUsersController extends Controller
                 'stripe_active' => $input['stripe_active'],
             ]);
 
+        $User = User::where('id',$id)->first();
+        $SubscriptionPlan = SubscriptionPlan::where('plan_id',$input['plan'])->first();
+        if($input['role'] == 'subscriber' && !empty($input['plan']) && !empty($id)){
+            $current_date = date('Y-m-d h:i:s');    
+            $next_date = $SubscriptionPlan->days;
+            $date = Carbon::parse($current_date)->addDays($next_date);
+            $Subscription = Subscription::where('user_id',$id)->first();
+            if(!empty($Subscription)){
+                $User = User::where('id',$id)->first();
+                $subscription = Subscription::where('user_id',$id)->first();
+
+                $subscription->name = $User->username;
+                $subscription->price = $SubscriptionPlan->price;
+                $subscription->user_id = $id;
+                $subscription->stripe_id = $SubscriptionPlan->plan_id;
+                $subscription->stripe_plan = $SubscriptionPlan->plan_id;
+                $subscription->stripe_status  = 'active';
+                $subscription->name = $user->username;
+                $subscription->days = $SubscriptionPlan->days;
+                $subscription->regionname = Region_name();
+                $subscription->countryname = Country_name();
+                $subscription->cityname = city_name();
+                $subscription->PaymentGateway =  $SubscriptionPlan->type;
+                $subscription->ends_at = $date;
+                $subscription->save();
+
+            }else{
+
+                $subscription = new Subscription();
+                $subscription->name = $User->username;
+                $subscription->price = $SubscriptionPlan->price;
+                $subscription->user_id = $id;
+                $subscription->stripe_id = $SubscriptionPlan->plan_id;
+                $subscription->stripe_plan = $SubscriptionPlan->plan_id;
+                $subscription->stripe_status  = 'active';
+                $subscription->name = $user->username;
+                $subscription->days = $SubscriptionPlan->days;
+                $subscription->regionname = Region_name();
+                $subscription->countryname = Country_name();
+                $subscription->cityname = city_name();
+                $subscription->PaymentGateway =  $SubscriptionPlan->type;
+                $subscription->ends_at = $date;
+                $subscription->save();
+            }
+
+        }else{
+            return Redirect::to('admin/user/create')->with(array(
+                'note' => 'Need to Add Plan',
+                'note_type' => 'failed'
+            ));
+            return Redirect::to('admin/users')->with(array('message' => 'Need to Select Plan ID','note_type' => 'success'));
+        }
+
+
         return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User','note_type' => 'success'));
     }
 
@@ -603,6 +710,7 @@ class AdminUsersController extends Controller
             'post_route' => URL::to('admin/user/update') ,
             'admin_user' => Auth::user() ,
             'button_text' => 'Update User',
+            'SubscriptionPlan' => SubscriptionPlan::all(),
         );
         return View::make('admin.users.edit', $data);
     }
