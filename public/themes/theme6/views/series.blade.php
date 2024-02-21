@@ -146,8 +146,8 @@ style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)
                     !Auth::guest() &&
                     Auth::user()->subscribed() &&
                     $series->ppv_status != 1) ||
-                (!Auth::guest() &&  Auth::user()->role == 'admin') ||  Auth::user()->role == 'registered' 
-                ||  Auth::user()->role == 'subscriber' ||
+                (!Auth::guest() &&  Auth::user()->role == 'admin') || !Auth::guest() &&  Auth::user()->role == 'registered' 
+                ||  !Auth::guest() &&  Auth::user()->role == 'subscriber' ||
                 (!Auth::guest() && $series->access == 'registered' &&
                     $settings->free_registration && $series->ppv_status != 1)
             ) :  ?>
@@ -388,32 +388,352 @@ style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)
 
             </div>
         </div>
-        <?php elseif( Auth::guest() && $series->access == "subscriber"):
-						
-					// }
-						?>
+        <?php elseif( Auth::guest() && $series->access == "registered"): ?>
+
+            <div class="col-md-7 p-0">
+                <div id="series_title" class="show-movie">
+                    <div class=" p-2 text-white ">
+                        <div class="trending-info p-0">
+                                                        
+                                                        {{-- Ṭitle --}}
+                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">
+                                {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }}
+                            </h1>
+
+                                                        {{-- Rating --}}
+                            <div class="slider-ratting d-flex align-items-center" data-animation-in="fadeInLeft">
+                                @if (optional($series)->rating)
+                                    <ul
+                                        class="ratting-start p-0 m-0 list-inline text-primary d-flex align-items-center justify-content-left">
+                                        @php $rating = ($series->rating / 2) ; @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($rating >= $i)
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            @elseif ($rating + 0.5 == $i)
+                                                <li><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                            @else
+                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                                            @endif
+                                        @endfor
+                                    </ul>
+                                @endif
+                                <span class="text-white ml-3">{{ $series->rating ? $series->rating / 2 : ' ' }}</span>
+                            </div>
+
+                                                        {{-- Category --}}
+                            <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-content">
+                                @foreach ($Series_Category as $key => $Series_Category_details)
+                                    <li class="trending-list"><a class="text-primary title"
+                                            href=" {{ URL::to('/series/category/' . $Series_Category_details->slug) }}">{{ $Series_Category_details->name }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+
+                                                        {{-- year & season Count --}}
+                            <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
+                                <span> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
+                                <span class="trending-year">{{ optional($series)->year }}</span>
+                            </div>
+
+                                                        {{-- Details --}}
+                            <div class="trending-">
+                                <p class="m-0">{!! html_entity_decode(optional($series)->details) !!}</p>
+                            </div>
+                        </div>
+
+                                                        {{-- Episode --}}
+                        @if( Auth::guest() && $series->access == 'registered' )
+                            <div class="position-relative mt-5">
+                                <a href="{{ URL::to('signup' ) }}" class="d-flex align-items-center">
+                                    <div class="play-button"> <i class="ri-play-fill"></i></div>
+                                    <h4 class="w-name text-white font-weight-700">Become a Registered User to watch this Episodes</h4>
+                                </a>
+                            </div>
+                        @endif
+
+                        <div class="col-12 mt-auto mb-auto mt-3 p-0">
+                            <ul class="list-inline p-0 mt-5 share-icons music-play-lists">
+                                <li class="share mb-0">
+                                    <span><i class="ri-share-fill"></i></span>
+                                    <div class="share-box">
+                                        <div class="d-flex align-items-center">
+                                            <a href="#" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                            <a href="#" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                            <a href="#" class="share-ico"><i class="ri-links-fill"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-0"><span><i class="ri-heart-fill"></i></span></li>
+                                <li class="mb-0"><span><i class="ri-add-line"></i></span></li>
+                            </ul>
+
+                            <ul
+                                class="p-0 list-inline d-flex flex-wrap align-items-center movie-content movie-space-action flex-wrap iq_tag-list">
+                                @if (optional($series)->search_tag)
+
+                                    <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
+                                            aria-hidden="true"></i>TAGS:</li>
+                                            
+                                    <li> <p class="tag-list m-0" >{{ optional($series)->search_tag }}</p></li>
+                                @endif
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-center" id="theDiv">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt-5">
+            <div class="favorites-contens">
+
+                {{-- Season Depends Episode --}}
+
+                @if(($season)->isNotEmpty())
+
+                    <div class="col-md-3 p-0" style="width:150px">
+                        <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;">
+                            @foreach ($season as $key => $seasons)
+                                <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                
+                    <div class="data">
+                        @partial('season_depends_episode_section')
+                    </div>
+                @endif
+
+                <ul class="category-page list-inline row p-3 mb-0">
+                    <?php 
+                    foreach($season as $key => $seasons):  
+                      foreach($seasons->episodes as $key => $episodes):
+                        if($seasons->ppv_interval > $key):
+							 ?>
+
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                        <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
+                            <div class="block-images position-relative episodes_div season_<?= $seasons->id ?>">
+                                <div class="img-box">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid w-100">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+
+                                    <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price;
+                                    ?></p> -->
+                                    <?php }elseif(!empty($seasons->ppv_price)){?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price;
+                                    ?></p> -->
+                                    <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <?php } ?>
+                                    <?php } ?>
+
+                                </div>
+                            </div>
+
+                            <div class="block-description"></div>
+
+
+                            <h6><?= $episodes->title ?></h6>
+                            <p class="text-white desc mb-0"><?= gmdate('H:i:s', $episodes->duration) ?></p>
+
+                           
+
+                        </a>
+                    </li>
+
+                    <?php else : ?>
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                        <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
+                        
+
+                        </a>
+                    </li>
+                    <?php endif;	endforeach; 
+						                      endforeach; ?>
+                </ul>
+
+
+        <?php elseif( Auth::guest() && $series->access == "subscriber"): ?>
     </div>
 
-    <!-- <div  style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
-    <div class="col-sm-12">
-        <div id="ppv">
-            <h2 class="text-center" style="margin-top:80px;">Purchase to Watch the Series
-                <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
-            <div class="clear"></div>
+
+    <div class="col-md-7 p-0">
+                <div id="series_title" class="show-movie">
+                    <div class=" p-2 text-white ">
+                        <div class="trending-info p-0">
+                                                        
+                                                        {{-- Ṭitle --}}
+                            <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">
+                                {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }}
+                            </h1>
+
+                                                        {{-- Rating --}}
+                            <div class="slider-ratting d-flex align-items-center" data-animation-in="fadeInLeft">
+                                @if (optional($series)->rating)
+                                    <ul
+                                        class="ratting-start p-0 m-0 list-inline text-primary d-flex align-items-center justify-content-left">
+                                        @php $rating = ($series->rating / 2) ; @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($rating >= $i)
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            @elseif ($rating + 0.5 == $i)
+                                                <li><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                            @else
+                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                                            @endif
+                                        @endfor
+                                    </ul>
+                                @endif
+                                <span class="text-white ml-3">{{ $series->rating ? $series->rating / 2 : ' ' }}</span>
+                            </div>
+
+                                                        {{-- Category --}}
+                            <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-content">
+                                @foreach ($Series_Category as $key => $Series_Category_details)
+                                    <li class="trending-list"><a class="text-primary title"
+                                            href=" {{ URL::to('/series/category/' . $Series_Category_details->slug) }}">{{ $Series_Category_details->name }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+
+                                                        {{-- year & season Count --}}
+                            <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
+                                <span> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
+                                <span class="trending-year">{{ optional($series)->year }}</span>
+                            </div>
+
+                                                        {{-- Details --}}
+                            <div class="trending-">
+                                <p class="m-0">{!! html_entity_decode(optional($series)->details) !!}</p>
+                            </div>
+                        </div>
+
+                                                        {{-- Episode --}}
+                        @if( $latest_Episode != null )
+                            <div class="position-relative mt-5">
+                                <a href="{{ URL::to('/signup') }}" class="d-flex align-items-center">
+                                    <div class="play-button"> <i class="ri-play-fill"></i></div>
+                                    <h4 class="w-name text-white font-weight-700">Become a subscriber to watch this Episodes</h4>
+                                </a>
+                            </div>
+                        @endif
+
+                        <div class="col-12 mt-auto mb-auto mt-3 p-0">
+                            <ul class="list-inline p-0 mt-5 share-icons music-play-lists">
+                                <li class="share mb-0">
+                                    <span><i class="ri-share-fill"></i></span>
+                                    <div class="share-box">
+                                        <div class="d-flex align-items-center">
+                                            <a href="#" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                                            <a href="#" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                                            <a href="#" class="share-ico"><i class="ri-links-fill"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-0"><span><i class="ri-heart-fill"></i></span></li>
+                                <li class="mb-0"><span><i class="ri-add-line"></i></span></li>
+                            </ul>
+
+                            <ul
+                                class="p-0 list-inline d-flex flex-wrap align-items-center movie-content movie-space-action flex-wrap iq_tag-list">
+                                @if (optional($series)->search_tag)
+
+                                    <li class="text-primary text-lable"><i class="fa fa-tags font-Weight-900"
+                                            aria-hidden="true"></i>TAGS:</li>
+                                            
+                                    <li> <p class="tag-list m-0" >{{ optional($series)->search_tag }}</p></li>
+                                @endif
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-center" id="theDiv">
+            </div>
         </div>
-        <!-- </div>  -->
+    </div>
+</div>
+<div class="container-fluid mt-5">
+            <div class="favorites-contens">
+
+                {{-- Season Depends Episode --}}
+
+                @if(($season)->isNotEmpty())
+
+                    <div class="col-md-3 p-0" style="width:150px">
+                        <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;">
+                            @foreach ($season as $key => $seasons)
+                                <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                
+                    <div class="data">
+                        @partial('season_depends_episode_section')
+                    </div>
+                @endif
+
+                <ul class="category-page list-inline row p-3 mb-0">
+                    <?php 
+                    foreach($season as $key => $seasons):  
+                      foreach($seasons->episodes as $key => $episodes):
+                        if($seasons->ppv_interval > $key):
+							 ?>
+
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                        <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
+                            <div class="block-images position-relative episodes_div season_<?= $seasons->id ?>">
+                                <div class="img-box">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid w-100">
+                                    <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
+
+                                    <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price;
+                                    ?></p> -->
+                                    <?php }elseif(!empty($seasons->ppv_price)){?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price;
+                                    ?></p> -->
+                                    <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
+                                    <p class="p-tag"><?php echo 'Free'; ?></p>
+                                    <?php } ?>
+                                    <?php } ?>
+
+                                </div>
+                            </div>
+
+                            <div class="block-description"></div>
 
 
-        <div class="col-md-2 text-center text-white">
-            <div class="col-md-4">
-                <?php if ( $series->ppv_status == 1 && !Auth::guest() && Auth::User()->role !="admin") { ?>
-                <button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)">
-                    Purchase For <?php echo $currency->symbol . ' ' . $settings->ppv_price; ?></button>
-                <?php } ?>
-                <br>
-                <!-- </div> -->
+                            <h6><?= $episodes->title ?></h6>
+                            <p class="text-white desc mb-0"><?= gmdate('H:i:s', $episodes->duration) ?></p>
 
-                <!-- </div> -->
+                           
+
+                        </a>
+                    </li>
+
+                    <?php else : ?>
+                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id ?>">
+                        <a href="<?php echo URL::to('episode') . '/' . $series->slug . '/' . $episodes->slug; ?>">
+                        
+
+                        </a>
+                    </li>
+                    <?php endif;	endforeach; 
+						                      endforeach; ?>
+                </ul>
+
+
             </div>
         </div>
     </div>
@@ -910,3 +1230,4 @@ style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0)
 </script>
 <?php include public_path('themes/theme6/views/footer.blade.php'); ?>
 
+<!-- series -->
