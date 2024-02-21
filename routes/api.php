@@ -664,5 +664,7 @@ Route::group(
             Route::post('scheduled-programs', 'ApiAuthController@ChannelScheduledDataVideos');
             Route::post('store-user-translation', 'ApiAuthController@ChooseTranslation');
             Route::post('user-translation', 'ApiAuthController@UserTranslation');
+            Route::get('translation-language', 'ApiAuthController@LanguageTranslation');
+            Route::get('translation-checkout', 'ApiAuthController@TranslationEnable');
 
         });
