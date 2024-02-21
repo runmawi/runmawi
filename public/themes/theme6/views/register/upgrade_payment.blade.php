@@ -4,6 +4,7 @@
     include public_path('themes/theme6/views/header.php');
 @endphp
 
+
 @section('content')
 
     <script
