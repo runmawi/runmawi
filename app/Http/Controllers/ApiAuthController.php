@@ -138,6 +138,7 @@ use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
 use App\ChannelVideoScheduler as ChannelVideoScheduler;
 use App\AdminEPGChannel as AdminEPGChannel;
 use App\UserTranslation as UserTranslation;
+use App\TranslationLanguage as TranslationLanguage;
 
 
 class ApiAuthController extends Controller
@@ -4715,7 +4716,7 @@ public function checkEmailExists(Request $request)
                 $ppv_video_status = "pay_now";
           }
       $seasonfirst = SeriesSeason::where('series_id','=',$seriesid)->first();
-      $settings = Setting::first();
+      $settings = Setting::get();
       $response = array(
         'series' => $series,
         'seasonfirst' => $seasonfirst,
@@ -23517,5 +23518,43 @@ public function TV_login(Request $request)
         }
           return response()->json($response, 200);
     }
-   
+    public function LanguageTranslation( Request $request ){
+      try{
+
+        $TranslationLanguage  = TranslationLanguage::where('status',1)->get(); 
+
+        $response = array(
+          "status"  => 'true' ,
+          'TranslationLanguage' => $TranslationLanguage,
+          "message" => "Successfully Retrived Data" ,
+        );
+
+        }catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+    }
+
+    public function TranslationEnable( Request $request ){
+      try{
+
+        $TranslateCheckout    = SiteTheme::pluck('translate_checkout')->first(); 
+
+        $response = array(
+          "status"  => 'true' ,
+          'TranslateCheckout' => $TranslateCheckout,
+          "message" => "Successfully Retrived Data" ,
+        );
+
+        }catch (\Throwable $th) {
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+        );
+      }
+        return response()->json($response, 200);
+    }
 }

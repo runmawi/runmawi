@@ -606,8 +606,8 @@ else{
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin:0 !important;">
                                 <span aria-hidden="true"><i class="fa fa-times"></i></span>
                             </button>
-
                         </div>
+
 
                         <div class="modal-body">
                             <div class="row justify-content-between">
@@ -671,10 +671,10 @@ else{
 
                         <div class="modal-footer">
 
-                            <div class="Stripe_button">
-                                <!-- Stripe Button -->
-                                <button class="btn2  btn-outline-primary"
-                                    onclick="pay(<?php echo $video->ppv_price; ?>)"> <?= __('Continue') ?> </button>
+                            <div class="Stripe_button">  <!-- Stripe Button -->
+                                <?php if( $stripe_payment_setting != null && $stripe_payment_setting->payment_type == "Stripe" ){?>
+                                    <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_live_PPV_Purchase/'.$video->id.'/'.$video->ppv_price) ?>' ;" > Continue </button>
+                                <?php } ?>
                             </div>
 
                             <div class="Razorpay_button">
@@ -861,50 +861,6 @@ $(document).ready(function() {
         }
     });
 });
-
-function pay(amount) {
-    var video_id = $('#video_id').val();
-    var handler = StripeCheckout.configure({
-        key: publishable_key,
-        locale: 'auto',
-        token: function(token) {
-            console.log('Token Created!!'); // You can access the token ID with `token.id`.
-            console.log(token); // Get the token ID to your server-side code for use.
-            $('#token_response').html(JSON.stringify(token));
-
-            $.ajax({
-                url: '<?php echo URL::to("purchase-live") ;?>',
-                method: 'post',
-                data: {
-                    "_token": "<?= csrf_token(); ?>",
-                    tokenId: token.id,
-                    amount: amount,
-                    video_id: video_id
-                },
-                success: (response) => {
-                    alert("You have done  Payment !");
-                    setTimeout(function() {
-                        location.reload();
-                    }, 2000);
-                },
-                error: (error) => {
-                    swal('error');
-                    //swal("Oops! Something went wrong");
-                    /* setTimeout(function() {
-                    location.reload();
-                    }, 2000);*/
-                }
-            })
-
-        }
-    });
-
-    handler.open({
-        name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
-        description: 'PAY PeR VIEW',
-        amount: amount * 100
-    });
-}
 </script>
 
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
