@@ -385,22 +385,11 @@ class AdminUsersController extends Controller
                 'note_type' => 'failed'
             ));
         }
-        // DB::table('users')->insert(
-        //     [
-        //         'username' => $request['username'],
-        //         'email' => $request['email'],
-        //         'mobile' => $request['mobile'],
-        //         'ccode' => $request['ccode'],
-        //         'role' => $request['role'],
-        //         'activation_code' => $string,
-        //         'active' => $active,
-        //         'avatar' =>  $avatar ,
-        //         //  terms = $request['terms'],
-        //         'password' => $password,
-        // ]);
 
-        $SubscriptionPlan = SubscriptionPlan::where('plan_id',$input['plan'])->first();
         if($input['role'] == 'subscriber' && !empty($input['plan']) && !empty($User_id)){
+
+            $SubscriptionPlan = SubscriptionPlan::where('plan_id',$input['plan'])->first();
+
             $current_date = date('Y-m-d h:i:s');    
             $next_date = $SubscriptionPlan->days;
             $date = Carbon::parse($current_date)->addDays($next_date);
@@ -607,8 +596,12 @@ class AdminUsersController extends Controller
             ]);
 
         $User = User::where('id',$id)->first();
-        $SubscriptionPlan = SubscriptionPlan::where('plan_id',$input['plan'])->first();
+
+
         if($input['role'] == 'subscriber' && !empty($input['plan']) && !empty($id)){
+
+            $SubscriptionPlan = SubscriptionPlan::where('plan_id',$input['plan'])->first();
+
             $current_date = date('Y-m-d h:i:s');    
             $next_date = $SubscriptionPlan->days;
             $date = Carbon::parse($current_date)->addDays($next_date);
