@@ -499,10 +499,9 @@ class TvshowsController extends Controller
                             ):
                                 $free_episode = 1;
                     else:
-                        if($SeriesPpvPurchase > 0){
-                            
+                        if($series->access == 'registered' && $SeriesPpvPurchase > 0 ){
                             $free_episode = 1;
-                        } elseif($PpvPurchase > 0){
+                        } elseif($series->access == 'registered' && $PpvPurchase > 0){
                         $free_episode = 1;
                         }elseif( $series->access == 'guest' && $season_details->access != 'ppv'  
                             || $season_details->access != 'ppv' && $series->access == 'registered' && Auth::user()->role == 'registered' 

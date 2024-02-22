@@ -73,8 +73,8 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
     <div class="">
         @if (!Auth::guest())
             @if (
-                ( $free_episode > 0 && $checkseasonppv_exits == 0) || ($ppv_exits > 0 && $checkseasonppv_exits == 0) ||
-                    Auth::user()->role == 'admin' || Auth::user()->role == 'subscriber' || (Auth::guest() && $checkseasonppv_exits == 0))
+                ( $free_episode > 0 && @$checkseasonppv_exits == 0) || ($ppv_exits > 0 && @$checkseasonppv_exits == 0) ||
+                    Auth::user()->role == 'admin' || Auth::user()->role == 'subscriber' || (Auth::guest() && @$checkseasonppv_exits == 0))
                     @if ( $episode_PpvPurchase > 0  && Auth::user()->role == 'registered' && $episode->access == 'ppv' ||
                         $episode->access == 'guest' || Auth::user()->role == 'subscriber' ||
                         $video_access == 'free' &&  Auth::user()->role == 'registered' && $episode->access == 'registered' ||
@@ -151,7 +151,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                         @endif
                     </div>
                 @endif
-            @elseif($checkseasonppv_exits == 0)
+            @elseif(@$checkseasonppv_exits == 0)
                 <div id="series_container">
                 </div>
                 @else
@@ -254,7 +254,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
             <div id="series_title">
                 <div class="">
 
-                    <!-- @if ( ($free_episode > 0 && Auth::user()->role != 'admin') || ($checkseasonppv_exits > 0 && Auth::user()->role != 'admin') || ($ppv_exits > 0 && Auth::user()->role != 'admin') || Auth::guest())
+                    <!-- @if ( ($free_episode > 0 && Auth::user()->role != 'admin') || (@$checkseasonppv_exits > 0 && Auth::user()->role != 'admin') || ($ppv_exits > 0 && Auth::user()->role != 'admin') || Auth::guest())
 
                         <div class="row align-items-center justify-content-between"
                             style="background: url({{ URL::to('public/uploads/images/' . $episode->player_image) }} ); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
