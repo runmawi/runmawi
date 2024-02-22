@@ -202,7 +202,7 @@
                                     @foreach ($errors->all() as $message)
                                         <div class="alert alert-danger display-hide" id="successMessage">
                                             <button id="successMessage" class="close" data-close="alert"></button>
-                                            <span>{{ $message }}</span>
+                                            <span>{{ ( __($message)) }}</span>
                                         </div>
                                     @endforeach
                                 @endif
@@ -276,8 +276,8 @@
                     </div>
                     <div class="mt-3">
                         <div class="d-flex justify-content-center  links">
-                            <p class="text-primary text-white ml-2">{{ __('Not having an Account ? Click') }} <a class="sig"
-                                    href="{{ route('signup') }}">{{ __('Here') }}</a> {{ __('to Sign Up') }}! </p>
+                            <p class="text-primary text-white ml-2">{{ (__('Not having an Account ? Click')) }} <a class="sig"
+                                    href="{{ route('signup') }}">{{ __('Here') }}</a> {{ (__('to Sign Up!')) }} </p>
                         </div>
                     </div>
                 </div>
