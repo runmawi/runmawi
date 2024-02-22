@@ -66,19 +66,7 @@ ol.breadcrumb {
                                     </div>
                                     </div>
 
-                                    <div class="block-description">
-                                        <a href="<?php echo URL::to('live').'/'.$LiveCategory->slug  ?>">
-                                            <p class="epi-name text-left m-0">
-                                                <?php  echo (strlen(@$LiveCategory->title) > 17) ? substr(@$LiveCategory->title,0,18).'...' : @$LiveCategory->title; ?>
-                                            </p>
-                                        </a>
-                                        <div>
-                                            <button type="button" class="show-details-button" data-toggle="modal"
-                                                data-target="#myModal<?= @$LiveCategory->id;?>">
-                                                <span class="text-center thumbarrow-sec"></span>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </a>
                         </li>

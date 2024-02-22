@@ -45,7 +45,7 @@
                                       
                                   
 
-                                <!-- PPV price -->
+                                    <!-- PPV price -->
                                     
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                        
@@ -79,9 +79,9 @@
                                            <p class="p-tag"><?php echo (__('Free')); ?></p>
                                        <?php } ?>
                                   
-                               <?php } ?>
+                                    <?php } ?>
 
-                               <div class="hover-buttons text-white">
+                                    <div class="hover-buttons text-white">
                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $Most_watched_countries->slug ?>">
                                     <?php if($ThumbnailSetting->title == 1) { ?>  
                                                   <!-- Title -->
@@ -135,9 +135,9 @@
                                         </div>
                                         <?php } ?>
                                     </div>
-                                <?php } ?>
+                                    <?php } ?>
 
-                                <div class="movie-time d-flex align-items-center pt-1">
+                                    <div class="movie-time d-flex align-items-center pt-1">
                                        <!-- Category Thumbnail  setting -->
                                       <?php
                                       $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
@@ -164,7 +164,7 @@
                                              <img class="d-inline-block ply" alt="ply" src="<?php echo URL::to('/').'/assets/img/theme7_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                       </a>
                                     <div>
-                                    <div>
+                                <div>
                                     <div>
                 </li>
                          <?php endforeach; endif; ?>

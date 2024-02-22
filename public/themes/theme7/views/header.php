@@ -258,7 +258,7 @@
    <!-- Typography CSS  -->
    <link rel="stylesheet" href="<?= typography_link();?>" />
    <!-- Style -->
-   <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+   <link rel="stylesheet" href="<?= URL::to('/'). '/public/themes/theme7/assets/css/style.css';?>" />
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
    <!-- Responsive -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
