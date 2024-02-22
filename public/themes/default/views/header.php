@@ -474,6 +474,9 @@
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
    } 
+   body.light-theme .list-group-item a{
+   color: <?php echo GetAdminDarkText(); ?> !important;
+   } 
     body.light-theme .block-description{
   background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
     backdrop-filter: blur(2px);

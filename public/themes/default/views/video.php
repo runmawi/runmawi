@@ -408,6 +408,9 @@ hr {
         /* margin: 0 auto !important;  */
         object-fit: contain;
     }
+    .text-white.col-lg-7.p-0 p{
+        color: #fff !important;
+    }
 
 </style>
 
@@ -777,12 +780,12 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                         <div class="container-fluid">
 
                             <div style="padding-top:8%;">
-                                <h4 class=""><?php echo $video->title; ?></h4>
+                                <h4 class="text-white"><?php echo $video->title; ?></h4>
                                 <div class="text-white col-lg-7 p-0">
                                     <p class=" " style="margin:0 auto";><?php echo $video->description; ?></p>
                                 </div>
 
-                                <h4>
+                                <h4 class="text-white">
                                 <?php echo __('Sorry, this video is only available to Subscribers or PPV users'); ?>
                                     <?php if($video->access == 'subscriber'): ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?>
                                 </h4>
@@ -823,11 +826,11 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                 <div id="subscribers_only">
                     <div class="clear"></div>
                     <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
-                        <h4 class="text-center"><?php echo $video->title; ?></h4>
+                        <h4 class="text-center text-white"><?php echo $video->title; ?></h4>
                         <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
 
-                        <h6>
-                            <p style="margin-left:14%"><?php echo __('Sorry, this video is only available to'); ?></p>
+                        <h6 class="text-white">
+                            <p class="text-white" style="margin-left:14%"><?php echo __('Sorry, this video is only available to'); ?></p>
                             <?php if($video->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?>
                         </h6>
                         
@@ -858,10 +861,10 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                     <div id="subscribers_only">
                         <div class="clear"></div>
                         <div style="margin-left: -20%;position: absolute;top: 20%;left: 20%;width: 100%;">
-                            <h4 class="text-center"><?php echo $video->title; ?></h4>
+                            <h4 class="text-center text-white"><?php echo $video->title; ?></h4>
                             <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
-                            <h2>
-                                <p style="margin-left:14%"><?php echo __('Purchase to watch this PPV video'); ?></p>
+                            <h2 class="text-white">
+                                <p class="text-white" style="margin-left:14%"><?php echo __('Purchase to watch this PPV video'); ?></p>
                             </h2>
                             <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
                                 
@@ -894,13 +897,13 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
                                     <div class="container-fluid">
-                                        <h2 class="text-left"><?php echo $video->title; ?></h2>
+                                        <h2 class="text-left text-white"><?php echo $video->title; ?></h2>
 
                                         <div class="text-white col-lg-7 p-0">
                                         <p style="margin:0 auto;"> <?php echo $video->description; ?></p>
                                         </div>
 
-                                        <h4 class="mb-3">  <?php echo __('PPV Rent'); ?> </h4>
+                                        <h4 class="mb-3 text-white">  <?php echo __('PPV Rent'); ?> </h4>
                                         
                                         <div>
                                         <a href="<?= URL::to('/signup') ?>" class="btn btn-primary" ><?php echo __('Become a Subscriber to watch this video'); ?></a> 
