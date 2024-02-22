@@ -633,7 +633,7 @@
 
 
 
-    <section>
+    <!-- <section>
     
     <div class="container-fluid mb-5">
         <div class="steps-wrapper pl-0 mb-3">
@@ -654,7 +654,7 @@
 
         <h4><?= "Choose the right plan for you" ?></h4>
 
-        <!-- <div class="plan-card">
+        <div class="plan-card">
             <div class="row">
                 <div class="col-sm-4">
                     <div class="card" >
@@ -685,7 +685,7 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
 
 
         <div class="steps-wrapper payment-sec pl-0 mb-3" id="payment_card_scroll_dummy">
@@ -746,7 +746,7 @@
     </div>
 
 
-</section>
+</section> -->
 
 
 
@@ -870,7 +870,7 @@
 
 
 
-                        <div class="row">
+                        <div class="row col-12 mt-4">
                             <!-- <div class="col-md-12">
                                 <div class="data-plans row align-items-center p-0">
                                     @foreach ($plans_data_signup_checkout as $key => $plan)
@@ -945,8 +945,8 @@
                         <div class="mt-3"></div>
 
                         <!-- <label for="fname"><i class="fa fa-user"></i> {{ __('Full Name') }}</label> -->
-                        <div class="d-flex col-12">
-                            <div class="col-6">
+                        <div class="d-flex col-12 p-0">
+                            <div class="col-6 p-0">
                                 <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
                             </div>
                             <div class="col-6">
@@ -1018,7 +1018,7 @@
 
 
                                                 {{-- Summary --}}
-                            <div class="col-md-12 mt-5" id="payment_card_scroll">
+                            <!-- <div class="col-md-12 mt-5" id="payment_card_scroll">
 
                                 <h4>Summary</h4>
 
@@ -1043,7 +1043,7 @@
                                 <p class="text-white mt-3 dp">
                                     {{ $signup_payment_content ? $signup_payment_content : ' ' }}
                                 </p>
-                            </div>
+                            </div> -->
 
                                                 {{-- Payment Buttons --}}
                            
