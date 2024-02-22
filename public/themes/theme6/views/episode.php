@@ -62,7 +62,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 <div id="series_bg">
     <div class="">
         <?php 
-			   if(!Auth::guest()){ ;
+			   if(!Auth::guest()){ 
                 if( $free_episode > 0){
                     
                     if( $free_episode > 0):
