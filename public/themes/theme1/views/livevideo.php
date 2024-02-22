@@ -477,7 +477,7 @@ else{
                         <div class=" align-items-center text-white text-detail p-0">
                             <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>
                             <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>
-                            <span class="badge badge-secondary p-2"><?= __('Published On') ?> : <?php  echo $publishdate;?></span>
+                            <span class="badge badge-secondary p-2"><?= __('Published On') ?> : <?php  echo __($publishdate);?></span>
                             <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>
 
                         </div>

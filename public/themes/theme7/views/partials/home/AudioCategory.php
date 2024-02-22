@@ -67,23 +67,7 @@
                                     </div>
                                     </div>
 
-                                    <div class="block-description">
-                                    <a href="<?php echo URL::to('/audio/'.$Audio_Category->slug ) ?>">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Audio_Category->player_image;  ?>"
-                                            class="img-fluid w-100" alt="">
-                            </a>
-                            <div class="hover-buttons text-white">
-                                        <a href="<?php echo URL::to('/audio/').'/'.$Audio_Category->slug  ?>">
-                                            <p class="epi-name text-left m-0">
-                                                <?php  echo (strlen(@$Audio_Category->title) > 17) ? substr(@$Audio_Category->title,0,18).'...' : @$Audio_Category->title; ?>
-                                            </p>
-                                        </a>
-                                            <a class="epi-name mt-5 mb-0 btn" href="<?php echo URL::to('/audio'.'/'.$Audio_Category->slug  ) ?> ">
-                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                Visit Audio Player
-                                            </a>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                         </li>
 
