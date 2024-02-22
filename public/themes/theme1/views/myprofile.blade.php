@@ -616,7 +616,7 @@
                                                                         ->where('subscriptions.user_id',$user->id)->where('stripe_id',$user->stripe_id)
                                                                         ->first();                    
                                                 ?>
-                                            <p class="mb-0">{{ $current_plan->name ?? '-' }}</p>
+                                            <p class="mb-0">{{ $current_plan->plans_name ?? '-' }}</p>
                                         </div>
 
                                         @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
