@@ -226,7 +226,7 @@ class TvshowsController extends Controller
 
     public function play_episode($series_name, $episode_name)
     {
-        try {
+        // try {
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             
@@ -499,10 +499,9 @@ class TvshowsController extends Controller
                             ):
                                 $free_episode = 1;
                     else:
-                        if($SeriesPpvPurchase > 0){
-                            
+                        if($series->access == 'registered' && $SeriesPpvPurchase > 0 ){
                             $free_episode = 1;
-                        } elseif($PpvPurchase > 0){
+                        } elseif($series->access == 'registered' && $PpvPurchase > 0){
                         $free_episode = 1;
                         }elseif( $series->access == 'guest' && $season_details->access != 'ppv'  
                             || $season_details->access != 'ppv' && $series->access == 'registered' && Auth::user()->role == 'registered' 
@@ -879,11 +878,11 @@ class TvshowsController extends Controller
             return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
         }
     
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
     
-            // return $th->getMessage();
-            return abort(404);
-        }
+        //     // return $th->getMessage();
+        //     return abort(404);
+        // }
     }
     
     public function handleViewCount($id)

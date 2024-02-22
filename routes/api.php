@@ -665,6 +665,6 @@ Route::group(
             Route::post('store-user-translation', 'ApiAuthController@ChooseTranslation');
             Route::post('user-translation', 'ApiAuthController@UserTranslation');
             Route::get('translation-language', 'ApiAuthController@LanguageTranslation');
-            Route::get('translation-checkout', 'ApiAuthController@TranslationEnable');
+            Route::get('translation-checkout', 'ApiAuthController@TranslationEnable'); 
 
         });
