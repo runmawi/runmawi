@@ -15,11 +15,8 @@
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-6 col-lg-12 col-md-12">
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23">
-                            <a href="<?php echo $slider_video->link; ?>" class="learn-mr-bt">
-                                <button class="btn bd">
-                                    <i class="fa fa-play mr-2"  aria-hidden="true"></i> Learn More
-                                </button>
-                            </a>
+                            <a href="<?php echo $slider_video->link; ?>" class="btn bd"><i class="fa fa-play mr-2"
+                                    aria-hidden="true"></i> Learn More</a>
                         </div>
                     </div>
                 </div>
@@ -46,10 +43,8 @@ endif; ?>
                     <div class="col-xl-6 col-lg-12 col-md-12">
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23"
                             data-animation-in="fadeInUp" data-delay-in="1.2">
-                            <a href="<?= URL::to('live/' . $slider_video->slug) ?>" class="learn-mr-bt">
-                                <button class="btn bd">
-                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
-                                </button>
+                            <a href="<?= URL::to('live/' . $slider_video->slug) ?>" class="btn bd"><i
+                                    class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
                             </a>
                             
                         </div>
@@ -85,10 +80,8 @@ endif; ?>
                     <div class="col-xl-6 col-lg-12 col-md-12">
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23"
                             data-animation-in="fadeInUp" data-delay-in="1.2">
-                            <a href="<?= route('live_event_play', $live_event_banner->slug) ?>" class="learn-mr-bt">
-                                <button class="btn bd">
-                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
-                                </button>
+                            <a href="<?= route('live_event_play', $live_event_banner->slug) ?>" class="btn bd">
+                                <i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
                             </a>
                         </div>
                     </div>
@@ -115,10 +108,8 @@ endif; ?>
                        
 
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23">
-                            <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>" class="learn-mr-bt">
-                                <button class="btn bd">
-                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
-                                </button>
+                            <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>" class="btn bd">
+                                <i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
                             </a>
 
                             <?php   include(public_path('themes/theme7/views/partials/home/Trailer-slider.php')); ?>       
@@ -172,10 +163,8 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                        
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23"
                             data-animation-in="fadeInUp" data-delay-in="1.2">
-                            <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>" class="learn-mr-bt">
-                                <button class="btn bd">
-                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
-                                </button>
+                            <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>"
+                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
                             </a>
 
                             <?php   include(public_path('themes/theme7/views/partials/home/Trailer-slider.php')); ?>       
@@ -213,13 +202,12 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                         
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23"
                             data-animation-in="fadeInUp" data-delay-in="1.2">
-                            <a href="<?php echo URL::to('episode'); ?><?= '/' . @$slider_video->series_title->slug . '/' . $slider_video->slug ?>"  class="learn-mr-bt">
-                                <button class="btn bd">
-                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
-                                </button>
-                            </a>
+                            <a href="<?php echo URL::to('episode'); ?><?= '/' . @$slider_video->series_title->slug . '/' . $slider_video->slug ?>"
+                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More</a>
 
-                            
+                            <a class="btn bd ml-2"
+                                href="<?php echo URL::to('episode'); ?><?= '/' . @$slider_video->series_title->slug . '/' . $slider_video->slug ?>"><i
+                                    class="fa fa-info" aria-hidden="true"></i> More details</a>
                         </div>
                     </div>
                 </div>
@@ -282,10 +270,8 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
                         
 
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23">
-                            <a href="<?= URL::to('/play_series' . '/' . $series_slider->slug)  ?>" class="learn-mr-bt">
-                                <button class="btn bd">
-                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
-                                </button>
+                            <a href="<?= URL::to('/play_series' . '/' . $series_slider->slug)  ?>" class="btn bd"><i
+                                    class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
                             </a>
                         </div>
                     </div>
