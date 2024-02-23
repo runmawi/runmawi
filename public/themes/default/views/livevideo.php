@@ -157,7 +157,6 @@
    .modal {
       position: fixed;
       top: 0;
-      right: auto;
       bottom: 0;
       left: 0;
       z-index: 1050;
