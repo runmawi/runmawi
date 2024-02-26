@@ -1,12 +1,12 @@
 @php
-    $data = App\SeriesNetwork::where('in_home',1)->orderBy('order')->get()->map(function ($item) {
+    $data = App\SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) {
                 $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : default_vertical_image_url() ;
                 $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : default_horizontal_image_url();
 
                 $item['series'] = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
                                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
                                                                                                     ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
-                                                                                                    ->latest()->limit(30)->get()->map(function ($item) {
+                                                                                                    ->latest()->limit(15)->get()->map(function ($item) {
                                                                                                             $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : Vertical_Default_Image() ;
                                                                                                             $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : Horizontal_Default_Image() ;
                                                                                                             $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : Horizontal_Default_Image() ;       

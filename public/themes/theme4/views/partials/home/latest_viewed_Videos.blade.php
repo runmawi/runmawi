@@ -23,7 +23,7 @@
                 $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
             }
             
-            $data = $data->get();
+            $data = $data->limit(15)->get();
    }
    else
    {

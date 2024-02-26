@@ -1,6 +1,6 @@
 @php
     $data->map(function($item){
-        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
+        $item['Series_depends_episodes'] = App\Series::find($item->id)->theme4_Series_depends_episodes
                                                     ->map(function ($item) {
                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                         return $item;
