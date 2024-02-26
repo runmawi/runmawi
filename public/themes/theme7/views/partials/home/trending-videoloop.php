@@ -1,11 +1,10 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h4 class="main-title">
-    <a
-      href="<?php if ($order_settings_list[0]->header_name) {
-        echo URL::to('/') . '/' . $order_settings_list[0]->url;
-      } else {
-        echo "";
-      } ?>">
+    <a href="<?php if ($order_settings_list[0]->header_name) {
+      echo URL::to('/') . '/' . $order_settings_list[0]->url;
+    } else {
+      echo "";
+    } ?>">
       <?php if ($order_settings_list[0]->header_name) {
         echo __($order_settings_list[0]->header_name);
       } else {
@@ -14,12 +13,11 @@
       <!-- Featured Movies -->
     </a>
   </h4>
-  <h4 class="main-title"><a
-      href="<?php if ($order_settings_list[0]->header_name) {
-        echo URL::to('/') . '/' . $order_settings_list[0]->url;
-      } else {
-        echo "";
-      } ?>">
+  <h4 class="main-title"><a href="<?php if ($order_settings_list[0]->header_name) {
+    echo URL::to('/') . '/' . $order_settings_list[0]->url;
+  } else {
+    echo "";
+  } ?>">
       <?php echo (__('View All')); ?>
     </a></h4>
 </div>
@@ -80,7 +78,7 @@
 
                 <!-- PPV price -->
 
-                <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ;  ?></p> -->
+                <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ;   ?></p> -->
                 <?php if ($ThumbnailSetting->free_or_cost_label == 1) { ?>
                   <?php if ($watchlater_video->access == 'subscriber') { ?>
                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
@@ -105,10 +103,10 @@
               </div>
             </div>
 
-            
+
           </div>
         </li>
-      <?php
+        <?php
       endforeach;
     endif; ?>
   </ul>

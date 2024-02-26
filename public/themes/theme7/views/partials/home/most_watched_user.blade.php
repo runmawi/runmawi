@@ -52,7 +52,7 @@
                     </div>
                 </div>
 
-                
+
             </div>
         </li>
         <?php endforeach; endif; ?>

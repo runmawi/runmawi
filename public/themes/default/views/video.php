@@ -785,13 +785,14 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                     <p class=" " style="margin:0 auto";><?php echo $video->description; ?></p>
                                 </div>
 
-                                <h4 class="text-white">
-                                <?php echo __('Sorry, this video is only available to Subscribers or PPV users'); ?>
-                                    <?php if($video->access == 'subscriber'): ?><?php elseif($video->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?>
-                                </h4>
+                         
 
-                                <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
-                                    
+                                <?php $videodetails = App\Video::where('id',$video->id)->first();  
+                                    if(!Auth::guest() && $videodetails->access == 'subscriber'  && $videodetails->access != 'ppv'  ){ //|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ?> 
+                                    <h4 class="text-white">
+                                        <?php echo __('Sorry, this video is only available to Subscribers '); ?>
+                                    </h4>
+
                                     <div class="d-flex align-items-baseline">
                                         <form class="text-center" method="get" action="<?= route('payment_becomeSubscriber') ?>">
                                             <button style="margin-top: 0%;" class="btn btn-primary"id="button"> <?php echo __('subscribe to watch this video'); ?></button>
@@ -804,9 +805,10 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                             <?php elseif($video->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
                                     </form>
 
-                                <?php } ?>
-
-                                <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
+                                <?php } elseif(!Auth::guest() && $videodetails->ppv_price != '' && $videodetails->ppv_price != null || $videodetails->global_ppv == 1 ){ ?>
+                                    <h4 class="text-white">
+                                        <?php echo __('Sorry, this video is only available to PPV users'); ?>
+                                    </h4>
                                     <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
                                         <?php echo __('Rent Now'); ?> 
                                     </button>
