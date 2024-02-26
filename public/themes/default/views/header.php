@@ -1130,7 +1130,7 @@
 
                                        <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?>
-                                          <?php if($Language->code == $translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
+                                          <?php if(GetWebsiteName().$Language->code == $translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
                                        </a>
                                        <?php endforeach; ?>
                                        <!-- <a href="#" class="iq-sub-card">
@@ -1944,7 +1944,7 @@
                },
                success: (response) => {
                   console.log(response);
-                  alert("Changed The Language !");
+                  // alert("Changed The Language !");
                   location.reload();
 
                },
