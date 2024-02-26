@@ -9,8 +9,11 @@
 <div class="item <?php if ($key == 0) {
     echo 'active';
 } ?> header-image">
-    <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $slider_video->slider; ?>" style="background-size: cover;    ">
-        <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+    <div class="slide slick-bg s-bg-1 lazyload" style="background-size: cover;">
+        <div class="home-slid position-relative" style="height:calc(100vh - 60px)">
+            <img src="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $slider_video->slider; ?>" alt="" width="100%" height="100%">
+        </div>
+        <div class="container-fluid position-absolute h-100" style="padding:0px 100px; top:33%;">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-6 col-lg-12 col-md-12">

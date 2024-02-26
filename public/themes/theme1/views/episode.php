@@ -295,17 +295,17 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 <br>
                 <br>
                 <div class="col-md-5">
-                    <span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span>
+                    <span class="text-white" style="font-size: 129%;font-weight: 700;"><?= (__("You're watching")) ?>:</span>
                     <p style=";font-size: 130%;color: white;">
                         <?php 
-			$seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
-			foreach($seasons as $key=>$seasons_value){ ?>
+                        $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
+                        foreach($seasons as $key=>$seasons_value){ ?>
                         <?php
-			if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo 'Season'.' '. ($key+1)   .' ';}  }
-			$Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
-			foreach($Episode as $key=>$Episode_value){  ?>
+                        if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo __('Season').' '. ($key+1)   .' ';}  }
+                        $Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
+                        foreach($Episode as $key=>$Episode_value){  ?>
                         <?php if (!empty($episode) && $episode->id == $Episode_value->id) {
-                            echo 'Episode' . ' ' . $episode->episode_order . ' ';
+                            echo __('Episode') . ' ' . $episode->episode_order . ' ';
                         } ?>
                         <?php } ?>
                     <p style=";font-size: 130%;color: white;"><?= $episode->title ?></p>
