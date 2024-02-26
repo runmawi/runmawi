@@ -207,30 +207,22 @@ class ApiAuthController extends Controller
   {
 
         $input = $request->all();
-        $user_data = array('username' => $request->get('username'), 'email' => $request->get('email'), 'password' => $request->get('password'),'ccode' => $request->get('ccode'),'mobile' => $request->get('mobile') );
+        
+        $user_data = array( 'username' => $request->get('username'),
+                            'email' => $request->get('email'),
+                            'password' => $request->get('password'),
+                            'ccode' => $request->get('ccode'),
+                            'mobile' => $request->get('mobile') 
+                          );
 
         $stripe_plan = SubscriptionPlan();
+
         $settings = Setting::first();
-        if (isset($input['ccode']) && !empty($input['ccode'])) {
-          $user_data['ccode'] = $input['ccode'];
-        } else {
-          $user_data['ccode'] = '';
-        }
 
-        if (isset($input['mobile']) && !empty($input['mobile'])) {
-          $user_data['mobile'] = $input['mobile'];
-        }
-        else {
-          $user_data['mobile'] = '';
-        }
-
-        if (isset($input['skip'])) {
-          $skip = $input['skip'];
-        }
-        else {
-          $skip = 0;
-        }
-
+        $user_data['ccode'] = isset($input['ccode']) && !empty($input['ccode']) ?  $input['ccode'] : " ";
+        $user_data['mobile'] = isset($input['mobile']) && !empty($input['mobile']) ? $input['mobile'] : " " ;
+        $skip = isset($input['skip']) ? $input['skip'] : 0 ;
+        
         if (!empty($input['referrer_code'])){
           $referrer_code = $input['referrer_code'];
         }
@@ -242,7 +234,6 @@ class ApiAuthController extends Controller
               $referred_user_id =null;
         }
 
-
         $length = 10;
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
@@ -253,7 +244,6 @@ class ApiAuthController extends Controller
         } else {
           $user_data['token'] =  '';
         }
-
 
         $path = URL::to('/').'/public/uploads/avatars/';
         $logo = $request->file('avatar');
@@ -286,10 +276,8 @@ class ApiAuthController extends Controller
             $plan = $input['subscrip_plan'];
         }
 
-
-        $user = User::where('email', '=', $request->get('email'))->first();
-        $username = User::where('username', '=', $request->get('username'))->where('username', '!=', null)->first();
-
+        $user = User::where('email', $request->get('email'))->first();
+        $username = User::where('username', $request->get('username'))->where('username', '!=', null)->first();
 
         if ($user === null && $username === null) {
 
@@ -360,12 +348,11 @@ class ApiAuthController extends Controller
                 return response()->json($response, 200);
               }
         }
-        if(!empty($userdata)){
-          $userid = $user->id;
-        }else{
-          $userid = '';
-        }
+
+        $userid = !empty($userdata) ?  $user->id : " ";
+
     try {
+      
       if($settings->free_registration && $settings->activation_email == 1){
 
         try {
@@ -384,57 +371,65 @@ class ApiAuthController extends Controller
       else {
         if(!$settings->free_registration  && $skip == 0){
 
-          $paymentMode = $request->payment_mode;
+            $paymentMode = $request->payment_mode;
 
-            if($paymentMode == "Razorpay"){
+                        // Razorpay Payment  
 
-            try{
-              $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-              $countryName = $geoip->getCountry();
-              $regionName = $geoip->getregion();
-              $cityName = $geoip->getcity();
+            if($paymentMode == "Razorpay"){                               
 
-                                                                                // Store the Razorpay subscription detials
-              $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-              $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
-              $plan_id      = $api->plan->fetch($subscription['plan_id']);
+              try{
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                $countryName = $geoip->getCountry();
+                $regionName = $geoip->getregion();
+                $cityName = $geoip->getcity();
 
-              $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']);
-              $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']);
-              $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString();
+                                                                                  // Store the Razorpay subscription detials
+                $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+                $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
+                $plan_id      = $api->plan->fetch($subscription['plan_id']);
 
-                  Subscription::create([
-                  'user_id'        =>  $userid,
-                  'name'           =>  $plan_id['item']->name,
-                  'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
-                  'stripe_id'      =>  $subscription['id'],
-                  'stripe_status'  =>  $subscription['status'],
-                  'stripe_plan'    =>  $subscription['plan_id'],
-                  'quantity'       =>  $subscription['quantity'],
-                  'countryname'    =>  $countryName,
-                  'regionname'     =>  $regionName,
-                  'cityname'       =>  $cityName,
-                  'PaymentGateway' =>  'Razorpay',
-                  'trial_ends_at'  =>  $trial_ends_at,
-                  'ends_at'        =>  $trial_ends_at,
-              ]);
+                $Sub_Startday = date('d/m/Y H:i:s', $subscription['current_start']);
+                $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']);
+                $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString();
 
-              User::where('id',$userid)->update([
-                  'role'                  =>  'subscriber',
-                  'stripe_id'             =>  $subscription['id'] ,
-                  'subscription_start'    =>  $Sub_Startday,
-                  'subscription_ends_at'  =>  $Sub_Endday,
-              ]);
+                    Subscription::create([
+                    'user_id'        =>  $userid,
+                    'name'           =>  $plan_id['item']->name,
+                    'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
+                    'stripe_id'      =>  $subscription['id'],
+                    'stripe_status'  =>  $subscription['status'],
+                    'stripe_plan'    =>  $subscription['plan_id'],
+                    'quantity'       =>  $subscription['quantity'],
+                    'countryname'    =>  Country_name(),
+                    'regionname'     =>  Region_name(),
+                    'cityname'       =>  city_name(),
+                    'PaymentGateway' =>  'Razorpay',
+                    'trial_ends_at'  =>  $trial_ends_at,
+                    'ends_at'        =>  $trial_ends_at,
+                ]);
 
-                return $response = array('status'=>'true',
-                'message' => 'Registered Successfully.');
+                User::where('id',$userid)->update([
+                    'role'                  =>  'subscriber',
+                    'stripe_id'             =>  $subscription['id'] ,
+                    'subscription_start'    =>  $Sub_Startday,
+                    'subscription_ends_at'  =>  $Sub_Endday,
+                    'payment_gateway'       =>  'Razorpay',
+                    'payment_status'       => 'active',
+                ]);
+
+                  return $response = array('status'=>'true',
+                  'message' => 'Registered Successfully.');
+              }
+              catch (\Exception $e){
+                return response()->json([
+                  'status'  => 'false',
+                  'Message' => 'Error,While Storing the data on Serve Error'], 200);
+                }
+
             }
-          catch (\Exception $e){
-            return response()->json([
-              'status'  => 'false',
-              'Message' => 'Error,While Storing the data on Serve Error'], 200);
-          }
-            }elseif( $paymentMode == "Paystack" ){
+                        // Paystack Payment
+
+            elseif( $paymentMode == "Paystack" ){                       
 
               try {
                   
@@ -500,6 +495,7 @@ class ApiAuthController extends Controller
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_gateway'       =>  'Paystack',
+                    'payment_status'       => 'active',
                 ]);
 
                 return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
@@ -515,7 +511,10 @@ class ApiAuthController extends Controller
 
               }
 
-            }elseif( $paymentMode == "CinetPay" ){
+            }
+                        // CinetPay Payment
+
+            elseif( $paymentMode == "CinetPay" ){                       
               
               try {
                            
@@ -549,6 +548,7 @@ class ApiAuthController extends Controller
                       'subscription_start'   =>  Carbon::now(),
                       'subscription_ends_at' =>  $ends_at,
                       'payment_gateway'      =>  'CinetPay',
+                      'payment_status'       => 'active',
                   ]);
 
                 return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
@@ -564,7 +564,10 @@ class ApiAuthController extends Controller
 
               }
 
-            }elseif( $paymentMode == "PayPal" ){
+            }
+                        // PayPal Payment
+
+            elseif( $paymentMode == "PayPal" ){                         
               
               try {
                            
@@ -598,6 +601,7 @@ class ApiAuthController extends Controller
                       'subscription_start'   =>  Carbon::now(),
                       'subscription_ends_at' =>  $ends_at,
                       'payment_gateway'      =>  'PayPal',
+                      'payment_status'       => 'active',
                   ]);
 
                 return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
@@ -611,6 +615,164 @@ class ApiAuthController extends Controller
 
                 return response()->json($response, 200);
 
+              }
+
+            }
+                      
+                      // Stripe Payment
+            elseif( $paymentMode == "stripe"  ){
+
+              try {
+
+                  $stripe = new \Stripe\StripeClient(
+                    env('STRIPE_SECRET')
+                  );
+
+                  $paymentMethod = $request->get('py_id');
+                  $plan          = $request->get('plan');
+                  $apply_coupon  = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
+      
+                  $user_id      = $userid;
+                  $user         = User::where('id',$user_id)->first();
+      
+                  $product_id =  $stripe->plans->retrieve($plan)->product;
+
+                  if( subscription_trails_status() == 1 ){
+                    
+                      $subscription_details = $user->newSubscription( $product_id, $plan )->trialUntil( subscription_trails_day() )->withCoupon($apply_coupon)->create( $paymentMethod );
+      
+                  }else{
+      
+                      $subscription_details = $user->newSubscription( $product_id, $plan )->withCoupon($apply_coupon)->create( $paymentMethod );
+                  }
+
+                    // Retrieve Subscriptions
+                  $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
+                  
+                  if( subscription_trails_status() == 1 ){
+      
+                    $subscription_days_count = $subscription['plan']['interval_count'];
+            
+                    switch ($subscription['plan']['interval']) {
+          
+                      case 'day':
+                        break;
+      
+                      case 'week':
+                        $subscription_days_count *= 7;
+                      break;
+      
+                      case 'month':
+                        $subscription_days_count *= 30;
+                      break;
+      
+                      case 'year':
+                        $subscription_days_count *= 365;
+                      break;
+                    }
+          
+                    $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+                    $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString(); 
+                    $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->addDays($subscription_days_count)->toDateTimeString(); 
+      
+                  }else{
+      
+                    $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+                    $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+                    $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+      
+                  }
+          
+                  $Subscription = Subscription::create([
+                      'user_id'        =>  $user->id,
+                      'name'           =>  $subscription->plan['product'],
+                      'price'          =>  $subscription->plan['amount_decimal'] / 100,   // Amount Paise to Rupees
+                      'stripe_id'      =>  $subscription['id'],
+                      'stripe_status'  =>  $subscription['status'],
+                      'stripe_plan'    =>  $subscription->plan['id'],
+                      'quantity'       =>  $subscription['quantity'],
+                      'countryname'    =>  Country_name(),
+                      'regionname'     =>  Region_name(),
+                      'cityname'       =>  city_name(),
+                      'PaymentGateway' =>  'Stripe',
+                      'trial_ends_at'  =>  $trial_ends_at,
+                      'ends_at'        =>  $trial_ends_at,
+                  ]);
+          
+                  $user_data = array(
+                      'role'                  =>  'subscriber',
+                      'stripe_id'             =>  $subscription['customer'],
+                      'subscription_start'    =>  $Sub_Startday,
+                      'subscription_ends_at'  =>  $Sub_Endday,
+                      'payment_type'          => 'recurring',
+                      'payment_status'        => $subscription['status'],
+                      'payment_gateway'       =>  'Stripe',
+                      'coupon_used'           =>  !is_null($subscription['discount']) ?  $subscription['discount']->promotion_code : null ,
+                  );
+      
+                  if( subscription_trails_status()  == 1 ){
+                      $user_data +=  ['Subscription_trail_status' => 1 ];
+                      $user_data +=  ['Subscription_trail_tilldate' => subscription_trails_day() ];
+                  }
+      
+                  User::where('id',$user_id)->update( $user_data );
+                  
+                  try {
+      
+                    $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+                    $plandetail = SubscriptionPlan::where('plan_id','=',$plan)->first();
+      
+                    $nextPaymentAttemptDate =  Carbon::createFromTimeStamp( $subscription['current_period_end'] )->format('F jS, Y')  ;
+      
+                    \Mail::send('emails.subscriptionmail', array(
+      
+                        'name'          => ucwords($user->username),
+                        'paymentMethod' => $paymentMethod,
+                        'plan'          => ucfirst($plandetail->plans_name),
+                        'price'         => $subscription->plan['amount_decimal'] / 100 ,
+                        'plan_id'       => $subscription['plan']['id'] ,
+                        'billing_interval'  => $subscription['plan']['interval'] ,
+                        'next_billing'      => $nextPaymentAttemptDate,
+                        'subscription_type' => 'recurring',
+                      ), 
+      
+                      function($message) use ($request,$user,$email_subject){
+                        $message->from(AdminMail(),GetWebsiteName());
+                        $message->to($user->email, $user->username)->subject($email_subject);
+                      });
+      
+                    $email_log      = 'Mail Sent Successfully from Become Subscription';
+                    $email_template = "23";
+                    $user_id = $user->id;
+        
+                    Email_sent_log($user_id,$email_log,$email_template);
+      
+                } catch (\Throwable $th) {
+      
+                    $email_log      = $th->getMessage();
+                    $email_template = "23";
+                    $user_id = $user->id;
+        
+                    Email_notsent_log($user_id,$email_log,$email_template);
+                }
+      
+                $response = array(
+                  'status'        => "true",
+                  'message'       => "Registered Successfully & Your Payment done Successfully!",
+                  'next_billing'  => $nextPaymentAttemptDate ,
+                  'Subscription'  => $Subscription ,
+                  'users_role'    => User::where('id',$user_id)->pluck('role')->first() ,
+                  'user_id'       => $user->id,
+                );
+    
+              } catch (\Throwable $th) {
+        
+                  $data = array(
+                    'status'    => "false",
+                    'message'   => $th->getMessage(),
+                  );
+
+                  return response()->json($data, 200);
               }
 
             }
@@ -740,24 +902,6 @@ class ApiAuthController extends Controller
                                         }
                                      }
                        }
-                      //  $plan_details = SubscriptionPlan::where("plan_id","=",$plan)->first();
-                      //  $next_date = $plan_details->days;
-                      //  $current_date = date('Y-m-d h:i:s');
-                      //  $date = Carbon::parse($current_date)->addDays($next_date);
-
-                      // Mail::send('emails.subscriptionmail', array(
-                      //          /* 'activation_code', $user->activation_code,*/
-                      //           'name'=>$user->username,
-                      //     'days' => $plan_details->days,
-                      //     'price' => $plan_details->price,
-                      //     'plan_id' => $plan_details->plan_id,
-                      //     'ends_at' => $date,
-                      //     'created_at' => $current_date), function($message) use ($request,$user) {
-                      //                           $message->from(AdminMail(),'Flicknexs');
-                      //                           $message->to($user->email, $user->username)->subject($request->get('subject'));
-                      //                       });
-
-            // send_password_notification('Notification From '. GetWebsiteName(),'Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
         }
       }
       else{
@@ -4234,14 +4378,14 @@ public function verifyandupdatepassword(Request $request)
               Email_notsent_log($user_id,$email_log,$email_template);
           }
 
-            $data = array(
-              'status'        => "true",
-              'message'       => "Your Payment done Successfully!",
-              'next_billing'  => $nextPaymentAttemptDate ,
-              'Subscription'  => $Subscription ,
-              'users_role'    => User::where('id',$user_id)->pluck('role')->first() ,
-              'user_id'       => $user->id,
-            );
+          $data = array(
+            'status'        => "true",
+            'message'       => "Your Payment done Successfully!",
+            'next_billing'  => $nextPaymentAttemptDate ,
+            'Subscription'  => $Subscription ,
+            'users_role'    => User::where('id',$user_id)->pluck('role')->first() ,
+            'user_id'       => $user->id,
+          );
 
       } catch (\Throwable $th) {
 
