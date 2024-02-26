@@ -1,6 +1,6 @@
 <?php
 
-$data = App\Series::where('active', '=', '1')
+$data = App\Series::where('active', '1')->limit(15)
     ->get()
     ->map(function ($item) {
         $item['image_url'] = URL::to('/public/uploads/images/' . $item->image);
@@ -11,25 +11,28 @@ $data = App\Series::where('active', '=', '1')
         $item['Series_Category'] = App\SeriesCategory::select('category_id', 'series_id', 'name', 'slug')
             ->join('series_genre', 'series_genre.id', '=', 'series_categories.category_id')
             ->where('series_id', $item->id)
+            ->limit(15)
             ->get();
 
         $item['Series_Language'] = App\SeriesLanguage::select('language_id', 'series_id', 'name', 'slug')
             ->join('languages', 'languages.id', '=', 'series_languages.language_id')
             ->where('series_id', $item->id)
+            ->limit(15)
             ->get();
 
         $item['Series_artist'] = App\Seriesartist::select('artist_id', 'artist_name as name', 'artist_slug')
             ->join('artists', 'artists.id', '=', 'series_artists.artist_id')
             ->where('series_id', $item->id)
+            ->limit(15)
             ->get();
 
-        $item['season'] = App\SeriesSeason::where('series_id', $item->id)->get();
+        $item['season'] = App\SeriesSeason::where('series_id', $item->id)->limit(15)->get();
 
-        $item['Episode_details'] = $item->Series_depends_episodes;
+        $item['Episode_details'] = $item->theme4_Series_depends_episodes;
 
-        $item['Episode_Traler_details'] = $item->Series_depends_episodes;
+        $item['Episode_Traler_details'] = $item->theme4_Series_depends_episodes;
 
-        $item['Episode_Similar_content'] = App\Episode::where('series_id','!=',$item->id)->where('status','1')->where('active',1)->get();
+        $item['Episode_Similar_content'] = App\Episode::where('series_id','!=',$item->id)->where('status','1')->where('active',1)->limit(15)->get();
 
         return $item;
     });
@@ -42,7 +45,7 @@ $data = App\Series::where('active', '=', '1')
             <div class="row">
                 <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title mar-left"><a href="#">Trending</a></h4>
+                        <h4 class="main-title mar-left"><a href="#">{{ optional($order_settings_list[29])->header_name }}</a></h4>
                     </div>
 
                     <div class="trending-contens">

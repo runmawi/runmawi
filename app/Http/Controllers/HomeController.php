@@ -201,7 +201,7 @@ class HomeController extends Controller
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')
-                    ->take(10)
+                    ->limit(15)
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')
@@ -362,7 +362,7 @@ class HomeController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->get();
             $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')
-                ->take(10)
+                ->limit(15)
                 ->orderBy('created_at', 'DESC')
                 ->get();
             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')
@@ -1045,7 +1045,7 @@ class HomeController extends Controller
                             $most_watch_user = $most_watch_user->where('age_restrict', '<', 10);
                         }
                         $most_watch_user = $most_watch_user->orderByRaw('count DESC')
-                            ->limit(20)
+                            ->limit(15)
                             ->get();
                     }
                     else
@@ -1093,7 +1093,7 @@ class HomeController extends Controller
                             $top_most_watched = $top_most_watched->where('age_restrict', '<', 10);
                         }
                         $top_most_watched = $top_most_watched->orderByRaw('count DESC')
-                            ->limit(20)
+                            ->limit(15)
                             ->get();
                     }
                     else
@@ -1119,7 +1119,7 @@ class HomeController extends Controller
                         {
                             $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 10);
                         }
-                        $Most_watched_country = $Most_watched_country->where('country', $countryName)->whereNotIn('videos.id', $blocking_videos)->limit(20)
+                        $Most_watched_country = $Most_watched_country->where('country', $countryName)->whereNotIn('videos.id', $blocking_videos)->limit(15)
                             ->get();
                     }
                     else
@@ -1228,7 +1228,7 @@ class HomeController extends Controller
                         ->orderBy('created_at', 'DESC')
                         ->get();
                     $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')
-                        ->take(10)
+                        ->limit(15)
                         ->orderBy('created_at', 'DESC')
                         ->get();
                     $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')
@@ -2019,7 +2019,7 @@ class HomeController extends Controller
                         $most_watch_user = $most_watch_user->where('age_restrict', '<', 10);
                     }
                     $most_watch_user = $most_watch_user->orderByRaw('count DESC')
-                        ->limit(20)
+                        ->limit(15)
                         ->get();
                 }
                 else
@@ -2066,7 +2066,7 @@ class HomeController extends Controller
                         $top_most_watched = $top_most_watched->where('age_restrict', '<', 10);
                     }
                     $top_most_watched = $top_most_watched->orderByRaw('count DESC')
-                        ->limit(20)
+                        ->limit(15)
                         ->get();
                 }
                 else
@@ -2092,7 +2092,7 @@ class HomeController extends Controller
                     {
                         $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 10);
                     }
-                    $Most_watched_country = $Most_watched_country->where('recent_views.country_name', $countryName)->whereNotIn('videos.id', $blocking_videos)->limit(20)
+                    $Most_watched_country = $Most_watched_country->where('recent_views.country_name', $countryName)->whereNotIn('videos.id', $blocking_videos)->limit(15)
                         ->get();
                 }
                 else
@@ -2202,7 +2202,7 @@ class HomeController extends Controller
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 $latest_audios = Audio::where('active', '=', '1')->where('status', '=', '1')
-                    ->take(10)
+                    ->limit(15)
                     ->orderBy('created_at', 'DESC')
                     ->get();
                 $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')
@@ -3285,7 +3285,7 @@ class HomeController extends Controller
             
             $Most_watched_country = $Most_watched_country->where('recent_views.country_name', Country_name())
                             ->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$LanguageVideo)
-                            ->limit(10)->get()->map(function ($item) {
+                            ->limit(15)->get()->map(function ($item) {
 
                             $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
                                                         ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
@@ -3303,10 +3303,10 @@ class HomeController extends Controller
                             ->groupBy('video_id');
 
                             if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
-                                $top_most_watched = $Most_watched_country->whereNotIn('videos.id', Block_videos());
+                                $top_most_watched = $top_most_watched->whereNotIn('videos.id', Block_videos());
                             }
 
-            $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(30)->get();
+            $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(15)->get();
 
             $video_banners = Video::where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
                                         ->where('draft', '1')->where('status', '1')
