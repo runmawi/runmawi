@@ -174,12 +174,13 @@ class StripePaymentController extends Controller
 
                 $user_data = array(
                     'role'                  =>  'subscriber',
-                    'stripe_id'             =>  $subscription['customer'],
+                    'stripe_id'             =>  $subscription['id'],
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_type'          => 'recurring',
                     'payment_status'        => $subscription['status'],
-                    'coupon_used'    =>  !is_null($subscription['discount']) ?  $subscription['discount']->promotion_code : null ,
+                    'payment_gateway'       =>  'Stripe',
+                    'coupon_used'           =>  !is_null($subscription['discount']) ?  $subscription['discount']->promotion_code : null ,
                 );
 
                 if( subscription_trails_status()  == 1 ){
@@ -800,7 +801,7 @@ class StripePaymentController extends Controller
                     'from_time'  => Carbon::now()->format('Y-m-d H:i:s a'),
                     'to_time'    => $to_time,
                     'moderator_id' => $moderator_id,
-                    'payment_gateway'  => 'Paydunya',
+                    'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
                 ]);
 

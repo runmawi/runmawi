@@ -1,11 +1,11 @@
 <?php
 
-$data = App\SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
+$data = App\SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
 
 $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
             ->whereJsonContains('network_id', [(string)$item->id])
 
-            ->latest('series.created_at')->get()->map(function ($item) { 
+            ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
     
     $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
     $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;

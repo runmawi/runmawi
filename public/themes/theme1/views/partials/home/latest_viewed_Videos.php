@@ -194,9 +194,10 @@
                             <?php
                             $Category_Thumbnail = [];
                             foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
-                                $Category_Thumbnail[] = $CategoryThumbnail;
+                                    $Category_Thumbnail[] = $CategoryThumbnail;
+                                    echo (__($CategoryThumbnail).' ');
                             }
-                            echo implode(',' . ' ', $Category_Thumbnail);
+                            // echo implode(',' . ' ', $Category_Thumbnail);
                             ?>
                         </span>
                         <?php } ?>

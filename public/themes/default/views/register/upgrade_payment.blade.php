@@ -102,7 +102,8 @@
         .toggle{
             display: flex;
             justify-content: space-between;
-    width: 43%;
+            width: 43%;
+            align-items:center;
         }
     /* Create an active/current tablink class */
     .tab button.active {
@@ -500,6 +501,9 @@ i.fa.fa-google-plus {
     }
 .ambk{
 background-color: #000;padding: 10px!important;}
+    body.light-theme h4, body.light-theme p, body.light-theme h2 {
+        color: <?php echo GetLightText(); ?> !important;
+    }
 </style>
 
 <script>
@@ -538,9 +542,9 @@ background-color: #000;padding: 10px!important;}
         <div class="row justify-content-center">
             <div class="col-lg-12 col-md-12 p-0">
                 <div class="flick1">
-                 <div class="small-heading text-white">{{ __('Step 2 of') }}<span class="ml-2">2</span></div>
+                 <p class="small-heading text-white">{{ __('Step 2 of') }}<span class="ml-2">2</span></p>
                      <p class="text-white" style="font-size: 16px;">{{ __('Welcome') }} {{ Auth::user()->username ? Auth::user()->username  : " "  }}, </p>
-                     <div class="medium-heading text-white pb-3"> {{  $signup_step2_title  }} </div>
+                     <h4 class="medium-heading text-white pb-3"> {{  $signup_step2_title  }} </h4>
 
                     <div class="col-md-12 p-0">
                         <p class="meth"> {{ __('Plan Payment Method ') }} </p>
@@ -603,7 +607,7 @@ background-color: #000;padding: 10px!important;}
                                             <div class="col-md-12 ambk p-0 text-center">
                                                 <div>
                                                     <h6 class=" font-weight-bold"> {{ $plan->plans_name  }} </h6>
-                                                    <p class="text-white mb-0"> {{ ($CurrencySetting == 1) ? Currency_Convert($plan->price) : $plan->price }} {{ __('plan') }}Membership</p>
+                                                    <h6 class="text-white mb-0"> {{ ($CurrencySetting == 1) ? Currency_Convert($plan->price) : $plan->price }} {{ __('plan') }}Membership</h6>
                                                 </div>
                                             </div>
                                             
@@ -628,7 +632,7 @@ background-color: #000;padding: 10px!important;}
                                         <div class="row dg align-items-center mb-4" >
                                             <div class="col-md-7 p-0">
                                                 <h4 class="text-black font-weight-bold"> {{ $AdminLifeTimeSubscription  ? $AdminLifeTimeSubscription->name : " " }} </h4>
-                                                <p> {{ $AdminLifeTimeSubscription  ? $AdminLifeTimeSubscription->name : " " . " Membership " }} </p>
+                                                <h6> {{ $AdminLifeTimeSubscription  ? $AdminLifeTimeSubscription->name : " " . " Membership " }} </h6>
                                             </div>
                                             <div class="vl "></div>
                                             <div class="col-md-4 p-2" >
@@ -1285,7 +1289,7 @@ background-color: #000;padding: 10px!important;}
                                             
                                             html +=   '<div class="col-md-12 ambk p-0 text-center">';
                                                 html +=   '<h6 class="font-weight-bold">  '+ plan_data.plans_name +'   </h6>';
-                                                html +=   '<p class="text-white mb-0">' + currency_symbol + plan_data.price + ' Membership </p>';
+                                                html +=   '<h6 class="text-white mb-0">' + currency_symbol + plan_data.price + ' Membership </h6>';
                                             html += '</div>' ;
 
                                             html += '<div class="col-md-12 blk" >' ;

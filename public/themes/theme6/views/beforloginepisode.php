@@ -148,7 +148,7 @@
          <?php
             else: ?>
          <form method="get" action="<?=URL::to('signup') ?>">
-             <div class=" mt-3">
+             <div class="container-fluid mt-3">
             <button id="button" class="btn btn-primary">Subscribe to view more <?php if ($series->access == 'subscriber'): ?><?php
                elseif ($series->access == 'registered'): ?>for Free!<?php
                endif; ?></button></div>
@@ -183,7 +183,7 @@
                 </div>
                 <?php if( Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber' 
                      || Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access == 'registered'  ):  ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                     <!-- <button type="button"
                         class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button> -->
                     <form method="get" action="<?= URL::to('/signup') ?>">
@@ -191,13 +191,13 @@
                     </form>
                 </div>
                 <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                 <form method="get" action="<?= URL::to('/signup') ?>">
                         <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
                     </form>
                 </div>
                 <?php else: ?>
-                <div class=" mt-3">
+                <div class="container-fluid mt-3">
                     <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                         <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
                             <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
@@ -219,10 +219,10 @@
    ?>">
 <br>
 
-<div class="row">
+<div class="">
         <div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
             <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb pl-0">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
@@ -412,8 +412,8 @@
                         <!-- Comment Section -->
                
       <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
-       <div class="row">
-           <div class=" container-fluid video-list you-may-like overflow-hidden">
+       <div class="">
+           <div class="  video-list you-may-like overflow-hidden">
                <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                <?php include('comments/index.blade.php');?>
            </div>
@@ -424,7 +424,7 @@
          <h4 class="main-title">Season</h4>
       </div>
 
-      <div class="col-sm-12 overflow-hidden">
+      <div class="overflow-hidden">
          <div class="favorites-contens ml-2">
             <ul class="favorites-slider list-inline row mb-0" >
                <?php  

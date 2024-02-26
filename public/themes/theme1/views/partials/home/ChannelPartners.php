@@ -50,7 +50,7 @@
             </div>
             <a href="<?php echo URL::to('/channel'.'/'.$channel->channel_slug) ?> ">
 
-              <h6><?php echo __($channel->channel_name); ?></h6>
+              <h6><?php echo (__($channel->channel_name)) ?></h6>
               </a>
           
         </li>
