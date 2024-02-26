@@ -358,7 +358,7 @@
                 <div class="row sig ">
                     <div class="col-md-4 mt-3 pt-3">
                         <h4 class="main-title mb-4">{{ __('My Account') }}</h4>
-                        <p class="text-white">{{ __('Edit your name or change') }}<br>{{ __('your password') }}.</p>
+                        <p class="text-white">{{ (__('Edit your name or change your password.')) }}</p>
                         <ul class="edit p-0 mt-5">
                             <li>
                                 <div class="d-flex showSingle" target="1">

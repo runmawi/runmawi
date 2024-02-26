@@ -241,7 +241,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
         <div class="bc-icons-2">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="black-text"
-                            href="<?= route('series.tv-shows') ?>"><?= ucwords('Series') ?></a>
+                            href="<?= route('series.tv-shows') ?>"><?= ucwords (__('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
 
@@ -250,7 +250,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     <li class="breadcrumb-item">
                         <a class="black-text"
                             href="<?= route('SeriesCategory', [$series_category_name->categories_slug]) ?>">
-                            <?= ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                            <?= ucwords (__($series_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
                         </a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                     </li>
@@ -399,7 +399,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             </div>
 
 
-            <h2 id="tags">Tags:
+            <h2 id="tags"><?= __('Tags') ?>:
                 <?php if(isset($episode->tags)) {
 		foreach($episode->tags as $key => $tag): ?>
 
