@@ -1527,7 +1527,7 @@ class TvshowsController extends Controller
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 
-        $series_data = SeriesNetwork::orderBy('order')->get()->map(function ($item) {
+        $series_data = SeriesNetwork::orderBy('order')->limit(15)->get()->map(function ($item) {
             $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : default_vertical_image_url() ;
             $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : default_horizontal_image_url();
             return $item;

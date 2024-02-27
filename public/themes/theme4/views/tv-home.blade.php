@@ -9,7 +9,7 @@
     $SeriesGenre = App\SeriesGenre::all();
 
     $Slider_array_data = [
-        'Episode_sliders' => $banner,
+        'Episode_sliders' => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get(),
     ];
 
 @endphp
@@ -37,12 +37,14 @@
 
     @php
         $sections = array(
-                        ['view' => 'latest-series','data' => $latest_series],
-                        ['view' => 'free_content', 'data' => $free_Contents], 
-                        ['view' => 'latest-episodes', 'data' => $latest_episodes], 
-                        ['view' => 'featured-episodes', 'data' => $featured_episodes]
+                        ['view' => 'latest-series','data' => !empty($latest_series) ? $latest_series->slice(0,15) : $latest_series  ],
+                        ['view' => 'free_content', 'data' => !empty($free_Contents) ? $free_Contents->slice(0,15) : $free_Contents ], 
+                        ['view' => 'latest-episodes', 'data' => !empty($latest_episodes) ? $latest_episodes->slice(0,15) : $latest_episodes  ], 
+                        ['view' => 'featured-episodes', 'data' => !empty($featured_episodes) ? $featured_episodes->slice(0,15): $featured_episodes ]
                     );
+                    
     @endphp
+
 
     @foreach ($sections as $section)
         <section id="iq-favorites">
@@ -67,7 +69,7 @@
                         <div class="col-sm-12">
 
                             @if ($value->video_name == 'Series_Genre')
-                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', [ 'data' => $SeriesGenre, 'order_settings_list' => $order_settings_list, ])->content() !!}
+                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', [ 'data' => !empty($SeriesGenre) ? $SeriesGenre->slice(0,15) : $SeriesGenre , 'order_settings_list' => $order_settings_list, ])->content() !!}
                             @endif
 
                             @if ($value->video_name == 'Series_Genre_videos')
@@ -97,5 +99,5 @@
 </script>
 
 @php
-    include public_path('themes/theme4/views/footer.blade.php');
+    include public_path('themes/theme4/views/footer.blade.php'); 
 @endphp

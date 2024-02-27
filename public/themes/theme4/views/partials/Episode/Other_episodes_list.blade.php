@@ -12,7 +12,8 @@
             <ul class="favorites-slider list-inline row mb-0">
                 <?php  
                 foreach($season as $key => $seasons):
-                    foreach($seasons->episodes as $episode_key => $episodes):
+                    $season_episode =  !empty($seasons->episodes) ? $seasons->episodes->slice(0,15) : $seasons->episodes ;
+                    foreach( $season_episode as $episode_key => $episodes):
                         if($episodes->id != $episode->id): ?>
                             <li class="slide-item">
                                 <a href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
@@ -42,7 +43,9 @@
 <!-- Model -->
 <?php  
 foreach($season as $key => $seasons):
-    foreach($seasons->episodes as $episode_key => $episodes):
+    $season_episode =  !empty($seasons->episodes) ? $seasons->episodes->slice(0,15) : $seasons->episodes ;
+
+    foreach( $season_episode as $episode_key => $episodes):
         if($episodes->id != $episode->id): ?>
             <div class="modal fade info_model" id=<?= "Other-episode-videos-Modal-".$episode_key ?> tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
