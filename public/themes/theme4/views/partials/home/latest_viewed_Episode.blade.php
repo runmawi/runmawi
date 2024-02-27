@@ -8,6 +8,7 @@ if (Auth::guest() != true) {
         ->join('series', 'series.id', '=', 'episodes.series_id')
         ->where('recent_views.user_id', Auth::user()->id)
         ->groupBy('recent_views.episode_id')
+        ->limit(15)
         ->get();
 } else {
     $data = [];

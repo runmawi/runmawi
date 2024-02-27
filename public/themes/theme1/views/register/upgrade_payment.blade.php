@@ -518,8 +518,10 @@
         }
 
         .blk {
-            height: 200px;
             padding: 10px;
+            height: auto;
+            max-height: 510px;
+            min-height: 300px;
         }
 
         .ambk {
@@ -633,7 +635,7 @@
                                             $plan_name = $plan->plans_name;
                                         @endphp
 
-                                        <div style="" class="col-md-4 plan_details p-0" data-plan-id="{{ 'active' . $plan->id }}" data-plan-price="{{ $CurrencySetting == 1 ? (Currency_Convert($plan->price)) : currency_symbol().$plan->price }}"
+                                        <div style="" class="col-md-4 plan_details p-0" data-plan-id="{{ 'active' . $plan->id }}" data-plan-price="{{ $CurrencySetting == 1 ? (Currency_Convert($plan->price)) : currency_symbol(). round($plan->price,2) }}"
                                             data-plan_id={{ $plan->plan_id }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
 
 
@@ -643,7 +645,7 @@
                                                     <div class="col-md-12 ambk p-0 text-center">
                                                         <div>
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
-                                                            <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : currency_symbol(). $plan->price }} Membership</p>
+                                                            <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol(). round($plan->price,2) }} Membership</p>
                                                         </div>
                                                     </div>
 
@@ -673,7 +675,7 @@
                                             @if (  $CurrencySetting == 1 && $SubscriptionPlan )
                                                 {{Currency_Convert($SubscriptionPlan->price) }}
                                             @elseif($SubscriptionPlan )
-                                                {{  currency_symbol() . $SubscriptionPlan->price  }}
+                                                {{  currency_symbol() . round($SubscriptionPlan->price,2 )  }}
                                             @else
                                                 {{'0:0'}}
                                             @endif

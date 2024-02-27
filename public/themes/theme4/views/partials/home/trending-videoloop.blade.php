@@ -20,7 +20,7 @@ $data = App\Video::select('id','title','slug','year','rating','access','publish_
                             $data = $data->whereBetween('videos.age_restrict', [0, 12]);
                         }
 
-$data = $data->latest()->limit(30)->get();
+$data = $data->latest()->limit(15)->get();
                                                                     
 @endphp
 

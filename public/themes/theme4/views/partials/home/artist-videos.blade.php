@@ -1,7 +1,7 @@
 @php
     $check_Kidmode = 0 ;
 
-    $data =  App\Artist::get()->map(function($item) use($check_Kidmode){
+    $data =  App\Artist::limit(15)->get()->map(function($item) use($check_Kidmode){
 
         // Videos 
 
@@ -20,7 +20,7 @@
                                                 $item['artist_depends_videos']->whereBetween('videos.age_restrict', [0, 12]);
                                             }
 
-        $item['artist_depends_videos'] = $item['artist_depends_videos']->latest()->limit(30)->get()->map(function ($item) {
+        $item['artist_depends_videos'] = $item['artist_depends_videos']->latest()->limit(15)->get()->map(function ($item) {
                                         $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
                                         $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
                                         $item['source']           = 'series';
@@ -33,7 +33,7 @@
 
         $item['artist_depends_series'] = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
-                                    ->where('active', '1')->whereIn('id',$Seriesartist)->latest()->limit(30)->get()
+                                    ->where('active', '1')->whereIn('id',$Seriesartist)->latest()->limit(15)->get()
                                     ->map(function ($item) {
                                         $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
                                         $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
@@ -50,7 +50,7 @@
 
         $item['artist_depends_series'] = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
                             'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
-                            ->where('active', '1')->whereIn('id',$Seriesartist)->latest()->limit(30)->get()
+                            ->where('active', '1')->whereIn('id',$Seriesartist)->latest()->limit(15)->get()
                             ->map(function ($item) {
                                 $item['image_url']        = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
                                 $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
@@ -74,7 +74,7 @@
                     $item['artist_depends_audios'] = $item['artist_depends_audios']->whereNotIn('id',Block_audios());
                 }
 
-            $item['artist_depends_audios'] = $item['artist_depends_audios']->limit(30)->latest()->get()->map(function ($item) {
+            $item['artist_depends_audios'] = $item['artist_depends_audios']->limit(15)->latest()->get()->map(function ($item) {
                             $item['image_url'] = $item->image != null ? URL::to('/public/uploads/audios/'.$item->image) : default_vertical_image_url() ;
                             $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/audios/'.$item->player_image) : default_horizontal_image_url() ; 
                             return $item;

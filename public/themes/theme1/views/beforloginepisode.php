@@ -396,9 +396,9 @@ elseif (isset($episodeprev))
       <?php endif; ?>
 
 		<div class="iq-main-header container-fluid d-flex align-items-center justify-content-between">
-  <h4 class="main-title"><?= ('Season') ?></h4>                      
+  <h4 class="main-title"><?= __('Season') ?></h4>                      
 </div>
-<div class="favorites-contens">
+<div class="favorites-contens container-fluid">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php
 foreach ($season as $key => $seasons):
@@ -409,14 +409,16 @@ foreach ($season as $key => $seasons):
                 ->series_title->slug . '/' . $episodes->slug; ?>">
 				<div class="thumbnail-overlay"></div>
 <!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
-				<img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" width="200">
+            <div class="img-box">
+              <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" width="200">
+            </div>				  
 				<div class="details">
-				<h4><?=$episodes->title; ?> <span><br><?=gmdate("H:i:s", $episodes->duration); ?></span></h4>
+				<h6><?=$episodes->title; ?> <span><br><?=gmdate("H:i:s", $episodes->duration); ?></span></h6>
 				</div></a>
               <div class="block-contents">
-			  <p class="date" style="color:#fff;"><?=date("F jS, Y", strtotime($episodes->created_at)); ?>
+			  <small class="date" style="color:#fff;"><?=date("F jS, Y", strtotime($episodes->created_at)); ?>
 				<?php if ($episodes->access == 'guest'): ?>
-				<span class="label label-info"><?= __('Free') ?></span>
+				<span class="label label-info"><?= (__('Free')) ?></span>
 				<?php
             elseif ($episodes->access == 'subscriber'): ?>
 				<span class="label label-success"><?= __('Subscribers Only') ?></span>
@@ -425,7 +427,7 @@ foreach ($season as $key => $seasons):
 				<span class="label label-warning"><?= __('Registered Users') ?></span>
 				<?php
             endif; ?>
-				</p>
+        </small>
 				<p class="desc"><?php if (strlen($episodes->description) > 90)
             {
                 echo substr($episodes->description, 0, 90) . '...';

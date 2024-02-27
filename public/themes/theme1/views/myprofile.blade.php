@@ -358,7 +358,7 @@
                 <div class="row sig ">
                     <div class="col-md-4 mt-3 pt-3">
                         <h4 class="main-title mb-4">{{ __('My Account') }}</h4>
-                        <p class="text-white">{{ __('Edit your name or change') }}<br>{{ __('your password') }}.</p>
+                        <p class="text-white">{{ (__('Edit your name or change your password.')) }}</p>
                         <ul class="edit p-0 mt-5">
                             <li>
                                 <div class="d-flex showSingle" target="1">
@@ -561,36 +561,36 @@
                                 <div class="col-sm-6 p-0">
                                     @if ( $user->role == "registered" )
                                         <label>
-                                            <h5 class="mb-4">{{ ucwords(__('Registered')) .' as on '. $user->created_at  }}</h5>
+                                            <h5 class="mb-4">{{ (__(ucwords('Registered'))) .' as on '. $user->created_at  }}</h5>
                                         </label>
 
-                                        <p class="mb-0"> {{ ucwords('To watch and enjoy the most latest video & live stream, Get subscribers') }}.</p> <br>
+                                        <p class="mb-0"> {{ (__(ucwords('To watch and enjoy the most latest video & live stream, Get subscribers'))) }}.</p> <br>
 
                                         <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
 
                                     @elseif( $user->role == "subscriber")
 
                                         <label>
-                                            <h5 class="mb-4">{{ ucwords(__('subscriber')) .' as on '. $user->subscription_start }}</h5>
+                                            <h5 class="mb-4">{{ (__(ucwords('subscriber'))) .' as on '. $user->subscription_start }}</h5>
                                         </label>
 
                                         <div class="d-flex justify-content-between mt-2">
-                                            <span class="text-light font-size-13">{{ ucwords(__('subscription start date')) }}</span>
+                                            <span class="text-light font-size-13">{{ (__(ucwords('subscription start date'))) }}</span>
                                             <p class="mb-0">{{ $user->subscription_start ?? '-' }}</p>
                                         </div>
 
                                         <div class="d-flex justify-content-between mt-2">
-                                            <span class="text-light font-size-13">{{ ucwords(__('subscription End date')) }}</span>
+                                            <span class="text-light font-size-13">{{ (__(ucwords('subscription End date'))) }}</span>
                                             <p class="mb-0">{{ $user->subscription_ends_at ?? '-' }}</p>
                                         </div>
 
                                         <div class="d-flex justify-content-between mt-2">
-                                            <span class="text-light font-size-13">{{ ucwords(__('Subscription Payment through')) }}</span>
+                                            <span class="text-light font-size-13">{{ (__(ucwords('Subscription Payment through'))) }}</span>
                                             <p class="mb-0">{{ $user->payment_gateway ?? '-' }}</p>
                                         </div>
 
                                         <div class="d-flex justify-content-between mt-2">
-                                            <span class="text-light font-size-13">{{ ucwords(__('subscription Payment status')) }}</span>
+                                            <span class="text-light font-size-13">{{ (__(ucwords('subscription Payment status'))) }}</span>
                                             <p class="mb-0">{{ $user->payment_status ?? '-' }}</p>
                                         </div>
 
@@ -603,14 +603,14 @@
                                             ?>
 
                                             <div class="d-flex justify-content-between mt-2">
-                                                <span class="text-light font-size-13">{{ ucwords(__('subscription remaining Days')) }}</span>
+                                                <span class="text-light font-size-13">{{ (__(ucwords('subscription remaining Days'))) }}</span>
                                                 <p class="mb-0">{{ $remainingDays ?? '-' }}</p>
                                             </div>
 
                                         @endif
                                             
                                         <div class="d-flex justify-content-between mt-2">
-                                            <span class="text-light font-size-13">{{ ucwords(__('Current Plans')) }}</span>
+                                            <span class="text-light font-size-13">{{ (__(ucwords('Current Plans'))) }}</span>
                                                 <?php 
                                                         $current_plan = App\Subscription::join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
                                                                         ->where('subscriptions.user_id',$user->id)->where('stripe_id',$user->stripe_id)
@@ -625,7 +625,7 @@
                                             </div>
                                         @else
 
-                                            <p class="mb-0"> {{ ucwords('To watch and enjoy the most latest video & live stream, Get subscribers') }}.</p> <br>
+                                            <p class="mb-0"> {{ (__(ucwords('To watch and enjoy the most latest video & live stream, Get subscribers'))) }}.</p> <br>
 
                                             <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
 
