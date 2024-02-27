@@ -307,6 +307,7 @@ else
                         <?php } ?>
        <p style=";font-size: 130%;color: white;"><?=$episode->title
 ?></p>
+<p style="color:white !important"><?php echo $series->details; ?></p>
 		
 	</div>
                 
