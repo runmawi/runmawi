@@ -518,8 +518,10 @@
         }
 
         .blk {
-            height: 200px;
             padding: 10px;
+            height: auto;
+            max-height: 510px;
+            min-height: 300px;
         }
 
         .ambk {
