@@ -12,7 +12,7 @@
             <article class="block expand">
                 <a class="block-thumbnail" href="<?php echo URL::to('/').'/category/'.$subcategory->id;?>">
                    
-                    <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$subcategory->image;?>">
+                    <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$subcategory->image;?>" style="width:200px;">
                 </a>
                <div class="block-contents">
                     <p class="movie-title padding"><?php echo __($subcategory->name);?></p>
@@ -26,3 +26,9 @@
 @endforeach
 
 <?php } ?>
+
+<style>
+  .col-lg-3{
+    max-width:20%;
+  }
+</style>

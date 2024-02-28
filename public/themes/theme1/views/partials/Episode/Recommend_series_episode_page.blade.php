@@ -1,5 +1,5 @@
 <div class="iq-main-header container-fluid d-flex align-items-center justify-content-between">
-    <h4 class="main-title"> <?= __('Series') ?></h4>
+    <h6 class="main-title"> <?= __('Series') ?></h6>
 </div>
 
 <div class="favorites-contens container-fluid">
