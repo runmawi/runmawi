@@ -564,9 +564,9 @@ class TvshowsController extends Controller
                 } elseif($PpvPurchase > 0){
                 $free_episode = 1;
                 }
-                // elseif (empty($ppv_price) || $season_details->access == 'free') {
-                // $free_episode = 1;
-                // }
+                elseif (Auth::guest() && $series->access == 'guest' && $season_details->access == 'free') {
+                $free_episode = 1;
+                }
                 else {
                     $free_episode = 0;
                 } 
