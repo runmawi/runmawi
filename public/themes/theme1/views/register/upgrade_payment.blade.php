@@ -562,14 +562,14 @@
                 <div class="col-lg-8 col-md-6 p-0">
                     <div class="flick1">
                         
-                        <div class="small-heading text-white">Step 2 of<span class="ml-2">2</span></div>
+                        <div class="small-heading text-white">{{ __('Step 2 of') }}<span class="ml-2">2</span></div>
 
-                        <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
+                        <p class="text-white" style="font-size: 16px;">{{ __('Welcome') }} {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
                         
                         <div class="medium-heading text-white pb-3"> {{ $signup_step2_title }} </div>
 
                         <div class="col-md-12 p-0">
-                            <p class="meth"> Payment Method</p>
+                            <p class="meth"> {{ (__('Payment Method')) }}</p>
                             <div class="d-flex">
 
                                             <!-- Stripe -->
@@ -577,7 +577,7 @@
                                 @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                     <div class="align-items-center ">
                                         <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe">
-                                        <label class="ml-2"><p> {{ $stripe_label }} </p> </label> <br />
+                                        <label class="ml-2"><p> {{ __($stripe_label) }} </p> </label> <br />
                                     </div>
                                 @endif
                                 
@@ -666,10 +666,10 @@
                                                 {{-- Summary --}}
                             <div class="col-md-12 mt-5" id="payment_card_scroll">
 
-                                <h4>Summary</h4>
+                                <h4>{{ __('Summary') }}</h4>
 
                                 <div class="bg-white mt-4 dgk">
-                                    <h4> Due today: 
+                                    <h4>{{ __('Due today') }}:
                                         <span class='plan_price Summary'>
 
                                             @if (  $CurrencySetting == 1 && $SubscriptionPlan )
@@ -683,7 +683,7 @@
                                         </span> 
                                     </h4>
                                     <hr />
-                                    <p class="text-center mt-3">All state sales taxes apply</p>
+                                    <p class="text-center mt-3">{{ __('All state sales taxes apply') }}</p>
                                 </div>
 
                                 <p class="text-white mt-3 dp">
@@ -695,7 +695,7 @@
                            
                             {{-- Stripe --}}  
                             <div class="col-md-12 stripe_payment">
-                                <button type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 stripe_button processing_alert"> Pay Now</button>
+                                <button type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 stripe_button processing_alert"> {{ __('Pay Now') }}</button>
                             </div>
                            
 
@@ -703,7 +703,7 @@
                             <div class="col-md-12 Razorpay_payment">
                                 <button type="submit"
                                     class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert">
-                                    Pay Now
+                                    {{ __('Pay Now') }}
                                 </button>
                             </div>
 
@@ -711,7 +711,7 @@
                             <div class="col-md-12 paystack_payment">
                                 <button type="submit"
                                     class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert">
-                                    Pay Now
+                                    {{ __('Pay Now') }}
                                 </button>
                             </div>
 
@@ -719,7 +719,7 @@
                             <div class="col-md-12 cinetpay_payment">
                                 <button onclick="cinetpay_checkout()" data-subscription-price='100' type="submit"
                                     class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button">
-                                    Pay Now
+                                    {{ __('Pay Now') }}
                                 </button>
                             </div>
 
