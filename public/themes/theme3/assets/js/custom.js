@@ -197,6 +197,7 @@ Index Of Script
 			}
 			]
 		});
+		
 
 		jQuery('#top-ten-slider').slick({
 			slidesToShow: 1,

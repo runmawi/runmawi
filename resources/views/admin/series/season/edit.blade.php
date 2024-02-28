@@ -55,7 +55,7 @@
                         <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
                             <option value= "" >Select IOS PPV Price: </option>
                             @foreach($InappPurchase as $Inapp_Purchase)
-                                <option value="{{ $Inapp_Purchase->product_id }}"  @if(!empty($season->product_id) && $season->product_id == $Inapp_Purchase->product_id){{ 'selected' }} @endif > {{ $Inapp_Purchase->plan_price }} </option>
+                                <option value="{{ $Inapp_Purchase->product_id }}"  @if(!empty($season->ios_product_id) && $season->ios_product_id == $Inapp_Purchase->product_id){{ 'selected' }} @endif > {{ $Inapp_Purchase->plan_price }} </option>
                             @endforeach
                         </select>
                     </div>

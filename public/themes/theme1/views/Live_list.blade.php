@@ -24,7 +24,7 @@
                     <div class="col-sm-12 overflow-hidden">
                             <div class="iq-main-header d-flex align-items-center justify-content-between">
                                 <a href="<?php echo URL::to('/LiveCategory/').'/'.$category->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
-                                    <h4 class="movie-title"> {{ $category->name }} </h4>
+                                    <h4 class="movie-title"> {{ __($category->name) }} </h4>
                                 </a>
                             </div>
 

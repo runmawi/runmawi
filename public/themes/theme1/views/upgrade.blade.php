@@ -251,14 +251,14 @@ body.loading .overlay{
         <div class="container">
             <div class="row sig ">
                 <div class="col-md-4 mt-3 pt-3">
-                    <h4 class="main-title mb-4">{{ __('My Account') }}</h4>
+                    <h4 class="main-title mb-4">{{ (__('My Account')) }}</h4>
                     <!-- <p class="text-white">Edit your name or change<br>your password.</p> -->
                     <ul class="edit p-0 mt-5">
                         
                         <li><div class="d-flex showSingle" target="2">
                                 <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="text-white">
                             <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
-                            {{ __('Plan') }} 
+                            {{ (__('Plan')) }} 
                                 </a>
 </div></li>
                         

@@ -759,7 +759,6 @@
    body.light-theme ul.navbar-nav{
       background-color: <?php echo GetLightBg(); ?>!important;  
       color: <?php echo GetLightText(); ?>;
-      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
    .light-theme.onclickbutton_menu{
       color: <?php echo GetLightText(); ?>;
@@ -977,7 +976,7 @@ div#main_nav {
 
 }
 @media (min-width:851px) {
-    .fa-bar-screen{
+   button.navbar-toggler.d-block.border-0.p-0.mr-3.onclickbutton_menu{
       display:none;
     }
    
@@ -1410,10 +1409,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                        <!-- ============= COMPONENT ============== -->
                         <nav class="navbar navbar-expand-lg navbar-light p-0">
-                           <button class="fa-bar-screen"><i class="fa fa-bars" onclick="toggleContainer(this)" aria-hidden="true"></i></button>
-                           <!-- <button class="fa-bar-screen">
-                              <i class="fa fa-bars" onclick="this.classList.toggle('fa-bars'); this.classList.toggle('fa-times')" aria-hidden="true"></i>
-                           </button> -->
+                           <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu"><i class="fa fa-bars" onclick="toggleContainer(this)" aria-hidden="true"></i></button>
+                           
                            
                            <div class="container-fluid p-0">
 
