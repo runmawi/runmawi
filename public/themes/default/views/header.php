@@ -474,6 +474,9 @@
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
    } 
+   body.light-theme .list-group-item a{
+   color: <?php echo GetAdminDarkText(); ?> !important;
+   } 
     body.light-theme .block-description{
   background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
     backdrop-filter: blur(2px);
@@ -1127,7 +1130,7 @@
 
                                        <?php foreach($TranslationLanguage as $Language): ?>
                                        <a href="#" class="language-link iq-sub-card" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?>
-                                          <?php if($Language->code == $translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
+                                          <?php if(GetWebsiteName().$Language->code == $translate_language) { ?> <span class="selected-icon" >✔</span> <?php } ?>
                                        </a>
                                        <?php endforeach; ?>
                                        <!-- <a href="#" class="iq-sub-card">
@@ -1941,7 +1944,7 @@
                },
                success: (response) => {
                   console.log(response);
-                  alert("Changed The Language !");
+                  // alert("Changed The Language !");
                   location.reload();
 
                },

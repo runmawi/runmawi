@@ -125,6 +125,9 @@
         border-width: 0 0px 2px 0px !important;
         border-radius: 0;
     }
+    .nav-link{
+        margin: 0 1rem !important;
+    }
 </style>
 
 <?php
@@ -167,7 +170,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
             </div>
         </div>
 
-<div id="myImage" class="container"
+<!-- <div id="myImage" class="container"
     style="background: url( {{ URL::to('public/uploads/images/' . $series->player_image) }} ) right no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 40%); background-size: cover;  padding: 0px 0px 0px;position:relative;z-index:1;">
     <div> </div>
     <div class="container-fluid pt-5">
@@ -191,12 +194,12 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                     <div class=" p-2 text-white ">
                         <div class="trending-info p-0">
                                                         
-                                                        {{-- Ṭitle --}}
+                                                   
                             <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft">
                                 {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }}
                             </h1>
 
-                                                        {{-- Rating --}}
+                                        
                             <div class="slider-ratting d-flex align-items-center" data-animation-in="fadeInLeft">
                                 @if (optional($series)->rating)
                                     <ul
@@ -216,7 +219,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                                 <span class="text-white ml-3">{{ $series->rating ? $series->rating / 2 : ' ' }}</span>
                             </div>
 
-                                                        {{-- Category --}}
+                                                      
                             <ul class="p-0 mt-2 list-inline d-flex flex-wrap movie-content">
                                 @foreach ($Series_Category as $key => $Series_Category_details)
                                     <li class="trending-list"><a class="text-primary title"
@@ -225,19 +228,19 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                                 @endforeach
                             </ul>
 
-                                                        {{-- year & season Count --}}
+                                                        
                             <div class="d-flex flex-wrap align-items-center text-white text-detail sesson-date">
                                 <span> {{ App\SeriesSeason::where('series_id', $series->id)->count() }} Seasons</span>
                                 <span class="trending-year">{{ optional($series)->year }}</span>
                             </div>
 
-                                                        {{-- Details --}}
+                                                       
                             <div class="trending-">
                                 <p class="m-0">{!! html_entity_decode(optional($series)->details) !!}</p>
                             </div>
                         </div>
 
-                                                        {{-- Episode --}}
+                                                        
                         @if( $latest_Episode != null )
                             <div class="position-relative mt-5">
                                 <a href="{{ URL::to('episode/'. $series->slug.'/'.$latest_Episode->slug ) }}" class="d-flex align-items-center">
@@ -282,7 +285,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <section id="tabs" class="project-tab">
     <div class="container-fluid p-0">
@@ -332,20 +335,20 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 
                 @if(($season)->isNotEmpty())
 
-                    <div class="col-md-3 p-0" style="width:150px">
+                    <!-- <div class="col-md-3 p-0" style="width:150px">
                         <select class="form-control season-depends-episode" id="season_id" name="season_id" style="box-shadow: none;">
                             @foreach ($season as $key => $seasons)
                                 <option data-key="{{ $key + 1 }}" value="{{ $seasons->id }}"> {{ 'Season '. ($key + 1) }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> -->
                 
                     <div class="data">
                         @partial('season_depends_episode_section')
                     </div>
                 @endif
 
-                <ul class="category-page list-inline row p-3 mb-0">
+                <!-- <ul class="category-page list-inline row p-3 mb-0">
                     <?php 
                     foreach($season as $key => $seasons):  
                       foreach($seasons->episodes as $key => $episodes):
@@ -361,12 +364,12 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
 
                                     <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                     <p class="p-tag"><?php echo 'Free'; ?></p>
-                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price;
-                                    ?></p> -->
+                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price;
+                                    ?></p>
                                     <?php }elseif(!empty($seasons->ppv_price)){?>
                                     <p class="p-tag"><?php echo 'Free'; ?></p>
-                                    <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price;
-                                    ?></p> -->
+                                    <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price;
+                                    ?></p>
                                     <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                     <p class="p-tag"><?php echo 'Free'; ?></p>
                                     <?php } ?>
@@ -395,7 +398,7 @@ $latest_Episode = App\Episode::where('active',1)->where('status',1)->where('seri
                     </li>
                     <?php endif;	endforeach; 
 						                      endforeach; ?>
-                </ul>
+                </ul> -->
 
 
 <!-- Starring -->

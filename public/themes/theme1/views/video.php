@@ -1243,28 +1243,33 @@ $artists = [];
             </div>
 
             <div class="modal-footer">
-              <div class="Stripe_button">  <!-- Stripe Button -->
-                <a onclick="pay(<?php echo $video->ppv_price;?>)">
-                  <button type="button" class="btn2  btn-outline-primary" ><?= __('Continue') ?></button>
-                </a>
-              </div>
-                         
               <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
-                <div class="Razorpay_button">   <!-- Razorpay Button -->
-                  <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" id="" class="btn2  btn-outline-primary" > <?= __('Continue') ?></button>
+
+                <div class="Stripe_button">  <!-- Stripe Button -->
+                    <?php if( $Stripepayment != null && $Stripepayment->payment_type == "Stripe" ){?>
+                      <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_video_PPV_Purchase/'.$video->id.'/'.$video->ppv_price) ?>' ;" > Continue </button>
+                    <?php } ?>
                 </div>
-              <?php }?>
-                
-              <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
-                <div class="paystack_button">  <!-- Paystack Button -->
-                  <button onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" id="" class="btn2  btn-outline-primary" > <?= __('Continue') ?></button>
-                </div>
-              <?php }?>
-              <?php if( $video->ppv_price !=null &&  $video->ppv_price != " " || $video->ppv_price !=null  || $video->global_ppv == 1){ ?>
-                <div class="cinetpay_button">  <!-- CinetPay Button -->
-                  <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary"><?= __('Continue') ?></button>
-                </div>
-              <?php }?>
+                          
+                <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
+                  <div class="Razorpay_button">   <!-- Razorpay Button -->
+                    <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" id="" class="btn2  btn-outline-primary" > <?= __('Continue') ?></button>
+                  </div>
+                <?php }?>
+                  
+                <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
+                  <div class="paystack_button">  <!-- Paystack Button -->
+                    <button onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" id="" class="btn2  btn-outline-primary" > <?= __('Continue') ?></button>
+                  </div>
+                <?php }?>
+
+                <?php if( $video->ppv_price !=null &&  $video->ppv_price != " " || $video->ppv_price !=null  || $video->global_ppv == 1){ ?>
+                  <div class="cinetpay_button">  <!-- CinetPay Button -->
+                    <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary"><?= __('Continue') ?></button>
+                  </div>
+                <?php }?>
+
+              <?php } ?>
             </div>
           </div>
       </div>
@@ -1884,7 +1889,7 @@ location.reload();
 
 <script>
   window.onload = function(){ 
-       $('.Razorpay_button,.paystack_button').hide();
+       $('.Razorpay_button,.paystack_button,.cinetpay_button').hide();
     }
 
      $(document).ready(function(){

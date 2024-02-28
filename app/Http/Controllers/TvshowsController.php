@@ -419,7 +419,7 @@ class TvshowsController extends Controller
                         $season_details->access == 'free' && $series->access == 'registered' && Auth::user()->role == 'registered'  ||
                         Auth::user()->role == 'subscriber' &&  $season_details->access == 'free'  ) {
                     $free_episode = 1;
-                    } elseif($SeriesPpvPurchase > 0 || Auth::user()->role == 'admin'){
+                    } elseif($series->access == 'registered' && $SeriesPpvPurchase > 0 || $series->access == 'guest' && $SeriesPpvPurchase > 0 || Auth::user()->role == 'admin'){
                         
                         $free_episode = 1;
                     } elseif($PpvPurchase > 0){
@@ -480,7 +480,7 @@ class TvshowsController extends Controller
                             $season_details->access == 'free' && $series->access == 'registered' && Auth::user()->role == 'registered'  ||
                             Auth::user()->role == 'subscriber' &&  $season_details->access == 'free' ) {
                         $free_episode = 1;
-                        } elseif($SeriesPpvPurchase > 0){
+                        } elseif($series->access == 'registered' && $SeriesPpvPurchase > 0 || $series->access == 'guest' && $SeriesPpvPurchase > 0){
                             
                             $free_episode = 1;
                         } elseif($PpvPurchase > 0){
@@ -499,10 +499,9 @@ class TvshowsController extends Controller
                             ):
                                 $free_episode = 1;
                     else:
-                        if($SeriesPpvPurchase > 0){
-                            
+                        if($series->access == 'registered' && $SeriesPpvPurchase > 0 || $series->access == 'guest' && $SeriesPpvPurchase > 0){
                             $free_episode = 1;
-                        } elseif($PpvPurchase > 0){
+                        } elseif($series->access == 'registered' && $PpvPurchase > 0 || $series->access == 'guest' && $PpvPurchase > 0){
                         $free_episode = 1;
                         }elseif( $series->access == 'guest' && $season_details->access != 'ppv'  
                             || $season_details->access != 'ppv' && $series->access == 'registered' && Auth::user()->role == 'registered' 
@@ -530,9 +529,9 @@ class TvshowsController extends Controller
                             $season_details->access != 'free' && $series->access == 'registered' || 
                              Auth::guest() && $series->access == 'registered' ) {
                         $free_episode = 0;
-                    } elseif($SeriesPpvPurchase > 0){
+                    } elseif($series->access == 'registered' && $SeriesPpvPurchase > 0 || $series->access == 'guest' && $SeriesPpvPurchase > 0){
                     $free_episode = 1;
-                    } elseif($PpvPurchase > 0){
+                    } elseif($series->access == 'registered' && $PpvPurchase > 0 || $series->access == 'guest' && $PpvPurchase > 0){
                     $free_episode = 1;
                     }elseif( $series->access == 'guest' && $season_details->access != 'ppv'  
                         || $season_details->access != 'ppv' && $series->access == 'registered' && Auth::user()->role == 'registered' 
@@ -565,9 +564,9 @@ class TvshowsController extends Controller
                 } elseif($PpvPurchase > 0){
                 $free_episode = 1;
                 }
-                // elseif (empty($ppv_price) || $season_details->access == 'free') {
-                // $free_episode = 1;
-                // }
+                elseif (Auth::guest() && $series->access == 'guest' && $season_details->access == 'free') {
+                $free_episode = 1;
+                }
                 else {
                     $free_episode = 0;
                 } 

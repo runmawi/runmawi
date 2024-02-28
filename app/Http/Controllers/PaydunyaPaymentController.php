@@ -61,6 +61,8 @@ class PaydunyaPaymentController extends Controller
         Theme::uses($this->Theme);
     }
 
+    // subscription
+
     public function Paydunya_checkout(Request $request)
     {
         try {
@@ -355,6 +357,8 @@ class PaydunyaPaymentController extends Controller
         }
     }
 
+    // PPV Live
+
     public function Paydunya_live_checkout_Rent_payment(Request $request,$live_id,$amount)
     {
         try {
@@ -551,6 +555,8 @@ class PaydunyaPaymentController extends Controller
         return Theme::view('paydunya.Message',compact('respond'),$respond);
     }
 
+    // PPV Video
+
     public function Paydunya_video_checkout_Rent_payment(Request $request,$video_id,$amount)
     {
         try {
@@ -568,11 +574,69 @@ class PaydunyaPaymentController extends Controller
             \Paydunya\Setup::setToken($this->Paydunya_token_key);
             \Paydunya\Setup::setMode( $this->Paydunya_set_mode  ); 
 
+               // Currency Conversation 
+                
+            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
+
+                $To_Currency_symbol = 'XOF';
+
+                $default_Currency = CurrencySetting::first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+
+                $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
+
+                try {
+
+                    $response = Http::get($api_url);
+                
+                    $exchangeRates = $response->json();
+                
+                    if (isset($exchangeRates['rates'])) {
+                        $targetCurrency = $To_Currency_symbol;
+                
+                        if (isset($exchangeRates['rates'][$targetCurrency])) {
+                            $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                            $convertedAmount = $amount * $conversionRate;
+                        } else {
+                            $convertedAmount = null;
+
+                            return response()->json( array(
+                                "status"  => false ,
+                                "message" => "Error on Currency Conversation, Pls connect admin" ,
+                            ), 200);
+                        }
+                    } else {
+                        $convertedAmount = null;
+
+                        $video = Video::where('id',$live_id)->first();
+
+                        $Error_msg = 'Error on Currency Conversation, Pls connect admin' ;
+                        $url = URL::to('live/'. $video->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                    }
+                
+                } catch (\Exception $e) {
+                        $video = Video::where('id',$live_id)->first();
+
+                        $Error_msg = $e->getMessage();
+                        $url = URL::to('live/'. $video->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                }
+
+                $payment_amount = (float)$convertedAmount ;
+
+            }else{
+
+                $payment_amount = (float) $amount ;
+
+            }
+
                 // Checkout Page Creation 
 
             $invoice = new \Paydunya\Checkout\CheckoutInvoice();
-            $invoice->addItem("", 1, $amount , $amount );
-            $invoice->setTotalAmount($amount);
+            $invoice->addItem("", 1, $payment_amount , $payment_amount );
+            $invoice->setTotalAmount($payment_amount);
 
             if($invoice->create()) {
                 $authorization_url =  $invoice->getInvoiceUrl() ;
@@ -610,7 +674,7 @@ class PaydunyaPaymentController extends Controller
 
             if ($invoice->confirm($token)) {
         
-                $video = Video::where('id','=',$request->video_id)->first();
+                $video = Video::where('id',$request->video_id)->first();
 
                 $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
                 $to_time = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
@@ -676,7 +740,7 @@ class PaydunyaPaymentController extends Controller
         return Theme::view('paydunya.Message',compact('respond'),$respond);
     }
 
-
+    // PPV Series Season
     
     public function Paydunya_SeriesSeason_checkout_Rent_payment(Request $request,$SeriesSeason_id,$amount)
     {
@@ -697,11 +761,66 @@ class PaydunyaPaymentController extends Controller
             \Paydunya\Setup::setToken($this->Paydunya_token_key);
             \Paydunya\Setup::setMode( $this->Paydunya_set_mode  ); 
 
+              // Currency Conversation 
+                
+            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
+
+                $To_Currency_symbol = 'XOF';
+
+                $default_Currency = CurrencySetting::first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+
+                $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
+
+                try {
+
+                    $response = Http::get($api_url);
+                
+                    $exchangeRates = $response->json();
+                
+                    if (isset($exchangeRates['rates'])) {
+                        $targetCurrency = $To_Currency_symbol;
+                
+                        if (isset($exchangeRates['rates'][$targetCurrency])) {
+                            $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                            $convertedAmount = $amount * $conversionRate;
+                        } else {
+                            $convertedAmount = null;
+
+                            return response()->json( array(
+                                "status"  => false ,
+                                "message" => "Error on Currency Conversation, Pls connect admin" ,
+                            ), 200);
+                        }
+                    } else {
+                        $convertedAmount = null;
+
+                        $Error_msg = 'Error on Currency Conversation, Pls connect admin' ;
+                        $url = URL::to('play_series/'.$series->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                    }
+                
+                } catch (\Exception $e) {
+
+                        $Error_msg = $e->getMessage();
+                        $url = URL::to('play_series/'.$series->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                }
+
+                $payment_amount = (float)$convertedAmount ;
+
+            }else{
+
+                $payment_amount = (float) $amount ;
+
+            }
+
                 // Checkout Page Creation 
 
             $invoice = new \Paydunya\Checkout\CheckoutInvoice();
-            $invoice->addItem("", 1, $amount , $amount );
-            $invoice->setTotalAmount($amount);
+            $invoice->addItem("", 1, $payment_amount , $payment_amount );
+            $invoice->setTotalAmount($payment_amount);
 
             if($invoice->create()) {
                 $authorization_url =  $invoice->getInvoiceUrl() ;
@@ -709,13 +828,14 @@ class PaydunyaPaymentController extends Controller
             }else{
                 
                 $Error_msg = $invoice->response_text ;
-                // $url = Redirect::back();
+                $url = URL::to('play_series/'.$series->slug);
                 echo "<script type='text/javascript'>alert('$Error_msg'); window.location.reload(); </script>";
             }
 
         } catch (\Throwable $th) {
 
             $Error_msg = $th->getMessage() ; 
+            $url = URL::to('play_series/'.$series->slug);
             echo "<script type='text/javascript'>alert('$Error_msg'); window.location.reload(); </script>";
         }
     }
@@ -729,6 +849,10 @@ class PaydunyaPaymentController extends Controller
             \Paydunya\Setup::setPrivateKey($this->Paydunya_private_key);
             \Paydunya\Setup::setToken($this->Paydunya_token_key);
             \Paydunya\Setup::setMode( $this->Paydunya_set_mode  ); 
+            
+            $SeriesSeason = SeriesSeason::where('id',$request->SeriesSeason_id)->first();
+            $series_id = $SeriesSeason->series_id;
+            $series = Series::find($series_id);
 
             $token   = $request->token;
 
@@ -736,15 +860,13 @@ class PaydunyaPaymentController extends Controller
 
             if ($invoice->confirm($token)) {
         
-                $SeriesSeason = SeriesSeason::where('id',$request->SeriesSeason_id)->first();
-                $series_id = $SeriesSeason->series_id;
-
                 $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
                 $to_time = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
-    
-                if(!empty($SeriesSeason_id)){
-                    $moderators_id = $SeriesSeason_id->user_id;
+                
+                if(!empty($request->SeriesSeason_id)){
+                    $moderators_id = $SeriesSeason->user_id;
                 }
+
 
                 if(!empty($moderators_id)){
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
@@ -766,12 +888,12 @@ class PaydunyaPaymentController extends Controller
                     $moderator_commssion =  null;
                     $moderator_id        =  null;
                 }
-            
+
                 PpvPurchase::create([
-                    'user_id'       =>  Auth::user()->id ,
-                    'season_id'       => $SeriesSeason_id ,
+                    'user_id'         =>  Auth::user()->id ,
+                    'season_id'       => $request->SeriesSeason_id ,
                     'series_id'       => $series_id ,
-                    'total_amount'  => $invoice->getTotalAmount() , 
+                    'total_amount'    => $invoice->getTotalAmount() , 
                     'admin_commssion'     => $admin_commssion,
                     'moderator_commssion' => $moderator_commssion,
                     'status'     => 'active',
@@ -785,8 +907,8 @@ class PaydunyaPaymentController extends Controller
 
                 $respond = array(
                     'status'  => 'true',
-                    'redirect_url' => URL::back() ,
-                    'message'   => 'SeriesSeason  Payment Purchase Successfully !!' ,
+                    'redirect_url' => URL::to('play_series/'.$series->slug),
+                    'message'   => 'Series Season Payment Purchase Successfully !!' ,
                 );
             }
 
@@ -794,9 +916,10 @@ class PaydunyaPaymentController extends Controller
 
             $respond = array(
                 'status'  => 'false',
-                'redirect_url' => URL::back() ,
+                'redirect_url' => URL::to('play_series/'.$series->slug),
                 'message'   => $e->getMessage() ,
             );
+
         }
 
         return Theme::view('paydunya.Message',compact('respond'),$respond);

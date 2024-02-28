@@ -161,7 +161,7 @@
                             </div>
 
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                <a href="{{ URL::to('live'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
                                 aria-hidden="true"></i>Play Now</a>
                                 {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
                             </div>

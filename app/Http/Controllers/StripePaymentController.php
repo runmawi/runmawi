@@ -21,6 +21,9 @@ use App\LivePurchase;
 use App\LiveStream;
 use App\Setting;
 use App\Currency;
+use App\SeriesSeason;
+use App\Video;
+use App\Series;
 use App\User;
 use Theme;
 
@@ -31,6 +34,8 @@ class StripePaymentController extends Controller
         $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($this->Theme);
     }
+
+    // Subscription
 
     public function Stripe_authorization_url(Request $request)
     {
@@ -169,12 +174,13 @@ class StripePaymentController extends Controller
 
                 $user_data = array(
                     'role'                  =>  'subscriber',
-                    'stripe_id'             =>  $subscription['customer'],
+                    'stripe_id'             =>  $subscription['id'],
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_type'          => 'recurring',
                     'payment_status'        => $subscription['status'],
-                    'coupon_used'    =>  !is_null($subscription['discount']) ?  $subscription['discount']->promotion_code : null ,
+                    'payment_gateway'       =>  'Stripe',
+                    'coupon_used'           =>  !is_null($subscription['discount']) ?  $subscription['discount']->promotion_code : null ,
                 );
 
                 if( subscription_trails_status()  == 1 ){
@@ -254,6 +260,8 @@ class StripePaymentController extends Controller
     {
       return redirect()->back();
     }
+
+    // PPV Live
 
     public function Stripe_payment_live_PPV_Purchase( $live_id,$amount)
     {
@@ -443,6 +451,372 @@ class StripePaymentController extends Controller
             $respond = array(
                 'status'  => 'false',
                 'redirect_url' => URL::to('live/'. $video->slug) ,
+                'message'   => $e->getMessage() ,
+            );
+        }
+
+        return Theme::view('stripe_payment.message',compact('respond'),$respond);
+    }
+
+    // PPV Video
+
+    public function Stripe_payment_video_PPV_Purchase( $video_id,$amount)
+    {
+        try {
+            
+            $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
+            $success_url = URL::to('Stripe_payment_video_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$video_id ) ;
+
+            $default_Currency = CurrencySetting::first();
+
+               // Checkout Page Creation 
+                
+            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
+
+                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+
+                $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
+
+                try {
+
+                    $response = Http::get($api_url);
+                
+                    $exchangeRates = $response->json();
+                
+                    if (isset($exchangeRates['rates'])) {
+                        $targetCurrency = $To_Currency_symbol;
+                
+                        if (isset($exchangeRates['rates'][$targetCurrency])) {
+                            $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                            $convertedAmount = $amount * $conversionRate;
+                        } else {
+                            $convertedAmount = null;
+
+                            return response()->json( array(
+                                "status"  => false ,
+                                "message" => "Error on Currency Conversation, Pls connect admin" ,
+                            ), 200);
+                        }
+                    } else {
+                        $convertedAmount = null;
+
+                        $video = Video::where('id',$video_id)->first();
+
+                        $Error_msg = 'Error on Currency Conversation, Pls connect admin' ;
+                        $url = URL::to('category/videos/'. $video->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                    }
+                
+                } catch (\Exception $e) {
+                        $video = Video::where('id',$video_id)->first();
+
+                        $Error_msg = $e->getMessage();
+                        $url = URL::to('category/videos/'. $video->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                }
+
+                $payment_amount = $convertedAmount ;
+
+            }else{
+
+                $payment_amount = $amount ;
+                $To_Currency_symbol = CurrencySetting::query()->join('currencies','currencies.country','=','currency_settings.country') 
+                                                            ->pluck('code')->first();
+            }
+
+            // Stripe Checkout
+
+            $Checkout_details = array(
+                'success_url' => $success_url,
+                
+                'line_items' => [
+                    [
+                        'price_data' => [
+                            'currency' => $To_Currency_symbol ,
+                            'product_data' => [
+                                'name' => GetWebsiteName(),
+                            ],
+                            'unit_amount' => (integer) $payment_amount * 100, 
+                        ],
+                        'quantity' => 1,
+                    ],
+                ],
+                'mode' => 'payment', 
+                'customer_email' => Auth::user()->email, 
+            );
+            
+            $stripe_checkout = $stripe->checkout->sessions->create($Checkout_details);
+
+            $url = $stripe_checkout->url;
+            echo "<script type='text/javascript'> window.location.href = '$url' </script>";
+
+        } catch (\Throwable $th) {
+
+            $video = Video::where('id',$video_id)->first();
+
+            $Error_msg = "Error on Payment, Pls Connect admin" ;
+            $url = URL::to('category/videos/'. $video->slug);
+
+            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+        }
+    }
+
+    public function Stripe_payment_video_PPV_Purchase_verify($stripe_payment_session_id,$video_id)
+    {
+        try {
+
+            $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
+
+                            // Retrieve Payment Session
+            $stripe_payment_session_id = $stripe_payment_session_id ;
+            $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
+
+            $video = Video::where('id',$video_id)->first();
+
+            if( $stripe_payment_session->status == "complete"){
+        
+                $setting = Setting::first();  
+                $ppv_hours = $setting->ppv_hours;
+    
+                $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
+                $to_time = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
+
+                if(!empty($video)){
+                    $moderators_id = $video->user_id;
+                }
+
+                if(!empty($moderators_id)){
+                    $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                    $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
+                    $title               =  $video->title;
+                    $commssion           =  VideoCommission::first();
+                    $percentage          =  $commssion->percentage; 
+                    $ppv_price           =  $video->ppv_price;
+                    $admin_commssion     =  ($percentage/100) * $ppv_price ;
+                    $moderator_commssion =  $ppv_price - $percentage;
+                    $moderator_id        =  $moderators_id;
+                }else{
+                    $total_amount       =    (integer) $stripe_payment_session->amount_total / 100;
+                    $title              =   $video->title;
+                    $commssion          =   VideoCommission::first();
+                    $ppv_price          =   $video->ppv_price;
+                    $percentage         =   null; 
+                    $admin_commssion    =   null;
+                    $moderator_commssion =  null;
+                    $moderator_id        =  null;
+                }
+            
+                PpvPurchase::create([
+                    'user_id'       =>  Auth::user()->id ,
+                    'video_id'       => $video->id ,
+                    'total_amount'  =>  (integer) $stripe_payment_session->amount_total / 100 , 
+                    'admin_commssion'     => $admin_commssion,
+                    'moderator_commssion' => $moderator_commssion,
+                    'status'     => 'active',
+                    'to_time'    => $to_time,
+                    'from_time'  => Carbon::now()->format('Y-m-d H:i:s'),
+                    'moderator_id' => $moderator_id,
+                    'payment_gateway'  => 'Stripe',
+                    'payment_in'       => 'website',
+                ]);
+
+
+                $respond = array(
+                    'status'  => 'true',
+                    'redirect_url' => URL::to('category/videos/'. $video->slug) ,
+                    'message'   => 'Video Payment Purchase Successfully !!' ,
+                );
+            }
+
+        } catch (\Exception $e) {
+
+            $respond = array(
+                'status'  => 'false',
+                'redirect_url' => URL::to('category/videos/'. $video->slug) ,
+                'message'   => $e->getMessage() ,
+            );
+        }
+
+        return Theme::view('stripe_payment.message',compact('respond'),$respond);
+    }
+
+    // PPV Series Season
+
+    public function Stripe_payment_series_season_PPV_Purchase( $SeriesSeason_id,$amount)
+    {
+        try {
+            
+            $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
+            $success_url = URL::to('Stripe_payment_series_season_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$SeriesSeason_id ) ;
+
+            $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
+            $series_id = $SeriesSeason->series_id;
+            $series = Series::find($series_id);
+
+            $default_Currency = CurrencySetting::first();
+
+               // Checkout Page Creation 
+                
+            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
+
+                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+
+                $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
+
+                try {
+
+                    $response = Http::get($api_url);
+                
+                    $exchangeRates = $response->json();
+                
+                    if (isset($exchangeRates['rates'])) {
+                        $targetCurrency = $To_Currency_symbol;
+                
+                        if (isset($exchangeRates['rates'][$targetCurrency])) {
+                            $conversionRate = $exchangeRates['rates'][$targetCurrency];
+                            $convertedAmount = $amount * $conversionRate;
+                        } else {
+                            $convertedAmount = null;
+
+                            return response()->json( array(
+                                "status"  => false ,
+                                "message" => "Error on Currency Conversation, Pls connect admin" ,
+                            ), 200);
+                        }
+                    } else {
+                        $convertedAmount = null;
+
+                        $Error_msg = 'Error on Currency Conversation, Pls connect admin' ;
+                        $url = URL::to('play_series/'.$series->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                    }
+                
+                } catch (\Exception $e) {
+
+                        $Error_msg = $e->getMessage();
+                        $url = URL::to('play_series/'.$series->slug);
+                        echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+                }
+
+                $payment_amount = $convertedAmount ;
+
+            }else{
+
+                $payment_amount = $amount ;
+                $To_Currency_symbol = CurrencySetting::query()->join('currencies','currencies.country','=','currency_settings.country') 
+                                                            ->pluck('code')->first();
+            }
+
+            // Stripe Checkout
+
+            $Checkout_details = array(
+                'success_url' => $success_url,
+                
+                'line_items' => [
+                    [
+                        'price_data' => [
+                            'currency' => $To_Currency_symbol ,
+                            'product_data' => [
+                                'name' => GetWebsiteName(),
+                            ],
+                            'unit_amount' => (integer) $payment_amount * 100, 
+                        ],
+                        'quantity' => 1,
+                    ],
+                ],
+                'mode' => 'payment', 
+                'customer_email' => Auth::user()->email, 
+            );
+            
+            $stripe_checkout = $stripe->checkout->sessions->create($Checkout_details);
+
+            $url = $stripe_checkout->url;
+            echo "<script type='text/javascript'> window.location.href = '$url' </script>";
+
+        } catch (\Throwable $th) {
+
+            $Error_msg = "Error on Payment, Pls Connect admin" ;
+            $url = URL::to('play_series/'.$series->slug);
+
+            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+        }
+    }
+
+    public function Stripe_payment_series_season_PPV_Purchase_verify( $stripe_payment_session_id, $SeriesSeason_id)
+    {
+        try{
+
+            $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
+
+                            // Retrieve Payment Session
+            $stripe_payment_session_id = $stripe_payment_session_id ;
+            $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
+
+            $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
+            $series_id = $SeriesSeason->series_id;
+            $series = Series::find($series_id);
+
+            if( $stripe_payment_session->status == "complete"){
+        
+                $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
+                $to_time = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
+                
+                if(!empty($request->SeriesSeason_id)){
+                    $moderators_id = $SeriesSeason->user_id;
+                }
+
+                if(!empty($moderators_id)){
+                    $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                    $total_amount        =  $SeriesSeason->ppv_price;
+                    $title               =  $SeriesSeason->series_seasons_name;
+                    $commssion           =  VideoCommission::first();
+                    $percentage          =  $commssion->percentage; 
+                    $ppv_price           =  $SeriesSeason->ppv_price;
+                    $admin_commssion     =  ($percentage/100) * $ppv_price ;
+                    $moderator_commssion =  $ppv_price - $percentage;
+                    $moderator_id        =  $moderators_id;
+                }else{
+                    $total_amount       =   $SeriesSeason->ppv_price;
+                    $title              =   $SeriesSeason->series_seasons_name;
+                    $commssion          =   VideoCommission::first();
+                    $ppv_price          =   $SeriesSeason->ppv_price;
+                    $percentage         =   null; 
+                    $admin_commssion    =   null;
+                    $moderator_commssion =  null;
+                    $moderator_id        =  null;
+                }
+
+                PpvPurchase::create([
+                    'user_id'         =>  Auth::user()->id ,
+                    'season_id'       => $SeriesSeason_id ,
+                    'series_id'       => $series_id ,
+                    'total_amount'        =>   (integer) $stripe_payment_session->amount_total / 100,
+                    'admin_commssion'     => $admin_commssion,
+                    'moderator_commssion' => $moderator_commssion,
+                    'status'     => 'active',
+                    'from_time'  => Carbon::now()->format('Y-m-d H:i:s a'),
+                    'to_time'    => $to_time,
+                    'moderator_id' => $moderator_id,
+                    'payment_gateway'  => 'Stripe',
+                    'payment_in'       => 'website',
+                ]);
+
+                $respond = array(
+                    'status'  => 'true',
+                    'redirect_url' => URL::to('play_series/'. $series->slug) ,
+                    'message'   => 'Video Payment Purchase Successfully !!' ,
+                );
+            }
+
+        } catch (\Exception $e) {
+
+            $respond = array(
+                'status'  => 'false',
+                'redirect_url' => URL::to('play_series/'. $series->slug) ,
                 'message'   => $e->getMessage() ,
             );
         }

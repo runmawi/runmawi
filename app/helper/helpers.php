@@ -540,9 +540,10 @@ function Country_name(){
     
     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
     $userIp = $geoip->getip();
-    $countryName = $geoip->getCountry();
+    $countryName = \Location::get($userIp)->countryName;
 
-    return $countryName;
+    return $countryName ;
+
 }
 
 function city_name(){
@@ -1102,11 +1103,6 @@ function Currency_Convert($amount){
 
     $From_Currency_symbol = App\Currency::where('country',@$allCurrency->country)->pluck('code')->first();
 
-    // $Currency_Converter = AmrShawky\LaravelCurrency\Facade\Currency::convert()
-    // ->from($From_Currency_symbol)
-    // ->to($To_Currency_symbol)
-    // ->amount($amount)
-    // ->get();  
     $api_url = "https://open.er-api.com/v6/latest/$From_Currency_symbol";
 
     // Make a GET request to the API
@@ -1149,7 +1145,7 @@ function Currency_Convert($amount){
     curl_close($ch);
 
 
-    return  $Currency_symbol.' '.$convertedAmount; 
+    return  $Currency_symbol.' '.round($convertedAmount,2); 
 }
 
 

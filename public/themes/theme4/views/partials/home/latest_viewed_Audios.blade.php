@@ -11,7 +11,7 @@
             if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
                 $data = $data  ->whereNotIn('audio.id',Block_audios());
             }
-            $data = $data->get();
+            $data = $data->limit(15)->get();
    }
    else
    {

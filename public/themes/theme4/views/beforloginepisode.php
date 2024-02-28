@@ -2,7 +2,7 @@
    include(public_path('themes/theme4/views/header.php'));
    include(public_path('themes/theme4/views/episode_ads.blade.php'));
 
-   $autoplay  = $episode_ads == null ? 'autoplay' : "" ;    
+   $autoplay  = @$episode_ads == null ? 'autoplay' : "" ;    
 
    $series = App\series::first();
    ?>
@@ -41,15 +41,14 @@
 <div id="series_bg">
    <div class="">
       <?php
-         if (Auth::guest())
-         {
-         
-             if ($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' || Auth::guest())
-             {
-         
-                 if ($episode->access == 'guest' || (($episode->access == 'subscriber' || $episode->access == 'registered') && !Auth::guest() && Auth::user()
-                     ->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered')):
-         ?>
+            if (Auth::guest())
+            {
+            
+               if ($free_episode > 0 )
+               {
+            
+                  if ($series->access == 'guest' ||  $free_episode > 0): 
+                 ?>
       <?php if ($episode->type == 'embed'): ?>
       <div id="series_container" class="fitvid">
          <?=$episode->embed_code
@@ -163,37 +162,40 @@
          { //dd($season);
           ?>
       <div id="series_container">
-         <video id="videoPlayer"  <?= $autoplay ?> class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
-            <source src="<?=$season[0]->trailer; ?>" type='video/mp4' label='auto' >
-            <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
-                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
-                    srclang="<?= $episodesubtitles_file->sub_language ?>"
-                    label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } } ?>
-         </video>
-         <!-- <div id=""style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-            <div id="ppv">
-            <h2>Purchase to Watch the Episodes <?php if ($episode->access == 'subscriber'): ?>Subscribers<?php
-               elseif ($episode->access == 'registered'): ?>Registered Users<?php
-               endif; ?></h2>
-            <div class="clear"></div>
-            <?php //if(!Auth::guest() ):
-               ?>
-            <form method="get" action="<?
-               // URL::to('/')
-               
-               ?>/user/<?
-               // Auth::user()->username
-                ?>/upgrade_subscription">
-            	<button id="button">Purchase to Watch <?php //$currency->symbol.' '.$episode->ppv_price
-               ?></button>
-            </form>
-            <?php //else:
-               ?>
-            
-            <?php //endif;
-               ?> -->
+      <div
+                id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+                <div class="container-fluid">
+                    <h4 class=""><?php echo $episode->title; ?></h4>
+                    <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
+                    <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Purchase to view Episode'); ?>
+                        <?php endif; ?></h4>
+                    <div class="clear"></div>
+                </div>
+                <?php if( Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber' 
+                     || Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access == 'registered'  ):  ?>
+                <div class=" mt-3">
+                    <!-- <button type="button"
+                        class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button> -->
+                    <form method="get" action="<?= URL::to('/signup') ?>">
+                        <button class="btn btn-primary" id="button"><?php echo __('Purchase Now'); ?></button>
+                    </form>
+                </div>
+                <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
+                <div class=" mt-3">
+                <form method="get" action="<?= URL::to('/signup') ?>">
+                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
+                    </form>
+                </div>
+                <?php else: ?>
+                <div class=" mt-3">
+                    <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
+                        <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
+                            <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+                    </form>
+                </div>
+                <?php endif; ?>
+       
+
       </div>
       <div>
       </div>
@@ -244,11 +246,11 @@
    <div id="series_title">
       <div class="">
          <div class="row align-items-center">
-            <?php if ($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' || Auth::guest())
+            <?php if ($free_episode > 0 || $ppv_exits > 0 || Auth::guest())
                {
                }
                else
-               { ?>
+               { dd($free_episode); ?>
             <div class="col-md-6">
                <span class="text-white" style="font-size: 129%;font-weight: 700;"><?php echo __('Purchase to Watch the Series'); ?>:</span>
                <?php if ($series->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php
