@@ -117,7 +117,17 @@
 									@else
 										<p class="p1">Enter users password:</p>
 									@endif
-									<input type="password" class="form-control mb-3" name="passwords" id="password" value="" />
+									<div class="d-flex position-relative">
+										<input type="password" class="form-control mb-3" name="passwords" id="password" value="" />
+										<div class="position-absolute" style="right:0;">
+											<span class="input-group-btn" id="eyeSlash">
+												<button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+											</span>
+											<span class="input-group-btn" id="eyeShow" style="display: none;">
+												<button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+											</span>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="col-sm-12 mt-2 p-0"> 
@@ -273,6 +283,20 @@
     });
 
     })
+</script>
+<script>
+    function visibility1() {
+        var x = document.getElementById('password');
+        if (x.type === 'password') {
+            x.type = "text";
+            $('#eyeShow').show();
+            $('#eyeSlash').hide();
+        } else {
+            x.type = "password";
+            $('#eyeShow').hide();
+            $('#eyeSlash').show();
+        }
+    }
 </script>
 	@stop
 
