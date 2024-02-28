@@ -121,7 +121,7 @@
 
     .btn {
 
-        padding: 15px 120px;
+        /* padding: 15px 120px; */
         color: #fff !important;
 
         border: 1px solid #fff;
@@ -561,7 +561,7 @@
                                 <div class="col-sm-6 p-0">
                                     @if ( $user->role == "registered" )
                                         <label>
-                                            <h5 class="mb-4">{{ (__(ucwords('Registered'))) .' as on '. $user->created_at  }}</h5>
+                                            <h5 class="mb-4">{{ (__('Registered as on')) .'  '. $user->created_at  }}</h5>
                                         </label>
 
                                         <p class="mb-0"> {{ (__(ucwords('To watch and enjoy the most latest video & live stream, Get subscribers'))) }}.</p> <br>

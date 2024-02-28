@@ -127,6 +127,9 @@ $settings = App\Setting::first();
          border-radius: 50px !important;
          padding: 2px 40px;
       }
+      body.light-theme h4, body.light-theme p,body.light-theme h3,body.light-theme h5,body.light-theme h2 {
+         color: <?php echo GetDarkText(); ?> !important;
+      }
       @media (max-width:768px) {
          ul.usk {
             display: flex !important;
