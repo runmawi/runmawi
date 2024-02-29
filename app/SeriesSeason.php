@@ -17,7 +17,7 @@ class SeriesSeason extends Model
 
 	 public function episodes()
     {
-        return $this->hasMany('App\Episode','season_id','id')->where('status',1)->where('active',1)->orderBy('episode_order');
+        return $this->hasMany('App\Episode','season_id','id')->where('active',1)->orderBy('episode_order');
     }
 
 }
