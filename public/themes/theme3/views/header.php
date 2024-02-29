@@ -977,7 +977,7 @@ div#main_nav {
 }
 @media (min-width:851px) {
    button.navbar-toggler.d-block.border-0.p-0.mr-3.onclickbutton_menu{
-      display:none;
+      display:none !important;
     }
    
 }
@@ -1409,7 +1409,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                        <!-- ============= COMPONENT ============== -->
                         <nav class="navbar navbar-expand-lg navbar-light p-0">
-                           <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu"><i class="fa fa-bars" onclick="toggleContainer(this)" aria-hidden="true"></i></button>
+                           <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu fa-bar-screen"><i class="fa fa-bars" onclick="toggleContainer(this)" aria-hidden="true"></i></button>
                            
                            
                            <div class="container-fluid p-0">
