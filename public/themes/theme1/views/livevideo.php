@@ -467,11 +467,18 @@ else{
                         <!-- Year, Running time, Age -->
                         <?php 
        if(!empty($video->publish_time)){
-        $originalDate = $video->publish_time;
-        $publishdate = date('d F Y', strtotime($originalDate));
+            $originalDate = $video->publish_time;
+            $publishdate = explode(' ', date('d F Y', strtotime($originalDate)));
+            $translatedMonth = __($publishdate[1]);
+            $publishdate = implode(' ', [$publishdate[2], $translatedMonth, $publishdate[0]]);
+
+           
        }else{
-        $originalDate = $video->created_at;
-        $publishdate = date('d F Y', strtotime($originalDate));
+            $originalDate = $video->created_at;
+            $publishdate = explode(' ',date('d F Y', strtotime($originalDate)));
+            $publishdate = explode(' ', date('d F Y', strtotime($originalDate)));
+            $translatedMonth = __($publishdate[1]);
+            $publishdate = implode(' ', [$publishdate[2], $translatedMonth, $publishdate[0]]);
        }
      ?>
                         <div class=" align-items-center text-white text-detail p-0">
