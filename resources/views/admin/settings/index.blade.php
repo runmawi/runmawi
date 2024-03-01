@@ -900,6 +900,35 @@ border-radius: 0px 4px 4px 0px;
                         <input type="checkbox" @if($settings->coupon_status == 1)checked="checked" value="1"@else
                         value="0"@endif name="coupon_status">
                     </div>
+                </div>
+                <div class="panel panel-primary mt-3" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label>System Address</label></div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="display: block;">
+
+                        <p class="p1">Enter you're System Address:</p>
+                        <textarea id="summary-ckeditor" name="system_address" class="form-control"
+                                placeholder="Email System Address"
+                                value="@if(!empty($settings->system_address)){{ $settings->system_address }}@endif"><?php echo $settings->system_address; ?></textarea>
+
+                    </div>
+                </div>
+                <div class="panel panel-primary mt-3" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label>System Phone Number</label></div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="display: block;">
+
+                        <p class="p1">Enter you're System Phone Number:</p>
+                        <input type="text" class="form-control" name="system_phone_number" id="system_phone_number"
+                            placeholder="System Phone Number"
+                            value="@if(!empty($settings->system_phone_number)){{ $settings->system_phone_number }}@endif" />
+                    </div>
                 </div></div>
             </div>
         </div>
