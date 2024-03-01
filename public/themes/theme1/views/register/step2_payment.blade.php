@@ -683,7 +683,7 @@
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
                                                             <p class="text-white mb-0">
                                                                 {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : currency_symbol(). round($plan->price,2) }}
-                                                                {{ __(Membership) }}</p>
+                                                                {{ (__('Membership'))  }}</p>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 blk">
@@ -1232,7 +1232,7 @@
                             html += '<div class="col-md-12 ambk p-0 text-center">';
                                 html += '<div>';
                                     html += '<h6 class="font-weight-bold">  ' + plan_data.plans_name +'   </h6>';
-                                    html += '<p class="text-white mb-0">' + plan_data.price +' Membership </p>';
+                                    html += '<p class="text-white mb-0">' + plan_data.price + '<?= __('Membership') ?>'+' </p>';
                                 html += '</div>';
                             html += '</div>';
 
