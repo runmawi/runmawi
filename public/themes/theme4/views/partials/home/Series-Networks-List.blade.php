@@ -130,5 +130,5 @@
 
 
 @php
-    include public_path('themes/default/views/footer.blade.php');
+    include public_path('themes/theme4/views/footer.blade.php');
 @endphp

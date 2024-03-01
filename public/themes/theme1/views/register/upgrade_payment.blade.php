@@ -730,6 +730,13 @@
                                 </button>
                             </div>
 
+                            {{-- Home Button  --}}
+                            <div class="col-sm-4 d-flex justify-content-center" style="margin-left: 35%;">
+                                <a class="btn1 btn-lg btn-block font-weight-bold text-white mt-3" href="{{ URL::to('/home') }}">
+                                    <i class="ri-home-4-line"></i>  {{ __('Home') }}
+                                </a>
+                            </div>
+
                             <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">
                             <input type="hidden" id="currency_symbol" value="{{ currency_symbol() }}">
                         </div>
