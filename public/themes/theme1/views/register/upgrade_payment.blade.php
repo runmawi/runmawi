@@ -645,7 +645,7 @@
                                                     <div class="col-md-12 ambk p-0 text-center">
                                                         <div>
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
-                                                            <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol(). round($plan->price,2) }} Membership</p>
+                                                            <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol(). round($plan->price,2) }} {{ __(Membership) }}</p>
                                                         </div>
                                                     </div>
 
