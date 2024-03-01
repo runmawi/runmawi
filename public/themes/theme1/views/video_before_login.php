@@ -320,7 +320,7 @@ if(!empty($request_url)){
                           <div class="col-md-12">
                               <div class="bc-icons-2">
                                   <ol class="breadcrumb">
-                                      <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= ucwords('videos') ?></a>
+                                      <li class="breadcrumb-item"><a class="black-text" href="<?= route('latest-videos') ?>"><?= __(ucwords('videos')) ?></a>
                                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                       </li>
 
@@ -328,7 +328,7 @@ if(!empty($request_url)){
                                         <?php $category_name_length = count($category_name); ?>
                                         <li class="breadcrumb-item">
                                             <a class="black-text" href="<?php echo route('video_categories',[ $video_category_name->categories_slug ])?>">
-                                                <?= ucwords($video_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
+                                                <?= __(ucwords($video_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?> 
                                             </a>
                                             <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                         </li>

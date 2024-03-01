@@ -19,7 +19,7 @@
                     <div class="col-xl-6 col-lg-12 col-md-12">
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23">
                             <a href="<?php echo $slider_video->link; ?>" class="btn bd"><i class="fa fa-play mr-2"
-                                    aria-hidden="true"></i> Learn More</a>
+                                    aria-hidden="true"></i> WATCH THE TRAILER</a>
                         </div>
                     </div>
                 </div>
@@ -38,22 +38,20 @@ endif; ?>
 <div class="item <?php if ($key == 0) {
     echo 'active';
 } ?> header-image">
-    <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>" style="background-size: cover;   ">
-        
-        <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+    <div class="slide slick-bg s-bg-1 lazyload" style="background-size: cover;   ">
+        <div class="home-slid position-relative" style="height:calc(100vh - 60px)">
+            <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>" alt="" width="100%" height="100%">
+        </div>
+        <div class="container-fluid position-absolute h-100" style="padding:0px 100px; top:33%;">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-6 col-lg-12 col-md-12">
-                        <div class="d-flex justify-content-evenly align-items-center r-mb-23"
-                            data-animation-in="fadeInUp" data-delay-in="1.2">
-                            <a href="<?= URL::to('live/' . $slider_video->slug) ?>" class="btn bd"><i
-                                    class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
-                            </a>
-                            
+                        <div class="d-flex justify-content-evenly align-items-center r-mb-23">
+                            <a href="<?= URL::to('live/' . $slider_video->slug) ?>" class="btn bd"><i class="fa fa-play mr-2"
+                                    aria-hidden="true"></i> WATCH THE TRAILER</a>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -75,22 +73,23 @@ endif; ?>
 <div class="item <?php if ($key == 0) {
     echo 'active';
 } ?> header-image">
-    <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $live_event_banner->player_image; ?>"
-        style="background-size: cover;   ">
-        <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+    <div class="slide slick-bg s-bg-1 lazyload"  style="background-size: cover;   ">
+        <div class="home-slid position-relative" style="height:calc(100vh - 60px)">
+            <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $live_event_banner->player_image; ?>" alt="" width="100%" height="100%">
+        </div>
+        <div class="container-fluid position-absolute h-100" style="padding:0px 100px; top:33%;">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-6 col-lg-12 col-md-12">
-                        <div class="d-flex justify-content-evenly align-items-center r-mb-23"
-                            data-animation-in="fadeInUp" data-delay-in="1.2">
-                            <a href="<?= route('live_event_play', $live_event_banner->slug) ?>" class="btn bd">
-                                <i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
-                            </a>
+                        <div class="d-flex justify-content-evenly align-items-center r-mb-23">
+                            <a href="<?= route('live_event_play', $live_event_banner->slug) ?>" class="btn bd"><i class="fa fa-play mr-2"
+                                    aria-hidden="true"></i> WATCH THE TRAILER</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
     </div>
 </div>
 <?php endforeach; endif; ?>
@@ -101,26 +100,23 @@ endif; ?>
 <div class="item <?php if ($key == 0) {
     echo 'active';
 } ?> header-image">
-    <div class="slide  slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>" style="background-size: cover;">
-        
-        <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+    <div class="slide  slick-bg s-bg-1 lazyload" style="background-size: cover;">
+        <div class="home-slid position-relative" style="height:calc(100vh - 60px)">
+            <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>" alt="" width="100%" height="100%">
+        </div>
+        <div class="container-fluid position-absolute h-100" style="padding:0px 100px; top:33%;">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
-                    <div class="col-xl-6 col-lg-12 col-md-12 bgc">
-
-                       
-
+                    <div class="col-xl-6 col-lg-12 col-md-12">
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23">
-                            <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>" class="btn bd">
-                                <i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
-                            </a>
-
-                            <?php   include(public_path('themes/theme7/views/partials/home/Trailer-slider.php')); ?>       
+                            <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>" class="btn bd"><i class="fa fa-play mr-2"
+                                    aria-hidden="true"></i> WATCH THE TRAILER</a>
                         </div>
                     </div>
-                </div>   
+                </div>
             </div>
         </div>
+        
     </div>
 </div>
 
@@ -155,29 +151,23 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
 <div class="item <?php if ($key == 0) {
     echo 'active';
 } ?> header-image">
-    <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>"
-        style="background-size: cover;">
-        
-        <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+    <div class="slide slick-bg s-bg-1 lazyload"   style="background-size: cover;">
+        <div class="home-slid position-relative" style="height:calc(100vh - 60px)">
+            <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>" alt="" width="100%" height="100%">
+        </div>
+        <div class="container-fluid position-absolute h-100" style="padding:0px 100px; top:33%;">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-6 col-lg-12 col-md-12">
-
-                       
-                        <div class="d-flex justify-content-evenly align-items-center r-mb-23"
-                            data-animation-in="fadeInUp" data-delay-in="1.2">
-                            <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Learn More
-                            </a>
-
-                            <?php   include(public_path('themes/theme7/views/partials/home/Trailer-slider.php')); ?>       
-                           
+                        <div class="d-flex justify-content-evenly align-items-center r-mb-23">
+                            <a href="<?php echo URL::to('/'); ?><?= '/category/videos/' . $videos->slug ?>" class="btn bd"><i class="fa fa-play mr-2"
+                                    aria-hidden="true"></i> WATCH THE TRAILER</a>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
+    
     </div>
 </div>
 
@@ -195,10 +185,25 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
 <div class="item <?php if ($key == 0) {
     echo 'active';
 } ?> header-image">
-    <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>"
-        style="background-size: cover;  ">
+    <div class="slide slick-bg s-bg-1 lazyload"  style="background-size: cover;  ">
+
+        <div class="home-slid position-relative" style="height:calc(100vh - 60px)">
+            <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>" alt="" width="100%" height="100%">
+        </div>
+        <div class="container-fluid position-absolute h-100" style="padding:0px 100px; top:33%;">
+            <div class="slider-inner h-100">
+                <div class="row align-items-center bl h-100">
+                    <div class="col-xl-6 col-lg-12 col-md-12">
+                        <div class="d-flex justify-content-evenly align-items-center r-mb-23">
+                            <a href="<?php echo URL::to('episode'); ?><?= '/' . @$slider_video->series_title->slug . '/' . $slider_video->slug ?>" class="btn bd"><i class="fa fa-play mr-2"
+                                    aria-hidden="true"></i> WATCH THE TRAILER</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         
-        <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+        <!-- <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-8 col-lg-12 col-md-12">
@@ -233,7 +238,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                     </a>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 <?php ?>
@@ -258,14 +263,25 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
     <div class="item <?php if ($key == 0) {
                     echo 'active';
     } ?> header-image">
-      <div class="slide slick-bg s-bg-1 lazyload"
-    data-bgset="<?php echo URL::to('/') . '/public/uploads/images/' . $series_slider->player_image; ?>"
-    style="background-size: cover;"
-    id="image-container"
-> 
+      <div class="slide slick-bg s-bg-1 lazyload"  style="background-size: cover;"  id="image-container"> 
 
+        <div class="home-slid position-relative" style="height:calc(100vh - 60px)">
+            <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_slider->player_image; ?>" alt="" width="100%" height="100%">
+        </div>
+        <div class="container-fluid position-absolute h-100" style="padding:0px 100px; top:33%;">
+            <div class="slider-inner h-100">
+                <div class="row align-items-center bl h-100">
+                    <div class="col-xl-6 col-lg-12 col-md-12">
+                        <div class="d-flex justify-content-evenly align-items-center r-mb-23">
+                            <a href="<?= URL::to('/play_series' . '/' . $series_slider->slug)  ?>" class="btn bd"><i class="fa fa-play mr-2"
+                                    aria-hidden="true"></i> WATCH THE TRAILER</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+        <!-- <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-6 col-lg-12 col-md-12">
@@ -281,7 +297,7 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
                 </div>
 
 
-                <!-- watch Trailer -->
+                
                 <?php if( $series_trailer != null ) { ?>
                 <?php
                 $series_image = $series_trailer != null ? $series_trailer->season_image : ' ';
@@ -382,7 +398,7 @@ $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'seri
                 <?php } ?>
 
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 <?php endforeach;  endif; ?>

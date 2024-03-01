@@ -478,7 +478,8 @@ class TvshowsController extends Controller
                             $series->access == 'subscriber' && Auth::user()->role == 'subscriber'  || 
                             $series->access == 'guest' && $season_details->access == 'free' && Auth::user()->role == 'registered' ||
                             $season_details->access == 'free' && $series->access == 'registered' && Auth::user()->role == 'registered'  ||
-                            Auth::user()->role == 'subscriber' &&  $season_details->access == 'free' ) {
+                            Auth::user()->role == 'subscriber' &&  $season_details->access == 'free'
+                            || settings_enable_rent() == 1 && Auth::user()->role == 'subscriber'  && $season_details->access == 'ppv'  ) {
                         $free_episode = 1;
                         } elseif($series->access == 'registered' && $SeriesPpvPurchase > 0 || $series->access == 'guest' && $SeriesPpvPurchase > 0){
                             
@@ -496,7 +497,8 @@ class TvshowsController extends Controller
                            $series->access == 'registered' && Auth::user()->role == 'registered'   && $season_details->access != 'ppv' ||
                            $series->access == 'registered' && Auth::user()->role == 'subscriber'  && $season_details->access != 'ppv' || 
                            $series->access == 'subscriber' && Auth::user()->role == 'subscriber'  && $season_details->access != 'ppv'
-                            ):
+                           || settings_enable_rent() == 1 && Auth::user()->role == 'subscriber'  && $season_details->access == 'ppv' 
+                           ):
                                 $free_episode = 1;
                     else:
                         if($series->access == 'registered' && $SeriesPpvPurchase > 0 || $series->access == 'guest' && $SeriesPpvPurchase > 0){
@@ -564,9 +566,9 @@ class TvshowsController extends Controller
                 } elseif($PpvPurchase > 0){
                 $free_episode = 1;
                 }
-                // elseif (empty($ppv_price) || $season_details->access == 'free') {
-                // $free_episode = 1;
-                // }
+                elseif (Auth::guest() && $series->access == 'guest' && $season_details->access == 'free') {
+                $free_episode = 1;
+                }
                 else {
                     $free_episode = 0;
                 } 

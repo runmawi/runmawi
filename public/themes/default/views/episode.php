@@ -502,8 +502,8 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                     <div class="col-md-6">
                         <?php if (!empty($season)) {   ;?>
                         <input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
-                        <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
-                        <?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+                        <!-- <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
+                        <?php echo __('Purchase For'); ?> <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button> -->
                     </div>
                     <?php	} } ?>
 
