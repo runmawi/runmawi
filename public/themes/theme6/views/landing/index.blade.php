@@ -8,6 +8,7 @@
     }
     section.header{
         background-color:#000;
+        background-image: linear-gradient(-90deg, #1c0f06 0%, #4d1104 49%, #221505 100%);
     }
     section.header .container{
         padding: 20px 0;
@@ -26,15 +27,23 @@
         -webkit-text-stroke-color: #00000070;
         font-stretch: 39%;
         font-weight:bold !important;
+        font-size: 66px !important;
+        color: #ffffff;
+        font-weight: 500;
+        font-family: "Futura";
+        filter: drop-shadow(4.357px 6.709px 0px #000000);
     }
     h1,h2,h3,h4,h5,h6,p,li{
         color:#fff;
     }
-    /* ul li:before{
-        content: "\e69c";
-    } */
+    ul li:before{
+        content: ' \2714';
+        color:red;
+        padding-right:10px;
+    }
     ul li{
         text-align:left;
+        list-style:none;
     }
     section.main-content{
         margin-bottom:5rem;
@@ -58,7 +67,7 @@
         font-weight:bold;
     }
     button.inscrivez {
-        padding: 15px 11px;
+        padding: 25px 11px;
         border: none;
         border-radius: 10px;
         color: #fff;
@@ -71,6 +80,7 @@
     }
     .col-3 img{
         width:100%;
+        height:100%;
     }
     button.join-reg {
         padding: 5px 32px;
@@ -108,6 +118,9 @@
         .back-img .container {
             padding-top: 1rem;
         }
+        h1{
+            font-size:40px !important;
+        }
     }
     @media(max-width:768px){
         .back-img .container{
@@ -132,6 +145,11 @@
         ul li {
             text-align: left;
             font-size: 12px;
+        }
+    }
+    @media(max-width:500px){
+        .container.secon-condent {
+            margin-top: 2rem;
         }
     }
 
@@ -163,6 +181,14 @@
         .col-lg-4.col-md-4.col-12{
             margin-top:1rem;
         }
+        section.footer-sec{
+            padding-top:0;
+        }
+    }
+    @media (max-width:375px){
+        .container.secon-condent {
+            margin-top: 6rem;
+        }
     }
 </style>
 <style>
@@ -173,7 +199,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <title>{{  $title ? $title.' | '.GetWebsiteName() : 'Landing-page'.' | '.GetWebsiteName() }}</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ $title ? $title . ' | ' . GetWebsiteName() : 'Landing-page' . ' | ' . GetWebsiteName() }}</title>
 
                             {{-- Boostrap --}}
          <?php  echo  $bootstrap_link ;  ?>
@@ -201,8 +231,6 @@
                 </div>
             </div>
         </section>
-        
-    </head>
 
 
     <body>
@@ -214,15 +242,17 @@
                         <div class="row align-items-center bl">
                             <div class="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                                 <div class="row">
-                                    <div class="col-8 col-md-12 col-xs-12 ">
+                                    <div class="col-12 col-md-12 col-xs-8 ">
                                         <h1>Le site de streaming de séries télévisées et de films en Afrique</h1>
                                     </div>
                                 </div>
                                 
                                 <div class="row ins-btun">
-                                    <div class="col-2 d-md-none d-sm-none "></div>
-                                    <div class="col-10 col-md-12 col-xs-12">
-                                        <button class="inscrivez">INSCRIVEZ-VOUS GRATUITEMENT MAINTENANT</button>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-2 col-md-12 "></div>
+                                        <div class="col-12 col-lg-10 col-md-12 col-xs-10">
+                                            <button class="inscrivez">INSCRIVEZ-VOUS GRATUITEMENT MAINTENANT</button>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -245,7 +275,7 @@
                     </div>
                 </div>
                 </div>
-                <div class="container">
+                <div class="container secon-condent">
                     <h2>Regardez toutes ces séries et bien plus encore...</h2>
                     <div class="row">
                         <div class="col-3">
@@ -310,5 +340,6 @@
 
            </section>
 
-    </body>
+           
+
 </html>
