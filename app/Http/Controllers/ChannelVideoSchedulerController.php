@@ -41,7 +41,7 @@ class ChannelVideoSchedulerController extends Controller
                 $item['Logo_url'] = $item->logo != null ? URL::to('public/uploads/EPG-Channel/' . $item->logo) : default_vertical_image_url();
 
                 $item['ChannelVideoScheduler'] = ChannelVideoScheduler::where('channe_id', $item->id)
-                    ->where('choosed_date', '=', Carbon::today()->format('n-d-Y'))
+                    ->where('choosed_date', '=', Carbon::today()->format('n-j-Y'))
                     ->where('start_time','>',Carbon::now()->toTimeString())
                     ->orderBy('start_time')
                     ->get()
@@ -58,11 +58,6 @@ class ChannelVideoSchedulerController extends Controller
                                 $item['video_url'] = $item->url;
                                 $item['mimeType'] = 'application/x-mpegURL';
                             break;
-
-                            // case $item['url'] != null && $item['url'] == 'Gap':
-                            //     $item['video_url'] = 'https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8';
-                            //     $item['mimeType'] = 'application/x-mpegURL';
-                            // break;
 
                             default:
                                 $item['video_url'] = null;
