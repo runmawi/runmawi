@@ -234,7 +234,7 @@
                                 <?php } else  { } ?>
 
                                 @if (Session::has('message'))
-                                    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}
+                                    <div id="successMessage" class="alert alert-info">{{ __(Session::get('message')) }}
                                     </div>
                                 @endif
 
