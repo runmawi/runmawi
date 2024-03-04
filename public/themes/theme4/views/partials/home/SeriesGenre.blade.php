@@ -57,7 +57,7 @@
                                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
                                                                                                     ->where('active', '1')->whereIn('id',$SeriesCategory);
 
-                                                                    $series = $series->latest()->limit(30)->get()->map(function ($item) {
+                                                                    $series = $series->latest()->limit(15)->get()->map(function ($item) {
                                                                                 $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : Vertical_Default_Image() ;
                                                                                 $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : Horizontal_Default_Image() ;
                                                                                 $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : Horizontal_Default_Image() ;       
@@ -123,7 +123,7 @@
                                                 'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description')
                                                 ->where('active', '1')->whereIn('id',$SeriesCategory);
 
-                $series = $series->latest()->limit(30)->get()->map(function ($item) {
+                $series = $series->latest()->limit(15)->get()->map(function ($item) {
                             $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : Vertical_Default_Image() ;
                             $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : Horizontal_Default_Image() ;
                             $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : Horizontal_Default_Image() ;       

@@ -209,6 +209,12 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Favicon -->
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400..800&display=swap" rel="stylesheet">
+
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
     <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
@@ -388,7 +394,7 @@
    a.navbar-brand.iconss {
    font-size: 19px;
    font-style: italic;
-   font-family: ui-rounded;
+   font-family: "Sen", sans-serif;
    }
    .switch {
    position: relative;
