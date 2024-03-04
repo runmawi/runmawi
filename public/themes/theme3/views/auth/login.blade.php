@@ -125,16 +125,30 @@ iframe {
         width:80%;
     }
 }
-@media (max-width:600px){
-    .sign-user_card{
-        width:100%;
-    }
-}
 @media screen and (max-width: 767px) {
   .col-md-4.recaptcha {
     width: 100%; 
   }
 }
+@media (max-width:600px){
+    .sign-user_card{
+        width:100%;
+    }
+}
+@media (max-width:530px){
+    h4{
+       font-size: 15px;
+    }
+    a.f-link{
+        font-size: 12px;
+    }
+}
+@media (max-width:425px){
+    img.apps{
+        width:150px;
+    }
+}
+
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .col-md-4.recaptcha {
@@ -385,7 +399,7 @@ h1, h2, h3, h4, h5, h6, p{
 </body>
 
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme3/views/footer.blade.php'));
 @endphp
 
 
