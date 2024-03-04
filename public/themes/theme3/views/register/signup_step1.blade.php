@@ -23,9 +23,15 @@ $theme = App\SiteTheme::first();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+
+
+    <!-- Font -->
+    <link href="public\themes\theme3\assets\font\stylesheet.css" rel="stylesheet">
+
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-    <
+    
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
@@ -185,11 +191,63 @@ i.fa.fa-google-plus {
         background:rgba(11, 11, 11,1);
         color-scheme: dark;
     }
+    body{
+    font-family: 'Sen', sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6, p{
+    font-family: 'Sen', sans-serif !important;
+    font-weight:300;
+}
+.sign-in-from {
+    padding: 21px;
+}
+.sign-user_card input, .sign-user_card select{
+    border: 1px solid #5B5B5B !important;
+}
+.sign-user_card input::placeholder{
+    color:#fff !important;
+}
+.form-control{
+    margin-bottom: 0.4rem !important;
+}
+h4.mb-3.text-center {
+    margin-bottom: 1.5rem !important;
+}
+button.btn.btn-hover.btn-primary.btn-block.signup {
+    font-weight: 500;
+    font-size: 25px;
+}
+@media (max-width:425px){
+    .col-form-label{
+        font-size:12px;
+    }
+    .d-flex.justify-content-center.links.mt-2 {
+        font-size: 12px;
+    }
+    h4.mb-3.text-center {
+        font-size: 14px;
+    }
+    img.apps {
+        width: 150px;
+    }
+}
+@media (max-width:320px){
+    .col-form-label{
+        font-size:12px;
+    }
+    .d-flex.justify-content-center.links.mt-2 {
+        font-size: 12px;
+    }
+    h4.mb-3.text-center {
+    font-size: 12px;
+}
+}
 </style>
 <style>
     .sign-user_card{
         background-color: #111;
         border-radius: 15px;
+        margin-top: 2rem;
     }
     button.btn.btn-default.reveal {
         background: transparent !important;
@@ -245,11 +303,11 @@ i.fa.fa-google-plus {
                 </div>
 
                 <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                    <img src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:1rem;">  
+                    <img class="apps" src="<?= URL::to('public/uploads/settings/'. $theme->light_mode_logo)  ?>" style="margin-bottom:0.3rem;">  
                 <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                    <img src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:1rem;">  
+                    <img class="apps" src="<?= URL::to('public/uploads/settings/'. $theme->dark_mode_logo) ?>" style="margin-bottom:0.3rem;">  
                 <?php }else { ?> 
-                    <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                    <img class="apps" alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:0.3rem;"></div></div>
                 <?php } ?>
                 <p class="text-center text-white mb-3" style="font-size:11px;margin:0;"> <?= 'Created by Music Fans for Music Fans' ?></p>
 

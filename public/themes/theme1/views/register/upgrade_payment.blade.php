@@ -686,9 +686,9 @@
                                     <p class="text-center mt-3">{{ __('All state sales taxes apply') }}</p>
                                 </div>
 
-                                <p class="text-white mt-3 dp">
+                                <!-- <p class="text-white mt-3 dp">
                                     {{ $signup_payment_content ? $signup_payment_content : ' ' }}
-                                </p>
+                                </p> -->
                             </div>
 
                                                 {{-- Payment Buttons --}}
