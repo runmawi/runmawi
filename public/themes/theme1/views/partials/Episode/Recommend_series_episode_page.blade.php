@@ -52,7 +52,12 @@
                 </div>
 
                 <div>
-                    <small class="date" style="color:#fff;"><?= date('F jS, Y', strtotime($series_list->created_at)) ?>
+                    <small class="date" style="color:#fff;"><?php
+                      $originalDate = $series_list->created_at;
+                        $publishdate = explode(' ', date('F jS, Y', strtotime($originalDate)));
+                        $translatedMonth = __($publishdate[0]);
+                        $publishdate = implode(' ', [ $translatedMonth,$publishdate[1], $publishdate[2]]);
+                        echo $publishdate ; ?>
                     </small>
                 </div>
             </a>

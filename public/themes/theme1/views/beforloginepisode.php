@@ -550,7 +550,12 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                   </a>
                   <div class="block-contents">
                   <small class="date" style="color:#fff;">
-                    <?= date("F jS, Y", strtotime($episodes->created_at)); ?>
+                  <?php
+                      $originalDate = $episodes->created_at;
+                        $publishdate = explode(' ', date('F jS, Y', strtotime($originalDate)));
+                        $translatedMonth = __($publishdate[0]);
+                        $publishdate = implode(' ', [ $translatedMonth,$publishdate[1], $publishdate[2]]);
+                        echo $publishdate ; ?>
                     <?php if ($episodes->access == 'guest'): ?>
                       <span class="label label-info">
                         <?= (__('Free')) ?>

@@ -645,7 +645,7 @@
                                                     <div class="col-md-12 ambk p-0 text-center">
                                                         <div>
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
-                                                            <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol(). round($plan->price,2) }} Membership</p>
+                                                            <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol(). round($plan->price,2) }} {{ (__('Membership')) }}</p>
                                                         </div>
                                                     </div>
 
@@ -728,6 +728,13 @@
                                 <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Paydunya_button processing_alert" >
                                     {{ __('Pay Now') }}
                                 </button>
+                            </div>
+
+                            {{-- Home Button  --}}
+                            <div class="col-sm-4 d-flex justify-content-center" style="margin-left: 35%;">
+                                <a class="btn1 btn-lg btn-block font-weight-bold text-white mt-3" href="{{ URL::to('/home') }}">
+                                    <i class="ri-home-4-line"></i>  {{ __('Home') }}
+                                </a>
                             </div>
 
                             <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">
@@ -883,7 +890,7 @@
                             html += '<h6 class="font-weight-bold">  ' + plan_data.plans_name +
                                 '   </h6>';
                             html += '<p class="text-white mb-0">'  + plan_data
-                                .price + ' Membership </p>';
+                                .price + '<?= __('Membership') ?>'+'</p>';
                             html += '</div>';
 
                             html += '<div class="col-md-12 blk" >';

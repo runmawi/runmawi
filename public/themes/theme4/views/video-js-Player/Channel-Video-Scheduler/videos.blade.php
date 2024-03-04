@@ -22,32 +22,13 @@
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
     <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
     
+{{-- Player HTML --}}
+
     <div class="container-fluid p-0">
-        <video id="channel-video-scheduler-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls preload="auto"  poster="" style="width:100%;height:100%;">
+        <video id="channel-video-scheduler-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" 
+            controls preload="auto"  poster="{{ $AdminEPGChannel->Player_image_url }}" style="width:100%;height:100%;">
         </video>
-
-        {{-- <div class="col-sm-12 col-md-12 col-xs-12 p-0">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="bc-icons-2">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="black-text" href="<?= route('liveList') ?>"><?= ucwords( __('Livestreams')) ?></a>
-                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                            </li>
-                           
-                            <li class="breadcrumb-item"></li>
-
-                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-
-                            <li class="breadcrumb-item"><a class="black-text"> </a></li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-        
     </div>
-
 
 @php 
     include public_path('themes/theme4/views/video-js-Player/Channel-Video-Scheduler/Player_Script.blade.php');
