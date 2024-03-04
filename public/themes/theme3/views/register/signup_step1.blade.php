@@ -503,7 +503,7 @@ button.btn.btn-hover.btn-primary.btn-block.signup {
                                     </div>
                                  @endif
                             
-                       <div class="form-group row">
+                       <div class="form-group row" style="display:none;">
                         </div>
                             <?php if ( isset($ref)) { ?>
                                 <div class="form-group row">
