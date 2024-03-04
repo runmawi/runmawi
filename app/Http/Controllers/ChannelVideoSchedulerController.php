@@ -76,6 +76,8 @@ class ChannelVideoSchedulerController extends Controller
             })
             ->first();
 
+            // dd( $AdminEPGChannel['ChannelVideoScheduler'] );s
+
         $data = [ 'AdminEPGChannel' => $AdminEPGChannel ];
 
         return Theme::view('video-js-Player.Channel-Video-Scheduler.videos', $data);

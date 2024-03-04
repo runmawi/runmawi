@@ -21,7 +21,6 @@
                     'liveDisplay': {},
 
                     'flexibleWidthSpacer': {},
-                    'progressControl': {},
 
                     'settingsMenuButton': {
                         entries: [
@@ -29,12 +28,9 @@
                         ]
                     },
                     'fullscreenToggle': {},
-                    'progressControl': {},
-
                 }
             }
         });
-
         // Hls Quality Selector - M3U8 
 
         player.hlsQualitySelector({
@@ -70,7 +66,7 @@
 
                 player.src({
                     src: `data:application/vnd.videojs.vhs+json,${JSON.stringify(result.manifestObject)}`,
-                    type: 'application/vnd.videojs.vhs+json'
+                    type: 'application/vnd.videojs.vhs+json',
                 });
             }
         });
