@@ -257,8 +257,8 @@ if(empty($new_date)){
             
             if(!empty($password_hash)){
 
-                if ($ppv_exist > 0 || ( Auth::user()->role == "subscriber" && $Livestream_details->access != "ppv" )|| $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
-
+                if ( ($ppv_exist > 0 )|| ( Auth::user()->role == "subscriber" && settings_enable_rent() == 1 ) || ( Auth::user()->role == "subscriber" && $Livestream_details->access != "ppv" ) || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+                    
                     <div id="video_bg">
                         <div class="">
                             <div id="video sda" class="fitvid" style="margin: 0 auto;">
