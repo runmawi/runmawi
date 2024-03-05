@@ -257,8 +257,8 @@ if(empty($new_date)){
             
             if(!empty($password_hash)){
 
-                if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
-                    
+                if ($ppv_exist > 0 || ( Auth::user()->role == "subscriber" && $Livestream_details->access != "ppv" )|| $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+
                     <div id="video_bg">
                         <div class="">
                             <div id="video sda" class="fitvid" style="margin: 0 auto;">
@@ -296,7 +296,7 @@ if(empty($new_date)){
                                         ?>
                                     </p>
                                 </div>
-                                
+
                             </div>
 
                 <?php  } else {  ?>
@@ -315,7 +315,7 @@ if(empty($new_date)){
 
                                                     <!--  Become Subscriber-->
                                         <h4 class="text-center" style="margin-top:40px;"> 
-                                            <a href="<?=URL::to('/') . '/stripe/billings-details' ?>">
+                                            <a href="<?= route('payment_becomeSubscriber') ?>">
                                                 <p> <?= __('Click Here To Become Subscriber') ?></p>
                                             </a>
                                         </h4>
@@ -399,49 +399,51 @@ if(empty($new_date)){
         </div>
 <?php } ?>
 
-    <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
+<input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
 
-                    <!-- BREADCRUMBS -->
-                    <div class="container-fluid">
-                        <div class="col-sm-12 col-md-12 col-xs-12 p-0">
-                            <div class="row">
-                                <div class="col-md-12 p-0">
-                                    <div class="bc-icons-2">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a class="black-text"
-                                                    href="<?= route('liveList') ?>"><?= __(ucwords('Livestreams')) ?></a>
-                                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                            </li>
+            <!-- BREADCRUMBS -->
 
-                                            <?php foreach ($category_name as $key => $video_category_name) { ?>
-                                            <?php $category_name_length = count($category_name); ?>
-                                            <li class="breadcrumb-item">
-                                                <a class="black-text"
-                                                    href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
-                                                    <?= __(ucwords($video_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
-                                                </a>
-                                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                            </li>
-                                            <?php } ?>
+<div class="container-fluid">
+    <div class="col-sm-12 col-md-12 col-xs-12 p-0">
+        <div class="row">
+            <div class="col-md-12 p-0">
+                <div class="bc-icons-2">
+                    <ol class="breadcrumb">
 
+                        <li class="breadcrumb-item">
+                            <a class="black-text" href="<?= route('liveList') ?>"><?= __(ucwords('Livestreams')) ?></a>
+                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                        </li>
 
+                        <?php foreach ($category_name as $key => $video_category_name) { ?>
 
-                                            <li class="breadcrumb-item"><a
-                                                    class="black-text"><?php echo (strlen($video->title) > 50) ? __(ucwords(substr($video->title,0,120).'...')) : __(ucwords($video->title)); ?>
-                                                </a></li>
-                                        </ol>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            <?php $category_name_length = count($category_name); ?>
+
+                            <li class="breadcrumb-item">
+                                <a class="black-text"
+                                    href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
+                                    <?= __(ucwords($video_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                                </a>
+                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                            </li>
+
+                        <?php } ?>
+
+                        <li class="breadcrumb-item">
+                            <a class="black-text"><?php echo (strlen($video->title) > 50) ? __(ucwords(substr($video->title,0,120).'...')) : __(ucwords($video->title)); ?></a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
                     <div class="container-fluid video-details">
                         <div class="row">
                             <div class="col-sm-9 col-md-9 col-xs-12">
                                 <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?>
                                     <?php if( Auth::guest() ) { ?> <?php } ?></h1>
-                                <!-- Category -->
                                 <ul class="p-0 list-inline d-flex align-items-center movie-content">
                                     <li class="text-white">
                                         <?//= $videocategory ;?>
@@ -484,101 +486,81 @@ if(empty($new_date)){
 
                         </div>
 
+                                        <!-- Social Share, Like Dislike -->
+
                         <?php if(!Auth::guest()) { ?>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-xs-12 pl-0">
+                                    <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                                        <?php  include('partials/live-social-share.php'); ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php } ?>
+
+                    <?php if(Auth::guest()) { ?>
+
                         <div class="row">
-                            <div class="col-sm-6 col-md-6 col-xs-12 pl-0">
+                            <div class="col-sm-6 col-md-6 col-xs-12">
                                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                                     <!-- Social Share, Like Dislike -->
                                     <?php  include('partials/live-social-share.php'); ?>
                                 </ul>
                             </div>
 
-                            <!--                    <div class="col-sm-6 col-md-6 col-xs-12">-->
-                            <!--
-                  <div class="d-flex align-items-center series mb-4">
-                     <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
-                           alt=""></a>
-                     <span class="text-gold ml-3">#2 in Series Today</span>
-                  </div>
--->
-                            <!--                        <ul class="list-inline p-0 mt-4 rental-lists">-->
-                            <!-- Subscribe -->
-                            <!--
-                    <li>
-                        <?php     
-                            $user = Auth::user(); 
-                            if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
-                                <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-                        <?php } ?>
-                    </li>
--->
 
-                            <!-- </ul> -->
-                    </div>
-
-
-                    <?php } ?>
-
-                    <?php if(Auth::guest()) { ?>
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6 col-xs-12">
-                            <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                                <!-- Social Share, Like Dislike -->
-                                <?php  include('partials/live-social-share.php'); ?>
-                            </ul>
-                        </div>
-
-
-
-                        <div class="col-sm-6 col-md-6 col-xs-12">
+                            <div class="col-sm-6 col-md-6 col-xs-12">
 
                                 <ul class="list-inline p-0 mt-4 rental-lists">
+
                                     <!-- Subscribe -->
                                     <?php if ($video->access == 'subscriber' ) { ?>
-
-                                    <li>
-                                        <a href="<?php echo URL::to('/login');?>"><span
-                                                class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?>
-                                            </span></a>
-                                    </li>
+                                        <li>
+                                            <a href="<?php echo URL::to('/login');?>">
+                                                <span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?></span>
+                                            </a>
+                                        </li>
                                     <?php } ?>
+
                                     <!-- PPV button -->
                                     <?php if ($video->access != 'guest' ) { ?>
                                         <li>
-                                            <a data-toggle="modal" data-target="#exampleModalCenter"
-                                                class="view-count btn btn-primary rent-video"
+                                            <a data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video"
                                                 href="<?php echo URL::to('/login');?>">
-                                                <?php echo __('Rent');?> </a>
+                                                <?php echo __('Rent');?> 
+                                            </a>
                                         </li>
-                                    <?php   }?>
-
+                                    <?php  }?>
                                 </ul>
+                            </div>
                         </div>
-                    </div>
-                    <?php   } ?>
+                    <?php } ?>
 
                     <div class="">
                         <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
                     </div>
+
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-xs-12">
                             <div class="video-details-container">
+
                                 <?php if (!empty($video->details)) { ?>
-                                <h6 class="mt-3 mb-1">Live Details</h6>
-                                <p class="trending-dec w-100 mb-3 text-white"><?=$video->details; ?></p>
+                                    <h6 class="mt-3 mb-1">Live Details</h6>
+                                    <p class="trending-dec w-100 mb-3 text-white"><?=$video->details; ?></p>
                                 <?php  } ?>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
-                <div class="">
-                    <div class=" container-fluid video-list you-may-like overflow-hidden">
-                        <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
-                        <?php include('comments/index.blade.php');?>
+                    <div class="">
+                        <div class=" container-fluid video-list you-may-like overflow-hidden">
+                            <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
+                            <?php include('comments/index.blade.php');?>
+                        </div>
                     </div>
-                </div>
                 <?php endif; ?>
 
                 <div class="">
@@ -593,7 +575,6 @@ if(empty($new_date)){
                     </div>
                 </div>
             </div>
-
 
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
