@@ -101,7 +101,7 @@
    }  
    include('Adstagurl.php'); 
    
-   $autoplay = $video_tag_url == null ? "autoplay" : "" ;    
+   $autoplay = $video_tag_url == null ? " " : "" ;    
 
 ?>
 
