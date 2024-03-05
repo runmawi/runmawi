@@ -97,10 +97,6 @@
                                                 <td valign="bottom"><img src="{{ $Admin_EPG_Channel_data->image_url }}" width="50" height="50"></td>
                                                 <td>
                                                     <div class=" align-items-center list-user-action" style="display: inline !important;">
-                                                        <a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                                            href="#">
-                                                            <img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}">
-                                                        </a>
 
                                                         <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit"
                                                                 href="{{ route('admin.Channel.edit',$Admin_EPG_Channel_data->id) }}">

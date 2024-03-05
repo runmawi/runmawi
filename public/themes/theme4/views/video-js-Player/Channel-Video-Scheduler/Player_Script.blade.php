@@ -15,20 +15,22 @@
 
                 children: {
                     'playToggle': {},
+                    'currentTimeDisplay': {},
+                    'timeDivider': {},
                     'durationDisplay': {},
                     'liveDisplay': {},
+
+                    'flexibleWidthSpacer': {},
+
                     'settingsMenuButton': {
                         entries: [
                             'playbackRateMenuButton'
                         ]
                     },
                     'fullscreenToggle': {},
-                    'progressControl': {},
-
                 }
             }
         });
-
         // Hls Quality Selector - M3U8 
 
         player.hlsQualitySelector({
@@ -46,7 +48,7 @@
             };
         });
 
-        console.log( videoList );
+        // console.log( videoList );
 
         player.concat({
 
@@ -59,10 +61,12 @@
                     console.error(err);
                     return;
                 }
-                console.log(result);
+
+                // console.log(result);
+
                 player.src({
                     src: `data:application/vnd.videojs.vhs+json,${JSON.stringify(result.manifestObject)}`,
-                    type: 'application/vnd.videojs.vhs+json'
+                    type: 'application/vnd.videojs.vhs+json',
                 });
             }
         });

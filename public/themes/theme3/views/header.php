@@ -209,6 +209,12 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Favicon -->
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400..800&display=swap" rel="stylesheet">
+
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
     <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
@@ -388,7 +394,7 @@
    a.navbar-brand.iconss {
    font-size: 19px;
    font-style: italic;
-   font-family: ui-rounded;
+   font-family: "Sen", sans-serif;
    }
    .switch {
    position: relative;
@@ -759,7 +765,6 @@
    body.light-theme ul.navbar-nav{
       background-color: <?php echo GetLightBg(); ?>!important;  
       color: <?php echo GetLightText(); ?>;
-      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
    }
    .light-theme.onclickbutton_menu{
       color: <?php echo GetLightText(); ?>;
@@ -977,8 +982,8 @@ div#main_nav {
 
 }
 @media (min-width:851px) {
-    .fa-bar-screen{
-      display:none;
+   button.navbar-toggler.d-block.border-0.p-0.mr-3.onclickbutton_menu{
+      display:none !important;
     }
    
 }
@@ -1410,10 +1415,8 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                        <!-- ============= COMPONENT ============== -->
                         <nav class="navbar navbar-expand-lg navbar-light p-0">
-                           <button class="fa-bar-screen"><i class="fa fa-bars" onclick="toggleContainer(this)" aria-hidden="true"></i></button>
-                           <!-- <button class="fa-bar-screen">
-                              <i class="fa fa-bars" onclick="this.classList.toggle('fa-bars'); this.classList.toggle('fa-times')" aria-hidden="true"></i>
-                           </button> -->
+                           <button class="navbar-toggler d-block border-0 p-0 mr-3 onclickbutton_menu fa-bar-screen"><i class="fa fa-bars" onclick="toggleContainer(this)" aria-hidden="true"></i></button>
+                           
                            
                            <div class="container-fluid p-0">
 

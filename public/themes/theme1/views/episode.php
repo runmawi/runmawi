@@ -237,9 +237,9 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     value="<?= $episode->genre_id ?>">
 <br>
 
-    <div class="row-flex">
+    <div class="container-fluid">
         <div class="bc-icons-2">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb p-0">
                     <li class="breadcrumb-item"><a class="black-text"
                             href="<?= route('series.tv-shows') ?>"><?= ucwords (__('Series')) ?></a>
                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
@@ -318,13 +318,13 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
   </h3>-->
 
-                <div class="col-md-2 text-center text-white">
+                <!-- <div class="col-md-2 text-center text-white">
                     <span class="view-count " style="float:right;">
                         <i class="fa fa-eye"></i>
                         <?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?>
                         <?php else: ?><?= $episode->views ?><?php endif; ?><?= __('Views') ?> 
                     </span>
-                </div>
+                </div> -->
 
 
                 <!-- <div>
@@ -398,8 +398,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 </ul>
             </div>
 
-
-            <h2 id="tags"><?= __('Tags') ?>:
+            <span class="text-white" style="font-size: 129%;font-weight: 500;">
+                <?= __('Tags') ?>:
                 <?php if(isset($episode->tags)) {
 		foreach($episode->tags as $key => $tag): ?>
 
@@ -408,8 +408,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
                 <?php endforeach; }
 		?>
-
-            </h2>
+            </span>
+            
         </div>
 
 
@@ -443,7 +443,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     </div>
 </div>
 <div class="clear">
-    <h2 id="tags">
+    <span class="text-white" style="font-size: 129%;font-weight: 500;">
         <?php if(isset($episode->tags)) {
 		foreach($episode->tags as $key => $tag): ?>
 
@@ -452,7 +452,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
         <?php endforeach; }
 		?>
-    </h2>
+    </span>
 
     <div class="clear"></div>
     <div id="social_share">
