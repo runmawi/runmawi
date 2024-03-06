@@ -344,6 +344,15 @@ function GetLightText(){
 
 }
 
+function front_End_text_color()
+{
+    $settings = App\SiteTheme::first();
+
+    $front_End_text_colors = $settings->theme_mode == "light"  ? $settings->light_text_color : $settings->dark_text_color ;
+
+    return $front_End_text_colors  ;
+}
+
 function GetDarkBg()
 {
      $settings = App\SiteTheme::first();
