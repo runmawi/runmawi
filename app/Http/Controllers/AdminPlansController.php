@@ -361,6 +361,8 @@ class AdminPlansController extends Controller
                         $new_plan->ios_product_id = $request->ios_product_id;
                         $new_plan->ios_plan_price = $request->ios_plan_price;
                         $new_plan->plan_content = $request->plan_content;
+                        $new_plan->auto_stripe_promo_code_status = !empty($input['auto_stripe_promo_code_status']) == true ? 1 : 0 ;
+                        $new_plan->auto_stripe_promo_code        = $request->auto_stripe_promo_code ;
                         // $new_plan->andriod_paystack_url = $request->andriod_paystack_url;
                         $new_plan->ads_status = !empty($input['ads_status']) == true ? 1 : 0;
                         $new_plan->save();
@@ -479,7 +481,8 @@ class AdminPlansController extends Controller
             $plans->plan_content = $request->plan_content;
             // $plans->andriod_paystack_url = $request->andriod_paystack_url;
             $plans->ads_status = !empty($input['ads_status']) == true ? 1 : 0;
-
+            $plans->auto_stripe_promo_code_status = !empty($input['auto_stripe_promo_code_status']) == true ? 1 : 0 ;
+            $plans->auto_stripe_promo_code        = $request->auto_stripe_promo_code ;
             foreach ($input['plan_id'] as $key => $values) {
                 if ($key == $value) {
                     $plans->plan_id = $values;
