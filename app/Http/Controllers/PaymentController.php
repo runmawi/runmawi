@@ -869,7 +869,7 @@ public function RentPaypal(Request $request)
         $plans_data = SubscriptionPlan::where('type',$request->payment_gateway)->groupBy('plans_name')->get()->map(function ($item) use ($CurrencySetting,$Theme){
           $item['plan_content'] = $item->plan_content != null ? $item->plan_content : "Plan Description";
             
-          if($Theme == "theme6" || $Theme == "theme1"){
+          if($Theme == "theme6" || $Theme == "theme1" || $Theme == "default" || $Theme == "theme3" || $Theme == "theme7"){
                 $item['price'] = ($CurrencySetting == 1 ? Currency_Convert($item->price) : currency_symbol().($item->price)) ;
           }else{
               $item['price'] = $item->price ;
