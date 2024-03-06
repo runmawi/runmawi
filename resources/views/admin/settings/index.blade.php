@@ -478,7 +478,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
                         <div class="row mt-3">
-                            <div class="col-sm-6" >
+                            {{-- <div class="col-sm-6" >
                                 <div class="form-group">
                                     <p class="p1">{{ ucwords('Enable Rent as PPV') }}</p>
                                     <div class="make-switch" data-on="success" data-off="warning">
@@ -492,7 +492,25 @@ border-radius: 0px 4px 4px 0px;
                                         <div class="ml-2">ON</div>
                                     </div>
                                 </div>
+                        </div> --}}
+
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="mt-1"> Enable Rent as PPV</label>
+                            <span>( Free for subscriber )</span>
                         </div>
+
+                        <div class="d-flex ">
+                            <div>OFF</div>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div>ON</div>
+                        </div>
+                    </div>
             </div>
         </div>
                                 {{-- End Set Expiry time --}}
