@@ -479,22 +479,20 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="row mt-3">
                             <div class="col-sm-6" >
-                            <div class="form-group">
-                                <p class="p1"> Enable Rent as PPV  </p>
-                                <div class="make-switch" data-on="success" data-off="warning">
-                                     <div class="mr-2">OFF</div>
+                                <div class="form-group">
+                                    <p class="p1">{{ ucwords('Enable Rent as PPV') }}</p>
+                                    <div class="make-switch" data-on="success" data-off="warning">
+                                        <div class="mr-2">OFF</div>
                                         <div class="mt-1">
                                             <label class="switch">
-                                            <input type="checkbox" @if(!isset($settings->enable_ppv_rent) ||
-                                                (isset($settings->enable_ppv_rent) && $settings->enable_ppv_rent))checked="checked"
-                                                value="1"@else value="0"@endif name="enable_ppv_rent" id="enable_ppv_rent" />
+                                                <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
                                                 <span class="slider round"></span>
-                                            </div>
+                                            </label>
+                                        </div>
                                         <div class="ml-2">ON</div>
+                                    </div>
                                 </div>
-                            </div>
-
-                </div>
+                        </div>
             </div>
         </div>
                                 {{-- End Set Expiry time --}}
