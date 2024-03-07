@@ -2,7 +2,7 @@
 include 'header.php';
 include 'episode_ads.blade.php';
 
-$autoplay = $episode_ads == null ? 'autoplay' : '';
+$autoplay = $episode_ads == null ? ' ' : '';
 $series = App\series::first();
 $series = App\series::where('id', $episode->series_id)->first();
 $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
@@ -153,7 +153,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
         <?php  else: ?>
 
         <div id="series_container">
-            <video id="videoPlayer" muted autoplay class="video-js vjs-default-skin" controls preload="auto"
+            <video id="videoPlayer"  class="video-js vjs-default-skin" controls preload="auto"
                 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}"
                 width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
                 <source src="<?php echo URL::to('/storage/app/public/') . '/' . 'TfLwBgA62jiyfpce_2_1000_00018'; ?>" type='application/x-mpegURL' label='360p' res='360' />
@@ -225,7 +225,7 @@ $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() 
                  ?>
 
         <div id="series_container">
-            <video id="videoPlayer" muted autoplay class="video-js vjs-default-skin" controls preload="auto"
+            <video id="videoPlayer"  class="video-js vjs-default-skin" controls preload="auto"
                 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}"
                 width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
                 <source src="<?= $season[0]->trailer ?>" type='video/mp4' label='auto'>

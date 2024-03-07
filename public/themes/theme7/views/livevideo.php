@@ -210,7 +210,7 @@ include('livevideo_ads.blade.php');
         $autoplay = " "  ;  
 
     }else{
-        $autoplay = "autoplay"  ;  
+        $autoplay = " "  ;  
     }
 
 $str = $video->mp4_url;
@@ -229,7 +229,7 @@ if(empty($new_date)){
 
 if(!Auth::guest()){
     if(!empty($password_hash)){ ?>
-        <?php if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+        <?php if ($ppv_exist > 0 ||  ( Auth::user()->role == "subscriber" && $video->access != "ppv" ) ||  ( Auth::user()->role == "subscriber" && settings_enable_rent() == 1 )  || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
             <div id="video_bg"> 
                 <div class="">
                     <div id="video sda" class="fitvid" style="margin: 0 auto;">
@@ -249,7 +249,7 @@ if(!Auth::guest()){
                                     src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
                                     allowfullscreen
                                     allowtransparency
-                                    allow="autoplay" >
+                                     >
                                 </iframe>
                             </div>
 
@@ -380,7 +380,7 @@ if(!Auth::guest()){
 
                     <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-                            <video id="live_player_mp4" <?= $autoplay ?>  onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                            <video id="live_player_mp4" <?= $autoplay ?> class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
                                 <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
                                 <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
                             </video>

@@ -27,7 +27,7 @@ if ($ads_details != null) {
 
 include 'Adstagurl.php';
 
-$autoplay = $video_tag_url == null ? 'autoplay' : '';
+$autoplay = $video_tag_url == null ? ' ' : '';
 
 $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first() ;
 
@@ -476,7 +476,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
 
                                 <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 
-                                    <video <?= $autoplay ?> muted id="video" crossorigin  playsinline allow="autoplay" class="adstime_url"
+                                    <video <?= $autoplay ?> muted id="video" crossorigin  playsinline class="adstime_url"
                                         poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
                                         data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
                                         <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>" type='application/x-mpegURL' label='auto'>
@@ -654,7 +654,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                     if(!empty($video->path)){ ?>
 
                         <div id="video_container" class="fitvid" style="z-index: 9999;">
-                            <video id="video" autoplay muted class="adstime_url" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
+                            <video id="video"  class="adstime_url" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
                                 data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
 
                                 <source type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '.m3u8'; ?>">

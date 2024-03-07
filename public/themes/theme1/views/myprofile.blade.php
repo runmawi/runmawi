@@ -571,7 +571,7 @@
                                     @elseif( $user->role == "subscriber")
 
                                         <label>
-                                            <h5 class="mb-4">{{ (__(ucwords('subscriber'))) .' as on '. $user->subscription_start }}</h5>
+                                            <h5 class="mb-4">{{ (__('Subscriber as on')) . $user->subscription_start }}</h5>
                                         </label>
 
                                         <div class="d-flex justify-content-between mt-2">
@@ -586,12 +586,12 @@
 
                                         <div class="d-flex justify-content-between mt-2">
                                             <span class="text-light font-size-13">{{ (__(ucwords('Subscription Payment through'))) }}</span>
-                                            <p class="mb-0">{{ $user->payment_gateway ?? '-' }}</p>
+                                            <p class="mb-0">{{ __($user->payment_gateway) ?? '-' }}</p>
                                         </div>
 
                                         <div class="d-flex justify-content-between mt-2">
                                             <span class="text-light font-size-13">{{ (__(ucwords('subscription Payment status'))) }}</span>
-                                            <p class="mb-0">{{ $user->payment_status ?? '-' }}</p>
+                                            <p class="mb-0">{{ __($user->payment_status) ?? '-' }}</p>
                                         </div>
 
                                         @if ( !is_null($user->subscription_start) && !is_null($user->subscription_ends_at))

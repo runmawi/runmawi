@@ -478,23 +478,39 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
                         <div class="row mt-3">
-                            <div class="col-sm-6" >
-                            <div class="form-group">
-                                <p class="p1"> Enable Rent as PPV  </p>
-                                <div class="make-switch" data-on="success" data-off="warning">
-                                     <div class="mr-2">OFF</div>
+                            {{-- <div class="col-sm-6" >
+                                <div class="form-group">
+                                    <p class="p1">{{ ucwords('Enable Rent as PPV') }}</p>
+                                    <div class="make-switch" data-on="success" data-off="warning">
+                                        <div class="mr-2">OFF</div>
                                         <div class="mt-1">
                                             <label class="switch">
-                                            <input type="checkbox" @if(!isset($settings->enable_ppv_rent) ||
-                                                (isset($settings->enable_ppv_rent) && $settings->enable_ppv_rent))checked="checked"
-                                                value="1"@else value="0"@endif name="enable_ppv_rent" id="enable_ppv_rent" />
+                                                <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
                                                 <span class="slider round"></span>
-                                            </div>
+                                            </label>
+                                        </div>
                                         <div class="ml-2">ON</div>
+                                    </div>
                                 </div>
-                            </div>
+                        </div> --}}
 
-                </div>
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="mt-1"> Enable Rent as PPV</label>
+                            <span>( Free for subscriber )</span>
+                        </div>
+
+                        <div class="d-flex ">
+                            <div>OFF</div>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div>ON</div>
+                        </div>
+                    </div>
             </div>
         </div>
                                 {{-- End Set Expiry time --}}
@@ -899,6 +915,35 @@ border-radius: 0px 4px 4px 0px;
                         <label class="panel-title">Enable / Disable:</label>
                         <input type="checkbox" @if($settings->coupon_status == 1)checked="checked" value="1"@else
                         value="0"@endif name="coupon_status">
+                    </div>
+                </div>
+                <div class="panel panel-primary mt-3" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label>System Address</label></div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="display: block;">
+
+                        <p class="p1">Enter you're System Address:</p>
+                        <textarea id="summary-ckeditor" name="system_address" class="form-control"
+                                placeholder="Email System Address"
+                                value="@if(!empty($settings->system_address)){{ $settings->system_address }}@endif"><?php echo $settings->system_address; ?></textarea>
+
+                    </div>
+                </div>
+                <div class="panel panel-primary mt-3" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label>System Phone Number</label></div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="display: block;">
+
+                        <p class="p1">Enter you're System Phone Number:</p>
+                        <input type="text" class="form-control" name="system_phone_number" id="system_phone_number"
+                            placeholder="System Phone Number"
+                            value="@if(!empty($settings->system_phone_number)){{ $settings->system_phone_number }}@endif" />
                     </div>
                 </div></div>
             </div>
