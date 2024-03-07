@@ -196,15 +196,6 @@
                                                     <div class="caption pl-4">
 
                                                         <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2><br>
-                                                    
-                                                        
-                                                            {{-- @if ( Carbon\Carbon::now()->greaterThanOrEqualTo( $epg_channel_data->EPG->epg_start_date )) 
-                                                                <ul class="vod-info">
-                                                                    <li><span></span> LIVE NOW</li>
-                                                                </ul>
-                                                            @else
-                                                                <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($epg_channel_data->EPG->epg_start_date)->isoFormat('YYYY-MM-DD') }} </span>
-                                                            @endif --}}
 
                                                         @if (optional($epg_channel_data)->description)
                                                             <div class="trending-dec">{!! html_entity_decode( optional($epg_channel_data)->description) !!}</div><br>
@@ -215,9 +206,9 @@
                                                                 <img src="{{ $epg_channel_data->ChannelVideoScheduler_current_video_details->video_image_url }}" alt="" style="height: 30%; width:30%"><br>
                                                                 
                                                                 <ul>
-                                                                    <li><span> LIVE NOW </span> </li>
-                                                                    <li> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->socure_title }} </li>
-                                                                    <li>{{ current_timezone() ." ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_start_time ." to ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_end_time   }} </li>
+                                                                    <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->socure_title }}  </p> 
+                                                                    <p> {{ current_timezone() ." - ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_start_time ." to ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_end_time   }} </p> 
+                                                                    <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="100%" style="position: static !important ; margin:0% !important"></p>
                                                                 </ul>
 
                                                             </div>
@@ -276,14 +267,6 @@
                                                 <div class="col-lg-10 col-md-10 col-sm-10">
 
                                                     <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
-
-                                                    {{-- @if ( Carbon\Carbon::now()->greaterThanOrEqualTo( $epg_channel_data->EPG->epg_start_date )) 
-                                                        <ul class="vod-info">
-                                                            <li><span></span> LIVE NOW</li>
-                                                        </ul>
-                                                    @else
-                                                        <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($epg_channel_data->EPG->epg_start_date)->isoFormat('YYYY-MM-DD') }} </span>
-                                                    @endif --}}
 
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
