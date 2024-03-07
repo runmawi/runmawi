@@ -45,8 +45,6 @@ class StripePaymentController extends Controller
         
             $success_url = URL::to('Stripe_payment_success?stripe_payment_session_id={CHECKOUT_SESSION_ID}') ;
             
-            $apply_coupon = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
-
             $Plan_id = $request->Stripe_Plan_id;
 
             if( Auth::User()  != null){
@@ -58,6 +56,8 @@ class StripePaymentController extends Controller
                 $redirection_back = URL::to('/register2'); 
             }
 
+            $Subscription_Plan = SubscriptionPlan::where('plan_id',$Plan_id)->latest()->first();
+           
             // Stripe Checkout
 
             $Checkout_details = array(
@@ -69,10 +69,11 @@ class StripePaymentController extends Controller
                         'quantity' => 1,
                     ],
                 ],
-                'allow_promotion_codes' => true,
                 'mode' => 'subscription',
                 'customer_email' => $user_details->email, 
             );
+            
+                // Trail days
 
             if (subscription_trails_status() == 1) {
 
@@ -81,6 +82,26 @@ class StripePaymentController extends Controller
                 $Checkout_details['subscription_data'] = [
                     'trial_period_days' => $Trail_days,
                 ];
+            }
+
+                // Stripe Promo Code auto
+
+            try {
+
+                if ( $Subscription_Plan->auto_stripe_promo_code_status == 1) {
+
+                    $stripe->promotionCodes->retrieve($Subscription_Plan->auto_stripe_promo_code, []);            // Verify Promo Code 
+
+                    $Checkout_details['discounts'] = [['promotion_code' => $Subscription_Plan->auto_stripe_promo_code ]];
+                }
+                else{
+    
+                    $Checkout_details['allow_promotion_codes'] = true ;
+                }
+
+            } catch (\Throwable $th) {
+
+                $Checkout_details['allow_promotion_codes'] = true ;
             }
 
             $stripe_checkout = $stripe->checkout->sessions->create($Checkout_details);
