@@ -571,7 +571,7 @@
                                     @elseif( $user->role == "subscriber")
 
                                         <label>
-                                            <h5 class="mb-4">{{ (__(ucwords('subscriber'))) .' as on '. $user->subscription_start }}</h5>
+                                            <h5 class="mb-4">{{ (__('Subscriber as on')) . $user->subscription_start }}</h5>
                                         </label>
 
                                         <div class="d-flex justify-content-between mt-2">
