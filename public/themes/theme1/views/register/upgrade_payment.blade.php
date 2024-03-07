@@ -731,9 +731,9 @@
                             </div>
 
                             {{-- Home Button  --}}
-                            <div class="col-sm-4 d-flex justify-content-center" style="margin-left: 35%;">
+                            <div class="col-sm-4 d-flex justify-content-center" style="margin-left: 33%;">
                                 <a class="btn1 btn-lg btn-block font-weight-bold text-white mt-3" href="{{ URL::to('/home') }}">
-                                    <i class="ri-home-4-line"></i>  {{ __('Home') }}
+                                    <span> <i class="ri-home-4-line"></i></span>  {{ __('Go to Home') }}
                                 </a>
                             </div>
 
