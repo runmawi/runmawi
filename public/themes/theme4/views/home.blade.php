@@ -35,7 +35,7 @@
                });
             }
 
-         $video_banner = $video_banner->latest()->limit(30)->get();
+         $video_banner = $video_banner->latest()->limit(15)->get();
 
                   // Video Category Banner
 
@@ -59,15 +59,15 @@
                                     });
                                  }
 
-         $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(30)->get();
+         $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(15)->get();
 
          $Slider_array_data = array(
             'sliders'            => $sliders, 
-            'live_banner'        => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->get() , 
+            'live_banner'        => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->limit(15)->get() , 
             'video_banners'      => $video_banner ,
-            'series_sliders'     => $series_sliders ,
-            'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->get(),
-            'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->get(),
+            'series_sliders'     => App\Series::where('active', '1')->where('banner','1')->latest()->limit(15)->get() ,
+            'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->latest()->limit(15)->get(),
+            'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get(),
             'VideoCategory_banner' => $VideoCategory_banner ,
          );    
       
@@ -246,16 +246,16 @@
                @endif
 
                @if( $item == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live videos --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', ['data' => $livetream, 'order_settings_list' => $order_settings_list ])->content() !!}
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', [ 'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
                @if( $item == 'videoCategories' && $home_settings->videoCategories == 1 )     {{-- video Categories --}}
-                     <?php $parentCategories =   App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get(); ?>
+                     <?php $parentCategories =   App\VideoCategory::where('in_home',1)->orderBy('order','ASC')->limit(15)->get(); ?>
                      {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/videoCategories', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
                @if( $item == 'liveCategories' && $home_settings->liveCategories == 1 )       {{-- Live Categories --}}
-                     <?php $parentCategories = App\LiveCategory::orderBy('order','ASC')->get(); ?>
+                     <?php $parentCategories = App\LiveCategory::orderBy('order','ASC')->limit(15)->get(); ?>
                      {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/liveCategories', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
@@ -264,7 +264,12 @@
                @endif
 
                @if( $item == 'albums' && $home_settings->albums == 1 )        {{-- Albums --}}
-                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-albums', ['data' => $albums, 'order_settings_list' => $order_settings_list ])->content() !!}
+
+                  @php
+                     $latest_albums = App\AudioAlbums::latest()->limit(15)->get() ;
+                  @endphp
+
+                  {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-albums', ['data' => $latest_albums, 'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
                @if( $item == 'audios' && $home_settings->audios == 1 )        {{-- Audios --}}
@@ -276,17 +281,21 @@
                @endif
 
                @if( $item == 'ContentPartner' && $home_settings->content_partner == 1 )        {{-- content partner  --}}
-                  <?php $ModeratorsUser = App\ModeratorsUser::where('status',1)->get(); ?>
+                  <?php $ModeratorsUser = App\ModeratorsUser::where('status',1)->limit(15)->get(); ?>
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/ContentPartners', ['data' => $ModeratorsUser , 'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
                @if( $item == 'ChannelPartner' && $home_settings->channel_partner == 1 )        {{-- channel partner  --}}
-                  <?php $channels = App\Channel::where('status',1)->get(); ?>
+                  
+                  <?php $channels = App\Channel::where('status',1)->limit(15)->get(); ?>
+               
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/ChannelPartners', ['data' => $channels, 'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
                @if( $item == 'Series_Genre' && $home_settings->SeriesGenre == 1 )        {{-- Series Genre  --}}
-                  <?php $parentCategories = App\SeriesGenre::orderBy('order','ASC')->get(); ?>
+
+                  <?php $parentCategories = App\SeriesGenre::orderBy('order','ASC')->limit(15)->get(); ?>
+                  
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
@@ -295,7 +304,7 @@
                @endif
                
                @if( $item == 'Audio_Genre' && $home_settings->AudioGenre == 1 )        {{-- Audios Genre  --}}
-                  <?php $parentCategories = App\AudioCategory::orderBy('order','ASC')->get(); ?>
+                  <?php $parentCategories = App\AudioCategory::orderBy('order','ASC')->limit(15)->get(); ?>
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/AudioGenre', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
@@ -332,18 +341,27 @@
                @endif
 
                @if( !Auth::guest() && $item == 'my_play_list' && $home_settings->my_playlist == 1 ) {{-- MY PlayList --}}
-                  <?php $MyPlaylist = App\MyPlaylist::where('user_id',Auth::user()->id)->get() ?>
+
+                  <?php
+                     if( !Auth::guest()):
+                        $MyPlaylist = App\MyPlaylist::where('user_id',Auth::user()->id)->limit(15)->get();
+                     else:
+                        $MyPlaylist = [];
+
+                     endif;
+                  ?>
+
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/my-playlist', [ 'data' => $MyPlaylist ,'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
                @if( $item == 'video_play_list' && $home_settings->video_playlist == 1 ) {{-- Video PlayList  --}}
-                  <?php $AdminVideoPlaylist = App\AdminVideoPlaylist::get(); ?>
+                  <?php $AdminVideoPlaylist = App\AdminVideoPlaylist::limit(15)->get(); ?>
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/playlist-videos', [ 'data' => $AdminVideoPlaylist ,'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
                
                @if( $item == 'video_schedule' && $home_settings->video_schedule == 1 ) {{-- schedule  --}}
-                  <?php $AdminVideoPlaylist = App\AdminVideoPlaylist::get(); ?>
+                  <?php $AdminVideoPlaylist = App\AdminVideoPlaylist::limit(15)->get(); ?>
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/schedule', [ 'data' => $VideoSchedules ,'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
 
@@ -358,7 +376,7 @@
                @endif
 
                @if( $item == 'Today-Top-videos' && $home_settings->Today_Top_videos == 1 )      {{-- Today Top video --}} 
-                  <?php $video_details = App\Video::first(); ?>
+                  <?php $video_details = App\Video::latest()->first(); ?>
                   {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Today-Top-videos', ['data' => $video_details, 'order_settings_list' => $order_settings_list ])->content() !!}
                @endif
                

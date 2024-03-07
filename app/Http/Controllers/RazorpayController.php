@@ -102,9 +102,11 @@ class RazorpayController extends Controller
 
         if($users_details != null){
             $user_details =Auth::User();
+            $redirection_back = URL::to('/becomesubscriber'); 
         }else{
             $userEmailId = $request->session()->get('register.email');
             $user_details =User::where('email',$userEmailId)->first();
+            $redirection_back = URL::to('/register2'); 
         }
 
         $plan_Id =Crypt::decryptString($Plan_Id);
@@ -134,6 +136,7 @@ class RazorpayController extends Controller
             'regionName'     =>  $regionName,
             'cityName'       =>  $cityName,
             'PaymentGateway' =>  'razorpay',
+            'redirection_back' => $redirection_back ,
         );
 
         return Theme::view('Razorpay.checkout',compact('respond'),$respond);
@@ -187,7 +190,6 @@ class RazorpayController extends Controller
             'created_at'    =>  $carbon ,
     ]);
 
-dd($carbon);
         $testing =   $api->subscription->fetch($subscriptionId)->update($attributes);
 
     }
@@ -290,23 +292,38 @@ dd($carbon);
 
     public function RazorpayCancelSubscriptions(Request $request)
     {
-        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+        try {
 
-        $subscriptionId = User::where('id',Auth::user()->id)->pluck('stripe_id')->first();
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+            $subscriptionId = User::where('id',Auth::user()->id)->where('payment_gateway','Razorpay')->pluck('stripe_id')->first();
+            
+            $options  = array('cancel_at_cycle_end'  => 0);
+
+            $api->subscription->fetch($subscriptionId)->cancel($options);
+
+            Subscription::where('stripe_id',$subscriptionId)->update([
+                'stripe_status' =>  'Cancelled',
+            ]);
+
+            User::where('id',Auth::user()->id )->update([
+                'payment_gateway' =>  null ,
+                'role'            => 'registered',
+                'stripe_id'       => null ,  
+                'payment_type'    => null ,
+            ]);
+
+            $Error_msg = "Subscription has been Cancel Successfully";
+            $url = URL::to('/myprofile');
+            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+
+
+        } catch (\Throwable $th) {
+            $msg = 'Some Error occuring while Cancelling the Subscription, Please check this query with admin..';
+            $url = URL::to('myprofile/');
+            echo "<script type='text/javascript'>alert('$msg'); window.location.href = '$url' </script>";
+        }
         
-        $options  = array('cancel_at_cycle_end'  => 0);
-
-        $api->subscription->fetch($subscriptionId)->cancel($options);
-
-        Subscription::where('stripe_id',$subscriptionId)->update([
-            'stripe_status' =>  'Cancelled',
-        ]);
-
-        User::where('id',Auth::user()->id )->update([
-            'payment_gateway' =>  null ,
-        ]);
-
-        return Redirect::route('home')->with('message', 'Invalid Activation.');
     }
 
     public function RazorpayVideoRent(Request $request,$video_id,$amount){

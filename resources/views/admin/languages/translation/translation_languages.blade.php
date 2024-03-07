@@ -75,8 +75,10 @@
                         </tr>
                         </thead>
                         <tbody>
+      
                             @if($columnsCount > 0)
                                 @foreach($columns[0] as $columnKey => $columnValue)
+                         
                                     <tr>
                                         <td><a href="#" class="translate-key" data-title="Enter Key" data-type="text" data-pk="{{ $columnKey }}" data-url="{{ route('translation.update.json.key') }}">{{ $columnKey }}</a></td>
                                         @for($i=1; $i<=$columnsCount; ++$i)

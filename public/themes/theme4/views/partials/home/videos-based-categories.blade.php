@@ -1,7 +1,7 @@
 <?php 
     $check_Kidmode = 0 ;
 
-    $data = App\VideoCategory::query()->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+    $data = App\VideoCategory::query()->limit(15)->whereHas('category_videos', function ($query) use ($check_Kidmode) {
         $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
 
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
@@ -35,7 +35,7 @@
             $videos->whereBetween('videos.age_restrict', [0, 12]);
         }
 
-        $videos->latest('videos.created_at')->get();
+        $videos->latest('videos.created_at')->limit(15)->get();
     }])
     ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
     ->where('video_categories.in_home', 1)

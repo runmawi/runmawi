@@ -24,241 +24,221 @@
 <script src="<?= asset('public/themes/theme1/assets/js/video-js/end-card.js') ?>"></script>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
+
 <style type="text/css">
-.video-js .vjs-tech {
-    position: absolute;
-    top: 0px;
-    left: 0;
-    width: 100%;
-    /* height: 425px !important; */
-    height: 100%;
-}
+    .video-js .vjs-tech {
+        position: absolute;
+        top: 0px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 
-/* .vjs-theme-fantasy .vjs-control-bar {
-    top: 85%;
-    height: 64px;
-} */
+    .live-stream-player-dimensions.vjs-fluid {
+        padding-top: 31.25% !important;
+    }
 
-.live-stream-player-dimensions.vjs-fluid {
-    padding-top: 31.25% !important;
-}
+    .vjs-poster {
+        height: 425px !important;
+    }
+    .vjs-icon-hd:before{
+        display: none;
+    }
 
-.vjs-poster {
-    height: 425px !important;
-}
-.vjs-icon-hd:before{
-    display: none;
-}
+    .close {
+        color: red;
+        text-shadow: none;
+        opacity:1;
+        margin:-1rem -1rem -1rem auto !important;
+    }
 
+    .come-from-modal.left .modal-dialog,
+    .come-from-modal.right .modal-dialog {
+        margin: auto;
+        width: 400px;
+        background-color: #000 !important;
+        height: 100%;
+        -webkit-transform: translate3d(0%, 0, 0);
+        -ms-transform: translate3d(0%, 0, 0);
+        -o-transform: translate3d(0%, 0, 0);
+        transform: translate3d(0%, 0, 0);
+    }
 
-.close {
-    color: red;
-    text-shadow: none;
-}
+    .come-from-modal.left .modal-content,
+    .come-from-modal.right .modal-content {
+        height: 100%;
+        overflow-y: auto;
+        border-radius: 0px;
+    }
 
-.come-from-modal.left .modal-dialog,
-.come-from-modal.right .modal-dialog {
+    .come-from-modal.left .modal-body,
+    .come-from-modal.right .modal-body {
+        padding: 15px 15px 80px;
+    }
 
-    margin: auto;
-    width: 400px;
-    background-color: #000 !important;
-    height: 100%;
-    -webkit-transform: translate3d(0%, 0, 0);
-    -ms-transform: translate3d(0%, 0, 0);
-    -o-transform: translate3d(0%, 0, 0);
-    transform: translate3d(0%, 0, 0);
-}
+    .come-from-modal.right.fade .modal-dialog {
+        right: 0;
+        -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+        -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+        -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+        transition: opacity 0.3s linear, right 0.3s ease-out;
+    }
 
-.come-from-modal.left .modal-content,
-.come-from-modal.right .modal-content {
-    height: 100%;
-    overflow-y: auto;
-    border-radius: 0px;
-}
+    .come-from-modal.right.fade.in .modal-dialog {
+        right: 0;
+    }
 
-.come-from-modal.left .modal-body,
-.come-from-modal.right .modal-body {
-    padding: 15px 15px 80px;
-}
+    #sidebar-wrapper {
+        height: calc(100vh - 80px - 75px) !important;
+        border-radius: 10px;
+        box-shadow: inset 0 0 10px #000000;
+        color: #fff;
+        transition: margin 0.25s ease-out;
+    }
 
-.come-from-modal.right.fade .modal-dialog {
-    right: 0;
-    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
-    transition: opacity 0.3s linear, right 0.3s ease-out;
-}
+    .list-group-item-action:hover {
+        color: #000 !important;
+    }
 
-.come-from-modal.right.fade.in .modal-dialog {
-    right: 0;
-}
+    .list-group-item-light {
+        background-color: transparent;
+    }
 
-#sidebar-wrapper {
-    height: calc(100vh - 80px - 75px) !important;
-    /*background-color: #000;*/
-    border-radius: 10px;
-    box-shadow: inset 0 0 10px #000000;
-    color: #fff;
-    transition: margin 0.25s ease-out;
-}
+    .list-group-item-light:hover {
+        background-color: #fff;
+        color: #000 !important;
+    }
 
-.list-group-item-action:hover {
-    color: #000 !important;
-}
+    a.list-group-item {
+        border: none;
+    }
 
-.list-group-item-light {
-    background-color: transparent;
+    .list-group-flush::-webkit-scrollbar-thumb {
+        background-color: red;
+        border-radius: 2px;
+        border: 2px solid red;
+        width: 2px;
+    }
 
+    .list-group-flush {
+        overflow-x: hidden !important;
+        overflow: scroll;
+        height: calc(91vh - 80px - 75px) !important;
+        scroll-behavior: auto;
+        scrollbar-color: rebeccapurple green !important;
+    }
 
-}
+    .list-group-flush::-webkit-scrollbar {
+        width: 8px;
+    }
 
-.list-group-item-light:hover {
-    background-color: #fff;
-    color: #000 !important;
-}
+    .list-group-flush::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.2);
+    }
 
-a.list-group-item {
-    border: none;
+    #sidebar-wrapper .sidebar-heading {
+        padding: 10px 10px;
+        font-size: 1.2rem;
+    }
 
-}
+    .plyr__video-embed {
+        position: relative;
+    }
 
-.list-group-flush::-webkit-scrollbar-thumb {
-    background-color: red;
-    border-radius: 2px;
-    border: 2px solid red;
-    width: 2px;
-}
+    #video_bg_dim {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
 
-.list-group-flush {
-    overflow-x: hidden !important;
-    overflow: scroll;
-    height: calc(91vh - 80px - 75px) !important;
-    scroll-behavior: auto;
+    .countdown {
+        text-align: center;
+        font-size: 60px;
+        margin-top: 0px;
+        color: red;
+    }
 
-    scrollbar-color: rebeccapurple green !important;
+    .fp-ratio {
+        padding-top: 64% !important;
+    }
 
-}
+    h2 {
+        text-align: center;
+        font-size: 35px;
+        margin-top: 0px;
+        font-weight: 400;
+    }
 
-.list-group-flush::-webkit-scrollbar {
-    width: 8px;
-}
+    #live_player_mp4 {
+        width: 100%;
+        height: 100%;
+        margin: 20px auto;
+    }
 
-.list-group-flush::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.2);
+    .plyr audio,
+    .plyr iframe,
+    .plyr video {
+        display: block;
+    }
 
-}
+    .plyr--video {
+        height: calc(100vh - 80px - 75px);
+        max-width: none;
+        width: 100%;
+    }
 
-#sidebar-wrapper .sidebar-heading {
-    padding: 10px 10px;
-    font-size: 1.2rem;
+    .modal {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1050;
+        display: none;
+        overflow: hidden;
+        outline: 0;
+    }
 
-}
+    /* <!-- BREADCRUMBS  */
 
+    .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
 
+    ol.breadcrumb {
+        color: white;
+        background-color: transparent !important;
+        font-size: revert;
+    }
 
-.plyr__video-embed {
-    position: relative;
-}
+    .vjs-skin-hotdog-stand {
+        color: #FF0000;
+    }
 
-#video_bg_dim {
-    /*background: rgb(0 0 0 / 45%);*/
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
+    .vjs-skin-hotdog-stand .vjs-control-bar {
+        background: #FFFF00;
+    }
 
-.countdown {
-    text-align: center;
-    font-size: 60px;
-    margin-top: 0px;
-    color: red;
-}
-
-.fp-ratio {
-    padding-top: 64% !important;
-}
-
-h2 {
-    text-align: center;
-    font-size: 35px;
-    margin-top: 0px;
-    font-weight: 400;
-}
-
-#live_player_mp4 {
-    width: 100%;
-    height: 100%;
-    margin: 20px auto;
-}
-
-.plyr audio,
-.plyr iframe,
-.plyr video {
-    display: block;
-    /* height: 100%; */
-    /* width: 100%; */
-}
-
-.plyr--video {
-    height: calc(100vh - 80px - 75px);
-    max-width: none;
-    width: 100%;
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    right: auto;
-    bottom: 0;
-    left: 0;
-    z-index: 1050;
-    display: none;
-    overflow: hidden;
-    outline: 0;
-}
-
-/* <!-- BREADCRUMBS  */
-
-.bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
-    content: none;
-}
-
-ol.breadcrumb {
-    color: white;
-    background-color: transparent !important;
-    font-size: revert;
-}
-</style>
-
-<style>
-.vjs-skin-hotdog-stand {
-    color: #FF0000;
-}
-
-.vjs-skin-hotdog-stand .vjs-control-bar {
-    background: #FFFF00;
-}
-
-.vjs-skin-hotdog-stand .vjs-play-progress {
-    background: #FF0000;
-}
+    .vjs-skin-hotdog-stand .vjs-play-progress {
+        background: #FF0000;
+    }
 </style>
 
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
 
+                        <!-- Message -->
 
 <?php if (Session::has('message')): ?>
-<div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;">
-    <?php  echo Session::get('message') ?></div>
+    <!-- <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;">
+        <?php  echo Session::get('message') ?>
+    </div> -->
 <?php endif ;?>
+
 
 <?php
 
 include('livevideo_ads.blade.php');  
-
-$autoplay = $live_ads == null ? "autoplay" : "" ;    
 
 $str = $video->mp4_url;
 
@@ -269,183 +249,201 @@ if(!empty($str)){
 
 $rtmp_url = $video->rtmp_url;
 
-
 $Rtmp_url = str_replace ('rtmp', 'http', $rtmp_url);
 
 if(empty($new_date)){
 
-if(!Auth::guest()){
-if(!empty($password_hash)){
-if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
-<div id="video_bg">
-    <div class="">
-        <div id="video sda" class="fitvid" style="margin: 0 auto;">
+        if(!Auth::guest()){
+            
+            if(!empty($password_hash)){
 
-                <?php if ( $Livestream_details->url_type == "embed" ) : ?>
+                if ( ($ppv_exist > 0 )|| ( Auth::user()->role == "subscriber" && settings_enable_rent() == 1 ) || ( Auth::user()->role == "subscriber" && $Livestream_details->access != "ppv" ) || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+                    
+                    <div id="video_bg">
+                        <div class="">
+                            <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
-                    <iframe class="responsive-iframe" src="<?= $Livestream_details->livestream_URL ?>" poster="<?= $Livestream_details->Player_thumbnail ?>"
-                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                    </iframe>
+                                    <?php if ( $Livestream_details->url_type == "embed" ) : ?>
 
-                <?php else: ?>
+                                        <iframe class="responsive-iframe" src="<?= $Livestream_details->livestream_URL ?>" poster="<?= $Livestream_details->Player_thumbnail ?>"
+                                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen>
+                                        </iframe>
 
-                    <video id="live-stream-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls
-                        preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
-                        <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
-                    </video>
-                
-                <?php endif; ?>
+                                    <?php else: ?>
 
-            <div class="playertextbox hide">
-                <p> <?php if (isset($videonext)) { ?>
-                    <?=App\LiveStream::where('id', '=', $videonext->id)->pluck('title'); ?>
-                    <?php } elseif (isset($videoprev)) { ?>
-                    <?=App\LiveStream::where('id', '=', $videoprev->id)->pluck('title'); ?>
-                    <?php } ?>
+                                        <video id="live-stream-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls
+                                            preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
+                                            <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
+                                        </video>
+                                    
+                                    <?php endif; ?>
 
-                    <?php if (isset($videos_category_next)) { ?>
-                    <?=App\LiveStream::where('id', '=', $videos_category_next->id)->pluck('title'); ?>
-                    <?php } elseif (isset($videos_category_prev)) { ?>
-                    <?=App\LiveStream::where('id', '=', $videos_category_prev->id)->pluck('title'); ?>
-                    <?php } ?>
-                </p>
-            </div>
-        </div>
+                                <div class="playertextbox hide">
+                                    <p>
+                                        <?php 
+                                            if (isset($videonext)) {
+                                                echo App\LiveStream::where('id', '=', $videonext->id)->pluck('title');
+                                            } elseif (isset($videoprev)) {
+                                                echo App\LiveStream::where('id', '=', $videoprev->id)->pluck('title');
+                                            }
 
-        <?php  } else {  ?>
-        <div id="subscribers_only"
-            style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
-            <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?>
-                class="darker" <?php endif; ?>></div>
-            <div class="row justify-content-center pay-live">
-                <div class="col-md-4 col-sm-offset-4">
-                    <div class="ppv-block">
-                        <h2 class="mb-3"> <?= __('Pay now to watch') ?> <?php echo $video->title; ?></h2>
-
-                        <h4 class="text-center" style="margin-top:40px;"><a
-                                href="<?=URL::to('/') . '/stripe/billings-details' ?>">
-                                <p> <?= __('Click Here To Become Subscriber') ?></p>
-                            </a></h4>
-
-                        <!-- PPV button -->
-                        <?php $users = Auth::user();  ?>
-
-                        <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
-                        <button data-toggle="modal" data-target="#exampleModalCenter"
-                            class="view-count btn btn-primary btn-block rent-video">
-                            <?php echo __('Purchase Now ');?> </button>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php } }
-}
-
-else{  
-
-        if (Auth::guest() && empty($video->ppv_price)) {  ?>
-        <div id="video_bg">
-            <div class="">
-                <div id="video sda" class="fitvid" style="margin: 0 auto;">
-
-                <?php if ( $Livestream_details->url_type == "embed" ) : ?>
-
-                    <iframe class="responsive-iframe" src="<?= $Livestream_details->livestream_URL ?>" poster="<?= $Livestream_details->Player_thumbnail ?>"
-                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                    </iframe>
-
-                <?php else: ?>
-
-                    <video id="live-stream-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls
-                        preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
-                        <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
-                    </video>
-                
-                <?php endif; ?>
-
-                
-                    <?php  } else { ?>
-                    <div id="subscribers_only"
-                        style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
-                        <div id="video_bg_dim"
-                            <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?>
-                            class="darker" <?php endif; ?>></div>
-                        <div class="row justify-content-center pay-live">
-                            <div class="col-md-4 col-sm-offset-4">
-                                <div class="ppv-block">
-                                    <h2 class="mb-3"><?= __('Pay now to watch') ?> <?php echo $video->title; ?></h2>
-                                    <div class="clear"></div>
-                                    <?php if(Auth::guest()){ ?>
-                                    <a href="<?php echo URL::to('/login');?>"><button
-                                            class="btn btn-primary btn-block"><?= __('Purchase For Pay') ?>
-                                            <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
-                                    <?php }else{ ?>
-                                    <button class="btn btn-primary btn-block"
-                                        onclick="pay(<?php echo $video->ppv_price; ?>)"><?= __('Purchase For Pay') ?>
-                                        <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
-                                    <?php } ?>
+                                            if (isset($videos_category_next)) {
+                                                echo App\LiveStream::where('id', '=', $videos_category_next->id)->pluck('title');
+                                            } elseif (isset($videos_category_prev)) {
+                                                echo App\LiveStream::where('id', '=', $videos_category_prev->id)->pluck('title');
+                                            }
+                                        ?>
+                                    </p>
                                 </div>
+
                             </div>
-                        </div>
-                    </div>
-                    <?php }
-    }
-    } elseif(!empty($new_date)){ ?>
-                    <div id="subscribers_only"
-                        style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
-                        <h2><?= __('COMING SOON') ?> </h2>
-                        <p class="countdown" id="demo"></p>
-                    </div>
-                    <?php }
-    ?>
 
-                    <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>"
-                        value="<?=$video->video_category_id; ?>">
+                <?php  } else {  ?>
 
-                    <!-- BREADCRUMBS -->
-                    <div class="container-fluid">
-                        <div class="col-sm-12 col-md-12 col-xs-12 p-0">
-                            <div class="row">
-                                <div class="col-md-12 p-0">
-                                    <div class="bc-icons-2">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a class="black-text"
-                                                    href="<?= route('liveList') ?>"><?= __(ucwords('Livestreams')) ?></a>
-                                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                            </li>
+                        <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                            <div id="video_bg_dim" 
+                                <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?>
+                                    <?php else: ?> class="darker" <?php endif; ?>>
+                            </div>
 
-                                            <?php foreach ($category_name as $key => $video_category_name) { ?>
-                                            <?php $category_name_length = count($category_name); ?>
-                                            <li class="breadcrumb-item">
-                                                <a class="black-text"
-                                                    href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
-                                                    <?= __(ucwords($video_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
-                                                </a>
-                                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                            </li>
-                                            <?php } ?>
+                            <div class="row justify-content-center pay-live">
+                                <div class="col-md-4 col-sm-offset-4">
+                                    <div class="ppv-block">
 
+                                        <h2 class="mb-3"> <?= __('Pay now to watch') ?> <?= $video->title; ?></h2>
 
+                                                    <!--  Become Subscriber-->
+                                        <h4 class="text-center" style="margin-top:40px;"> 
+                                            <a href="<?= route('payment_becomeSubscriber') ?>">
+                                                <p> <?= __('Click Here To Become Subscriber') ?></p>
+                                            </a>
+                                        </h4>
 
-                                            <li class="breadcrumb-item"><a
-                                                    class="black-text"><?php echo (strlen($video->title) > 50) ? __(ucwords(substr($video->title,0,120).'...')) : __(ucwords($video->title)); ?>
-                                                </a></li>
-                                        </ol>
+                                                    <!-- PPV button -->
+                                        <?php $users = Auth::user();  ?>
+
+                                        <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin") && $video->access == "ppv" )  : ?>
+                                            <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
+                                                <?=  __('Purchase Now ') ?>
+                                            </button>
+                                        <?php endif; ?>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                <?php } }
+
+        } else{  
+
+                if (Auth::guest() && empty($video->ppv_price)) {  ?>
+
+                    <div id="video_bg">
+                        <div class="">
+                            <div id="video sda" class="fitvid" style="margin: 0 auto;">
+
+                            <?php if ( $Livestream_details->url_type == "embed" ) : ?>
+
+                                <iframe class="responsive-iframe" src="<?= $Livestream_details->livestream_URL ?>" poster="<?= $Livestream_details->Player_thumbnail ?>"
+                                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                                </iframe>
+
+                            <?php else: ?>
+
+                                <video id="live-stream-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large" controls
+                                    preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
+                                    <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
+                                </video>
+                            
+                            <?php endif; ?>
+
+                        
+                <?php  } else { ?>
+
+                            <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                                
+                                <div id="video_bg_dim"
+                                    <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?>
+                                    class="darker" <?php endif; ?>>
+                                </div>
+
+                                <div class="row justify-content-center pay-live">
+                                    <div class="col-md-4 col-sm-offset-4">
+                                        <div class="ppv-block">
+                                            <h2 class="mb-3"><?= __('Pay now to watch') ?> <?php echo $video->title; ?></h2>
+                                            <div class="clear"></div>
+
+                                            <?php if(Auth::guest()){ ?>
+                                                <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block"><?= __('Purchase For Pay') ?>
+                                                        <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                                                </a>
+                                            <?php }else{ ?>
+                                                <button class="btn btn-primary btn-block"
+                                                    onclick="pay(<?php echo $video->ppv_price; ?>)"><?= __('Purchase For Pay') ?>
+                                                    <?php echo $currency->symbol.' '.$video->ppv_price; ?>
+                                                </button>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                <?php }
+        }
+
+} elseif(!empty($new_date)){ ?>
+        <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+            <h2><?= __('COMING SOON') ?> </h2>
+            <p class="countdown" id="demo"></p>
+        </div>
+<?php } ?>
+
+<input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
+
+            <!-- BREADCRUMBS -->
+
+<div class="container-fluid">
+    <div class="col-sm-12 col-md-12 col-xs-12 p-0">
+        <div class="row">
+            <div class="col-md-12 p-0">
+                <div class="bc-icons-2">
+                    <ol class="breadcrumb">
+
+                        <li class="breadcrumb-item">
+                            <a class="black-text" href="<?= route('liveList') ?>"><?= __(ucwords('Livestreams')) ?></a>
+                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                        </li>
+
+                        <?php foreach ($category_name as $key => $video_category_name) { ?>
+
+                            <?php $category_name_length = count($category_name); ?>
+
+                            <li class="breadcrumb-item">
+                                <a class="black-text"
+                                    href="<?= route('LiveCategory',[ $video_category_name->categories_slug ])?>">
+                                    <?= __(ucwords($video_category_name->categories_name)) . ($key != $category_name_length - 1 ? ' - ' : '') ?>
+                                </a>
+                                <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                            </li>
+
+                        <?php } ?>
+
+                        <li class="breadcrumb-item">
+                            <a class="black-text"><?php echo (strlen($video->title) > 50) ? __(ucwords(substr($video->title,0,120).'...')) : __(ucwords($video->title)); ?></a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
                     <div class="container-fluid video-details">
                         <div class="row">
                             <div class="col-sm-9 col-md-9 col-xs-12">
                                 <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?>
                                     <?php if( Auth::guest() ) { ?> <?php } ?></h1>
-                                <!-- Category -->
                                 <ul class="p-0 list-inline d-flex align-items-center movie-content">
                                     <li class="text-white">
                                         <?//= $videocategory ;?>
@@ -466,116 +464,103 @@ else{
                         <!-- Year, Running time, Age -->
                         <?php 
        if(!empty($video->publish_time)){
-        $originalDate = $video->publish_time;
-        $publishdate = date('d F Y', strtotime($originalDate));
+            $originalDate = $video->publish_time;
+            $publishdate = explode(' ', date('d F Y', strtotime($originalDate)));
+            $translatedMonth = __($publishdate[1]);
+            $publishdate = implode(' ', [$publishdate[2], $translatedMonth, $publishdate[0]]);
+
+           
        }else{
-        $originalDate = $video->created_at;
-        $publishdate = date('d F Y', strtotime($originalDate));
+            $originalDate = $video->created_at;
+            $publishdate = explode(' ',date('d F Y', strtotime($originalDate)));
+            $publishdate = explode(' ', date('d F Y', strtotime($originalDate)));
+            $translatedMonth = __($publishdate[1]);
+            $publishdate = implode(' ', [$publishdate[2], $translatedMonth, $publishdate[0]]);
        }
      ?>
                         <div class=" align-items-center text-white text-detail p-0">
                             <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>
                             <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>
-                            <span class="badge badge-secondary p-2"><?= __('Published On') ?> : <?php  echo $publishdate;?></span>
+                            <span class="badge badge-secondary p-2"><?= __('Published On') ?> : <?php  echo __($publishdate);?></span>
                             <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>
 
                         </div>
 
+                                        <!-- Social Share, Like Dislike -->
+
                         <?php if(!Auth::guest()) { ?>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-xs-12 pl-0">
+                                    <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                                        <?php  include('partials/live-social-share.php'); ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php } ?>
+
+                    <?php if(Auth::guest()) { ?>
+
                         <div class="row">
-                            <div class="col-sm-6 col-md-6 col-xs-12 pl-0">
+                            <div class="col-sm-6 col-md-6 col-xs-12">
                                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                                     <!-- Social Share, Like Dislike -->
                                     <?php  include('partials/live-social-share.php'); ?>
                                 </ul>
                             </div>
 
-                            <!--                    <div class="col-sm-6 col-md-6 col-xs-12">-->
-                            <!--
-                  <div class="d-flex align-items-center series mb-4">
-                     <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
-                           alt=""></a>
-                     <span class="text-gold ml-3">#2 in Series Today</span>
-                  </div>
--->
-                            <!--                        <ul class="list-inline p-0 mt-4 rental-lists">-->
-                            <!-- Subscribe -->
-                            <!--
-                    <li>
-                        <?php     
-                            $user = Auth::user(); 
-                            if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
-                                <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-                        <?php } ?>
-                    </li>
--->
 
-                            <!-- </ul> -->
-                    </div>
-
-
-                    <?php } ?>
-
-                    <?php if(Auth::guest()) { ?>
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6 col-xs-12">
-                            <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                                <!-- Social Share, Like Dislike -->
-                                <?php  include('partials/live-social-share.php'); ?>
-                            </ul>
-                        </div>
-
-
-
-                        <div class="col-sm-6 col-md-6 col-xs-12">
+                            <div class="col-sm-6 col-md-6 col-xs-12">
 
                                 <ul class="list-inline p-0 mt-4 rental-lists">
+
                                     <!-- Subscribe -->
                                     <?php if ($video->access == 'subscriber' ) { ?>
-
-                                    <li>
-                                        <a href="<?php echo URL::to('/login');?>"><span
-                                                class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?>
-                                            </span></a>
-                                    </li>
+                                        <li>
+                                            <a href="<?php echo URL::to('/login');?>">
+                                                <span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?></span>
+                                            </a>
+                                        </li>
                                     <?php } ?>
+
                                     <!-- PPV button -->
                                     <?php if ($video->access != 'guest' ) { ?>
                                         <li>
-                                            <a data-toggle="modal" data-target="#exampleModalCenter"
-                                                class="view-count btn btn-primary rent-video"
+                                            <a data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video"
                                                 href="<?php echo URL::to('/login');?>">
-                                                <?php echo __('Rent');?> </a>
+                                                <?php echo __('Rent');?> 
+                                            </a>
                                         </li>
-                                    <?php   }?>
-
+                                    <?php  }?>
                                 </ul>
+                            </div>
                         </div>
-                    </div>
-                    <?php   } ?>
+                    <?php } ?>
 
                     <div class="">
                         <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
                     </div>
+
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-xs-12">
                             <div class="video-details-container">
+
                                 <?php if (!empty($video->details)) { ?>
-                                <h6 class="mt-3 mb-1">Live Details</h6>
-                                <p class="trending-dec w-100 mb-3 text-white"><?=$video->details; ?></p>
+                                    <h6 class="mt-3 mb-1">Live Details</h6>
+                                    <p class="trending-dec w-100 mb-3 text-white"><?=$video->details; ?></p>
                                 <?php  } ?>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
-                <div class="">
-                    <div class=" container-fluid video-list you-may-like overflow-hidden">
-                        <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
-                        <?php include('comments/index.blade.php');?>
+                    <div class="">
+                        <div class=" container-fluid video-list you-may-like overflow-hidden">
+                            <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
+                            <?php include('comments/index.blade.php');?>
+                        </div>
                     </div>
-                </div>
                 <?php endif; ?>
 
                 <div class="">
@@ -591,7 +576,6 @@ else{
                 </div>
             </div>
 
-
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -602,11 +586,11 @@ else{
                             <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:black">Rent Now
                             </h4>
 
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin:0 !important;">
+                                <span aria-hidden="true"><i class="fa fa-times"></i></span>
                             </button>
-
                         </div>
+
 
                         <div class="modal-body">
                             <div class="row justify-content-between">
@@ -670,10 +654,10 @@ else{
 
                         <div class="modal-footer">
 
-                            <div class="Stripe_button">
-                                <!-- Stripe Button -->
-                                <button class="btn2  btn-outline-primary"
-                                    onclick="pay(<?php echo $video->ppv_price; ?>)"> <?= __('Continue') ?> </button>
+                            <div class="Stripe_button">  <!-- Stripe Button -->
+                                <?php if( $stripe_payment_setting != null && $stripe_payment_setting->payment_type == "Stripe" ){?>
+                                    <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Stripe_payment_live_PPV_Purchase/'.$video->id.'/'.$video->ppv_price) ?>' ;" > Continue </button>
+                                <?php } ?>
                             </div>
 
                             <div class="Razorpay_button">
@@ -860,50 +844,6 @@ $(document).ready(function() {
         }
     });
 });
-
-function pay(amount) {
-    var video_id = $('#video_id').val();
-    var handler = StripeCheckout.configure({
-        key: publishable_key,
-        locale: 'auto',
-        token: function(token) {
-            console.log('Token Created!!'); // You can access the token ID with `token.id`.
-            console.log(token); // Get the token ID to your server-side code for use.
-            $('#token_response').html(JSON.stringify(token));
-
-            $.ajax({
-                url: '<?php echo URL::to("purchase-live") ;?>',
-                method: 'post',
-                data: {
-                    "_token": "<?= csrf_token(); ?>",
-                    tokenId: token.id,
-                    amount: amount,
-                    video_id: video_id
-                },
-                success: (response) => {
-                    alert("You have done  Payment !");
-                    setTimeout(function() {
-                        location.reload();
-                    }, 2000);
-                },
-                error: (error) => {
-                    swal('error');
-                    //swal("Oops! Something went wrong");
-                    /* setTimeout(function() {
-                    location.reload();
-                    }, 2000);*/
-                }
-            })
-
-        }
-    });
-
-    handler.open({
-        name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
-        description: 'PAY PeR VIEW',
-        amount: amount * 100
-    });
-}
 </script>
 
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
@@ -983,7 +923,7 @@ if (ppv_exits == 1) {
 
     var i = setInterval(function() {
         PPV_live_PurchaseUpdate();
-    }, 60 * 1000);
+    }, 10 * 1000);
 
     window.onload = unseen_expirydate_checking();
 

@@ -17,7 +17,7 @@
                                     </div>
                                 </div>
 
-                            
+                                </div>
 
                                 <div>
                                     <div class="movie-time d-flex align-items-center justify-content-between my-2">
@@ -84,14 +84,15 @@
                                             $Category_Thumbnail = array();
                                                     foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
                                                     $Category_Thumbnail[] = $CategoryThumbnail ; 
+                                                    echo (__($CategoryThumbnail).' ');
                                                     }
-                                            echo implode(','.' ', $Category_Thumbnail);
+                                            // echo implode(','.' ', $Category_Thumbnail);
                                         ?>
                                         </span>
                                         <?php } ?>
                                     </div>
                                 </div>
-                            </div>
+                            
                         </a>
                     </li>
                 @endforeach

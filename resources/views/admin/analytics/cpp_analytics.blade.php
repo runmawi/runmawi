@@ -100,52 +100,46 @@
                 </div>
                 <br>
                 <div class="row">
-                            <div class="col-md-12">
-                                <table class="table text-center" id="cpp_analytics_table" style="width:100%">
-                                    <thead>
-                                        <tr class="r1">
-                                            <th>#</th>
-                                            <th>Email</th>
-                                            <th>Uploader Name</th>
-                                            <th>No Of Uploads</th>
-                                            <th>Total Views</th>
-                                            <th>Total Comments</th>
-                                        </tr>
-                                    </thead>
-                                <tbody>
-                                <tr>
-                                    @foreach($total_content as $key => $user)
-                                        <td>{{ $key+1  }}</td>   
-                                        <td>{{ $user->email  }}</td>   
-                                        <td>{{ $user->username  }}</td>   
-                                        <td>{{ $user->count  }}</td>   
-                                        <?php if (!empty($user->videos_views) && !empty($user->audio_count))
-                                        { ?>
-                                        <td ><?php echo $user->videos_views + $user->audio_count; ?></td>
-                                        <?php
-                                        }
-                                        elseif (!empty($user->videos_views) && empty($user->audio_count))
-                                        { ?>
-                                        <td > <?php echo $user->videos_views; ?></td>
+                <div class="col-md-12">
+                        <table class="table text-center" id="cpp_analytics_table" style="width:100%">
+                            <thead>
+                                <tr class="r1">
+                                    <th>#</th>
+                                    <th>Email</th>
+                                    <th>Uploader Name</th>
+                                    <th>No Of Uploads</th>
+                                    <th>Total Views</th>
+                                    <th>Total Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($total_content as $key => $user)
+                                    <tr>
+                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->username }}</td>
+                                        <td>{{ $user->count }}</td>
+                                        <td>
+                                            @if (!empty($user->videos_views) && !empty($user->audio_count))
+                                                {{ $user->videos_views + $user->audio_count }}
+                                            @elseif (!empty($user->videos_views) && empty($user->audio_count))
+                                                {{ $user->videos_views }}
+                                            @elseif (empty($user->videos_views) && !empty($user->audio_count))
+                                                {{ $user->audio_count }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $user->count }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-                                        <?php   }  elseif (empty($user->videos_views) && !empty($user->audio_count))
-                                        { ?>
-                                        <td > <?php echo $user->audio_count; ?></td>
-                                        <?php   } ?> 
-                                        <td>{{ $user->count }}</td> 
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                           </table>
-                        </div>
                     </div>
 
                 <div class="clear"></div>
                 <br>
                
-
-               
-                
 
                 <h4 class="card-title">Content View Through Graph :</h4>
                 <div class="col-md-6">
@@ -191,9 +185,25 @@
 </div>
     
 @stop
+
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
 
 <script>
+
+// $(document).ready(function() {
+//     $('#cpp_analytics_table').DataTable();
+// });
+$(document).ready(function() {
+    console.log('Before DataTables initialization');
+    $('#cpp_analytics_table').DataTable();
+    console.log('After DataTables initialization');
+});
 
     $.ajaxSetup({
             headers: {
@@ -204,6 +214,7 @@
      $(document).ready(function(){
         $('#google-line-chart').show();
         $('#barchart_material').hide();
+        // $('#cpp_analytics_table').DataTable();
 
         $('#filter_content').click(function(){
             var Audio = "{{ $total_audio_content }}" ;
@@ -399,7 +410,6 @@
             $('#top_x_div').hide();
         });
 
-        $('#cpp_analytics_table').DataTable();
         $('#start_time').change(function(){
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();

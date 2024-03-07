@@ -8,6 +8,9 @@
                     <ul class="favorites-slider list-inline row mb-0">
                         <?php  
                             $ThumbnailSetting = App\ThumbnailSetting::first();
+
+                            $series_lists = !empty($series_lists) ? $series_lists->slice(0,15) : $series_lists  ; 
+
                             foreach($series_lists as $key => $series_list):
                         ?>
                         <li class="slide-item">

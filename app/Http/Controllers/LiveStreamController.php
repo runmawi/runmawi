@@ -227,6 +227,8 @@ class LiveStreamController extends Controller
 
              $stripe_payment_setting = PaymentSetting::where('payment_type','Stripe')->where('stripe_status',1)->first();
 
+             $paydunya_payment_setting = PaymentSetting::where('payment_type','Paydunya')->where('status',1)->first();
+
              $view = new RecentView;
              $view->user_id      = Auth::User() ? Auth::User()->id : null ;
              $view->country_name = $this->countryName ? $this->countryName : null ;
@@ -347,6 +349,7 @@ class LiveStreamController extends Controller
                  'Razorpay_payment_setting' => $Razorpay_payment_setting,
                  'Paystack_payment_setting' => $Paystack_payment_setting ,
                  'stripe_payment_setting'   => $stripe_payment_setting ,
+                 'paydunya_payment_setting'   => $paydunya_payment_setting ,
                  'Related_videos' => LiveStream::whereNotIn('id',[$vid])->inRandomOrder()->get(),
                  'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
                  'M3U_channels' => $M3U_channels ,
@@ -505,7 +508,7 @@ class LiveStreamController extends Controller
           try {
               $current_time = Carbon::now()->format('Y-m-d H:i:s');
 
-              $unseen_expiry_date = LivePurchase::where('video_id',$request->live_id)->where('livestream_view_count',0)->where('user_id',Auth::user()->id)->pluck('unseen_expiry_date')->first();
+              $unseen_expiry_date = LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->pluck('unseen_expiry_date')->first();
 
               if(  $unseen_expiry_date != null && $unseen_expiry_date <= $current_time ){
 

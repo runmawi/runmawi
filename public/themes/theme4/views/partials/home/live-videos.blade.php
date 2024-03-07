@@ -1,3 +1,9 @@
+@php
+        
+    $data = App\LiveStream::query()->where('active',1)->where('status', 1)->latest()->limit(15)->get();
+                                                                        
+@endphp
+
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">

@@ -253,6 +253,8 @@ class AdminSettingsController extends Controller
         $settings->search_details_status = $request['search_details_status'];
 
         $settings->ppv_status = $request['ppv_status'];
+        $settings->system_address = $request['system_address'];
+        $settings->system_phone_number = $request['system_phone_number'];
 
         $path = storage_path('app/public/');
 

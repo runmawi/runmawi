@@ -21,40 +21,40 @@ $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
 
 @$translate_language = App\Setting::pluck('translate_language')->first();
 
-    if(Auth::guest()){
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();
-        $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+if(Auth::guest()){
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $userIp = $geoip->getip();
+    $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
 
-        if(!empty($UserTranslation)){
-            $translate_language = $UserTranslation->translate_language;
-        }else{
-            $translate_language = 'en';
-        }
-    }else if(!Auth::guest()){
-
-        $subuser_id=Session::get('subuser_id');
-        if($subuser_id != ''){
-            $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
-            if(!empty($Subuserranslation)){
-                $translate_language = $Subuserranslation->translate_language;
-            }else{
-                $translate_language = 'en';
-            }
-        }else if(Auth::user()->id != ''){
-            $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
-            if(!empty($UserTranslation)){
-                $translate_language = $UserTranslation->translate_language;
-            }else{
-                $translate_language = 'en';
-            }
-        }else{
-            $translate_language = 'en';
-        }
-
+    if(!empty($UserTranslation)){
+        $translate_language = GetWebsiteName().$UserTranslation->translate_language;
     }else{
-        $translate_language = 'en';
+        $translate_language = GetWebsiteName().'en';
     }
+}else if(!Auth::guest()){
+
+    $subuser_id=Session::get('subuser_id');
+    if($subuser_id != ''){
+        $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+        if(!empty($Subuserranslation)){
+            $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+        }else{
+            $translate_language = GetWebsiteName().'en';
+        }
+    }else if(Auth::user()->id != ''){
+        $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+        if(!empty($UserTranslation)){
+            $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+        }else{
+            $translate_language = GetWebsiteName().'en';
+        }
+    }else{
+        $translate_language = GetWebsiteName().'en';
+    }
+
+}else{
+    $translate_language = GetWebsiteName().'en';
+}
 
 \App::setLocale(@$translate_language);
 
@@ -228,6 +228,13 @@ i.fa.fa-google-plus {
         left: 114px;
         background:rgba(11, 11, 11,1);
         font-size: 12px;
+    }
+    button.close {
+        color: #fff;
+        opacity: 1;
+    }
+    .close:not(:disabled):not(.disabled):hover{
+        color: red;
     }
 </style>
 
@@ -496,8 +503,8 @@ i.fa.fa-google-plus {
       <!-- Modal content-->
       <div class="modal-content" >
         <div class="modal-header" style="border:none;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color:#000;"><?php echo __('Terms and Conditions');?></h4>
+            <h4 class="modal-title"><?php echo __('Terms and Conditions');?></h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
         </div>
         <div class="modal-body" >
             <?php

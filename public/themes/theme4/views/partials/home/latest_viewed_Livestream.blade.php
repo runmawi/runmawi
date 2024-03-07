@@ -7,6 +7,7 @@
     $data =  App\RecentView::join('live_streams', 'live_streams.id', '=', 'recent_views.live_id')
         ->where('recent_views.user_id',Auth::user()->id)
         ->groupBy('recent_views.live_id')
+        ->limit(15)
         ->get();
    }
    else

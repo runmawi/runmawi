@@ -5,8 +5,48 @@
     $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
     $theme = App\SiteTheme::first();
 
+
+    $translate_checkout = App\SiteTheme::pluck('translate_checkout')->first();
+
     @$translate_language = App\Setting::pluck('translate_language')->first();
+
+        if(Auth::guest()){
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $UserTranslation = App\UserTranslation::where('ip_address',$userIp)->first();
+
+            if(!empty($UserTranslation)){
+                $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+            }else{
+                $translate_language = GetWebsiteName().'en';
+            }
+        }else if(!Auth::guest()){
+
+            $subuser_id=Session::get('subuser_id');
+            if($subuser_id != ''){
+                $Subuserranslation = App\UserTranslation::where('multiuser_id',$subuser_id)->first();
+                if(!empty($Subuserranslation)){
+                    $translate_language = GetWebsiteName().$Subuserranslation->translate_language;
+                }else{
+                    $translate_language = GetWebsiteName().'en';
+                }
+            }else if(Auth::user()->id != ''){
+                $UserTranslation = App\UserTranslation::where('user_id',Auth::user()->id)->first();
+                if(!empty($UserTranslation)){
+                    $translate_language = GetWebsiteName().$UserTranslation->translate_language;
+                }else{
+                    $translate_language = GetWebsiteName().'en';
+                }
+            }else{
+                $translate_language = GetWebsiteName().'en';
+            }
+
+        }else{
+            $translate_language = GetWebsiteName().'en';
+        }
+
     \App::setLocale(@$translate_language);
+
 ?>
 <html>
 
@@ -194,7 +234,7 @@
                                 <?php } else  { } ?>
 
                                 @if (Session::has('message'))
-                                    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}
+                                    <div id="successMessage" class="alert alert-info">{{ __(Session::get('message')) }}
                                     </div>
                                 @endif
 
@@ -202,7 +242,7 @@
                                     @foreach ($errors->all() as $message)
                                         <div class="alert alert-danger display-hide" id="successMessage">
                                             <button id="successMessage" class="close" data-close="alert"></button>
-                                            <span>{{ $message }}</span>
+                                            <span>{{ ( __($message)) }}</span>
                                         </div>
                                     @endforeach
                                 @endif
@@ -276,8 +316,8 @@
                     </div>
                     <div class="mt-3">
                         <div class="d-flex justify-content-center  links">
-                            <p class="text-primary text-white ml-2">{{ __('Not having an Account ? Click') }} <a class="sig"
-                                    href="{{ route('signup') }}">{{ __('Here') }}</a> {{ __('to Sign Up') }}! </p>
+                            <p class="text-primary text-white ml-2">{{ (__('Not having an Account ? Click')) }} <a class="sig"
+                                    href="{{ route('signup') }}">{{ __('Here') }}</a> {{ (__('to Sign Up!')) }} </p>
                         </div>
                     </div>
                 </div>

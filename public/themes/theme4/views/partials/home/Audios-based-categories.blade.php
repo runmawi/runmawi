@@ -1,14 +1,15 @@
 <?php
     $data = App\AudioCategory::query()
         ->whereHas('category_audios', function ($query) {
-            $query->where('audio.active', 1);
+            $query->where('audio.active', 1)->limit(15);
         })
         ->with([
             'category_audios' => function ($audios_videos) {
                 $audios_videos
                     ->select('audio.id', 'audio.title', 'audio.slug', 'audio.year', 'audio.rating', 'audio.access', 'audio.ppv_price', 'audio.duration', 'audio.rating', 'audio.image', 'audio.featured', 'audio.player_image', 'audio.description', 'audio.mp3_url')
                     ->where('audio.active', 1)
-                    ->latest('audio.created_at');
+                    ->latest('audio.created_at')
+                    ->limit(15);
             },
         ])
         ->select('audio_categories.id', 'audio_categories.name', 'audio_categories.slug', 'audio_categories.order')

@@ -102,11 +102,11 @@ text-align: left;
                           <div class="col-md-12">
 
                             <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;width:200px;"></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  ></div></div>
                             <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;width:200px;"></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  ></div></div>
                             <?php }else { ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;width:200px;"></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  ></div></div>
                             <?php } ?>
 
                       <?php if($settings->demo_mode == 1) { ?>
@@ -205,18 +205,18 @@ text-align: left;
 						</div>-->
                         <div class="soc mb-3">
                             <div class="d-flex align-items-center">
-                                <?php if($system_settings != null && $system_settings->facebook == 1 || $system_settings->google == 1){ ?>
+                                <?php if(@$system_settings != null && @$system_settings->facebook == 1 || @$system_settings->google == 1){ ?>
                                     <div>
                                         <p class="links">{{ __('Login with using').':' }}</p>
                                     </div>
                                 <?php } ?>
-                               <?php if($system_settings != null && $system_settings->facebook == 1){ ?>
+                               <?php if(@$system_settings != null && @$system_settings->facebook == 1){ ?>
                                 <div>
                                     <a href="{{ url('/auth/redirect/facebook') }}" class="" >
                                     <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                 </div>
                                <?php } ?>
-                                <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
+                                <?php if(@$system_settings != null && @$system_settings->google == 0 ){  }else{ ?>
                                     <div>
                                         <a href="{{ url('/auth/redirect/google') }}" class="" >
                                             <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">

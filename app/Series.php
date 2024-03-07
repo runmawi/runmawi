@@ -12,7 +12,12 @@ class Series extends Model
                             'embed_code','mp4_url','webm_url','ogg_url','language',
                             'year','trailer','url','banner','player_image','search_tag','network_id'];
 
-                    
+     
+    public function theme4_Series_depends_episodes()
+    {
+        return $this->hasMany(Episode::class, 'series_id')->where('active',1)->where('status',1)->latest('season_id')->limit(15)->orderBy('episode_order');
+    }
+
     public function Series_depends_episodes()
     {
         return $this->hasMany(Episode::class, 'series_id')->where('active',1)->where('status',1)->latest('season_id')->orderBy('episode_order');
