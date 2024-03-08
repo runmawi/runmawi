@@ -614,7 +614,7 @@ border-radius: 2px; display: block; margin: 0 auto; }
 .sign-user_logo { position: absolute; top: -56px; border-radius: 50%; padding: 10px; text-align: center; }
 .sign-user_logo img { height: 100px; width: 100px; border-radius: 50%; border: 2px solid white; }
 .sign-in-page .form-control, .m-profile .form-control { color:#fff; }
-.sign-in-page .form-control:focus, .m-profile .form-control:focus { background: #000; box-shadow: none; border: 1px solid var(--iq-primary); }
+.sign-in-page .form-control:focus, .m-profile .form-control:focus { background: #000; color:#fff !important; box-shadow: none; border: 1px solid var(--iq-primary); }
 ::placeholder { color: #CACACA!important; opacity: 1; font-size: 16px;font-weight: 400; }
 :-ms-input-placeholder {color: #CACACA!important;  }
 ::-ms-input-placeholder { color: #CACACA!important; }
