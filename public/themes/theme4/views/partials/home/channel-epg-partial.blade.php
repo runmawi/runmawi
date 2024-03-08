@@ -6,9 +6,7 @@
                     <table class="table table-striped">
                         <tbody>
                             <tr>
-                                <th scope="row" class="time"> {{ $item->start_time }} <small>{{ $item->AM_PM_Time }}</small> -  {{ $item->end_time }}  <small>{{ $item->AM_PM_Time }}</small>
-                                </th>
-                                <th scope="row" class="time">  <small>{{ $item->ChannelVideoScheduler_Choosen_date }}</small>
+                                <th scope="row" class="time"> {{ $item->converted_start_time }}  -  {{ $item->converted_end_time }}  </th>
                                 </th>
                                 <td><h6>{{ ucwords($item->socure_title) }}</h6></td>
                             </tr>
