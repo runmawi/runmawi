@@ -309,11 +309,12 @@ $settings = App\Setting::first();
                             <div class="col-sm-6">
                                 <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                     <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
+                    <span style="color:red" id="Error_image">Image is Requried*</span>
                     <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
                             </div>
                             <div class="col-sm-6">
                                  <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;">{{ __('Verify Profile') }} </button>
-                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
+                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" id = "profileImageUpdate" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
                             </div>
                         </div>
                                   
@@ -322,6 +323,19 @@ $settings = App\Setting::first();
                    
                       
                 </div>
+
+                <script>
+                  $('#Error_image').hide();
+                  $("#profileImageUpdate").click(function(){
+                     if($('#avatar').val() == ""){
+                           $('#Error_image').show();
+                           return false; // Prevent form submission
+                     }else{
+                        $('#Error_image').hide();
+                     }
+                  });
+
+                </script>
                     <!-- Add New Modal -->
 <div class="modal fade" id="add-profile">
   <div class="modal-dialog">
