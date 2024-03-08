@@ -125,7 +125,6 @@
         color: #fff !important;
 
         border: 1px solid #fff;
-        background-color: transparent;
     }
 
     .ply {
@@ -565,13 +564,13 @@
                                         </label>
 
                                         <p class="mb-0"> {{ (__(ucwords('To watch and enjoy the most latest video & live stream, Get subscribers'))) }}.</p> <br>
-
-                                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
-
+                                        <button class="btn btn-primary">
+                                            <a href="<?=URL::to('/becomesubscriber');?>" class=" btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
+                                        </button>
                                     @elseif( $user->role == "subscriber")
 
                                         <label>
-                                            <h5 class="mb-4">{{ (__('Subscriber as on')) . $user->subscription_start }}</h5>
+                                            <h5 class="mb-4">{{ (__('Subscriber as on')) .'  '.  $user->subscription_start }}</h5>
                                         </label>
 
                                         <div class="d-flex justify-content-between mt-2">
@@ -621,13 +620,16 @@
 
                                         @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
                                             <div class="col-md-6 text-right">
-                                                <a class="btn btn-primary btn-login "  href="{{ URL::to('/cancelSubscription') }}" class="text-white font-size-13" >{{ __('Cancel Membership') }}</a>
+                                                <button class="btn btn-primary">
+                                                    <a class=" btn-login "  href="{{ URL::to('/cancelSubscription') }}" class="text-white font-size-13" >{{ __('Cancel Membership') }}</a>
+                                                </button>
                                             </div>
                                         @else
 
                                             <p class="mb-0"> {{ (__(ucwords('To watch and enjoy the most latest video & live stream, Get subscribers'))) }}.</p> <br>
-
-                                            <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
+                                            <button class="btn btn-primary">
+                                                <a href="<?=URL::to('/becomesubscriber');?>" class="btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
+                                            </button>
 
                                         @endif
                                     @endif
