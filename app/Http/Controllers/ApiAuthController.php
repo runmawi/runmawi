@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use \App\User as User;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use URL;
 use App\Test as Test;
 use App\RecentView as RecentView;
@@ -140,6 +141,7 @@ use App\ChannelVideoScheduler as ChannelVideoScheduler;
 use App\AdminEPGChannel as AdminEPGChannel;
 use App\UserTranslation as UserTranslation;
 use App\TranslationLanguage as TranslationLanguage;
+use App\AdminOTPCredentials ;
 
 
 class ApiAuthController extends Controller
@@ -204,7 +206,7 @@ class ApiAuthController extends Controller
         $this->ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
   }
 
-  public function signup(Request $request)
+  public function fup(Request $request)
   {
 
         $input = $request->all();
@@ -23804,5 +23806,194 @@ public function TV_login(Request $request)
         );
       }
         return response()->json($response, 200);
+    }
+
+    // OTP
+
+    public function Mobile_exists_verify(Request $request)
+    {
+
+      try {
+          
+        $validator = Validator::make($request->all(), [
+          'mobile_number' => 'required|numeric',
+        ]);
+    
+        if ($validator->fails()) {
+
+          $response = [
+              'status'    => 'false',
+              'message'    => $validator->errors()->first(),
+          ];
+  
+          return response()->json($response, 422); 
+        }
+
+        $user = User::where('mobile',$request->mobile_number)->first();
+
+        if(!is_null($user)  ){
+
+          $mobile_number_status = "mobile_number_exists";
+          $message = Str::title('this mobile number already exists !!');
+          $redirect_api     = URL::to('api/auth/login');
+
+          $user_detail = $user ;
+
+        }else{
+
+          $mobile_number_status = "mobile_number_not_exists";
+          $message = Str::title('this mobile number not exists exists !!');
+          $redirect_api     = URL::to('api/auth/signup');
+
+          $user_detail = User::create([
+            'mobile' => $request->mobile_number,
+            'email'  => random_int(100000, 999999) ,
+          ]);
+        }
+
+        $response = array(
+          'status'   => 'true',
+          'mobile_number_status' => $mobile_number_status ,
+          'redirect_api' => $redirect_api ,
+          'message'      => $message,
+          'user_detail'  => $user_detail ,
+        );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'  => 'false',
+          'message' => $th->getMessage(),
+        );
+
+      }
+
+      return response()->json($response, 200);
+    }
+
+    public function Sending_OTP(Request $request)
+    {
+      try {
+
+          $validator = Validator::make($request->all(), [
+            'user_id'        =>  'required|numeric' ,
+          ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+              'status'    => 'false',
+                'message'    => $validator->errors()->first(),
+            ], 422); 
+        }
+        
+        $AdminOTPCredentials =  AdminOTPCredentials::where('otp_vai','fast2sms')->first();
+
+        if(is_null($AdminOTPCredentials)){
+
+            return response()->json( array(
+                "status"     => 'false' ,
+                "message"    => 'Please, Check the Admin OTP Credentials',
+              ) , 422);
+        }
+
+      
+        $random_otp_number = random_int(1000, 9999);
+        $fast2sms_API_key  = $AdminOTPCredentials->otp_fast2sms_api_key ;
+        $Mobile_number     = $request->mobile_number ;
+        $user_id           = $request->user_id;
+
+        $user = User::find($user_id);
+
+        $response = Http::withOptions(['verify' => false, ])  
+          ->get('https://www.fast2sms.com/dev/bulkV2', [
+                'authorization'    => $fast2sms_API_key ,
+                'variables_values' => $random_otp_number,
+                'route'   => 'otp',
+                'numbers' => $user->mobile ,
+                'flash'   => 1 ,
+            ]);
+
+        if ($response->failed()) {
+            
+            $response = array(
+              "status"  => 'false' ,
+              "message" => $response['message'] ,
+            );
+
+        } else {
+
+            User::find($user_id)->update([
+              'otp' => $random_otp_number ,
+              'otp_request_id' => $response['request_id'] ,
+              'otp_through' => 'fast2sms' ,
+            ]);
+
+            $response = array(
+              "status"     => 'true' ,
+              "request_id" => $response['request_id'] ,
+              "message"    => $response['message'] ,
+              "user_details" => User::find($user_id),
+            );
+        }
+
+      } catch (\Throwable $th) {
+
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+          );
+          
+      }
+
+      return response()->json($response, 200);
+    }
+
+    public function Verify_OTP(Request $request)
+    {
+      try {
+           
+        $validator = Validator::make($request->all(), [
+          'mobile_number' => 'required|numeric',
+          'user_id' => 'required|numeric',
+          'otp' => 'required|numeric',
+        ]);
+    
+        if ($validator->fails()) {
+
+          return response()->json( [
+                    'status'    => 'false',
+                    'message'    => $validator->errors()->first(),
+                ], 422); 
+        }
+
+        $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('otp',$request->otp)->first();
+
+        if(!is_null($user)  ){
+
+          $otp_status = "true";
+          $message = Str::title('Otp verify successfully !!');
+
+        }else{
+
+          $otp_status = "false";
+          $message = Str::title('invalid otp');
+        }
+
+        $response = array(
+          "status"  => 'true' ,
+          "message" => $message,
+          'otp_status' => $otp_status ,
+        );
+        
+      } catch (\Throwable $th) {
+
+        $response = array(
+          "status"  => 'false' ,
+          "message" => $th->getMessage(),
+        );
+
+      }
+      return response()->json($response, 200);
     }
 }
