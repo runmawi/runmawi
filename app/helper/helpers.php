@@ -1742,3 +1742,15 @@ function VideoScheduledData($time,$channe_id,$time_zone){
 
     return $value;
 }
+
+function Tv_Activation_Code()
+{
+    $Tv_Activation_Code = App\SiteTheme::pluck('Tv_Activation_Code')->first();
+    return  $Tv_Activation_Code; 
+}
+
+function Tv_Logged_User_List()
+{
+    $Tv_Logged_User_List = App\SiteTheme::pluck('Tv_Logged_User_List')->first();
+    return  $Tv_Logged_User_List; 
+}

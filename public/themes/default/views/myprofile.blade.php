@@ -221,8 +221,12 @@ $settings = App\Setting::first();
                         <li><a class="showSingle" target="5">{{ (__('Preference for videos')) }}</a></li>
                         <li><a class="showSingle" target="6">{{ (__('Profile')) }}</a></li>
                         <li><a class="showSingle" target="7">{{ (__('Recently Viewed Items')) }}</a></li>
+                        @if(Tv_Activation_Code()== 1)
                         <li><a class="showSingle" target="8">{{ (__('Tv Activation Code')) }}</a></li>
+                        @endif
+                        @if(Tv_Logged_User_List()== 1)
                         <li><a class="showSingle" target="9">{{ (__('Tv Logged User List')) }}</a></li>
+                        @endif
                     </ul>
                 </div>
             </div>
