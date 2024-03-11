@@ -524,6 +524,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/mobile_app/Splash_edit/{source}/{id}', 'AdminUsersController@Splash_edit')->name('Splash_edit');
     Route::post('/mobile_app/Splash_update/{source}/{id}', 'AdminUsersController@Splash_update')->name('Splash_update');
 
+    // OTP Auth
+    Route::get('/OTP-Credentials', 'AdminOTPCredentialsController@index')->name('admin.OTP-Credentials-index');
+    Route::post('/OTP-Credentials-update', 'AdminOTPCredentialsController@update')->name('admin.OTP-Credentials-update');
+
     Route::get('/users', 'AdminUsersController@index')->name('users');
     Route::get('/user/create', 'AdminUsersController@create');
     Route::post('/user/store', 'AdminUsersController@store');
