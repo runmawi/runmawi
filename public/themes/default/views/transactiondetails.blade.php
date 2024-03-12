@@ -10,17 +10,17 @@
                 
 			<div class="login-block ">
 
-            <h2 class="my_profile" style="color: black;">
-                <i class="fa fa-edit"></i> 
-                {{  'Transaction History' }}
-            </h2>
+                <div class="d-flex justify-content-between">
+                    <h2 class="my_profile" style="color: black;"> <i class="fa fa-edit"></i> {{  __('Transaction History') }}</h2>
+                    <a href="<?php echo URL::to('/myprofile') ?>">
+                    <button class="btn bd">{{ __('Back') }}</button></a>
+                </div>
                 <hr>
                 <div class="bg-strip">
                     <div class="d-flex justify-content-between">
-                        <div >
-                        <h5 style="color: black;">{{ __('Make payment') }}</h5></div>
-                        
-                        
+                        <div>
+                            <h4 style="color: black;">{{ __('Make payment') }}</h4>
+                        </div>
                     </div>
                 <div class="row mt-3 p-1" id="">
                     <div class="col-sm-3 bg-white">

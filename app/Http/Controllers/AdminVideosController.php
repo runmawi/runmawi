@@ -3356,7 +3356,7 @@ class AdminVideosController extends Controller
         $video->ios_ppv_price = $data['ios_ppv_price'];
         $video->player_image = $data["player_image"] ;
         $video->video_tv_image = $data["video_tv_image"] ;
-        $video->today_top_video = $data["today_top_video"] ;
+        $video->today_top_video = !empty($data["today_top_video"]) ? $data["today_top_video"] : 0 ;
 
 
         // Ads videos

@@ -514,7 +514,39 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
                 </div>
+                <div class="row d-flex"> 
+                
+                    <div class="col-md-6">
+                            <label>{{ (__('Enable Tv Activation Code')) }} </label>
 
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="Tv_Activation_Code"  type="checkbox" @if( $settings->Tv_Activation_Code == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    <div class="col-md-6">
+                            <label>{{ (__('Enable Tv Logged User List')) }} </label>
+
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="Tv_Logged_User_List"  type="checkbox" @if( $settings->Tv_Logged_User_List == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                
                 </div>
                 
                 <div class="panel-body mt-4" style="display: flex; justify-content: flex-end;">

@@ -667,4 +667,9 @@ Route::group(
             Route::get('translation-language', 'ApiAuthController@LanguageTranslation');
             Route::get('translation-checkout', 'ApiAuthController@TranslationEnable'); 
 
+            // Sending OTP
+            Route::post('Mobile-exists-verify', 'ApiAuthController@Mobile_exists_verify'); 
+            Route::post('Sending-OTP', 'ApiAuthController@Sending_OTP'); 
+            Route::post('Verify-OTP', 'ApiAuthController@Verify_OTP'); 
+
         });

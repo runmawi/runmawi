@@ -45,6 +45,9 @@ $theme = App\SiteTheme::first();
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
+    body{
+        font-family:'Sen', sans-serif !important;
+    }
     /*.sign-user_card {
         background: none !important;
     }*/
@@ -111,21 +114,6 @@ $theme = App\SiteTheme::first();
     .panel-heading {
     margin-bottom: 1rem;
 }
-   /* .form-control {
-    background-color: var(--iq-body-text) !important;
-    border: 1px solid transparent;
-    height: 46px;
-    position: relative;
-    color: var(--iq-body-bg) !important;
-    font-size: 16px;
-    width: 100%;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-}
-    a {
-    color: var(--iq-body-text);
-    text-decoration: none;
-}*/
 .phselect{
     width: 100%;
     height: 45px !important;
@@ -155,9 +143,6 @@ $theme = App\SiteTheme::first();
     padding: 6px 12px;
     cursor: pointer;
 }
-/*input[type="file"] {
-    display: none;
-}*/
     .catag {
     padding-right: 150px !important;
 }
@@ -194,7 +179,7 @@ i.fa.fa-google-plus {
     body{
     font-family: 'Sen', sans-serif !important;
 }
-h1, h2, h3, h4, h5, h6, p{
+h1, h2, h3, h4, h5, h6, p, input{
     font-family: 'Sen', sans-serif !important;
     font-weight:300;
 }
