@@ -525,7 +525,7 @@ $settings = App\Setting::first();
                   <div class=" mb-3">
                      <div class="d-flex justify-content-between">
                         <h4 class="card-title mb-0 manage">{{ __('Profile') }}</h4>
-                        <a class="btn" style="color: white !important; " href="{{ route('Multi-profile-create') }}" > <i class="fa fa-plus-circle fa-100x "></i> add profile</a> 
+                        <a class="btn" style="color: white !important; " href="{{ route('Multi-profile-create') }}" > <i class="fa fa-plus-circle fa-100x "></i> Add Profile</a> 
                      </div>
                      <div class="col-md-12 profile_image mt-3 p-0">                  
                         @forelse  ( $profile_details as $profile )
