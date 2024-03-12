@@ -206,7 +206,7 @@ class ApiAuthController extends Controller
         $this->ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
   }
 
-  public function fup(Request $request)
+  public function signup(Request $request)
   {
 
         $input = $request->all();
@@ -23887,7 +23887,7 @@ public function TV_login(Request $request)
             ], 422); 
         }
         
-        $AdminOTPCredentials =  AdminOTPCredentials::where('otp_vai','fast2sms')->first();
+        $AdminOTPCredentials =  AdminOTPCredentials::where('otp_vai','fast2sms')->where('status',1)->first();
 
         if(is_null($AdminOTPCredentials)){
 
@@ -23932,7 +23932,7 @@ public function TV_login(Request $request)
             $response = array(
               "status"     => 'true' ,
               "request_id" => $response['request_id'] ,
-              "message"    => $response['message'] ,
+              "message"    => 'SMS Send Successfully' ,
               "user_details" => User::find($user_id),
             );
         }
@@ -23973,6 +23973,12 @@ public function TV_login(Request $request)
 
           $otp_status = "true";
           $message = Str::title('Otp verify successfully !!');
+
+          User::find($request->user_id)->update([
+            'otp' => null ,
+            'otp_request_id' => null ,
+            'otp_through' => null ,
+          ]);
 
         }else{
 
