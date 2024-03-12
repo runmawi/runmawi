@@ -210,7 +210,7 @@ $settings = App\Setting::first();
             <div class="col-lg-4 mb-3 bdr">
                   <a class="" href="{{ URL::to('/home') }}"><button class='fas fa-arrow-alt-circle-left btn bd btn-action back'  style=''> {{ (__('Home')) }}</button></a>
                   <br><br>
-                <h3>{{ (__('Account Settings')) }}</h3>
+                <h4>{{ (__('Account Settings')) }}</h4>
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
@@ -452,11 +452,11 @@ $settings = App\Setting::first();
                         </div>
 
                         @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
-                              <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn" >{{ __('Cancel Membership') }}</a>
+                              <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn text-white" >{{ __('Cancel Membership') }}</a>
                         @endif
 
                         @if ( $payment_package != null  && $payment_package->payment_gateway == "Paystack")
-                              <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius" > {{ __('Cancel Membership') }} </a>
+                              <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius text-white" > {{ __('Cancel Membership') }} </a>
                         @endif
 
                     </div>

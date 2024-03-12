@@ -54,11 +54,11 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
             <div class="row pageheight">
                 <div class="col-sm-12 ">
                     <div class="iq-main-header align-items-center d-flex justify-content-between">
-                        <h2 class="ml-3"><?php echo __($categoryVideos['category_title']); ?></h2>
+                        <h2 class=""><?php echo __($categoryVideos['category_title']); ?></h2>
                     </div>
 
                     <!-- BREADCRUMBS -->
-                    <div class="row d-flex">
+                    <div class=" d-flex">
                         <div class="nav nav-tabs nav-fill container-fluid nav-div" id="nav-tab" role="tablist">
                             <div class="bc-icons-2">
                                 <ol class="breadcrumb">
