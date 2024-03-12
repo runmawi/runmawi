@@ -425,19 +425,29 @@ $settings = App\Setting::first();
                          
                          <!-- -->
                   <div class="row align-items-center justify-content-center mb-3 mt-3">
-                     <div class=" text-center col-sm-12 ">
+                     <!-- <div class=" text-center col-sm-12 ">
                         <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('View Transaction Details') }}</a>
-                     </div>
+                     </div> -->
 
                         
-                        <div class="col-sm-4 text-center">
+                        <div class="row text-center">
                            @if(Auth::user()->role == "subscriber")
-                              <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >{{ __('Upgrade Plan') }} </a>        
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
+                           </div>
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn text-white" >{{ __('Upgrade Plan') }} </a>        
+                           </div>
                            
                            @elseif( Auth::user()->role == "admin")
-
+                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
                            @else
-                                 <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
+                           </div>
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('Become Subscriber') }} </a>
+                           </div>
                            @endif
                         </div>
 
