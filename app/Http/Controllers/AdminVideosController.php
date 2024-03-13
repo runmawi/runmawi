@@ -2181,38 +2181,40 @@ class AdminVideosController extends Controller
 
                 $reelvideo_names = "reels" . $reelvideo_name;
                 $reelvideo = $Reel_Videos->move(
-                    public_path("uploads/reelsVideos"),
+                    public_path("uploads/reelsVideos/shorts"),
                     $reelvideo_name
                 );
-                $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
-                $shorts_name = 'shorts_'.$reelvideo_name; 
-                $videoPath = str_replace('\\', '/', $videoPath);
-                $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+                
+                // $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+                // $videoPath = public_path("uploads/reelsVideos/shorts/{$reelvideo_name}");
+                // $shorts_name = 'shorts_'.$reelvideo_name; 
+                // $videoPath = str_replace('\\', '/', $videoPath);
+                // $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
 
                 // Ensure the output directory exists
-                File::ensureDirectoryExists(dirname($outputPath));
 
-                // FFmpeg command to resize to 9:16 aspect ratio
-                $command = [
-                    'ffmpeg',
-                    '-y', // Add this option to force overwrite
-                    '-i', $videoPath,
-                    '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
-                    '-c:a', 'copy',
-                    $outputPath,
-                ];
+                // Convert Reels 
+                // File::ensureDirectoryExists(dirname($outputPath));
 
+                // // FFmpeg command to resize to 9:16 aspect ratio
+                // $command = [
+                //     'ffmpeg',
+                //     '-y', // Add this option to force overwrite
+                //     '-i', $videoPath,
+                //     '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+                //     '-c:a', 'copy',
+                //     $outputPath,
+                // ];
 
+                // $process = new Process($command);
 
-                $process = new Process($command);
-
-                try {
-                    $process->mustRun();
-                    // return 'Video resized successfully!';
-                } catch (ProcessFailedException $exception) {
-                    // Error message
-                    throw new \Exception('Error resizing video: ' . $exception->getMessage());
-                }
+                // try {
+                //     $process->mustRun();
+                //     // return 'Video resized successfully!';
+                // } catch (ProcessFailedException $exception) {
+                //     // Error message
+                //     throw new \Exception('Error resizing video: ' . $exception->getMessage());
+                // }
 
             // dd('done');
 
@@ -2250,20 +2252,21 @@ class AdminVideosController extends Controller
                 // );
 
                 // dd('done');
-                unlink($reelvideo);
+
+                // unlink($reelvideo);
 
                 $Reels_videos = new ReelsVideo();
                 $Reels_videos->video_id = $video->id;
-                $Reels_videos->reels_videos = $shorts_name;
+                $Reels_videos->reels_videos = $reelvideo_name;
+                // $Reels_videos->reels_videos = $shorts_name;
                 $Reels_videos->reels_videos_slug = $reel_videos_slug;
                 $Reels_videos->save();
 
                 $video->reels_thumbnail = "default.jpg";
             }
         }
-
+        // dd($reelvideo_name);
         // Reels Thumbnail
-
         if (!empty($request->reels_thumbnail)) {
             $Reels_thumbnail ="reels_" .time() . "." .$request->reels_thumbnail->extension();
             $request->reels_thumbnail->move(public_path("uploads/images"), $Reels_thumbnail);
