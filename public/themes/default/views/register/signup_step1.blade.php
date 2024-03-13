@@ -205,13 +205,19 @@ i.fa.fa-google-plus {
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
 
                             {{-- recaptcha --}}
-                <div class="col-md-12">
-                    @if ($errors->has('g-recaptcha-response'))
-                        <span class="alert alert-danger display-hide" id="successMessage" >
-                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                        </span>
-                     @endif
-                </div>
+                            @if (Session::has('message'))
+                                <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
+                            @endif
+                        
+
+                        @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                        <div class="alert alert-danger display-hide" id="successMessage" >
+                        <button id="successMessage" class="close" data-close="alert"></button>
+                        <span>{{ $message }}</span>
+                        </div>
+                        @endforeach
+                        @endif
 
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
