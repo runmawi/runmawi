@@ -1014,6 +1014,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           </li>
           
                  
+                  <div class="men">
+                     <p class="lnk" >{{ (__('Documents Management')) }}</p>
+                  </div>
+                   <li><a href="{{ URL::to('admin/document/genre') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Menu.svg')?>"heigth="40" width="40"><span>{{ (__('Document Genre')) }}</span></a></li>
+                   <li><a href="{{ URL::to('admin/document/upload') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Signup.svg')?>"heigth="40" width="40"><span>{{ (__('Document Upload')) }}</span></a></li>
+                   <li><a href="{{ URL::to('/admin/document/list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>{{ (__('Document List')) }}</span></a></li>
+
+                 
                     <div class="men">
                         <p class="lnk" >{{ (__('Accounts')) }}</p>
                      </div>
