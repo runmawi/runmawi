@@ -156,14 +156,14 @@
             </div>
         </div>
 
-        <div class="rec-video col mt-5">
+        <div class="rec-video col mt-5 p-0">
         {{-- Recommended videos Section --}}
 
         @if ( ( $videodetail->recommended_videos)->isNotEmpty() ) 
 
-            <div class=" container-fluid video-list  overflow-hidden pl-0">
+            <div class=" container-fluid video-list  overflow-hidden">
 
-                <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords('recommended videos') }}</h4> 
+                <h4 class="iq-main-header d-flex align-items-center justify-content-between" style="color:#fffff;">{{ ucwords('recommended videos') }}</h4> 
 
                 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
 
