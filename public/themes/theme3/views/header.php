@@ -1510,7 +1510,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              if ( $menu->in_menu == "video" ) {  ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
+                                                   <img class="" src="<?php echo $menu->image; ?>" />
                                                    <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
@@ -1545,7 +1545,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php } elseif  ( $menu->in_menu == "movies") {  ?>
 
                                                 <li class="nav-item  dskdflex menu-item d-flex align-items-center">
-                                                <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
+                                                <img class="" src="<?php echo $menu->image; ?>" />
                                                    <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
                                                       <?= $menu->name ?>
                                                    </a>
@@ -1563,7 +1563,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php } elseif ( $menu->in_menu == "live") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
+                                                   <img class="" src="<?php echo $menu->image; ?>" />
                                                    <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
@@ -1599,7 +1599,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php } elseif ( $menu->in_menu == "audios") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
+                                                   <img class="" src="<?php echo $menu->image; ?>" />
                                                    <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
@@ -1635,7 +1635,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php }elseif ( $menu->in_menu == "tv_show") { ?>
                                                 
                                                 <li class="nav-item active dskdflex menu-item d-flex align-items-center">
-                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
+                                                   <img class="" src="<?php echo $menu->image; ?>" />
                                                    <a href="<?php echo URL::to($menu->url)?>">
                                                          <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
                                                    </a>
@@ -1662,7 +1662,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php }elseif ( $menu->in_menu == "series") { ?>
                                                 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
+                                                   <img class="" src="<?php echo $menu->image; ?>" />
                                                    <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                       <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                    </a>
@@ -1698,7 +1698,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php }elseif ( $menu->in_menu == "networks") { ?>
 
                                                 <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                      <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
+                                                      <img class="" src="<?php echo $menu->image; ?>" />
                                                       <a class="nav-link dropdown-toggle justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
                                                          <?= $menu->name ?> <i class="fa fa-angle-down"></i>
                                                       </a>
@@ -1734,7 +1734,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                              <?php } else { ?>
 
                                                 <li class="menu-item d-flex align-items-center">
-                                                   <img class="" src="public\themes\theme3\views\img\Frame (2).png" />
+                                                   <img class="" src="<?php echo $menu->image; ?>" />
                                                    <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to( $menu->url ); }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
                                                          <?php echo __($menu->name);?>
                                                    </a>
@@ -2181,7 +2181,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                                   <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                                                   <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
                                                                   <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
-                                                                  <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                                                  <button type="submit" class="btn btn-primary" >Visit Channel Portal</button>
                                                                </form>
                                                             </div>
                                                       <?php }
@@ -2207,7 +2207,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                                 <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
                                                 <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
-                                                <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
+                                                <button type="submit" class="btn btn-primary" >Visit CPP Portal</button>
                                              </form>
                                           </div>
                                     <?php }
@@ -2218,7 +2218,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                                 <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
                                                 <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
-                                                <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                                <button type="submit" class="btn btn-primary" >Visit Channel Portal</button>
                                              </form>
                                           </div>
                                     <?php }
