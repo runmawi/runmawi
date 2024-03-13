@@ -705,7 +705,7 @@
    }
 
    body.dark-theme .share-icons.music-play-lists li span i{
-      color: <?php echo GetDarkText(); ?>!important;
+      color: #d30abe !important;
    }
    
    body.dark-theme .btn1{
