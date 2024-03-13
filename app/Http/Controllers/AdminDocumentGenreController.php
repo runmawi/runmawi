@@ -54,34 +54,16 @@ class AdminDocumentGenreController extends Controller
 
             if(compress_image_enable() == 1){
 
-                $filename   = 'series-Genre-'.time().'.'.compress_image_format();
+                $filename   = 'Document-Genre-'.time().'.'.compress_image_format();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
 
             }else{
 
-                $filename   = 'series-Genre-'.time().'.'.$file->getClientOriginalExtension();
+                $filename   = 'Document-Genre-'.time().'.'.$file->getClientOriginalExtension();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
             }
 
             $inputs +=  ['image' => $filename ];
-        }
-
-        if($request->hasFile('banner_image')){
-
-            $file = $request->banner_image;
-
-            if(compress_image_enable() == 1){
-
-                $filename   = 'series-Genre-banner-'.time().'.'.compress_image_format();
-                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
-
-            }else{
-
-                $filename   = 'series-Genre-banner-'.time().'.'.$file->getClientOriginalExtension();
-                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
-            }
-
-            $inputs +=  ['banner_image' => $filename ];
         }
 
         $DocumentGenre = DocumentGenre::create($inputs);
@@ -117,12 +99,12 @@ class AdminDocumentGenreController extends Controller
 
             if(compress_image_enable() == 1){
 
-                $filename   = 'series-Genre-'.time().'.'.compress_image_format();
+                $filename   = 'Document-Genre-'.time().'.'.compress_image_format();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename ,compress_image_resolution() );
 
             }else{
 
-                $filename   = 'series-Genre-'.time().'.'.$file->getClientOriginalExtension();
+                $filename   = 'Document-Genre-'.time().'.'.$file->getClientOriginalExtension();
                 Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$filename );
             }
 
