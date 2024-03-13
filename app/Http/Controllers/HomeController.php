@@ -79,6 +79,8 @@ use App\ChannelVideoScheduler;
 use App\AdminEPGChannel;
 use App\Wishlist;
 use App\TimeZone;
+use App\Document;
+use App\DocumentGenre;
 
 class HomeController extends Controller
 {
@@ -5250,4 +5252,114 @@ public function uploadExcel(Request $request)
 
         return response()->json(['data' => $response]); 
     }
+
+
+    
+    public function DocumentList()
+    {
+        $settings = Setting::first();
+
+        if($settings->enable_landing_page == 1 && Auth::guest()){
+
+            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+
+            return redirect()->route('landing_page', $landing_page_slug );
+        }
+
+        $multiuser = Session::get('subuser_id');
+
+        if(!Auth::guest()):
+             
+            $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+        else:
+
+            $Mode['user_type'] = null ;
+        endif;
+
+           
+        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
+
+
+        $Document_count = Document::latest()->count();
+
+        if ($Document_count > 0)
+        {
+            $latest_Documents = Document::limit(50)->paginate($this->videos_per_page);
+                
+        }
+        else
+        {
+            $latest_Documents = array();
+        }
+
+        $settings = Setting::first();
+        $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+        $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
+       
+        $data = array(
+            'latest_Documents' => $latest_Documents,
+            'ppv_gobal_price'  => $ppv_gobal_price,
+            'currency'         => CurrencySetting::first(),
+            'ThumbnailSetting' => ThumbnailSetting::first(),
+        );
+
+        return Theme::view('DocumentList',['DocumentList'=>$data]);
+    }
+
+    
+    public function DocumentCategoryList($slug)
+    {
+        $settings = Setting::first();
+
+        $category_id = DocumentGenre::where('slug',$slug)->pluck('id')->first();
+
+        $Documents =  Document::where('category','!=',null)->WhereJsonContains('category',(string) $category_id)->limit(50)->paginate($this->videos_per_page);
+        if($settings->enable_landing_page == 1 && Auth::guest()){
+
+            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+
+            return redirect()->route('landing_page', $landing_page_slug );
+        }
+
+        $multiuser = Session::get('subuser_id');
+
+        if(!Auth::guest()):
+             
+            $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+        else:
+
+            $Mode['user_type'] = null ;
+        endif;
+
+           
+        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
+
+
+        $Document_count = Document::latest()->count();
+
+        if ($Document_count > 0)
+        {
+            $latest_Documents = Document::limit(50)->paginate($this->videos_per_page);
+                
+        }
+        else
+        {
+            $latest_Documents = array();
+        }
+
+        $settings = Setting::first();
+        $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+        $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
+       
+        $data = array(
+            'latest_Documents' => $Documents,
+            'ppv_gobal_price'  => $ppv_gobal_price,
+            'currency'         => CurrencySetting::first(),
+            'ThumbnailSetting' => ThumbnailSetting::first(),
+            'DocumentGenre_Name' => DocumentGenre::where('slug',$slug)->pluck('name')->first(),
+        );
+
+        return Theme::view('DocumentCategoryListPage',['DocumentCategoryListPage'=>$data]);
+    }
+
 }

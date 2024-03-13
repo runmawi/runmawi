@@ -158,7 +158,48 @@
       </div>
    </section>
    <?php } }  } ?>
+
+   <!-- Document -->
+
    
+   <?php 
+      if($value->video_name == 'Document'){
+      
+      if($home_settings->Document == 1){ ?>
+   <section id="iq-favorites">
+      <div class="container-fluid overflow-hidden">
+         <div class="row">
+            <div class="col-sm-12 ">
+               <?php include('partials/home/Documents.php'); ?>
+            </div>
+         </div>
+      </div>
+   </section>
+   <?php } }  ?>
+
+   <?php
+         if($value->video_name == 'Document_Category'){
+            if($home_settings->Document_Category == 1){ ?>
+            <section id="iq-favorites">
+            <div class="container-fluid overflow-hidden">
+
+                  <?php
+                     $parentCategories = App\DocumentGenre::all();
+                     foreach($parentCategories as $category) {
+                        $Documents =  App\Document::where('category','!=',null)->WhereJsonContains('category',(string) $category->id)->limit(30)->get();
+                  ?>
+
+                  <?php 
+                     if (count($Documents) > 0) { 
+                        include('partials/home/Document-Category.php');
+                     } 
+                     else { 
+                  ?>
+                     <p class="no_video"></p>
+                  <?php } }?>
+         </section>
+      <?php } } ?>
+
    <!-- Audio Genre -->
    <?php
        if( $value->video_name == "Audio_Genre"){

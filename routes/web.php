@@ -35,6 +35,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('video_chat', 'VideoChatController@index');
     Route::post('auth/video_chat', 'VideoChatController@auth');
   });
+
+  Route::get('/Document-List', 'HomeController@DocumentList');    
+  Route::get('/document/category/{slug}', 'HomeController@DocumentCategoryList');    
+
 //   Route::get('/MusicAudioPlayer', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
     Route::get('admin/video/combine-video', 'AdminVideosController@combinevideo');
 
