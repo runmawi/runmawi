@@ -292,7 +292,7 @@ i.fa.fa-google-plus {
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
                             <div class="col-md-12" style="postion:relative;">
-                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                <input type="file" accept="image/*" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                 <label id="fileLabel">{{ __('Choose Profile Image') }}</label>
                                  </div>
                                  @endif

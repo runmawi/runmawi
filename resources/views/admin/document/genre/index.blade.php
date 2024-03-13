@@ -36,7 +36,7 @@ border-radius: 0px 4px 4px 0px;
             <div class="iq-card">
                 <div class="row">
                     <div class="col-md-6">
-                        <h4><i class="entypo-archive"></i> Document Genre</h4>
+                        <h4><i class="entypo-archive"></i> Document Category</h4>
 
                         @if (Session::has('message'))
                             <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
@@ -62,7 +62,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title">New Document Genre</h4>
+                                <h4 class="modal-title">New Document Category</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
 
@@ -128,8 +128,8 @@ border-radius: 0px 4px 4px 0px;
 							<table class="table table-bordered iq-card text-center" id="categorytbl">
 								<tr class="table-header r1">
 									<th><label>S.No</label></th>
-									<th><label>Document Genre Image</label></th>
-									<th><label>Document Genre Name</label></th>
+									<th><label>Document Category Image</label></th>
+									<th><label>Document Category Name</label></th>
                                     <th><label>Document Active</label></th>          
 									<th><label>Operation</label></th>
 								</tr>
