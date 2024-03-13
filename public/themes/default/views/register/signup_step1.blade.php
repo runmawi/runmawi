@@ -275,14 +275,13 @@ i.fa.fa-google-plus {
                             </div>
 
                             <div class="col-md-7 col-sm-8">
-                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
-                                <span class="verify-error"></span>
-                                
+                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                                  @error('mobile')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror                                    
+                                @enderror                               
                             </div></div>
 						
 
@@ -441,7 +440,7 @@ i.fa.fa-google-plus {
                             <div class="sign-up-buttons col-md-12 ">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> {{ __('Verify Profile') }}</button>
                                   <!-- <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button> -->
-                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                  <button id = "profileUpdate"  class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                             </div>
                         
@@ -541,6 +540,90 @@ i.fa.fa-google-plus {
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+$('form[id="stripe_plan"]').validate({
+    ignore: [],
+    rules: {
+        username: 'required',
+        email: {
+            required: true,
+            email: true,
+            normalizer: function(value) {
+                // Trim leading and trailing spaces from the email address
+                return $.trim(value);
+            }
+        },
+    },
+    messages: {
+        username: 'This field is required',
+        email: {
+            required: 'Email address is required',
+            email: 'Please enter a valid email address',
+        },
+    },
+    submitHandler: function(form) {
+        form.submit();
+    }
+});
+
+
+     </script>
+
+<script>
+
+    
+var specialKeys = new Array();
+        specialKeys.push(8); //Backspace
+
+    function IsNumeric(e) {
+    var keyCode = e.which ? e.which : e.keyCode;
+    var inputField = e.target || e.srcElement;
+    var inputValue = inputField.value;
+    var digitCount = inputValue.replace(/[^0-9]/g, '').length;
+
+    var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
+
+    if (digitCount >= 10) {
+        alert('Please enter at least 10 characters');
+        ret = ret || specialKeys.indexOf(keyCode) !== -1;
+        document.getElementById("error").style.display = ret ? "none" : "inline";
+        return false;
+    }
+
+    document.getElementById("error").style.display = ret ? "none" : "inline";
+    return ret;
+}
+
+
+    $('#email_error').hide();
+    $("#profileUpdate").click(function(){
+
+        var email = $('#email').val();
+            $.ajax({
+                url:"{{ URL::to('/emailvalidation') }}",
+                method:'GET',
+                data: {
+                        _token: '{{ csrf_token() }}',
+                        email: $('#email').val()
+
+                },        success: function(value){
+                    // console.log(value);
+                    if(value == "false"){
+                        $('#email_error').show();
+                        return false; // Prevent form submission
+
+                    }else{
+                    $('#email_error').hide();
+                    }
+                }
+            });
+
+            // mobile
+    });
+
+</script>
+
 <script>
     jQuery.noConflict();
     (function($) {
@@ -549,6 +632,7 @@ i.fa.fa-google-plus {
         });
     })(jQuery);
 </script>  
+
 <script>
 
 $(document).ready(function() {
@@ -672,31 +756,30 @@ $.ajaxSetup({
                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
     });
-=
 
 	$(document).ready(function(){
         $('#email_error').hide();
 
-// $('#email').change(function(){
+ $('#email').change(function(){
 
-// 	var email = $('#email').val();
-// 	$.ajax({
-//         url:"{{ URL::to('/emailvalidation') }}",
-//         method:'GET',
-//         data: {
-//                _token: '{{ csrf_token() }}',
-//                email: $('#email').val()
+ 	var email = $('#email').val();
+ 	$.ajax({
+         url:"{{ URL::to('/emailvalidation') }}",
+         method:'GET',
+         data: {
+                _token: '{{ csrf_token() }}',
+                email: $('#email').val()
 
-//          },        success: function(value){
-// 			console.log(value.email);
-//             if(value.user_exits == "yes"){
-//             $('#email_error').show();
-//             }else{
-//             $('#email_error').hide();
-//             }
-//         }
-//     });
-// })
+          },        success: function(value){
+ 			// console.log(value);
+             if(value == "false"){
+             $('#email_error').show();
+             }else{
+             $('#email_error').hide();
+             }
+         }
+     });
+ })
 
 });
 	

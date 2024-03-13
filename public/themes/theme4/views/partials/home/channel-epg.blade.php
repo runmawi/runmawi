@@ -103,7 +103,7 @@
                     
                     $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
                     
-                    $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-d-Y'))->orderBy('start_time')->get()->map(function ($item) {
+                    $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-j-Y'))->orderBy('start_time')->get()->map(function ($item) {
 
                                                             $TimeZone = App\TimeZone::where('id',$item->time_zone)->first();
 
@@ -123,7 +123,7 @@
                                                         });
 
                                                         
-                    $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-d-Y'))->orderBy('start_time')->groupBy('choosed_date')->get()->map(function ($item) {
+                    $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-j-Y'))->orderBy('start_time')->groupBy('choosed_date')->get()->map(function ($item) {
                                                                     $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
                                                                     return $item;
                                                                 });

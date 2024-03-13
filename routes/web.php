@@ -524,6 +524,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/mobile_app/Splash_edit/{source}/{id}', 'AdminUsersController@Splash_edit')->name('Splash_edit');
     Route::post('/mobile_app/Splash_update/{source}/{id}', 'AdminUsersController@Splash_update')->name('Splash_update');
 
+    // OTP Auth
+    Route::get('/OTP-Credentials', 'AdminOTPCredentialsController@index')->name('admin.OTP-Credentials-index');
+    Route::post('/OTP-Credentials-update', 'AdminOTPCredentialsController@update')->name('admin.OTP-Credentials-update');
+
     Route::get('/users', 'AdminUsersController@index')->name('users');
     Route::get('/user/create', 'AdminUsersController@create');
     Route::post('/user/store', 'AdminUsersController@store');
@@ -1119,6 +1123,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('advertisement/ads-banners', 'AdminAdvertiserController@ads_banners')->name('admin.ads_banners');
     Route::post('advertisement/ads-banners-update', 'AdminAdvertiserController@ads_banners_update')->name('admin.ads_banners_update');
 
+
+    // Admin Series Genre
+        Route::get('/document/genre', 'AdminDocumentGenreController@index');
+        Route::Post('/document/genre/store', 'AdminDocumentGenreController@Document_Store');
+        Route::get('/document/genre/edit/{id}', 'AdminDocumentGenreController@Document_Edit');
+        Route::post('/document/genre/update', 'AdminDocumentGenreController@Document_Update');
+        Route::get('/document/genre/delete/{id}', 'AdminDocumentGenreController@Document_Delete');
+        Route::Post('/document/genre/order', 'AdminDocumentGenreController@Document_Order');
+        Route::post('/document/genre/active', 'AdminDocumentGenreController@Document_Active');
+    
+        
 
     /*Ads Management ends*/
 

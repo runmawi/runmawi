@@ -240,7 +240,7 @@ function about(evt , id) {
  <script defer src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
  <script defer src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
  <script defer src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
- <script defer src="<?= URL::to('/'). '/assets/js/.js';?>"></script>
+ <!-- <script defer src="<?= URL::to('/'). '/assets/js/.js';?>"></script> -->
 <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 <script src="https://cdn.plyr.io/3.4.6/plyr.js"></script>
         

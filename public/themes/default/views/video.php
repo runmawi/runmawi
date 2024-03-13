@@ -2208,7 +2208,7 @@ $artists = [];
                         <?php endif; ?>
 
                         <div class=" container-fluid video-list you-may-like overflow-hidden">
-                            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos'); ?></h4>
+                            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recommended Videos'); ?></h4>
                             <div class="slider"
                                 data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
                                 <?php include 'partials/video-loop.php'; ?>
