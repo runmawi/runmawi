@@ -16,7 +16,7 @@
                         </h4>
                     </div>
                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <ul class="favorites-slider list-inline p-0 mb-0">
                             @foreach ($data as $series_details)
                                 <li class="slide-item">
                                     <a href="{{ URL::to('play_series/'.$series_details->slug) }}">

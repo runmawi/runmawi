@@ -10,7 +10,7 @@
 @if (!empty($sliders) && $sliders->isNotEmpty())
     @foreach ($sliders as $item)
         <div class="slide slick-bg s-bg-2" style="background: url('{{ URL::to('public/uploads/videocategory/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;" >
-            <div class="container-fluid position-relative h-100" style="padding:0 100px;">
+            <div class="container-fluid position-relative h-100" style="padding:0 100px !important;">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
@@ -45,11 +45,11 @@
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $item)
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;">
-            <div class="container-fluid position-relative h-100" style="padding:0 100px;">
+            <div class="container-fluid position-relative h-100" style="padding:0 100px !important;">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <p class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </p>
+                            <h1 class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
                             <div class="descp">
                                 <p> {!! html_entity_decode( optional($item)->description) !!}</p>
                             </div>
@@ -77,7 +77,7 @@
 @if (!empty($series_sliders) && $series_sliders->isNotEmpty())
     @foreach ($series_sliders as $item)
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
-            <div class="container-fluid position-relative h-100" style="padding:0 100px;">
+            <div class="container-fluid position-relative h-100" style="padding:0 100px !important;">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
@@ -109,7 +109,7 @@
 @if (!empty($live_banner) && $live_banner->isNotEmpty())
     @foreach ($live_banner as $item)
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
-            <div class="container-fluid position-relative h-100" style="padding:0 100px;">
+            <div class="container-fluid position-relative h-100" style="padding:0 100px !important;">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
@@ -133,7 +133,7 @@
 @if (!empty($live_event_banners) && $live_event_banners->isNotEmpty())
     @foreach ($live_event_banners as $item)
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
-            <div class="container-fluid position-relative h-100" style="padding:0 100px;">
+            <div class="container-fluid position-relative h-100" style="padding:0 100px !important;">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">

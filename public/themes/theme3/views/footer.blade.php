@@ -55,18 +55,15 @@
 
 
 </style>
-<footer class="mb-0">
+<footer class="mb-0" style="margin-top:5rem;">
         <div class="logo-content">
             
             <div class="row m-0">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-3">
                     <div class="text-center">
-                        <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="100%"/> </a>
+                        <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="80%"/> </a>
                         <p class="music-text" style="font-size:11px;"> <?= 'Created by Music Fans for Music Fans' ?></p>
                     </div>
-                    <!-- <a class="navbar-brand" href="<?php URL::to('/home'); ?>">
-                        <img class="img-fluid logo" src="<?= front_end_logo() ?>" />
-                    </a> -->
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-9 col-9 text-right m-0">
                     <ul class="list-inline m-0">
