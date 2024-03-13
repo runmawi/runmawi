@@ -9,7 +9,7 @@
 .slick-nav i:after { -webkit-transform: rotate(40deg); transform: rotate(40deg); }
 .slick-nav:before, .slick-nav:after { content: ''; display: block; position: absolute; left: 1px; right: 1px; top: 1px; bottom: 1px; border-radius: 50%; border: 2px solid var(--border); }
 .slick-nav svg { width: 44px; height: 44px; display: block; position: relative; z-index: 1; color: var(--active); stroke-width: 2px; stroke-dashoffset: 126; stroke-dasharray: 126 126 0; -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-.slick-nav.animate svg { -webkit-animation: stroke 1s ease forwards .3s; animation: stroke 1s ease forwards .3s; }
+/* .slick-nav.animate svg { -webkit-animation: stroke 1s ease forwards .3s; animation: stroke 1s ease forwards .3s; } */
 .slick-nav.animate i { -webkit-animation: arrow 1.6s ease forwards; animation: arrow 1.6s ease forwards; }
 .slick-nav.animate i:before { -webkit-animation: arrowUp 1.6s ease forwards; animation: arrowUp 1.6s ease forwards; }
 .slick-nav.animate i:after { -webkit-animation: arrowDown 1.6s ease forwards; animation: arrowDown 1.6s ease forwards; }

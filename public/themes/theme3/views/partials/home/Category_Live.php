@@ -51,7 +51,7 @@ ol.breadcrumb {
                 </div>
 
                 <div class="favorites-contens">
-                    <ul class="category-page list-inline row p-0 mb-0">
+                    <ul class="category-page list-inline p-0 mb-0">
                         <?php if(isset($Live_Category)) {
                         foreach($Live_Category as $LiveCategory){ ?>
                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
