@@ -7,7 +7,7 @@
          <div class="container-fluid">
 
 <div class="iq-card">
-    <h4><i class="entypo-archive"></i> Add New Document Category</h4>
+    <h4><i class="entypo-archive"></i> Add New Document</h4>
 	<div class="modal-body">
 		<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/document/update') }}" method="post" enctype="multipart/form-data">
          			<div class="form-group">
