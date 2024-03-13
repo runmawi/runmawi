@@ -42,7 +42,6 @@ $settings = App\Setting::first();
 
   .name{
      font-size: larger;
-     font-family: auto;
      color: white;
      text-align: center;
   }
@@ -208,7 +207,7 @@ $settings = App\Setting::first();
          <div class="sign-user_card">
         <div class="row align-items-center">
             <div class="col-lg-4 mb-3 bdr">
-                  <a class="" href="{{ URL::to('/home') }}"><button class='fas fa-arrow-alt-circle-left btn bd btn-action back'  style=''> {{ (__('Home')) }}</button></a>
+                  <a class="" href="{{ URL::to('/home') }}"><button class=' btn bd btn-action back'  style=''> <i class="fas fa-arrow-alt-circle-left"></i> {{ (__('Home')) }}</button></a>
                   <br><br>
                 <h4>{{ (__('Account Settings')) }}</h4>
                 <div class="mt-5 text-white p-0">
@@ -244,7 +243,7 @@ $settings = App\Setting::first();
                 <div class="" id="personal_det">
                 <div class="" >
                     <div class="d-flex align-items-baseline justify-content-between">
-                    <div><h5 class="mb-2 pb-3 ">{{ __('Personal Details') }}</h5></div>
+                    <div><h4 class="mb-2 pb-3 ">{{ __('Personal Details') }}</h4></div>
                     <div><a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary text-white"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a>
                         </div></div>
                     </div>
@@ -252,7 +251,7 @@ $settings = App\Setting::first();
                    <div class="a-border"></div>
                       <div class="row jusitfy-content-center">
                         <div class="col-md-3 mt-3">
-                            <h5>{{ __('Account Details') }}</h5>
+                            <h4>{{ __('Account Details') }}</h4>
                           </div>
                         <div class="col-md-9">
                              <div class="row align-items-center justify-content-end">
@@ -305,7 +304,7 @@ $settings = App\Setting::first();
                           <div class="a-border"></div>
                          
                           <div class="mt-3 row align-items-center">
-                              <div class="col-md-3"> <h5 class="card-title mb-2">{{ __('Update Profile') }}</h5></div>
+                              <div class="col-md-3"> <h4 class="card-title mb-2">{{ __('Update Profile:') }}</h4></div>
                               <div class="col-md-9"> 
                     <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                     @csrf
