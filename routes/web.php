@@ -1134,6 +1134,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
         Route::post('/document/genre/active', 'AdminDocumentGenreController@Document_Active');
     
         
+        // Admin Series Genre
+            Route::get('/document/list', 'AdminDocumentController@List');
+            Route::get('/document/upload', 'AdminDocumentController@index');
+            Route::Post('/document/store', 'AdminDocumentController@store');
+            Route::get('/document/edit/{id}', 'AdminDocumentController@Edit');
+            Route::post('/document/update', 'AdminDocumentController@Update');
+            Route::get('/document/delete/{id}', 'AdminDocumentController@Delete');    
+            
 
     /*Ads Management ends*/
 
