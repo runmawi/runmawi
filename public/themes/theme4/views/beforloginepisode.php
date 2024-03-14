@@ -45,6 +45,9 @@ ol.breadcrumb {
     background-color: transparent !important;
     font-size: revert;
 }
+
+#series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 14%; left:1%; color: white; border: none; cursor: pointer; }
+
 </style>
 
 <?php
@@ -73,93 +76,22 @@ ol.breadcrumb {
 
                         if ($series->access == 'guest' ||  $free_episode > 0): ?>
 
+                            <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            </button>
+
+                            <div id="series_container">
+                                <video id="episode-player" class="video-js vjs-theme-fantasy vjs-icon-hd vjs-layout-x-large"
+                                    controls preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay"
+                                    poster="<?= $episode_details->Player_thumbnail ?>">
+                                    <source src="<?= $episode_details->Episode_url ?>" type="<?= $episode_details->Episode_player_type ?>">
+                                </video>
+                            </div>
+
                             <?php if ($episode->type == 'embed'): ?>
 
                                 <div id="series_container" class="fitvid">
                                     <?=$episode->embed_code ?>
-                                </div>
-
-                            <?php elseif ($episode->type == 'file' || $episode->type == 'upload'): ?>
-
-                                <div id="series_container">
-                                    
-                                    <video id="videoPlayer" <?= $autoplay ?> class="video-js vjs-default-skin"
-                                        poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls
-                                        data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;"
-                                        type="video/mp4" data-authenticated="<?=!Auth::guest() ?>">
-
-                                        <source src="<?=$episode->mp4_url; ?>" type='video/mp4' label='auto'>
-                                        <source src="<?=$episode->webm_url; ?>" type='video/webm' label='auto'>
-                                        <source src="<?=$episode->ogg_url; ?>" type='video/ogg' label='auto'>
-                                        <?php  
-                                                if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
-                                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                                                        <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
-                                                            srclang="<?= $episodesubtitles_file->sub_language ?>"
-                                                            label="<?= $episodesubtitles_file->shortcode ?>" default>
-                                                        <?php } } } ?>
-                                        <p class="vjs-no-js">
-                                            <?php echo __('To view this series please enable JavaScript, and consider upgrading to a web browser that'); ?>
-                                            <a href="http://videojs.com/html5-video-support/"
-                                                target="_blank"><?php echo __('supports HTML5 series'); ?>
-                                            </a>
-                                        </p>
-                                    </video>
-                                </div>
-
-                            <?php  elseif($episode->type == 'm3u8'): ?>
-
-                                <div id="series_container">
-                                    <video id="video" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
-                                        <source type="application/x-mpegURL"
-                                            src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '.m3u8'; ?>">
-                                        <?php  
-                                            if(@$playerui_settings['subtitle'] == 1 ){ 
-                                                if(isset($episodesubtitles)){
-                                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                                                        <track kind="captions" src="<?= $episodesubtitles_file->url ?>" srclang="<?= $episodesubtitles_file->sub_language ?>" label="<?= $episodesubtitles_file->shortcode ?>" default>
-                                                    <?php }
-                                                } 
-                                            } ?>
-                                    </video>
-                                </div>
-
-                            <?php  elseif( $episode->type == 'aws_m3u8' ): ?>
-
-                                <div id="series_container">
-                                    <video id="video" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
-                                        <source type="application/x-mpegURL" src="<?php echo $episode->path; ?>">
-
-                                        <?php  
-                                            if(@$playerui_settings['subtitle'] == 1 ){ 
-                                                if(isset($episodesubtitles)){
-                                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                                                        <track kind="captions" src="<?= $episodesubtitles_file->url ?>" srclang="<?= $episodesubtitles_file->sub_language ?>" label="<?= $episodesubtitles_file->shortcode ?>" default>
-                                                    <?php }
-                                                } 
-                                            } ?>
-                                    </video>
-                                </div>
-
-
-                            <?php  else: ?>
-                                <div id="series_container">
-                                    <video id="videoPlayer" <?= $autoplay ?> class="video-js vjs-default-skin" controls preload="auto"
-                                        poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}"
-                                        width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
-
-                                        <source src="<?php echo URL::to('/storage/app/public/') . '/' . 'TfLwBgA62jiyfpce_2_1000_00018'; ?>" type='application/x-mpegURL' label='360p' res='360' />
-                                        <source src="<?php echo URL::to('/storage/app/public/') . '/' . $episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480' />
-                                        <source src="<?php echo URL::to('/storage/app/public/') . '/' . $episode->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720' />
-                                            <?php  
-                                                if(@$playerui_settings['subtitle'] == 1 ){ 
-                                                    if(isset($episodesubtitles)){
-                                                        foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                                                            <track kind="captions" src="<?= $episodesubtitles_file->url ?>" srclang="<?= $episodesubtitles_file->sub_language ?>" label="<?= $episodesubtitles_file->shortcode ?>" default>
-                                                        <?php }
-                                                    } 
-                                                } ?>
-                                    </video>
                                 </div>
                             <?php endif; ?>
 
