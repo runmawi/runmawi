@@ -191,6 +191,8 @@
     input{
         color:#000 !important;
     }
+    body.dark table.dataTable.no-footer{border-bottom: 1px solid <?php echo GetAdminDarkText(); ?>!important;} /* #9b59b6 */
+
 </style>
 
     @section('content')
