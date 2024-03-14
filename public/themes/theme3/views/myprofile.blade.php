@@ -290,7 +290,7 @@ $settings = App\Setting::first();
            
             <div class="col-lg-4 col-md-4 mb-3 bdr">
                 <h3>Account Settings</h3>
-                <div class="mt-5 text-white p-0">
+                <div class="mt-5 mb-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
                           <!-- <li><a class="showSingle" target="2">Transaction details</a></li>-->

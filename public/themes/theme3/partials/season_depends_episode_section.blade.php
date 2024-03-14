@@ -21,11 +21,15 @@
                     <div class="e-item col-lg-12 col-sm-12 col-md-12">
                         <div class="row">
                             <div class="col-4">
-                                <img src="{{ $item->image ?  URL::to('public/uploads/images/' . $item->image ) : default_vertical_image_url() }}" class="img-fluid transimga" alt="">
+                                <a href="{{ route('play_episode',[$series_data->slug,$item->slug]) }}">
+                                    <img src="{{ $item->image ?  URL::to('public/uploads/images/' . $item->image ) : default_vertical_image_url() }}" class="img-fluid transimga" alt="">
+                                </a>
                             </div>
                             <div class="col-7">
-                                <h5 class="epi-name text-white mb-0"> {{ $item->title }}</h5>
-                                <h6>{{ $item->description }}</h6>
+                                <a href="{{ route('play_episode',[$series_data->slug,$item->slug]) }}">
+                                    <h5 class="epi-name text-white mb-0"> {{ $item->title }}</h5>
+                                    <h6>{{ $item->description }}</h6>
+                                </a>
                             </div>
                         </div>
                         
