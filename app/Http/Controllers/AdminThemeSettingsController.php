@@ -240,6 +240,10 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->enable_bunny_cdn       = !empty($data['enable_bunny_cdn']) ? '1' : '0';
 
+        $theme_settings->Tv_Activation_Code       = !empty($data['Tv_Activation_Code']) ? '1' : '0';
+
+        $theme_settings->Tv_Logged_User_List       = !empty($data['Tv_Logged_User_List']) ? '1' : '0';
+
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);

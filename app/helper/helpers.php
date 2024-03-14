@@ -545,6 +545,22 @@ function Geofencing(){
     return $getfeching;
 }
 
+function current_timezone()
+{
+    $current_location = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $current_ip = $current_location->getip();
+
+    $apiUrl = "http://ip-api.com/php/{$current_ip}";
+
+    $response = Http::get($apiUrl);
+
+    $data = unserialize($response->body());
+
+    $timezone = $data['status'] == "success" ? $data['timezone'] : null ;
+
+    return $timezone ;
+}
+
 function Country_name(){
     
     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -552,7 +568,6 @@ function Country_name(){
     $countryName = \Location::get($userIp)->countryName;
 
     return $countryName ;
-
 }
 
 function city_name(){
@@ -1726,4 +1741,16 @@ function VideoScheduledData($time,$channe_id,$time_zone){
         $value["total_content"] = $ChannelVideoScheduler;
 
     return $value;
+}
+
+function Tv_Activation_Code()
+{
+    $Tv_Activation_Code = App\SiteTheme::pluck('Tv_Activation_Code')->first();
+    return  $Tv_Activation_Code; 
+}
+
+function Tv_Logged_User_List()
+{
+    $Tv_Logged_User_List = App\SiteTheme::pluck('Tv_Logged_User_List')->first();
+    return  $Tv_Logged_User_List; 
 }

@@ -826,6 +826,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Profile Screen</a></li>
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Theme</a></li>
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect">Image Setting </a></li>
+                            <li><a href="{{ route('admin.OTP-Credentials-index') }}" class="iq-waves-effect">{{ (__('OTP Credentials')) }} </a></li>
 
                      </ul>
                   </li>
@@ -1012,6 +1013,20 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             </ul>
           </li>
           
+               @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->document_category_checkout == 1 || @$AdminAccessPermission->document_upload_checkout == 1 || @$AdminAccessPermission->document_list_checkout == 1)
+                  <div class="men">
+                     <p class="lnk" >{{ (__('Documents Management')) }}</p>
+                  </div>
+                  @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->document_category_checkout == 1)
+                     <li><a href="{{ URL::to('admin/document/genre') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Menu.svg')?>"heigth="40" width="40"><span>{{ (__('Document Genre')) }}</span></a></li>
+                  @endif    
+                  @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->document_upload_checkout == 1)
+                  <li><a href="{{ URL::to('admin/document/upload') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Signup.svg')?>"heigth="40" width="40"><span>{{ (__('Document Upload')) }}</span></a></li>
+                  @endif 
+                  @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->document_list_checkout == 1)
+                  <li><a href="{{ URL::to('/admin/document/list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>{{ (__('Document List')) }}</span></a></li>
+                  @endif 
+               @endif  
                  
                     <div class="men">
                         <p class="lnk" >{{ (__('Accounts')) }}</p>
@@ -1172,9 +1187,13 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> {{ (__('Comment Section Settings')) }} </a></li>
                             <li><a href="{{ route('meta_setting') }}" class="iq-waves-effect"> {{ (__('Site Meta Settings')) }} </a></li>
                             <li><a href="{{ route('TV_Settings_Index') }}" class="iq-waves-effect">{{ (__('TV Settings')) }} </a></li>
+                            
                             @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->Page_Permission_checkout == 1 || Auth::user()->plan_name == 'SuperAdmin')
                               <li><a href="{{ URL::to('admin/access-premission') }}" class="iq-waves-effect">{{ (__('Page Permission Settings')) }}</a></li>
                             @endif 
+
+                           <li><a href="{{ route('admin.OTP-Credentials-index') }}" class="iq-waves-effect">{{ (__('OTP Credentials')) }} </a></li>
+
                         </ul>
                     </li>
                     <!-- Ads Menu starts -->
@@ -1493,6 +1512,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
                             <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> {{ ucwords('Home page Pop Up settings') }} </a></li>
                             <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> Comment Section Settings </a></li>
+                            <li><a href="{{ route('admin.OTP-Credentials-index') }}" class="iq-waves-effect">{{ (__('OTP Credentials')) }} </a></li>
+
                            </ul>
                     </li>
                     <!-- Ads Menu starts class="iq-waves-effect"-->

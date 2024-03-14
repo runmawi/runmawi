@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use \App\User as User;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use URL;
 use App\Test as Test;
 use App\RecentView as RecentView;
@@ -140,6 +141,9 @@ use App\ChannelVideoScheduler as ChannelVideoScheduler;
 use App\AdminEPGChannel as AdminEPGChannel;
 use App\UserTranslation as UserTranslation;
 use App\TranslationLanguage as TranslationLanguage;
+use App\AdminOTPCredentials ;
+use App\Document ;
+use App\DocumentGenre ;
 
 
 class ApiAuthController extends Controller
@@ -13943,6 +13947,26 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
+        if($OrderHomeSetting['video_name'] == "Document"){      // Latest Videos
+          
+          $data = $this->All_Homepage_Documents();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "Document" ;
+
+        }
+
+        if($OrderHomeSetting['video_name'] == "Document_Category"){      // Document Category
+          
+          $data = $this->All_Homepage_Document_Category();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "Document_Category" ;
+
+        }
+
         $result[] = array(
           "source"      => $source,
           "header_name" => $header_name,
@@ -14071,6 +14095,13 @@ public function QRCodeMobileLogout(Request $request)
    if($Homesetting->video_playlist == 1 && $this->All_Homepage_video_playlist()->isNotEmpty() ){
     array_push($input,'video_play_list');
  }
+
+  if($Homesetting->Document == 1 && $this->All_Homepage_Documents()->isNotEmpty() ){
+    array_push($input,'Document');
+  }
+  if($Homesetting->Document_Category == 1 && $this->All_Homepage_Document_Category()->isNotEmpty() ){
+    array_push($input,'Document_Category');
+  }
     // if($Homesetting->artist == 1){
     //   array_push($input,'artist');
     // }
@@ -14581,6 +14612,57 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
   }
 
+  
+  private static function All_Homepage_Documents(){
+
+    $Document_status = MobileHomeSetting::pluck('Document')->first();
+
+      if( $Document_status == null || $Document_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Document status) is turned off in the admin panel
+      else:
+
+          $data =  Document::get()->map(function ($item) {
+                        $item['image_url'] = URL::to('public/uploads/Document/'.$item->image) ;
+                        $item['document_url'] = URL::to('public/uploads/Document/'.$item->document) ;
+                        $item['description'] = null ;
+                        $item['source']    = "Document";
+                        return $item;
+                    });
+      endif;
+   
+    return $data;
+  }
+
+  private static function All_Homepage_Document_Category(){
+
+    $Document_Category_status = MobileHomeSetting::pluck('Document_Category')->first();
+      if( $Document_Category_status == null || $Document_Category_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Audio Genre Audios status) is turned off in the admin panel
+      else:
+          
+        $data =  DocumentGenre::get()->map(function ($item)  {
+          $item['image_url'] = $item->image != null ? URL::to('public/uploads/Document/'.$item->image ) : default_vertical_image_url() ;
+          $item['source']    = "Document_Category";
+          $item['Documents'] = Document::where('category', '!=', null)
+                                      ->whereJsonContains('category', (string)$item->id)
+                                      ->get()
+                                      ->map(function ($item) {
+                                        $item['image_url'] = $item->image != null ?  URL::to('public/uploads/Document/'.$item->image) : default_vertical_image_url() ;
+                                        $item['document_url'] = URL::to('public/uploads/Document/'.$item->document) ;
+                                        $item['source']    = "Document_Category";
+                                        return $item->toArray();
+              });
+            return $item;
+          });
+                
+      endif;
+
+    return $data;
+  }
+
+
   private static function All_Homepage_Recommended_videos_site(){
 
     $Recommendation_status = MobileHomeSetting::pluck('Recommended_videos_site')->first();
@@ -14994,6 +15076,16 @@ public function QRCodeMobileLogout(Request $request)
                 $data = $this->Video_Playlist_Pagelist();
                 $Page_List_Name = 'Video_Playlist_Pagelist';
                 break;  
+
+              case 'Document':
+                $data = $this->Document_Pagelist();
+                $Page_List_Name = 'Document_Pagelist';
+                break;  
+
+              case 'Document_Category':
+                $data = $this->Document_Category_Pagelist($request->category_id);
+                $Page_List_Name = 'Document_Category_Pagelist';
+                break;  
           }
       }
 
@@ -15101,6 +15193,43 @@ public function QRCodeMobileLogout(Request $request)
   
     return $data;
     
+  }
+
+  
+  private static function Document_Category_Pagelist( $category_id ){
+    
+
+    $query =  Document::where('category','!=',null)
+    ->WhereJsonContains('category',(string) $category_id)->latest();
+
+    $data = $query->latest()->get();
+
+    $data->transform(function ($item) {
+      $item['image_url'] = !is_null($item->image )? URL::to('public/uploads/Document/'.$item->image) : default_vertical_image_url() ;
+      $item['document_url'] = !is_null($item->document )? URL::to('public/uploads/Document/'.$item->document) : default_vertical_image_url() ;
+      $item['Category']    = DocumentGenre::where('id',$category_id)->first();
+      $item['source']    = "Document_Category";
+      return $item;
+    });
+  
+    return $data;
+    
+  }
+
+  private static function Document_Pagelist(){
+
+    $query = Document::query();
+
+    $data = $query->latest()->get();
+
+    $data->transform(function ($item) {
+      $item['image_url'] = !is_null($item->image )? URL::to('public/uploads/Document/'.$item->image) : default_vertical_image_url() ;
+      $item['document_url'] = !is_null($item->document )? URL::to('public/uploads/Document/'.$item->document) : default_vertical_image_url() ;
+      $item['source']    = "Document";
+      return $item;
+    });
+
+    return $data;
   }
 
   private static function Audio_Genre_Pagelist(){
@@ -23804,5 +23933,200 @@ public function TV_login(Request $request)
         );
       }
         return response()->json($response, 200);
+    }
+
+    // OTP
+
+    public function Mobile_exists_verify(Request $request)
+    {
+
+      try {
+          
+        $validator = Validator::make($request->all(), [
+          'mobile_number' => 'required|numeric',
+        ]);
+    
+        if ($validator->fails()) {
+
+          $response = [
+              'status'    => 'false',
+              'message'    => $validator->errors()->first(),
+          ];
+  
+          return response()->json($response, 422); 
+        }
+
+        $user = User::where('mobile',$request->mobile_number)->first();
+
+        if(!is_null($user)  ){
+
+          $mobile_number_status = "mobile_number_exists";
+          $message = Str::title('this mobile number already exists !!');
+          $redirect_api     = URL::to('api/auth/login');
+
+          $user_detail = $user ;
+
+        }else{
+
+          $mobile_number_status = "mobile_number_not_exists";
+          $message = Str::title('this mobile number not exists exists !!');
+          $redirect_api     = URL::to('api/auth/signup');
+
+          $user_detail = User::create([
+            'mobile' => $request->mobile_number,
+            'email'  => random_int(100000, 999999) ,
+          ]);
+        }
+
+        $response = array(
+          'status'   => 'true',
+          'mobile_number_status' => $mobile_number_status ,
+          'redirect_api' => $redirect_api ,
+          'message'      => $message,
+          'user_detail'  => $user_detail ,
+        );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'  => 'false',
+          'message' => $th->getMessage(),
+        );
+
+      }
+
+      return response()->json($response, 200);
+    }
+
+    public function Sending_OTP(Request $request)
+    {
+      try {
+
+          $validator = Validator::make($request->all(), [
+            'user_id'        =>  'required|numeric' ,
+          ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+              'status'    => 'false',
+                'message'    => $validator->errors()->first(),
+            ], 422); 
+        }
+        
+        $AdminOTPCredentials =  AdminOTPCredentials::where('otp_vai','fast2sms')->where('status',1)->first();
+
+        if(is_null($AdminOTPCredentials)){
+
+            return response()->json( array(
+                "status"     => 'false' ,
+                "message"    => 'Please, Check the Admin OTP Credentials',
+              ) , 422);
+        }
+
+      
+        $random_otp_number = random_int(1000, 9999);
+        $fast2sms_API_key  = $AdminOTPCredentials->otp_fast2sms_api_key ;
+        $Mobile_number     = $request->mobile_number ;
+        $user_id           = $request->user_id;
+
+        $user = User::find($user_id);
+
+        $response = Http::withOptions(['verify' => false, ])  
+          ->get('https://www.fast2sms.com/dev/bulkV2', [
+                'authorization'    => $fast2sms_API_key ,
+                'variables_values' => $random_otp_number,
+                'route'   => 'otp',
+                'numbers' => $user->mobile ,
+                'flash'   => 1 ,
+            ]);
+
+        if ($response->failed()) {
+            
+            $response = array(
+              "status"  => 'false' ,
+              "message" => $response['message'] ,
+            );
+
+        } else {
+
+            User::find($user_id)->update([
+              'otp' => $random_otp_number ,
+              'otp_request_id' => $response['request_id'] ,
+              'otp_through' => 'fast2sms' ,
+            ]);
+
+            $response = array(
+              "status"     => 'true' ,
+              "request_id" => $response['request_id'] ,
+              "message"    => 'SMS Send Successfully' ,
+              "user_details" => User::find($user_id),
+            );
+        }
+
+      } catch (\Throwable $th) {
+
+          $response = array(
+            "status"  => 'false' ,
+            "message" => $th->getMessage(),
+          );
+          
+      }
+
+      return response()->json($response, 200);
+    }
+
+    public function Verify_OTP(Request $request)
+    {
+      try {
+           
+        $validator = Validator::make($request->all(), [
+          'mobile_number' => 'required|numeric',
+          'user_id' => 'required|numeric',
+          'otp' => 'required|numeric',
+        ]);
+    
+        if ($validator->fails()) {
+
+          return response()->json( [
+                    'status'    => 'false',
+                    'message'    => $validator->errors()->first(),
+                ], 422); 
+        }
+
+        $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('otp',$request->otp)->first();
+
+        if(!is_null($user)  ){
+
+          $otp_status = "true";
+          $message = Str::title('Otp verify successfully !!');
+
+          User::find($request->user_id)->update([
+            'otp' => null ,
+            'otp_request_id' => null ,
+            'otp_through' => null ,
+          ]);
+
+        }else{
+
+          $otp_status = "false";
+          $message = Str::title('invalid otp');
+        }
+
+        $response = array(
+          "status"  => 'true' ,
+          "message" => $message,
+          'otp_status' => $otp_status ,
+        );
+        
+      } catch (\Throwable $th) {
+
+        $response = array(
+          "status"  => 'false' ,
+          "message" => $th->getMessage(),
+        );
+
+      }
+      return response()->json($response, 200);
     }
 }

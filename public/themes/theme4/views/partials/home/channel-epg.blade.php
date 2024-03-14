@@ -1,28 +1,4 @@
-@php
-    
-    $data =  App\AdminEPGChannel::where('status',1)->get()->map(function ($item) {
-                    
-                    $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
-                    
-                    $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
-                    
-                    $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
-                    
-                    $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-d-Y'))->orderBy('start_time')->get()->map(function ($item) {
-                                                            $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
-                                                            return $item;
-                                                        });
-
-                                                        
-                    $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-d-Y'))->orderBy('start_time')->groupBy('choosed_date')->get()->map(function ($item) {
-                                                                    $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
-                                                                    return $item;
-                                                                });
-                    return $item;
-                });
-
-@endphp    
-              
+      
 <style>
     .time{
         width: 28%;
@@ -118,6 +94,69 @@
     }
 </style>
 
+@php    
+    $data =  App\AdminEPGChannel::where('status',1)->get()->map(function ($item) {
+                    
+                    $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : default_vertical_image_url() ;
+                    
+                    $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : default_horizontal_image_url();
+                    
+                    $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : default_vertical_image_url();
+                    
+                    $item['ChannelVideoScheduler']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-j-Y'))->orderBy('start_time')->get()->map(function ($item) {
+
+                                                            $TimeZone = App\TimeZone::where('id',$item->time_zone)->first();
+
+                                                            $initial_start_time   = carbon\Carbon::createFromFormat('H:i:s', $item->start_time , $TimeZone->time_zone);
+                                                            $converted_start_time = $initial_start_time->setTimezone( current_timezone() )->format('h:i A');
+
+                                                            $initial_end_time   = carbon\Carbon::createFromFormat('H:i:s', $item->end_time , $TimeZone->time_zone);
+                                                            $converted_end_time = $initial_end_time->setTimezone( current_timezone() )->format('h:i A');
+
+                                                            $item['converted_start_time'] = $converted_start_time ;
+                                                            $item['converted_end_time'] = $converted_end_time ;
+
+                                                            $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                            $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+
+                                                            return $item;
+                                                        });
+
+                                                        
+                    $item['ChannelVideoScheduler_top_date']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date', '>=' ,Carbon\Carbon::today()->format('n-j-Y'))->orderBy('start_time')->groupBy('choosed_date')->get()->map(function ($item) {
+                                                                    $item['ChannelVideoScheduler_Choosen_date'] = Carbon\Carbon::createFromFormat('n-d-Y', $item->choosed_date)->format('d-m-Y');
+                                                                    return $item;
+                                                                });
+
+                                                                
+                                                        
+                    $item['ChannelVideoScheduler_current_video_details']  =  App\ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , Carbon\Carbon::today()->format('n-j-Y'))
+
+                                                                    ->get()->map(function ($item) {
+
+                                                                            // Change the Time Zone
+
+                                                                        $TimeZone = App\TimeZone::where('id',$item->time_zone)->first();
+
+                                                                        $initial_start_time   = carbon\Carbon::createFromFormat('H:i:s', $item->start_time , $TimeZone->time_zone);
+                                                                        $converted_start_time = $initial_start_time->setTimezone( current_timezone() )->format('H:i:s');
+
+                                                                        $initial_end_time   = carbon\Carbon::createFromFormat('H:i:s', $item->end_time , $TimeZone->time_zone);
+                                                                        $converted_end_time = $initial_end_time->setTimezone( current_timezone() )->format('H:i:s');
+
+                                                                        if(( $converted_start_time <= carbon\carbon::now()->setTimezone( current_timezone() )->format('H:i:s') ) && ( $converted_end_time >= carbon\carbon::now()->setTimezone( current_timezone() )->format('H:i:s')) ){
+                                                                            $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                            $item['converted_start_time'] = $initial_start_time->setTimezone( current_timezone() )->format('h:i A');
+                                                                            $item['converted_end_time'] = $initial_end_time->setTimezone( current_timezone() )->format('h:i A');
+                                                                            return $item ;
+                                                                        }
+
+                                                                    })->filter()->first();
+
+                    return $item;
+                });
+@endphp    
+        
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
@@ -156,28 +195,43 @@
 
                                                     <div class="caption pl-4">
 
-                                                        <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
-                                                    {{-- 
-                                                        @if ( Carbon\Carbon::now()->greaterThanOrEqualTo( $epg_channel_data->EPG->epg_start_date )) 
-                                                            <ul class="vod-info">
-                                                                <li><span></span> LIVE NOW</li>
-                                                            </ul>
-                                                        @else
-                                                            <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($epg_channel_data->EPG->epg_start_date)->isoFormat('YYYY-MM-DD') }} </span>
-                                                        @endif --}}
+                                                        <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2><br>
 
                                                         @if (optional($epg_channel_data)->description)
-                                                            <div class="trending-dec">{!! html_entity_decode( optional($epg_channel_data)->description) !!}</div>
+                                                            <div class="trending-dec">{!! html_entity_decode( optional($epg_channel_data)->description) !!}</div><br>
+                                                        @endif
+
+                                                        @if ( !is_null($epg_channel_data->ChannelVideoScheduler_current_video_details) )
+                                                            <div class="d-flex align-items-center p-0">
+                                                                <img src="{{ $epg_channel_data->ChannelVideoScheduler_current_video_details->video_image_url }}" alt="" style="height: 30%; width:30%"><br>
+                                                                
+                                                                <ul>
+                                                                    <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->socure_title }}  </p> 
+                                                                    <p> {{ current_timezone() ." - ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_start_time ." to ". $epg_channel_data->ChannelVideoScheduler_current_video_details->converted_end_time   }} </p> 
+                                                                    <p><img class="blob" src="public\themes\theme4\views\img\Live-Icon.png" alt="" width="100%" style="position: static !important ; margin:0% !important"></p>
+                                                                </ul>
+
+                                                            </div>
                                                         @endif
 
                                                         <div class="p-btns">
+
                                                             <div class="d-flex align-items-center p-0">
-                                                                <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
+
+                                                                @if ( ($epg_channel_data->ChannelVideoScheduler)->isNotEmpty() )
+
+                                                                    @if ( !is_null($epg_channel_data->ChannelVideoScheduler_current_video_details) )
+                                                                        <a href="{{ route('Front-End.Channel-video-scheduler',$epg_channel_data->slug )}}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                    @endif
+
+                                                                    <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-events-Modal-'.$key }}"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Event </a>
+                                                                @endif
+
                                                                 <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-epg-channel-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                                             </div>
                                                         </div>
                                                         </div>
+
 
                                                         <div class="dropdown_thumbnail">
                                                             <img  src="{{ $epg_channel_data->Player_image_url }}" alt="">
@@ -213,14 +267,6 @@
                                                 <div class="col-lg-10 col-md-10 col-sm-10">
 
                                                     <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
-
-                                                    {{-- @if ( Carbon\Carbon::now()->greaterThanOrEqualTo( $epg_channel_data->EPG->epg_start_date )) 
-                                                        <ul class="vod-info">
-                                                            <li><span></span> LIVE NOW</li>
-                                                        </ul>
-                                                    @else
-                                                        <span class="trending"> {{ 'Live Start On '. Carbon\Carbon::parse($epg_channel_data->EPG->epg_start_date)->isoFormat('YYYY-MM-DD') }} </span>
-                                                    @endif --}}
 
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">

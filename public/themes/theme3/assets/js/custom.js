@@ -152,7 +152,7 @@ Index Of Script
 		});
 		jQuery('.favorites-slider').slick({
 			dots: false,
-			slidesToShow: 9,
+			slidesToShow: 6,
 			slidesToScroll: 1,
 			arrows: true,
 			infinite: false,

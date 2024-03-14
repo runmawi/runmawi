@@ -45,6 +45,9 @@ $theme = App\SiteTheme::first();
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
+    body{
+        font-family:'Sen', sans-serif !important;
+    }
     /*.sign-user_card {
         background: none !important;
     }*/
@@ -111,21 +114,6 @@ $theme = App\SiteTheme::first();
     .panel-heading {
     margin-bottom: 1rem;
 }
-   /* .form-control {
-    background-color: var(--iq-body-text) !important;
-    border: 1px solid transparent;
-    height: 46px;
-    position: relative;
-    color: var(--iq-body-bg) !important;
-    font-size: 16px;
-    width: 100%;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-}
-    a {
-    color: var(--iq-body-text);
-    text-decoration: none;
-}*/
 .phselect{
     width: 100%;
     height: 45px !important;
@@ -155,9 +143,6 @@ $theme = App\SiteTheme::first();
     padding: 6px 12px;
     cursor: pointer;
 }
-/*input[type="file"] {
-    display: none;
-}*/
     .catag {
     padding-right: 150px !important;
 }
@@ -194,7 +179,7 @@ i.fa.fa-google-plus {
     body{
     font-family: 'Sen', sans-serif !important;
 }
-h1, h2, h3, h4, h5, h6, p{
+h1, h2, h3, h4, h5, h6, p, input{
     font-family: 'Sen', sans-serif !important;
     font-weight:300;
 }
@@ -343,8 +328,8 @@ button.btn.btn-hover.btn-primary.btn-block.signup {
                                 @if(!empty($SignupMenu) && $SignupMenu->email == 1)
                                     <div class="col-md-12">
                                         <input id="email" type="email" placeholder="Email"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
-                                        <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
-                                        </span>
+                                        <span class="invalid-feedback" id="email_error" role="alert">{{ __('Email Already Exits') }}
+                                    </span>
 
                                         @error('email')
                                             <span class="invalid-feedback" id="email_error" role="alert">
@@ -369,8 +354,8 @@ button.btn.btn-hover.btn-primary.btn-block.signup {
                             </div>
 
                             <div class="col-md-7 col-sm-8">
-                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
-                                <span class="verify-error"></span>
+                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                                 
                                  @error('mobile')
                                     <span class="invalid-feedback" role="alert">
@@ -387,7 +372,7 @@ button.btn.btn-hover.btn-primary.btn-block.signup {
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
                             <div class="col-md-12" style="postion:relative;">
-                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                <input type="file" accept="image/*" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                 <label id="fileLabel">Choose Profile Image</label>
                                  </div>
                                  @endif
@@ -630,7 +615,97 @@ button.btn.btn-hover.btn-primary.btn-block.signup {
   </div>
 </div>
     </section>
+
+      
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include jQuery UI library -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 <script>
+
+    
+var specialKeys = new Array();
+        specialKeys.push(8); //Backspace
+
+    function IsNumeric(e) {
+    var keyCode = e.which ? e.which : e.keyCode;
+    var inputField = e.target || e.srcElement;
+    var inputValue = inputField.value;
+    var digitCount = inputValue.replace(/[^0-9]/g, '').length;
+
+    var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
+
+    if (digitCount >= 10) {
+        alert('Please enter at least 10 characters');
+        ret = ret || specialKeys.indexOf(keyCode) !== -1;
+        document.getElementById("error").style.display = ret ? "none" : "inline";
+        return false;
+    }
+
+    document.getElementById("error").style.display = ret ? "none" : "inline";
+    return ret;
+}
+
+
+$('form[id="stripe_plan"]').validate({
+    ignore: [],
+    rules: {
+        username: 'required',
+        email: {
+            required: true,
+            email: true,
+            normalizer: function(value) {
+                // Trim leading and trailing spaces from the email address
+                return $.trim(value);
+            }
+        },
+    },
+    messages: {
+        username: 'This field is required',
+        email: {
+            required: 'Email address is required',
+            email: 'Please enter a valid email address',
+        },
+    },
+    submitHandler: function(form) {
+        form.submit();
+    }
+});
+
+
+
+    $(document).ready(function(){
+        $('#email_error').hide();
+
+        $('#email').change(function(){
+
+            var email = $('#email').val();
+            $.ajax({
+                url:"{{ URL::to('/emailvalidation') }}",
+                method:'GET',
+                data: {
+                        _token: '{{ csrf_token() }}',
+                        email: $('#email').val()
+
+                },        success: function(value){
+                    // console.log(value);
+                    if(value == "false"){
+                    $('#email_error').show();
+                    }else{
+                    $('#email_error').hide();
+                    }
+                }
+            });
+        })
+
+    });
+
     setTimeout(function() {
 
     $('.recaptcha').each(function() {
