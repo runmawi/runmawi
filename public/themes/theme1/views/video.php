@@ -91,15 +91,21 @@ div#url_linkdetails {
     font-size: x-large;
   
 }
-   .intro_skips,.Recap_skip {
+   .intro_skips {
    position: absolute;
        z-index: 5;
        top: 60%;
        right: 0;
        display: flex;
        justify-content: flex-end;
-   
-        
+}
+.Recap_skip {
+   position: absolute;
+       z-index: 5;
+       top: 60%;
+       right: 0;
+       display: flex;
+       justify-content: flex-end;
 }
       .skips{
           position: absolute;
@@ -247,6 +253,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
   </div>
+
+  <div class="col-sm-12 Recap_skip">
+      <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
+  </div>
+
    <div class=" page-height">
      <?php 
            $paypal_id = Auth::user()->paypal_id;
@@ -1068,9 +1079,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
           height: 20%;
         }
       </style>
-  <div class="col-sm-12 Recap_skip">
-      <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
-  </div>
+  
 
 <!--End Intro Skip and Recap Skip 
 
@@ -1673,11 +1682,13 @@ location.reload();
   var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
 
 if( SkipIntroPermissions == 1 ){
-  button.addEventListener("click", function(e) {
-    video.currentTime = IntroskipEnd;
-       $("#intro_skip").remove();  // Button Shows only one tym
-    video.play();
-  })
+
+    button.addEventListener("click", function(e) {
+      video.currentTime = IntroskipEnd;
+      video.play();
+      document.getElementById("intro_skip").hidden = true;
+    });
+
     if(AutoSkip != 1){
           this.video.addEventListener('timeupdate', (e) => {
             document.getElementById("intro_skip").style.display = "none";
@@ -1685,10 +1696,10 @@ if( SkipIntroPermissions == 1 ){
             var RemoveSkipbutton = End + 1;
 
             if (Start <= e.target.currentTime && e.target.currentTime < End) {
-                    document.getElementById("intro_skip").style.display = "block"; // Manual skip
+                  document.getElementById("intro_skip").style.display = "block"; // Manual skip
             } 
             if(RemoveSkipbutton  <= e.target.currentTime){
-                  $("#intro_skip").remove();   // Button Shows only one tym
+                  document.getElementById("intro_skip").hidden = true;  // Button Shows only one tym
             }
         });
     }
@@ -1738,9 +1749,10 @@ if( SkipIntroPermissions == 1 ){
 
   button.addEventListener("click", function(e) {
     videoId.currentTime = RecapskipEnd;
-    $("#Recaps_Skip").remove();   // Button Shows only one tym
     videoId.play();
-  })
+    document.getElementById("Recaps_Skip").hidden = true; // Button Shows only one tym
+  });
+  
       this.videoId.addEventListener('timeupdate', (e) => {
         document.getElementById("Recaps_Skip").style.display = "none";
 
@@ -1750,7 +1762,7 @@ if( SkipIntroPermissions == 1 ){
               }
                
               if(RemoveRecapsbutton  <= e.target.currentTime){
-                  $("#Recaps_Skip").remove();   // Button Shows only one tym
+                document.getElementById("Recaps_Skip").hidden = true; // Button Shows only one tym
               }
     });
 </script>
