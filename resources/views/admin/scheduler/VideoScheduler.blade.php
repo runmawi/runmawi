@@ -188,6 +188,9 @@
         width: 100%;
         text-align: left;
     }
+    input{
+        color:#000 !important;
+    }
 </style>
 
     @section('content')
