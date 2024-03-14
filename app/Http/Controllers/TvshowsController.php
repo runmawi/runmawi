@@ -226,7 +226,7 @@ class TvshowsController extends Controller
 
     public function play_episode($series_name, $episode_name)
     {
-        // try {
+        try {
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             
@@ -880,11 +880,11 @@ class TvshowsController extends Controller
             return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
         }
     
-        // } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
     
-        //     // return $th->getMessage();
-        //     return abort(404);
-        // }
+            // return $th->getMessage();
+            return abort(404);
+        }
     }
     
     public function handleViewCount($id)
