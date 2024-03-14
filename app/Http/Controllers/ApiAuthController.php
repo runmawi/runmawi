@@ -944,35 +944,41 @@ class ApiAuthController extends Controller
     $device_name = $request->device_name;
     $email = $request->email;
     $token = $request->token;
-    $users = User::where('email',$email)->first();
 
+    $users = User::where('email',$email)->first();
+    $users_mobile = User::where('mobile',$request->mobile_number)->first();
 
     $email_login = array(
       'email' => $request->get('email'),
       'password' => $request->get('password')
     );
+
     $username_login = array(
       'username' => $request->get('username'),
       'password' => $request->get('password')
     );
+
     $mobile_login = array(
       'mobile' => $request->get('mobile'),
       'otp' => $request->get('otp'),
       'password' => $request->get('password')
     );
 
+    if ( (!empty($users) && Auth::attempt($email_login)) || (!empty($users) && Auth::attempt($username_login)) || !empty($users_mobile) && Auth::attempt($mobile_login)  ){
 
-    if(!empty($users)){ 
-      LoggedDevice::where('user_id', '=', $users->id)->delete();
-      $user_id = $users->id;
+      LoggedDevice::where('user_id', '=', Auth::user()->id)->delete();
+      $user_id = Auth::user()->id;
       $adddevice = new LoggedDevice;
       $adddevice->user_id = $user_id;
       $adddevice->user_ip = $userIp;
       $adddevice->device_name = $device_name;
       $adddevice->save();
-    }
 
-    if ( !empty($users) && Auth::attempt($email_login) || !empty($users) && Auth::attempt($username_login) || !empty($users) && Auth::attempt($mobile_login)  ){
+      user::find(Auth::user()->id)->update([
+        'otp' => null ,
+        'otp_request_id' => null ,
+        'otp_through' => null ,
+      ]);
 
       Paystack_Andriod_UserId::truncate();
       Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
@@ -1059,14 +1065,27 @@ class ApiAuthController extends Controller
     endif;
 
   } else {
-    $count = User::where('email', '=', $request->get('email'))->count();
-    if($count > 0){
-      $response = array('message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch');
-      return response()->json($response, 200);
-    }else{
-      $response = array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');
-      return response()->json($response, 200);
+
+    if( $request->get('email') ){
+      
+      $count = User::where('email', $request->get('email'))->count();
+      
+      $response = $count > 0 ? array('message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch') : array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');    
+
+      return response()->json($response, 401);
+
     }
+
+    if( $request->get('mobile')){
+      
+      $count = User::where('mobile', $request->get('mobile'))->count();
+      
+      $response = $count > 0 ? array('message' => 'Incorrect Otp.', 'note_type' => 'error','status'=>'mismatch') : array('message' => 'Invalid Mobile Number, please try again.', 'note_type' => 'error','status'=>'false');    
+
+      return response()->json($response, 401);
+
+    }
+
   }
   }
 
@@ -23975,6 +23994,7 @@ public function TV_login(Request $request)
           $user_detail = User::create([
             'mobile' => $request->mobile_number,
             'email'  => random_int(100000, 999999) ,
+            'role'   => 'registered',
           ]);
         }
 
@@ -24054,6 +24074,8 @@ public function TV_login(Request $request)
               'otp' => $random_otp_number ,
               'otp_request_id' => $response['request_id'] ,
               'otp_through' => 'fast2sms' ,
+              'password'    => Hash::make($random_otp_number),
+              'email'       => 'No email for this id - '.$user_id,
             ]);
 
             $response = array(
@@ -24100,12 +24122,6 @@ public function TV_login(Request $request)
 
           $otp_status = "true";
           $message = Str::title('Otp verify successfully !!');
-
-          User::find($request->user_id)->update([
-            'otp' => null ,
-            'otp_request_id' => null ,
-            'otp_through' => null ,
-          ]);
 
         }else{
 
