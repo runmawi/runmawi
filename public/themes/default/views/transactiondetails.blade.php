@@ -11,32 +11,32 @@
 			<div class="login-block ">
 
                 <div class="d-flex justify-content-between">
-                    <h2 class="my_profile" style="color: black;"> <i class="fa fa-edit"></i> {{  __('Transaction History') }}</h2>
+                    <h3 class="my_profile" style="color: black;"> <i class="fa fa-edit"></i> {{  __('Transaction History') }}</h3>
                     <a href="<?php echo URL::to('/myprofile') ?>">
                     <button class="btn bd">{{ __('Back') }}</button></a>
                 </div>
                 <hr>
-                <div class="bg-strip">
+                <!-- <div class="bg-strip">
                     <div class="d-flex justify-content-between">
                         <div>
                             <h4 style="color: black;">{{ __('Make payment') }}</h4>
                         </div>
                     </div>
-                <div class="row mt-3 p-1" id="">
-                    <div class="col-sm-3 bg-white">
-                        <img src="{{ URL::to('/assets/img/PayPal-Logo.png') }}" class="w-100 pt-5">
+                    <div class="row mt-3 p-1" id="">
+                        <div class="col-sm-3 bg-white">
+                            <img src="{{ URL::to('/assets/img/PayPal-Logo.png') }}" class="w-100 pt-5">
+                        </div>
+                        <div class="col-sm-3 bg-white ">
+                            <img src="{{ URL::to('/assets/img/apple.jpg') }}" width="" class="w-100 pt-4" >
+                        </div>
+                        <div class="col-sm-3 bg-white">
+                            <img src="{{ URL::to('/assets/img/stripe.png') }}" class="w-100 pt-4" >
+                        </div>
+                        <div class="col-sm-3">
+                            <img src="{{ URL::to('/assets/img/maste.jpg') }}" class="w-100" >
+                        </div>
                     </div>
-                    <div class="col-sm-3 bg-white ">
-                    <img src="{{ URL::to('/assets/img/apple.jpg') }}" width="" class="w-100 pt-4" >
-                    </div>
-                    <div class="col-sm-3 bg-white">
-                           <img src="{{ URL::to('/assets/img/stripe.png') }}" class="w-100 pt-4" >
-                    </div>
-                    <div class="col-sm-3">
-                         <img src="{{ URL::to('/assets/img/maste.jpg') }}" class="w-100" >
-                    </div>
-                </div>
-            </div>
+                </div> -->
                 
                 <!-- <div class="mt-5">
                     <table class="table table-bordered text-center">
