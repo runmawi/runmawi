@@ -11,7 +11,7 @@
 			<div class="login-block ">
 
                 <div class="d-flex justify-content-between">
-                    <h3 class="my_profile" style="color: black;"> <i class="fa fa-edit"></i> {{  __('Transaction History') }}</h3>
+                    <h4 class="my_profile" style="color: black;"> <i class="fa fa-edit"></i> {{  __('Transaction History') }}</h4>
                     <a href="<?php echo URL::to('/myprofile') ?>">
                     <button class="btn bd">{{ __('Back') }}</button></a>
                 </div>

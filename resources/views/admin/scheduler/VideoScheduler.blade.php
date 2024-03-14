@@ -50,7 +50,7 @@
         text-overflow: ellipsis;
         width: 100px;
     }
-    body.dark .drop-zone{background-color: <?php echo GetAdminDarkBg(); ?>;}
+    /* body.dark .drop-zone{background-color: <?php echo GetAdminDarkBg(); ?>;} */
     body.dark input#video_id{background-color: <?php echo GetAdminDarkBg(); ?> !important; color: <?php echo GetAdminDarkText(); ?>!important;}
 
     .drop-zone {

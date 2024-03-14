@@ -12,41 +12,15 @@
             <div id="home-slider" class="slider m-0 p-0">
                 @foreach ($categoryVideos['video_banners'] as $item)
                     <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}')" >
-                        <div class="container-fluid position-relative h-100">
+                        <div class="container-fluid position-relative h-100" style="padding:0 100px !important;">
                             <div class="slider-inner h-100">
                                 <div class="row align-items-center  h-100">
                                     <div class="col-xl-6 col-lg-12 col-md-12">
                                         <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft" data-delay-in="0.6">{{ strlen($item->title) > 13 ? substr($item->title, 0, 14) . '...' : $item->title }}</h1>
 
-                                        <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-                                            <span class="badge  p-2">
-                                                <ul class="ratting-start p-0 m-0 list-inline text-primary d-flex align-items-center justify-content-left">
-                                                    @php $rating = ($item->rating / 2) ; @endphp
-                                                    @for ($i = 1; $i <= 5; $i++)
-                                                        @if ($rating >= $i)
-                                                            <li><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                                        @elseif ($rating + 0.5 == $i)
-                                                            <li><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                                                        @else
-                                                            <li><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-                                                        @endif
-                                                    @endfor
-                                                </ul>
-                                            </span>
-                                            <span class="ml-3"> {{ $item->rating ? ( $item->rating / 2 ) : " "  }} </span>
-                                        </div>
-
-                                        <br />
-                                        <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-                                            <span class="badge badge-secondary p-2"> {{ optional($item)->age_restrict.'+' }} </span>
-                                            <li class="ml-3">{{ $item->publish_type == "publish_now" ? Carbon\Carbon::createFromDate($item->created_at)->toFormattedDateString()  : Carbon\Carbon::createFromDate($item->publish_time)->toFormattedDateString() }}</li>
-                                        </div>
+                                        
                                         <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->description) !!}  </p>
-                                        <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp"
-                                            data-delay-in="1.2">
-                                            <a href="{{ URL::to('category/videos/'.$item->slug ) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                                    aria-hidden="true"></i>Play Now</a>
-                                        </div>
+                                        
                                     </div>
                                 </div>
 
@@ -102,25 +76,16 @@
                                                     </div>
 
                                                     <div class="block-description">
-
-                                                        <h6> {{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }}</h6>
-
-                                                        <div class="movie-time d-flex align-items-center my-2">
-                                                            <div class="badge badge-secondary p-1 mr-2"> {{ optional($item)->age_restrict . '+'  }} </div>
-                                                            <span class="text-white"> {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }} </span>
-                                                        </div>
-
                                                         <div class="hover-buttons">
-                                                            <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                Play Now
-                                                            </span>
-                                                        </div>
-                                                        <div class="block-social-info">
-                                                            <ul class="list-inline p-0 m-0 music-play-lists">
-                                                                {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                                <li><span><i class="ri-heart-fill"></i></span></li>
-                                                                <li><span><i class="ri-add-line"></i></span></li>
-                                                            </ul>
+                                                            <a class="" href="{{ URL::to('category/videos/'.$item->slug ) }}">
+                                                                <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                                    <span class="text pr-2"> {{ (__('Play')) }} </span>
+                                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                                    </svg>
+                                                                </div>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -161,32 +126,17 @@
                                                         <img src="{{ URL::to('public/uploads/images/' . $item->image) }}" class="img-fluid" alt="">
                                                     </div>
                                                     <div class="block-description">
-                                                        <h6> {{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }}
-                                                        </h6>
-                                                        <div class="movie-time d-flex align-items-center my-2">
-
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                                {{ optional($item)->age_restrict.'+' }}
-                                                            </div>
-
-                                                            <span class="text-white">
-                                                                {{ $item->duration != null ? gmdate('H:i:s', $item->duration) : null }}
-                                                            </span>
-                                                        </div>
-
                                                         <div class="hover-buttons">
-                                                            <span class="btn btn-hover">
-                                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                Play Now
-                                                            </span>
+                                                            <a class="" href="{{ URL::to('category/videos/'.$item->slug ) }}">
+                                                                <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                                    <span class="text pr-2"> {{ (__('Play')) }} </span>
+                                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                                    </svg>
+                                                                </div>
+                                                            </a>
                                                         </div>
-                                                    </div>
-                                                    <div class="block-social-info">
-                                                        <ul class="list-inline p-0 m-0 music-play-lists">
-                                                            {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                            <li><span><i class="ri-heart-fill"></i></span></li>
-                                                            <li><span><i class="ri-add-line"></i></span></li>
-                                                        </ul>
                                                     </div>
                                                 </div>
                                             </a>
@@ -229,27 +179,16 @@
                                                     </div>
 
                                                     <div class="block-description">
-
-                                                        <h6> {{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }}</h6>
-                                                        
-                                                        <div class="movie-time d-flex align-items-center my-2">
-                                                            <div class="badge badge-secondary p-1 mr-2"> {{ optional($item)->age_restrict . '+'  }} </div>
-                                                            <span class="text-white">
-                                                                {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}
-                                                            </span>
-                                                        </div>
-
                                                         <div class="hover-buttons">
-                                                            <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                Play Now
-                                                            </span>
-                                                        </div>
-                                                        <div class="block-social-info">
-                                                            <ul class="list-inline p-0 m-0 music-play-lists">
-                                                                {{-- <li><span><i class="ri-volume-mute-fill"></i></span></li> --}}
-                                                                <li><span><i class="ri-heart-fill"></i></span></li>
-                                                                <li><span><i class="ri-add-line"></i></span></li>
-                                                            </ul>
+                                                            <a class="" href="{{ URL::to('category/videos/'.$item->slug ) }}">
+                                                                <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                                    <span class="text pr-2"> {{ (__('Play')) }} </span>
+                                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                                    </svg>
+                                                                </div>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
