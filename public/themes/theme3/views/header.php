@@ -742,7 +742,7 @@
    .light-theme .iq-search-bar .search-input {color: <?php echo GetLightText(); ?> !important;}
    .dark-theme ul.list-group.home-search {background: <?php echo GetDarkBg(); ?> !important;}
    .light-theme ul.list-group.home-search {background: <?php echo GetLightBg(); ?> !important;}
-   .dark-theme .iq-search-bar .search-input {background: <?php echo GetDarkBg(); ?> !important;}
+   /* .dark-theme .iq-search-bar .search-input {background: <?php echo GetDarkBg(); ?> !important;} */
    .light-theme .iq-search-bar .search-input {background:<?php echo GetLightText(); ?> !important;}
    .dark-theme h1,.dark-theme h2,.dark-theme h3,.dark-theme h4,.dark-theme h5,.dark-theme h6 {color: <?php echo GetDarkText(); ?> !important;}
    .light-theme h1,.light-theme h2,.light-theme h3,.light-theme h4,.light-theme h5,.light-theme h6 {color: <?php echo GetLightText(); ?> !important;}

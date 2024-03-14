@@ -32,18 +32,17 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
 @if (!empty($data) && $data->isNotEmpty())
 
     @foreach( $data as $key => $series_networks )
+        @if (!empty($series_networks->Series_depends_Networks) && ($series_networks->Series_depends_Networks)->isNotEmpty() )
         <section id="iq-trending" class="s-margin">
             <div class="container-fluid pl-0">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                                         
-                        @if (!empty($series_networks->Series_depends_Networks) && ($series_networks->Series_depends_Networks)->isNotEmpty() )
                                                                     {{-- Header --}}
                             <div class="iq-main-header d-flex align-items-center justify-content-between">
                                 <h4 class="main-title mar-left"><a href="{{ route('Specific_Series_Networks',[$series_networks->slug] )}}">{{ optional($series_networks)->name }}</a></h4>
                                 <h4 class="main-title"><a href="{{ route('Specific_Series_Networks',[$series_networks->slug] )}}">{{ "view all" }}</a></h4>
                             </div>
-                        @endif
 
                         <div class="trending-contens">
                             <ul id="trending-slider-nav" class="{{ 'series-networks-videos-slider-nav list-inline p-0 mar-left row align-items-center' }}" data-key-id="{{$key}}">
@@ -138,6 +137,7 @@ $item['Series_depends_Networks'] = App\Series::where('series.active', 1)
                 </div>
             </div>
         </section>
+    @endif
     @endforeach
 
     {{-- Networks depends Episode Modal --}}
