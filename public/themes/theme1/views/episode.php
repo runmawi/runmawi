@@ -876,7 +876,7 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     .intro_skips,
     .Recap_skip {
         position: absolute;
-        margin-top: -14%;
+        margin-top: -9%;
         margin-bottom: 0;
         margin-left: 80%;
         margin-right: 0;
@@ -925,8 +925,6 @@ $EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['se
 $SkipIntroParse = date_parse($Intro_skip['skip_intro']);
 $skipIntroTime = $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] * 60 + $SkipIntroParse['second'];
 
-// dd($SkipIntroPermission);
-
 ?>
 
 <script>
@@ -938,13 +936,15 @@ $skipIntroTime = $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] *
     var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
     var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
 
-    if (SkipIntroPermissions == 0) {
+    if( SkipIntroPermissions == 1 ){
+
         button.addEventListener("click", function(e) {
             video.currentTime = IntroskipEnd;
-            $("#intro_skip").remove(); // Button Shows only one tym
             video.play();
-        })
-        if (AutoSkip != 1) {
+            document.getElementById("intro_skip").hidden = true;
+        });
+
+        if(AutoSkip != 1){
             this.video.addEventListener('timeupdate', (e) => {
                 document.getElementById("intro_skip").style.display = "none";
                 document.getElementById("Auto_skip").style.display = "none";
@@ -953,12 +953,14 @@ $skipIntroTime = $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] *
                 if (Start <= e.target.currentTime && e.target.currentTime < End) {
                     document.getElementById("intro_skip").style.display = "block"; // Manual skip
                 }
-                if (RemoveSkipbutton <= e.target.currentTime) {
-                    $("#intro_skip").remove(); // Button Shows only one tym
+
+                if(RemoveSkipbutton  <= e.target.currentTime){
+                    document.getElementById("intro_skip").hidden = true;  // Button Shows only one tym
                 }
             });
-        } else {
-            this.video.addEventListener('timeupdate', (e) => {
+        }
+        else{
+        this.video.addEventListener('timeupdate', (e) => {
                 document.getElementById("Auto_skip").style.display = "none";
                 document.getElementById("intro_skip").style.display = "none";
 
@@ -966,8 +968,8 @@ $skipIntroTime = $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] *
                 var trigger = Start - 1;
                 if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
                     document.getElementById("Auto_skip").style.display = "block";
-                    if (trigger <= e.target.currentTime) {
-                        document.getElementById("intro_skip").click(); // Auto skip
+                    if(trigger  <= e.target.currentTime){
+                        document.getElementById("intro_skip").click();    // Auto skip
                     }
                 }
             });
@@ -1003,7 +1005,7 @@ $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 
 
     button.addEventListener("click", function(e) {
         videoId.currentTime = RecapskipEnd;
-        $("#Recaps_Skip").remove(); // Button Shows only one tym
+        document.getElementById("Recaps_Skip").hidden = true; // Button Shows only one tym
         videoId.play();
     })
     this.videoId.addEventListener('timeupdate', (e) => {
@@ -1015,7 +1017,7 @@ $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 
         }
 
         if (RemoveRecapsbutton <= e.target.currentTime) {
-            $("#Recaps_Skip").remove(); // Button Shows only one tym
+            document.getElementById("Recaps_Skip").hidden = true; // Button Shows only one tym
         }
     });
 </script>

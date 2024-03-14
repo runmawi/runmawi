@@ -19,11 +19,13 @@ class AdminOTPCredentialsController extends Controller
     {
         $AdminOTPCredentials = AdminOTPCredentials::first();
 
-        if( !is_null($AdminOTPCredentials) ){
-            AdminOTPCredentials::first()->update($request->all());
-        }else{
-            AdminOTPCredentials::create($request->all());
-        }
+        $inputs = array(
+            'otp_vai' => $request->otp_vai ,
+            'otp_fast2sms_api_key' => $request->otp_fast2sms_api_key ,
+            'status' => !empty($request->status) && $request->status == "on" ? 1 : 0  ,
+        );
+
+        !is_null($AdminOTPCredentials) ? AdminOTPCredentials::first()->update($inputs) : AdminOTPCredentials::create($inputs) ;
 
         return redirect()->route('admin.OTP-Credentials-index');
     }

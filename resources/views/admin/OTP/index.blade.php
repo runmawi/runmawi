@@ -83,8 +83,24 @@
 
                     <form method="POST" action="{{ route('admin.OTP-Credentials-update') }}" accept-charset="UTF-8" >
                         @csrf
-                        <div class="row mt-4">
-                            <div class="col-md-4">
+
+                        <div class="row col-md-6">
+                            <label>{{ ucfirst(trans('Enable OTP')) }} <small>( signup & Login )</small> </label>
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Disable</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="status" class="status" id="status" type="checkbox"  @if( $AdminOTPCredentials->status == 1 ) checked @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">Enable</div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row md-12">
+                            <div class="col-md-5">
                                 <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
                                         <div class="panel-title"><label>OTP Through</label></div>
@@ -100,7 +116,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
                                         <div class="panel-title"><label> API KEY - fast2sms </label></div>
@@ -115,7 +131,8 @@
                             </div>
                         </div>
                         <br>
-                        <div class="panel-body mt-3 ml-2">
+
+                        <div class="panel-body mt-3 ml-2 text-right">
                             <input type="submit" value="Update" class="btn btn-primary" />
                         </div>
                     </form>
