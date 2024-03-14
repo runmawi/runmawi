@@ -259,7 +259,7 @@
     try {
         if (Route::currentRouteName() == 'LiveStream_play') {
             include 'livevideo_player_script.blade.php';
-        } elseif (Route::currentRouteName() == 'play_episode') {
+        } elseif (Route::currentRouteName() == 'play_episode' || Route::currentRouteName() == "network_play_episode"  ) {
             include 'episode_player_script.blade.php';
         } else {
             include 'footerPlayerScript.blade.php';
