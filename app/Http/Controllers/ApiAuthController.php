@@ -24082,7 +24082,7 @@ public function TV_login(Request $request)
               "status"     => 'true' ,
               "request_id" => $response['request_id'] ,
               "message"    => 'SMS Send Successfully' ,
-              "user_details" => User::find($user_id),
+              "user_details" => User::where('id',$user_id)->get() ,
             );
         }
 
