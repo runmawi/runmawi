@@ -28,7 +28,6 @@ $theme = App\SiteTheme::first();
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-    <
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
@@ -205,13 +204,19 @@ i.fa.fa-google-plus {
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
 
                             {{-- recaptcha --}}
-                <div class="col-md-12">
-                    @if ($errors->has('g-recaptcha-response'))
-                        <span class="alert alert-danger display-hide" id="successMessage" >
-                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                        </span>
-                     @endif
-                </div>
+                    @if (Session::has('message'))
+                        <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
+                    @endif
+                        
+
+                    @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                            <div class="alert alert-danger display-hide" id="successMessage" >
+                            <button id="successMessage" class="close" data-close="alert"></button>
+                            <span>{{ $message }}</span>
+                            </div>
+                        @endforeach
+                    @endif
 
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
@@ -541,7 +546,19 @@ i.fa.fa-google-plus {
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>                
+
 <script>
+        $(document).ready(function(){
+        // $('#message').fadeOut(120);
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 5000);
+    })
+        var onloadCallback = function(){
+      
+    }
 $('form[id="stripe_plan"]').validate({
     ignore: [],
     rules: {

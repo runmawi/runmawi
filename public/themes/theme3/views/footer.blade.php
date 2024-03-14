@@ -25,11 +25,12 @@
     ul.list-inline.m-0 {
         height: 100%;
     }
-    input[type="text"] {
-        border-radius: 50px 0 0 50px;
+    #join-com input[type="text"] {
+        border-radius: 50px 0 0 50px !important;
         border-right: none;
         padding: 5px;
         border:none;
+        height:auto;
     }
     input[type="text"]::placeholder{
         color: #000;
@@ -169,7 +170,7 @@
 
                         <h5><?= "Join the community" ?></h5>
                         <p class="font-size-12"><?= "For the latest news and offers signup below" ?></p>
-                        <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-end" id="join-com">
                             <div class="row">
                                 <div class="col-lg-8 col-md-8 col-sm-7 col-7 p-0">
                                     <input type="text" placeholder="Your Email">

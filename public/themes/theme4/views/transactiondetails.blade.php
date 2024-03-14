@@ -10,15 +10,16 @@
                 
 			<div class="login-block ">
 
-            <h2 class="my_profile" style="color: black;">
-                <i class="fa fa-edit"></i> 
-                {{  'Transaction History' }}
-            </h2>
+                <div class="d-flex justify-content-between">
+                    <h3 class="my_profile" style="color: #000 !important;"> <i class="fa fa-edit"></i> {{  __('Transaction History') }}</h3>
+                    <a href="<?php echo URL::to('/myprofile') ?>">
+                    <button class="btn bd text-white">{{ __('Back') }}</button></a>
+                </div>
                 <hr>
-                <div class="bg-strip">
+                <!-- <div class="bg-strip">
                     <div class="d-flex justify-content-between">
                         <div >
-                        <h5 style="color: black;">{{ __('Make payment') }}</h5></div>
+                        <h5 style="color: #000 !important;">{{ __('Make payment') }}</h5></div>
                         
                         
                     </div>
@@ -36,7 +37,7 @@
                          <img src="{{ URL::to('/assets/img/maste.jpg') }}" class="w-100" >
                     </div>
                 </div>
-            </div>
+            </div> -->
                 
                 <!-- <div class="mt-5">
                     <table class="table table-bordered text-center">
@@ -76,7 +77,7 @@
                 </div> -->
                 
                <div class="mt-5">
-               <table class="table table-bordered text-center">
+               <table class="table table-bordered text-center text-black">
                       <thead>
                         <tr>
                         <th scope="col">{{ __('Status') }}</th>

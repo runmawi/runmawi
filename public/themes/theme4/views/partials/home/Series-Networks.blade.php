@@ -7,9 +7,9 @@
                                                                                                     'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
                                                                                                     ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
                                                                                                     ->latest()->limit(15)->get()->map(function ($item) {
-                                                                                                            $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : Vertical_Default_Image() ;
-                                                                                                            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : Horizontal_Default_Image() ;
-                                                                                                            $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : Horizontal_Default_Image() ;       
+                                                                                                            $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                                                                                                            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                                                                                            $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : default_horizontal_image_url() ;       
                                                                                                             $item['season_count'] =  App\SeriesSeason::where('series_id',$item->id)->count();
                                                                                                             $item['episode_count'] =  App\Episode::where('series_id',$item->id)->count();
                                                                                                             return $item;

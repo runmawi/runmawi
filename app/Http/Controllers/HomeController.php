@@ -2471,7 +2471,9 @@ class HomeController extends Controller
                 ]);
             }
             // dd(1);
-
+            $validatedData = $request->validate([
+                'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
+            ]);
         }else{
 
             $validatedData = $request->validate(

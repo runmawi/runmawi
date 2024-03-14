@@ -142,6 +142,8 @@ use App\AdminEPGChannel as AdminEPGChannel;
 use App\UserTranslation as UserTranslation;
 use App\TranslationLanguage as TranslationLanguage;
 use App\AdminOTPCredentials ;
+use App\Document ;
+use App\DocumentGenre ;
 
 
 class ApiAuthController extends Controller
@@ -942,35 +944,41 @@ class ApiAuthController extends Controller
     $device_name = $request->device_name;
     $email = $request->email;
     $token = $request->token;
-    $users = User::where('email',$email)->first();
 
+    $users = User::where('email',$email)->first();
+    $users_mobile = User::where('mobile',$request->mobile_number)->first();
 
     $email_login = array(
       'email' => $request->get('email'),
       'password' => $request->get('password')
     );
+
     $username_login = array(
       'username' => $request->get('username'),
       'password' => $request->get('password')
     );
+
     $mobile_login = array(
       'mobile' => $request->get('mobile'),
       'otp' => $request->get('otp'),
       'password' => $request->get('password')
     );
 
+    if ( (!empty($users) && Auth::attempt($email_login)) || (!empty($users) && Auth::attempt($username_login)) || !empty($users_mobile) && Auth::attempt($mobile_login)  ){
 
-    if(!empty($users)){ 
-      LoggedDevice::where('user_id', '=', $users->id)->delete();
-      $user_id = $users->id;
+      LoggedDevice::where('user_id', '=', Auth::user()->id)->delete();
+      $user_id = Auth::user()->id;
       $adddevice = new LoggedDevice;
       $adddevice->user_id = $user_id;
       $adddevice->user_ip = $userIp;
       $adddevice->device_name = $device_name;
       $adddevice->save();
-    }
 
-    if ( !empty($users) && Auth::attempt($email_login) || !empty($users) && Auth::attempt($username_login) || !empty($users) && Auth::attempt($mobile_login)  ){
+      user::find(Auth::user()->id)->update([
+        'otp' => null ,
+        'otp_request_id' => null ,
+        'otp_through' => null ,
+      ]);
 
       Paystack_Andriod_UserId::truncate();
       Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
@@ -1057,14 +1065,27 @@ class ApiAuthController extends Controller
     endif;
 
   } else {
-    $count = User::where('email', '=', $request->get('email'))->count();
-    if($count > 0){
-      $response = array('message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch');
-      return response()->json($response, 200);
-    }else{
-      $response = array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');
-      return response()->json($response, 200);
+
+    if( $request->get('email') ){
+      
+      $count = User::where('email', $request->get('email'))->count();
+      
+      $response = $count > 0 ? array('message' => 'Password Mismatch.', 'note_type' => 'error','status'=>'mismatch') : array('message' => 'Invalid Email, please try again.', 'note_type' => 'error','status'=>'false');    
+
+      return response()->json($response, 401);
+
     }
+
+    if( $request->get('mobile')){
+      
+      $count = User::where('mobile', $request->get('mobile'))->count();
+      
+      $response = $count > 0 ? array('message' => 'Incorrect Otp.', 'note_type' => 'error','status'=>'mismatch') : array('message' => 'Invalid Mobile Number, please try again.', 'note_type' => 'error','status'=>'false');    
+
+      return response()->json($response, 401);
+
+    }
+
   }
   }
 
@@ -13945,6 +13966,26 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
+        if($OrderHomeSetting['video_name'] == "Document"){      // Latest Videos
+          
+          $data = $this->All_Homepage_Documents();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "Document" ;
+
+        }
+
+        if($OrderHomeSetting['video_name'] == "Document_Category"){      // Document Category
+          
+          $data = $this->All_Homepage_Document_Category();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "Document_Category" ;
+
+        }
+
         $result[] = array(
           "source"      => $source,
           "header_name" => $header_name,
@@ -14073,6 +14114,13 @@ public function QRCodeMobileLogout(Request $request)
    if($Homesetting->video_playlist == 1 && $this->All_Homepage_video_playlist()->isNotEmpty() ){
     array_push($input,'video_play_list');
  }
+
+  if($Homesetting->Document == 1 && $this->All_Homepage_Documents()->isNotEmpty() ){
+    array_push($input,'Document');
+  }
+  if($Homesetting->Document_Category == 1 && $this->All_Homepage_Document_Category()->isNotEmpty() ){
+    array_push($input,'Document_Category');
+  }
     // if($Homesetting->artist == 1){
     //   array_push($input,'artist');
     // }
@@ -14583,6 +14631,57 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
   }
 
+  
+  private static function All_Homepage_Documents(){
+
+    $Document_status = MobileHomeSetting::pluck('Document')->first();
+
+      if( $Document_status == null || $Document_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Document status) is turned off in the admin panel
+      else:
+
+          $data =  Document::get()->map(function ($item) {
+                        $item['image_url'] = URL::to('public/uploads/Document/'.$item->image) ;
+                        $item['document_url'] = URL::to('public/uploads/Document/'.$item->document) ;
+                        $item['description'] = null ;
+                        $item['source']    = "Document";
+                        return $item;
+                    });
+      endif;
+   
+    return $data;
+  }
+
+  private static function All_Homepage_Document_Category(){
+
+    $Document_Category_status = MobileHomeSetting::pluck('Document_Category')->first();
+      if( $Document_Category_status == null || $Document_Category_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Audio Genre Audios status) is turned off in the admin panel
+      else:
+          
+        $data =  DocumentGenre::get()->map(function ($item)  {
+          $item['image_url'] = $item->image != null ? URL::to('public/uploads/Document/'.$item->image ) : default_vertical_image_url() ;
+          $item['source']    = "Document_Category";
+          $item['Documents'] = Document::where('category', '!=', null)
+                                      ->whereJsonContains('category', (string)$item->id)
+                                      ->get()
+                                      ->map(function ($item) {
+                                        $item['image_url'] = $item->image != null ?  URL::to('public/uploads/Document/'.$item->image) : default_vertical_image_url() ;
+                                        $item['document_url'] = URL::to('public/uploads/Document/'.$item->document) ;
+                                        $item['source']    = "Document_Category";
+                                        return $item->toArray();
+              });
+            return $item;
+          });
+                
+      endif;
+
+    return $data;
+  }
+
+
   private static function All_Homepage_Recommended_videos_site(){
 
     $Recommendation_status = MobileHomeSetting::pluck('Recommended_videos_site')->first();
@@ -14996,6 +15095,16 @@ public function QRCodeMobileLogout(Request $request)
                 $data = $this->Video_Playlist_Pagelist();
                 $Page_List_Name = 'Video_Playlist_Pagelist';
                 break;  
+
+              case 'Document':
+                $data = $this->Document_Pagelist();
+                $Page_List_Name = 'Document_Pagelist';
+                break;  
+
+              case 'Document_Category':
+                $data = $this->Document_Category_Pagelist($request->category_id);
+                $Page_List_Name = 'Document_Category_Pagelist';
+                break;  
           }
       }
 
@@ -15103,6 +15212,43 @@ public function QRCodeMobileLogout(Request $request)
   
     return $data;
     
+  }
+
+  
+  private static function Document_Category_Pagelist( $category_id ){
+    
+
+    $query =  Document::where('category','!=',null)
+    ->WhereJsonContains('category',(string) $category_id)->latest();
+
+    $data = $query->latest()->get();
+
+    $data->transform(function ($item) {
+      $item['image_url'] = !is_null($item->image )? URL::to('public/uploads/Document/'.$item->image) : default_vertical_image_url() ;
+      $item['document_url'] = !is_null($item->document )? URL::to('public/uploads/Document/'.$item->document) : default_vertical_image_url() ;
+      $item['Category']    = DocumentGenre::where('id',$category_id)->first();
+      $item['source']    = "Document_Category";
+      return $item;
+    });
+  
+    return $data;
+    
+  }
+
+  private static function Document_Pagelist(){
+
+    $query = Document::query();
+
+    $data = $query->latest()->get();
+
+    $data->transform(function ($item) {
+      $item['image_url'] = !is_null($item->image )? URL::to('public/uploads/Document/'.$item->image) : default_vertical_image_url() ;
+      $item['document_url'] = !is_null($item->document )? URL::to('public/uploads/Document/'.$item->document) : default_vertical_image_url() ;
+      $item['source']    = "Document";
+      return $item;
+    });
+
+    return $data;
   }
 
   private static function Audio_Genre_Pagelist(){
@@ -23848,6 +23994,7 @@ public function TV_login(Request $request)
           $user_detail = User::create([
             'mobile' => $request->mobile_number,
             'email'  => random_int(100000, 999999) ,
+            'role'   => 'registered',
           ]);
         }
 
@@ -23927,13 +24074,15 @@ public function TV_login(Request $request)
               'otp' => $random_otp_number ,
               'otp_request_id' => $response['request_id'] ,
               'otp_through' => 'fast2sms' ,
+              'password'    => Hash::make($random_otp_number),
+              'email'       => 'No email for this id - '.$user_id,
             ]);
 
             $response = array(
               "status"     => 'true' ,
               "request_id" => $response['request_id'] ,
               "message"    => 'SMS Send Successfully' ,
-              "user_details" => User::find($user_id),
+              "user_details" => User::where('id',$user_id)->get() ,
             );
         }
 
@@ -23973,12 +24122,6 @@ public function TV_login(Request $request)
 
           $otp_status = "true";
           $message = Str::title('Otp verify successfully !!');
-
-          User::find($request->user_id)->update([
-            'otp' => null ,
-            'otp_request_id' => null ,
-            'otp_through' => null ,
-          ]);
 
         }else{
 
