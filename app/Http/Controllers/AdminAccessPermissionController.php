@@ -60,6 +60,9 @@ class AdminAccessPermissionController extends Controller
                     'Header_Side_Position_checkout'             => !empty($request->Header_Side_Position_checkout) ? 1 : 0 ,
                     'Extract_Images_checkout'                   => !empty($request->Extract_Images_checkout) ? 1 : 0 ,
                     'Page_Permission_checkout'                  => !empty($request->Page_Permission_checkout) ? 1 : 0 ,
+                    'document_category_checkout'                => !empty($request->document_category_checkout) ? 1 : 0 ,
+                    'document_upload_checkout'                  => !empty($request->document_upload_checkout) ? 1 : 0 ,
+                    'document_list_checkout'                    => !empty($request->document_list_checkout) ? 1 : 0 ,
                  ]);
             }else{
                 
@@ -75,6 +78,9 @@ class AdminAccessPermissionController extends Controller
                     'Header_Side_Position_checkout'             => !empty($request->Header_Side_Position_checkout) ? 1 : 0 ,
                     'Extract_Images_checkout'                   => !empty($request->Extract_Images_checkout) ? 1 : 0 ,
                     'Page_Permission_checkout'                  => !empty($request->Page_Permission_checkout) ? 1 : 0 ,
+                    'document_category_checkout'                => !empty($request->document_category_checkout) ? 1 : 0 ,
+                    'document_upload_checkout'                  => !empty($request->document_upload_checkout) ? 1 : 0 ,
+                    'document_list_checkout'                    => !empty($request->document_list_checkout) ? 1 : 0 ,
                 ]);
             }
 
