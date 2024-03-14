@@ -28,7 +28,6 @@ $theme = App\SiteTheme::first();
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
-    <
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
@@ -205,19 +204,19 @@ i.fa.fa-google-plus {
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
 
                             {{-- recaptcha --}}
-                            @if (Session::has('message'))
-                                <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
-                            @endif
+                    @if (Session::has('message'))
+                        <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
+                    @endif
                         
 
-                        @if(count($errors) > 0)
+                    @if(count($errors) > 0)
                         @foreach( $errors->all() as $message )
-                        <div class="alert alert-danger display-hide" id="successMessage" >
-                        <button id="successMessage" class="close" data-close="alert"></button>
-                        <span>{{ $message }}</span>
-                        </div>
+                            <div class="alert alert-danger display-hide" id="successMessage" >
+                            <button id="successMessage" class="close" data-close="alert"></button>
+                            <span>{{ $message }}</span>
+                            </div>
                         @endforeach
-                        @endif
+                    @endif
 
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">

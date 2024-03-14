@@ -1594,6 +1594,60 @@ class AdminVideosController extends Controller
             $data["slug"] = str_replace(" ", "-", $request->slug);
         }
 
+        if ($request->hasFile('image')) {
+            $tinyimage = $request->file('image');
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_video_image = 'tiny-image-' . $image_filename;
+                Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $tiny_video_image = 'tiny-image-' . $image_filename;
+                Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+            }
+            $tiny_video_image = $tiny_video_image;
+
+        }else{
+            $tiny_video_image = $video->tiny_video_image; 
+        }
+        if ($request->hasFile('player_image')) {
+
+            $tinyplayer_image = $request->file('player_image');
+
+            if (compress_image_enable() == 1) {
+                $player_image_filename = time() . '.' . compress_image_format();
+                $tiny_player_image = 'tiny-player_image-' . $image_filename;
+                Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $tiny_player_image = 'tiny-player_image-' . $image_filename;
+                Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
+
+            }
+            $tiny_player_image = $tiny_player_image;
+        }else{
+            $tiny_player_image = $video->tiny_player_image; 
+        }
+        if ($request->hasFile('video_title_image')) {
+
+            $tinyvideo_title_image = $request->file('video_title_image');
+
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+
+            }
+            $tiny_video_title_image = $tiny_video_title_image;
+
+        }else{
+            $tiny_video_title_image = $video->tiny_video_title_image; 
+        }
+
         $image = isset($data["image"]) ? $data["image"] : "";
         $trailer = isset($data["trailer"]) ? $data["trailer"] : "";
         $mp4_url2 = isset($data["video"]) ? $data["video"] : "";
@@ -2167,7 +2221,59 @@ class AdminVideosController extends Controller
         // Reels videos
         $reels_videos = $request->reels_videos;
 
-        if ($reels_videos != null) {
+        if ($request->enable_reel_conversion == 1 && $reels_videos != null) {
+            ReelsVideo::where("video_id", $video->id)->delete();
+
+            foreach ($reels_videos as $Reel_Videos) {
+                $reelvideo_name =
+                    time() . rand(1, 50) . "." . $Reel_Videos->extension();
+                $reel_videos_slug = substr(
+                    $Reel_Videos->getClientOriginalName(),
+                    0,
+                    strpos($Reel_Videos->getClientOriginalName(), ".")
+                );
+
+                $reelvideo_names = "reels" . $reelvideo_name;
+
+            
+                $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+
+                $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+                $shorts_name = 'shorts_'.$reelvideo_name; 
+                $videoPath = str_replace('\\', '/', $videoPath);
+                $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+                // Ensure the output directory exists
+                File::ensureDirectoryExists(dirname($outputPath));
+                // FFmpeg command to resize to 9:16 aspect ratio
+                $command = [
+                    'ffmpeg',
+                    '-y', // Add this option to force overwrite
+                    '-i', $videoPath,
+                    '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+                    '-c:a', 'copy',
+                    $outputPath,
+                ];
+
+                $process = new Process($command);
+
+                try {
+                    $process->mustRun();
+                    // return 'Video resized successfully!';
+                } catch (ProcessFailedException $exception) {
+                    // Error message
+                    throw new \Exception('Error resizing video: ' . $exception->getMessage());
+                }
+
+                $Reels_videos = new ReelsVideo();
+                $Reels_videos->video_id = $video->id;
+                // $Reels_videos->reels_videos = $reelvideo_name;
+                $Reels_videos->reels_videos = $shorts_name;
+                $Reels_videos->reels_videos_slug = $reel_videos_slug;
+                $Reels_videos->save();
+
+                $video->reels_thumbnail = "default.jpg";
+            }
+        }else if($reels_videos != null){
             ReelsVideo::where("video_id", $video->id)->delete();
 
             foreach ($reels_videos as $Reel_Videos) {
@@ -2184,76 +2290,6 @@ class AdminVideosController extends Controller
                     public_path("uploads/reelsVideos/shorts"),
                     $reelvideo_name
                 );
-                
-                // $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
-                // $videoPath = public_path("uploads/reelsVideos/shorts/{$reelvideo_name}");
-                // $shorts_name = 'shorts_'.$reelvideo_name; 
-                // $videoPath = str_replace('\\', '/', $videoPath);
-                // $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
-
-                // Ensure the output directory exists
-
-                // Convert Reels 
-                // File::ensureDirectoryExists(dirname($outputPath));
-
-                // // FFmpeg command to resize to 9:16 aspect ratio
-                // $command = [
-                //     'ffmpeg',
-                //     '-y', // Add this option to force overwrite
-                //     '-i', $videoPath,
-                //     '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
-                //     '-c:a', 'copy',
-                //     $outputPath,
-                // ];
-
-                // $process = new Process($command);
-
-                // try {
-                //     $process->mustRun();
-                //     // return 'Video resized successfully!';
-                // } catch (ProcessFailedException $exception) {
-                //     // Error message
-                //     throw new \Exception('Error resizing video: ' . $exception->getMessage());
-                // }
-
-            // dd('done');
-
-                // try {
-                //     $outputPath = public_path('uploads/reelsVideos/shorts/output.mp4');
-                //     if (!file_exists(dirname($outputPath))) {
-                //         mkdir(dirname($outputPath), 0755, true);
-                //     }
-                
-                //     $ffmpeg = \FFMpeg\FFMpeg::create();
-                //     $video = $ffmpeg->open(public_path('uploads/reelsVideos'.'/'.$reelvideo_name));
-                
-                //     $dimension = new Dimension(400, 720); // Adjust dimensions as needed
-                
-                //     $video->filters()->resize($dimension)->synchronize();
-                
-                //     $format = new X264('libmp3lame', 'libx264');
-                //     $format->setKiloBitrate(1000);
-                //     $video->save($format, $outputPath);
-                // } catch (\Exception $e) {
-                //     \Illuminate\Support\Facades\Log::error($e->getMessage());
-                //     dd($e->getMessage());
-                // }
-
-                // $ffmpeg = \FFMpeg\FFMpeg::create();
-                // $videos = $ffmpeg->open(
-                //     "public/uploads/reelsVideos" . "/" . $reelvideo_name
-                // );
-                // $videos
-                //     ->filters()
-                //     ->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-                // $videos->save(
-                //     new \FFMpeg\Format\Video\X264("libmp3lame"),
-                //     "public/uploads/reelsVideos" . "/" . $reelvideo_names
-                // );
-
-                // dd('done');
-
-                // unlink($reelvideo);
 
                 $Reels_videos = new ReelsVideo();
                 $Reels_videos->video_id = $video->id;
@@ -2426,6 +2462,9 @@ class AdminVideosController extends Controller
         $video->video_js_mid_advertisement_sequence_time = $request->video_js_mid_advertisement_sequence_time;
         $video->expiry_date = $request->expiry_date;
         $video->today_top_video = $request->today_top_video;
+        $video->tiny_video_image = $tiny_video_image;
+        $video->tiny_player_image = $tiny_player_image;
+        $video->tiny_video_title_image = $tiny_video_title_image;
         $video->save();
 
         if (
@@ -2782,7 +2821,6 @@ class AdminVideosController extends Controller
         
         $id = $data['video_id'];
         $video = Video::findOrFail($id);
-
         Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
 
         if (!empty($video->embed_code)) {
@@ -2824,10 +2862,56 @@ class AdminVideosController extends Controller
         $image_path = public_path() . '/uploads/images/';
 
         // Image
-// dd($data);
+        if ($request->hasFile('image')) {
+                $tinyimage = $request->file('image');
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_video_image = 'tiny-image-' . $image_filename;
+                Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $tiny_video_image = 'tiny-image-' . $image_filename;
+                Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+
+            }
+        }
+        if ($request->hasFile('player_image')) {
+
+            $tinyplayer_image = $request->file('player_image');
+
+            if (compress_image_enable() == 1) {
+                $player_image_filename = time() . '.' . compress_image_format();
+                $tiny_player_image = 'tiny-player_image-' . $image_filename;
+                Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $tiny_player_image = 'tiny-player_image-' . $image_filename;
+                Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
+
+            }
+        }
+        if ($request->hasFile('video_title_image')) {
+
+            $tinyvideo_title_image = $request->file('video_title_image');
+
+            if (compress_image_enable() == 1) {
+                $image_filename = time() . '.' . compress_image_format();
+                $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+            } else {
+                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+
+            }
+        }
+
+        $data["tiny_video_image"] = $tiny_video_image;
+        $data["tiny_player_image"] = $tiny_player_image;
+        $data["tiny_video_title_image"] = $tiny_video_title_image;
+
         if ($request->hasFile('image')) {
             $file = $request->image;
-
             if (compress_image_enable() == 1) {
                 $image_filename = time() . '.' . compress_image_format();
                 $video_image = 'pc-image-' . $image_filename;
@@ -3251,13 +3335,21 @@ class AdminVideosController extends Controller
 
         // Reels videos
         $reels_videos = $request->reels_videos;
+        if ($request->enable_reel_conversion == 1 && $reels_videos != null) {
+            ReelsVideo::where("video_id", $video->id)->delete();
 
-        if ($reels_videos != null) {
             foreach ($reels_videos as $Reel_Videos) {
-                $reelvideo_name = time() . rand(1, 50) . '.' . $Reel_Videos->extension();
-                $reel_videos_slug = substr($Reel_Videos->getClientOriginalName(), 0, strpos($Reel_Videos->getClientOriginalName(), '.'));
-                $reelvideo_names = 'reels' . $reelvideo_name;
+                $reelvideo_name =
+                    time() . rand(1, 50) . "." . $Reel_Videos->extension();
+                $reel_videos_slug = substr(
+                    $Reel_Videos->getClientOriginalName(),
+                    0,
+                    strpos($Reel_Videos->getClientOriginalName(), ".")
+                );
 
+                $reelvideo_names = "reels" . $reelvideo_name;
+
+            
                 $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
 
                 $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
@@ -3275,32 +3367,103 @@ class AdminVideosController extends Controller
                     '-c:a', 'copy',
                     $outputPath,
                 ];
+
                 $process = new Process($command);
 
                 try {
                     $process->mustRun();
                     // return 'Video resized successfully!';
                 } catch (ProcessFailedException $exception) {
+                    // Error message
                     throw new \Exception('Error resizing video: ' . $exception->getMessage());
                 }
 
-
-                $ffmpeg = \FFMpeg\FFMpeg::create();
-                $videos = $ffmpeg->open('public/uploads/reelsVideos' . '/' . $reelvideo_name);
-                $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-                $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos' . '/' . $reelvideo_names);
-
-                unlink($reelvideo);
-
                 $Reels_videos = new ReelsVideo();
                 $Reels_videos->video_id = $video->id;
+                // $Reels_videos->reels_videos = $reelvideo_name;
                 $Reels_videos->reels_videos = $shorts_name;
                 $Reels_videos->reels_videos_slug = $reel_videos_slug;
                 $Reels_videos->save();
 
-                $video->reels_thumbnail = default_vertical_image();
+                $video->reels_thumbnail = "default.jpg";
+            }
+        }else if($reels_videos != null){
+            ReelsVideo::where("video_id", $video->id)->delete();
+
+            foreach ($reels_videos as $Reel_Videos) {
+                $reelvideo_name =
+                    time() . rand(1, 50) . "." . $Reel_Videos->extension();
+                $reel_videos_slug = substr(
+                    $Reel_Videos->getClientOriginalName(),
+                    0,
+                    strpos($Reel_Videos->getClientOriginalName(), ".")
+                );
+
+                $reelvideo_names = "reels" . $reelvideo_name;
+                $reelvideo = $Reel_Videos->move(
+                    public_path("uploads/reelsVideos/shorts"),
+                    $reelvideo_name
+                );
+
+                $Reels_videos = new ReelsVideo();
+                $Reels_videos->video_id = $video->id;
+                $Reels_videos->reels_videos = $reelvideo_name;
+                // $Reels_videos->reels_videos = $shorts_name;
+                $Reels_videos->reels_videos_slug = $reel_videos_slug;
+                $Reels_videos->save();
+
+                $video->reels_thumbnail = "default.jpg";
             }
         }
+        // if ($reels_videos != null) {
+        //     foreach ($reels_videos as $Reel_Videos) {
+        //         $reelvideo_name = time() . rand(1, 50) . '.' . $Reel_Videos->extension();
+        //         $reel_videos_slug = substr($Reel_Videos->getClientOriginalName(), 0, strpos($Reel_Videos->getClientOriginalName(), '.'));
+        //         $reelvideo_names = 'reels' . $reelvideo_name;
+
+        //         $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+
+        //         $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+        //         $shorts_name = 'shorts_'.$reelvideo_name; 
+        //         $videoPath = str_replace('\\', '/', $videoPath);
+        //         $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+        //         // Ensure the output directory exists
+        //         File::ensureDirectoryExists(dirname($outputPath));
+        //         // FFmpeg command to resize to 9:16 aspect ratio
+        //         $command = [
+        //             'ffmpeg',
+        //             '-y', // Add this option to force overwrite
+        //             '-i', $videoPath,
+        //             '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+        //             '-c:a', 'copy',
+        //             $outputPath,
+        //         ];
+        //         $process = new Process($command);
+
+        //         try {
+        //             $process->mustRun();
+        //             // return 'Video resized successfully!';
+        //         } catch (ProcessFailedException $exception) {
+        //             throw new \Exception('Error resizing video: ' . $exception->getMessage());
+        //         }
+
+
+        //         $ffmpeg = \FFMpeg\FFMpeg::create();
+        //         $videos = $ffmpeg->open('public/uploads/reelsVideos' . '/' . $reelvideo_name);
+        //         $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+        //         $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos' . '/' . $reelvideo_names);
+
+        //         unlink($reelvideo);
+
+        //         $Reels_videos = new ReelsVideo();
+        //         $Reels_videos->video_id = $video->id;
+        //         $Reels_videos->reels_videos = $shorts_name;
+        //         $Reels_videos->reels_videos_slug = $reel_videos_slug;
+        //         $Reels_videos->save();
+
+        //         $video->reels_thumbnail = default_vertical_image();
+        //     }
+        // }
 
         // Reels Thumbnail
 
@@ -3359,7 +3522,9 @@ class AdminVideosController extends Controller
         $video->player_image = $data["player_image"] ;
         $video->video_tv_image = $data["video_tv_image"] ;
         $video->today_top_video = !empty($data["today_top_video"]) ? $data["today_top_video"] : 0 ;
-
+        $video->tiny_video_image = $data["tiny_video_image"] ;
+        $video->tiny_player_image = $data["tiny_player_image"] ;
+        $video->tiny_video_title_image = $data["tiny_video_title_image"] ;
 
         // Ads videos
         if (!empty($data['ads_tag_url_id']) == null) {
