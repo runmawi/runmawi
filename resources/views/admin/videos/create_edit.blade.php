@@ -652,6 +652,16 @@ border-radius: 0px 4px 4px 0px;
                </div> 
                   <div class="col-sm-6 form-group">
                      <label class="m-0">Reels videos: <small>( Upload the 1 min Videos )</small></label>
+                        <div class="d-flex justify-content-around align-items-center" style="width:60%;">
+                           <div style="color:red;">Decode Reels </div>
+                           <div class="mt-1">
+                                 <label class="switch">
+                                    <input name="enable_reel_conversion"  type="checkbox"  >
+                                    <span class="slider round"></span>
+                                 </label>
+                           </div>
+                           <div style="color:green;">Encode Reels </div>
+                        </div>
                      <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple >
 
                      @if(!empty($Reels_videos) && count($Reels_videos) > 0 )
@@ -673,8 +683,7 @@ border-radius: 0px 4px 4px 0px;
                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->reels_thumbnail }}" width="200" height="200"  class="" />
                         @endif
                   </div>
-
-               </div>   
+                    </div>
 
             
             <div class="row">

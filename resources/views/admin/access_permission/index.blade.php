@@ -237,7 +237,51 @@ border-radius: 0px 4px 4px 0px;
                                     </div>
                                 </div>
                             </div>
-                            
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">Document Category Checkout </label></div>
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                            <label class="switch mt-2">
+                                                <input name="document_category_checkout" type="checkbox"
+                                                @if( !empty($AdminAccessPermission) && $AdminAccessPermission->document_category_checkout == 1) checked  @endif>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">Document Upload Checkout </label></div>
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                            <label class="switch mt-2">
+                                                <input name="document_upload_checkout" type="checkbox"
+                                                @if( !empty($AdminAccessPermission) && $AdminAccessPermission->document_upload_checkout == 1) checked  @endif>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">Document List Checkout </label></div>
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                            <label class="switch mt-2">
+                                                <input name="document_list_checkout" type="checkbox"
+                                                @if( !empty($AdminAccessPermission) && $AdminAccessPermission->document_list_checkout == 1) checked  @endif>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
