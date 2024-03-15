@@ -48,6 +48,24 @@
                                                 <input type="text"  class="form-control" name="slug" id="slug" placeholder=" Landing Page Slug" value="">
                                              </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> Meta Title :</label>
+                                                <input type="text"  class="form-control" name="meta_title" id="meta_title" placeholder=" Landing Page Meta Title" value="">
+                                             </div>
+    
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> Meta Keywords :</label>
+                                                <input type="text"  class="form-control" name="meta_keywords" id="meta_keywords" placeholder=" Landing Page Meta Keywords" value="">
+                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 form-group" >
+                                                <label class="m-0"> Meta Description :</label>
+                                                    <textarea class="form-control mt-2" name="meta_description" id="meta-description-ckeditors">
+                                                    </textarea>
+                                            </div>
+                                        </div>
 
                                                             {{-- Custom CSS  --}}
                                         <div class="row">
@@ -202,6 +220,11 @@
 </div>
 
 <script>
+
+    CKEDITOR.replace( 'meta-description-ckeditor', {
+        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+        filebrowserUploadMethod: 'form'
+    });
         var i = 0;
 
         $(".section_1").click(function(){

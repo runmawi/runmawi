@@ -38,8 +38,11 @@ class LandingpageController extends Controller
             'header'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('header')->first(),
             'SeriesGenre' => SeriesGenre::orderBy('order')->get(),
             'SeriesCategory'    => SeriesGenre::find($first_videos_categories_id) != null ? SeriesGenre::find($first_videos_categories_id)->specific_category_series : array(),
-        ];
+            'meta_title'      => AdminLandingPage::where('status',1)->pluck('meta_title')->first(),
+            'meta_keywords'      => AdminLandingPage::where('status',1)->pluck('meta_keywords')->first(),
+            'meta_description'      => AdminLandingPage::where('status',1)->pluck('meta_description')->first(),
 
+        ];
         return Theme::view('landing.index', $data);
    }
 

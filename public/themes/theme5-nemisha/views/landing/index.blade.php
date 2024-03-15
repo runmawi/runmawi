@@ -15,11 +15,28 @@
     <meta charset="UTF-8">
     <?php $settings = App\Setting::first(); ?>
 
-    <title><?php echo $uppercase . ' | ' . $settings->website_name; ?></title>
+    <title><?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_description   ;} ?></title>
 
     <meta name="description" content="<?php echo $settings->website_description; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>" />
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_description   ;} ?>">
+    <meta itemprop="description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_name   ;} ?>">
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_name   ;} ?>">
+    <meta name="twitter:description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_name   ;} ?>" />
+    <meta property="og:description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>" />
+
+    <?php if(!empty($settings->website_name)){ ?><meta property="og:site_name" content="<?php echo $settings->website_name ;?>" /><?php } ?>
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

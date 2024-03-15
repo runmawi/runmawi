@@ -1403,7 +1403,7 @@
                                                     <div class="form-group position-relative">
                                                         <input type="text" name="search"
                                                             class="text search-input font-size-12 searches"
-                                                            placeholder="Type here to Search Videos" />
+                                                            placeholder="Type Here" />
                                                         <i class="search-link ri-search-line"></i>
 
                                                         <?php include 'public/themes/default/partials/Search_content.php'; ?>
@@ -1682,7 +1682,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">My Wishlist</h6>
+                                                                    <h6 class="mb-0 ">Wish List</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -1704,7 +1704,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Logout</h6>
+                                                                    <h6 class="mb-0 ">Sign Out</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -1853,7 +1853,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">My Wishlist</h6>
+                                                                    <h6 class="mb-0 ">Wish List</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -1978,7 +1978,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Logout</h6>
+                                                                    <h6 class="mb-0 ">Sign Out</h6>
                                                                 </div>
                                                             </div>
                                                         </a>

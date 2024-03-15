@@ -19,17 +19,23 @@
     }
 
     .favorites-contens {
-        display: grid !important;
+        display: flex !important;
+        flex-direction:column;
         justify-content: center;
+        align-items:center;
     }
 
     .reels-video {
         margin: 10px;
         position: relative;
-        width: 20%;
-        he
+        width: 30%;
     }
-
+    .plyr__video-wrapper{
+        border-radius:15px;
+    }
+    .plyr--video{
+        border-radius: 15px;
+    }
     .video-controls {
         position: absolute;
         bottom: 10px;
