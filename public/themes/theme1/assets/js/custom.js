@@ -158,12 +158,14 @@ Index Of Script
 		jQuery('.favorites-slider').slick({
 			dots: false,
 			arrows: true,
-			infinite: false,
+			autoplay:true,
+			infinite: true,
 			speed: 300,
+			centerMode:false,
 			appendDots: '.slider-dots',
 
 	
-		slidesToScroll: 5,
+		slidesToScroll: 4,
 		slidesToShow: 7,
 		accessibility: true,
 		variableWidth: false,
