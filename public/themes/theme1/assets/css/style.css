@@ -2443,3 +2443,6 @@ height: 29px;
 .Refine{
     margin: 10px;
 }
+ul.favorites-slider.list-inline.row.p-0.mb-0.slick-initialized.slick-slider {
+    overflow: hidden;
+}
