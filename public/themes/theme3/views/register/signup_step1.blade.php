@@ -159,8 +159,8 @@ i.fa.fa-google-plus {
         color: #fff !important;
     }
     .error {
-    color: brown;
-    font-family: 'remixicon';
+    color: #d30abe;
+    font-family: 'Sen', sans-serif !important;
     }
     #fileLabel{
         position: absolute;
