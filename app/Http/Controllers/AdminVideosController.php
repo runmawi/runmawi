@@ -2874,6 +2874,9 @@ class AdminVideosController extends Controller
                 Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
 
             }
+        }else{
+            $tiny_video_image = null;
+
         }
         if ($request->hasFile('player_image')) {
 
@@ -2889,6 +2892,9 @@ class AdminVideosController extends Controller
                 Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
 
             }
+        }else{
+            $tiny_player_image = null;
+
         }
         if ($request->hasFile('video_title_image')) {
 
@@ -2904,6 +2910,9 @@ class AdminVideosController extends Controller
                 Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
 
             }
+        }else{
+            $tiny_video_title_image = null;
+
         }
 
         $data["tiny_video_image"] = $tiny_video_image;
