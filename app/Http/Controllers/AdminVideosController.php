@@ -1601,7 +1601,7 @@ class AdminVideosController extends Controller
                 $tiny_video_image = 'tiny-image-' . $image_filename;
                 Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
             } else {
-                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $image_filename = time() . '.' . $tinyimage->getClientOriginalExtension();
                 $tiny_video_image = 'tiny-image-' . $image_filename;
                 Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
             }
@@ -1619,7 +1619,7 @@ class AdminVideosController extends Controller
                 $tiny_player_image = 'tiny-player_image-' . $image_filename;
                 Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
             } else {
-                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $image_filename = time() . '.' . $tinyplayer_image->getClientOriginalExtension();
                 $tiny_player_image = 'tiny-player_image-' . $image_filename;
                 Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
 
@@ -1637,7 +1637,7 @@ class AdminVideosController extends Controller
                 $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
                 Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
             } else {
-                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $image_filename = time() . '.' . $tinyvideo_title_image->getClientOriginalExtension();
                 $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
                 Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
 
@@ -2869,7 +2869,7 @@ class AdminVideosController extends Controller
                 $tiny_video_image = 'tiny-image-' . $image_filename;
                 Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
             } else {
-                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $image_filename = time() . '.' . $tinyimage->getClientOriginalExtension();
                 $tiny_video_image = 'tiny-image-' . $image_filename;
                 Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
 
@@ -2884,7 +2884,7 @@ class AdminVideosController extends Controller
                 $tiny_player_image = 'tiny-player_image-' . $image_filename;
                 Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
             } else {
-                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $image_filename = time() . '.' . $tinyplayer_image->getClientOriginalExtension();
                 $tiny_player_image = 'tiny-player_image-' . $image_filename;
                 Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
 
@@ -2899,7 +2899,7 @@ class AdminVideosController extends Controller
                 $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
                 Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
             } else {
-                $image_filename = time() . '.' . $file->getClientOriginalExtension();
+                $image_filename = time() . '.' . $tinyvideo_title_image->getClientOriginalExtension();
                 $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
                 Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
 
