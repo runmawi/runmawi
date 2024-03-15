@@ -43,7 +43,6 @@ class LandingpageController extends Controller
             'meta_description'      => AdminLandingPage::where('status',1)->pluck('meta_description')->first(),
 
         ];
-
         return Theme::view('landing.index', $data);
    }
 
