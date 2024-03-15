@@ -160,7 +160,7 @@ Index Of Script
 			arrows: true,
 			autoplay:true,
 			infinite: true,
-			speed: 300,
+			speed: 800,
 			centerMode:false,
 			appendDots: '.slider-dots',
 
