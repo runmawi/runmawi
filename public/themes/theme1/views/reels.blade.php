@@ -53,6 +53,9 @@
         cursor: pointer;
         color: #fff; /* Add color for the icons */
     }
+    .vid-tile{color: #fff !important;}
+    /* body.light-theme .vid-tile{color: <?php echo GetLightText(); ?> !important;}
+    body.dark-theme .vid-tile{color: <?php echo GetDarkText(); ?> !important;} */
 </style>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
 </head>
@@ -65,6 +68,10 @@
             <div class="video-controls">
                 <!-- <span class="share-button" onclick="shareVideo('{{ URL::to('public/uploads/reelsVideos/shorts') . '/' . $video->reels_videos }}')">&#128279;</span> -->
             </div>
+        </div>
+        <div class="d-flex justify-content-between" style="width:28%;">
+            <p class="vid-tile"><?php echo (strlen($video->title) > 15) ? substr($video->title, 0, 80) . '...' : $video->title; ?></p>
+            <a class="vid-tile" href="<?php echo URL::to('/') ?><?= '/category/videos/' . $video->slug ?>">Go to video</a>
         </div>
     @endforeach
 </div>
