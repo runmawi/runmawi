@@ -3,7 +3,7 @@
 </div>
 
     <div class="favorites-contens">
-        <ul class="favorites-slider list-inline  row p-0 mb-0">
+        <ul class="favorites-slider list-inline p-0 mb-0">
             <?php  
                 $ThumbnailSetting = App\ThumbnailSetting::first();
                 foreach($season as $key => $seasons):
@@ -15,32 +15,24 @@
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="img-fluid" alt="">
                                         </div>
+
                                         <div class="block-description">
-                                            <h6> <?php echo strlen($episodes->title) > 15 ? substr($episodes->title, 0, 15) . '...' : $episodes->title; ?> </h6>
-                                            <div class="movie-time d-flex align-items-center my-2">
-
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                        <?php echo $episodes->age_restrict.' '.'+' ?>
-                                                    </div>
-
-                                                    <span class="text-white">
-                                                        <?= gmdate('H:i:s', $episodes->duration); ?>
-                                                    </span>
-                                            </div>
+                                                
 
                                             <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                    <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                    Play Now
-                                                    </span>
+                                                <a class="" href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
+                                                    <div class="playbtn" style="gap:5px">    
+                                                        <span class="text pr-2"> <?php echo('Play') ?> </span>
+                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                            <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                            <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                        </svg>
+                                                    </div>
+                                                </a>
                                             </div>
                                         </div>
-                                        <div class="block-social-info">
-                                            <ul class="list-inline p-0 m-0 music-play-lists">
-                                                    <li><span><i class="ri-heart-fill"></i></span></li>
-                                                    <li><span><i class="ri-add-line"></i></span></li>
-                                            </ul>
-                                        </div>
+                                        
+                                        
                                     </div>
                                 </a>
                             </li>

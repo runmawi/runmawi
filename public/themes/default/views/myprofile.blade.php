@@ -42,7 +42,6 @@ $settings = App\Setting::first();
 
   .name{
      font-size: larger;
-     font-family: auto;
      color: white;
      text-align: center;
   }
@@ -208,9 +207,9 @@ $settings = App\Setting::first();
          <div class="sign-user_card">
         <div class="row align-items-center">
             <div class="col-lg-4 mb-3 bdr">
-                  <a class="" href="{{ URL::to('/home') }}"><button class='fas fa-arrow-alt-circle-left btn bd btn-action back'  style=''> {{ (__('Home')) }}</button></a>
+                  <a class="" href="{{ URL::to('/home') }}"><button class=' btn bd btn-action back'  style=''> <i class="fas fa-arrow-alt-circle-left"></i> {{ (__('Home')) }}</button></a>
                   <br><br>
-                <h3>{{ (__('Account Settings')) }}</h3>
+                <h4>{{ (__('Account Settings')) }}</h4>
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
@@ -221,8 +220,12 @@ $settings = App\Setting::first();
                         <li><a class="showSingle" target="5">{{ (__('Preference for videos')) }}</a></li>
                         <li><a class="showSingle" target="6">{{ (__('Profile')) }}</a></li>
                         <li><a class="showSingle" target="7">{{ (__('Recently Viewed Items')) }}</a></li>
+                        @if(Tv_Activation_Code()== 1)
                         <li><a class="showSingle" target="8">{{ (__('Tv Activation Code')) }}</a></li>
+                        @endif
+                        @if(Tv_Logged_User_List()== 1)
                         <li><a class="showSingle" target="9">{{ (__('Tv Logged User List')) }}</a></li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -240,15 +243,15 @@ $settings = App\Setting::first();
                 <div class="" id="personal_det">
                 <div class="" >
                     <div class="d-flex align-items-baseline justify-content-between">
-                    <div><h5 class="mb-2 pb-3 ">{{ __('Personal Details') }}</h5></div>
-                    <div><a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a>
+                    <div><h4 class="mb-2 pb-3 ">{{ __('Personal Details') }}</h4></div>
+                    <div><a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary text-white"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a>
                         </div></div>
                     </div>
                     <div class="a-border"></div>
                    <div class="a-border"></div>
                       <div class="row jusitfy-content-center">
                         <div class="col-md-3 mt-3">
-                            <h5>{{ __('Account Details') }}</h5>
+                            <h4>{{ __('Account Details') }}</h4>
                           </div>
                         <div class="col-md-9">
                              <div class="row align-items-center justify-content-end">
@@ -301,7 +304,7 @@ $settings = App\Setting::first();
                           <div class="a-border"></div>
                          
                           <div class="mt-3 row align-items-center">
-                              <div class="col-md-3"> <h5 class="card-title mb-2">{{ __('Update Profile') }}</h5></div>
+                              <div class="col-md-3"> <h4 class="card-title mb-2">{{ __('Update Profile:') }}</h4></div>
                               <div class="col-md-9"> 
                     <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                     @csrf
@@ -309,11 +312,12 @@ $settings = App\Setting::first();
                             <div class="col-sm-6">
                                 <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                     <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
+                    <span style="color:red" id="Error_image">Image is Requried*</span>
                     <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
                             </div>
                             <div class="col-sm-6">
                                  <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;">{{ __('Verify Profile') }} </button>
-                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
+                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" id = "profileImageUpdate" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
                             </div>
                         </div>
                                   
@@ -322,6 +326,19 @@ $settings = App\Setting::first();
                    
                       
                 </div>
+
+                <script>
+                  $('#Error_image').hide();
+                  $("#profileImageUpdate").click(function(){
+                     if($('#avatar').val() == ""){
+                           $('#Error_image').show();
+                           return false; // Prevent form submission
+                     }else{
+                        $('#Error_image').hide();
+                     }
+                  });
+
+                </script>
                     <!-- Add New Modal -->
 <div class="modal fade" id="add-profile">
   <div class="modal-dialog">
@@ -407,28 +424,38 @@ $settings = App\Setting::first();
                          
                          <!-- -->
                   <div class="row align-items-center justify-content-center mb-3 mt-3">
-                     <div class=" text-center col-sm-12 ">
+                     <!-- <div class=" text-center col-sm-12 ">
                         <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('View Transaction Details') }}</a>
-                     </div>
+                     </div> -->
 
                         
-                        <div class="col-sm-4 text-center">
+                        <div class="row text-center">
                            @if(Auth::user()->role == "subscriber")
-                              <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >{{ __('Upgrade Plan') }} </a>        
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
+                           </div>
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn text-white" >{{ __('Upgrade Plan') }} </a>        
+                           </div>
                            
                            @elseif( Auth::user()->role == "admin")
-
+                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
                            @else
-                                 <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" >{{ __('Become Subscriber') }} </a>
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
+                           </div>
+                           <div class="col-lg-6 col-md-6 col-12">
+                              <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('Become Subscriber') }} </a>
+                           </div>
                            @endif
                         </div>
 
                         @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
-                              <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn" >{{ __('Cancel Membership') }}</a>
+                              <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn text-white" >{{ __('Cancel Membership') }}</a>
                         @endif
 
                         @if ( $payment_package != null  && $payment_package->payment_gateway == "Paystack")
-                              <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius" > {{ __('Cancel Membership') }} </a>
+                              <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius text-white" > {{ __('Cancel Membership') }} </a>
                         @endif
 
                     </div>
@@ -493,41 +520,46 @@ $settings = App\Setting::first();
                   </form>		
               </div>
                 </div>
-                <div class="targetDiv" id="div6"><div class=" mb-3">
-           <h4 class="card-title mb-0 manage">{{ __('Profile') }} </h4>
-              <div class="col-md-12 profile_image mt-3 p-0">                  
-                  @forelse  ( $profile_details as $profile )
+               <div class="targetDiv" id="div6">
+                  <div class=" mb-3">
+                     <div class="d-flex justify-content-between">
+                        <h4 class="card-title mb-0 manage">{{ __('Profile') }}</h4>
+                        <a class="btn" style="color: white !important; " href="{{ route('Multi-profile-create') }}" > <i class="fa fa-plus-circle fa-100x "></i> Add Profile</a> 
+                     </div>
+                     <div class="col-md-12 profile_image mt-3 p-0">                  
+                        @forelse  ( $profile_details as $profile )
 
-                    <div class="">
-                        <div>
-                         <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
+                           <div class="">
+                              <div>
+                                 <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
 
-                        <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                                 <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                              </div>
+                              <div class=" text-center text-white">
+                                 
+                                 <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
+
+                                 @if($Multiuser == null)
+                                    <a class="ml-2"  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
+                                       <i class="fa fa-trash"></i>
+                                    </a> 
+                                 @endif
+
+                              </div>
+                           </div> 
+                        @empty
+                           <div class="col-sm-6">  
+                              <p class="name">{{ __('No Profile') }}  </p>  
+                           </div>
+                        @endforelse
+
+                        <div class="col-md-6">
                         </div>
-                        <div class=" text-center text-white">
-                            
-                           <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
 
-                           @if($Multiuser == null)
-                              <a class="ml-2"  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
-                                 <i class="fa fa-trash"></i>
-                              </a> 
-                           @endif
-
-                        </div>
-                    </div> 
-                  @empty
-                    <div class="col-sm-6">  
-                        <p class="name">{{ __('No Profile') }}  </p>  </div>
-                  @endforelse
-
-                  <div class="col-md-6" style="margin-top: 63px;">
-                     <li> <a class="fa fa-plus-circle fa-100x" style="color: white !important; " href="{{ route('Multi-profile-create') }}" ></a> </li>
-                  </div>
-
-              </div>    
-          </div> </div>
-                <div class="targetDiv" id="div7">
+                     </div>    
+                  </div> 
+               </div>
+               <div class="targetDiv" id="div7">
                     <div class="iq-card" id="recentviews" style="background-color:#191919;">
                  <div class="iq-card-header d-flex justify-content-between" >
                     <div class="iq-header-title">

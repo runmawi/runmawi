@@ -44,6 +44,26 @@
                                              </div>
                                         </div>
 
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> Meta Title :</label>
+                                                <input type="text"  class="form-control" name="meta_title" id="meta_title" placeholder=" Landing Page Meta Title" value="{{ $meta_title }}">
+                                             </div>
+    
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> Meta Keywords :</label>
+                                                <input type="text"  class="form-control" name="meta_keywords" id="meta_keywords" placeholder=" Landing Page Meta Keywords" value="{{ $meta_keywords }}">
+                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 form-group" >
+                                                <label class="m-0"> Meta Description :</label>
+                                                    <textarea  rows="5" class="form-control mt-2" name="meta_description" id="meta-description-ckeditors">
+                                                    {{ $meta_description }}
+                                                    </textarea>
+                                            </div>
+                                        </div>
+
                                                 {{-- Custom CSS  --}}
                                         <div class="row">
                                             

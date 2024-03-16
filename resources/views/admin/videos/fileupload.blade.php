@@ -849,6 +849,16 @@ border-radius: 0px 4px 4px 0px;
                               </div>
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">Reels Videos: </label>
+                                 <div class="d-flex justify-content-around align-items-center" style="width:60%;">
+                                    <div style="color:red;">Decode Reels </div>
+                                    <div class="mt-1">
+                                          <label class="switch">
+                                             <input name="enable_reel_conversion"  type="checkbox"  >
+                                             <span class="slider round"></span>
+                                          </label>
+                                    </div>
+                                    <div style="color:green;">Encode Reels </div>
+                                 </div>
                                  <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
                               </div>
 

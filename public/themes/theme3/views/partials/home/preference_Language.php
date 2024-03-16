@@ -2,7 +2,7 @@
         <h4 class="main-title"><a href="">Preference By language </a></h4>                      
 </div>
     <div class="favorites-contens">
-        <ul class="favorites-slider list-inline  row p-0 mb-0">
+        <ul class="favorites-slider list-inline p-0 mb-0">
                 <?php  if(isset($preference_Language)) :
                     foreach($preference_Language as $preference_Languages): 
                 ?>

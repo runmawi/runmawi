@@ -15,11 +15,28 @@
     <meta charset="UTF-8">
     <?php $settings = App\Setting::first(); ?>
 
-    <title><?php echo $uppercase . ' | ' . $settings->website_name; ?></title>
+    <title><?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_description   ;} ?></title>
 
     <meta name="description" content="<?php echo $settings->website_description; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>" />
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_description   ;} ?>">
+    <meta itemprop="description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_name   ;} ?>">
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_name   ;} ?>">
+    <meta name="twitter:description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="<?php if(!empty($meta_title)){ echo $meta_title  ; }else{ echo $settings->website_name   ;} ?>" />
+    <meta property="og:description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo $settings->website_description   ;} ?>" />
+
+    <?php if(!empty($settings->website_name)){ ?><meta property="og:site_name" content="<?php echo $settings->website_name ;?>" /><?php } ?>
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,19 +47,19 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> -->
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="stylesheet">
 
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" />
-    <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" />
+    <!-- <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" /> -->
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" />
 
     <!-- Style -->
 
 
     <!-- Responsive -->
-    <link rel="stylesheet" href="assets/css/responsive.css" />
+    <link rel="stylesheet" href="<?php echo URL::to('assets/css/responsive.css'); ?>" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.3/plyr.css" />
 
 
@@ -1814,7 +1831,7 @@
 
     </section>
 
-    <section style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+    <section /*style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>');*/ no-repeat scroll 0 0; background-size: cover;">
         @section('content')
 
             <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
@@ -1829,7 +1846,7 @@
         </section>
 
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+        /* <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> */
         <script>
             function toggleMute() {
                 var button = document.getElementById("MuteButton")

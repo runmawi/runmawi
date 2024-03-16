@@ -35,6 +35,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('video_chat', 'VideoChatController@index');
     Route::post('auth/video_chat', 'VideoChatController@auth');
   });
+
+  Route::get('/Document-List', 'HomeController@DocumentList');    
+  Route::get('/document/category/{slug}', 'HomeController@DocumentCategoryList');    
+
 //   Route::get('/MusicAudioPlayer', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
     Route::get('admin/video/combine-video', 'AdminVideosController@combinevideo');
 
@@ -1132,6 +1136,25 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('advertisement/ads-banners', 'AdminAdvertiserController@ads_banners')->name('admin.ads_banners');
     Route::post('advertisement/ads-banners-update', 'AdminAdvertiserController@ads_banners_update')->name('admin.ads_banners_update');
 
+
+    // Admin Series Genre
+        Route::get('/document/genre', 'AdminDocumentGenreController@index');
+        Route::Post('/document/genre/store', 'AdminDocumentGenreController@Document_Store');
+        Route::get('/document/genre/edit/{id}', 'AdminDocumentGenreController@Document_Edit');
+        Route::post('/document/genre/update', 'AdminDocumentGenreController@Document_Update');
+        Route::get('/document/genre/delete/{id}', 'AdminDocumentGenreController@Document_Delete');
+        Route::Post('/document/genre/order', 'AdminDocumentGenreController@Document_Order');
+        Route::post('/document/genre/active', 'AdminDocumentGenreController@Document_Active');
+    
+        
+        // Admin Series Genre
+            Route::get('/document/list', 'AdminDocumentController@List');
+            Route::get('/document/upload', 'AdminDocumentController@index');
+            Route::Post('/document/store', 'AdminDocumentController@store');
+            Route::get('/document/edit/{id}', 'AdminDocumentController@Edit');
+            Route::post('/document/update', 'AdminDocumentController@Update');
+            Route::get('/document/delete/{id}', 'AdminDocumentController@Delete');    
+            
 
     /*Ads Management ends*/
 
