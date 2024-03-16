@@ -314,6 +314,15 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('/sendOtp', 'HomeController@SendOTP');
     Route::post('/verifyOtp', 'HomeController@verifyOtp');
     Route::post('/directVerify', 'SignupController@directVerify');
+
+    // OTP (March 2024)
+    Route::get('/login-otp', 'OTPController@OTP_index')->name('auth.otp.index');
+    Route::get('/verify-mobile-number', 'OTPController@verify_mobile_number')->name('auth.otp.verify_mobile_number');
+    Route::post('/sending-otp', 'OTPController@Sending_OTP')->name('auth.otp.sending-otp');
+    Route::get('/verify-otp', 'OTPController@verify_OTP')->name('auth.otp.verify-otp');
+    Route::post('/otp_verification', 'OTPController@otp_verification')->name('auth.otp.otp_verification');
+    Route::get('/check-mobile-exist', 'OTPController@check_mobile_exist')->name('auth.otp.check-mobile-exist');
+
     Route::get('/signup', 'SignupController@createStep1')->name('signup');
     Route::post('/SignupMobile_val', 'SignupController@SignupMobile_val')->name('SignupMobile_val');
 
