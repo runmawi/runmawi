@@ -270,11 +270,9 @@ if(!empty($request_url)){
   <input type="hidden" id="hls" name="hls" value="<?php echo $hls; ?>">
 
     <div id="subscribers_only" style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-      <h4 class="text-center"><?= $video->title; ?></h4>
+      <h4 class="text-center"><?= $video->title; ?></h4><br>
 
-      <p class="text-center text-white col-lg-8" style="margin:0 auto";>
-         <?= $video->description; ?>
-      </p> <br>
+      <h6 class="text-center"><?= html_entity_decode($video->description); ?></h6>
 
       <h2>
         <?php
