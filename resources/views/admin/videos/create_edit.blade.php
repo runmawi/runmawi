@@ -468,36 +468,36 @@ border-radius: 0px 4px 4px 0px;
                </div>
                 <div class="row">
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Skip Intro Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif">
-                        <span><p id="error_skip_intro_time" style="color:red;">* Fill Skip Intro Time </p></span>
+                        <label class="m-0">Skip Intro Time <small>(Duration Time In (HH : MM : SS))</small></label>
+                        <input type="text" class="form-control" id="skip_intro" name="skip_intro" value="@if(!empty($video->skip_intro)){{ $video->skip_intro }}@endif" placeholder="HH:MM:SS">
+                        <span><p id="error_skip_intro_time" style="color:red !important;">* Fill Skip Intro Time </p></span>
                      </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Intro Start Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" >
-                        <span><p id="error_intro_start_time" style="color:red;">* Fill Intro Start Time </p></span>
+                        <label class="m-0">Intro Start Time <small>(Duration Time In (HH : MM : SS))</small></label>
+                        <input type="text"  class="form-control without" id="intro_start_time" name="intro_start_time" value="@if(!empty($video->intro_start_time)){{ $video->intro_start_time }}@endif" placeholder="HH:MM:SS" >
+                        <span><p id="error_intro_start_time" style="color:red !important;">* Fill Intro Start Time </p></span>
                     </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Intro End Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" >
-                        <span><p id="error_intro_end_time" style="color:red;">* Fill Intro End Time </p></span>
+                        <label class="m-0">Intro End Time <small>(Duration Time In (HH : MM : SS))</small></label>
+                        <input type="text"  class="form-control without" id="intro_end_time" name="intro_end_time" value="@if(!empty($video->intro_end_time)){{ $video->intro_end_time }}@endif" placeholder="HH:MM:SS">
+                        <span><p id="error_intro_end_time" style="color:red !important; ">* Fill Intro End Time </p></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Skip Recap Time <small>(Please Give In Seconds)</small></label> 
-                        <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif">
-                        <span><p id="error_skip_recap_time" style="color:red;">* Fill Skip Recap Time </p></span>
+                        <label class="m-0"> Recap Time <small>(Duration Time In (HH : MM : SS))</small></label> <br>
+                        <span> <small> Recap Time Always Lesser than video duration </small> </span>
+                        <input type="text" class="form-control" id="skip_recap" name="skip_recap" value="@if(!empty($video->skip_recap)){{ $video->skip_recap }}@endif" placeholder="HH:MM:SS" >
                      </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Recap Start Time <small>(Please Give In Seconds)</small></label>
-                        <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif">
-                        <span><p id="error_recap_start_time" style="color:red;" >* Fill Recap Start Time </p></span>
+                        <label class="m-0">Recap Start Time <small>(Duration Time In (HH : MM : SS))</small></label><br>
+                        <span> <small> Start Time Always Lesser Than End Time </small> </span>
+                        <input type="text"  class="form-control without" id="recap_start_time" name="recap_start_time"  value="@if(!empty($video->recap_start_time)){{ $video->recap_start_time }}@endif" placeholder="HH:MM:SS" >
                     </div>
                     <div class="col-sm-4 form-group mt-3">
-                        <label class="m-0">Recap End Time <small>(Please Give In Seconds)</small></label> 
-                        <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ $video->recap_end_time }}@endif" >
-                        <span><p id="error_recap_end_time" style="color:red;" >* Fill Recap End Time </p></span>
+                        <label class="m-0">Recap End Time <small>(Duration Time In (HH : MM : SS))</small></label><br> 
+                        <span> <small> Recap Time Always Greater than video duration </small> </span>
+                        <input type="text"  class="form-control without" id="recap_end_time" name="recap_end_time"  value="@if(!empty($video->recap_end_time)){{ $video->recap_end_time }}@endif" placeholder="HH:MM:SS">
                     </div>
                 </div>
 
@@ -583,7 +583,7 @@ border-radius: 0px 4px 4px 0px;
                @endif      
                @endforeach
                </select>
-               <span><p id="error_video_Category" style="color:red;" >* Choose the Video Category </p></span>
+               <span><p id="error_video_Category" style="color:red !important;" >* Choose the Video Category </p></span>
                </div>
                <div class="col-sm-6 form-group" >                               
                <div class="panel panel-primary" data-collapsed="0"> 
@@ -624,7 +624,7 @@ border-radius: 0px 4px 4px 0px;
                         @endif 
                      @endforeach
                   </select>
-               <span><p id="error_language" style="color:red;" >* Choose the Language </p></span>
+               <span><p id="error_language" style="color:red !important;" >* Choose the Language </p></span>
 
                </div> 
                <div class="col-sm-4 form-group">
@@ -1664,80 +1664,7 @@ $(document).ready(function($){
             $('#next2').removeAttr('disabled');
       }
    });
-
-
-   // validation Recap 
-
-      $('#error_recap_start_time').hide();
-      $('#error_recap_end_time').hide();
-      $('#error_skip_recap_time').hide();
-
-   $('#recap_start_time').on('keyup keypress change', function(event) {
-          $('#error_recap_start_time').hide();
-
-      if($('#skip_recap').val() == ""){
-         $('#error_skip_recap_time').show();
-         $('#error_recap_end_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#skip_recap').val() != "" && $('#skip_recap').val() <= $('#recap_start_time').val() ){
-
-            $("#error_recap_start_time").empty();
-            $("#error_recap_start_time").append("Skip intro time always greater than intro Start time");
-            $('#error_recap_start_time').show();
-            $('#error_recap_end_time').show();
-            $('#error_recap_start_time').hide();
-
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_skip_recap_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
-   $('#skip_recap').on('keyup keypress change', function(event) {
-      if($('#recap_start_time').val() == ""){
-         $('#error_recap_start_time').show();
-         $('#error_recap_end_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#skip_recap').val() <= $('#recap_start_time').val() ){
-            $("#error_skip_recap_time").empty();
-            $("#error_skip_recap_time").append("Skip Recap time always lesser than recap Start time ");
-            $('#error_skip_recap_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_skip_recap_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
-   $('#recap_end_time').on('keyup keypress change', function(event) {
-
-      if($('#skip_recap').val() == ""){
-         $('#error_recap_start_time').show();
-         $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#recap_start_time').val() >= $('#recap_end_time').val() ){
-            $("#error_recap_end_time").empty();
-            $("#error_recap_end_time").append("End intro time always greater than intro start time ");
-            $('#error_recap_end_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else if($('#recap_start_time').val() != "" && $('#skip_recap').val() <= $('#recap_end_time').val() ){
-            $("#error_recap_end_time").empty();
-            $("#error_recap_end_time").append("End recap time always lesser than Skip recap time ");
-            $('#error_recap_end_time').show();
-            $('#next2').attr('disabled','disabled');
-      }
-      else{
-         $('#error_recap_end_time').hide();
-            $('#next2').removeAttr('disabled');
-      }
-   });
-
+   
 // video category
 $('#error_video_Category').hide();
    $('#error_language').hide();

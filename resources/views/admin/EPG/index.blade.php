@@ -75,23 +75,27 @@
                             </div>
                         </div>
 
-                        <div class="panel-body">
-                            <div id="nestable" class="nested-list dd with-margins">
-                                <table class="table table-bordered iq-card text-center" id="categorytbl">
-                                    <tr class="table-header r1">
-                                        <th><label>S.No</label></th>
-                                        <th><label>Channel Name </label></th>
-                                        <th><label>Start Date </label></th>
-                                        <th><label>End Date </label></th>
-                                        <th><label>Operation</</label></th>
+                        <div class="gallery-env mt-2">
+                            <table class="data-tables table iq-card text-center p-0" style="width:100%" id="epg_table">
+                                <thead>
+                                    <tr class="r1">
+                                        <th>S.No</th>
+                                        <th>Channel Name </th>
+                                        <th>Start Date </th>
+                                        <th>End Date </th>
+                                        <th>Time Zone </th>
+                                        <th>Operation</</th>
                                     </tr>
+                                </thead>
 
+                                <tbody>
                                     @foreach ($EPG as $key => $epg_data )
                                         <tr id="{{ $epg_data->id }}">
                                             <td>{{ $key+1 }}</td>
                                             <td>{{ $epg_data->channel_name }}</td>
                                             <td>{{ ($epg_data->epg_start_date) ? Carbon\Carbon::createFromFormat('Y-m-d', $epg_data->epg_start_date)->format('d-m-Y')  : '-' }}</td>
                                             <td>{{ $epg_data->epg_end_date ? Carbon\Carbon::createFromFormat('Y-m-d', $epg_data->epg_end_date)->format('d-m-Y')  : "-" }}</td>
+                                            <td>{{ $epg_data->time_zone_id ?  App\TimeZone::where('id',$epg_data->time_zone_id)->pluck('time_zone')->first()  : "-" }}</td>
 
                                             <td>
                                                 <div class=" align-items-center list-user-action" style="display: inline !important;">
@@ -110,13 +114,12 @@
                                                         href="{{ route('admin.epg.delete',[$epg_data->id] ) }}">
                                                         <img class="ply" src="{{ URL::to('assets/img/icon/delete.svg') }}">
                                                     </a>
-                                                    
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforeach
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -130,9 +133,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.css" />
+        <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+
         <script type="text/javascript">
             
-       
             $(document).ready(function() {
 
                 $('#submit-new-cat').click(function() {
@@ -142,6 +147,10 @@
                 setTimeout(function() {
                     $('#successMessage').fadeOut('fast');
                 }, 3000);
+            });
+
+            $(document).ready( function () {
+                $('#epg_table').DataTable();
             });
 
             function Copy(ele) {
@@ -156,7 +165,6 @@
                 $('.add_watch').slideUp('fast');
             }, 3000);
         }
-
         </script>
     @stop
 @stop

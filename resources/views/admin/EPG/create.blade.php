@@ -71,10 +71,12 @@
                     </div>
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0">  EPG Format   </label>
+                        <label class="m-0"> {{ ucwords(_('Time Zone')) }}  </label>
                         <div class="panel-body">
-                            <select class="form-control m-bot15" name="epg_format">
-                                <option value="{{ "XML-FILE"}}" selected> {{ 'XML FILE' }}  </option>
+                            <select class="form-control m-bot15" name="time_zone_id" id="time_zone_id">
+                                @foreach($TimeZone as $key => $time_zone)
+                                    <option value="{{ @$time_zone->id }}">{{ @$time_zone->time_zone }} {{ '(UTC'.@$time_zone->utc_difference.')' }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -98,7 +100,17 @@
                 </div>
                 
                 <div class="row mt-3 p-3 align-items-center">
+
                     <div class="col-sm-6 mt-3" data-collapsed="0">
+                        <label class="m-0">  EPG Format   </label>
+                        <div class="panel-body">
+                            <select class="form-control m-bot15" name="epg_format">
+                                <option value="{{ "XML-FILE"}}" selected> {{ 'XML FILE' }}  </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- <div class="col-sm-6 mt-3" data-collapsed="0">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
@@ -112,7 +124,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="row mt-3 p-3 align-items-center" align="left">
