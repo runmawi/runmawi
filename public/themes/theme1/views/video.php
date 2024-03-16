@@ -460,7 +460,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         <div style="position: absolute;top: 20%;width: 100%;">
 
           <h4 class="text-center"><?php echo $video->title ; ?></h4>
-          <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
+          <h6 class="text-center"><?= html_entity_decode($video->description); ?></h6>
           
           <h2>
             <?php
@@ -560,7 +560,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
      <div class="clear"></div>
      <div style="position: absolute;top: 20%;width: 100%;">
      <h4 class="text-center"><?php echo $video->title ; ?></h4>
-     <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
+     <h6 class="text-center"><?= html_entity_decode($video->description); ?></h6>
     
      <h2>
             <?php
