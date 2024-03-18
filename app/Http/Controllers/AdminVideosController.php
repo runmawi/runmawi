@@ -2710,7 +2710,7 @@ class AdminVideosController extends Controller
 
                 'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
                 'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
-                'tv_vj_post_position_ads'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
+                'ios_vj_post_position_ads'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
                 'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
 
                 'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
@@ -3865,7 +3865,7 @@ class AdminVideosController extends Controller
 
                 'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
                 'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
-                'tv_vj_post_position_ads'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
+                'ios_vj_post_position_ads' => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
                 'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
 
                 'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,

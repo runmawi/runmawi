@@ -21,7 +21,7 @@
                </select>
             </div>
 
-            <div id="accordionExample" class="accordion">
+            <div id="accordionExample" class="accordion col-md-12">
 
                               {{-- Website --}}
 

@@ -1415,6 +1415,8 @@ border-radius: 0px 4px 4px 0px;
     object-fit: cover
 }
 #msform input[type="file"]{border: 0; width: 100%;}
+
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
