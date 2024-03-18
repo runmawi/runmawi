@@ -18,7 +18,7 @@ Route::get('/video-chat', function () {
     return view('video-chat', ['users' => $users]);
 });
 // Route::get('video_chat', 'VideoChatController@index');
-Route::post('/FFplayoutlogin', 'AdminDashboardController@FFplayoutlogin');
+Route::get('/FFplayoutlogin', 'AdminDashboardController@FFplayoutlogin');
 
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
