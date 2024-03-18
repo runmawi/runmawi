@@ -321,21 +321,22 @@ $settings = App\Setting::first();
                           <div class="mt-3 row align-items-center">
                               <div class="col-md-3"> <h5 class="card-title mb-2">Update Profile</h5></div>
                               <div class="col-md-9"> 
-                    <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
-                    @csrf
+                     <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
+                     @csrf
                         <div class="row align-items-center">
-                            <div class="col-sm-6">
-                                <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                    <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
-                    <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
-                            </div>
-                            <div class="col-sm-6">
+                           <div class="col-sm-6">
+                              <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                              <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
+                              <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
+                           </div>
+                           <div class="col-sm-6">
                                  <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
-                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
-                            </div>
+                                 <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
+                           </div>
                         </div>
                                   
-                    </form>	</div>
+                     </form>	
+                  </div>
                               <div class="col-md-3"></div></div>
                    
                       

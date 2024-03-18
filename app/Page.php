@@ -13,5 +13,5 @@ class Page extends Model
 
 	protected $table = 'pages';
 
-	protected $fillable = array('user_id', 'title', 'slug', 'banner', 'image', 'body', 'active', 'created_at', 'footer_active');
+	protected $fillable = array('user_id', 'title', 'slug', 'banner', 'image', 'body', 'active', 'created_at', 'footer_active', 'meta_title', 'meta_keywords', 'meta_description');
 }
