@@ -103,7 +103,8 @@
       $livestream = App\LiveStream::where("slug", $request_url)->first();
       // }
       ?>
-   <?php   $dynamic_page = App\Page::where('slug', '=', $request_url)->first(); ?>
+   <?php   $dynamic_page = App\Page::where('slug', '=', $request_url)->first();
+   //dd($request_url); ?>
 
    <?php    $SiteMeta_page = App\SiteMeta::where('page_slug', '=', $request_url)->first(); 
             $SiteMeta_image = App\SiteMeta::where('page_slug', '=', $request_url)->pluck('meta_image')->first(); ?>
@@ -117,7 +118,7 @@
       elseif(!empty($series)){ echo urldecode($series->title) .' | '. $settings->website_name ; }
       elseif(!empty($episdoe)){ echo urldecode($episdoe->title) .' | '. $settings->website_name ; }
       elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
-      elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->title) .' | '. $settings->website_name ; }
+      elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->meta_title) .' | '. $settings->website_name ; }
       elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
       else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?></title>
 <meta name="description" content="<?php 
@@ -126,8 +127,11 @@
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
+      elseif(!empty($dynamic_page)){ echo ($dynamic_page->meta_description) ; }
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+      
+ <meta name="keywords" content="<?php  $dynamic_page->meta_keywords ? $dynamic_page->meta_keywords : $dynamic_page->meta_keywords?>">
 
 <!-- Schema.org markup for Google+ -->
 <meta itemprop="name" content="<?php
@@ -457,6 +461,9 @@
    font-weight: 400;
    }  
    body.light-theme #translator-table_filter input[type="search"]{
+   color: <?php echo GetLightText(); ?>;
+   }
+   body.light-theme li.breadcrumb-item{
    color: <?php echo GetLightText(); ?>;
    }
    body.light-theme .p-tag1{

@@ -526,6 +526,14 @@
             background-color: #000;
             padding: 10px !important;
         }
+        body.light-theme p{
+            color: <?php echo GetLightText(); ?> !important;
+        }
+        body.light-theme p{
+            color: <?php echo GetLightText(); ?> !important;
+        }
+        p{color: #fff !important;} 
+
     </style>
 
 
@@ -571,7 +579,7 @@
                         
                         <div class="small-heading text-white">Step 2 of<span class="ml-2">2</span></div>
 
-                        <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
+                        <p style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
                         
                         <div class="medium-heading text-white pb-3"> {{ $signup_step2_title }} </div>
 

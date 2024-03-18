@@ -1013,6 +1013,20 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             </ul>
           </li>
           
+               @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->document_category_checkout == 1 || @$AdminAccessPermission->document_upload_checkout == 1 || @$AdminAccessPermission->document_list_checkout == 1)
+                  <div class="men">
+                     <p class="lnk" >{{ (__('Documents Management')) }}</p>
+                  </div>
+                  @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->document_category_checkout == 1)
+                     <li><a href="{{ URL::to('admin/document/genre') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Menu.svg')?>"heigth="40" width="40"><span>{{ (__('Document Genre')) }}</span></a></li>
+                  @endif    
+                  @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->document_upload_checkout == 1)
+                  <li><a href="{{ URL::to('admin/document/upload') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Signup.svg')?>"heigth="40" width="40"><span>{{ (__('Document Upload')) }}</span></a></li>
+                  @endif 
+                  @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->document_list_checkout == 1)
+                  <li><a href="{{ URL::to('/admin/document/list') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>{{ (__('Document List')) }}</span></a></li>
+                  @endif 
+               @endif  
                  
                     <div class="men">
                         <p class="lnk" >{{ (__('Accounts')) }}</p>

@@ -48,7 +48,7 @@ $data->each(function ($category) {
                         </div>
 
                         <div class="favorites-contens">
-                            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            <ul class="favorites-slider list-inline p-0 mb-0">
                                 @foreach ($live_Category->category_livestream as $livestream_videos)
                                     <li class="slide-item">
                                         <div class="block-images position-relative">

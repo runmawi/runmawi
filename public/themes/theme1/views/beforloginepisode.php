@@ -882,7 +882,7 @@ $Auth = Auth::guest();
   .intro_skips,
   .Recap_skip {
     position: absolute;
-    margin-top: -14%;
+    margin-top: -9%;
     margin-bottom: 0;
     margin-left: 80%;
     margin-right: 0;
@@ -947,8 +947,8 @@ $skipIntroTime = $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] *
   if (SkipIntroPermissions == 0) {
     button.addEventListener("click", function (e) {
       video.currentTime = IntroskipEnd;
-      $("#intro_skip").remove();  // Button Shows only one tym
       video.play();
+      document.getElementById("intro_skip").hidden = true;  // Button Shows only one tym
     })
     if (AutoSkip != 1) {
       this.video.addEventListener('timeupdate', (e) => {
@@ -960,7 +960,7 @@ $skipIntroTime = $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] *
           document.getElementById("intro_skip").style.display = "block"; // Manual skip
         }
         if (RemoveSkipbutton <= e.target.currentTime) {
-          $("#intro_skip").remove();   // Button Shows only one tym
+          document.getElementById("intro_skip").hidden = true;  // Button Shows only one tym
         }
       });
     }
@@ -1011,8 +1011,8 @@ $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 
 
   button.addEventListener("click", function (e) {
     videoId.currentTime = RecapskipEnd;
-    $("#Recaps_Skip").remove();   // Button Shows only one tym
     videoId.play();
+    document.getElementById("Recaps_Skip").hidden = true; // Button Shows only one tym
   })
   this.videoId.addEventListener('timeupdate', (e) => {
     document.getElementById("Recaps_Skip").style.display = "none";
@@ -1023,7 +1023,7 @@ $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 
     }
 
     if (RemoveRecapsbutton <= e.target.currentTime) {
-      $("#Recaps_Skip").remove();   // Button Shows only one tym
+      document.getElementById("Recaps_Skip").hidden = true; // Button Shows only one tym
     }
   });
 

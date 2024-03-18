@@ -1,6 +1,6 @@
 
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path($header_link));
 @endphp
 
 <style>
@@ -135,6 +135,7 @@
         };
     });
 </script>
+
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+  include(public_path($footer_link));
 @endphp

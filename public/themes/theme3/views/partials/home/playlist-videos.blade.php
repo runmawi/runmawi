@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="tvthrillers-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <ul class="favorites-slider list-inline p-0 mb-0">
                             @foreach ($data as $playlist_videos)
                                 <li class="slide-item">
                                     <a href="{{ URL::to('video-playlist/' . $playlist_videos->slug) }}">

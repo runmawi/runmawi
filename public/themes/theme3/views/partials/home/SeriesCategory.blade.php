@@ -52,7 +52,7 @@ include public_path('themes/theme3/views/header.php');
                 </div>
 
                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+                    <ul class="favorites-slider list-inline p-0 mb-0">
                         @if (isset($SeriesGenre))
                             @foreach ($SeriesGenre as $Series_Genre)
                                 <li class="slide-item">
