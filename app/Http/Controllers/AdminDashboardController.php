@@ -661,38 +661,79 @@ class AdminDashboardController extends Controller
 
         }
 
-        
     public function FFplayoutlogin(Request $request)
-    {
-        // Get username and password from the request
-        $username = 'admin';
-        $password = 'o737{@&|3TCr';
+        {
+            // Get username and password from the request
+            $username = 'admin';
+            $password = 'o737{@&|3TCr';
 
-        // Create a Guzzle client instance
-        $client = new Client();
+            // Create a Guzzle client instance
+            $client = new Client();
 
-        try {
-            // Send a POST request to the authentication endpoint
-            $response = $client->post('http://127.0.0.1:8787/auth/login', [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => [
-                    'username' => $username,
-                    'password' => $password,
-                ],
-            ]);
+            try {
+                // Send a POST request to the authentication endpoint
+                $response = $client->post('http://69.197.189.34:8787/auth/login/', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => [
+                        'username' => $username,
+                        'password' => $password,
+                    ],
+                ]);
 
-            // Get the response body
-            $body = $response->getBody()->getContents();
+                // Get the response body
+                $body = $response->getBody()->getContents();
 
-            // Do something with the response body
-            // For example, return it as JSON
-            return response()->json(json_decode($body), $response->getStatusCode());
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            // Handle request exceptions (e.g., connection errors, 4xx, 5xx errors)
-            // You can customize the error handling based on your requirements
-            return response()->json(['error' => 'An error occurred while trying to log in'], 500);
+                // Decode the JSON response
+                $responseData = json_decode($body, true);
+
+                // Extract the token from the response data
+                $token = $responseData['user']['token'];
+            
+                // Get channel data from the request
+                $channelData = [
+                    'name' => 'Channel 2',
+                    'preview_url' => 'http://69.197.189.34:8787/live/stream.m3u8',
+                    'config_path' => '/etc/ffplayout/channel2.yml',
+                    'extra_extensions' => 'jpg,jpeg,png,mp4,mov,avi',
+                    'service' => 'ffplayout@channel2.service',
+                ];
+            
+
+                // Send a POST request to the channel creation endpoint
+                $responses = $client->post('http://69.197.189.34:8787/api/channel/', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . $token,
+                    ],
+                    'json' => $channelData,
+                ]);
+
+                // Get the response body
+                $bodys = $responses->getBody()->getContents();
+                // Send a GET request to the channel endpoint
+                $responsechannels = $client->get('http://69.197.189.34:8787/api/channels', [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $token,
+                    ],
+                ]);
+
+                // Get the response body
+                $bodyresponsechannels = $responsechannels->getBody()->getContents();
+
+                // Decode the JSON response
+
+                // Decode the JSON response
+                $channelsresponseData = json_decode($bodyresponsechannels, true);
+            dd($channelsresponseData);
+            
+                // Return the JSON response
+                return response()->json(json_decode($bodys), $responses->getStatusCode());
+            } catch (RequestException $e) {
+                // Handle request exceptions (e.g., connection errors, 4xx, 5xx errors)
+                // You can customize the error handling based on your requirements
+                return $e->getMessage();
+            }
         }
-    }
 }
