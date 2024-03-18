@@ -173,9 +173,19 @@
             ],
         });
 
-        $('.cnt-videos-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.cnt-videos-slider').show();
+        $(document).ready(function() {
+            var sliderVisible = false;
+
+            $('.cnt-videos-slider-nav').on('click', function() {
+                $(".drp-close").trigger("click");
+                if (!sliderVisible) {
+                    $('.cnt-videos-slider').show();
+                    sliderVisible = true;
+                } else {
+                    $('.cnt-videos-slider').hide();
+                    sliderVisible = false;
+                }
+            });
         });
 
         $('body').on('click', '.drp-close', function() {
