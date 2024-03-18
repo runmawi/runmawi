@@ -15,8 +15,8 @@ class AddOtpRequestIdToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            $table->string('otp_request_id', 100)->nullable();
-            $table->string('otp_through', 100)->nullable();
+            $table->string('otp_request_id', 100)->nullable()->after('otp');
+            $table->string('otp_through', 100)->nullable()->after('otp_request_id');
 
         });
     }

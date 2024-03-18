@@ -2515,7 +2515,7 @@ class AdminVideosController extends Controller
         $video->status = $status;
         $video->draft = $draft;
         $video->banner = $banner;
-        $video->ppv_price = $data["ppv_price"];
+        $video->ppv_price = $data['access'] == "ppv" ? $data["ppv_price"] : null ;
         $video->type = $data["type"];
         $video->description = $data["description"];
         $video->trailer_description = $data["trailer_description"];

@@ -115,6 +115,7 @@ class AdminEPGController extends Controller
     
             $responseBody = json_decode($response->getBody());
             $settings = Setting::first();
+            
 
             $data = array(
                 'settings' => $settings,
@@ -136,8 +137,9 @@ class AdminEPGController extends Controller
         }else{
 
             $data = array(
-                'button_text' => 'Generate' ,
+                'button_text'  => 'Generate' ,
                 'EPG_channels' => AdminEPGChannel::where('status',1)->get(),
+                'TimeZone'     => TimeZone::get(),
             );
     
             return View::make('admin.EPG.create',$data);
@@ -159,12 +161,15 @@ class AdminEPGController extends Controller
 
             $unique_channel_id = $EPG_Channel->unique_channel_id ;
             
-            $epg_start_date = Carbon::createFromFormat('Y-m-d', $request->epg_start_date)->format('n-d-Y');
-            $epg_end_date   = Carbon::createFromFormat('Y-m-d', $request->epg_end_date)->format('n-d-Y') ;
+            $Request_TimeZone = TimeZone::where('id',$request->time_zone_id)->first();
+
+            $epg_start_date = Carbon::createFromFormat('Y-m-d', $request->epg_start_date)->setTimezone( $Request_TimeZone->time_zone )->format('n-j-Y');
+            $epg_end_date   = Carbon::createFromFormat('Y-m-d', $request->epg_end_date)->setTimezone( $Request_TimeZone->time_zone )->format('n-j-Y') ;
 
             $ChannelVideoScheduler =  ChannelVideoScheduler::where('channe_id',$request->epg_channel_id)  
                                                             ->whereBetween('choosed_date', [$epg_start_date, $epg_end_date])
                                                             ->get();
+
 
             // XML 
 
@@ -179,12 +184,20 @@ class AdminEPGController extends Controller
 
             foreach ($ChannelVideoScheduler as $data) {
 
-                $International_standard_time_start_time = ( ($data->choosed_date) . $data->start_time . $data->AM_PM_Time) ;
-                $International_standard_time_stop_time  = ($data->choosed_date . $data->end_time . $data->AM_PM_Time) ;
+                $TimeZone = TimeZone::where('id',$data->time_zone)->first();
 
-                $start_time = Carbon::createFromFormat('n-d-Y h:i:s A', $International_standard_time_start_time)->format('YmdHis') . " " . TimeZone::where('id',$data->time_zone )->pluck('utc_difference')->first();
+                $initial_start_time   = Carbon::createFromFormat('H:i:s', $data->start_time , $TimeZone->time_zone);
+                $converted_start_time = $initial_start_time->setTimezone( $Request_TimeZone->time_zone )->format('h:i:s A');
+
+                $initial_end_time   = Carbon::createFromFormat('H:i:s', $data->end_time , $TimeZone->time_zone);
+                $converted_end_time = $initial_end_time->setTimezone( $Request_TimeZone->time_zone )->format('h:i:s A');
+
+                $International_standard_time_start_time = ( ($data->choosed_date) . ' ' . $converted_start_time ) ;
+                $International_standard_time_stop_time  = ( $data->choosed_date   . ' ' . $converted_end_time ) ;
+
+                $start_time = Carbon::createFromFormat('n-d-Y h:i:s A', $International_standard_time_start_time)->format('YmdHis') . " " . TimeZone::where('id',$Request_TimeZone->time_zone )->pluck('utc_difference')->first();
                 
-                $stop_time =  Carbon::createFromFormat('n-d-Y h:i:s A', $International_standard_time_stop_time)->format('YmdHis') . " " .  TimeZone::where('id',$data->time_zone )->pluck('utc_difference')->first(); 
+                $stop_time =  Carbon::createFromFormat('n-d-Y h:i:s A', $International_standard_time_stop_time)->format('YmdHis') . " " .  TimeZone::where('id',$Request_TimeZone->time_zone )->pluck('utc_difference')->first(); 
             
 
                 $programs[] = array(
@@ -222,6 +235,7 @@ class AdminEPGController extends Controller
                 'epg_end_date'      =>  $request->epg_end_date ,
                 'include_gaps_status' => !empty($request->include_gaps_status)  ? 1 : 0 ,
                 'xml_file_name'       => $filename ,
+                'time_zone_id'        => $request->time_zone_id ,
                 'status'              => 1 ,
             ]);
             

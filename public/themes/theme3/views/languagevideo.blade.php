@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="favorites-contens">
-                            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            <ul class="favorites-slider list-inline p-0 mb-0">
                                @foreach ($lang_videos as $item)
                                     <li class="slide-item">
                                         <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
@@ -114,7 +114,7 @@
                         </div>
 
                         <div class="favorites-contens">
-                            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            <ul class="favorites-slider list-inline p-0 mb-0">
                                 @foreach ($Most_watched_country as $item)
                                     <li class="slide-item">
                                         <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
@@ -230,7 +230,7 @@
                         </div>
 
                         <div class="favorites-contens">
-                            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            <ul class="favorites-slider list-inline p-0 mb-0">
                                 @foreach ($top_most_watched as $item)
                                     <li class="slide-item">
                                         <a href="{{ URL::to('category/videos/'.$item->slug ) }}">
