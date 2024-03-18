@@ -660,4 +660,39 @@ class AdminDashboardController extends Controller
 
 
         }
+
+        
+    public function FFplayoutlogin(Request $request)
+    {
+        // Get username and password from the request
+        $username = 'admin';
+        $password = 'o737{@&|3TCr';
+
+        // Create a Guzzle client instance
+        $client = new Client();
+
+        try {
+            // Send a POST request to the authentication endpoint
+            $response = $client->post('http://127.0.0.1:8787/auth/login', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    'username' => $username,
+                    'password' => $password,
+                ],
+            ]);
+
+            // Get the response body
+            $body = $response->getBody()->getContents();
+
+            // Do something with the response body
+            // For example, return it as JSON
+            return response()->json(json_decode($body), $response->getStatusCode());
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            // Handle request exceptions (e.g., connection errors, 4xx, 5xx errors)
+            // You can customize the error handling based on your requirements
+            return response()->json(['error' => 'An error occurred while trying to log in'], 500);
+        }
+    }
 }
