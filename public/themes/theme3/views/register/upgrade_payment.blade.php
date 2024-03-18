@@ -1049,7 +1049,7 @@
                            
                             {{-- Stripe --}}  
                             <div class="col-md-12 stripe_payment">
-                                <button type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 stripe_button processing_alert"> Pay Now</button>
+                                <button type="submit" class="btn btn-primary btn1 btn-lg btn-block font-weight-bold text-white mt-3 stripe_button processing_alert"> Pay Now</button>
                             </div>
                            
 
