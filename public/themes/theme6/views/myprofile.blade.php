@@ -325,13 +325,13 @@ $settings = App\Setting::first();
                     @csrf
                         <div class="row align-items-center">
                             <div class="col-sm-6">
-                                <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                    <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
-                    <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
+                              <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                              <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
+                           <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
                             </div>
                             <div class="col-sm-6">
                                  <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
-                    <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
+                                 <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
                             </div>
                         </div>
                                   
