@@ -852,7 +852,6 @@ class AuthController extends Controller
 
     public function store_ads(Request $request)
     {
-
         if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
             return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
         }
@@ -866,9 +865,8 @@ class AuthController extends Controller
         $Ads->ads_position = $request->ads_position;
         $Ads->ads_path = $request->ads_path;
         $Ads->ads_upload_type =  $request->ads_upload_type;
-        // $Ads->age = $request->age;
-        // $Ads->gender = $request->gender;
         $Ads->household_income = $request->household_income;
+        $Ads->ads_devices = !empty($request->ads_devices) ? json_encode($request->ads_devices) : null;
 
         if ($request->location == 'all_countries' || $request->location == 'India') {
             $Ads->location = $request->location;
@@ -1163,7 +1161,8 @@ class AuthController extends Controller
             'ads_position' => $request->ads_position,
             'ads_upload_type' => $request->ads_upload_type,
             'age' => !empty($request->age) ? json_encode($request['age']) : ' ',
-            'gender' => !empty($request['gender']) ? json_encode($request['gender']) : ' ',
+            'gender' => !empty($request['gender']) ? json_encode($request['gender']) :  null ,
+            'ads_devices' => !empty($request['ads_devices']) ? json_encode($request['ads_devices']) : null,
             'status' => 0,
         ];
 
