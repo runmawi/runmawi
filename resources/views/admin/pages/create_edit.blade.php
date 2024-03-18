@@ -89,7 +89,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <br>
+                            <br>
+                            <br>
+                            <div class="row col-md-12">
+                                <div class="col-md-4">
+                                    <label class="m-0"> Meta Title :</label>
+                                    <input type="text"  class="form-control" name="meta_title" id="meta_title" placeholder="Page Meta Title" value="@if (!empty($page->meta_title)) {{ $page->meta_title }} @endif">
 
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="m-0"> Meta Keywords :</label>
+                                    <input type="text"  class="form-control" name="meta_keywords" id="meta_keywords" placeholder="Page Meta Keywords" value="@if (!empty($page->meta_keywords)) {{ $page->meta_keywords }} @endif">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="m-0"> Meta Description :</label>
+                                    <textarea  rows="5" class="form-control mt-2" name="meta_description" id="meta-description-ckeditors">
+                                    @if (!empty($page->slug)) {{ $page->meta_description }} @endif
+                                    </textarea>
+                                </div>
+                            </div>
                             @if (!empty($page->created_at))
                                 <div class="col-sm-3">
                                     <div class="panel panel-primary" data-collapsed="0">

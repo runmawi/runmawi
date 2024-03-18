@@ -67,7 +67,7 @@
          elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
          elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
          elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
-         elseif(!empty($dynamic_page)){ echo $dynamic_page->title .' | '. $settings->website_name ; }
+         elseif(!empty($dynamic_page)){ echo $dynamic_page->meta_title .' | '. $settings->website_name ; }
          elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->page_title .' | '. $settings->website_name ; }
          else{ echo $uppercase .' | ' . $settings->website_name ;} 
       ?>
@@ -79,8 +79,10 @@
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
+      elseif(!empty($dynamic_page)){ echo ($dynamic_page->meta_description) ; }
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+   <meta name="keywords" content="<?php  $dynamic_page->meta_keywords ? $dynamic_page->meta_keywords : $dynamic_page->meta_keywords?>">
 
     <!-- Schema.org markup for Google+ -->
 
