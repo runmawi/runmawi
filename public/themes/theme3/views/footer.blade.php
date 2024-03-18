@@ -56,7 +56,7 @@
 
 
 </style>
-<footer class="mb-0" style="margin-top:5rem;">
+<footer class="mb-3" style="margin-top:5rem;">
         <div class="logo-content">
             
             <div class="row m-0">

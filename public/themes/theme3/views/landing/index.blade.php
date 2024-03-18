@@ -7,25 +7,11 @@
 
         <title>{{  $meta_title ? $meta_title.' | '.GetWebsiteName() : 'Landing-page'.' | '.GetWebsiteName() }}</title>
         
+        <meta name="title" content="{{  $meta_title ? $meta_title : GetWebsiteName() }}">
         <meta name="description" content="{{  $meta_description ? $meta_description : Getwebsitedescription() }}" />
+        <meta name="keywords" content="{{  $meta_keywords ? $meta_keywords : $meta_keywords }}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <meta name="keywords" content="{{  $meta_keywords ? $meta_keywords : $meta_keywords }}">
-
-
-        <!-- Schema.org markup for Google+ -->
-        <meta itemprop="name" content="{{  $meta_title ? $meta_title : GetWebsiteName() }}">
-        <meta itemprop="description" content="<?php if(!empty($meta_description)){ echo $meta_description  ; }else{ echo GetWebsiteName()   ;} ?>">
-        <!-- Twitter Card data -->
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{{  $meta_title ? $meta_title : GetWebsiteName() }}">
-        <meta name="twitter:description" content="{{  $meta_description ? $meta_description : Getwebsitedescription() }}">
-
-        <!-- Open Graph data -->
-        <meta property="og:title" content="{{  $meta_title ? $meta_title : GetWebsiteName() }}" />
-        <meta property="og:description" content="{{  $meta_description ? $meta_description : Getwebsitedescription() }}" />
-
-        <meta property="og:site_name" content="{{ GetWebsiteName() }}" />
 
                             {{-- Boostrap --}}
          <?php  echo  $bootstrap_link ;  ?>
