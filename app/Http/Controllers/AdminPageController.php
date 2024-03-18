@@ -183,7 +183,6 @@ class AdminPageController extends Controller
                 ->withErrors($validator)
                 ->withRequest();
         }
-
         $page = Page::create($data);
 
         return Redirect::to('admin/pages')->with(['note' => 'New Page Successfully Added!', 'note_type' => 'success']);
