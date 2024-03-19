@@ -4,7 +4,7 @@ $currency = App\CurrencySetting::first();
 // include('header.php'); 
 ?><!-- Header End -->
     @php
-    include(public_path('themes/theme6/views/header.php'));
+    include(public_path('themes/theme7/views/header.php'));
 @endphp
 
 <!-- MainContent -->
@@ -152,7 +152,7 @@ $currency = App\CurrencySetting::first();
     <!-- Modal Starts -->
 <!-- MainContent End-->
 @php
-    include(public_path('themes/theme6/views/footer.blade.php'));
+    include(public_path('themes/theme7/views/footer.blade.php'));
 @endphp
 <script>
 $('.mywishlist').click(function(){

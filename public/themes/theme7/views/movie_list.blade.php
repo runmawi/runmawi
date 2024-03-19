@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/theme6/views/header.php'));
+    include(public_path('themes/theme7/views/header.php'));
 @endphp
     
 <section id="iq-tvthrillers" class="s-margin">
@@ -88,7 +88,7 @@
                                             ];
                                         @endphp
 
-                                        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
+                                        {!! Theme::uses('theme7')->load('public/themes/theme7/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!}
 
                                     </div>
                                 </li>
@@ -221,5 +221,5 @@
     </div>
 </section>
 @php
-    include(public_path('themes/theme6/views/footer.blade.php'));
+    include(public_path('themes/theme7/views/footer.blade.php'));
 @endphp

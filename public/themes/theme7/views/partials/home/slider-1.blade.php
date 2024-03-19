@@ -54,38 +54,13 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-9 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
-                                <div class="channel-logo" data-delay-in="0.5">
-                                    <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
-                                </div>
-                            </a>
-                            <h1 class="slider-text big-title title text-uppercase">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
-
-                            <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-                                <span class="badge badge-secondary p-2"> {{ optional($item)->age_restrict.'+' }} </span>
-                                <span class="ml-3">  {{ $item->duration !=null ? Carbon\CarbonInterval::seconds($item->duration)->cascade()->format('%im %ss') : null }}</span>
-                            </div>
-                            <div class="descript">
-                                {!! html_entity_decode( optional($item)->description) !!}
-                            </div>
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
                                 aria-hidden="true"></i>Play Now</a>
-                                {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
                             </div>
                         </div>
                     </div>
 
-                        {{-- Trailer --}}
-                    {{-- @if ( optional($item)->trailer)
-                        <div class="trailor-video">
-                            <a href="{{ $item->trailer_link }}" class="playbtn">
-                                {!! html_entity_decode( $play_button_svg ) !!}
-                                <span class="w-trailor">Watch Trailer</span>
-                            </a>
-                        </div>
-
-                    @endif --}}
                 </div>
             </div>
         </div>
@@ -101,7 +76,7 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-9 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
+                            <!-- <a href="javascript:void(0);">
                                 <div class="channel-logo" data-delay-in="0.5">
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
@@ -114,7 +89,7 @@
                             </div>
                             <div class="descript">
                                 <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p>
-                            </div>
+                            </div> -->
                             <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
                                 <a href="{{ URL::to('play_series/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
                                 aria-hidden="true"></i>Play Now</a>

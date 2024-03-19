@@ -1,5 +1,5 @@
 <?php
-    include(public_path('themes/theme6/views/header.php'));
+    include(public_path('themes/theme7/views/header.php'));
 ?>
 <style>
     .h-100 { height: 540px !important; }
@@ -51,5 +51,5 @@
  
 
  <?php
-    include(public_path('themes/theme6/views/footer.blade.php'));
+    include(public_path('themes/theme7/views/footer.blade.php'));
 ?>
