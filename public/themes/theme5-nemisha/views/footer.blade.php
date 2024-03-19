@@ -20,10 +20,10 @@
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>
-                 <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.png')?>" /></a>
+                 <a href="<?= $app_settings->android_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.webp')?>" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.png')?>"  /></a>
+                 <a href="<?= $app_settings->ios_url ?>"><img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.webp')?>"  /></a>
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
               <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" />
@@ -61,18 +61,18 @@ entertainment.</p>
                       <p>Follow us :</p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/i.png')?>" style="" />
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/i.webp')?>" style="" />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
                       <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank" class="ml-1">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/t.png')?>" style="" />
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/t.webp')?>" style="" />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1">
                           <img class="" width="40" height="40"
-                               src="<?php echo  URL::to('/assets/img/lan/f.png')?>" style="" />
+                               src="<?php echo  URL::to('/assets/img/lan/f.webp')?>" style="" />
                       </a>
                       <?php } ?>
 
@@ -100,7 +100,7 @@ entertainment.</p>
 
                       <?php if(!empty($settings->youtube_page_id)){?>
                       <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank" class="ml-1">
-                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/y.png')?>" style="" />
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/y.webp')?>" style="" />
                       </a>
                       <?php } ?>
 

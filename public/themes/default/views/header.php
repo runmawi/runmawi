@@ -131,7 +131,7 @@
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>" />
       
- <meta name="keywords" content="<?php  $dynamic_page->meta_keywords ? $dynamic_page->meta_keywords : $dynamic_page->meta_keywords?>">
+ <meta name="keywords" content="<?php  @$dynamic_page->meta_keywords ? @$dynamic_page->meta_keywords : @$dynamic_page->meta_keywords?>">
 
 <!-- Schema.org markup for Google+ -->
 <meta itemprop="name" content="<?php
@@ -461,6 +461,9 @@
    font-weight: 400;
    }  
    body.light-theme #translator-table_filter input[type="search"]{
+   color: <?php echo GetLightText(); ?>;
+   }
+   body.light-theme li.breadcrumb-item{
    color: <?php echo GetLightText(); ?>;
    }
    body.light-theme .p-tag1{
