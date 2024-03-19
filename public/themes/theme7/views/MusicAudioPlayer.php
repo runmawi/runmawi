@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<?php include(public_path('themes/theme6/views/header.php')); ?>
+<?php include(public_path('themes/theme7/views/header.php')); ?>
 
 <div id="music-player">
   
@@ -1251,4 +1251,4 @@ html,body{
 
 
 </style>
-<?php include(public_path('themes/theme6/views/footer.blade.php')); ?>
+<?php include(public_path('themes/theme7/views/footer.blade.php')); ?>

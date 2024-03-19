@@ -119,29 +119,29 @@
 </footer>
 
    <!-- jQuery, Popper JS -->
-   <script src="<?= asset('public/themes/theme6/assets/js/jquery-3.4.1.min.js') ?>"></script>
-   <script src="<?= asset('public/themes/theme6/assets/js/popper.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme7/assets/js/jquery-3.4.1.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme7/assets/js/popper.min.js') ?>"></script>
    
    <!-- Bootstrap JS -->
-   <script src="<?= asset('public/themes/theme6/assets/js/bootstrap.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme7/assets/js/bootstrap.min.js') ?>"></script>
    
    <!-- Slick JS -->
-   <script src="<?= asset('public/themes/theme6/assets/js/slick.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme7/assets/js/slick.min.js') ?>"></script>
    
    <!-- owl carousel Js -->
-   <script src="<?= asset('public/themes/theme6/assets/js/owl.carousel.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme7/assets/js/owl.carousel.min.js') ?>"></script>
    
    <!-- select2 Js -->
-   <script src="<?= asset('public/themes/theme6/assets/js/select2.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme7/assets/js/select2.min.js') ?>"></script>
    
    <!-- Magnific Popup-->
-   <script src="<?= asset('public/themes/theme6/assets/js/jquery.magnific-popup.min.js') ?>"></script>
+   <script src="<?= asset('public/themes/theme7/assets/js/jquery.magnific-popup.min.js') ?>"></script>
    
    <!-- Slick Animation-->
-    <script src="<?= asset('public/themes/theme6/assets/js/slick-animation.min.js') ?>"></script>
+    <script src="<?= asset('public/themes/theme7/assets/js/slick-animation.min.js') ?>"></script>
    
    <!-- Custom JS-->
-    <script src="<?= asset('public/themes/theme6/assets/js/custom.js') ?>"></script>
+    <script src="<?= asset('public/themes/theme7/assets/js/custom.js') ?>"></script>
     <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.js' ?>"></script>
     <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.min.js' ?>"></script>
 

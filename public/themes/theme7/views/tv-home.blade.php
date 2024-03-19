@@ -1,5 +1,5 @@
 <?php
-    include public_path('themes/theme6/views/header.php');
+    include public_path('themes/theme7/views/header.php');
 
     $parentCategories = App\SeriesGenre::orderBy('order', 'ASC')->get();
 
@@ -24,7 +24,7 @@
 
     <!-- <section id="home" class="iq-main-slider p-0">
         <div id="home-slider" class="slider m-0 p-0">
-        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/slider-1', [
+        {!! Theme::uses('theme7')->load('public/themes/theme7/views/partials/home/slider-1', [
                     'series_sliders' => App\Series::where('active', '=', '1')->where('banner','=','1')
                                             ->latest()->get() ,
                 ])->content() !!}
@@ -36,28 +36,28 @@
 
                     {{-- Series   --}}
 
-        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/latest-series', [
+        {!! Theme::uses('theme7')->load('public/themes/theme7/views/partials/home/latest-series', [
                 'data' => $latest_series,
                 'order_settings_list' => $order_settings_list,
             ])->content() !!}
 
                     {{-- Free Content  --}}
 
-        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/free_content', [
+        {!! Theme::uses('theme7')->load('public/themes/theme7/views/partials/home/free_content', [
                 'data' => $free_Contents,
                 'order_settings_list' => $order_settings_list,
             ])->content() !!}
 
                     {{-- Latest Episode  --}}
 
-        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/latest-episodes', [
+        {!! Theme::uses('theme7')->load('public/themes/theme7/views/partials/home/latest-episodes', [
                 'data' => $latest_episodes,
                 'order_settings_list' => $order_settings_list,
             ])->content() !!}
 
                     {{-- featured Episodes  --}}
 
-        {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/featured-episodes', [
+        {!! Theme::uses('theme7')->load('public/themes/theme7/views/partials/home/featured-episodes', [
                 'data' => $featured_episodes,
                 'order_settings_list' => $order_settings_list,
             ])->content() !!}
@@ -68,7 +68,7 @@
                 {{-- Series Genre  --}}
 
             @if ($item == 'Series_Genre' && $home_settings->SeriesGenre == 1)
-                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/SeriesGenre', [
+                {!! Theme::uses('theme7')->load('public/themes/theme7/views/partials/home/SeriesGenre', [
                         'data' => $parentCategories,
                         'order_settings_list' => $order_settings_list,
                     ])->content() !!}
@@ -87,7 +87,7 @@
                             ->get();
                     @endphp
 
-                    {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/seriescategoryloop', [
+                    {!! Theme::uses('theme7')->load('public/themes/theme7/views/partials/home/seriescategoryloop', [
                             'data' => $series,
                             'category' => $category,
                             'order_settings_list' => $order_settings_list,
@@ -110,4 +110,4 @@
     })
 </script>
 
-<?php include public_path('themes/theme6/views/footer.blade.php'); ?>
+<?php include public_path('themes/theme7/views/footer.blade.php'); ?>
