@@ -16,9 +16,6 @@ $user = App\User::where('id',$id)->first();
 
 }
 
-@$translate_language = App\Setting::pluck('translate_language')->first();
-\App::setLocale(@$translate_language);
-
  ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -664,11 +661,11 @@ cursor: pointer;
                      @if (Session::has('message'))
                         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                   @endif
-                        <h2 class="text-center">{{ __('My Account') }}</h2>
+                        <h2 class="text-center">My Account</h2>
                        
                          <div class="row mt-5 align-items-center justify-content-between">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">{{ __('Email') }}</span>
+                                 <span class="text-light font-size-13">Email</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13"> {{ $user->email ? $user->email : " "   }}</span></div>
                               </div>
@@ -687,7 +684,7 @@ cursor: pointer;
                                                 <input type="text"  name="user_email" class="form-control">
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_userEmail">{{ __('Update') }}</a></div>
+                                             <a type="button" class="btn round update_userEmail">Update</a></div>
                                        </div>
                               </span>
                            </form>
@@ -696,24 +693,24 @@ cursor: pointer;
                         <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-5 mt-3">
-                                <span class="text-light font-size-13">{{ __('Password') }}</span>
+                                <span class="text-light font-size-13">Password</span>
                                 <div class="p-0 mt-2">
                                        <span class="text-light font-size-13">*********</span>
                                 </div>
                            </div>
                             <div class="col-md-7 mt-2 text-right" style="font-size:14px;">
-                                <a href="{{ URL::to('/password/reset') }}" class="f-link text-white font-size-13">{{ __('Send Reset Password Email') }}</a>
+                                <a href="{{ URL::to('/password/reset') }}" class="f-link text-white font-size-13">Send Reset Password Email</a>
                             </div>
                             </div>
                           <hr style="border:0.5px solid #fff;">
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">{{ __('Display Name') }}</span>
+                                 <span class="text-light font-size-13">Display Name</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></div>
                               </div>
                               <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#demo">{{ __('Change') }}</a>
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#demo">Change</a>
                                  
                               </div>
                            </div>
@@ -727,7 +724,7 @@ cursor: pointer;
                                                 <input type="text"  name="user_name" class="form-control">
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_username">{{ __('Update') }}</a></div>
+                                             <a type="button" class="btn round update_username">Update</a></div>
                                        </div>
                               </span>
                            </form>
@@ -737,15 +734,17 @@ cursor: pointer;
 
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">{{ __('Display Image') }}</span>
+                                 <span class="text-light font-size-13">Display Image</span>
                                  <div class="p-0">
                                     <span class="text-light font-size-13">
-                                       <img src="{{ !is_null($user->avatar) ? URL::to('public/uploads/avatars/'.$user->avatar) : URL::to('public/uploads/avatars/theme7_profile_image.png')   }}" height="50px" width="50px" />
+                                       @if( $user->avatar != null ) 
+                                          <img src="{{ URL::to('public/uploads/avatars/'.$user->avatar)  }}" height="50px" width="50px" />
+                                       @endif
                                     </span>
                                  </div>
                               </div>
                               <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_img">{{ __('Change') }}</a>
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_img">Change</a>
                               </div>
                            </div>
 
@@ -758,7 +757,7 @@ cursor: pointer;
                                                 <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" required/>
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round update_userimg">{{ __('Update') }}</a></div>
+                                             <a type="button" class="btn round update_userimg">Update</a></div>
                                        </div>
                               </span>
                            </form>
@@ -768,10 +767,10 @@ cursor: pointer;
 
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">{{ __('Tv Activation Code') }}</span>
+                                 <span class="text-light font-size-13">Tv Activation Code</span>
                               </div>
                               <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_tvcode">{{ __('Add') }}</a>
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_tvcode">Add</a>
                               </div>
                            </div>
 
@@ -787,9 +786,9 @@ cursor: pointer;
                                           </div>
                                        <div class="col-md-4">
                                        @if(!empty($UserTVLoginCode->tv_code))
-                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn round tv-code-remove text-red">{{ __('Remove') }}</a>
+                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
                                        @else
-                                       <a type="button"  class="btn round tv-code text-white">{{ __('Add') }}</a>
+                                       <a type="button"  class="btn round tv-code text-white">Add</a>
                                        @endif
                                           </div>
                                        </div>
@@ -801,10 +800,10 @@ cursor: pointer;
 
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">{{ __('Date of Birth') }}</span>
+                                 <span class="text-light font-size-13">Date of Birth</span>
                               </div>
                               <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_DOB">{{ __('Add') }}</a>
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_DOB">Add</a>
                               </div>
                            </div>
 
@@ -821,7 +820,7 @@ cursor: pointer;
                                           </div>
                                        <div class="col-md-4">
                    
-                                       <a type="button"  class="btn round DOB text-white">{{ __('Add') }}</a>
+                                       <a type="button"  class="btn round DOB text-white">Add</a>
                                           </div>
                                        </div>
                               </span>
@@ -831,19 +830,17 @@ cursor: pointer;
                           <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-8">
-                                <span class="text-light font-size-13">{{ __('Membership Settings') }}</span>
+                                <span class="text-light font-size-13">Membership Settings</span>
 
                               <div class="p-0">
                                  <span class="text-light font-size-13">
-                                       {{ ucwords( __('Current Membership'). '-'.' '.$user->role) }}
+                                       {{ ucwords('Current Membership -'.' '.$user->role) }}
                                     </span><br>
 
                                     @if(Auth::user()->role == "subscriber" )
-                                       <span class="text-light font-size-13">
-                                          @php  $subscription_ends_at = \DB::table('users')->where('id',Auth::user()->id)->pluck('subscription_ends_at')->first(); @endphp
-
-                                          @if( !is_null($subscription_ends_at)  && !empty($subscription_ends_at) )
-                                             {{   "your subscription renew on ". $subscription_ends_at  }}
+                                    <span class="text-light font-size-13">
+                                          @if( $user->subscription_ends_at != null && !empty($user->subscription_ends_at) )
+                                             {{   "your subscription renew on ". ($user->subscription_ends_at)->format('d-m-Y') }}
                                           @endif
                                        </span>
                                     @endif
@@ -858,19 +855,19 @@ cursor: pointer;
                                     @elseif( (Auth::user()->role == "admin" ) )
 
                                     @else
-                                       <a href="<?=URL::to('/becomesubscriber');?>"  class="text-white font-size-13"> {{ __('Subscriber Payment') }}</a>
+                                       <a href="<?=URL::to('/becomesubscriber');?>"  class="text-white font-size-13"> Subscriber Payment</a>
                                     @endif
                               </div>
                         </div>
                          <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <a  href="{{ URL::to('logout') }}" type="button" class="btn round">{{ __('Logout') }}</a>
+                                <a  href="{{ URL::to('logout') }}" type="button" class="btn round">Logout</a>
                             </div>
 
                             @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
                               <div class="col-md-6 text-right">
-                                    <a  href="{{ URL::to('/cancelSubscription') }}" class="text-white font-size-13" >{{ __('Cancel Membership') }}</a>
+                                    <a  href="{{ URL::to('/cancelSubscription') }}" class="text-white font-size-13" >Cancel Membership</a>
                               </div>
                             @endif
                             
@@ -1947,5 +1944,5 @@ jQuery(document).ready(function($){
 });
    </script>
 @php
-include(public_path('themes/theme7/views/footer.blade.php'));
+include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp

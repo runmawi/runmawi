@@ -10,15 +10,15 @@ if(isset($sliders)) :
             } ?> header-image">
 
             <div class="slide slick-bg s-bg-1 lazy"
-                style="background:url('<?php echo URL::to('/') . '/public/uploads/videocategory/' . $slider_video->slider; ?>') no-repeat;background-size:contain;background-position:right; ">
+                style="background:url('<?php echo URL::to('/') . '/public/uploads/videocategory/' . $slider_video->slider; ?>');  background-repeat: no-repeat;background-size: cover;">
 
                 <div class="container position-relative h-100">
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">
-                                <h1 class="text-white text-uppercase mb-3" style="color:#fff!important;">
+                                <p class="text-white text-uppercase mb-3" style="color:#fff!important;">
                                     <?php echo strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title; ?>
-                                </h1>
+                                </p>
 
                                 <div class="mb-3">
                                     <span class="fa fa-star checked"></span>
@@ -62,7 +62,7 @@ endif; ?>
 } ?> header-image">
 
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>') no-repeat;background-size:cover;background-position:right;  ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>'); background-repeat: no-repeat;background-size: cover;  ">
         <div class="container position-relative h-100">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -73,11 +73,11 @@ endif; ?>
                             </div>
                         </a>
 
-                        <h1 class="slider-text big-title title text-uppercase text-white">
+                        <p class="slider-text big-title title text-uppercase text-white">
                             <?php
                             echo strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title;
                             ?>
-                        </h1>
+                        </p>
                         <div class="mb-3">
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star checked"></span>
@@ -129,15 +129,15 @@ endif; ?>
 } ?> header-image">
 
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $live_event_banner->player_image; ?>') no-repeat;background-size:cover;background-position:right;  ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $live_event_banner->player_image; ?>'); background-repeat: no-repeat;background-size: cover;  ">
         <div class="container position-relative h-100">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
 
                     <div class="col-xl-5 col-lg-12 col-md-12">
-                        <h1 class="slider-text big-title title text-uppercase text-white">
+                        <p class="slider-text big-title title text-uppercase text-white">
                             <?php echo strlen($live_event_banner->title) > 15 ? substr($live_event_banner->title, 0, 80) . '...' : $live_event_banner->title; ?>
-                        </h1>
+                        </p>
 
                         <div class="mb-3">
                             <span class="fa fa-star checked"></span>
@@ -185,7 +185,7 @@ endif; ?>
     echo 'active';
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>') no-repeat;background-size:contain;background-position:right; ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>'); background-repeat: no-repeat;background-size: cover;s ">
         <div class="container-fluid position-relative h-100" style="padding:0px 100px;">
             <div class="slider-inner h-100">
 
@@ -201,9 +201,9 @@ endif; ?>
 
                         <!-- Video Title  -->
                         <?php }else{ ?>
-                        <h1 class="text-white title text-uppercase mb-3">
+                        <p class="text-white title text-uppercase mb-3">
                             <?php echo strlen($videos->title) > 15 ? substr($videos->title, 0, 80) . '...' : $videos->title; ?>
-                        </h1>
+                        </p>
                         <?php } ?>
 
                         <div class="mb-3">
@@ -225,7 +225,7 @@ endif; ?>
                                     class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
                          
                             <!-- Trailer  -->
-                         <?php   include(public_path('themes/theme7/views/partials/home/Trailer-slider.php')); ?>                    
+                         <?php   include(public_path('themes/default/views/partials/home/Trailer-slider.php')); ?>                    
                         
                         </div>
 
@@ -274,7 +274,7 @@ if(Route::current()->getName() == "home"){
     echo 'active';
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>') no-repeat;background-size:inherit;background-position:right 10%; ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>'); background-repeat: no-repeat;background-size: cover; ">
         <div class="container position-relative h-100">
             <div class="slider-inner h-100">
 
@@ -288,10 +288,10 @@ if(Route::current()->getName() == "home"){
                         </a>
                         <!-- Video Title  -->
                         <?php }else{ ?>
-                        <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft"
+                        <p class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft"
                             data-delay-in="0.6">
                             <?php echo strlen($videos->title) > 15 ? substr($videos->title, 0, 80) . '...' : $videos->title; ?>
-                        </h1>
+                        </p>
                         <?php } ?>
 
                         <div class="mb-3">
@@ -314,7 +314,7 @@ if(Route::current()->getName() == "home"){
                                     class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
 
                                <!-- Trailer  -->
-                            <?php   include(public_path('themes/theme7/views/partials/home/Trailer-slider.php')); ?>       
+                            <?php   include(public_path('themes/default/views/partials/home/Trailer-slider.php')); ?>       
 
                         </div>
 
@@ -340,17 +340,17 @@ if(Route::current()->getName() == "home"){
     echo 'active';
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>') no-repeat;background-size:cover;background-position:center center; ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $slider_video->player_image; ?>');  background-repeat: no-repeat;background-size: cover; ">
         <div class="container position-relative h-100">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-6 col-lg-12 col-md-12">
-                        <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
+                        <p class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
                             data-delay-in="0.6">
                             <?php
                             echo strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title;
                             ?>
-                        </h1>
+                        </p>
                         <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
                             <span class="badge badge-secondary p-2">
                                 <?php echo __($slider_video->age_restrict); ?>
@@ -413,15 +413,15 @@ endif; ?>
     echo 'active';
 } ?> header-image">
     <div class="slide slick-bg s-bg-1 lazy"
-        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $series_slider->player_image; ?>') no-repeat;background-size:cover;background-position:right;  ">
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/images/' . $series_slider->player_image; ?>'); background-repeat: no-repeat;background-size: cover;  ">
         <div class="container position-relative h-100">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-5 col-lg-12 col-md-12">
 
-                        <h1 class="slider-text big-title title text-uppercase text-white">
+                        <p class="slider-text big-title title text-uppercase text-white">
                             <?php echo __($series_slider->title); ?>
-                        </h1>
+                        </p>
 
                         <div class="mb-3">
                             <span class="fa fa-star  checked"></span>
@@ -464,7 +464,7 @@ endif; ?>
 <?php endforeach; endif; ?>
 
 
-<!-- <script type="application/javascript">
+<script type="application/javascript">
 
 function trailer_series_slider(ele) 
 	{
@@ -496,4 +496,4 @@ function trailer_series_slider(ele)
         }).magnificPopup('open');
 }
 
-</script> -->
+</script>

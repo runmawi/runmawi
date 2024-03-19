@@ -1,6 +1,6 @@
 <!-- Header Start -->
 <?php
-include public_path('themes/theme7/views/header.php');
+include public_path('themes/default/views/header.php');
 
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
 $order_settings_list = App\OrderHomeSetting::get();
@@ -50,20 +50,10 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 <section class="mt-5 mb-5">
     <div class="container-fluid">
         <div class="row ">
-            <div class="col-6 col-lg-6">
-
-                <div class="channel-about">
-                    @if(!empty($channel_partner->channel_about) && $channel_partner->channel_about != null)
-                     <h6>{{ __('About Channel') }} : <?php echo $channel_partner->channel_about;  ?></h6> 
-                    @endif
-                </div>
-            </div>
-        </div>
             <div class="col-2 col-lg-2">
-
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     @php
-                        include(public_path('themes/theme7/views/partials/channel-social-share.php'));
+                        include(public_path('themes/default/views/partials/channel-social-share.php'));
                     @endphp
                 </ul>
             </div>
@@ -71,7 +61,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             <div class="col-2 col-lg-2">
             <a class="lkn" data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false"  style="cursor: pointer;">	
                 <span class="text-white">
-                <i class="fa fa-play mr-1" aria-hidden="true"></i> {{  __('About Channel Partner')  }}
+                <i class="fa fa-play mr-1" aria-hidden="true"></i> About Channel Partner
                 </span>
             </a>
 
@@ -100,19 +90,19 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     <div class="container-fluid">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item Allnav">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{  __('All')  }}</a>
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
   </li>
   <li class="nav-item videonav">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{  __('Videos')  }}</a>
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Videos</a>
   </li>
         <li class="nav-item livenav">
-    <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">{{  __('Live Stream')  }}</a>
+    <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">Live Stream</a>
   </li>
   <li class="nav-item seriesnav">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">{{  __('Series')  }}</a>
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
   </li>
          <li class="nav-item audionav">
-    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">{{  __('Audio')  }}</a>
+    <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
   </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -130,11 +120,11 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                                     @endforeach 
                         </div></div>
   <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><hr><div class="Series_Categorynav ">
-                            <?php foreach ($SeriesGenre as $key => $series_category) { ?>
+                            <?php foreach ($VideoCategory as $key => $videos_category) { ?>
 
                             <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                data-category-id=<?php echo $series_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
-                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $series_category->name; ?></a>
+                                data-category-id=<?php echo $videos_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
+                                role="tab" aria-controls="pills-kids" aria-selected="false"><?php echo $videos_category->name; ?></a>
                             <?php }  ?>
       
                         </div></div>
@@ -241,7 +231,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php include public_path('themes/theme7/views/partials/home/latest-videos.php');  ?>
+                    <?php include public_path('themes/default/views/partials/home/latest-videos.php');  ?>
                 </div>
             </div>
         </div>
@@ -257,7 +247,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/theme7/views/partials/home/live-videos.php');
+                    include public_path('themes/default/views/partials/home/live-videos.php');
                     ?>
                 </div>
             </div>
@@ -275,7 +265,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/theme7/views/partials/home/latest-series.php');
+                    include public_path('themes/default/views/partials/home/latest-series.php');
                     ?>
                 </div>
             </div>
@@ -293,7 +283,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
-                    include public_path('themes/theme7/views/partials/home/latest-audios.php');
+                    include public_path('themes/default/views/partials/home/latest-audios.php');
                     ?>
                 </div>
             </div>
@@ -301,8 +291,8 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
     </section>
     <?php } }else{ ?>
     <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
-        <h4 class="main-title mb-4">{{  __('Sorry! There are no contents under this genre at this moment')  }}.</h4>
-        <a href="{{ URL::to('/') }}" class="outline-danger1">{{  __('Home')  }}</a>
+        <h4 class="main-title mb-4">Sorry! There are no contents under this genre at this moment.</h4>
+        <a href="{{ URL::to('/') }}" class="outline-danger1">Home</a>
     </div>
     <?php   } ?>
 </div>
@@ -443,5 +433,5 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
 
 <?php
-    include public_path('themes/theme7/views/footer.blade.php');
+    include public_path('themes/default/views/footer.blade.php');
 ?>

@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>{{ __('Login') }} | <?php echo $settings->website_name ; ?></title>
+      <title>Login | <?php echo $settings->website_name ; ?></title>
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
@@ -102,18 +102,18 @@ text-align: left;
                           <div class="col-md-12">
 
                             <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  ></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                             <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  ></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                             <?php }else { ?> 
-                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  ></div></div>
+                                <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                             <?php } ?>
 
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
-                            <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">{{ __('Demo Login') }}</p>
-                            <p class="links"><strong>{{ __('Email') }}</strong>: admin@admin.com</p>
-                            <p class="links mb-0"><strong>{{ __('Password') }}</strong>: Webnexs123!@#</p>
+                            <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">Demo Login</p>
+                            <p class="links"><strong>Email</strong>: admin@admin.com</p>
+                            <p class="links mb-0"><strong>Password</strong>: Webnexs123!@#</p>
                         </div>
                       <?php } else  { ?>
                       <?php } ?>
@@ -152,17 +152,17 @@ text-align: left;
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
                             								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password"  autocomplete="current-password" >
                         </div>
-                        <div class="position-relative">
-                            <span class="input-group-btn" id="eyeSlash">
-                                <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                            </span>
-                            <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                            </span>
-                        </div>
+<div class="position-relative">
+                                 <span class="input-group-btn" id="eyeSlash">
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                 </span>
+                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                 </span>
+                            </div>
                         
                          <div class="d-flex justify-content-end links">
-                                    <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password').'?' }}</a>
+                                    <a href="{{ route('Reset_Password') }}" class="f-link">Forgot your password?</a>
                         </div>
                         
                                          {{-- reCAPTCHA  --}}
@@ -174,7 +174,7 @@ text-align: left;
                         @endif
                         
                         <div class="sign-info">
-                            <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">{{ __('SIGN IN') }}</button>                     
+                            <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>                     
                         </div> 
 
                          <div class="mt-3" align="left" style="" >
@@ -205,18 +205,18 @@ text-align: left;
 						</div>-->
                         <div class="soc mb-3">
                             <div class="d-flex align-items-center">
-                                <?php if(@$system_settings != null && @$system_settings->facebook == 1 || @$system_settings->google == 1){ ?>
+                                <?php if($system_settings != null){ ?>
                                     <div>
-                                        <p class="links">{{ __('Login with using').':' }}</p>
+                                        <p class="links">Login with using:</p>
                                     </div>
                                 <?php } ?>
-                               <?php if(@$system_settings != null && @$system_settings->facebook == 1){ ?>
+                               <?php if($system_settings != null && $system_settings->facebook == 1){ ?>
                                 <div>
                                     <a href="{{ url('/auth/redirect/facebook') }}" class="" >
                                     <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                 </div>
                                <?php } ?>
-                                <?php if(@$system_settings != null && @$system_settings->google == 0 ){  }else{ ?>
+                                <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
                                     <div>
                                         <a href="{{ url('/auth/redirect/google') }}" class="" >
                                             <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;">
@@ -228,7 +228,7 @@ text-align: left;
                      </form>
                        <div class="">
                   <div class="text -left links">
-                  {{ __("Don't have an account?") }} <a href="{{ route('signup') }}" class="text-primary ml-2">{{ __('Sign Up here!') }}</a>
+                     Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2">Sign Up here!</a>
                   </div>
                   
                </div>
@@ -288,7 +288,7 @@ text-align: left;
 </body>
 
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/default/views/footer.blade.php'));
 @endphp
 
 

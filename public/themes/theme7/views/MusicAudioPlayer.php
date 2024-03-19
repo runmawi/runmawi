@@ -1,75 +1,35 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<?php include(public_path('themes/theme7/views/header.php')); 
-  $music_station_url = array_slice(explode('/', request()->url()), -2, 1); 
-  if(count($music_station_url) > 0){
-    $music_station_button = $music_station_url[0];
-  }
+<?php include(public_path('themes/theme6/views/header.php')); ?>
 
- ?>
-<style>
-  .plus-minus-toggle {
-    cursor: pointer;
-    position: relative;
-    width: 21px;
-    &: before,;
-}
-.collapsed {
-    text-decoration: none;
-    font-size: 35px;
-    color: #fff;
-}
-.plus-minus-toggle
-&:after {
-    transform-origin: center;
-}
-  .playlist-ctn td {
-  color: white;
-}
-.active-track > .playlist-info-track,.active-track >.playlist-duration,.active-track > .playlist-btn-play{
-    color: #ffc266 !important;
-  }
-  .playlist-ctn::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.2);
-      
-  }
-  .active-track{
-    background: #4d4d4d;
-    color: #ffc266 !important;
-    font-weight: bold;
-    
-  }
-
-</style>
 <div id="music-player">
   
         <img id="album-art"/>
         <div id="top-bar">
+          <button id="backbutton"><i class="fa fa-arrow-left"></i></button> 
+          <button id="backStationbutton"><i class="fa fa-arrow-left"></i></button> 
           <div id="about-song"><h2 class="song-name"></h2><h4 class="artist-name"></h4></div>
           <div id="station-music">
-          <button id="addtoqueuebtn" class="addqubt"><i class="fa fa-plus" aria-hidden="true"></i></button>    
-          <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%; margin-right:2%'><?php echo __('Add to Queue'); ?></button></div>
+              <button class='btn bd btn-action station_auto_create' data-toggle="modal" data-target="#myModal" style='position: absolute;margin-left: 15%;'>Create Station</button></div>
         </div>
         <div id="lyrics">
           <!-- <h2 class="song-name"></h2><h4 class="artist-name"></h4> -->
           <div id="lyrics-content">
           </div>
           <div class="<?php echo URL::to('/becomesubscriber'); ?>">
-              <img height="250" width="250"  id="audio_img" src="<?php echo URL::to('/').'/public/uploads/images/' . @$first_album_image ;?>" style="object-fit: contain;">
+              <img height="250" width="250"  id="audio_img" src="">
               <!-- height="150" width="150"  -->
            </div>
-           <div id="description-content">
-          </div>
            <div class="Subscribe_stripe_button">
                 <!-- Subscriber Button -->
   
               <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="margin-left: -9%;position: absolute;margin-top: 20px;"
-                      class="btn bd btn-action"><?php echo __('Subscribe to continue listening'); ?></button> 
+                      class="btn bd btn-action">Subscribe to continue listening</button> 
                   </a>
               </div>
               <div class="ppv_stripe_button">
                   <!-- stripe Button -->
                   <button  onclick="stripe_checkout()" id="enable_button" style="margin-left: -9%;position: absolute;margin-top: 20px;"
-                      class="btn bd btn-action"><?php echo __('Purchase to Play Audio'); ?></button> 
+                      class="btn bd btn-action">Purchase to Play Audio</button> 
                   </a>
               </div>
         </div>
@@ -84,96 +44,33 @@
             <div id="totalTime"></div>
           </div>
           <div id="menu">
-          <button id="like-button" style="color:grey" class="like" title="Like"><i class="fa fa-thumbs-up"></i></button>
-          <button id="lyrics-toggle"><i class="fa fa-file-text" title="Lyrics"></i></button> <!-- Add this line -->
-          <button id="description-toggle"><i class="fa fa-book" title="Description"></i></button> <!-- Add this line -->
           <button id="back" title="Songs List"><i class="fas fa-list"></i></button> 
-          <button id="prev" title="Previous"><i class="fa fa-step-backward"></i></button>
-          <button id="play" ><i class="fa fa-play"></i></button>
-          <button id="next" title="Next"><i class="fa fa-step-forward"></i></button>
-          <button id="shuffle" style="color:grey" title="Shuffle"><i class="fa fa-random"></i></button>
-          <button id="repeat" style="color:grey" title="Repeat"><i class="fa fa-repeat"></i></button>
-          <button id="dislike-button" style="color:grey" class="dislike" title="DisLike"><i class="fa fa-thumbs-down"></i></button>
-          <?php if(@$playlist_station == 1){ ?>
-          <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
-          <?php } ?>
+            <button id="repeat" style="color:grey" title="Repeat"><i class="fa fa-repeat"></i></button>
+            <button id="prev" title="Previous"><i class="fa fa-step-backward"></i></button>
+            <button id="play" ><i class="fa fa-play"></i></button>
+            <button id="next" title="Next"><i class="fa fa-step-forward"></i></button>
+            <button id="shuffle" style="color:grey" title="Shuffle"><i class="fa fa-random"></i></button>
+            <button id="lyrics-toggle"><i class="fa fa-file-text" title="Lyrics"></i></button> <!-- Add this line -->
+            <button id="like-button" style="color:grey" class="like" title="Like"><i class="fa fa-thumbs-up"></i></button>
+            <button id="dislike-button" style="color:grey" class="dislike" title="DisLike"><i class="fa fa-thumbs-down"></i></button>
+            <?php if(@$playlist_station == 1){ ?>
+            <button id="backstation" title="Station List" ><i class="fas fa-stream"></i></button>
+            <?php } ?>
           </div>
-          
         </div>
-
-        <?php if(!empty(@$All_Playlist_Audios) && count(@$All_Playlist_Audios) > 0){ ?>
-            <div class="playlist-ctn mb-5">
-                <!-- Add the new code here -->
-              <h4 class="mb-3"><?php echo __('Tracks'); ?></h4>
-                <table class="w-100">
-                    <?php foreach ($All_Playlist_Audios as $key => $audio) { //dd($All_Playlist_Audios);?>
-                        <tr>
-                            <td><?= $key + 1 ?></td>
-                            <td><img src="<?= URL::to('/').'/public/uploads/images/' . $audio->image ?>" class="" height="50" width="50"></td>
-                            <td><h4><?= $audio->title ?></h4></td>
-                            <td><?= $audio->albumname ?></td>
-                            <td><div class="plus-minus-toggle collapsed add_audio_playlist" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio->id ?>"></div></td>
-                            <td><?php echo gmdate("H:i:s", $audio->duration);?></td>
-                        </tr>
-                    <?php } ?>
-                </table>
-                <ol>
-                  <li>
-                    <div class="track d-flex">
-                    </div>
-                  </li>
-                </ol>
-            </div>
-
-        <?php } ?>
-        <?php if(count(@$recommended_audios) > 0): ?>
-        <div class=" container-fluid video-list you-may-like overflow-hidden">
-            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Audios'); ?></h4>
-                <div class="slider"
-                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
-                      <?php include 'partials/recommeded_audio.php'; ?>
-                </div>
-          </div>
-      <?php endif; ?>
-          
-      <?php if(count(@$OtherMusicStation) > 0): ?>
-        <div class=" container-fluid video-list you-may-like overflow-hidden">
-            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Other MusicStation'); ?></h4>
-                <div class="slider"
-                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
-                      <?php include 'partials/other_music_station.php'; ?>
-                </div>
-          </div>
-      <?php endif; ?>
-
-      <?php if(count(@$Otherplaylist) > 0): ?>
-        <div class=" container-fluid video-list you-may-like overflow-hidden">
-            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Other Albums'); ?></h4>
-                <div class="slider"
-                    data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
-                      <?php include 'partials/other_palylist.php'; ?>
-                </div>
-          </div>
-      <?php endif; ?>
-
         <div id="playlist">
-
           <div id="label">
             <h1><?php echo @$playlist_name ; ?></h1>
             <input id="search" type="text" placeholder="&#xF002; Search from all songs"></input>
           </div>
-
-        <button id="backbutton"><i class="fas fa-times"></i></button> 
-
           <div id="show-box">
             <div id="show-list">
             </div>
           </div>
         </div>
         <div id="playlistStation">
-        <button id="backStationbutton"><i class="fas fa-times"></i></button> 
           <div id="label">
-            <h1><?php echo __('Other Music Station') ; ?></h1>
+            <h1><?php echo 'Other Music Station' ; ?></h1>
             <input id="Stationsearch" type="text" placeholder="&#xF002; Search from all Station"></input>
           </div>
           <div id="show-box">
@@ -188,22 +85,22 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title text-black" id="myModalLabel"><?php echo __('Create Station'); ?></h4>
+        <h4 class="modal-title text-black" id="myModalLabel">Create Station</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">      
       <div class="col-sm-10 p-0">
-          <label for="name"><?php echo __('Station Title'); ?></label>
-            <input name="station_name" id="station_name" placeholder="<?php echo __('Station Title'); ?>" class="form-control form-control1 text-black"  />
-            <span id='station_error' class="" style='color:red;'><?php echo __('Station Name Required'); ?></span>
+          <label for="name">Station Title</label>
+            <input name="station_name" id="station_name" placeholder="Station Title" class="form-control form-control1 text-black"  />
+            <span id='station_error' class="" style='color:red;'>Station Name Required</span>
         </div>
           </div>
      
 <br>
       <div class="modal-footer">
-        <button type="button" id="station_save" class="btn btn-primary"><?php echo __('Save'); ?></button>
+        <button type="button" id="station_save" class="btn btn-primary">Save</button>
       </div>
     </div>
   </div>
@@ -231,13 +128,6 @@ var buttonColorOnPress = "white";
 var $j = jQuery.noConflict();
 $('#station_error').hide();
 
-var music_station_button = <?php echo json_encode(@$music_station_button); ?>;
-
-if(music_station_button == 'music-station'){
-  $('.station_auto_create').css('display','none');
-
-}
-
 $(document).ready(function(){
   $('.Subscribe_stripe_button').hide();
   $('.ppv_stripe_button').hide();
@@ -245,12 +135,6 @@ $(document).ready(function(){
     if (lyrics.is(':visible')) {
         lyrics.hide(); // Hide lyrics
     }
-
-    var description = $('#description-content');
-        if (description.is(':visible')) {
-            description.hide(); // Hide lyrics
-        }
-
     var backbutton = $('#backbutton');
     backbutton.hide();
 
@@ -262,7 +146,6 @@ $(document).ready(function(){
     var listAudio = <?php echo json_encode($songs); ?>;
     var OtherMusicStation = <?php echo json_encode(@$OtherMusicStation); ?>;
     // console.log(listAudio);
-
 var data = listAudio; // Assuming listAudio contains the URL
 
 // $.getJSON(listAudioURL, function(data) {
@@ -316,22 +199,12 @@ var data = listAudio; // Assuming listAudio contains the URL
             context[i].innerHTML = songName;
         }
     }
-    // function setArtistName(artistName){
-    //     var context = $('.artist-name');
-    //     for(var i=0;i<context.length;i++){
-    //         context[i].innerHTML = artistName;
-    //     }
-    // }
-
-    function setArtistName(artistslug,artistName) {
-      var context = document.querySelectorAll('.artist-name');
-      var baseUrl = '<?= URL::to('/artist'); ?>';
-      
-      context.forEach(function(element) {
-        element.innerHTML += `<a href="${baseUrl}/${artistslug}"> ${artistName}</a>`;
-      });
+    function setArtistName(artistName){
+        var context = $('.artist-name');
+        for(var i=0;i<context.length;i++){
+            context[i].innerHTML = artistName;
+        }
     }
-    
     function setAlbumArt(albumart){
         var context = $('#album-art');
         context.attr("src",albumart);
@@ -354,17 +227,7 @@ var data = listAudio; // Assuming listAudio contains the URL
         // if(indexing.author == ""){ indexing.author = "Unknown"; }
         // console.log(data);
         setSongName(indexing.song);
-          // for (var i = 0; i < indexing.artistscrew.length; i++) {
-          //     // Access the inner array
-          //     var innerArray = indexing.artistscrew[i];
-          //     // Loop through the inner array
-          //     for (var j = 0; j < innerArray.length; j++) {
-          //       // Access the object
-          //       var obj = innerArray[j];
-          //       setArtistName(obj.artist_slug,obj.artist_name)
-          //       console.log(obj.artist_slug,obj.artist_name);
-          //     }
-          //   }
+        setArtistName(indexing.cast_crew);
         setAlbumArt(indexing.albumart);
 
         var image = document.querySelector('#audio_img')
@@ -449,59 +312,7 @@ var data = listAudio; // Assuming listAudio contains the URL
             break;
         }
     });
-    
-    function toggleRepeat(){if(songRepeat == 0){$('#repeat').css("color",buttonColorOnPress);songRepeat=1;}else{$('#repeat').css("color","grey");songRepeat=0;}}
-    function toggleShuffle() {
-            if (songShuffle == 0) {
-                $('#shuffle').css("color", buttonColorOnPress);
-                songShuffle = 1;
-
-                // Shuffle the playlist
-                shufflePlaylist();
-
-                // Start playing the first song in the shuffled playlist
-                playShuffledSong();
-            } else {
-                $('#shuffle').css("color", "grey");
-                songShuffle = 0;
-            }
-        }
-
-        
-        function shuffleArray(array) {
-            var currentIndex = array.length, randomIndex;
-
-            // While there remain elements to shuffle...
-            while (currentIndex != 0) {
-
-                // Pick a remaining element...
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex--;
-
-                // And swap it with the current element.
-                [array[currentIndex], array[randomIndex]] = [
-                    array[randomIndex], array[currentIndex]];
-            }
-
-            return array;
-        }
-
-        function shufflePlaylist() {
-            playlist.songs = shuffleArray(playlist.songs);
-            updateCurrentSong();
-        }
-
-        function updateCurrentSong() {
-            index = 0;
-            indexing = playlist.songs[index];
-        }
-
-        function playShuffledSong() {
-            loadSong();
-        }
-
-
-    function toggleMute(){if(mute == 0){mute=1;audio.volume = 0;}else{mute = 0;audio.volume = 1;}}
+    function toggleRepeat(){if(songRepeat == 0){$('#repeat').css("color",buttonColorOnPress);songRepeat=1;}else{$('#repeat').css("color","grey");songRepeat=0;}}function toggleShuffle(){if(songShuffle == 0){$('#shuffle').css("color",buttonColorOnPress);songShuffle = 1;}else{$('#shuffle').css("color","grey");songShuffle = 0;}}function toggleMute(){if(mute == 0){mute=1;audio.volume = 0;}else{mute = 0;audio.volume = 1;}}
     $(document).bind('keypress',function(event){
         //console.log(event.keyCode);
         switch(event.keyCode){
@@ -603,47 +414,15 @@ var data = listAudio; // Assuming listAudio contains the URL
             }
         });
 
-
         var html = "";
         html = html + "<h2>"+'Lyrics not Available'+"</h2>";
 
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
 
-        $('#description-toggle').on('click', function() {
-
-          var lyrics = $('#description-content');
-            $('#audio_img').show();
-
-            if (description.is(':visible')) {
-                description.hide(); // Hide description
-            } else {
-                $('#audio_img').show();
-                description.show(); // Show description
-                centerize(); // Centerize description (assuming you have this function)
-            }
-
-        });
-
-        var html = "";
-            html = html + "<h2>"+indexing.description+"</h2>";
-
-            // var html = "Lyrics not Available ";
-            $('#description-content').html(html);
-
 
             setSongName(indexing.title);
-            
-            for (var i = 0; i < indexing.artistscrew.length; i++) {
-              // Access the inner array
-              var innerArray = indexing.artistscrew[i];
-              // Loop through the inner array
-              for (var j = 0; j < innerArray.length; j++) {
-                // Access the object
-                var obj = innerArray[j];
-                setArtistName(obj.artist_slug,obj.artist_name)
-              }
-            }
+            setArtistName(indexing.slug);
             setAlbumArt(indexing.image_url);
             processing(indexing);
             totalTime = 'NaN';
@@ -693,39 +472,9 @@ var data = listAudio; // Assuming listAudio contains the URL
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
 
-        $('#description-toggle').on('click', function() {
-
-          var lyrics = $('#description-content');
-            $('#audio_img').show();
-
-            if (description.is(':visible')) {
-                description.hide(); // Hide description
-            } else {
-                $('#audio_img').show();
-                description.show(); // Show description
-                centerize(); // Centerize description (assuming you have this function)
-            }
-
-          });
-
-          var html = "";
-            html = html + "<h2>"+indexing.description+"</h2>";
-
-            // var html = "Lyrics not Available ";
-            $('#description-content').html(html);
-
 
             setSongName(indexing.title);
-            for (var i = 0; i < indexing.artistscrew.length; i++) {
-              // Access the inner array
-              var innerArray = indexing.artistscrew[i];
-              // Loop through the inner array
-              for (var j = 0; j < innerArray.length; j++) {
-                // Access the object
-                var obj = innerArray[j];
-                setArtistName(obj.artist_slug,obj.artist_name)
-              }
-            }
+            setArtistName(indexing.slug);
             setAlbumArt(indexing.image_url);
             processing(indexing);
             totalTime = 'NaN';
@@ -733,7 +482,6 @@ var data = listAudio; // Assuming listAudio contains the URL
 
       }else{ 
         // alert(indexing.access);
-        // alert(indexing.artistscrew);
         
         $('#audioFile').attr('src',indexing.audio);
         // abort_other_json = $.getJSON(indexing.json,function(data){
@@ -783,39 +531,9 @@ var data = listAudio; // Assuming listAudio contains the URL
         // var html = "Lyrics not Available ";
         $('#lyrics-content').html(html);
 
-        $('#description-toggle').on('click', function() {
 
-          var lyrics = $('#description-content');
-            $('#audio_img').show();
-
-            if (description.is(':visible')) {
-                description.hide(); // Hide description
-            } else {
-                $('#audio_img').show();
-                description.show(); // Show description
-                centerize(); // Centerize description (assuming you have this function)
-            }
-
-        });
-
-        var html = "";
-            html = html + "<h2>"+indexing.description+"</h2>";
-
-            // var html = "Lyrics not Available ";
-            $('#description-content').html(html);
-
-          for (var i = 0; i < indexing.artistscrew.length; i++) {
-              // Access the inner array
-              var innerArray = indexing.artistscrew[i];
-              // Loop through the inner array
-              for (var j = 0; j < innerArray.length; j++) {
-                // Access the object
-                var obj = innerArray[j];
-                setArtistName(obj.artist_slug,obj.artist_name)
-              }
-            }
             setSongName(indexing.title);
-
+            setArtistName(indexing.slug);
             setAlbumArt(indexing.image_url);
             processing(indexing);
             totalTime = NaN;
@@ -908,10 +626,9 @@ $('#Stationsearch').keyup(function(){
 
 var togglePlaylist = 0;
 $('#back').on('click',function(){
-// alert();  
+
   var backbutton = $('#backbutton');
   backbutton.show();
-  backbutton.css('opacity', 1); 
 
   var backStationbutton = $('#backStationbutton');
   backStationbutton.hide();
@@ -964,6 +681,7 @@ $('#backstation').on('click',function(){
 });
 
 $('#backStationbutton').on('click',function(){
+
 var backStationbutton = $('#backStationbutton');
   backStationbutton.hide();
 
@@ -1217,9 +935,8 @@ html,body{
 }
 #music-player{
   width:100%;
-  height:90vh;
+  height:100vh;
   background: var(--bg-color);
-  overflow: auto;
 }
 #album-art{ position:fixed; z-index:-1; left: 50%; transform: translateX(-50%);opacity: 0.15;width: auto; height: 100%;}
 #top-bar{
@@ -1228,7 +945,7 @@ html,body{
     color: white;
     width: 90%;
     padding: 0 0 0 5%;
-    /* z-index: 999; */
+    z-index: 999;
 }
 #top-bar > *{ display:inline-block; }
 #top-bar button{ margin:0;background: inherit; border: none; color: white; font-size: 100%;vertical-align:middle;transform:translateY(-40%);padding: 5px 10px;}
@@ -1236,14 +953,11 @@ html,body{
 .artist-name{ color: #ffffff79;}
 @media only screen and (max-width: 340px){
   #top-bar > button{ font-size: 15px; }
-  #top-bar > #about-song *{ font-size:120%;line-height:1.2; }
+  #top-bar > #about-song *{ font-size:120%;line-height:0; }
   #menu > button{ font-size: 5vw !important; padding: 4px 6px !important;  }
   #progress-bar{
     width: 50% !important;
   }
-}
-@media (max-width:460px){
-  #top-bar > #about-song *{ font-size:140%;line-height:1.2; }
 }
 #lyrics{
   width: 100%;
@@ -1272,7 +986,7 @@ html,body{
 }
 #player{
   background: var(--menu-color);
-  position: relative;
+  position: fixed;
   bottom: 0;
   height: 25vh;
   width: 100%;
@@ -1284,7 +998,7 @@ html,body{
   width:100%;
   padding-top: 25px;
 }
-#currentTime,#totalTime{transform:translateY(-28%);padding: 0 2%;font-size: 3vh}
+#currentTime,#totalTime{transform:translateY(-50%);padding: 0 2%;font-size: 3vh}
 @media only screen and (min-height: 500px){#currentTime,#totalTime{font-size: 2.25vh !important;}}
 #currentTime,#progress-bar,#totalTime{color: white;display: inline-block;}
 #progress-bar{
@@ -1448,17 +1162,6 @@ html,body{
     padding: 1vh 1.5vw;
     background: inherit;
   }
-
-  @media (max-width:655px){
-    .station_auto_create{
-        display: none;
-    }
-  }
-  @media (min-width:654px){
-    .addqubt{
-      display: none;
-    }
-  }
 @media only screen and (max-height: 500px){
   #show-list .float-song-card{font-size:40% !important;height:60px;width:50px;}
   #playlist > #label{font-size:70%;}
@@ -1546,32 +1249,6 @@ html,body{
     background: inherit;
   }
 
-  #backbutton{
-    opacity: 1;
-    margin: 0;
-    position: relative;
-    background: inherit;
-    border: none;
-    color: white;
-    font-size: 100%;
-    vertical-align: middle;
-    transform: translateY(-40%);
-    padding: 5px 10px;
-    left: 5%;
-  }
-  #backStationbutton{
-    opacity: 1;
-    margin: 0;
-    position: relative;
-    background: inherit;
-    border: none;
-    color: white;
-    font-size: 100%;
-    vertical-align: middle;
-    transform: translateY(-40%);
-    padding: 5px 10px;
-    left: 5%;
-    top: 15%; 
-  }
+
 </style>
-<?php include(public_path('themes/theme7/views/footer.blade.php')); ?>
+<?php include(public_path('themes/theme6/views/footer.blade.php')); ?>

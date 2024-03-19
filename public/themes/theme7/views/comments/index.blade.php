@@ -6,7 +6,7 @@
 
 <?php 
     if( !Auth::guest() ){
-        include public_path('themes/theme7/views/comments/commentbox.blade.php'); 
+        include public_path('themes/theme6/views/comments/commentbox.blade.php'); 
     }
 ?>
 
@@ -37,7 +37,7 @@
         <div>
             <?php if( Auth::user() != null && Auth::user()->id != $comment->user_id  && Auth::user()->role != 'register' ):?>
                 <a data-toggle="modal" data-target="#reply-modal-<?= $comment->id ?>"
-                class=" text-uppercase text-secondary"> <i class="fa fa-share" aria-hidden="true"></i>&nbsp;<?= __('Reply') ?></a>
+                class=" text-uppercase text-secondary"> <i class="fa fa-share" aria-hidden="true"></i>&nbsp;Reply</a>
             <?php endif; ?>
 
             <?php if( Auth::user() != null && Auth::user()->id == $comment->user_id && Auth::user()->role != 'register' ):?>
@@ -100,9 +100,9 @@
         endif; ?>
 
 
-        <?php include public_path('themes/theme7/views/comments/comment_edit_modal.blade.php'); ?>
-        <?php include public_path('themes/theme7/views/comments/comment_edit_reply_modal.blade.php'); ?>
-        <?php include public_path('themes/theme7/views/comments/comment_reply_modal.blade.php'); ?>
+        <?php include public_path('themes/theme6/views/comments/comment_edit_modal.blade.php'); ?>
+        <?php include public_path('themes/theme6/views/comments/comment_edit_reply_modal.blade.php'); ?>
+        <?php include public_path('themes/theme6/views/comments/comment_reply_modal.blade.php'); ?>
 
         <br />
     </div>

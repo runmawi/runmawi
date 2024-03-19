@@ -1,5 +1,5 @@
 <section id="main">
-  {{ __('Main Section') }}
+	Main Section
 	<small>
 		[{!! protectEmail('email@example.com') !!}]
 	</small>

@@ -4,39 +4,14 @@
     ->first();
 @endphp
 
-<style>
-    .bootstrap-select>.dropdown-toggle{
-        background: transparent !important;
-        border: 1px solid #ddd !important;
-        border-radius: 10px !important;
-        color: #fff !important;
-    }
-    body.light-theme .dropdown-menu{
-      background-color: <?php echo GetLightBg(); ?>!important;  
-      color: <?php echo GetLightText(); ?>!important;
-      box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
-    }
-    .dropdown-menu{
-        background-color: #000;
-        color: #fff !important;
-        box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
-    }
-    .dropdown-item:focus, .dropdown-item:hover{
-        background-color: #000;
-        color: #fff !important;
-        box-shadow: rgb(0 0 0 / 16%) 0px 3px 10px;
-    }
-
-</style>
-
 <div class="row mt-2 p-0 justify-content-end">
 
     {{-- <div class="col-md-2 col-sm-4 mb-1">
         <select class="selectpicker " multiple title="Refine" data-live-search="true">
-            <option value="videos">  {{ __('Movie') }}</option>
-            <option value="tv_Shows">  {{ __('TV Shows') }}</option>
-            <option value="live_stream">  {{ __('Live stream') }}</option>
-            <option value="audios">  {{ __('Audios') }}</option>
+            <option value="videos">Movie</option>
+            <option value="tv_Shows">TV Shows</option>
+            <option value="live_stream">Live stream</option>
+            <option value="audios">Audios</option>
         </select>
     </div> --}}
 
@@ -67,13 +42,13 @@
     <div class="col-md-2 mb-1">
         <select class="selectpicker " multiple title="Newly added First" id="sorting" name="sorting"
             data-live-search="true">
-            <option value="latest_videos">  {{ __('Latest Videos') }}</option>
+            <option value="latest_videos">Latest Videos</option>
         </select>
     </div>
 
     <input type="hidden" id="category_id" value={{ $category_id }} name="category_id">
 
     <div class="col-md-1 text-right p-0" id="mob1">
-        <button type="submit" class="btn btn-primary filter">  {{ __('Filter') }}</button>
+        <button type="submit" class="btn btn-primary filter">Filter</button>
     </div>
 </div>

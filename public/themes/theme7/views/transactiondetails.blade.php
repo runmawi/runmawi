@@ -1,7 +1,7 @@
 
 
 @php
-    include(public_path('themes/theme7/views/header.php'));
+    include(public_path('themes/default/views/header.php'));
 @endphp
 
 <div class="container mt-4 mb-4" style="background-color: white;border-radius: 10px; padding:20px;box-shadow: 0px 4px 20px rgb(0 0 0 / 5%);">
@@ -19,7 +19,7 @@
                 <!-- <div class="bg-strip">
                     <div class="d-flex justify-content-between">
                         <div >
-                        <h5 style="color: black;">{{ __('Make payment') }}</h5></div>
+                        <h5 style="color: black;">Make payment</h5></div>
                         
                         
                     </div>
@@ -80,10 +80,10 @@
                <table class="table table-bordered text-center">
                       <thead>
                         <tr>
-                        <th scope="col">{{ __('Status') }}</th>
-                        <th scope="col">{{ __('Amount') }}</th>
-                        <th scope="col">{{ __('Date') }}</th>
-                        <th scope="col">{{ __('Payment type') }}</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Payment type</th>
                         <!-- <th>Price</th>
                         <th>days</th>
                         <th>stripe id</th>
@@ -151,7 +151,7 @@
                             <td>{{ $live->amount }}</td>
            
                             <td>{{ $live->created_at}}</td>
-                            <td>{{ __('Card') }}</td>
+                            <td>Card</td>
                            </tr>
                             @endforeach
                         <?php    } ?>
@@ -168,5 +168,5 @@
 </div>
 
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/default/views/footer.blade.php'));
 @endphp

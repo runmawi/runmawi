@@ -1,5 +1,5 @@
 @php
-include(public_path('themes/theme7/views/header.php'));
+include(public_path('themes/theme6/views/header.php'));
 $settings = App\Setting::first(); 
 @endphp
 
@@ -126,7 +126,7 @@ padding-top: 20px;
 <audio id="myAudio" ontimeupdate="onTimeUpdate()">
   <!-- <source src="audio.ogg" type="audio/ogg"> -->
   <source id="source-audio" src="" type="audio/mpeg">
-  <?php echo __('Your browser does not support the audio element'); ?>.
+  Your browser does not support the audio element.
 </audio>
 
 <div class="player-ctn">
@@ -422,5 +422,5 @@ padding-top: 20px;
   }
       </script>
   @php
-include(public_path('themes/theme7/views/footer.blade.php'));
+include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp

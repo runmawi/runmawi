@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/theme7/views/header.php'));
+    include(public_path('themes/theme6/views/header.php'));
 @endphp
 
 <style>
@@ -27,10 +27,10 @@
           <div class="">
 		<div class="row">
 			<div class="col-md-12 text-center" >
-				<h4 class="font-weight-bold"><i class="entypo-archive"></i> {{ ('CONTACT US') }} </h4>
+				<h4 class="font-weight-bold"><i class="entypo-archive"></i> CONTACT US </h4>
 			</div>
 		</div>
-<div class="row justify-content-between mt-4 mb-5">
+<div class="row justify-content-center mt-4 mb-5">
     <div class="col-xl-8 col-lg-8">
         <div class="login-form">
             <form  id="contact_us_form" method="POST" action="{{ URL::to('/contact-us/store/') }}" enctype="multipart/form-data">
@@ -107,22 +107,12 @@
             </form>
         </div>
     </div>
-    <div class="col-4 mt-4">
-        <h4>{{ __('Contact Address') }}</h4>
-        
-        <p class="text-white font-size-14 pt-3"> GORPLAY ENTERTAINMENT INDIA PRIVATE LIMITED H No 8-3-898/20/2,Nagarjuna Nagar,Srinagar Colony,Khairatabad,Hyderabad-500073,Telangana</p>
-           
-        <p class="text-white font-size-14">Phone Number - +91 97035 41841</p>
-        <p class="text-white font-size-14">Email - mkj@gorplayer.com</p>
-
-
-    </div>
 </div>
         </div>
              </div>
     </div>
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp
 
 <script>

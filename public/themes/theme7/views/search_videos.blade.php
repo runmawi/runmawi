@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/theme7/views/header.php'));
+    include(public_path('themes/theme6/views/header.php'));
 @endphp
 
 <section id="iq-favorites">
@@ -10,7 +10,7 @@
             <div class="row">
 
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title"> {{  __("Showing Videos for") }} "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title"> Showing Videos for "{{  $search_value }}"</h3>                     
                 </div>
 
                 <div class="col-sm-12 page-height">
@@ -34,7 +34,7 @@
                                                             </p>
                                                         @elseif($video_search->global_ppv == null && $video_search->ppv_price == null )
                                                             <p class="p-tag" > 
-                                                                {{  __("Free")}} 
+                                                                {{  "Free"}} 
                                                             </p>
                                                         @endif
                                                     </div>
@@ -117,7 +117,7 @@
                                                             <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $video_search->slug ?>">	
                                                                 <span class="text-white">
                                                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                        {{ __("Watch Now") }}
+                                                                        {{ "Watch Now" }}
                                                                 </span>
                                                             </a>
                                                         <div>
@@ -141,5 +141,5 @@
 </section>
 
 @php
-    include(public_path('themes/theme7/views/footer.blade.php'));
+    include(public_path('themes/theme6/views/footer.blade.php'));
 @endphp

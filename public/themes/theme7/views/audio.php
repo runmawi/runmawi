@@ -1,4 +1,4 @@
-<?php include(public_path('themes/theme7/views/header.php'));  
+<?php include(public_path('themes/theme6/views/header.php'));  
 
 $audio = $audios ;
 
@@ -310,7 +310,7 @@ Your browser does not support the audio element.
 <?php if ( 1 == 0 ) { ?>
   <!--  $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin' -->
 <div id="subscribers_only">
-<a  class="text-center btn btn-success" id="paynowbutton"> <?php echo __('Pay for View'); ?>  </a>
+<a  class="text-center btn btn-success" id="paynowbutton"> Pay for View  </a>
 </div>
 <?php } else { ?>                
 
@@ -339,7 +339,7 @@ Your browser does not support the audio element.
 <div class="d-flex" style="justify-content: space-between;width: 70%;align-items: center;">
 
 <div onclick="toggleAudio()">
-  <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> <?php echo __('Play'); ?></button>
+  <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
 </div>
 
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
@@ -359,7 +359,7 @@ Your browser does not support the audio element.
 <div>
 <?php if(!Auth::guest()){ ?>
 <button type="button" class="btn bd btn-primary" data-toggle="modal" data-target="#exampleModal">
-<?php echo __('Create PlayList'); ?>
+  Create PlayList
 </button>
 <?php } ?>
 </div>
@@ -463,23 +463,23 @@ Your browser does not support the audio element.
     <div class="col-lg-4 p-0">
         <audio id="myAudio" ontimeupdate="onTimeUpdate()">
           <source id="source-audio" src="" type="audio/mpeg">
-          <?php echo __('Your browser does not support the audio element'); ?>.
+            Your browser does not support the audio element.
         </audio>
         <div class="stripe_button">
                   <!-- stripe Button -->
                   <button onclick="stripe_checkout()" id="enable_button" style="display:none;margin-left: -43%;position: absolute;margin-top: 20px;"
-                      class="btn2  btn-outline-primary"><?php echo __('Purchase to Play Audio'); ?></button>
+                      class="btn2  btn-outline-primary">Purchase to Play Audio</button>
 
                                      <!-- Subscriber Button -->
                          
                                       <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="display:none;margin-left: 66%;position: absolute;margin-top: 20px;"
-                      class="btn bd btn-action"><?php echo __('Subscribe to continue listening'); ?></button> 
+                      class="btn bd btn-action">Subscribe to continue listening</button> 
                       </a>
 
               </div>
         <div class="play-border">
             <div class="playlist-ctn">
-                <h6 class="mb-2 font-weight-bold"><?php echo __('AUDIO LIST'); ?> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <h6 class="mb-2 font-weight-bold">AUDIO LIST <i class="fa fa-arrow-right" aria-hidden="true"></i>
 </h6>
             </div></div>
     </div>
@@ -518,7 +518,7 @@ Your browser does not support the audio element.
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title text-black" id="exampleModalLabel"><?php echo __('Create PlayList  '); ?></h4>
+        <h4 class="modal-title text-black" id="exampleModalLabel">Create PlayList</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -528,12 +528,12 @@ Your browser does not support the audio element.
       <form  id="my-playlist-form" accept-charset="UTF-8"  enctype="multipart/form-data"  action="<?= URL::to('/playlist/store') ?>" method="post">
       
       <div class="col-sm-10 p-0">
-            <label for="name"><?php echo __('PlayList Title'); ?></label>
+            <label for="name">PlayList Title</label>
             <input name="title" id="title" placeholder="PlayList Title" class="form-control text-black"  />
           </div>
           <div class="col-sm-10 p-0">
 		
-            <label for="name"><?php echo __('PlayList Image'); ?></label>
+            <label for="name">PlayList Image</label>
             <input type="file" name="image" id="image" />
           </div>
      
@@ -541,7 +541,7 @@ Your browser does not support the audio element.
 <br>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-        <button type="button" id="store-play-list" class="btn btn-primary"><?php echo __('Save'); ?></button>
+        <button type="button" id="store-play-list" class="btn btn-primary">Save</button>
       </div>
     </form>
     </div>
@@ -595,7 +595,7 @@ Your browser does not support the audio element.
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
    
-<h4  class="album-title"><?php echo __('Other Albums'); ?> </h4>
+<h4  class="album-title">Other Albums </h4>
     <div class="favorites-contens">
 
    
@@ -688,15 +688,15 @@ Your browser does not support the audio element.
 <?php else: ?>
 
 <div id="subscribers_only">
-<h2><?php echo __('Sorry, this audio is only available to'); ?> <?php if($audio->access == 'subscriber'): ?><?php echo __('Subscribers'); ?><?php elseif($audio->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php endif; ?></h2>
+<h2>Sorry, this audio is only available to <?php if($audio->access == 'subscriber'): ?>Subscribers<?php elseif($audio->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 <div class="clear"></div>
 <?php if(!Auth::guest() && $audio->access == 'subscriber'): ?>
 <form method="get" action="/user/<?= Auth::user()->username ?>/upgrade_subscription">
-<button id="button"><?php echo __('Become a subscriber to watch this audio'); ?></button>
+<button id="button">Become a subscriber to watch this audio</button>
 </form>
 <?php else: ?>
 <form method="get" action="/signup">
-<button id="button"><?php echo __('Signup Now'); ?> <?php if($audio->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?><?php elseif($audio->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+<button id="button">Signup Now <?php if($audio->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($audio->access == 'registered'): ?>for Free!<?php endif; ?></button>
 </form>
 <?php endif; ?>
 </div>
@@ -1399,4 +1399,4 @@ if(role == 'admin'){
             });           
   });
     </script>
-<?php include(public_path('themes/theme7/views/footer.blade.php')); ?>
+<?php include(public_path('themes/theme6/views/footer.blade.php')); ?>
