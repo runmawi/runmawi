@@ -472,8 +472,8 @@ i.fa.fa-google-plus {
       <!-- Modal content-->
       <div class="modal-content" >
         <div class="modal-header" style="border:none;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
+            <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
+            <button type="button" class="close" data-dismiss="modal" style="color:#fff; opacity:1;">&times;</button>
         </div>
         <div class="modal-body" style='color: white;' >
             <?php
