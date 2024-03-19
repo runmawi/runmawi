@@ -415,6 +415,7 @@ hr {
         color: <?php echo GetLightText(); ?>!important;
     }
 
+
 </style>
 
 <?php if (Session::has('message')): ?>
@@ -1882,6 +1883,7 @@ if(empty($new_date) || Auth::user()->role == 'admin'){
                                         <p class="trending-dec w-100 mb-0  mt-2"><?php echo __($video->details); ?></p>
                                     </div>
                                 <?php  }?>
+                                <li>Heal From the Inside Out: Learn how to bring lasting healing into your body and life by tapping into the power of your emotions and soul.</li>
 
                                 <?php if(!empty($video->pdf_files) ) { ?>
                                 <h4><?php echo __('E-Paper'); ?>:</h4>
