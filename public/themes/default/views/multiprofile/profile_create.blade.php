@@ -58,7 +58,7 @@
                         </div>
 
                         <div class="row sumbit_btn">
-                            <a class="btn ab" href="{{ route('myprofile') }}">Cancel</a> {!! "&nbsp;" !!}
+                            <button class="btn btn-hover ab" ><a href="{{ route('myprofile') }}">Cancel</a> {!! "&nbsp;" !!}</button>
                             <button type="submit" class="btn btn-hover ab" >Save Changes</button>
                         </div>
 
@@ -87,12 +87,6 @@ $( document ).ready(function() {
     .ab {
         font-size: 14px;
         padding: 5px;
-    }
-    button.btn.btn-hover.ab, a.btn.ab {
-        border: #f3ece0 !important;
-        background-color: #d30abe !important;
-        color:#fff !important;
-        border-radius:0px !important;
     }
 </style>
 
