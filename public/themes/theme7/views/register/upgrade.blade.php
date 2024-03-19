@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    include(public_path('themes/theme7/views/header.php'));
+    include(public_path('themes/default/views/header.php'));
 @endphp
 
 <head>
@@ -162,7 +162,7 @@ body.loading .overlay{
     <div class="row justify-content-center page-height" id="signup-form">  
         <div class="col-md-11 col-sm-offset-1 plandetails">
 			<div class="login-block">
-                    <div class="panel-heading" align="center"><h1>{{ __('Choose Your Plan') }}</h1></div>
+                    <div class="panel-heading" align="center"><h1>Choose Your Plan</h1></div>
                      <div class="panel-body become-sub">
                         <div class="tab">
                           <!-- <button class="tablinks active" onclick="openCity(event, 'stripe_pg') " id="defaultOpen">
@@ -190,18 +190,18 @@ body.loading .overlay{
                                                     <?php echo $plan[0]->plans_name;?></h3>
                                             </div>
                                             <div class="plan-price">
-                                                <p>{{ __('plan') }}</p>
+                                                <p>plan</p>
                                                 <h4><?php echo "$".$plan[0]->price;?>
                                                     <small>
-                                                    <?php if ($plan_name == 'Monthly') { echo __('for a Month'); } else if ($plan_name == 'Yearly') { echo __('for 1 Year'); } else if ($plan_name == 'Quarterly') { echo __('for 3 Months'); } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+                                                    <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
                                                     </small>
                                                 </h4>
                                             </div>
                                             <div class="plan-details">
-                                                <p>{{ __('Grab this plan for your best Movies to Watch') }}.</p>
-                                                <p>{{ __('Welcome') }} :</p>
-                                                <h6 style ="color:yellow;background-color:black;"> {{ __('Welcome') }}Video Quality : <p style ="color:white;"><?php echo $plan[0]->video_quality; ?></p>  
-                                                {{ __('Video Resolution') }} : <p style ="color:white;"><?php echo $plan[0]->resolution; ?></p></h6>   
+                                                <p>Grab this plan for your best Movies to Watch.</p>
+                                                <p>Available Specification :</p>
+                                                <h6 style ="color:yellow;background-color:black;"> Video Quality : <p style ="color:white;"><?php echo $plan[0]->video_quality; ?></p>  
+                                                Video Resolution : <p style ="color:white;"><?php echo $plan[0]->resolution; ?></p></h6>   
                                                 <?php   
                                                     $permission = $plan[0]->devices;
                                                     // dd($permission);
@@ -218,10 +218,10 @@ body.loading .overlay{
                                                 }   
                                                 if(!empty($plan_devices)){ 
                                               ?>
-                                                <h6 style ="color:yellow;background-color:black;"  > {{ __('Available Devices') }} : <p><?php echo $plan_devices; ?></p></h6>   
+                                                <h6 style ="color:yellow;background-color:black;"  > Available Devices : <p><?php echo $plan_devices; ?></p></h6>   
                                             <?php } ?>
                                                 <div class="mt-4">
-                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">{{ __('Pay Now') }}
+                                                <button type="button" id="plans_name_choose" data-price="<?php echo $plan[0]->price;?>" data-name="<?php echo $plan[0]->plans_name;?>"  class="btn btn-primary plans_name_choose" onclick="jQuery('#add-new').modal('show');"  name="plan_name"  value="<?php echo $plan_name;?>">Pay Now
                                             </button>
                                                     <!-- <button type="submit" class="btn btn-primary" data-price="<?php // echo $plan[0]->price;?>" data-name="<?php //echo $plan[0]->plans_name;?>" name="plan_name" id="plan_name" value="<?php // echo $plan[0]->plan_id;?>"  >Pay Now</button> -->
                                                 </div>
@@ -259,7 +259,7 @@ body.loading .overlay{
 		<div class="modal-dialog">
 			<div class="modal-content">				
 				<div class="modal-header">
-                    <h4 class="modal-title" style="color: #000">{{ __('You are one step away from purchasing subscription Gate Way') }}</h4>
+                    <h4 class="modal-title" style="color: #000">You are one step away from purchasing subscription Gate Way</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				
@@ -303,8 +303,8 @@ body.loading .overlay{
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">{{ __('Close') }}</button>
-					<button type="button" class="btn btn-primary" id="submit-new-cat">{{ __('Continue') }}</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Continue</button>
 				</div>
 			</div>
 		</div>
@@ -338,7 +338,7 @@ body.loading .overlay{
     <div id="paypal_pg" class="tabcontent" >
         <label for="chkPassports">
                     <input type="checkbox" id="chkPassports" />
-                    {{ __('Click here for Recurring subscription!') }}
+                     Click here for Recurring subscription!
         </label>
         <form action="<?php echo URL::to('/').'/paypal_subscription';?>" method="POST" id="payment-form" enctype="multipart/form-data">
       
@@ -357,18 +357,18 @@ body.loading .overlay{
                             <?php echo $plan->name;?></h3>
 					</div>
 					<div class="plan-price">
-						<p>{{ __('plan') }}</p>
+						<p>plan</p>
 						<h4><?php echo "$".$plan->price;?>
 							<small>
-							<?php if ($plan_name == 'Monthly') { echo __('for a Month'); } else if ($plan_name == 'Yearly') { echo __('for 1 Year'); } else if ($plan_name == 'Quarterly') { echo __('for 3 Months'); } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+							<?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
 							</small>
 						</h4>
 					</div>
 					<div class="plan-details">
-						<p>{{ __('Grab this plan for your best Movies to Watch') }}.</p>
+						<p>Grab this plan for your best Movies to Watch.</p>
                        
                         <div class="mt-4">
-							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >{{ __('Pay Now') }}</button>
+							<button type="submit" class="btn btn-primary"  data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_id" id="paypal_plan" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
 						</div>
 <!--
 						<div class="text-right mt-4">
@@ -406,17 +406,17 @@ body.loading .overlay{
                                                     <?php echo $plan->plans_name;?></h3>
                                             </div>
                                             <div class="plan-price">
-                                                <p>{{ __('plan') }}</p>
+                                                <p>plan</p>
                                                 <h4><?php echo "$".$plan->price;?>
                                                     <small>
-                                                    <?php if ($plan_name == 'Monthly') { echo __('for a Month'); } else if ($plan_name == 'Yearly') { echo __('for 1 Year'); } else if ($plan_name == 'Quarterly') { echo __('for 3 Months'); } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
+                                                    <?php if ($plan_name == 'Monthly') { echo 'for a Month'; } else if ($plan_name == 'Yearly') { echo 'for 1 Year'; } else if ($plan_name == 'Quarterly') { echo 'for 3 Months'; } else if ($plan_name == 'Half Yearly') { echo 'for 6 Months'; } ?>
                                                     </small>
                                                 </h4>
                                             </div>
                                             <div class="plan-details">
-                                                <p>{{ __('Grab this plan and watch unlimited movies') }}</p>
+                                                <p>Grab this plan and watch unlimited movies</p>
                                                 <div class="text-right mt-4">
-                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >{{ __('Pay Now') }}</button>
+                                                    <button type="submit" class="btn btn-danger" data-price="<?php echo $plan->price;?>" data-name="<?php echo $plan->plans_name;?>" name="plan_name" id="plan_name" value="<?php echo $plan->plan_id;?>"  >Pay Now</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -431,7 +431,7 @@ body.loading .overlay{
                         <div id="paypal-button-container"></div>
                 </div>
                  <div class="col-sm-2 hide-box" style="margin-top: 4%;text-align: center;">
-                      <span class=" text-center">{{ __('OR') }}</span>
+                      <span class=" text-center">(OR)</span>
                 </div>
                  <div class="col-sm-4 hide-box" style="margin-top: 2%;">
                         <div class="text-center  pull-left" style="width: 100%;">
@@ -543,6 +543,6 @@ body.loading .overlay{
 
 
 @php
-  include(public_path('themes/theme7/views/footer.blade.php'));
+  include(public_path('themes/default/views/footer.blade.php'));
 @endphp
 @endsection 

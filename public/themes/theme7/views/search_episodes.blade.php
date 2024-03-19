@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
-                        <h3 class="vid-title"> {{ __('Showing  Episode for') }} "{{  $search_value }}"</h3>                     
+                        <h3 class="vid-title"> Showing  Episode for "{{  $search_value }}"</h3>                     
                     </div>
                     
                     <div class="favorites-contens">
@@ -39,7 +39,7 @@
                                                             </p>
                                                         @elseif($episode_search->global_ppv == null && $episode_search->ppv_price == null )
                                                             <p class="p-tag" > 
-                                                            {{  __("Free") }} 
+                                                                {{  "Free"}} 
                                                             </p>
                                                         @endif
                                                 </div>
@@ -100,7 +100,7 @@
                                                         <a  href="{{ URL::to('episode') .'/'.$series_slug.'/'. $episode_search->slug }}" >	
                                                             <span class="text-white">
                                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                    {{ __("Watch Now") }}
+                                                                    {{ "Watch Now" }}
                                                             </span>
                                                         </a>
                                                     <div>

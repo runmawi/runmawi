@@ -60,7 +60,7 @@
                         <div class="row sumbit_btn">
                             <a class="btn ab" href="{{ route('myprofile') }}">Cancel</a> {!! "&nbsp;" !!}
                             <button type="submit" class="btn btn-hover ab" >Save Changes</button>
-                        </div>
+                            </div>  
 
                         </form>
                     </div>

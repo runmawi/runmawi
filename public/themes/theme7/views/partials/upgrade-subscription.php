@@ -1,8 +1,8 @@
-<h2 class="form-signin-heading"><i class="fa fa-credit-card"></i><?= __('Become a Subscriber') ?>  </h2>
+<h2 class="form-signin-heading"><i class="fa fa-credit-card"></i> Become a Subscriber</h2>
 
 <div id="signup-form" style="margin-top:0px;">
 
-<p><?= __('Enter your credit card info to upgrade your account to a subscriber membership') ?> </p>
+<p>Enter your credit card info to upgrade your account to a subscriber membership</p>
 
 <form method="POST" action="<?= ($settings->enable_https) ? secure_url('user') : URL::to('user') ?>/<?= $user->username ?>/upgrade_cc" class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1" id="payment-form">
     
@@ -14,7 +14,7 @@
           
           <div class="row">
                   
-              <h1 class="panel-title col-lg-12 col-md-12 col-sm-12"><?= ThemeHelper::getThemeSetting(@$theme_settings->signup_message, __('Upgrade as Subscriber')) ?></h1>
+              <h1 class="panel-title col-lg-12 col-md-12 col-sm-12"><?= ThemeHelper::getThemeSetting(@$theme_settings->signup_message, 'Upgrade as Subscriber') ?></h1>
 
           </div>
 
@@ -23,7 +23,7 @@
         <div class="panel-body">
 
               <div class="form-group row C selectt">
-                              <label class="col-md-4 control-label" ><?= __('Choose a Plan') ?> </label>
+                              <label class="col-md-4 control-label" >Choose a Plan</label>
                                  <div class="col-md-8">
                                   <select class="form-control cc-subscrip-plan"  name="subscrip_plan" id="cc-subscrip-plan">
                                       <?php foreach ($plans as $plan) { ?>
@@ -35,7 +35,7 @@
             
             <!-- Credit Card Number -->
             <div class="form-group row">
-                <label class="col-md-4 control-label"><?= __('Credit Card Number') ?> </label>
+                <label class="col-md-4 control-label">Credit Card Number</label>
 
                 <div class="col-md-8">
                     <input type="text" id="cc-number" class="form-control input-md cc-number" data-stripe="number" required="">
@@ -45,10 +45,10 @@
 
             <!-- Expiration Date -->
             <div class="form-group row">
-                <label class="col-md-4 control-label" for="cc-expiration-month"><?= __('Expiration Date') ?> </label>
+                <label class="col-md-4 control-label" for="cc-expiration-month">Expiration Date</label>
 
                 <div class="col-md-3">
-                    <select class="form-control cc-expiration-month" data-stripe="exp-month" id="cc-expiration-month"><option value="1"><?= __('January') ?></option><option value="2"><?= __('February') ?></option><option value="3"><?= __('March') ?></option><option value="4"><?= __('April') ?></option><option value="5"><?= __('May') ?></option><option value="6"><?= __('June') ?></option><option value="7"><?= __('July') ?></option><option value="8"><?= __('August') ?></option><option value="9"><?= __('September') ?></option><option value="10"><?= __('October') ?></option><option value="11"><?= __('November') ?></option><option value="12"><?= __('December') ?></option></select>        </div>
+                    <select class="form-control cc-expiration-month" data-stripe="exp-month" id="cc-expiration-month"><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select>        </div>
                 <div class="col-md-2">
                     <select class="form-control cc-expiration-year" data-stripe="exp-year" id="cc-expiration-year"><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option><option value="2029">2029</option><option value="2030">2030</option></select>        </div>
             </div>
@@ -56,7 +56,7 @@
 
             <!-- CVV Number -->
             <div class="form-group row">
-                <label class="col-md-4 control-label" for="cvv"><?= __('CVV Number') ?> </label>
+                <label class="col-md-4 control-label" for="cvv">CVV Number</label>
 
                 <div class="col-md-3">
                     <input id="cvv" type="text" placeholder="" class="form-control input-md cvc" data-stripe="cvc" required="">
@@ -75,8 +75,8 @@
           </div>
       
           <div class="pull-right sign-up-buttons">
-          	<a href="<?= ($settings->enable_https) ? secure_url('user') : URL::to('user') ?>/<?= $user->username ?>" class="btn"><?= __('Cancel') ?> </a>
-            <button class="btn btn-primary" type="submit" name="create-account"><?= __('Upgrade to Subscriber') ?> </button>
+          	<a href="<?= ($settings->enable_https) ? secure_url('user') : URL::to('user') ?>/<?= $user->username ?>" class="btn">Cancel</a>
+            <button class="btn btn-primary" type="submit" name="create-account">Upgrade to Subscriber</button>
             
           </div>
 

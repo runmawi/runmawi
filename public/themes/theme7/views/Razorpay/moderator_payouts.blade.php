@@ -1,6 +1,6 @@
-@php  include(public_path('themes/theme7/views/header.php')); @endphp
+@php  include(public_path('themes/theme6/views/header.php')); @endphp
 
-<button id="rzp-button1" hidden>{{ __('Pay')  }}</button>  
+<button id="rzp-button1" hidden>Pay</button>  
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <div class="col-lg-12  h-100">
@@ -67,5 +67,5 @@ document.getElementById('rzp-button1').onclick = function(e){
         <input type="text"  name="commission"    value= {{ $response['commission'] }} />
 
 
-    <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">{{ __('Submit')  }}</button>
+    <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">Submit</button>
 </form>
