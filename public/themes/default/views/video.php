@@ -411,6 +411,9 @@ hr {
     .text-white.col-lg-7.p-0 p{
         color: #fff !important;
     }
+    body.light-theme li{
+        color: <?php echo GetLightText(); ?>!important;
+    }
 
 </style>
 
