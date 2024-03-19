@@ -79,9 +79,9 @@
                      <select class="form-control" name="video_js_pre_position_ads" >
       
                         <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="random_ads" {{  ( $video->video_js_pre_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  ( $video->video_js_pre_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['website'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['website'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->video_js_pre_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -92,9 +92,9 @@
                      <select class="form-control" name="video_js_post_position_ads" >
       
                         <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="random_ads" {{  ( $video->video_js_post_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  ( $video->video_js_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['website'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['website'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->video_js_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -143,9 +143,9 @@
                      <select class="form-control" name="andriod_vj_pre_postion_ads" >
       
                         <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_pre_postion_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['android'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['android'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -156,9 +156,9 @@
                      <select class="form-control" name="andriod_vj_post_position_ads" >
       
                         <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_post_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['android'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['android'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -209,9 +209,9 @@
                      <select class="form-control" name="ios_vj_pre_postion_ads" >
       
                         <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->ios_vj_pre_postion_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->ios_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['IOS'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['IOS'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->ios_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -222,9 +222,9 @@
                      <select class="form-control" name="ios_vj_post_position_ads" >
       
                         <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->ios_vj_post_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->ios_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['IOS'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['IOS'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->ios_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -275,9 +275,9 @@
                      <select class="form-control" name="tv_vj_pre_postion_ads" >
       
                         <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_pre_postion_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['TV'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['TV'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -288,9 +288,9 @@
                      <select class="form-control" name="tv_vj_post_position_ads" >
       
                         <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->tv_vj_post_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->tv_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['TV'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['TV'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -341,9 +341,9 @@
                      <select class="form-control" name="roku_vj_pre_postion_ads" >
       
                         <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_pre_postion_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['roku'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['roku'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -354,9 +354,9 @@
                      <select class="form-control" name="roku_vj_post_position_ads" >
       
                         <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_post_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['roku'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['roku'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{ !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->roku_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -407,9 +407,9 @@
                      <select class="form-control" name="lg_vj_pre_postion_ads" >
       
                         <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_pre_postion_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['lg'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['lg'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -420,9 +420,9 @@
                      <select class="form-control" name="lg_vj_post_position_ads" >
       
                         <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_post_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['lg'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['lg'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -473,9 +473,9 @@
                      <select class="form-control" name="samsung_vj_pre_postion_ads" >
       
                         <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_pre_postion_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['samsung'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['samsung'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>
@@ -486,9 +486,9 @@
                      <select class="form-control" name="samsung_vj_post_position_ads" >
       
                         <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="random_ads" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_post_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
       
-                        @foreach ( $vj_Ads_devices->whereJsonContains('ads_devices',['samsung'])->get() as $video_js_Advertisement)
+                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['samsung'])->get() as $video_js_Advertisement)
                            <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
                         @endforeach
                      </select>

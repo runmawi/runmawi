@@ -1007,7 +1007,6 @@ class AdminVideosController extends Controller
                 'videolibrary' => $videolibrary ,
                 'streamUrl' => $streamUrl ,
                 'theme_settings' => $theme_settings ,
-                'vj_Ads_devices' => Advertisement::where('status',1),
                 'advertisements_category' => Adscategory::get(),
             ];
 
@@ -1561,9 +1560,6 @@ class AdminVideosController extends Controller
 
             $video_js_Advertisements = Advertisement::where('status',1)->get() ;
 
-            // Admin video Ads
-
-            $vj_Ads_devices = Advertisement::where('status',1);
 
             $admin_videos_ads = AdminVideoAds::where('video_id',$id)->first();
 
@@ -1615,7 +1611,6 @@ class AdminVideosController extends Controller
                 "Playlist_id"  => VideoPlaylist::where("video_id", $id)->pluck("playlist_id")->toArray(),
                 'video_js_Advertisements' => $video_js_Advertisements ,
                 'admin_videos_ads'        => $admin_videos_ads ,
-                'vj_Ads_devices'          => $vj_Ads_devices ,
                 'advertisements_category' => Adscategory::get(),
             ];
 
